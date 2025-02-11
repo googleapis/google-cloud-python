@@ -76,6 +76,13 @@ from google.cloud.dialogflow_v2.types import (
 )
 from google.cloud.dialogflow_v2.types import conversation_model
 
+CRED_INFO_JSON = {
+    "credential_source": "/path/to/file",
+    "credential_type": "service account credentials",
+    "principal": "service-account@example.com",
+}
+CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
 
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
@@ -345,6 +352,49 @@ def test__get_universe_domain():
     with pytest.raises(ValueError) as excinfo:
         ConversationModelsClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+
+@pytest.mark.parametrize(
+    "error_code,cred_info_json,show_cred_info",
+    [
+        (401, CRED_INFO_JSON, True),
+        (403, CRED_INFO_JSON, True),
+        (404, CRED_INFO_JSON, True),
+        (500, CRED_INFO_JSON, False),
+        (401, None, False),
+        (403, None, False),
+        (404, None, False),
+        (500, None, False),
+    ],
+)
+def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
+    cred = mock.Mock(["get_cred_info"])
+    cred.get_cred_info = mock.Mock(return_value=cred_info_json)
+    client = ConversationModelsClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=["foo"])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    if show_cred_info:
+        assert error.details == ["foo", CRED_INFO_STRING]
+    else:
+        assert error.details == ["foo"]
+
+
+@pytest.mark.parametrize("error_code", [401, 403, 404, 500])
+def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
+    cred = mock.Mock([])
+    assert not hasattr(cred, "get_cred_info")
+    client = ConversationModelsClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=[])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    assert error.details == []
 
 
 @pytest.mark.parametrize(
@@ -7035,10 +7085,14 @@ def test_create_conversation_model_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.ConversationModelsRestInterceptor, "post_create_conversation_model"
     ) as post, mock.patch.object(
+        transports.ConversationModelsRestInterceptor,
+        "post_create_conversation_model_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ConversationModelsRestInterceptor, "pre_create_conversation_model"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = gcd_conversation_model.CreateConversationModelRequest.pb(
             gcd_conversation_model.CreateConversationModelRequest()
         )
@@ -7062,6 +7116,7 @@ def test_create_conversation_model_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_conversation_model(
             request,
@@ -7073,6 +7128,7 @@ def test_create_conversation_model_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_conversation_model_rest_bad_request(
@@ -7167,10 +7223,14 @@ def test_get_conversation_model_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ConversationModelsRestInterceptor, "post_get_conversation_model"
     ) as post, mock.patch.object(
+        transports.ConversationModelsRestInterceptor,
+        "post_get_conversation_model_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ConversationModelsRestInterceptor, "pre_get_conversation_model"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = conversation_model.GetConversationModelRequest.pb(
             conversation_model.GetConversationModelRequest()
         )
@@ -7196,6 +7256,10 @@ def test_get_conversation_model_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = conversation_model.ConversationModel()
+        post_with_metadata.return_value = (
+            conversation_model.ConversationModel(),
+            metadata,
+        )
 
         client.get_conversation_model(
             request,
@@ -7207,6 +7271,7 @@ def test_get_conversation_model_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_conversation_models_rest_bad_request(
@@ -7293,10 +7358,14 @@ def test_list_conversation_models_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ConversationModelsRestInterceptor, "post_list_conversation_models"
     ) as post, mock.patch.object(
+        transports.ConversationModelsRestInterceptor,
+        "post_list_conversation_models_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ConversationModelsRestInterceptor, "pre_list_conversation_models"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = conversation_model.ListConversationModelsRequest.pb(
             conversation_model.ListConversationModelsRequest()
         )
@@ -7322,6 +7391,10 @@ def test_list_conversation_models_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = conversation_model.ListConversationModelsResponse()
+        post_with_metadata.return_value = (
+            conversation_model.ListConversationModelsResponse(),
+            metadata,
+        )
 
         client.list_conversation_models(
             request,
@@ -7333,6 +7406,7 @@ def test_list_conversation_models_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_conversation_model_rest_bad_request(
@@ -7413,10 +7487,14 @@ def test_delete_conversation_model_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.ConversationModelsRestInterceptor, "post_delete_conversation_model"
     ) as post, mock.patch.object(
+        transports.ConversationModelsRestInterceptor,
+        "post_delete_conversation_model_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ConversationModelsRestInterceptor, "pre_delete_conversation_model"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = conversation_model.DeleteConversationModelRequest.pb(
             conversation_model.DeleteConversationModelRequest()
         )
@@ -7440,6 +7518,7 @@ def test_delete_conversation_model_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_conversation_model(
             request,
@@ -7451,6 +7530,7 @@ def test_delete_conversation_model_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_deploy_conversation_model_rest_bad_request(
@@ -7531,10 +7611,14 @@ def test_deploy_conversation_model_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.ConversationModelsRestInterceptor, "post_deploy_conversation_model"
     ) as post, mock.patch.object(
+        transports.ConversationModelsRestInterceptor,
+        "post_deploy_conversation_model_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ConversationModelsRestInterceptor, "pre_deploy_conversation_model"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = conversation_model.DeployConversationModelRequest.pb(
             conversation_model.DeployConversationModelRequest()
         )
@@ -7558,6 +7642,7 @@ def test_deploy_conversation_model_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.deploy_conversation_model(
             request,
@@ -7569,6 +7654,7 @@ def test_deploy_conversation_model_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_undeploy_conversation_model_rest_bad_request(
@@ -7649,10 +7735,14 @@ def test_undeploy_conversation_model_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.ConversationModelsRestInterceptor, "post_undeploy_conversation_model"
     ) as post, mock.patch.object(
+        transports.ConversationModelsRestInterceptor,
+        "post_undeploy_conversation_model_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ConversationModelsRestInterceptor, "pre_undeploy_conversation_model"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = conversation_model.UndeployConversationModelRequest.pb(
             conversation_model.UndeployConversationModelRequest()
         )
@@ -7676,6 +7766,7 @@ def test_undeploy_conversation_model_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.undeploy_conversation_model(
             request,
@@ -7687,6 +7778,7 @@ def test_undeploy_conversation_model_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_conversation_model_evaluation_rest_bad_request(
@@ -7781,10 +7873,14 @@ def test_get_conversation_model_evaluation_rest_interceptors(null_interceptor):
         "post_get_conversation_model_evaluation",
     ) as post, mock.patch.object(
         transports.ConversationModelsRestInterceptor,
+        "post_get_conversation_model_evaluation_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
+        transports.ConversationModelsRestInterceptor,
         "pre_get_conversation_model_evaluation",
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = conversation_model.GetConversationModelEvaluationRequest.pb(
             conversation_model.GetConversationModelEvaluationRequest()
         )
@@ -7810,6 +7906,10 @@ def test_get_conversation_model_evaluation_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = conversation_model.ConversationModelEvaluation()
+        post_with_metadata.return_value = (
+            conversation_model.ConversationModelEvaluation(),
+            metadata,
+        )
 
         client.get_conversation_model_evaluation(
             request,
@@ -7821,6 +7921,7 @@ def test_get_conversation_model_evaluation_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_conversation_model_evaluations_rest_bad_request(
@@ -7909,10 +8010,14 @@ def test_list_conversation_model_evaluations_rest_interceptors(null_interceptor)
         "post_list_conversation_model_evaluations",
     ) as post, mock.patch.object(
         transports.ConversationModelsRestInterceptor,
+        "post_list_conversation_model_evaluations_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
+        transports.ConversationModelsRestInterceptor,
         "pre_list_conversation_model_evaluations",
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = conversation_model.ListConversationModelEvaluationsRequest.pb(
             conversation_model.ListConversationModelEvaluationsRequest()
         )
@@ -7942,6 +8047,10 @@ def test_list_conversation_model_evaluations_rest_interceptors(null_interceptor)
         post.return_value = (
             conversation_model.ListConversationModelEvaluationsResponse()
         )
+        post_with_metadata.return_value = (
+            conversation_model.ListConversationModelEvaluationsResponse(),
+            metadata,
+        )
 
         client.list_conversation_model_evaluations(
             request,
@@ -7953,6 +8062,7 @@ def test_list_conversation_model_evaluations_rest_interceptors(null_interceptor)
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_conversation_model_evaluation_rest_bad_request(
@@ -8039,10 +8149,14 @@ def test_create_conversation_model_evaluation_rest_interceptors(null_interceptor
         "post_create_conversation_model_evaluation",
     ) as post, mock.patch.object(
         transports.ConversationModelsRestInterceptor,
+        "post_create_conversation_model_evaluation_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
+        transports.ConversationModelsRestInterceptor,
         "pre_create_conversation_model_evaluation",
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = conversation_model.CreateConversationModelEvaluationRequest.pb(
             conversation_model.CreateConversationModelEvaluationRequest()
         )
@@ -8066,6 +8180,7 @@ def test_create_conversation_model_evaluation_rest_interceptors(null_interceptor
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_conversation_model_evaluation(
             request,
@@ -8077,6 +8192,7 @@ def test_create_conversation_model_evaluation_rest_interceptors(null_interceptor
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_location_rest_bad_request(request_type=locations_pb2.GetLocationRequest):

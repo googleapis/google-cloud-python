@@ -70,6 +70,13 @@ from google.cloud.cloudcontrolspartner_v1beta.types import (
     partners,
 )
 
+CRED_INFO_JSON = {
+    "credential_source": "/path/to/file",
+    "credential_type": "service account credentials",
+    "principal": "service-account@example.com",
+}
+CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
 
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
@@ -343,6 +350,49 @@ def test__get_universe_domain():
     with pytest.raises(ValueError) as excinfo:
         CloudControlsPartnerCoreClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+
+@pytest.mark.parametrize(
+    "error_code,cred_info_json,show_cred_info",
+    [
+        (401, CRED_INFO_JSON, True),
+        (403, CRED_INFO_JSON, True),
+        (404, CRED_INFO_JSON, True),
+        (500, CRED_INFO_JSON, False),
+        (401, None, False),
+        (403, None, False),
+        (404, None, False),
+        (500, None, False),
+    ],
+)
+def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
+    cred = mock.Mock(["get_cred_info"])
+    cred.get_cred_info = mock.Mock(return_value=cred_info_json)
+    client = CloudControlsPartnerCoreClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=["foo"])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    if show_cred_info:
+        assert error.details == ["foo", CRED_INFO_STRING]
+    else:
+        assert error.details == ["foo"]
+
+
+@pytest.mark.parametrize("error_code", [401, 403, 404, 500])
+def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
+    cred = mock.Mock([])
+    assert not hasattr(cred, "get_cred_info")
+    client = CloudControlsPartnerCoreClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=[])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    assert error.details == []
 
 
 @pytest.mark.parametrize(
@@ -8532,10 +8582,14 @@ def test_get_workload_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.CloudControlsPartnerCoreRestInterceptor, "post_get_workload"
     ) as post, mock.patch.object(
+        transports.CloudControlsPartnerCoreRestInterceptor,
+        "post_get_workload_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.CloudControlsPartnerCoreRestInterceptor, "pre_get_workload"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = customer_workloads.GetWorkloadRequest.pb(
             customer_workloads.GetWorkloadRequest()
         )
@@ -8561,6 +8615,7 @@ def test_get_workload_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = customer_workloads.Workload()
+        post_with_metadata.return_value = customer_workloads.Workload(), metadata
 
         client.get_workload(
             request,
@@ -8572,6 +8627,7 @@ def test_get_workload_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_workloads_rest_bad_request(
@@ -8662,10 +8718,14 @@ def test_list_workloads_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.CloudControlsPartnerCoreRestInterceptor, "post_list_workloads"
     ) as post, mock.patch.object(
+        transports.CloudControlsPartnerCoreRestInterceptor,
+        "post_list_workloads_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.CloudControlsPartnerCoreRestInterceptor, "pre_list_workloads"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = customer_workloads.ListWorkloadsRequest.pb(
             customer_workloads.ListWorkloadsRequest()
         )
@@ -8691,6 +8751,10 @@ def test_list_workloads_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = customer_workloads.ListWorkloadsResponse()
+        post_with_metadata.return_value = (
+            customer_workloads.ListWorkloadsResponse(),
+            metadata,
+        )
 
         client.list_workloads(
             request,
@@ -8702,6 +8766,7 @@ def test_list_workloads_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_customer_rest_bad_request(request_type=customers.GetCustomerRequest):
@@ -8790,10 +8855,14 @@ def test_get_customer_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.CloudControlsPartnerCoreRestInterceptor, "post_get_customer"
     ) as post, mock.patch.object(
+        transports.CloudControlsPartnerCoreRestInterceptor,
+        "post_get_customer_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.CloudControlsPartnerCoreRestInterceptor, "pre_get_customer"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = customers.GetCustomerRequest.pb(customers.GetCustomerRequest())
         transcode.return_value = {
             "method": "post",
@@ -8815,6 +8884,7 @@ def test_get_customer_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = customers.Customer()
+        post_with_metadata.return_value = customers.Customer(), metadata
 
         client.get_customer(
             request,
@@ -8826,6 +8896,7 @@ def test_get_customer_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_customers_rest_bad_request(request_type=customers.ListCustomersRequest):
@@ -8910,10 +8981,14 @@ def test_list_customers_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.CloudControlsPartnerCoreRestInterceptor, "post_list_customers"
     ) as post, mock.patch.object(
+        transports.CloudControlsPartnerCoreRestInterceptor,
+        "post_list_customers_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.CloudControlsPartnerCoreRestInterceptor, "pre_list_customers"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = customers.ListCustomersRequest.pb(customers.ListCustomersRequest())
         transcode.return_value = {
             "method": "post",
@@ -8937,6 +9012,7 @@ def test_list_customers_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = customers.ListCustomersResponse()
+        post_with_metadata.return_value = customers.ListCustomersResponse(), metadata
 
         client.list_customers(
             request,
@@ -8948,6 +9024,7 @@ def test_list_customers_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_ekm_connections_rest_bad_request(
@@ -9036,10 +9113,14 @@ def test_get_ekm_connections_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.CloudControlsPartnerCoreRestInterceptor, "post_get_ekm_connections"
     ) as post, mock.patch.object(
+        transports.CloudControlsPartnerCoreRestInterceptor,
+        "post_get_ekm_connections_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.CloudControlsPartnerCoreRestInterceptor, "pre_get_ekm_connections"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = ekm_connections.GetEkmConnectionsRequest.pb(
             ekm_connections.GetEkmConnectionsRequest()
         )
@@ -9065,6 +9146,7 @@ def test_get_ekm_connections_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = ekm_connections.EkmConnections()
+        post_with_metadata.return_value = ekm_connections.EkmConnections(), metadata
 
         client.get_ekm_connections(
             request,
@@ -9076,6 +9158,7 @@ def test_get_ekm_connections_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_partner_permissions_rest_bad_request(
@@ -9172,10 +9255,14 @@ def test_get_partner_permissions_rest_interceptors(null_interceptor):
         "post_get_partner_permissions",
     ) as post, mock.patch.object(
         transports.CloudControlsPartnerCoreRestInterceptor,
+        "post_get_partner_permissions_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
+        transports.CloudControlsPartnerCoreRestInterceptor,
         "pre_get_partner_permissions",
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = partner_permissions.GetPartnerPermissionsRequest.pb(
             partner_permissions.GetPartnerPermissionsRequest()
         )
@@ -9201,6 +9288,10 @@ def test_get_partner_permissions_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = partner_permissions.PartnerPermissions()
+        post_with_metadata.return_value = (
+            partner_permissions.PartnerPermissions(),
+            metadata,
+        )
 
         client.get_partner_permissions(
             request,
@@ -9212,6 +9303,7 @@ def test_get_partner_permissions_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_access_approval_requests_rest_bad_request(
@@ -9306,10 +9398,14 @@ def test_list_access_approval_requests_rest_interceptors(null_interceptor):
         "post_list_access_approval_requests",
     ) as post, mock.patch.object(
         transports.CloudControlsPartnerCoreRestInterceptor,
+        "post_list_access_approval_requests_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
+        transports.CloudControlsPartnerCoreRestInterceptor,
         "pre_list_access_approval_requests",
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = access_approval_requests.ListAccessApprovalRequestsRequest.pb(
             access_approval_requests.ListAccessApprovalRequestsRequest()
         )
@@ -9339,6 +9435,10 @@ def test_list_access_approval_requests_rest_interceptors(null_interceptor):
         post.return_value = (
             access_approval_requests.ListAccessApprovalRequestsResponse()
         )
+        post_with_metadata.return_value = (
+            access_approval_requests.ListAccessApprovalRequestsResponse(),
+            metadata,
+        )
 
         client.list_access_approval_requests(
             request,
@@ -9350,6 +9450,7 @@ def test_list_access_approval_requests_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_partner_rest_bad_request(request_type=partners.GetPartnerRequest):
@@ -9436,10 +9537,14 @@ def test_get_partner_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.CloudControlsPartnerCoreRestInterceptor, "post_get_partner"
     ) as post, mock.patch.object(
+        transports.CloudControlsPartnerCoreRestInterceptor,
+        "post_get_partner_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.CloudControlsPartnerCoreRestInterceptor, "pre_get_partner"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = partners.GetPartnerRequest.pb(partners.GetPartnerRequest())
         transcode.return_value = {
             "method": "post",
@@ -9461,6 +9566,7 @@ def test_get_partner_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = partners.Partner()
+        post_with_metadata.return_value = partners.Partner(), metadata
 
         client.get_partner(
             request,
@@ -9472,6 +9578,7 @@ def test_get_partner_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_customer_rest_bad_request(request_type=customers.CreateCustomerRequest):
@@ -9643,10 +9750,14 @@ def test_create_customer_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.CloudControlsPartnerCoreRestInterceptor, "post_create_customer"
     ) as post, mock.patch.object(
+        transports.CloudControlsPartnerCoreRestInterceptor,
+        "post_create_customer_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.CloudControlsPartnerCoreRestInterceptor, "pre_create_customer"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = customers.CreateCustomerRequest.pb(
             customers.CreateCustomerRequest()
         )
@@ -9670,6 +9781,7 @@ def test_create_customer_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = customers.Customer()
+        post_with_metadata.return_value = customers.Customer(), metadata
 
         client.create_customer(
             request,
@@ -9681,6 +9793,7 @@ def test_create_customer_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_customer_rest_bad_request(request_type=customers.UpdateCustomerRequest):
@@ -9860,10 +9973,14 @@ def test_update_customer_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.CloudControlsPartnerCoreRestInterceptor, "post_update_customer"
     ) as post, mock.patch.object(
+        transports.CloudControlsPartnerCoreRestInterceptor,
+        "post_update_customer_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.CloudControlsPartnerCoreRestInterceptor, "pre_update_customer"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = customers.UpdateCustomerRequest.pb(
             customers.UpdateCustomerRequest()
         )
@@ -9887,6 +10004,7 @@ def test_update_customer_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = customers.Customer()
+        post_with_metadata.return_value = customers.Customer(), metadata
 
         client.update_customer(
             request,
@@ -9898,6 +10016,7 @@ def test_update_customer_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_customer_rest_bad_request(request_type=customers.DeleteCustomerRequest):

@@ -65,6 +65,13 @@ from google.ai.generativelanguage_v1beta.services.file_service import (
 )
 from google.ai.generativelanguage_v1beta.types import file, file_service
 
+CRED_INFO_JSON = {
+    "credential_source": "/path/to/file",
+    "credential_type": "service account credentials",
+    "principal": "service-account@example.com",
+}
+CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
 
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
@@ -302,6 +309,49 @@ def test__get_universe_domain():
     with pytest.raises(ValueError) as excinfo:
         FileServiceClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+
+@pytest.mark.parametrize(
+    "error_code,cred_info_json,show_cred_info",
+    [
+        (401, CRED_INFO_JSON, True),
+        (403, CRED_INFO_JSON, True),
+        (404, CRED_INFO_JSON, True),
+        (500, CRED_INFO_JSON, False),
+        (401, None, False),
+        (403, None, False),
+        (404, None, False),
+        (500, None, False),
+    ],
+)
+def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
+    cred = mock.Mock(["get_cred_info"])
+    cred.get_cred_info = mock.Mock(return_value=cred_info_json)
+    client = FileServiceClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=["foo"])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    if show_cred_info:
+        assert error.details == ["foo", CRED_INFO_STRING]
+    else:
+        assert error.details == ["foo"]
+
+
+@pytest.mark.parametrize("error_code", [401, 403, 404, 500])
+def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
+    cred = mock.Mock([])
+    assert not hasattr(cred, "get_cred_info")
+    client = FileServiceClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=[])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    assert error.details == []
 
 
 @pytest.mark.parametrize(
@@ -3091,10 +3141,13 @@ def test_create_file_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.FileServiceRestInterceptor, "post_create_file"
     ) as post, mock.patch.object(
+        transports.FileServiceRestInterceptor, "post_create_file_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.FileServiceRestInterceptor, "pre_create_file"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = file_service.CreateFileRequest.pb(file_service.CreateFileRequest())
         transcode.return_value = {
             "method": "post",
@@ -3118,6 +3171,7 @@ def test_create_file_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = file_service.CreateFileResponse()
+        post_with_metadata.return_value = file_service.CreateFileResponse(), metadata
 
         client.create_file(
             request,
@@ -3129,6 +3183,7 @@ def test_create_file_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_files_rest_bad_request(request_type=file_service.ListFilesRequest):
@@ -3211,10 +3266,13 @@ def test_list_files_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.FileServiceRestInterceptor, "post_list_files"
     ) as post, mock.patch.object(
+        transports.FileServiceRestInterceptor, "post_list_files_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.FileServiceRestInterceptor, "pre_list_files"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = file_service.ListFilesRequest.pb(file_service.ListFilesRequest())
         transcode.return_value = {
             "method": "post",
@@ -3238,6 +3296,7 @@ def test_list_files_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = file_service.ListFilesResponse()
+        post_with_metadata.return_value = file_service.ListFilesResponse(), metadata
 
         client.list_files(
             request,
@@ -3249,6 +3308,7 @@ def test_list_files_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_file_rest_bad_request(request_type=file_service.GetFileRequest):
@@ -3343,10 +3403,13 @@ def test_get_file_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.FileServiceRestInterceptor, "post_get_file"
     ) as post, mock.patch.object(
+        transports.FileServiceRestInterceptor, "post_get_file_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.FileServiceRestInterceptor, "pre_get_file"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = file_service.GetFileRequest.pb(file_service.GetFileRequest())
         transcode.return_value = {
             "method": "post",
@@ -3368,6 +3431,7 @@ def test_get_file_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = file.File()
+        post_with_metadata.return_value = file.File(), metadata
 
         client.get_file(
             request,
@@ -3379,6 +3443,7 @@ def test_get_file_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_file_rest_bad_request(request_type=file_service.DeleteFileRequest):

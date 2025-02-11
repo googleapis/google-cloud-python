@@ -123,11 +123,34 @@ class AdvisoryNotificationsServiceRestInterceptor:
     ) -> service.Notification:
         """Post-rpc interceptor for get_notification
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_notification_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AdvisoryNotificationsService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_notification` interceptor runs
+        before the `post_get_notification_with_metadata` interceptor.
         """
         return response
+
+    def post_get_notification_with_metadata(
+        self,
+        response: service.Notification,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.Notification, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_notification
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AdvisoryNotificationsService server but before it is returned to user code.
+
+        We recommend only using this `post_get_notification_with_metadata`
+        interceptor in new development instead of the `post_get_notification` interceptor.
+        When both interceptors are used, this `post_get_notification_with_metadata` interceptor runs after the
+        `post_get_notification` interceptor. The (possibly modified) response returned by
+        `post_get_notification` will be passed to
+        `post_get_notification_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_settings(
         self,
@@ -144,11 +167,34 @@ class AdvisoryNotificationsServiceRestInterceptor:
     def post_get_settings(self, response: service.Settings) -> service.Settings:
         """Post-rpc interceptor for get_settings
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_settings_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AdvisoryNotificationsService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_settings` interceptor runs
+        before the `post_get_settings_with_metadata` interceptor.
         """
         return response
+
+    def post_get_settings_with_metadata(
+        self,
+        response: service.Settings,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.Settings, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_settings
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AdvisoryNotificationsService server but before it is returned to user code.
+
+        We recommend only using this `post_get_settings_with_metadata`
+        interceptor in new development instead of the `post_get_settings` interceptor.
+        When both interceptors are used, this `post_get_settings_with_metadata` interceptor runs after the
+        `post_get_settings` interceptor. The (possibly modified) response returned by
+        `post_get_settings` will be passed to
+        `post_get_settings_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_notifications(
         self,
@@ -169,11 +215,36 @@ class AdvisoryNotificationsServiceRestInterceptor:
     ) -> service.ListNotificationsResponse:
         """Post-rpc interceptor for list_notifications
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_notifications_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AdvisoryNotificationsService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_notifications` interceptor runs
+        before the `post_list_notifications_with_metadata` interceptor.
         """
         return response
+
+    def post_list_notifications_with_metadata(
+        self,
+        response: service.ListNotificationsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        service.ListNotificationsResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_notifications
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AdvisoryNotificationsService server but before it is returned to user code.
+
+        We recommend only using this `post_list_notifications_with_metadata`
+        interceptor in new development instead of the `post_list_notifications` interceptor.
+        When both interceptors are used, this `post_list_notifications_with_metadata` interceptor runs after the
+        `post_list_notifications` interceptor. The (possibly modified) response returned by
+        `post_list_notifications` will be passed to
+        `post_list_notifications_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_settings(
         self,
@@ -190,11 +261,34 @@ class AdvisoryNotificationsServiceRestInterceptor:
     def post_update_settings(self, response: service.Settings) -> service.Settings:
         """Post-rpc interceptor for update_settings
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_settings_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AdvisoryNotificationsService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_settings` interceptor runs
+        before the `post_update_settings_with_metadata` interceptor.
         """
         return response
+
+    def post_update_settings_with_metadata(
+        self,
+        response: service.Settings,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.Settings, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_settings
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AdvisoryNotificationsService server but before it is returned to user code.
+
+        We recommend only using this `post_update_settings_with_metadata`
+        interceptor in new development instead of the `post_update_settings` interceptor.
+        When both interceptors are used, this `post_update_settings_with_metadata` interceptor runs after the
+        `post_update_settings` interceptor. The (possibly modified) response returned by
+        `post_update_settings` will be passed to
+        `post_update_settings_with_metadata`.
+        """
+        return response, metadata
 
 
 @dataclasses.dataclass
@@ -408,6 +502,10 @@ class AdvisoryNotificationsServiceRestTransport(
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_notification(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_notification_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -551,6 +649,10 @@ class AdvisoryNotificationsServiceRestTransport(
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_settings(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_settings_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -697,6 +799,10 @@ class AdvisoryNotificationsServiceRestTransport(
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_notifications(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_notifications_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -848,6 +954,10 @@ class AdvisoryNotificationsServiceRestTransport(
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_settings(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_settings_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

@@ -211,11 +211,34 @@ class NodeGroupsRestInterceptor:
     def post_add_nodes(self, response: compute.Operation) -> compute.Operation:
         """Post-rpc interceptor for add_nodes
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_add_nodes_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the NodeGroups server but before
-        it is returned to user code.
+        it is returned to user code. This `post_add_nodes` interceptor runs
+        before the `post_add_nodes_with_metadata` interceptor.
         """
         return response
+
+    def post_add_nodes_with_metadata(
+        self,
+        response: compute.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for add_nodes
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the NodeGroups server but before it is returned to user code.
+
+        We recommend only using this `post_add_nodes_with_metadata`
+        interceptor in new development instead of the `post_add_nodes` interceptor.
+        When both interceptors are used, this `post_add_nodes_with_metadata` interceptor runs after the
+        `post_add_nodes` interceptor. The (possibly modified) response returned by
+        `post_add_nodes` will be passed to
+        `post_add_nodes_with_metadata`.
+        """
+        return response, metadata
 
     def pre_aggregated_list(
         self,
@@ -236,11 +259,36 @@ class NodeGroupsRestInterceptor:
     ) -> compute.NodeGroupAggregatedList:
         """Post-rpc interceptor for aggregated_list
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_aggregated_list_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the NodeGroups server but before
-        it is returned to user code.
+        it is returned to user code. This `post_aggregated_list` interceptor runs
+        before the `post_aggregated_list_with_metadata` interceptor.
         """
         return response
+
+    def post_aggregated_list_with_metadata(
+        self,
+        response: compute.NodeGroupAggregatedList,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.NodeGroupAggregatedList, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for aggregated_list
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the NodeGroups server but before it is returned to user code.
+
+        We recommend only using this `post_aggregated_list_with_metadata`
+        interceptor in new development instead of the `post_aggregated_list` interceptor.
+        When both interceptors are used, this `post_aggregated_list_with_metadata` interceptor runs after the
+        `post_aggregated_list` interceptor. The (possibly modified) response returned by
+        `post_aggregated_list` will be passed to
+        `post_aggregated_list_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete(
         self,
@@ -257,11 +305,34 @@ class NodeGroupsRestInterceptor:
     def post_delete(self, response: compute.Operation) -> compute.Operation:
         """Post-rpc interceptor for delete
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the NodeGroups server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete` interceptor runs
+        before the `post_delete_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_with_metadata(
+        self,
+        response: compute.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the NodeGroups server but before it is returned to user code.
+
+        We recommend only using this `post_delete_with_metadata`
+        interceptor in new development instead of the `post_delete` interceptor.
+        When both interceptors are used, this `post_delete_with_metadata` interceptor runs after the
+        `post_delete` interceptor. The (possibly modified) response returned by
+        `post_delete` will be passed to
+        `post_delete_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_nodes(
         self,
@@ -280,11 +351,34 @@ class NodeGroupsRestInterceptor:
     def post_delete_nodes(self, response: compute.Operation) -> compute.Operation:
         """Post-rpc interceptor for delete_nodes
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_nodes_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the NodeGroups server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_nodes` interceptor runs
+        before the `post_delete_nodes_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_nodes_with_metadata(
+        self,
+        response: compute.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_nodes
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the NodeGroups server but before it is returned to user code.
+
+        We recommend only using this `post_delete_nodes_with_metadata`
+        interceptor in new development instead of the `post_delete_nodes` interceptor.
+        When both interceptors are used, this `post_delete_nodes_with_metadata` interceptor runs after the
+        `post_delete_nodes` interceptor. The (possibly modified) response returned by
+        `post_delete_nodes` will be passed to
+        `post_delete_nodes_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get(
         self,
@@ -301,11 +395,34 @@ class NodeGroupsRestInterceptor:
     def post_get(self, response: compute.NodeGroup) -> compute.NodeGroup:
         """Post-rpc interceptor for get
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the NodeGroups server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get` interceptor runs
+        before the `post_get_with_metadata` interceptor.
         """
         return response
+
+    def post_get_with_metadata(
+        self,
+        response: compute.NodeGroup,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[compute.NodeGroup, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the NodeGroups server but before it is returned to user code.
+
+        We recommend only using this `post_get_with_metadata`
+        interceptor in new development instead of the `post_get` interceptor.
+        When both interceptors are used, this `post_get_with_metadata` interceptor runs after the
+        `post_get` interceptor. The (possibly modified) response returned by
+        `post_get` will be passed to
+        `post_get_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_iam_policy(
         self,
@@ -324,11 +441,34 @@ class NodeGroupsRestInterceptor:
     def post_get_iam_policy(self, response: compute.Policy) -> compute.Policy:
         """Post-rpc interceptor for get_iam_policy
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_iam_policy_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the NodeGroups server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_iam_policy` interceptor runs
+        before the `post_get_iam_policy_with_metadata` interceptor.
         """
         return response
+
+    def post_get_iam_policy_with_metadata(
+        self,
+        response: compute.Policy,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[compute.Policy, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_iam_policy
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the NodeGroups server but before it is returned to user code.
+
+        We recommend only using this `post_get_iam_policy_with_metadata`
+        interceptor in new development instead of the `post_get_iam_policy` interceptor.
+        When both interceptors are used, this `post_get_iam_policy_with_metadata` interceptor runs after the
+        `post_get_iam_policy` interceptor. The (possibly modified) response returned by
+        `post_get_iam_policy` will be passed to
+        `post_get_iam_policy_with_metadata`.
+        """
+        return response, metadata
 
     def pre_insert(
         self,
@@ -345,11 +485,34 @@ class NodeGroupsRestInterceptor:
     def post_insert(self, response: compute.Operation) -> compute.Operation:
         """Post-rpc interceptor for insert
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_insert_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the NodeGroups server but before
-        it is returned to user code.
+        it is returned to user code. This `post_insert` interceptor runs
+        before the `post_insert_with_metadata` interceptor.
         """
         return response
+
+    def post_insert_with_metadata(
+        self,
+        response: compute.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for insert
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the NodeGroups server but before it is returned to user code.
+
+        We recommend only using this `post_insert_with_metadata`
+        interceptor in new development instead of the `post_insert` interceptor.
+        When both interceptors are used, this `post_insert_with_metadata` interceptor runs after the
+        `post_insert` interceptor. The (possibly modified) response returned by
+        `post_insert` will be passed to
+        `post_insert_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list(
         self,
@@ -366,11 +529,34 @@ class NodeGroupsRestInterceptor:
     def post_list(self, response: compute.NodeGroupList) -> compute.NodeGroupList:
         """Post-rpc interceptor for list
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the NodeGroups server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list` interceptor runs
+        before the `post_list_with_metadata` interceptor.
         """
         return response
+
+    def post_list_with_metadata(
+        self,
+        response: compute.NodeGroupList,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[compute.NodeGroupList, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for list
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the NodeGroups server but before it is returned to user code.
+
+        We recommend only using this `post_list_with_metadata`
+        interceptor in new development instead of the `post_list` interceptor.
+        When both interceptors are used, this `post_list_with_metadata` interceptor runs after the
+        `post_list` interceptor. The (possibly modified) response returned by
+        `post_list` will be passed to
+        `post_list_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_nodes(
         self,
@@ -391,11 +577,34 @@ class NodeGroupsRestInterceptor:
     ) -> compute.NodeGroupsListNodes:
         """Post-rpc interceptor for list_nodes
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_nodes_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the NodeGroups server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_nodes` interceptor runs
+        before the `post_list_nodes_with_metadata` interceptor.
         """
         return response
+
+    def post_list_nodes_with_metadata(
+        self,
+        response: compute.NodeGroupsListNodes,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[compute.NodeGroupsListNodes, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for list_nodes
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the NodeGroups server but before it is returned to user code.
+
+        We recommend only using this `post_list_nodes_with_metadata`
+        interceptor in new development instead of the `post_list_nodes` interceptor.
+        When both interceptors are used, this `post_list_nodes_with_metadata` interceptor runs after the
+        `post_list_nodes` interceptor. The (possibly modified) response returned by
+        `post_list_nodes` will be passed to
+        `post_list_nodes_with_metadata`.
+        """
+        return response, metadata
 
     def pre_patch(
         self,
@@ -412,11 +621,34 @@ class NodeGroupsRestInterceptor:
     def post_patch(self, response: compute.Operation) -> compute.Operation:
         """Post-rpc interceptor for patch
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_patch_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the NodeGroups server but before
-        it is returned to user code.
+        it is returned to user code. This `post_patch` interceptor runs
+        before the `post_patch_with_metadata` interceptor.
         """
         return response
+
+    def post_patch_with_metadata(
+        self,
+        response: compute.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for patch
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the NodeGroups server but before it is returned to user code.
+
+        We recommend only using this `post_patch_with_metadata`
+        interceptor in new development instead of the `post_patch` interceptor.
+        When both interceptors are used, this `post_patch_with_metadata` interceptor runs after the
+        `post_patch` interceptor. The (possibly modified) response returned by
+        `post_patch` will be passed to
+        `post_patch_with_metadata`.
+        """
+        return response, metadata
 
     def pre_perform_maintenance(
         self,
@@ -438,11 +670,34 @@ class NodeGroupsRestInterceptor:
     ) -> compute.Operation:
         """Post-rpc interceptor for perform_maintenance
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_perform_maintenance_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the NodeGroups server but before
-        it is returned to user code.
+        it is returned to user code. This `post_perform_maintenance` interceptor runs
+        before the `post_perform_maintenance_with_metadata` interceptor.
         """
         return response
+
+    def post_perform_maintenance_with_metadata(
+        self,
+        response: compute.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for perform_maintenance
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the NodeGroups server but before it is returned to user code.
+
+        We recommend only using this `post_perform_maintenance_with_metadata`
+        interceptor in new development instead of the `post_perform_maintenance` interceptor.
+        When both interceptors are used, this `post_perform_maintenance_with_metadata` interceptor runs after the
+        `post_perform_maintenance` interceptor. The (possibly modified) response returned by
+        `post_perform_maintenance` will be passed to
+        `post_perform_maintenance_with_metadata`.
+        """
+        return response, metadata
 
     def pre_set_iam_policy(
         self,
@@ -461,11 +716,34 @@ class NodeGroupsRestInterceptor:
     def post_set_iam_policy(self, response: compute.Policy) -> compute.Policy:
         """Post-rpc interceptor for set_iam_policy
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_set_iam_policy_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the NodeGroups server but before
-        it is returned to user code.
+        it is returned to user code. This `post_set_iam_policy` interceptor runs
+        before the `post_set_iam_policy_with_metadata` interceptor.
         """
         return response
+
+    def post_set_iam_policy_with_metadata(
+        self,
+        response: compute.Policy,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[compute.Policy, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for set_iam_policy
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the NodeGroups server but before it is returned to user code.
+
+        We recommend only using this `post_set_iam_policy_with_metadata`
+        interceptor in new development instead of the `post_set_iam_policy` interceptor.
+        When both interceptors are used, this `post_set_iam_policy_with_metadata` interceptor runs after the
+        `post_set_iam_policy` interceptor. The (possibly modified) response returned by
+        `post_set_iam_policy` will be passed to
+        `post_set_iam_policy_with_metadata`.
+        """
+        return response, metadata
 
     def pre_set_node_template(
         self,
@@ -484,11 +762,34 @@ class NodeGroupsRestInterceptor:
     def post_set_node_template(self, response: compute.Operation) -> compute.Operation:
         """Post-rpc interceptor for set_node_template
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_set_node_template_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the NodeGroups server but before
-        it is returned to user code.
+        it is returned to user code. This `post_set_node_template` interceptor runs
+        before the `post_set_node_template_with_metadata` interceptor.
         """
         return response
+
+    def post_set_node_template_with_metadata(
+        self,
+        response: compute.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for set_node_template
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the NodeGroups server but before it is returned to user code.
+
+        We recommend only using this `post_set_node_template_with_metadata`
+        interceptor in new development instead of the `post_set_node_template` interceptor.
+        When both interceptors are used, this `post_set_node_template_with_metadata` interceptor runs after the
+        `post_set_node_template` interceptor. The (possibly modified) response returned by
+        `post_set_node_template` will be passed to
+        `post_set_node_template_with_metadata`.
+        """
+        return response, metadata
 
     def pre_simulate_maintenance_event(
         self,
@@ -510,11 +811,34 @@ class NodeGroupsRestInterceptor:
     ) -> compute.Operation:
         """Post-rpc interceptor for simulate_maintenance_event
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_simulate_maintenance_event_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the NodeGroups server but before
-        it is returned to user code.
+        it is returned to user code. This `post_simulate_maintenance_event` interceptor runs
+        before the `post_simulate_maintenance_event_with_metadata` interceptor.
         """
         return response
+
+    def post_simulate_maintenance_event_with_metadata(
+        self,
+        response: compute.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for simulate_maintenance_event
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the NodeGroups server but before it is returned to user code.
+
+        We recommend only using this `post_simulate_maintenance_event_with_metadata`
+        interceptor in new development instead of the `post_simulate_maintenance_event` interceptor.
+        When both interceptors are used, this `post_simulate_maintenance_event_with_metadata` interceptor runs after the
+        `post_simulate_maintenance_event` interceptor. The (possibly modified) response returned by
+        `post_simulate_maintenance_event` will be passed to
+        `post_simulate_maintenance_event_with_metadata`.
+        """
+        return response, metadata
 
     def pre_test_iam_permissions(
         self,
@@ -536,11 +860,36 @@ class NodeGroupsRestInterceptor:
     ) -> compute.TestPermissionsResponse:
         """Post-rpc interceptor for test_iam_permissions
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_test_iam_permissions_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the NodeGroups server but before
-        it is returned to user code.
+        it is returned to user code. This `post_test_iam_permissions` interceptor runs
+        before the `post_test_iam_permissions_with_metadata` interceptor.
         """
         return response
+
+    def post_test_iam_permissions_with_metadata(
+        self,
+        response: compute.TestPermissionsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.TestPermissionsResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for test_iam_permissions
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the NodeGroups server but before it is returned to user code.
+
+        We recommend only using this `post_test_iam_permissions_with_metadata`
+        interceptor in new development instead of the `post_test_iam_permissions` interceptor.
+        When both interceptors are used, this `post_test_iam_permissions_with_metadata` interceptor runs after the
+        `post_test_iam_permissions` interceptor. The (possibly modified) response returned by
+        `post_test_iam_permissions` will be passed to
+        `post_test_iam_permissions_with_metadata`.
+        """
+        return response, metadata
 
 
 @dataclasses.dataclass
@@ -777,6 +1126,10 @@ class NodeGroupsRestTransport(_BaseNodeGroupsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_add_nodes(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_add_nodes_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -921,6 +1274,10 @@ class NodeGroupsRestTransport(_BaseNodeGroupsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_aggregated_list(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_aggregated_list_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1080,6 +1437,10 @@ class NodeGroupsRestTransport(_BaseNodeGroupsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1249,6 +1610,10 @@ class NodeGroupsRestTransport(_BaseNodeGroupsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_nodes(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_nodes_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1399,6 +1764,8 @@ class NodeGroupsRestTransport(_BaseNodeGroupsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_with_metadata(resp, response_metadata)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1568,6 +1935,10 @@ class NodeGroupsRestTransport(_BaseNodeGroupsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_iam_policy(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_iam_policy_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1733,6 +2104,10 @@ class NodeGroupsRestTransport(_BaseNodeGroupsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_insert(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_insert_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1875,6 +2250,8 @@ class NodeGroupsRestTransport(_BaseNodeGroupsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_with_metadata(resp, response_metadata)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2019,6 +2396,10 @@ class NodeGroupsRestTransport(_BaseNodeGroupsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_nodes(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_nodes_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2184,6 +2565,10 @@ class NodeGroupsRestTransport(_BaseNodeGroupsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_patch(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_patch_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2351,6 +2736,10 @@ class NodeGroupsRestTransport(_BaseNodeGroupsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_perform_maintenance(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_perform_maintenance_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2528,6 +2917,10 @@ class NodeGroupsRestTransport(_BaseNodeGroupsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_set_iam_policy(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_set_iam_policy_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2695,6 +3088,10 @@ class NodeGroupsRestTransport(_BaseNodeGroupsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_set_node_template(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_set_node_template_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2863,6 +3260,10 @@ class NodeGroupsRestTransport(_BaseNodeGroupsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_simulate_maintenance_event(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_simulate_maintenance_event_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3013,6 +3414,10 @@ class NodeGroupsRestTransport(_BaseNodeGroupsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_test_iam_permissions(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_test_iam_permissions_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

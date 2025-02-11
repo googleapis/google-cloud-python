@@ -66,6 +66,13 @@ from google.cloud.compute_v1.services.backend_services import (
 )
 from google.cloud.compute_v1.types import compute
 
+CRED_INFO_JSON = {
+    "credential_source": "/path/to/file",
+    "credential_type": "service account credentials",
+    "principal": "service-account@example.com",
+}
+CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
 
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
@@ -317,6 +324,49 @@ def test__get_universe_domain():
     with pytest.raises(ValueError) as excinfo:
         BackendServicesClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+
+@pytest.mark.parametrize(
+    "error_code,cred_info_json,show_cred_info",
+    [
+        (401, CRED_INFO_JSON, True),
+        (403, CRED_INFO_JSON, True),
+        (404, CRED_INFO_JSON, True),
+        (500, CRED_INFO_JSON, False),
+        (401, None, False),
+        (403, None, False),
+        (404, None, False),
+        (500, None, False),
+    ],
+)
+def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
+    cred = mock.Mock(["get_cred_info"])
+    cred.get_cred_info = mock.Mock(return_value=cred_info_json)
+    client = BackendServicesClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=["foo"])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    if show_cred_info:
+        assert error.details == ["foo", CRED_INFO_STRING]
+    else:
+        assert error.details == ["foo"]
+
+
+@pytest.mark.parametrize("error_code", [401, 403, 404, 500])
+def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
+    cred = mock.Mock([])
+    assert not hasattr(cred, "get_cred_info")
+    client = BackendServicesClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=[])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    assert error.details == []
 
 
 @pytest.mark.parametrize(
@@ -6301,10 +6351,14 @@ def test_add_signed_url_key_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.BackendServicesRestInterceptor, "post_add_signed_url_key"
     ) as post, mock.patch.object(
+        transports.BackendServicesRestInterceptor,
+        "post_add_signed_url_key_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.BackendServicesRestInterceptor, "pre_add_signed_url_key"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.AddSignedUrlKeyBackendServiceRequest.pb(
             compute.AddSignedUrlKeyBackendServiceRequest()
         )
@@ -6328,6 +6382,7 @@ def test_add_signed_url_key_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.Operation()
+        post_with_metadata.return_value = compute.Operation(), metadata
 
         client.add_signed_url_key(
             request,
@@ -6339,6 +6394,7 @@ def test_add_signed_url_key_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_aggregated_list_rest_bad_request(
@@ -6431,10 +6487,13 @@ def test_aggregated_list_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.BackendServicesRestInterceptor, "post_aggregated_list"
     ) as post, mock.patch.object(
+        transports.BackendServicesRestInterceptor, "post_aggregated_list_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.BackendServicesRestInterceptor, "pre_aggregated_list"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.AggregatedListBackendServicesRequest.pb(
             compute.AggregatedListBackendServicesRequest()
         )
@@ -6460,6 +6519,10 @@ def test_aggregated_list_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.BackendServiceAggregatedList()
+        post_with_metadata.return_value = (
+            compute.BackendServiceAggregatedList(),
+            metadata,
+        )
 
         client.aggregated_list(
             request,
@@ -6471,6 +6534,7 @@ def test_aggregated_list_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_rest_bad_request(request_type=compute.DeleteBackendServiceRequest):
@@ -6595,10 +6659,13 @@ def test_delete_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.BackendServicesRestInterceptor, "post_delete"
     ) as post, mock.patch.object(
+        transports.BackendServicesRestInterceptor, "post_delete_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.BackendServicesRestInterceptor, "pre_delete"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.DeleteBackendServiceRequest.pb(
             compute.DeleteBackendServiceRequest()
         )
@@ -6622,6 +6689,7 @@ def test_delete_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.Operation()
+        post_with_metadata.return_value = compute.Operation(), metadata
 
         client.delete(
             request,
@@ -6633,6 +6701,7 @@ def test_delete_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_signed_url_key_rest_bad_request(
@@ -6759,10 +6828,14 @@ def test_delete_signed_url_key_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.BackendServicesRestInterceptor, "post_delete_signed_url_key"
     ) as post, mock.patch.object(
+        transports.BackendServicesRestInterceptor,
+        "post_delete_signed_url_key_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.BackendServicesRestInterceptor, "pre_delete_signed_url_key"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.DeleteSignedUrlKeyBackendServiceRequest.pb(
             compute.DeleteSignedUrlKeyBackendServiceRequest()
         )
@@ -6786,6 +6859,7 @@ def test_delete_signed_url_key_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.Operation()
+        post_with_metadata.return_value = compute.Operation(), metadata
 
         client.delete_signed_url_key(
             request,
@@ -6797,6 +6871,7 @@ def test_delete_signed_url_key_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_rest_bad_request(request_type=compute.GetBackendServiceRequest):
@@ -6931,10 +7006,13 @@ def test_get_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.BackendServicesRestInterceptor, "post_get"
     ) as post, mock.patch.object(
+        transports.BackendServicesRestInterceptor, "post_get_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.BackendServicesRestInterceptor, "pre_get"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.GetBackendServiceRequest.pb(
             compute.GetBackendServiceRequest()
         )
@@ -6958,6 +7036,7 @@ def test_get_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.BackendService()
+        post_with_metadata.return_value = compute.BackendService(), metadata
 
         client.get(
             request,
@@ -6969,6 +7048,7 @@ def test_get_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_health_rest_bad_request(
@@ -7129,10 +7209,13 @@ def test_get_health_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.BackendServicesRestInterceptor, "post_get_health"
     ) as post, mock.patch.object(
+        transports.BackendServicesRestInterceptor, "post_get_health_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.BackendServicesRestInterceptor, "pre_get_health"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.GetHealthBackendServiceRequest.pb(
             compute.GetHealthBackendServiceRequest()
         )
@@ -7158,6 +7241,7 @@ def test_get_health_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.BackendServiceGroupHealth()
+        post_with_metadata.return_value = compute.BackendServiceGroupHealth(), metadata
 
         client.get_health(
             request,
@@ -7169,6 +7253,7 @@ def test_get_health_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_iam_policy_rest_bad_request(
@@ -7257,10 +7342,13 @@ def test_get_iam_policy_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.BackendServicesRestInterceptor, "post_get_iam_policy"
     ) as post, mock.patch.object(
+        transports.BackendServicesRestInterceptor, "post_get_iam_policy_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.BackendServicesRestInterceptor, "pre_get_iam_policy"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.GetIamPolicyBackendServiceRequest.pb(
             compute.GetIamPolicyBackendServiceRequest()
         )
@@ -7284,6 +7372,7 @@ def test_get_iam_policy_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.Policy()
+        post_with_metadata.return_value = compute.Policy(), metadata
 
         client.get_iam_policy(
             request,
@@ -7295,6 +7384,7 @@ def test_get_iam_policy_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_insert_rest_bad_request(request_type=compute.InsertBackendServiceRequest):
@@ -7660,10 +7750,13 @@ def test_insert_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.BackendServicesRestInterceptor, "post_insert"
     ) as post, mock.patch.object(
+        transports.BackendServicesRestInterceptor, "post_insert_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.BackendServicesRestInterceptor, "pre_insert"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.InsertBackendServiceRequest.pb(
             compute.InsertBackendServiceRequest()
         )
@@ -7687,6 +7780,7 @@ def test_insert_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.Operation()
+        post_with_metadata.return_value = compute.Operation(), metadata
 
         client.insert(
             request,
@@ -7698,6 +7792,7 @@ def test_insert_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_rest_bad_request(request_type=compute.ListBackendServicesRequest):
@@ -7786,10 +7881,13 @@ def test_list_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.BackendServicesRestInterceptor, "post_list"
     ) as post, mock.patch.object(
+        transports.BackendServicesRestInterceptor, "post_list_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.BackendServicesRestInterceptor, "pre_list"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.ListBackendServicesRequest.pb(
             compute.ListBackendServicesRequest()
         )
@@ -7813,6 +7911,7 @@ def test_list_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.BackendServiceList()
+        post_with_metadata.return_value = compute.BackendServiceList(), metadata
 
         client.list(
             request,
@@ -7824,6 +7923,7 @@ def test_list_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_usable_rest_bad_request(
@@ -7914,10 +8014,13 @@ def test_list_usable_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.BackendServicesRestInterceptor, "post_list_usable"
     ) as post, mock.patch.object(
+        transports.BackendServicesRestInterceptor, "post_list_usable_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.BackendServicesRestInterceptor, "pre_list_usable"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.ListUsableBackendServicesRequest.pb(
             compute.ListUsableBackendServicesRequest()
         )
@@ -7943,6 +8046,7 @@ def test_list_usable_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.BackendServiceListUsable()
+        post_with_metadata.return_value = compute.BackendServiceListUsable(), metadata
 
         client.list_usable(
             request,
@@ -7954,6 +8058,7 @@ def test_list_usable_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_patch_rest_bad_request(request_type=compute.PatchBackendServiceRequest):
@@ -8319,10 +8424,13 @@ def test_patch_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.BackendServicesRestInterceptor, "post_patch"
     ) as post, mock.patch.object(
+        transports.BackendServicesRestInterceptor, "post_patch_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.BackendServicesRestInterceptor, "pre_patch"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.PatchBackendServiceRequest.pb(
             compute.PatchBackendServiceRequest()
         )
@@ -8346,6 +8454,7 @@ def test_patch_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.Operation()
+        post_with_metadata.return_value = compute.Operation(), metadata
 
         client.patch(
             request,
@@ -8357,6 +8466,7 @@ def test_patch_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_set_edge_security_policy_rest_bad_request(
@@ -8561,10 +8671,14 @@ def test_set_edge_security_policy_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.BackendServicesRestInterceptor, "post_set_edge_security_policy"
     ) as post, mock.patch.object(
+        transports.BackendServicesRestInterceptor,
+        "post_set_edge_security_policy_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.BackendServicesRestInterceptor, "pre_set_edge_security_policy"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.SetEdgeSecurityPolicyBackendServiceRequest.pb(
             compute.SetEdgeSecurityPolicyBackendServiceRequest()
         )
@@ -8588,6 +8702,7 @@ def test_set_edge_security_policy_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.Operation()
+        post_with_metadata.return_value = compute.Operation(), metadata
 
         client.set_edge_security_policy(
             request,
@@ -8599,6 +8714,7 @@ def test_set_edge_security_policy_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_set_iam_policy_rest_bad_request(
@@ -8803,10 +8919,13 @@ def test_set_iam_policy_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.BackendServicesRestInterceptor, "post_set_iam_policy"
     ) as post, mock.patch.object(
+        transports.BackendServicesRestInterceptor, "post_set_iam_policy_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.BackendServicesRestInterceptor, "pre_set_iam_policy"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.SetIamPolicyBackendServiceRequest.pb(
             compute.SetIamPolicyBackendServiceRequest()
         )
@@ -8830,6 +8949,7 @@ def test_set_iam_policy_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.Policy()
+        post_with_metadata.return_value = compute.Policy(), metadata
 
         client.set_iam_policy(
             request,
@@ -8841,6 +8961,7 @@ def test_set_iam_policy_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_set_security_policy_rest_bad_request(
@@ -9045,10 +9166,14 @@ def test_set_security_policy_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.BackendServicesRestInterceptor, "post_set_security_policy"
     ) as post, mock.patch.object(
+        transports.BackendServicesRestInterceptor,
+        "post_set_security_policy_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.BackendServicesRestInterceptor, "pre_set_security_policy"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.SetSecurityPolicyBackendServiceRequest.pb(
             compute.SetSecurityPolicyBackendServiceRequest()
         )
@@ -9072,6 +9197,7 @@ def test_set_security_policy_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.Operation()
+        post_with_metadata.return_value = compute.Operation(), metadata
 
         client.set_security_policy(
             request,
@@ -9083,6 +9209,7 @@ def test_set_security_policy_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_test_iam_permissions_rest_bad_request(
@@ -9245,10 +9372,14 @@ def test_test_iam_permissions_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.BackendServicesRestInterceptor, "post_test_iam_permissions"
     ) as post, mock.patch.object(
+        transports.BackendServicesRestInterceptor,
+        "post_test_iam_permissions_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.BackendServicesRestInterceptor, "pre_test_iam_permissions"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.TestIamPermissionsBackendServiceRequest.pb(
             compute.TestIamPermissionsBackendServiceRequest()
         )
@@ -9274,6 +9405,7 @@ def test_test_iam_permissions_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.TestPermissionsResponse()
+        post_with_metadata.return_value = compute.TestPermissionsResponse(), metadata
 
         client.test_iam_permissions(
             request,
@@ -9285,6 +9417,7 @@ def test_test_iam_permissions_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_rest_bad_request(request_type=compute.UpdateBackendServiceRequest):
@@ -9650,10 +9783,13 @@ def test_update_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.BackendServicesRestInterceptor, "post_update"
     ) as post, mock.patch.object(
+        transports.BackendServicesRestInterceptor, "post_update_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.BackendServicesRestInterceptor, "pre_update"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.UpdateBackendServiceRequest.pb(
             compute.UpdateBackendServiceRequest()
         )
@@ -9677,6 +9813,7 @@ def test_update_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.Operation()
+        post_with_metadata.return_value = compute.Operation(), metadata
 
         client.update(
             request,
@@ -9688,6 +9825,7 @@ def test_update_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_initialize_client_w_rest():

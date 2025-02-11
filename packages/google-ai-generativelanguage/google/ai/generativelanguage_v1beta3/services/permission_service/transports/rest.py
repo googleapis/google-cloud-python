@@ -142,11 +142,34 @@ class PermissionServiceRestInterceptor:
     ) -> gag_permission.Permission:
         """Post-rpc interceptor for create_permission
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_permission_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the PermissionService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_permission` interceptor runs
+        before the `post_create_permission_with_metadata` interceptor.
         """
         return response
+
+    def post_create_permission_with_metadata(
+        self,
+        response: gag_permission.Permission,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[gag_permission.Permission, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_permission
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the PermissionService server but before it is returned to user code.
+
+        We recommend only using this `post_create_permission_with_metadata`
+        interceptor in new development instead of the `post_create_permission` interceptor.
+        When both interceptors are used, this `post_create_permission_with_metadata` interceptor runs after the
+        `post_create_permission` interceptor. The (possibly modified) response returned by
+        `post_create_permission` will be passed to
+        `post_create_permission_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_permission(
         self,
@@ -182,11 +205,34 @@ class PermissionServiceRestInterceptor:
     ) -> permission.Permission:
         """Post-rpc interceptor for get_permission
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_permission_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the PermissionService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_permission` interceptor runs
+        before the `post_get_permission_with_metadata` interceptor.
         """
         return response
+
+    def post_get_permission_with_metadata(
+        self,
+        response: permission.Permission,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[permission.Permission, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_permission
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the PermissionService server but before it is returned to user code.
+
+        We recommend only using this `post_get_permission_with_metadata`
+        interceptor in new development instead of the `post_get_permission` interceptor.
+        When both interceptors are used, this `post_get_permission_with_metadata` interceptor runs after the
+        `post_get_permission` interceptor. The (possibly modified) response returned by
+        `post_get_permission` will be passed to
+        `post_get_permission_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_permissions(
         self,
@@ -208,11 +254,37 @@ class PermissionServiceRestInterceptor:
     ) -> permission_service.ListPermissionsResponse:
         """Post-rpc interceptor for list_permissions
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_permissions_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the PermissionService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_permissions` interceptor runs
+        before the `post_list_permissions_with_metadata` interceptor.
         """
         return response
+
+    def post_list_permissions_with_metadata(
+        self,
+        response: permission_service.ListPermissionsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        permission_service.ListPermissionsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_permissions
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the PermissionService server but before it is returned to user code.
+
+        We recommend only using this `post_list_permissions_with_metadata`
+        interceptor in new development instead of the `post_list_permissions` interceptor.
+        When both interceptors are used, this `post_list_permissions_with_metadata` interceptor runs after the
+        `post_list_permissions` interceptor. The (possibly modified) response returned by
+        `post_list_permissions` will be passed to
+        `post_list_permissions_with_metadata`.
+        """
+        return response, metadata
 
     def pre_transfer_ownership(
         self,
@@ -234,11 +306,37 @@ class PermissionServiceRestInterceptor:
     ) -> permission_service.TransferOwnershipResponse:
         """Post-rpc interceptor for transfer_ownership
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_transfer_ownership_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the PermissionService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_transfer_ownership` interceptor runs
+        before the `post_transfer_ownership_with_metadata` interceptor.
         """
         return response
+
+    def post_transfer_ownership_with_metadata(
+        self,
+        response: permission_service.TransferOwnershipResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        permission_service.TransferOwnershipResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for transfer_ownership
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the PermissionService server but before it is returned to user code.
+
+        We recommend only using this `post_transfer_ownership_with_metadata`
+        interceptor in new development instead of the `post_transfer_ownership` interceptor.
+        When both interceptors are used, this `post_transfer_ownership_with_metadata` interceptor runs after the
+        `post_transfer_ownership` interceptor. The (possibly modified) response returned by
+        `post_transfer_ownership` will be passed to
+        `post_transfer_ownership_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_permission(
         self,
@@ -260,11 +358,34 @@ class PermissionServiceRestInterceptor:
     ) -> gag_permission.Permission:
         """Post-rpc interceptor for update_permission
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_permission_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the PermissionService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_permission` interceptor runs
+        before the `post_update_permission_with_metadata` interceptor.
         """
         return response
+
+    def post_update_permission_with_metadata(
+        self,
+        response: gag_permission.Permission,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[gag_permission.Permission, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_permission
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the PermissionService server but before it is returned to user code.
+
+        We recommend only using this `post_update_permission_with_metadata`
+        interceptor in new development instead of the `post_update_permission` interceptor.
+        When both interceptors are used, this `post_update_permission_with_metadata` interceptor runs after the
+        `post_update_permission` interceptor. The (possibly modified) response returned by
+        `post_update_permission` will be passed to
+        `post_update_permission_with_metadata`.
+        """
+        return response, metadata
 
 
 @dataclasses.dataclass
@@ -503,6 +624,10 @@ class PermissionServiceRestTransport(_BasePermissionServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_permission(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_permission_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -777,6 +902,10 @@ class PermissionServiceRestTransport(_BasePermissionServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_permission(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_permission_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -922,6 +1051,10 @@ class PermissionServiceRestTransport(_BasePermissionServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_permissions(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_permissions_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1074,6 +1207,10 @@ class PermissionServiceRestTransport(_BasePermissionServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_transfer_ownership(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_transfer_ownership_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1248,6 +1385,10 @@ class PermissionServiceRestTransport(_BasePermissionServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_permission(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_permission_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

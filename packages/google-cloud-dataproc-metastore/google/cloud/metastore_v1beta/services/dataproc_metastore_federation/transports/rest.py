@@ -138,11 +138,34 @@ class DataprocMetastoreFederationRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_federation
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_federation_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the DataprocMetastoreFederation server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_federation` interceptor runs
+        before the `post_create_federation_with_metadata` interceptor.
         """
         return response
+
+    def post_create_federation_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_federation
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the DataprocMetastoreFederation server but before it is returned to user code.
+
+        We recommend only using this `post_create_federation_with_metadata`
+        interceptor in new development instead of the `post_create_federation` interceptor.
+        When both interceptors are used, this `post_create_federation_with_metadata` interceptor runs after the
+        `post_create_federation` interceptor. The (possibly modified) response returned by
+        `post_create_federation` will be passed to
+        `post_create_federation_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_federation(
         self,
@@ -164,11 +187,34 @@ class DataprocMetastoreFederationRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_federation
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_federation_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the DataprocMetastoreFederation server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_federation` interceptor runs
+        before the `post_delete_federation_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_federation_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_federation
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the DataprocMetastoreFederation server but before it is returned to user code.
+
+        We recommend only using this `post_delete_federation_with_metadata`
+        interceptor in new development instead of the `post_delete_federation` interceptor.
+        When both interceptors are used, this `post_delete_federation_with_metadata` interceptor runs after the
+        `post_delete_federation` interceptor. The (possibly modified) response returned by
+        `post_delete_federation` will be passed to
+        `post_delete_federation_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_federation(
         self,
@@ -190,11 +236,36 @@ class DataprocMetastoreFederationRestInterceptor:
     ) -> metastore_federation.Federation:
         """Post-rpc interceptor for get_federation
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_federation_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the DataprocMetastoreFederation server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_federation` interceptor runs
+        before the `post_get_federation_with_metadata` interceptor.
         """
         return response
+
+    def post_get_federation_with_metadata(
+        self,
+        response: metastore_federation.Federation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        metastore_federation.Federation, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for get_federation
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the DataprocMetastoreFederation server but before it is returned to user code.
+
+        We recommend only using this `post_get_federation_with_metadata`
+        interceptor in new development instead of the `post_get_federation` interceptor.
+        When both interceptors are used, this `post_get_federation_with_metadata` interceptor runs after the
+        `post_get_federation` interceptor. The (possibly modified) response returned by
+        `post_get_federation` will be passed to
+        `post_get_federation_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_federations(
         self,
@@ -216,11 +287,37 @@ class DataprocMetastoreFederationRestInterceptor:
     ) -> metastore_federation.ListFederationsResponse:
         """Post-rpc interceptor for list_federations
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_federations_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the DataprocMetastoreFederation server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_federations` interceptor runs
+        before the `post_list_federations_with_metadata` interceptor.
         """
         return response
+
+    def post_list_federations_with_metadata(
+        self,
+        response: metastore_federation.ListFederationsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        metastore_federation.ListFederationsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_federations
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the DataprocMetastoreFederation server but before it is returned to user code.
+
+        We recommend only using this `post_list_federations_with_metadata`
+        interceptor in new development instead of the `post_list_federations` interceptor.
+        When both interceptors are used, this `post_list_federations_with_metadata` interceptor runs after the
+        `post_list_federations` interceptor. The (possibly modified) response returned by
+        `post_list_federations` will be passed to
+        `post_list_federations_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_federation(
         self,
@@ -242,11 +339,34 @@ class DataprocMetastoreFederationRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_federation
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_federation_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the DataprocMetastoreFederation server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_federation` interceptor runs
+        before the `post_update_federation_with_metadata` interceptor.
         """
         return response
+
+    def post_update_federation_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_federation
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the DataprocMetastoreFederation server but before it is returned to user code.
+
+        We recommend only using this `post_update_federation_with_metadata`
+        interceptor in new development instead of the `post_update_federation` interceptor.
+        When both interceptors are used, this `post_update_federation_with_metadata` interceptor runs after the
+        `post_update_federation` interceptor. The (possibly modified) response returned by
+        `post_update_federation` will be passed to
+        `post_update_federation_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_location(
         self,
@@ -750,6 +870,10 @@ class DataprocMetastoreFederationRestTransport(
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_federation(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_federation_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -894,6 +1018,10 @@ class DataprocMetastoreFederationRestTransport(
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_federation(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_federation_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1039,6 +1167,10 @@ class DataprocMetastoreFederationRestTransport(
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_federation(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_federation_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1184,6 +1316,10 @@ class DataprocMetastoreFederationRestTransport(
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_federations(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_federations_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1336,6 +1472,10 @@ class DataprocMetastoreFederationRestTransport(
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_federation(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_federation_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

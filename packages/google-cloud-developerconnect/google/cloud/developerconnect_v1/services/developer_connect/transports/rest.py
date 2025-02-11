@@ -208,11 +208,34 @@ class DeveloperConnectRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_connection
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_connection_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the DeveloperConnect server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_connection` interceptor runs
+        before the `post_create_connection_with_metadata` interceptor.
         """
         return response
+
+    def post_create_connection_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_connection
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the DeveloperConnect server but before it is returned to user code.
+
+        We recommend only using this `post_create_connection_with_metadata`
+        interceptor in new development instead of the `post_create_connection` interceptor.
+        When both interceptors are used, this `post_create_connection_with_metadata` interceptor runs after the
+        `post_create_connection` interceptor. The (possibly modified) response returned by
+        `post_create_connection` will be passed to
+        `post_create_connection_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_git_repository_link(
         self,
@@ -234,11 +257,34 @@ class DeveloperConnectRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_git_repository_link
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_git_repository_link_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the DeveloperConnect server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_git_repository_link` interceptor runs
+        before the `post_create_git_repository_link_with_metadata` interceptor.
         """
         return response
+
+    def post_create_git_repository_link_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_git_repository_link
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the DeveloperConnect server but before it is returned to user code.
+
+        We recommend only using this `post_create_git_repository_link_with_metadata`
+        interceptor in new development instead of the `post_create_git_repository_link` interceptor.
+        When both interceptors are used, this `post_create_git_repository_link_with_metadata` interceptor runs after the
+        `post_create_git_repository_link` interceptor. The (possibly modified) response returned by
+        `post_create_git_repository_link` will be passed to
+        `post_create_git_repository_link_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_connection(
         self,
@@ -260,11 +306,34 @@ class DeveloperConnectRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_connection
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_connection_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the DeveloperConnect server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_connection` interceptor runs
+        before the `post_delete_connection_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_connection_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_connection
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the DeveloperConnect server but before it is returned to user code.
+
+        We recommend only using this `post_delete_connection_with_metadata`
+        interceptor in new development instead of the `post_delete_connection` interceptor.
+        When both interceptors are used, this `post_delete_connection_with_metadata` interceptor runs after the
+        `post_delete_connection` interceptor. The (possibly modified) response returned by
+        `post_delete_connection` will be passed to
+        `post_delete_connection_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_git_repository_link(
         self,
@@ -286,11 +355,34 @@ class DeveloperConnectRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_git_repository_link
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_git_repository_link_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the DeveloperConnect server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_git_repository_link` interceptor runs
+        before the `post_delete_git_repository_link_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_git_repository_link_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_git_repository_link
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the DeveloperConnect server but before it is returned to user code.
+
+        We recommend only using this `post_delete_git_repository_link_with_metadata`
+        interceptor in new development instead of the `post_delete_git_repository_link` interceptor.
+        When both interceptors are used, this `post_delete_git_repository_link_with_metadata` interceptor runs after the
+        `post_delete_git_repository_link` interceptor. The (possibly modified) response returned by
+        `post_delete_git_repository_link` will be passed to
+        `post_delete_git_repository_link_with_metadata`.
+        """
+        return response, metadata
 
     def pre_fetch_git_hub_installations(
         self,
@@ -312,11 +404,37 @@ class DeveloperConnectRestInterceptor:
     ) -> developer_connect.FetchGitHubInstallationsResponse:
         """Post-rpc interceptor for fetch_git_hub_installations
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_fetch_git_hub_installations_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the DeveloperConnect server but before
-        it is returned to user code.
+        it is returned to user code. This `post_fetch_git_hub_installations` interceptor runs
+        before the `post_fetch_git_hub_installations_with_metadata` interceptor.
         """
         return response
+
+    def post_fetch_git_hub_installations_with_metadata(
+        self,
+        response: developer_connect.FetchGitHubInstallationsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        developer_connect.FetchGitHubInstallationsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for fetch_git_hub_installations
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the DeveloperConnect server but before it is returned to user code.
+
+        We recommend only using this `post_fetch_git_hub_installations_with_metadata`
+        interceptor in new development instead of the `post_fetch_git_hub_installations` interceptor.
+        When both interceptors are used, this `post_fetch_git_hub_installations_with_metadata` interceptor runs after the
+        `post_fetch_git_hub_installations` interceptor. The (possibly modified) response returned by
+        `post_fetch_git_hub_installations` will be passed to
+        `post_fetch_git_hub_installations_with_metadata`.
+        """
+        return response, metadata
 
     def pre_fetch_git_refs(
         self,
@@ -337,11 +455,36 @@ class DeveloperConnectRestInterceptor:
     ) -> developer_connect.FetchGitRefsResponse:
         """Post-rpc interceptor for fetch_git_refs
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_fetch_git_refs_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the DeveloperConnect server but before
-        it is returned to user code.
+        it is returned to user code. This `post_fetch_git_refs` interceptor runs
+        before the `post_fetch_git_refs_with_metadata` interceptor.
         """
         return response
+
+    def post_fetch_git_refs_with_metadata(
+        self,
+        response: developer_connect.FetchGitRefsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        developer_connect.FetchGitRefsResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for fetch_git_refs
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the DeveloperConnect server but before it is returned to user code.
+
+        We recommend only using this `post_fetch_git_refs_with_metadata`
+        interceptor in new development instead of the `post_fetch_git_refs` interceptor.
+        When both interceptors are used, this `post_fetch_git_refs_with_metadata` interceptor runs after the
+        `post_fetch_git_refs` interceptor. The (possibly modified) response returned by
+        `post_fetch_git_refs` will be passed to
+        `post_fetch_git_refs_with_metadata`.
+        """
+        return response, metadata
 
     def pre_fetch_linkable_git_repositories(
         self,
@@ -363,11 +506,37 @@ class DeveloperConnectRestInterceptor:
     ) -> developer_connect.FetchLinkableGitRepositoriesResponse:
         """Post-rpc interceptor for fetch_linkable_git_repositories
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_fetch_linkable_git_repositories_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the DeveloperConnect server but before
-        it is returned to user code.
+        it is returned to user code. This `post_fetch_linkable_git_repositories` interceptor runs
+        before the `post_fetch_linkable_git_repositories_with_metadata` interceptor.
         """
         return response
+
+    def post_fetch_linkable_git_repositories_with_metadata(
+        self,
+        response: developer_connect.FetchLinkableGitRepositoriesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        developer_connect.FetchLinkableGitRepositoriesResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for fetch_linkable_git_repositories
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the DeveloperConnect server but before it is returned to user code.
+
+        We recommend only using this `post_fetch_linkable_git_repositories_with_metadata`
+        interceptor in new development instead of the `post_fetch_linkable_git_repositories` interceptor.
+        When both interceptors are used, this `post_fetch_linkable_git_repositories_with_metadata` interceptor runs after the
+        `post_fetch_linkable_git_repositories` interceptor. The (possibly modified) response returned by
+        `post_fetch_linkable_git_repositories` will be passed to
+        `post_fetch_linkable_git_repositories_with_metadata`.
+        """
+        return response, metadata
 
     def pre_fetch_read_token(
         self,
@@ -388,11 +557,37 @@ class DeveloperConnectRestInterceptor:
     ) -> developer_connect.FetchReadTokenResponse:
         """Post-rpc interceptor for fetch_read_token
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_fetch_read_token_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the DeveloperConnect server but before
-        it is returned to user code.
+        it is returned to user code. This `post_fetch_read_token` interceptor runs
+        before the `post_fetch_read_token_with_metadata` interceptor.
         """
         return response
+
+    def post_fetch_read_token_with_metadata(
+        self,
+        response: developer_connect.FetchReadTokenResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        developer_connect.FetchReadTokenResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for fetch_read_token
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the DeveloperConnect server but before it is returned to user code.
+
+        We recommend only using this `post_fetch_read_token_with_metadata`
+        interceptor in new development instead of the `post_fetch_read_token` interceptor.
+        When both interceptors are used, this `post_fetch_read_token_with_metadata` interceptor runs after the
+        `post_fetch_read_token` interceptor. The (possibly modified) response returned by
+        `post_fetch_read_token` will be passed to
+        `post_fetch_read_token_with_metadata`.
+        """
+        return response, metadata
 
     def pre_fetch_read_write_token(
         self,
@@ -414,11 +609,37 @@ class DeveloperConnectRestInterceptor:
     ) -> developer_connect.FetchReadWriteTokenResponse:
         """Post-rpc interceptor for fetch_read_write_token
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_fetch_read_write_token_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the DeveloperConnect server but before
-        it is returned to user code.
+        it is returned to user code. This `post_fetch_read_write_token` interceptor runs
+        before the `post_fetch_read_write_token_with_metadata` interceptor.
         """
         return response
+
+    def post_fetch_read_write_token_with_metadata(
+        self,
+        response: developer_connect.FetchReadWriteTokenResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        developer_connect.FetchReadWriteTokenResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for fetch_read_write_token
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the DeveloperConnect server but before it is returned to user code.
+
+        We recommend only using this `post_fetch_read_write_token_with_metadata`
+        interceptor in new development instead of the `post_fetch_read_write_token` interceptor.
+        When both interceptors are used, this `post_fetch_read_write_token_with_metadata` interceptor runs after the
+        `post_fetch_read_write_token` interceptor. The (possibly modified) response returned by
+        `post_fetch_read_write_token` will be passed to
+        `post_fetch_read_write_token_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_connection(
         self,
@@ -439,11 +660,34 @@ class DeveloperConnectRestInterceptor:
     ) -> developer_connect.Connection:
         """Post-rpc interceptor for get_connection
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_connection_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the DeveloperConnect server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_connection` interceptor runs
+        before the `post_get_connection_with_metadata` interceptor.
         """
         return response
+
+    def post_get_connection_with_metadata(
+        self,
+        response: developer_connect.Connection,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[developer_connect.Connection, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_connection
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the DeveloperConnect server but before it is returned to user code.
+
+        We recommend only using this `post_get_connection_with_metadata`
+        interceptor in new development instead of the `post_get_connection` interceptor.
+        When both interceptors are used, this `post_get_connection_with_metadata` interceptor runs after the
+        `post_get_connection` interceptor. The (possibly modified) response returned by
+        `post_get_connection` will be passed to
+        `post_get_connection_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_git_repository_link(
         self,
@@ -465,11 +709,36 @@ class DeveloperConnectRestInterceptor:
     ) -> developer_connect.GitRepositoryLink:
         """Post-rpc interceptor for get_git_repository_link
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_git_repository_link_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the DeveloperConnect server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_git_repository_link` interceptor runs
+        before the `post_get_git_repository_link_with_metadata` interceptor.
         """
         return response
+
+    def post_get_git_repository_link_with_metadata(
+        self,
+        response: developer_connect.GitRepositoryLink,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        developer_connect.GitRepositoryLink, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for get_git_repository_link
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the DeveloperConnect server but before it is returned to user code.
+
+        We recommend only using this `post_get_git_repository_link_with_metadata`
+        interceptor in new development instead of the `post_get_git_repository_link` interceptor.
+        When both interceptors are used, this `post_get_git_repository_link_with_metadata` interceptor runs after the
+        `post_get_git_repository_link` interceptor. The (possibly modified) response returned by
+        `post_get_git_repository_link` will be passed to
+        `post_get_git_repository_link_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_connections(
         self,
@@ -491,11 +760,37 @@ class DeveloperConnectRestInterceptor:
     ) -> developer_connect.ListConnectionsResponse:
         """Post-rpc interceptor for list_connections
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_connections_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the DeveloperConnect server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_connections` interceptor runs
+        before the `post_list_connections_with_metadata` interceptor.
         """
         return response
+
+    def post_list_connections_with_metadata(
+        self,
+        response: developer_connect.ListConnectionsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        developer_connect.ListConnectionsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_connections
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the DeveloperConnect server but before it is returned to user code.
+
+        We recommend only using this `post_list_connections_with_metadata`
+        interceptor in new development instead of the `post_list_connections` interceptor.
+        When both interceptors are used, this `post_list_connections_with_metadata` interceptor runs after the
+        `post_list_connections` interceptor. The (possibly modified) response returned by
+        `post_list_connections` will be passed to
+        `post_list_connections_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_git_repository_links(
         self,
@@ -517,11 +812,37 @@ class DeveloperConnectRestInterceptor:
     ) -> developer_connect.ListGitRepositoryLinksResponse:
         """Post-rpc interceptor for list_git_repository_links
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_git_repository_links_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the DeveloperConnect server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_git_repository_links` interceptor runs
+        before the `post_list_git_repository_links_with_metadata` interceptor.
         """
         return response
+
+    def post_list_git_repository_links_with_metadata(
+        self,
+        response: developer_connect.ListGitRepositoryLinksResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        developer_connect.ListGitRepositoryLinksResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_git_repository_links
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the DeveloperConnect server but before it is returned to user code.
+
+        We recommend only using this `post_list_git_repository_links_with_metadata`
+        interceptor in new development instead of the `post_list_git_repository_links` interceptor.
+        When both interceptors are used, this `post_list_git_repository_links_with_metadata` interceptor runs after the
+        `post_list_git_repository_links` interceptor. The (possibly modified) response returned by
+        `post_list_git_repository_links` will be passed to
+        `post_list_git_repository_links_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_connection(
         self,
@@ -543,11 +864,34 @@ class DeveloperConnectRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_connection
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_connection_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the DeveloperConnect server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_connection` interceptor runs
+        before the `post_update_connection_with_metadata` interceptor.
         """
         return response
+
+    def post_update_connection_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_connection
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the DeveloperConnect server but before it is returned to user code.
+
+        We recommend only using this `post_update_connection_with_metadata`
+        interceptor in new development instead of the `post_update_connection` interceptor.
+        When both interceptors are used, this `post_update_connection_with_metadata` interceptor runs after the
+        `post_update_connection` interceptor. The (possibly modified) response returned by
+        `post_update_connection` will be passed to
+        `post_update_connection_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_location(
         self,
@@ -963,6 +1307,10 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_connection(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_connection_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1117,6 +1465,10 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_git_repository_link(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_git_repository_link_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1261,6 +1613,10 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_connection(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_connection_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1409,6 +1765,10 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_git_repository_link(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_git_repository_link_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1558,6 +1918,10 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_fetch_git_hub_installations(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_fetch_git_hub_installations_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1702,6 +2066,10 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_fetch_git_refs(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_fetch_git_refs_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1851,6 +2219,13 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_fetch_linkable_git_repositories(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_fetch_linkable_git_repositories_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2005,6 +2380,10 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_fetch_read_token(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_fetch_read_token_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2159,6 +2538,10 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_fetch_read_write_token(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_fetch_read_write_token_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2301,6 +2684,10 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_connection(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_connection_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2449,6 +2836,10 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_git_repository_link(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_git_repository_link_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2597,6 +2988,10 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_connections(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_connections_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2747,6 +3142,10 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_git_repository_links(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_git_repository_links_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2901,6 +3300,10 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_connection(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_connection_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

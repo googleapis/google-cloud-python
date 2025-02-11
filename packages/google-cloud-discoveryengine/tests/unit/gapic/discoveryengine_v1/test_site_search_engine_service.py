@@ -76,6 +76,13 @@ from google.cloud.discoveryengine_v1.types import (
     site_search_engine_service,
 )
 
+CRED_INFO_JSON = {
+    "credential_source": "/path/to/file",
+    "credential_type": "service account credentials",
+    "principal": "service-account@example.com",
+}
+CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
 
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
@@ -349,6 +356,49 @@ def test__get_universe_domain():
     with pytest.raises(ValueError) as excinfo:
         SiteSearchEngineServiceClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+
+@pytest.mark.parametrize(
+    "error_code,cred_info_json,show_cred_info",
+    [
+        (401, CRED_INFO_JSON, True),
+        (403, CRED_INFO_JSON, True),
+        (404, CRED_INFO_JSON, True),
+        (500, CRED_INFO_JSON, False),
+        (401, None, False),
+        (403, None, False),
+        (404, None, False),
+        (500, None, False),
+    ],
+)
+def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
+    cred = mock.Mock(["get_cred_info"])
+    cred.get_cred_info = mock.Mock(return_value=cred_info_json)
+    client = SiteSearchEngineServiceClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=["foo"])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    if show_cred_info:
+        assert error.details == ["foo", CRED_INFO_STRING]
+    else:
+        assert error.details == ["foo"]
+
+
+@pytest.mark.parametrize("error_code", [401, 403, 404, 500])
+def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
+    cred = mock.Mock([])
+    assert not hasattr(cred, "get_cred_info")
+    client = SiteSearchEngineServiceClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=[])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    assert error.details == []
 
 
 @pytest.mark.parametrize(
@@ -8069,10 +8119,14 @@ def test_get_site_search_engine_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.SiteSearchEngineServiceRestInterceptor, "post_get_site_search_engine"
     ) as post, mock.patch.object(
+        transports.SiteSearchEngineServiceRestInterceptor,
+        "post_get_site_search_engine_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.SiteSearchEngineServiceRestInterceptor, "pre_get_site_search_engine"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = site_search_engine_service.GetSiteSearchEngineRequest.pb(
             site_search_engine_service.GetSiteSearchEngineRequest()
         )
@@ -8098,6 +8152,10 @@ def test_get_site_search_engine_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = site_search_engine.SiteSearchEngine()
+        post_with_metadata.return_value = (
+            site_search_engine.SiteSearchEngine(),
+            metadata,
+        )
 
         client.get_site_search_engine(
             request,
@@ -8109,6 +8167,7 @@ def test_get_site_search_engine_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_target_site_rest_bad_request(
@@ -8277,10 +8336,14 @@ def test_create_target_site_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.SiteSearchEngineServiceRestInterceptor, "post_create_target_site"
     ) as post, mock.patch.object(
+        transports.SiteSearchEngineServiceRestInterceptor,
+        "post_create_target_site_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.SiteSearchEngineServiceRestInterceptor, "pre_create_target_site"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = site_search_engine_service.CreateTargetSiteRequest.pb(
             site_search_engine_service.CreateTargetSiteRequest()
         )
@@ -8304,6 +8367,7 @@ def test_create_target_site_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_target_site(
             request,
@@ -8315,6 +8379,7 @@ def test_create_target_site_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_batch_create_target_sites_rest_bad_request(
@@ -8401,10 +8466,14 @@ def test_batch_create_target_sites_rest_interceptors(null_interceptor):
         "post_batch_create_target_sites",
     ) as post, mock.patch.object(
         transports.SiteSearchEngineServiceRestInterceptor,
+        "post_batch_create_target_sites_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
+        transports.SiteSearchEngineServiceRestInterceptor,
         "pre_batch_create_target_sites",
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = site_search_engine_service.BatchCreateTargetSitesRequest.pb(
             site_search_engine_service.BatchCreateTargetSitesRequest()
         )
@@ -8428,6 +8497,7 @@ def test_batch_create_target_sites_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.batch_create_target_sites(
             request,
@@ -8439,6 +8509,7 @@ def test_batch_create_target_sites_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_target_site_rest_bad_request(
@@ -8541,10 +8612,14 @@ def test_get_target_site_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.SiteSearchEngineServiceRestInterceptor, "post_get_target_site"
     ) as post, mock.patch.object(
+        transports.SiteSearchEngineServiceRestInterceptor,
+        "post_get_target_site_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.SiteSearchEngineServiceRestInterceptor, "pre_get_target_site"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = site_search_engine_service.GetTargetSiteRequest.pb(
             site_search_engine_service.GetTargetSiteRequest()
         )
@@ -8570,6 +8645,7 @@ def test_get_target_site_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = site_search_engine.TargetSite()
+        post_with_metadata.return_value = site_search_engine.TargetSite(), metadata
 
         client.get_target_site(
             request,
@@ -8581,6 +8657,7 @@ def test_get_target_site_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_target_site_rest_bad_request(
@@ -8753,10 +8830,14 @@ def test_update_target_site_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.SiteSearchEngineServiceRestInterceptor, "post_update_target_site"
     ) as post, mock.patch.object(
+        transports.SiteSearchEngineServiceRestInterceptor,
+        "post_update_target_site_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.SiteSearchEngineServiceRestInterceptor, "pre_update_target_site"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = site_search_engine_service.UpdateTargetSiteRequest.pb(
             site_search_engine_service.UpdateTargetSiteRequest()
         )
@@ -8780,6 +8861,7 @@ def test_update_target_site_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.update_target_site(
             request,
@@ -8791,6 +8873,7 @@ def test_update_target_site_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_target_site_rest_bad_request(
@@ -8875,10 +8958,14 @@ def test_delete_target_site_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.SiteSearchEngineServiceRestInterceptor, "post_delete_target_site"
     ) as post, mock.patch.object(
+        transports.SiteSearchEngineServiceRestInterceptor,
+        "post_delete_target_site_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.SiteSearchEngineServiceRestInterceptor, "pre_delete_target_site"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = site_search_engine_service.DeleteTargetSiteRequest.pb(
             site_search_engine_service.DeleteTargetSiteRequest()
         )
@@ -8902,6 +8989,7 @@ def test_delete_target_site_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_target_site(
             request,
@@ -8913,6 +9001,7 @@ def test_delete_target_site_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_target_sites_rest_bad_request(
@@ -9005,10 +9094,14 @@ def test_list_target_sites_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.SiteSearchEngineServiceRestInterceptor, "post_list_target_sites"
     ) as post, mock.patch.object(
+        transports.SiteSearchEngineServiceRestInterceptor,
+        "post_list_target_sites_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.SiteSearchEngineServiceRestInterceptor, "pre_list_target_sites"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = site_search_engine_service.ListTargetSitesRequest.pb(
             site_search_engine_service.ListTargetSitesRequest()
         )
@@ -9034,6 +9127,10 @@ def test_list_target_sites_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = site_search_engine_service.ListTargetSitesResponse()
+        post_with_metadata.return_value = (
+            site_search_engine_service.ListTargetSitesResponse(),
+            metadata,
+        )
 
         client.list_target_sites(
             request,
@@ -9045,6 +9142,7 @@ def test_list_target_sites_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_enable_advanced_site_search_rest_bad_request(
@@ -9131,10 +9229,14 @@ def test_enable_advanced_site_search_rest_interceptors(null_interceptor):
         "post_enable_advanced_site_search",
     ) as post, mock.patch.object(
         transports.SiteSearchEngineServiceRestInterceptor,
+        "post_enable_advanced_site_search_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
+        transports.SiteSearchEngineServiceRestInterceptor,
         "pre_enable_advanced_site_search",
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = site_search_engine_service.EnableAdvancedSiteSearchRequest.pb(
             site_search_engine_service.EnableAdvancedSiteSearchRequest()
         )
@@ -9158,6 +9260,7 @@ def test_enable_advanced_site_search_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.enable_advanced_site_search(
             request,
@@ -9169,6 +9272,7 @@ def test_enable_advanced_site_search_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_disable_advanced_site_search_rest_bad_request(
@@ -9255,10 +9359,14 @@ def test_disable_advanced_site_search_rest_interceptors(null_interceptor):
         "post_disable_advanced_site_search",
     ) as post, mock.patch.object(
         transports.SiteSearchEngineServiceRestInterceptor,
+        "post_disable_advanced_site_search_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
+        transports.SiteSearchEngineServiceRestInterceptor,
         "pre_disable_advanced_site_search",
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = site_search_engine_service.DisableAdvancedSiteSearchRequest.pb(
             site_search_engine_service.DisableAdvancedSiteSearchRequest()
         )
@@ -9282,6 +9390,7 @@ def test_disable_advanced_site_search_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.disable_advanced_site_search(
             request,
@@ -9293,6 +9402,7 @@ def test_disable_advanced_site_search_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_recrawl_uris_rest_bad_request(
@@ -9377,10 +9487,14 @@ def test_recrawl_uris_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.SiteSearchEngineServiceRestInterceptor, "post_recrawl_uris"
     ) as post, mock.patch.object(
+        transports.SiteSearchEngineServiceRestInterceptor,
+        "post_recrawl_uris_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.SiteSearchEngineServiceRestInterceptor, "pre_recrawl_uris"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = site_search_engine_service.RecrawlUrisRequest.pb(
             site_search_engine_service.RecrawlUrisRequest()
         )
@@ -9404,6 +9518,7 @@ def test_recrawl_uris_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.recrawl_uris(
             request,
@@ -9415,6 +9530,7 @@ def test_recrawl_uris_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_batch_verify_target_sites_rest_bad_request(
@@ -9501,10 +9617,14 @@ def test_batch_verify_target_sites_rest_interceptors(null_interceptor):
         "post_batch_verify_target_sites",
     ) as post, mock.patch.object(
         transports.SiteSearchEngineServiceRestInterceptor,
+        "post_batch_verify_target_sites_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
+        transports.SiteSearchEngineServiceRestInterceptor,
         "pre_batch_verify_target_sites",
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = site_search_engine_service.BatchVerifyTargetSitesRequest.pb(
             site_search_engine_service.BatchVerifyTargetSitesRequest()
         )
@@ -9528,6 +9648,7 @@ def test_batch_verify_target_sites_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.batch_verify_target_sites(
             request,
@@ -9539,6 +9660,7 @@ def test_batch_verify_target_sites_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_fetch_domain_verification_status_rest_bad_request(
@@ -9635,10 +9757,14 @@ def test_fetch_domain_verification_status_rest_interceptors(null_interceptor):
         "post_fetch_domain_verification_status",
     ) as post, mock.patch.object(
         transports.SiteSearchEngineServiceRestInterceptor,
+        "post_fetch_domain_verification_status_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
+        transports.SiteSearchEngineServiceRestInterceptor,
         "pre_fetch_domain_verification_status",
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = site_search_engine_service.FetchDomainVerificationStatusRequest.pb(
             site_search_engine_service.FetchDomainVerificationStatusRequest()
         )
@@ -9668,6 +9794,10 @@ def test_fetch_domain_verification_status_rest_interceptors(null_interceptor):
         post.return_value = (
             site_search_engine_service.FetchDomainVerificationStatusResponse()
         )
+        post_with_metadata.return_value = (
+            site_search_engine_service.FetchDomainVerificationStatusResponse(),
+            metadata,
+        )
 
         client.fetch_domain_verification_status(
             request,
@@ -9679,6 +9809,7 @@ def test_fetch_domain_verification_status_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_cancel_operation_rest_bad_request(

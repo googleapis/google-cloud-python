@@ -76,6 +76,13 @@ from google.cloud.dialogflow_v2.types import context
 from google.cloud.dialogflow_v2.types import intent
 from google.cloud.dialogflow_v2.types import intent as gcd_intent
 
+CRED_INFO_JSON = {
+    "credential_source": "/path/to/file",
+    "credential_type": "service account credentials",
+    "principal": "service-account@example.com",
+}
+CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
 
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
@@ -297,6 +304,49 @@ def test__get_universe_domain():
     with pytest.raises(ValueError) as excinfo:
         IntentsClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+
+@pytest.mark.parametrize(
+    "error_code,cred_info_json,show_cred_info",
+    [
+        (401, CRED_INFO_JSON, True),
+        (403, CRED_INFO_JSON, True),
+        (404, CRED_INFO_JSON, True),
+        (500, CRED_INFO_JSON, False),
+        (401, None, False),
+        (403, None, False),
+        (404, None, False),
+        (500, None, False),
+    ],
+)
+def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
+    cred = mock.Mock(["get_cred_info"])
+    cred.get_cred_info = mock.Mock(return_value=cred_info_json)
+    client = IntentsClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=["foo"])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    if show_cred_info:
+        assert error.details == ["foo", CRED_INFO_STRING]
+    else:
+        assert error.details == ["foo"]
+
+
+@pytest.mark.parametrize("error_code", [401, 403, 404, 500])
+def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
+    cred = mock.Mock([])
+    assert not hasattr(cred, "get_cred_info")
+    client = IntentsClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=[])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    assert error.details == []
 
 
 @pytest.mark.parametrize(
@@ -5757,10 +5807,13 @@ def test_list_intents_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.IntentsRestInterceptor, "post_list_intents"
     ) as post, mock.patch.object(
+        transports.IntentsRestInterceptor, "post_list_intents_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.IntentsRestInterceptor, "pre_list_intents"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = intent.ListIntentsRequest.pb(intent.ListIntentsRequest())
         transcode.return_value = {
             "method": "post",
@@ -5782,6 +5835,7 @@ def test_list_intents_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = intent.ListIntentsResponse()
+        post_with_metadata.return_value = intent.ListIntentsResponse(), metadata
 
         client.list_intents(
             request,
@@ -5793,6 +5847,7 @@ def test_list_intents_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_intent_rest_bad_request(request_type=intent.GetIntentRequest):
@@ -5903,10 +5958,13 @@ def test_get_intent_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.IntentsRestInterceptor, "post_get_intent"
     ) as post, mock.patch.object(
+        transports.IntentsRestInterceptor, "post_get_intent_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.IntentsRestInterceptor, "pre_get_intent"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = intent.GetIntentRequest.pb(intent.GetIntentRequest())
         transcode.return_value = {
             "method": "post",
@@ -5928,6 +5986,7 @@ def test_get_intent_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = intent.Intent()
+        post_with_metadata.return_value = intent.Intent(), metadata
 
         client.get_intent(
             request,
@@ -5939,6 +5998,7 @@ def test_get_intent_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_intent_rest_bad_request(request_type=gcd_intent.CreateIntentRequest):
@@ -6282,10 +6342,13 @@ def test_create_intent_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.IntentsRestInterceptor, "post_create_intent"
     ) as post, mock.patch.object(
+        transports.IntentsRestInterceptor, "post_create_intent_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.IntentsRestInterceptor, "pre_create_intent"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = gcd_intent.CreateIntentRequest.pb(gcd_intent.CreateIntentRequest())
         transcode.return_value = {
             "method": "post",
@@ -6307,6 +6370,7 @@ def test_create_intent_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = gcd_intent.Intent()
+        post_with_metadata.return_value = gcd_intent.Intent(), metadata
 
         client.create_intent(
             request,
@@ -6318,6 +6382,7 @@ def test_create_intent_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_intent_rest_bad_request(request_type=gcd_intent.UpdateIntentRequest):
@@ -6661,10 +6726,13 @@ def test_update_intent_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.IntentsRestInterceptor, "post_update_intent"
     ) as post, mock.patch.object(
+        transports.IntentsRestInterceptor, "post_update_intent_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.IntentsRestInterceptor, "pre_update_intent"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = gcd_intent.UpdateIntentRequest.pb(gcd_intent.UpdateIntentRequest())
         transcode.return_value = {
             "method": "post",
@@ -6686,6 +6754,7 @@ def test_update_intent_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = gcd_intent.Intent()
+        post_with_metadata.return_value = gcd_intent.Intent(), metadata
 
         client.update_intent(
             request,
@@ -6697,6 +6766,7 @@ def test_update_intent_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_intent_rest_bad_request(request_type=intent.DeleteIntentRequest):
@@ -6878,10 +6948,13 @@ def test_batch_update_intents_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.IntentsRestInterceptor, "post_batch_update_intents"
     ) as post, mock.patch.object(
+        transports.IntentsRestInterceptor, "post_batch_update_intents_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.IntentsRestInterceptor, "pre_batch_update_intents"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = intent.BatchUpdateIntentsRequest.pb(
             intent.BatchUpdateIntentsRequest()
         )
@@ -6905,6 +6978,7 @@ def test_batch_update_intents_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.batch_update_intents(
             request,
@@ -6916,6 +6990,7 @@ def test_batch_update_intents_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_batch_delete_intents_rest_bad_request(
@@ -6994,10 +7069,13 @@ def test_batch_delete_intents_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.IntentsRestInterceptor, "post_batch_delete_intents"
     ) as post, mock.patch.object(
+        transports.IntentsRestInterceptor, "post_batch_delete_intents_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.IntentsRestInterceptor, "pre_batch_delete_intents"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = intent.BatchDeleteIntentsRequest.pb(
             intent.BatchDeleteIntentsRequest()
         )
@@ -7021,6 +7099,7 @@ def test_batch_delete_intents_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.batch_delete_intents(
             request,
@@ -7032,6 +7111,7 @@ def test_batch_delete_intents_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_location_rest_bad_request(request_type=locations_pb2.GetLocationRequest):

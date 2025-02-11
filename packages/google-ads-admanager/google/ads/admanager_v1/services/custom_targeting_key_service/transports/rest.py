@@ -114,11 +114,37 @@ class CustomTargetingKeyServiceRestInterceptor:
     ) -> custom_targeting_key_messages.CustomTargetingKey:
         """Post-rpc interceptor for get_custom_targeting_key
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_custom_targeting_key_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CustomTargetingKeyService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_custom_targeting_key` interceptor runs
+        before the `post_get_custom_targeting_key_with_metadata` interceptor.
         """
         return response
+
+    def post_get_custom_targeting_key_with_metadata(
+        self,
+        response: custom_targeting_key_messages.CustomTargetingKey,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        custom_targeting_key_messages.CustomTargetingKey,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for get_custom_targeting_key
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CustomTargetingKeyService server but before it is returned to user code.
+
+        We recommend only using this `post_get_custom_targeting_key_with_metadata`
+        interceptor in new development instead of the `post_get_custom_targeting_key` interceptor.
+        When both interceptors are used, this `post_get_custom_targeting_key_with_metadata` interceptor runs after the
+        `post_get_custom_targeting_key` interceptor. The (possibly modified) response returned by
+        `post_get_custom_targeting_key` will be passed to
+        `post_get_custom_targeting_key_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_custom_targeting_keys(
         self,
@@ -140,11 +166,37 @@ class CustomTargetingKeyServiceRestInterceptor:
     ) -> custom_targeting_key_service.ListCustomTargetingKeysResponse:
         """Post-rpc interceptor for list_custom_targeting_keys
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_custom_targeting_keys_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CustomTargetingKeyService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_custom_targeting_keys` interceptor runs
+        before the `post_list_custom_targeting_keys_with_metadata` interceptor.
         """
         return response
+
+    def post_list_custom_targeting_keys_with_metadata(
+        self,
+        response: custom_targeting_key_service.ListCustomTargetingKeysResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        custom_targeting_key_service.ListCustomTargetingKeysResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_custom_targeting_keys
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CustomTargetingKeyService server but before it is returned to user code.
+
+        We recommend only using this `post_list_custom_targeting_keys_with_metadata`
+        interceptor in new development instead of the `post_list_custom_targeting_keys` interceptor.
+        When both interceptors are used, this `post_list_custom_targeting_keys_with_metadata` interceptor runs after the
+        `post_list_custom_targeting_keys` interceptor. The (possibly modified) response returned by
+        `post_list_custom_targeting_keys` will be passed to
+        `post_list_custom_targeting_keys_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_operation(
         self,
@@ -380,6 +432,10 @@ class CustomTargetingKeyServiceRestTransport(
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_custom_targeting_key(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_custom_targeting_key_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -534,6 +590,10 @@ class CustomTargetingKeyServiceRestTransport(
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_custom_targeting_keys(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_custom_targeting_keys_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

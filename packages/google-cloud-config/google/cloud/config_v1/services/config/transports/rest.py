@@ -276,11 +276,34 @@ class ConfigRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_deployment
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_deployment_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Config server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_deployment` interceptor runs
+        before the `post_create_deployment_with_metadata` interceptor.
         """
         return response
+
+    def post_create_deployment_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_deployment
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Config server but before it is returned to user code.
+
+        We recommend only using this `post_create_deployment_with_metadata`
+        interceptor in new development instead of the `post_create_deployment` interceptor.
+        When both interceptors are used, this `post_create_deployment_with_metadata` interceptor runs after the
+        `post_create_deployment` interceptor. The (possibly modified) response returned by
+        `post_create_deployment` will be passed to
+        `post_create_deployment_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_preview(
         self,
@@ -299,11 +322,34 @@ class ConfigRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_preview
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_preview_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Config server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_preview` interceptor runs
+        before the `post_create_preview_with_metadata` interceptor.
         """
         return response
+
+    def post_create_preview_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_preview
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Config server but before it is returned to user code.
+
+        We recommend only using this `post_create_preview_with_metadata`
+        interceptor in new development instead of the `post_create_preview` interceptor.
+        When both interceptors are used, this `post_create_preview_with_metadata` interceptor runs after the
+        `post_create_preview` interceptor. The (possibly modified) response returned by
+        `post_create_preview` will be passed to
+        `post_create_preview_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_deployment(
         self,
@@ -322,11 +368,34 @@ class ConfigRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_deployment
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_deployment_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Config server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_deployment` interceptor runs
+        before the `post_delete_deployment_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_deployment_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_deployment
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Config server but before it is returned to user code.
+
+        We recommend only using this `post_delete_deployment_with_metadata`
+        interceptor in new development instead of the `post_delete_deployment` interceptor.
+        When both interceptors are used, this `post_delete_deployment_with_metadata` interceptor runs after the
+        `post_delete_deployment` interceptor. The (possibly modified) response returned by
+        `post_delete_deployment` will be passed to
+        `post_delete_deployment_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_preview(
         self,
@@ -345,11 +414,34 @@ class ConfigRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_preview
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_preview_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Config server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_preview` interceptor runs
+        before the `post_delete_preview_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_preview_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_preview
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Config server but before it is returned to user code.
+
+        We recommend only using this `post_delete_preview_with_metadata`
+        interceptor in new development instead of the `post_delete_preview` interceptor.
+        When both interceptors are used, this `post_delete_preview_with_metadata` interceptor runs after the
+        `post_delete_preview` interceptor. The (possibly modified) response returned by
+        `post_delete_preview` will be passed to
+        `post_delete_preview_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_statefile(
         self,
@@ -382,11 +474,34 @@ class ConfigRestInterceptor:
     ) -> config.Statefile:
         """Post-rpc interceptor for export_deployment_statefile
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_export_deployment_statefile_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Config server but before
-        it is returned to user code.
+        it is returned to user code. This `post_export_deployment_statefile` interceptor runs
+        before the `post_export_deployment_statefile_with_metadata` interceptor.
         """
         return response
+
+    def post_export_deployment_statefile_with_metadata(
+        self,
+        response: config.Statefile,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[config.Statefile, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for export_deployment_statefile
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Config server but before it is returned to user code.
+
+        We recommend only using this `post_export_deployment_statefile_with_metadata`
+        interceptor in new development instead of the `post_export_deployment_statefile` interceptor.
+        When both interceptors are used, this `post_export_deployment_statefile_with_metadata` interceptor runs after the
+        `post_export_deployment_statefile` interceptor. The (possibly modified) response returned by
+        `post_export_deployment_statefile` will be passed to
+        `post_export_deployment_statefile_with_metadata`.
+        """
+        return response, metadata
 
     def pre_export_lock_info(
         self,
@@ -403,11 +518,34 @@ class ConfigRestInterceptor:
     def post_export_lock_info(self, response: config.LockInfo) -> config.LockInfo:
         """Post-rpc interceptor for export_lock_info
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_export_lock_info_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Config server but before
-        it is returned to user code.
+        it is returned to user code. This `post_export_lock_info` interceptor runs
+        before the `post_export_lock_info_with_metadata` interceptor.
         """
         return response
+
+    def post_export_lock_info_with_metadata(
+        self,
+        response: config.LockInfo,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[config.LockInfo, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for export_lock_info
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Config server but before it is returned to user code.
+
+        We recommend only using this `post_export_lock_info_with_metadata`
+        interceptor in new development instead of the `post_export_lock_info` interceptor.
+        When both interceptors are used, this `post_export_lock_info_with_metadata` interceptor runs after the
+        `post_export_lock_info` interceptor. The (possibly modified) response returned by
+        `post_export_lock_info` will be passed to
+        `post_export_lock_info_with_metadata`.
+        """
+        return response, metadata
 
     def pre_export_preview_result(
         self,
@@ -428,11 +566,36 @@ class ConfigRestInterceptor:
     ) -> config.ExportPreviewResultResponse:
         """Post-rpc interceptor for export_preview_result
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_export_preview_result_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Config server but before
-        it is returned to user code.
+        it is returned to user code. This `post_export_preview_result` interceptor runs
+        before the `post_export_preview_result_with_metadata` interceptor.
         """
         return response
+
+    def post_export_preview_result_with_metadata(
+        self,
+        response: config.ExportPreviewResultResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        config.ExportPreviewResultResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for export_preview_result
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Config server but before it is returned to user code.
+
+        We recommend only using this `post_export_preview_result_with_metadata`
+        interceptor in new development instead of the `post_export_preview_result` interceptor.
+        When both interceptors are used, this `post_export_preview_result_with_metadata` interceptor runs after the
+        `post_export_preview_result` interceptor. The (possibly modified) response returned by
+        `post_export_preview_result` will be passed to
+        `post_export_preview_result_with_metadata`.
+        """
+        return response, metadata
 
     def pre_export_revision_statefile(
         self,
@@ -453,11 +616,34 @@ class ConfigRestInterceptor:
     ) -> config.Statefile:
         """Post-rpc interceptor for export_revision_statefile
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_export_revision_statefile_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Config server but before
-        it is returned to user code.
+        it is returned to user code. This `post_export_revision_statefile` interceptor runs
+        before the `post_export_revision_statefile_with_metadata` interceptor.
         """
         return response
+
+    def post_export_revision_statefile_with_metadata(
+        self,
+        response: config.Statefile,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[config.Statefile, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for export_revision_statefile
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Config server but before it is returned to user code.
+
+        We recommend only using this `post_export_revision_statefile_with_metadata`
+        interceptor in new development instead of the `post_export_revision_statefile` interceptor.
+        When both interceptors are used, this `post_export_revision_statefile_with_metadata` interceptor runs after the
+        `post_export_revision_statefile` interceptor. The (possibly modified) response returned by
+        `post_export_revision_statefile` will be passed to
+        `post_export_revision_statefile_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_deployment(
         self,
@@ -474,11 +660,34 @@ class ConfigRestInterceptor:
     def post_get_deployment(self, response: config.Deployment) -> config.Deployment:
         """Post-rpc interceptor for get_deployment
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_deployment_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Config server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_deployment` interceptor runs
+        before the `post_get_deployment_with_metadata` interceptor.
         """
         return response
+
+    def post_get_deployment_with_metadata(
+        self,
+        response: config.Deployment,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[config.Deployment, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_deployment
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Config server but before it is returned to user code.
+
+        We recommend only using this `post_get_deployment_with_metadata`
+        interceptor in new development instead of the `post_get_deployment` interceptor.
+        When both interceptors are used, this `post_get_deployment_with_metadata` interceptor runs after the
+        `post_get_deployment` interceptor. The (possibly modified) response returned by
+        `post_get_deployment` will be passed to
+        `post_get_deployment_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_preview(
         self,
@@ -495,11 +704,34 @@ class ConfigRestInterceptor:
     def post_get_preview(self, response: config.Preview) -> config.Preview:
         """Post-rpc interceptor for get_preview
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_preview_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Config server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_preview` interceptor runs
+        before the `post_get_preview_with_metadata` interceptor.
         """
         return response
+
+    def post_get_preview_with_metadata(
+        self,
+        response: config.Preview,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[config.Preview, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_preview
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Config server but before it is returned to user code.
+
+        We recommend only using this `post_get_preview_with_metadata`
+        interceptor in new development instead of the `post_get_preview` interceptor.
+        When both interceptors are used, this `post_get_preview_with_metadata` interceptor runs after the
+        `post_get_preview` interceptor. The (possibly modified) response returned by
+        `post_get_preview` will be passed to
+        `post_get_preview_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_resource(
         self,
@@ -516,11 +748,34 @@ class ConfigRestInterceptor:
     def post_get_resource(self, response: config.Resource) -> config.Resource:
         """Post-rpc interceptor for get_resource
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_resource_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Config server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_resource` interceptor runs
+        before the `post_get_resource_with_metadata` interceptor.
         """
         return response
+
+    def post_get_resource_with_metadata(
+        self,
+        response: config.Resource,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[config.Resource, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_resource
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Config server but before it is returned to user code.
+
+        We recommend only using this `post_get_resource_with_metadata`
+        interceptor in new development instead of the `post_get_resource` interceptor.
+        When both interceptors are used, this `post_get_resource_with_metadata` interceptor runs after the
+        `post_get_resource` interceptor. The (possibly modified) response returned by
+        `post_get_resource` will be passed to
+        `post_get_resource_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_revision(
         self,
@@ -537,11 +792,34 @@ class ConfigRestInterceptor:
     def post_get_revision(self, response: config.Revision) -> config.Revision:
         """Post-rpc interceptor for get_revision
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_revision_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Config server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_revision` interceptor runs
+        before the `post_get_revision_with_metadata` interceptor.
         """
         return response
+
+    def post_get_revision_with_metadata(
+        self,
+        response: config.Revision,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[config.Revision, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_revision
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Config server but before it is returned to user code.
+
+        We recommend only using this `post_get_revision_with_metadata`
+        interceptor in new development instead of the `post_get_revision` interceptor.
+        When both interceptors are used, this `post_get_revision_with_metadata` interceptor runs after the
+        `post_get_revision` interceptor. The (possibly modified) response returned by
+        `post_get_revision` will be passed to
+        `post_get_revision_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_terraform_version(
         self,
@@ -562,11 +840,34 @@ class ConfigRestInterceptor:
     ) -> config.TerraformVersion:
         """Post-rpc interceptor for get_terraform_version
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_terraform_version_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Config server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_terraform_version` interceptor runs
+        before the `post_get_terraform_version_with_metadata` interceptor.
         """
         return response
+
+    def post_get_terraform_version_with_metadata(
+        self,
+        response: config.TerraformVersion,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[config.TerraformVersion, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_terraform_version
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Config server but before it is returned to user code.
+
+        We recommend only using this `post_get_terraform_version_with_metadata`
+        interceptor in new development instead of the `post_get_terraform_version` interceptor.
+        When both interceptors are used, this `post_get_terraform_version_with_metadata` interceptor runs after the
+        `post_get_terraform_version` interceptor. The (possibly modified) response returned by
+        `post_get_terraform_version` will be passed to
+        `post_get_terraform_version_with_metadata`.
+        """
+        return response, metadata
 
     def pre_import_statefile(
         self,
@@ -583,11 +884,34 @@ class ConfigRestInterceptor:
     def post_import_statefile(self, response: config.Statefile) -> config.Statefile:
         """Post-rpc interceptor for import_statefile
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_import_statefile_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Config server but before
-        it is returned to user code.
+        it is returned to user code. This `post_import_statefile` interceptor runs
+        before the `post_import_statefile_with_metadata` interceptor.
         """
         return response
+
+    def post_import_statefile_with_metadata(
+        self,
+        response: config.Statefile,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[config.Statefile, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for import_statefile
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Config server but before it is returned to user code.
+
+        We recommend only using this `post_import_statefile_with_metadata`
+        interceptor in new development instead of the `post_import_statefile` interceptor.
+        When both interceptors are used, this `post_import_statefile_with_metadata` interceptor runs after the
+        `post_import_statefile` interceptor. The (possibly modified) response returned by
+        `post_import_statefile` will be passed to
+        `post_import_statefile_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_deployments(
         self,
@@ -606,11 +930,34 @@ class ConfigRestInterceptor:
     ) -> config.ListDeploymentsResponse:
         """Post-rpc interceptor for list_deployments
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_deployments_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Config server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_deployments` interceptor runs
+        before the `post_list_deployments_with_metadata` interceptor.
         """
         return response
+
+    def post_list_deployments_with_metadata(
+        self,
+        response: config.ListDeploymentsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[config.ListDeploymentsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for list_deployments
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Config server but before it is returned to user code.
+
+        We recommend only using this `post_list_deployments_with_metadata`
+        interceptor in new development instead of the `post_list_deployments` interceptor.
+        When both interceptors are used, this `post_list_deployments_with_metadata` interceptor runs after the
+        `post_list_deployments` interceptor. The (possibly modified) response returned by
+        `post_list_deployments` will be passed to
+        `post_list_deployments_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_previews(
         self,
@@ -629,11 +976,34 @@ class ConfigRestInterceptor:
     ) -> config.ListPreviewsResponse:
         """Post-rpc interceptor for list_previews
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_previews_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Config server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_previews` interceptor runs
+        before the `post_list_previews_with_metadata` interceptor.
         """
         return response
+
+    def post_list_previews_with_metadata(
+        self,
+        response: config.ListPreviewsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[config.ListPreviewsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for list_previews
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Config server but before it is returned to user code.
+
+        We recommend only using this `post_list_previews_with_metadata`
+        interceptor in new development instead of the `post_list_previews` interceptor.
+        When both interceptors are used, this `post_list_previews_with_metadata` interceptor runs after the
+        `post_list_previews` interceptor. The (possibly modified) response returned by
+        `post_list_previews` will be passed to
+        `post_list_previews_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_resources(
         self,
@@ -652,11 +1022,34 @@ class ConfigRestInterceptor:
     ) -> config.ListResourcesResponse:
         """Post-rpc interceptor for list_resources
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_resources_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Config server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_resources` interceptor runs
+        before the `post_list_resources_with_metadata` interceptor.
         """
         return response
+
+    def post_list_resources_with_metadata(
+        self,
+        response: config.ListResourcesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[config.ListResourcesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for list_resources
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Config server but before it is returned to user code.
+
+        We recommend only using this `post_list_resources_with_metadata`
+        interceptor in new development instead of the `post_list_resources` interceptor.
+        When both interceptors are used, this `post_list_resources_with_metadata` interceptor runs after the
+        `post_list_resources` interceptor. The (possibly modified) response returned by
+        `post_list_resources` will be passed to
+        `post_list_resources_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_revisions(
         self,
@@ -675,11 +1068,34 @@ class ConfigRestInterceptor:
     ) -> config.ListRevisionsResponse:
         """Post-rpc interceptor for list_revisions
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_revisions_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Config server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_revisions` interceptor runs
+        before the `post_list_revisions_with_metadata` interceptor.
         """
         return response
+
+    def post_list_revisions_with_metadata(
+        self,
+        response: config.ListRevisionsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[config.ListRevisionsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for list_revisions
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Config server but before it is returned to user code.
+
+        We recommend only using this `post_list_revisions_with_metadata`
+        interceptor in new development instead of the `post_list_revisions` interceptor.
+        When both interceptors are used, this `post_list_revisions_with_metadata` interceptor runs after the
+        `post_list_revisions` interceptor. The (possibly modified) response returned by
+        `post_list_revisions` will be passed to
+        `post_list_revisions_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_terraform_versions(
         self,
@@ -700,11 +1116,36 @@ class ConfigRestInterceptor:
     ) -> config.ListTerraformVersionsResponse:
         """Post-rpc interceptor for list_terraform_versions
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_terraform_versions_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Config server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_terraform_versions` interceptor runs
+        before the `post_list_terraform_versions_with_metadata` interceptor.
         """
         return response
+
+    def post_list_terraform_versions_with_metadata(
+        self,
+        response: config.ListTerraformVersionsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        config.ListTerraformVersionsResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_terraform_versions
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Config server but before it is returned to user code.
+
+        We recommend only using this `post_list_terraform_versions_with_metadata`
+        interceptor in new development instead of the `post_list_terraform_versions` interceptor.
+        When both interceptors are used, this `post_list_terraform_versions_with_metadata` interceptor runs after the
+        `post_list_terraform_versions` interceptor. The (possibly modified) response returned by
+        `post_list_terraform_versions` will be passed to
+        `post_list_terraform_versions_with_metadata`.
+        """
+        return response, metadata
 
     def pre_lock_deployment(
         self,
@@ -723,11 +1164,34 @@ class ConfigRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for lock_deployment
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_lock_deployment_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Config server but before
-        it is returned to user code.
+        it is returned to user code. This `post_lock_deployment` interceptor runs
+        before the `post_lock_deployment_with_metadata` interceptor.
         """
         return response
+
+    def post_lock_deployment_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for lock_deployment
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Config server but before it is returned to user code.
+
+        We recommend only using this `post_lock_deployment_with_metadata`
+        interceptor in new development instead of the `post_lock_deployment` interceptor.
+        When both interceptors are used, this `post_lock_deployment_with_metadata` interceptor runs after the
+        `post_lock_deployment` interceptor. The (possibly modified) response returned by
+        `post_lock_deployment` will be passed to
+        `post_lock_deployment_with_metadata`.
+        """
+        return response, metadata
 
     def pre_unlock_deployment(
         self,
@@ -746,11 +1210,34 @@ class ConfigRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for unlock_deployment
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_unlock_deployment_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Config server but before
-        it is returned to user code.
+        it is returned to user code. This `post_unlock_deployment` interceptor runs
+        before the `post_unlock_deployment_with_metadata` interceptor.
         """
         return response
+
+    def post_unlock_deployment_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for unlock_deployment
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Config server but before it is returned to user code.
+
+        We recommend only using this `post_unlock_deployment_with_metadata`
+        interceptor in new development instead of the `post_unlock_deployment` interceptor.
+        When both interceptors are used, this `post_unlock_deployment_with_metadata` interceptor runs after the
+        `post_unlock_deployment` interceptor. The (possibly modified) response returned by
+        `post_unlock_deployment` will be passed to
+        `post_unlock_deployment_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_deployment(
         self,
@@ -769,11 +1256,34 @@ class ConfigRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_deployment
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_deployment_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Config server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_deployment` interceptor runs
+        before the `post_update_deployment_with_metadata` interceptor.
         """
         return response
+
+    def post_update_deployment_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_deployment
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Config server but before it is returned to user code.
+
+        We recommend only using this `post_update_deployment_with_metadata`
+        interceptor in new development instead of the `post_update_deployment` interceptor.
+        When both interceptors are used, this `post_update_deployment_with_metadata` interceptor runs after the
+        `post_update_deployment` interceptor. The (possibly modified) response returned by
+        `post_update_deployment` will be passed to
+        `post_update_deployment_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_location(
         self,
@@ -1268,6 +1778,10 @@ class ConfigRestTransport(_BaseConfigRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_deployment(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_deployment_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1417,6 +1931,10 @@ class ConfigRestTransport(_BaseConfigRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_preview(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_preview_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1564,6 +2082,10 @@ class ConfigRestTransport(_BaseConfigRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_deployment(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_deployment_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1707,6 +2229,10 @@ class ConfigRestTransport(_BaseConfigRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_preview(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_preview_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1979,6 +2505,10 @@ class ConfigRestTransport(_BaseConfigRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_export_deployment_statefile(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_export_deployment_statefile_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2126,6 +2656,10 @@ class ConfigRestTransport(_BaseConfigRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_export_lock_info(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_export_lock_info_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2276,6 +2810,10 @@ class ConfigRestTransport(_BaseConfigRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_export_preview_result(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_export_preview_result_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2430,6 +2968,10 @@ class ConfigRestTransport(_BaseConfigRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_export_revision_statefile(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_export_revision_statefile_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2575,6 +3117,10 @@ class ConfigRestTransport(_BaseConfigRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_deployment(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_deployment_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2720,6 +3266,10 @@ class ConfigRestTransport(_BaseConfigRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_preview(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_preview_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2865,6 +3415,10 @@ class ConfigRestTransport(_BaseConfigRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_resource(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_resource_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3011,6 +3565,10 @@ class ConfigRestTransport(_BaseConfigRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_revision(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_revision_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3157,6 +3715,10 @@ class ConfigRestTransport(_BaseConfigRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_terraform_version(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_terraform_version_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3312,6 +3874,10 @@ class ConfigRestTransport(_BaseConfigRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_import_statefile(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_import_statefile_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3458,6 +4024,10 @@ class ConfigRestTransport(_BaseConfigRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_deployments(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_deployments_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3603,6 +4173,10 @@ class ConfigRestTransport(_BaseConfigRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_previews(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_previews_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3748,6 +4322,10 @@ class ConfigRestTransport(_BaseConfigRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_resources(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_resources_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3893,6 +4471,10 @@ class ConfigRestTransport(_BaseConfigRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_revisions(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_revisions_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4038,6 +4620,10 @@ class ConfigRestTransport(_BaseConfigRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_terraform_versions(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_terraform_versions_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4190,6 +4776,10 @@ class ConfigRestTransport(_BaseConfigRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_lock_deployment(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_lock_deployment_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4346,6 +4936,10 @@ class ConfigRestTransport(_BaseConfigRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_unlock_deployment(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_unlock_deployment_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4501,6 +5095,10 @@ class ConfigRestTransport(_BaseConfigRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_deployment(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_deployment_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

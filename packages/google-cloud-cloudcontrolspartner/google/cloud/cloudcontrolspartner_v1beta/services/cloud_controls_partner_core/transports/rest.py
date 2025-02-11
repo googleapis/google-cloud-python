@@ -183,11 +183,34 @@ class CloudControlsPartnerCoreRestInterceptor:
     def post_create_customer(self, response: customers.Customer) -> customers.Customer:
         """Post-rpc interceptor for create_customer
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_customer_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CloudControlsPartnerCore server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_customer` interceptor runs
+        before the `post_create_customer_with_metadata` interceptor.
         """
         return response
+
+    def post_create_customer_with_metadata(
+        self,
+        response: customers.Customer,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[customers.Customer, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_customer
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CloudControlsPartnerCore server but before it is returned to user code.
+
+        We recommend only using this `post_create_customer_with_metadata`
+        interceptor in new development instead of the `post_create_customer` interceptor.
+        When both interceptors are used, this `post_create_customer_with_metadata` interceptor runs after the
+        `post_create_customer` interceptor. The (possibly modified) response returned by
+        `post_create_customer` will be passed to
+        `post_create_customer_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_customer(
         self,
@@ -218,11 +241,34 @@ class CloudControlsPartnerCoreRestInterceptor:
     def post_get_customer(self, response: customers.Customer) -> customers.Customer:
         """Post-rpc interceptor for get_customer
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_customer_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CloudControlsPartnerCore server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_customer` interceptor runs
+        before the `post_get_customer_with_metadata` interceptor.
         """
         return response
+
+    def post_get_customer_with_metadata(
+        self,
+        response: customers.Customer,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[customers.Customer, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_customer
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CloudControlsPartnerCore server but before it is returned to user code.
+
+        We recommend only using this `post_get_customer_with_metadata`
+        interceptor in new development instead of the `post_get_customer` interceptor.
+        When both interceptors are used, this `post_get_customer_with_metadata` interceptor runs after the
+        `post_get_customer` interceptor. The (possibly modified) response returned by
+        `post_get_customer` will be passed to
+        `post_get_customer_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_ekm_connections(
         self,
@@ -244,11 +290,34 @@ class CloudControlsPartnerCoreRestInterceptor:
     ) -> ekm_connections.EkmConnections:
         """Post-rpc interceptor for get_ekm_connections
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_ekm_connections_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CloudControlsPartnerCore server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_ekm_connections` interceptor runs
+        before the `post_get_ekm_connections_with_metadata` interceptor.
         """
         return response
+
+    def post_get_ekm_connections_with_metadata(
+        self,
+        response: ekm_connections.EkmConnections,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[ekm_connections.EkmConnections, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_ekm_connections
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CloudControlsPartnerCore server but before it is returned to user code.
+
+        We recommend only using this `post_get_ekm_connections_with_metadata`
+        interceptor in new development instead of the `post_get_ekm_connections` interceptor.
+        When both interceptors are used, this `post_get_ekm_connections_with_metadata` interceptor runs after the
+        `post_get_ekm_connections` interceptor. The (possibly modified) response returned by
+        `post_get_ekm_connections` will be passed to
+        `post_get_ekm_connections_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_partner(
         self,
@@ -265,11 +334,34 @@ class CloudControlsPartnerCoreRestInterceptor:
     def post_get_partner(self, response: partners.Partner) -> partners.Partner:
         """Post-rpc interceptor for get_partner
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_partner_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CloudControlsPartnerCore server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_partner` interceptor runs
+        before the `post_get_partner_with_metadata` interceptor.
         """
         return response
+
+    def post_get_partner_with_metadata(
+        self,
+        response: partners.Partner,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[partners.Partner, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_partner
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CloudControlsPartnerCore server but before it is returned to user code.
+
+        We recommend only using this `post_get_partner_with_metadata`
+        interceptor in new development instead of the `post_get_partner` interceptor.
+        When both interceptors are used, this `post_get_partner_with_metadata` interceptor runs after the
+        `post_get_partner` interceptor. The (possibly modified) response returned by
+        `post_get_partner` will be passed to
+        `post_get_partner_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_partner_permissions(
         self,
@@ -291,11 +383,36 @@ class CloudControlsPartnerCoreRestInterceptor:
     ) -> partner_permissions.PartnerPermissions:
         """Post-rpc interceptor for get_partner_permissions
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_partner_permissions_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CloudControlsPartnerCore server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_partner_permissions` interceptor runs
+        before the `post_get_partner_permissions_with_metadata` interceptor.
         """
         return response
+
+    def post_get_partner_permissions_with_metadata(
+        self,
+        response: partner_permissions.PartnerPermissions,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        partner_permissions.PartnerPermissions, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for get_partner_permissions
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CloudControlsPartnerCore server but before it is returned to user code.
+
+        We recommend only using this `post_get_partner_permissions_with_metadata`
+        interceptor in new development instead of the `post_get_partner_permissions` interceptor.
+        When both interceptors are used, this `post_get_partner_permissions_with_metadata` interceptor runs after the
+        `post_get_partner_permissions` interceptor. The (possibly modified) response returned by
+        `post_get_partner_permissions` will be passed to
+        `post_get_partner_permissions_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_workload(
         self,
@@ -316,11 +433,34 @@ class CloudControlsPartnerCoreRestInterceptor:
     ) -> customer_workloads.Workload:
         """Post-rpc interceptor for get_workload
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_workload_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CloudControlsPartnerCore server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_workload` interceptor runs
+        before the `post_get_workload_with_metadata` interceptor.
         """
         return response
+
+    def post_get_workload_with_metadata(
+        self,
+        response: customer_workloads.Workload,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[customer_workloads.Workload, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_workload
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CloudControlsPartnerCore server but before it is returned to user code.
+
+        We recommend only using this `post_get_workload_with_metadata`
+        interceptor in new development instead of the `post_get_workload` interceptor.
+        When both interceptors are used, this `post_get_workload_with_metadata` interceptor runs after the
+        `post_get_workload` interceptor. The (possibly modified) response returned by
+        `post_get_workload` will be passed to
+        `post_get_workload_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_access_approval_requests(
         self,
@@ -342,11 +482,37 @@ class CloudControlsPartnerCoreRestInterceptor:
     ) -> access_approval_requests.ListAccessApprovalRequestsResponse:
         """Post-rpc interceptor for list_access_approval_requests
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_access_approval_requests_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CloudControlsPartnerCore server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_access_approval_requests` interceptor runs
+        before the `post_list_access_approval_requests_with_metadata` interceptor.
         """
         return response
+
+    def post_list_access_approval_requests_with_metadata(
+        self,
+        response: access_approval_requests.ListAccessApprovalRequestsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        access_approval_requests.ListAccessApprovalRequestsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_access_approval_requests
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CloudControlsPartnerCore server but before it is returned to user code.
+
+        We recommend only using this `post_list_access_approval_requests_with_metadata`
+        interceptor in new development instead of the `post_list_access_approval_requests` interceptor.
+        When both interceptors are used, this `post_list_access_approval_requests_with_metadata` interceptor runs after the
+        `post_list_access_approval_requests` interceptor. The (possibly modified) response returned by
+        `post_list_access_approval_requests` will be passed to
+        `post_list_access_approval_requests_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_customers(
         self,
@@ -365,11 +531,36 @@ class CloudControlsPartnerCoreRestInterceptor:
     ) -> customers.ListCustomersResponse:
         """Post-rpc interceptor for list_customers
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_customers_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CloudControlsPartnerCore server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_customers` interceptor runs
+        before the `post_list_customers_with_metadata` interceptor.
         """
         return response
+
+    def post_list_customers_with_metadata(
+        self,
+        response: customers.ListCustomersResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        customers.ListCustomersResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_customers
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CloudControlsPartnerCore server but before it is returned to user code.
+
+        We recommend only using this `post_list_customers_with_metadata`
+        interceptor in new development instead of the `post_list_customers` interceptor.
+        When both interceptors are used, this `post_list_customers_with_metadata` interceptor runs after the
+        `post_list_customers` interceptor. The (possibly modified) response returned by
+        `post_list_customers` will be passed to
+        `post_list_customers_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_workloads(
         self,
@@ -390,11 +581,37 @@ class CloudControlsPartnerCoreRestInterceptor:
     ) -> customer_workloads.ListWorkloadsResponse:
         """Post-rpc interceptor for list_workloads
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_workloads_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CloudControlsPartnerCore server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_workloads` interceptor runs
+        before the `post_list_workloads_with_metadata` interceptor.
         """
         return response
+
+    def post_list_workloads_with_metadata(
+        self,
+        response: customer_workloads.ListWorkloadsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        customer_workloads.ListWorkloadsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_workloads
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CloudControlsPartnerCore server but before it is returned to user code.
+
+        We recommend only using this `post_list_workloads_with_metadata`
+        interceptor in new development instead of the `post_list_workloads` interceptor.
+        When both interceptors are used, this `post_list_workloads_with_metadata` interceptor runs after the
+        `post_list_workloads` interceptor. The (possibly modified) response returned by
+        `post_list_workloads` will be passed to
+        `post_list_workloads_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_customer(
         self,
@@ -413,11 +630,34 @@ class CloudControlsPartnerCoreRestInterceptor:
     def post_update_customer(self, response: customers.Customer) -> customers.Customer:
         """Post-rpc interceptor for update_customer
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_customer_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CloudControlsPartnerCore server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_customer` interceptor runs
+        before the `post_update_customer_with_metadata` interceptor.
         """
         return response
+
+    def post_update_customer_with_metadata(
+        self,
+        response: customers.Customer,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[customers.Customer, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_customer
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CloudControlsPartnerCore server but before it is returned to user code.
+
+        We recommend only using this `post_update_customer_with_metadata`
+        interceptor in new development instead of the `post_update_customer` interceptor.
+        When both interceptors are used, this `post_update_customer_with_metadata` interceptor runs after the
+        `post_update_customer` interceptor. The (possibly modified) response returned by
+        `post_update_customer` will be passed to
+        `post_update_customer_with_metadata`.
+        """
+        return response, metadata
 
 
 @dataclasses.dataclass
@@ -634,6 +874,10 @@ class CloudControlsPartnerCoreRestTransport(_BaseCloudControlsPartnerCoreRestTra
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_customer(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_customer_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -886,6 +1130,10 @@ class CloudControlsPartnerCoreRestTransport(_BaseCloudControlsPartnerCoreRestTra
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_customer(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_customer_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1034,6 +1282,10 @@ class CloudControlsPartnerCoreRestTransport(_BaseCloudControlsPartnerCoreRestTra
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_ekm_connections(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_ekm_connections_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1175,6 +1427,10 @@ class CloudControlsPartnerCoreRestTransport(_BaseCloudControlsPartnerCoreRestTra
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_partner(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_partner_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1321,6 +1577,10 @@ class CloudControlsPartnerCoreRestTransport(_BaseCloudControlsPartnerCoreRestTra
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_partner_permissions(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_partner_permissions_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1468,6 +1728,10 @@ class CloudControlsPartnerCoreRestTransport(_BaseCloudControlsPartnerCoreRestTra
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_workload(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_workload_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1619,6 +1883,13 @@ class CloudControlsPartnerCoreRestTransport(_BaseCloudControlsPartnerCoreRestTra
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_access_approval_requests(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_list_access_approval_requests_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1766,6 +2037,10 @@ class CloudControlsPartnerCoreRestTransport(_BaseCloudControlsPartnerCoreRestTra
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_customers(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_customers_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1911,6 +2186,10 @@ class CloudControlsPartnerCoreRestTransport(_BaseCloudControlsPartnerCoreRestTra
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_workloads(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_workloads_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2064,6 +2343,10 @@ class CloudControlsPartnerCoreRestTransport(_BaseCloudControlsPartnerCoreRestTra
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_customer(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_customer_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

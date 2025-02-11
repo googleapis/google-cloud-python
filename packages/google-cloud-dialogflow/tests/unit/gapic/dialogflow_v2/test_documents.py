@@ -78,6 +78,13 @@ from google.cloud.dialogflow_v2.types import document
 from google.cloud.dialogflow_v2.types import document as gcd_document
 from google.cloud.dialogflow_v2.types import gcs
 
+CRED_INFO_JSON = {
+    "credential_source": "/path/to/file",
+    "credential_type": "service account credentials",
+    "principal": "service-account@example.com",
+}
+CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
 
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
@@ -309,6 +316,49 @@ def test__get_universe_domain():
     with pytest.raises(ValueError) as excinfo:
         DocumentsClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+
+@pytest.mark.parametrize(
+    "error_code,cred_info_json,show_cred_info",
+    [
+        (401, CRED_INFO_JSON, True),
+        (403, CRED_INFO_JSON, True),
+        (404, CRED_INFO_JSON, True),
+        (500, CRED_INFO_JSON, False),
+        (401, None, False),
+        (403, None, False),
+        (404, None, False),
+        (500, None, False),
+    ],
+)
+def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
+    cred = mock.Mock(["get_cred_info"])
+    cred.get_cred_info = mock.Mock(return_value=cred_info_json)
+    client = DocumentsClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=["foo"])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    if show_cred_info:
+        assert error.details == ["foo", CRED_INFO_STRING]
+    else:
+        assert error.details == ["foo"]
+
+
+@pytest.mark.parametrize("error_code", [401, 403, 404, 500])
+def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
+    cred = mock.Mock([])
+    assert not hasattr(cred, "get_cred_info")
+    client = DocumentsClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=[])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    assert error.details == []
 
 
 @pytest.mark.parametrize(
@@ -5720,10 +5770,13 @@ def test_list_documents_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DocumentsRestInterceptor, "post_list_documents"
     ) as post, mock.patch.object(
+        transports.DocumentsRestInterceptor, "post_list_documents_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.DocumentsRestInterceptor, "pre_list_documents"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = document.ListDocumentsRequest.pb(document.ListDocumentsRequest())
         transcode.return_value = {
             "method": "post",
@@ -5747,6 +5800,7 @@ def test_list_documents_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = document.ListDocumentsResponse()
+        post_with_metadata.return_value = document.ListDocumentsResponse(), metadata
 
         client.list_documents(
             request,
@@ -5758,6 +5812,7 @@ def test_list_documents_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_document_rest_bad_request(request_type=document.GetDocumentRequest):
@@ -5849,10 +5904,13 @@ def test_get_document_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DocumentsRestInterceptor, "post_get_document"
     ) as post, mock.patch.object(
+        transports.DocumentsRestInterceptor, "post_get_document_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.DocumentsRestInterceptor, "pre_get_document"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = document.GetDocumentRequest.pb(document.GetDocumentRequest())
         transcode.return_value = {
             "method": "post",
@@ -5874,6 +5932,7 @@ def test_get_document_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = document.Document()
+        post_with_metadata.return_value = document.Document(), metadata
 
         client.get_document(
             request,
@@ -5885,6 +5944,7 @@ def test_get_document_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_document_rest_bad_request(
@@ -6054,10 +6114,13 @@ def test_create_document_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.DocumentsRestInterceptor, "post_create_document"
     ) as post, mock.patch.object(
+        transports.DocumentsRestInterceptor, "post_create_document_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.DocumentsRestInterceptor, "pre_create_document"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = gcd_document.CreateDocumentRequest.pb(
             gcd_document.CreateDocumentRequest()
         )
@@ -6081,6 +6144,7 @@ def test_create_document_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_document(
             request,
@@ -6092,6 +6156,7 @@ def test_create_document_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_import_documents_rest_bad_request(
@@ -6170,10 +6235,13 @@ def test_import_documents_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.DocumentsRestInterceptor, "post_import_documents"
     ) as post, mock.patch.object(
+        transports.DocumentsRestInterceptor, "post_import_documents_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.DocumentsRestInterceptor, "pre_import_documents"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = document.ImportDocumentsRequest.pb(
             document.ImportDocumentsRequest()
         )
@@ -6197,6 +6265,7 @@ def test_import_documents_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.import_documents(
             request,
@@ -6208,6 +6277,7 @@ def test_import_documents_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_document_rest_bad_request(request_type=document.DeleteDocumentRequest):
@@ -6284,10 +6354,13 @@ def test_delete_document_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.DocumentsRestInterceptor, "post_delete_document"
     ) as post, mock.patch.object(
+        transports.DocumentsRestInterceptor, "post_delete_document_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.DocumentsRestInterceptor, "pre_delete_document"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = document.DeleteDocumentRequest.pb(document.DeleteDocumentRequest())
         transcode.return_value = {
             "method": "post",
@@ -6309,6 +6382,7 @@ def test_delete_document_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_document(
             request,
@@ -6320,6 +6394,7 @@ def test_delete_document_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_document_rest_bad_request(
@@ -6497,10 +6572,13 @@ def test_update_document_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.DocumentsRestInterceptor, "post_update_document"
     ) as post, mock.patch.object(
+        transports.DocumentsRestInterceptor, "post_update_document_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.DocumentsRestInterceptor, "pre_update_document"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = gcd_document.UpdateDocumentRequest.pb(
             gcd_document.UpdateDocumentRequest()
         )
@@ -6524,6 +6602,7 @@ def test_update_document_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.update_document(
             request,
@@ -6535,6 +6614,7 @@ def test_update_document_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_reload_document_rest_bad_request(request_type=document.ReloadDocumentRequest):
@@ -6611,10 +6691,13 @@ def test_reload_document_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.DocumentsRestInterceptor, "post_reload_document"
     ) as post, mock.patch.object(
+        transports.DocumentsRestInterceptor, "post_reload_document_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.DocumentsRestInterceptor, "pre_reload_document"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = document.ReloadDocumentRequest.pb(document.ReloadDocumentRequest())
         transcode.return_value = {
             "method": "post",
@@ -6636,6 +6719,7 @@ def test_reload_document_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.reload_document(
             request,
@@ -6647,6 +6731,7 @@ def test_reload_document_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_export_document_rest_bad_request(request_type=document.ExportDocumentRequest):
@@ -6723,10 +6808,13 @@ def test_export_document_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.DocumentsRestInterceptor, "post_export_document"
     ) as post, mock.patch.object(
+        transports.DocumentsRestInterceptor, "post_export_document_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.DocumentsRestInterceptor, "pre_export_document"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = document.ExportDocumentRequest.pb(document.ExportDocumentRequest())
         transcode.return_value = {
             "method": "post",
@@ -6748,6 +6836,7 @@ def test_export_document_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.export_document(
             request,
@@ -6759,6 +6848,7 @@ def test_export_document_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_location_rest_bad_request(request_type=locations_pb2.GetLocationRequest):

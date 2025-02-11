@@ -457,11 +457,36 @@ class CloudDeployRestInterceptor:
     ) -> cloud_deploy.AbandonReleaseResponse:
         """Post-rpc interceptor for abandon_release
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_abandon_release_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CloudDeploy server but before
-        it is returned to user code.
+        it is returned to user code. This `post_abandon_release` interceptor runs
+        before the `post_abandon_release_with_metadata` interceptor.
         """
         return response
+
+    def post_abandon_release_with_metadata(
+        self,
+        response: cloud_deploy.AbandonReleaseResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloud_deploy.AbandonReleaseResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for abandon_release
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CloudDeploy server but before it is returned to user code.
+
+        We recommend only using this `post_abandon_release_with_metadata`
+        interceptor in new development instead of the `post_abandon_release` interceptor.
+        When both interceptors are used, this `post_abandon_release_with_metadata` interceptor runs after the
+        `post_abandon_release` interceptor. The (possibly modified) response returned by
+        `post_abandon_release` will be passed to
+        `post_abandon_release_with_metadata`.
+        """
+        return response, metadata
 
     def pre_advance_rollout(
         self,
@@ -482,11 +507,36 @@ class CloudDeployRestInterceptor:
     ) -> cloud_deploy.AdvanceRolloutResponse:
         """Post-rpc interceptor for advance_rollout
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_advance_rollout_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CloudDeploy server but before
-        it is returned to user code.
+        it is returned to user code. This `post_advance_rollout` interceptor runs
+        before the `post_advance_rollout_with_metadata` interceptor.
         """
         return response
+
+    def post_advance_rollout_with_metadata(
+        self,
+        response: cloud_deploy.AdvanceRolloutResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloud_deploy.AdvanceRolloutResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for advance_rollout
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CloudDeploy server but before it is returned to user code.
+
+        We recommend only using this `post_advance_rollout_with_metadata`
+        interceptor in new development instead of the `post_advance_rollout` interceptor.
+        When both interceptors are used, this `post_advance_rollout_with_metadata` interceptor runs after the
+        `post_advance_rollout` interceptor. The (possibly modified) response returned by
+        `post_advance_rollout` will be passed to
+        `post_advance_rollout_with_metadata`.
+        """
+        return response, metadata
 
     def pre_approve_rollout(
         self,
@@ -507,11 +557,36 @@ class CloudDeployRestInterceptor:
     ) -> cloud_deploy.ApproveRolloutResponse:
         """Post-rpc interceptor for approve_rollout
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_approve_rollout_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CloudDeploy server but before
-        it is returned to user code.
+        it is returned to user code. This `post_approve_rollout` interceptor runs
+        before the `post_approve_rollout_with_metadata` interceptor.
         """
         return response
+
+    def post_approve_rollout_with_metadata(
+        self,
+        response: cloud_deploy.ApproveRolloutResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloud_deploy.ApproveRolloutResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for approve_rollout
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CloudDeploy server but before it is returned to user code.
+
+        We recommend only using this `post_approve_rollout_with_metadata`
+        interceptor in new development instead of the `post_approve_rollout` interceptor.
+        When both interceptors are used, this `post_approve_rollout_with_metadata` interceptor runs after the
+        `post_approve_rollout` interceptor. The (possibly modified) response returned by
+        `post_approve_rollout` will be passed to
+        `post_approve_rollout_with_metadata`.
+        """
+        return response, metadata
 
     def pre_cancel_automation_run(
         self,
@@ -532,11 +607,37 @@ class CloudDeployRestInterceptor:
     ) -> cloud_deploy.CancelAutomationRunResponse:
         """Post-rpc interceptor for cancel_automation_run
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_cancel_automation_run_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CloudDeploy server but before
-        it is returned to user code.
+        it is returned to user code. This `post_cancel_automation_run` interceptor runs
+        before the `post_cancel_automation_run_with_metadata` interceptor.
         """
         return response
+
+    def post_cancel_automation_run_with_metadata(
+        self,
+        response: cloud_deploy.CancelAutomationRunResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloud_deploy.CancelAutomationRunResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for cancel_automation_run
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CloudDeploy server but before it is returned to user code.
+
+        We recommend only using this `post_cancel_automation_run_with_metadata`
+        interceptor in new development instead of the `post_cancel_automation_run` interceptor.
+        When both interceptors are used, this `post_cancel_automation_run_with_metadata` interceptor runs after the
+        `post_cancel_automation_run` interceptor. The (possibly modified) response returned by
+        `post_cancel_automation_run` will be passed to
+        `post_cancel_automation_run_with_metadata`.
+        """
+        return response, metadata
 
     def pre_cancel_rollout(
         self,
@@ -557,11 +658,36 @@ class CloudDeployRestInterceptor:
     ) -> cloud_deploy.CancelRolloutResponse:
         """Post-rpc interceptor for cancel_rollout
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_cancel_rollout_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CloudDeploy server but before
-        it is returned to user code.
+        it is returned to user code. This `post_cancel_rollout` interceptor runs
+        before the `post_cancel_rollout_with_metadata` interceptor.
         """
         return response
+
+    def post_cancel_rollout_with_metadata(
+        self,
+        response: cloud_deploy.CancelRolloutResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloud_deploy.CancelRolloutResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for cancel_rollout
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CloudDeploy server but before it is returned to user code.
+
+        We recommend only using this `post_cancel_rollout_with_metadata`
+        interceptor in new development instead of the `post_cancel_rollout` interceptor.
+        When both interceptors are used, this `post_cancel_rollout_with_metadata` interceptor runs after the
+        `post_cancel_rollout` interceptor. The (possibly modified) response returned by
+        `post_cancel_rollout` will be passed to
+        `post_cancel_rollout_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_automation(
         self,
@@ -582,11 +708,34 @@ class CloudDeployRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_automation
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_automation_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CloudDeploy server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_automation` interceptor runs
+        before the `post_create_automation_with_metadata` interceptor.
         """
         return response
+
+    def post_create_automation_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_automation
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CloudDeploy server but before it is returned to user code.
+
+        We recommend only using this `post_create_automation_with_metadata`
+        interceptor in new development instead of the `post_create_automation` interceptor.
+        When both interceptors are used, this `post_create_automation_with_metadata` interceptor runs after the
+        `post_create_automation` interceptor. The (possibly modified) response returned by
+        `post_create_automation` will be passed to
+        `post_create_automation_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_custom_target_type(
         self,
@@ -608,11 +757,34 @@ class CloudDeployRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_custom_target_type
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_custom_target_type_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CloudDeploy server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_custom_target_type` interceptor runs
+        before the `post_create_custom_target_type_with_metadata` interceptor.
         """
         return response
+
+    def post_create_custom_target_type_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_custom_target_type
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CloudDeploy server but before it is returned to user code.
+
+        We recommend only using this `post_create_custom_target_type_with_metadata`
+        interceptor in new development instead of the `post_create_custom_target_type` interceptor.
+        When both interceptors are used, this `post_create_custom_target_type_with_metadata` interceptor runs after the
+        `post_create_custom_target_type` interceptor. The (possibly modified) response returned by
+        `post_create_custom_target_type` will be passed to
+        `post_create_custom_target_type_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_delivery_pipeline(
         self,
@@ -634,11 +806,34 @@ class CloudDeployRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_delivery_pipeline
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_delivery_pipeline_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CloudDeploy server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_delivery_pipeline` interceptor runs
+        before the `post_create_delivery_pipeline_with_metadata` interceptor.
         """
         return response
+
+    def post_create_delivery_pipeline_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_delivery_pipeline
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CloudDeploy server but before it is returned to user code.
+
+        We recommend only using this `post_create_delivery_pipeline_with_metadata`
+        interceptor in new development instead of the `post_create_delivery_pipeline` interceptor.
+        When both interceptors are used, this `post_create_delivery_pipeline_with_metadata` interceptor runs after the
+        `post_create_delivery_pipeline` interceptor. The (possibly modified) response returned by
+        `post_create_delivery_pipeline` will be passed to
+        `post_create_delivery_pipeline_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_deploy_policy(
         self,
@@ -659,11 +854,34 @@ class CloudDeployRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_deploy_policy
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_deploy_policy_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CloudDeploy server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_deploy_policy` interceptor runs
+        before the `post_create_deploy_policy_with_metadata` interceptor.
         """
         return response
+
+    def post_create_deploy_policy_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_deploy_policy
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CloudDeploy server but before it is returned to user code.
+
+        We recommend only using this `post_create_deploy_policy_with_metadata`
+        interceptor in new development instead of the `post_create_deploy_policy` interceptor.
+        When both interceptors are used, this `post_create_deploy_policy_with_metadata` interceptor runs after the
+        `post_create_deploy_policy` interceptor. The (possibly modified) response returned by
+        `post_create_deploy_policy` will be passed to
+        `post_create_deploy_policy_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_release(
         self,
@@ -684,11 +902,34 @@ class CloudDeployRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_release
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_release_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CloudDeploy server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_release` interceptor runs
+        before the `post_create_release_with_metadata` interceptor.
         """
         return response
+
+    def post_create_release_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_release
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CloudDeploy server but before it is returned to user code.
+
+        We recommend only using this `post_create_release_with_metadata`
+        interceptor in new development instead of the `post_create_release` interceptor.
+        When both interceptors are used, this `post_create_release_with_metadata` interceptor runs after the
+        `post_create_release` interceptor. The (possibly modified) response returned by
+        `post_create_release` will be passed to
+        `post_create_release_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_rollout(
         self,
@@ -709,11 +950,34 @@ class CloudDeployRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_rollout
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_rollout_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CloudDeploy server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_rollout` interceptor runs
+        before the `post_create_rollout_with_metadata` interceptor.
         """
         return response
+
+    def post_create_rollout_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_rollout
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CloudDeploy server but before it is returned to user code.
+
+        We recommend only using this `post_create_rollout_with_metadata`
+        interceptor in new development instead of the `post_create_rollout` interceptor.
+        When both interceptors are used, this `post_create_rollout_with_metadata` interceptor runs after the
+        `post_create_rollout` interceptor. The (possibly modified) response returned by
+        `post_create_rollout` will be passed to
+        `post_create_rollout_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_target(
         self,
@@ -734,11 +998,34 @@ class CloudDeployRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_target
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_target_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CloudDeploy server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_target` interceptor runs
+        before the `post_create_target_with_metadata` interceptor.
         """
         return response
+
+    def post_create_target_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_target
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CloudDeploy server but before it is returned to user code.
+
+        We recommend only using this `post_create_target_with_metadata`
+        interceptor in new development instead of the `post_create_target` interceptor.
+        When both interceptors are used, this `post_create_target_with_metadata` interceptor runs after the
+        `post_create_target` interceptor. The (possibly modified) response returned by
+        `post_create_target` will be passed to
+        `post_create_target_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_automation(
         self,
@@ -759,11 +1046,34 @@ class CloudDeployRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_automation
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_automation_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CloudDeploy server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_automation` interceptor runs
+        before the `post_delete_automation_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_automation_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_automation
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CloudDeploy server but before it is returned to user code.
+
+        We recommend only using this `post_delete_automation_with_metadata`
+        interceptor in new development instead of the `post_delete_automation` interceptor.
+        When both interceptors are used, this `post_delete_automation_with_metadata` interceptor runs after the
+        `post_delete_automation` interceptor. The (possibly modified) response returned by
+        `post_delete_automation` will be passed to
+        `post_delete_automation_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_custom_target_type(
         self,
@@ -785,11 +1095,34 @@ class CloudDeployRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_custom_target_type
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_custom_target_type_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CloudDeploy server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_custom_target_type` interceptor runs
+        before the `post_delete_custom_target_type_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_custom_target_type_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_custom_target_type
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CloudDeploy server but before it is returned to user code.
+
+        We recommend only using this `post_delete_custom_target_type_with_metadata`
+        interceptor in new development instead of the `post_delete_custom_target_type` interceptor.
+        When both interceptors are used, this `post_delete_custom_target_type_with_metadata` interceptor runs after the
+        `post_delete_custom_target_type` interceptor. The (possibly modified) response returned by
+        `post_delete_custom_target_type` will be passed to
+        `post_delete_custom_target_type_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_delivery_pipeline(
         self,
@@ -811,11 +1144,34 @@ class CloudDeployRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_delivery_pipeline
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_delivery_pipeline_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CloudDeploy server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_delivery_pipeline` interceptor runs
+        before the `post_delete_delivery_pipeline_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_delivery_pipeline_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_delivery_pipeline
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CloudDeploy server but before it is returned to user code.
+
+        We recommend only using this `post_delete_delivery_pipeline_with_metadata`
+        interceptor in new development instead of the `post_delete_delivery_pipeline` interceptor.
+        When both interceptors are used, this `post_delete_delivery_pipeline_with_metadata` interceptor runs after the
+        `post_delete_delivery_pipeline` interceptor. The (possibly modified) response returned by
+        `post_delete_delivery_pipeline` will be passed to
+        `post_delete_delivery_pipeline_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_deploy_policy(
         self,
@@ -836,11 +1192,34 @@ class CloudDeployRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_deploy_policy
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_deploy_policy_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CloudDeploy server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_deploy_policy` interceptor runs
+        before the `post_delete_deploy_policy_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_deploy_policy_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_deploy_policy
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CloudDeploy server but before it is returned to user code.
+
+        We recommend only using this `post_delete_deploy_policy_with_metadata`
+        interceptor in new development instead of the `post_delete_deploy_policy` interceptor.
+        When both interceptors are used, this `post_delete_deploy_policy_with_metadata` interceptor runs after the
+        `post_delete_deploy_policy` interceptor. The (possibly modified) response returned by
+        `post_delete_deploy_policy` will be passed to
+        `post_delete_deploy_policy_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_target(
         self,
@@ -861,11 +1240,34 @@ class CloudDeployRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_target
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_target_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CloudDeploy server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_target` interceptor runs
+        before the `post_delete_target_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_target_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_target
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CloudDeploy server but before it is returned to user code.
+
+        We recommend only using this `post_delete_target_with_metadata`
+        interceptor in new development instead of the `post_delete_target` interceptor.
+        When both interceptors are used, this `post_delete_target_with_metadata` interceptor runs after the
+        `post_delete_target` interceptor. The (possibly modified) response returned by
+        `post_delete_target` will be passed to
+        `post_delete_target_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_automation(
         self,
@@ -886,11 +1288,34 @@ class CloudDeployRestInterceptor:
     ) -> cloud_deploy.Automation:
         """Post-rpc interceptor for get_automation
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_automation_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CloudDeploy server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_automation` interceptor runs
+        before the `post_get_automation_with_metadata` interceptor.
         """
         return response
+
+    def post_get_automation_with_metadata(
+        self,
+        response: cloud_deploy.Automation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[cloud_deploy.Automation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_automation
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CloudDeploy server but before it is returned to user code.
+
+        We recommend only using this `post_get_automation_with_metadata`
+        interceptor in new development instead of the `post_get_automation` interceptor.
+        When both interceptors are used, this `post_get_automation_with_metadata` interceptor runs after the
+        `post_get_automation` interceptor. The (possibly modified) response returned by
+        `post_get_automation` will be passed to
+        `post_get_automation_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_automation_run(
         self,
@@ -911,11 +1336,34 @@ class CloudDeployRestInterceptor:
     ) -> cloud_deploy.AutomationRun:
         """Post-rpc interceptor for get_automation_run
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_automation_run_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CloudDeploy server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_automation_run` interceptor runs
+        before the `post_get_automation_run_with_metadata` interceptor.
         """
         return response
+
+    def post_get_automation_run_with_metadata(
+        self,
+        response: cloud_deploy.AutomationRun,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[cloud_deploy.AutomationRun, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_automation_run
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CloudDeploy server but before it is returned to user code.
+
+        We recommend only using this `post_get_automation_run_with_metadata`
+        interceptor in new development instead of the `post_get_automation_run` interceptor.
+        When both interceptors are used, this `post_get_automation_run_with_metadata` interceptor runs after the
+        `post_get_automation_run` interceptor. The (possibly modified) response returned by
+        `post_get_automation_run` will be passed to
+        `post_get_automation_run_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_config(
         self,
@@ -932,11 +1380,34 @@ class CloudDeployRestInterceptor:
     def post_get_config(self, response: cloud_deploy.Config) -> cloud_deploy.Config:
         """Post-rpc interceptor for get_config
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_config_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CloudDeploy server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_config` interceptor runs
+        before the `post_get_config_with_metadata` interceptor.
         """
         return response
+
+    def post_get_config_with_metadata(
+        self,
+        response: cloud_deploy.Config,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[cloud_deploy.Config, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_config
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CloudDeploy server but before it is returned to user code.
+
+        We recommend only using this `post_get_config_with_metadata`
+        interceptor in new development instead of the `post_get_config` interceptor.
+        When both interceptors are used, this `post_get_config_with_metadata` interceptor runs after the
+        `post_get_config` interceptor. The (possibly modified) response returned by
+        `post_get_config` will be passed to
+        `post_get_config_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_custom_target_type(
         self,
@@ -957,11 +1428,34 @@ class CloudDeployRestInterceptor:
     ) -> cloud_deploy.CustomTargetType:
         """Post-rpc interceptor for get_custom_target_type
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_custom_target_type_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CloudDeploy server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_custom_target_type` interceptor runs
+        before the `post_get_custom_target_type_with_metadata` interceptor.
         """
         return response
+
+    def post_get_custom_target_type_with_metadata(
+        self,
+        response: cloud_deploy.CustomTargetType,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[cloud_deploy.CustomTargetType, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_custom_target_type
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CloudDeploy server but before it is returned to user code.
+
+        We recommend only using this `post_get_custom_target_type_with_metadata`
+        interceptor in new development instead of the `post_get_custom_target_type` interceptor.
+        When both interceptors are used, this `post_get_custom_target_type_with_metadata` interceptor runs after the
+        `post_get_custom_target_type` interceptor. The (possibly modified) response returned by
+        `post_get_custom_target_type` will be passed to
+        `post_get_custom_target_type_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_delivery_pipeline(
         self,
@@ -982,11 +1476,34 @@ class CloudDeployRestInterceptor:
     ) -> cloud_deploy.DeliveryPipeline:
         """Post-rpc interceptor for get_delivery_pipeline
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_delivery_pipeline_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CloudDeploy server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_delivery_pipeline` interceptor runs
+        before the `post_get_delivery_pipeline_with_metadata` interceptor.
         """
         return response
+
+    def post_get_delivery_pipeline_with_metadata(
+        self,
+        response: cloud_deploy.DeliveryPipeline,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[cloud_deploy.DeliveryPipeline, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_delivery_pipeline
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CloudDeploy server but before it is returned to user code.
+
+        We recommend only using this `post_get_delivery_pipeline_with_metadata`
+        interceptor in new development instead of the `post_get_delivery_pipeline` interceptor.
+        When both interceptors are used, this `post_get_delivery_pipeline_with_metadata` interceptor runs after the
+        `post_get_delivery_pipeline` interceptor. The (possibly modified) response returned by
+        `post_get_delivery_pipeline` will be passed to
+        `post_get_delivery_pipeline_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_deploy_policy(
         self,
@@ -1007,11 +1524,34 @@ class CloudDeployRestInterceptor:
     ) -> cloud_deploy.DeployPolicy:
         """Post-rpc interceptor for get_deploy_policy
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_deploy_policy_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CloudDeploy server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_deploy_policy` interceptor runs
+        before the `post_get_deploy_policy_with_metadata` interceptor.
         """
         return response
+
+    def post_get_deploy_policy_with_metadata(
+        self,
+        response: cloud_deploy.DeployPolicy,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[cloud_deploy.DeployPolicy, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_deploy_policy
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CloudDeploy server but before it is returned to user code.
+
+        We recommend only using this `post_get_deploy_policy_with_metadata`
+        interceptor in new development instead of the `post_get_deploy_policy` interceptor.
+        When both interceptors are used, this `post_get_deploy_policy_with_metadata` interceptor runs after the
+        `post_get_deploy_policy` interceptor. The (possibly modified) response returned by
+        `post_get_deploy_policy` will be passed to
+        `post_get_deploy_policy_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_job_run(
         self,
@@ -1028,11 +1568,34 @@ class CloudDeployRestInterceptor:
     def post_get_job_run(self, response: cloud_deploy.JobRun) -> cloud_deploy.JobRun:
         """Post-rpc interceptor for get_job_run
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_job_run_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CloudDeploy server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_job_run` interceptor runs
+        before the `post_get_job_run_with_metadata` interceptor.
         """
         return response
+
+    def post_get_job_run_with_metadata(
+        self,
+        response: cloud_deploy.JobRun,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[cloud_deploy.JobRun, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_job_run
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CloudDeploy server but before it is returned to user code.
+
+        We recommend only using this `post_get_job_run_with_metadata`
+        interceptor in new development instead of the `post_get_job_run` interceptor.
+        When both interceptors are used, this `post_get_job_run_with_metadata` interceptor runs after the
+        `post_get_job_run` interceptor. The (possibly modified) response returned by
+        `post_get_job_run` will be passed to
+        `post_get_job_run_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_release(
         self,
@@ -1049,11 +1612,34 @@ class CloudDeployRestInterceptor:
     def post_get_release(self, response: cloud_deploy.Release) -> cloud_deploy.Release:
         """Post-rpc interceptor for get_release
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_release_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CloudDeploy server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_release` interceptor runs
+        before the `post_get_release_with_metadata` interceptor.
         """
         return response
+
+    def post_get_release_with_metadata(
+        self,
+        response: cloud_deploy.Release,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[cloud_deploy.Release, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_release
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CloudDeploy server but before it is returned to user code.
+
+        We recommend only using this `post_get_release_with_metadata`
+        interceptor in new development instead of the `post_get_release` interceptor.
+        When both interceptors are used, this `post_get_release_with_metadata` interceptor runs after the
+        `post_get_release` interceptor. The (possibly modified) response returned by
+        `post_get_release` will be passed to
+        `post_get_release_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_rollout(
         self,
@@ -1070,11 +1656,34 @@ class CloudDeployRestInterceptor:
     def post_get_rollout(self, response: cloud_deploy.Rollout) -> cloud_deploy.Rollout:
         """Post-rpc interceptor for get_rollout
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_rollout_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CloudDeploy server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_rollout` interceptor runs
+        before the `post_get_rollout_with_metadata` interceptor.
         """
         return response
+
+    def post_get_rollout_with_metadata(
+        self,
+        response: cloud_deploy.Rollout,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[cloud_deploy.Rollout, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_rollout
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CloudDeploy server but before it is returned to user code.
+
+        We recommend only using this `post_get_rollout_with_metadata`
+        interceptor in new development instead of the `post_get_rollout` interceptor.
+        When both interceptors are used, this `post_get_rollout_with_metadata` interceptor runs after the
+        `post_get_rollout` interceptor. The (possibly modified) response returned by
+        `post_get_rollout` will be passed to
+        `post_get_rollout_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_target(
         self,
@@ -1091,11 +1700,34 @@ class CloudDeployRestInterceptor:
     def post_get_target(self, response: cloud_deploy.Target) -> cloud_deploy.Target:
         """Post-rpc interceptor for get_target
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_target_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CloudDeploy server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_target` interceptor runs
+        before the `post_get_target_with_metadata` interceptor.
         """
         return response
+
+    def post_get_target_with_metadata(
+        self,
+        response: cloud_deploy.Target,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[cloud_deploy.Target, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_target
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CloudDeploy server but before it is returned to user code.
+
+        We recommend only using this `post_get_target_with_metadata`
+        interceptor in new development instead of the `post_get_target` interceptor.
+        When both interceptors are used, this `post_get_target_with_metadata` interceptor runs after the
+        `post_get_target` interceptor. The (possibly modified) response returned by
+        `post_get_target` will be passed to
+        `post_get_target_with_metadata`.
+        """
+        return response, metadata
 
     def pre_ignore_job(
         self,
@@ -1114,11 +1746,34 @@ class CloudDeployRestInterceptor:
     ) -> cloud_deploy.IgnoreJobResponse:
         """Post-rpc interceptor for ignore_job
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_ignore_job_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CloudDeploy server but before
-        it is returned to user code.
+        it is returned to user code. This `post_ignore_job` interceptor runs
+        before the `post_ignore_job_with_metadata` interceptor.
         """
         return response
+
+    def post_ignore_job_with_metadata(
+        self,
+        response: cloud_deploy.IgnoreJobResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[cloud_deploy.IgnoreJobResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for ignore_job
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CloudDeploy server but before it is returned to user code.
+
+        We recommend only using this `post_ignore_job_with_metadata`
+        interceptor in new development instead of the `post_ignore_job` interceptor.
+        When both interceptors are used, this `post_ignore_job_with_metadata` interceptor runs after the
+        `post_ignore_job` interceptor. The (possibly modified) response returned by
+        `post_ignore_job` will be passed to
+        `post_ignore_job_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_automation_runs(
         self,
@@ -1139,11 +1794,36 @@ class CloudDeployRestInterceptor:
     ) -> cloud_deploy.ListAutomationRunsResponse:
         """Post-rpc interceptor for list_automation_runs
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_automation_runs_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CloudDeploy server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_automation_runs` interceptor runs
+        before the `post_list_automation_runs_with_metadata` interceptor.
         """
         return response
+
+    def post_list_automation_runs_with_metadata(
+        self,
+        response: cloud_deploy.ListAutomationRunsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloud_deploy.ListAutomationRunsResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_automation_runs
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CloudDeploy server but before it is returned to user code.
+
+        We recommend only using this `post_list_automation_runs_with_metadata`
+        interceptor in new development instead of the `post_list_automation_runs` interceptor.
+        When both interceptors are used, this `post_list_automation_runs_with_metadata` interceptor runs after the
+        `post_list_automation_runs` interceptor. The (possibly modified) response returned by
+        `post_list_automation_runs` will be passed to
+        `post_list_automation_runs_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_automations(
         self,
@@ -1164,11 +1844,36 @@ class CloudDeployRestInterceptor:
     ) -> cloud_deploy.ListAutomationsResponse:
         """Post-rpc interceptor for list_automations
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_automations_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CloudDeploy server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_automations` interceptor runs
+        before the `post_list_automations_with_metadata` interceptor.
         """
         return response
+
+    def post_list_automations_with_metadata(
+        self,
+        response: cloud_deploy.ListAutomationsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloud_deploy.ListAutomationsResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_automations
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CloudDeploy server but before it is returned to user code.
+
+        We recommend only using this `post_list_automations_with_metadata`
+        interceptor in new development instead of the `post_list_automations` interceptor.
+        When both interceptors are used, this `post_list_automations_with_metadata` interceptor runs after the
+        `post_list_automations` interceptor. The (possibly modified) response returned by
+        `post_list_automations` will be passed to
+        `post_list_automations_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_custom_target_types(
         self,
@@ -1190,11 +1895,37 @@ class CloudDeployRestInterceptor:
     ) -> cloud_deploy.ListCustomTargetTypesResponse:
         """Post-rpc interceptor for list_custom_target_types
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_custom_target_types_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CloudDeploy server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_custom_target_types` interceptor runs
+        before the `post_list_custom_target_types_with_metadata` interceptor.
         """
         return response
+
+    def post_list_custom_target_types_with_metadata(
+        self,
+        response: cloud_deploy.ListCustomTargetTypesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloud_deploy.ListCustomTargetTypesResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_custom_target_types
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CloudDeploy server but before it is returned to user code.
+
+        We recommend only using this `post_list_custom_target_types_with_metadata`
+        interceptor in new development instead of the `post_list_custom_target_types` interceptor.
+        When both interceptors are used, this `post_list_custom_target_types_with_metadata` interceptor runs after the
+        `post_list_custom_target_types` interceptor. The (possibly modified) response returned by
+        `post_list_custom_target_types` will be passed to
+        `post_list_custom_target_types_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_delivery_pipelines(
         self,
@@ -1216,11 +1947,37 @@ class CloudDeployRestInterceptor:
     ) -> cloud_deploy.ListDeliveryPipelinesResponse:
         """Post-rpc interceptor for list_delivery_pipelines
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_delivery_pipelines_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CloudDeploy server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_delivery_pipelines` interceptor runs
+        before the `post_list_delivery_pipelines_with_metadata` interceptor.
         """
         return response
+
+    def post_list_delivery_pipelines_with_metadata(
+        self,
+        response: cloud_deploy.ListDeliveryPipelinesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloud_deploy.ListDeliveryPipelinesResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_delivery_pipelines
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CloudDeploy server but before it is returned to user code.
+
+        We recommend only using this `post_list_delivery_pipelines_with_metadata`
+        interceptor in new development instead of the `post_list_delivery_pipelines` interceptor.
+        When both interceptors are used, this `post_list_delivery_pipelines_with_metadata` interceptor runs after the
+        `post_list_delivery_pipelines` interceptor. The (possibly modified) response returned by
+        `post_list_delivery_pipelines` will be passed to
+        `post_list_delivery_pipelines_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_deploy_policies(
         self,
@@ -1241,11 +1998,36 @@ class CloudDeployRestInterceptor:
     ) -> cloud_deploy.ListDeployPoliciesResponse:
         """Post-rpc interceptor for list_deploy_policies
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_deploy_policies_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CloudDeploy server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_deploy_policies` interceptor runs
+        before the `post_list_deploy_policies_with_metadata` interceptor.
         """
         return response
+
+    def post_list_deploy_policies_with_metadata(
+        self,
+        response: cloud_deploy.ListDeployPoliciesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloud_deploy.ListDeployPoliciesResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_deploy_policies
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CloudDeploy server but before it is returned to user code.
+
+        We recommend only using this `post_list_deploy_policies_with_metadata`
+        interceptor in new development instead of the `post_list_deploy_policies` interceptor.
+        When both interceptors are used, this `post_list_deploy_policies_with_metadata` interceptor runs after the
+        `post_list_deploy_policies` interceptor. The (possibly modified) response returned by
+        `post_list_deploy_policies` will be passed to
+        `post_list_deploy_policies_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_job_runs(
         self,
@@ -1266,11 +2048,36 @@ class CloudDeployRestInterceptor:
     ) -> cloud_deploy.ListJobRunsResponse:
         """Post-rpc interceptor for list_job_runs
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_job_runs_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CloudDeploy server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_job_runs` interceptor runs
+        before the `post_list_job_runs_with_metadata` interceptor.
         """
         return response
+
+    def post_list_job_runs_with_metadata(
+        self,
+        response: cloud_deploy.ListJobRunsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloud_deploy.ListJobRunsResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_job_runs
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CloudDeploy server but before it is returned to user code.
+
+        We recommend only using this `post_list_job_runs_with_metadata`
+        interceptor in new development instead of the `post_list_job_runs` interceptor.
+        When both interceptors are used, this `post_list_job_runs_with_metadata` interceptor runs after the
+        `post_list_job_runs` interceptor. The (possibly modified) response returned by
+        `post_list_job_runs` will be passed to
+        `post_list_job_runs_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_releases(
         self,
@@ -1291,11 +2098,36 @@ class CloudDeployRestInterceptor:
     ) -> cloud_deploy.ListReleasesResponse:
         """Post-rpc interceptor for list_releases
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_releases_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CloudDeploy server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_releases` interceptor runs
+        before the `post_list_releases_with_metadata` interceptor.
         """
         return response
+
+    def post_list_releases_with_metadata(
+        self,
+        response: cloud_deploy.ListReleasesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloud_deploy.ListReleasesResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_releases
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CloudDeploy server but before it is returned to user code.
+
+        We recommend only using this `post_list_releases_with_metadata`
+        interceptor in new development instead of the `post_list_releases` interceptor.
+        When both interceptors are used, this `post_list_releases_with_metadata` interceptor runs after the
+        `post_list_releases` interceptor. The (possibly modified) response returned by
+        `post_list_releases` will be passed to
+        `post_list_releases_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_rollouts(
         self,
@@ -1316,11 +2148,36 @@ class CloudDeployRestInterceptor:
     ) -> cloud_deploy.ListRolloutsResponse:
         """Post-rpc interceptor for list_rollouts
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_rollouts_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CloudDeploy server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_rollouts` interceptor runs
+        before the `post_list_rollouts_with_metadata` interceptor.
         """
         return response
+
+    def post_list_rollouts_with_metadata(
+        self,
+        response: cloud_deploy.ListRolloutsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloud_deploy.ListRolloutsResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_rollouts
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CloudDeploy server but before it is returned to user code.
+
+        We recommend only using this `post_list_rollouts_with_metadata`
+        interceptor in new development instead of the `post_list_rollouts` interceptor.
+        When both interceptors are used, this `post_list_rollouts_with_metadata` interceptor runs after the
+        `post_list_rollouts` interceptor. The (possibly modified) response returned by
+        `post_list_rollouts` will be passed to
+        `post_list_rollouts_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_targets(
         self,
@@ -1341,11 +2198,36 @@ class CloudDeployRestInterceptor:
     ) -> cloud_deploy.ListTargetsResponse:
         """Post-rpc interceptor for list_targets
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_targets_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CloudDeploy server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_targets` interceptor runs
+        before the `post_list_targets_with_metadata` interceptor.
         """
         return response
+
+    def post_list_targets_with_metadata(
+        self,
+        response: cloud_deploy.ListTargetsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloud_deploy.ListTargetsResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_targets
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CloudDeploy server but before it is returned to user code.
+
+        We recommend only using this `post_list_targets_with_metadata`
+        interceptor in new development instead of the `post_list_targets` interceptor.
+        When both interceptors are used, this `post_list_targets_with_metadata` interceptor runs after the
+        `post_list_targets` interceptor. The (possibly modified) response returned by
+        `post_list_targets` will be passed to
+        `post_list_targets_with_metadata`.
+        """
+        return response, metadata
 
     def pre_retry_job(
         self,
@@ -1364,11 +2246,34 @@ class CloudDeployRestInterceptor:
     ) -> cloud_deploy.RetryJobResponse:
         """Post-rpc interceptor for retry_job
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_retry_job_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CloudDeploy server but before
-        it is returned to user code.
+        it is returned to user code. This `post_retry_job` interceptor runs
+        before the `post_retry_job_with_metadata` interceptor.
         """
         return response
+
+    def post_retry_job_with_metadata(
+        self,
+        response: cloud_deploy.RetryJobResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[cloud_deploy.RetryJobResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for retry_job
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CloudDeploy server but before it is returned to user code.
+
+        We recommend only using this `post_retry_job_with_metadata`
+        interceptor in new development instead of the `post_retry_job` interceptor.
+        When both interceptors are used, this `post_retry_job_with_metadata` interceptor runs after the
+        `post_retry_job` interceptor. The (possibly modified) response returned by
+        `post_retry_job` will be passed to
+        `post_retry_job_with_metadata`.
+        """
+        return response, metadata
 
     def pre_rollback_target(
         self,
@@ -1389,11 +2294,36 @@ class CloudDeployRestInterceptor:
     ) -> cloud_deploy.RollbackTargetResponse:
         """Post-rpc interceptor for rollback_target
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_rollback_target_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CloudDeploy server but before
-        it is returned to user code.
+        it is returned to user code. This `post_rollback_target` interceptor runs
+        before the `post_rollback_target_with_metadata` interceptor.
         """
         return response
+
+    def post_rollback_target_with_metadata(
+        self,
+        response: cloud_deploy.RollbackTargetResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloud_deploy.RollbackTargetResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for rollback_target
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CloudDeploy server but before it is returned to user code.
+
+        We recommend only using this `post_rollback_target_with_metadata`
+        interceptor in new development instead of the `post_rollback_target` interceptor.
+        When both interceptors are used, this `post_rollback_target_with_metadata` interceptor runs after the
+        `post_rollback_target` interceptor. The (possibly modified) response returned by
+        `post_rollback_target` will be passed to
+        `post_rollback_target_with_metadata`.
+        """
+        return response, metadata
 
     def pre_terminate_job_run(
         self,
@@ -1414,11 +2344,36 @@ class CloudDeployRestInterceptor:
     ) -> cloud_deploy.TerminateJobRunResponse:
         """Post-rpc interceptor for terminate_job_run
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_terminate_job_run_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CloudDeploy server but before
-        it is returned to user code.
+        it is returned to user code. This `post_terminate_job_run` interceptor runs
+        before the `post_terminate_job_run_with_metadata` interceptor.
         """
         return response
+
+    def post_terminate_job_run_with_metadata(
+        self,
+        response: cloud_deploy.TerminateJobRunResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloud_deploy.TerminateJobRunResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for terminate_job_run
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CloudDeploy server but before it is returned to user code.
+
+        We recommend only using this `post_terminate_job_run_with_metadata`
+        interceptor in new development instead of the `post_terminate_job_run` interceptor.
+        When both interceptors are used, this `post_terminate_job_run_with_metadata` interceptor runs after the
+        `post_terminate_job_run` interceptor. The (possibly modified) response returned by
+        `post_terminate_job_run` will be passed to
+        `post_terminate_job_run_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_automation(
         self,
@@ -1439,11 +2394,34 @@ class CloudDeployRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_automation
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_automation_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CloudDeploy server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_automation` interceptor runs
+        before the `post_update_automation_with_metadata` interceptor.
         """
         return response
+
+    def post_update_automation_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_automation
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CloudDeploy server but before it is returned to user code.
+
+        We recommend only using this `post_update_automation_with_metadata`
+        interceptor in new development instead of the `post_update_automation` interceptor.
+        When both interceptors are used, this `post_update_automation_with_metadata` interceptor runs after the
+        `post_update_automation` interceptor. The (possibly modified) response returned by
+        `post_update_automation` will be passed to
+        `post_update_automation_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_custom_target_type(
         self,
@@ -1465,11 +2443,34 @@ class CloudDeployRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_custom_target_type
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_custom_target_type_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CloudDeploy server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_custom_target_type` interceptor runs
+        before the `post_update_custom_target_type_with_metadata` interceptor.
         """
         return response
+
+    def post_update_custom_target_type_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_custom_target_type
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CloudDeploy server but before it is returned to user code.
+
+        We recommend only using this `post_update_custom_target_type_with_metadata`
+        interceptor in new development instead of the `post_update_custom_target_type` interceptor.
+        When both interceptors are used, this `post_update_custom_target_type_with_metadata` interceptor runs after the
+        `post_update_custom_target_type` interceptor. The (possibly modified) response returned by
+        `post_update_custom_target_type` will be passed to
+        `post_update_custom_target_type_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_delivery_pipeline(
         self,
@@ -1491,11 +2492,34 @@ class CloudDeployRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_delivery_pipeline
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_delivery_pipeline_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CloudDeploy server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_delivery_pipeline` interceptor runs
+        before the `post_update_delivery_pipeline_with_metadata` interceptor.
         """
         return response
+
+    def post_update_delivery_pipeline_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_delivery_pipeline
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CloudDeploy server but before it is returned to user code.
+
+        We recommend only using this `post_update_delivery_pipeline_with_metadata`
+        interceptor in new development instead of the `post_update_delivery_pipeline` interceptor.
+        When both interceptors are used, this `post_update_delivery_pipeline_with_metadata` interceptor runs after the
+        `post_update_delivery_pipeline` interceptor. The (possibly modified) response returned by
+        `post_update_delivery_pipeline` will be passed to
+        `post_update_delivery_pipeline_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_deploy_policy(
         self,
@@ -1516,11 +2540,34 @@ class CloudDeployRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_deploy_policy
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_deploy_policy_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CloudDeploy server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_deploy_policy` interceptor runs
+        before the `post_update_deploy_policy_with_metadata` interceptor.
         """
         return response
+
+    def post_update_deploy_policy_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_deploy_policy
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CloudDeploy server but before it is returned to user code.
+
+        We recommend only using this `post_update_deploy_policy_with_metadata`
+        interceptor in new development instead of the `post_update_deploy_policy` interceptor.
+        When both interceptors are used, this `post_update_deploy_policy_with_metadata` interceptor runs after the
+        `post_update_deploy_policy` interceptor. The (possibly modified) response returned by
+        `post_update_deploy_policy` will be passed to
+        `post_update_deploy_policy_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_target(
         self,
@@ -1541,11 +2588,34 @@ class CloudDeployRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_target
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_target_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CloudDeploy server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_target` interceptor runs
+        before the `post_update_target_with_metadata` interceptor.
         """
         return response
+
+    def post_update_target_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_target
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CloudDeploy server but before it is returned to user code.
+
+        We recommend only using this `post_update_target_with_metadata`
+        interceptor in new development instead of the `post_update_target` interceptor.
+        When both interceptors are used, this `post_update_target_with_metadata` interceptor runs after the
+        `post_update_target` interceptor. The (possibly modified) response returned by
+        `post_update_target` will be passed to
+        `post_update_target_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_location(
         self,
@@ -2031,6 +3101,10 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_abandon_release(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_abandon_release_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2179,6 +3253,10 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_advance_rollout(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_advance_rollout_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2327,6 +3405,10 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_approve_rollout(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_approve_rollout_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2477,6 +3559,10 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_cancel_automation_run(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_cancel_automation_run_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2629,6 +3715,10 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_cancel_rollout(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_cancel_rollout_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2780,6 +3870,10 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_automation(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_automation_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2929,6 +4023,10 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_custom_target_type(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_custom_target_type_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3078,6 +4176,10 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_delivery_pipeline(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_delivery_pipeline_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3227,6 +4329,10 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_deploy_policy(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_deploy_policy_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3378,6 +4484,10 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_release(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_release_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3530,6 +4640,10 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_rollout(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_rollout_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3683,6 +4797,10 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_target(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_target_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3826,6 +4944,10 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_automation(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_automation_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3969,6 +5091,10 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_custom_target_type(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_custom_target_type_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4112,6 +5238,10 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_delivery_pipeline(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_delivery_pipeline_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4255,6 +5385,10 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_deploy_policy(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_deploy_policy_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4400,6 +5534,10 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_target(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_target_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4550,6 +5688,10 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_automation(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_automation_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4696,6 +5838,10 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_automation_run(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_automation_run_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4838,6 +5984,10 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_config(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_config_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4986,6 +6136,10 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_custom_target_type(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_custom_target_type_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -5132,6 +6286,10 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_delivery_pipeline(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_delivery_pipeline_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -5278,6 +6436,10 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_deploy_policy(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_deploy_policy_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -5425,6 +6587,10 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_job_run(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_job_run_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -5573,6 +6739,10 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_release(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_release_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -5722,6 +6892,10 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_rollout(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_rollout_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -5868,6 +7042,10 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_target(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_target_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -6016,6 +7194,10 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_ignore_job(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_ignore_job_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -6158,6 +7340,10 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_automation_runs(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_automation_runs_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -6302,6 +7488,10 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_automations(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_automations_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -6446,6 +7636,10 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_custom_target_types(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_custom_target_types_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -6590,6 +7784,10 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_delivery_pipelines(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_delivery_pipelines_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -6734,6 +7932,10 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_deploy_policies(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_deploy_policies_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -6883,6 +8085,10 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_job_runs(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_job_runs_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -7029,6 +8235,10 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_releases(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_releases_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -7178,6 +8388,10 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_rollouts(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_rollouts_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -7324,6 +8538,10 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_targets(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_targets_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -7475,6 +8693,10 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_retry_job(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_retry_job_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -7621,6 +8843,10 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_rollback_target(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_rollback_target_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -7771,6 +8997,10 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_terminate_job_run(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_terminate_job_run_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -7922,6 +9152,10 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_automation(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_automation_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -8071,6 +9305,10 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_custom_target_type(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_custom_target_type_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -8220,6 +9458,10 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_delivery_pipeline(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_delivery_pipeline_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -8369,6 +9611,10 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_deploy_policy(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_deploy_policy_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -8522,6 +9768,10 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_target(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_target_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

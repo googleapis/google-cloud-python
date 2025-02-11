@@ -135,11 +135,34 @@ class SynonymSetServiceRestInterceptor:
     ) -> synonymset.SynonymSet:
         """Post-rpc interceptor for create_synonym_set
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_synonym_set_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the SynonymSetService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_synonym_set` interceptor runs
+        before the `post_create_synonym_set_with_metadata` interceptor.
         """
         return response
+
+    def post_create_synonym_set_with_metadata(
+        self,
+        response: synonymset.SynonymSet,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[synonymset.SynonymSet, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_synonym_set
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the SynonymSetService server but before it is returned to user code.
+
+        We recommend only using this `post_create_synonym_set_with_metadata`
+        interceptor in new development instead of the `post_create_synonym_set` interceptor.
+        When both interceptors are used, this `post_create_synonym_set_with_metadata` interceptor runs after the
+        `post_create_synonym_set` interceptor. The (possibly modified) response returned by
+        `post_create_synonym_set` will be passed to
+        `post_create_synonym_set_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_synonym_set(
         self,
@@ -176,11 +199,34 @@ class SynonymSetServiceRestInterceptor:
     ) -> synonymset.SynonymSet:
         """Post-rpc interceptor for get_synonym_set
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_synonym_set_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the SynonymSetService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_synonym_set` interceptor runs
+        before the `post_get_synonym_set_with_metadata` interceptor.
         """
         return response
+
+    def post_get_synonym_set_with_metadata(
+        self,
+        response: synonymset.SynonymSet,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[synonymset.SynonymSet, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_synonym_set
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the SynonymSetService server but before it is returned to user code.
+
+        We recommend only using this `post_get_synonym_set_with_metadata`
+        interceptor in new development instead of the `post_get_synonym_set` interceptor.
+        When both interceptors are used, this `post_get_synonym_set_with_metadata` interceptor runs after the
+        `post_get_synonym_set` interceptor. The (possibly modified) response returned by
+        `post_get_synonym_set` will be passed to
+        `post_get_synonym_set_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_synonym_sets(
         self,
@@ -202,11 +248,37 @@ class SynonymSetServiceRestInterceptor:
     ) -> synonymset_service_request.ListSynonymSetsResponse:
         """Post-rpc interceptor for list_synonym_sets
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_synonym_sets_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the SynonymSetService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_synonym_sets` interceptor runs
+        before the `post_list_synonym_sets_with_metadata` interceptor.
         """
         return response
+
+    def post_list_synonym_sets_with_metadata(
+        self,
+        response: synonymset_service_request.ListSynonymSetsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        synonymset_service_request.ListSynonymSetsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_synonym_sets
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the SynonymSetService server but before it is returned to user code.
+
+        We recommend only using this `post_list_synonym_sets_with_metadata`
+        interceptor in new development instead of the `post_list_synonym_sets` interceptor.
+        When both interceptors are used, this `post_list_synonym_sets_with_metadata` interceptor runs after the
+        `post_list_synonym_sets` interceptor. The (possibly modified) response returned by
+        `post_list_synonym_sets` will be passed to
+        `post_list_synonym_sets_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_synonym_set(
         self,
@@ -228,11 +300,34 @@ class SynonymSetServiceRestInterceptor:
     ) -> synonymset.SynonymSet:
         """Post-rpc interceptor for update_synonym_set
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_synonym_set_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the SynonymSetService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_synonym_set` interceptor runs
+        before the `post_update_synonym_set_with_metadata` interceptor.
         """
         return response
+
+    def post_update_synonym_set_with_metadata(
+        self,
+        response: synonymset.SynonymSet,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[synonymset.SynonymSet, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_synonym_set
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the SynonymSetService server but before it is returned to user code.
+
+        We recommend only using this `post_update_synonym_set_with_metadata`
+        interceptor in new development instead of the `post_update_synonym_set` interceptor.
+        When both interceptors are used, this `post_update_synonym_set_with_metadata` interceptor runs after the
+        `post_update_synonym_set` interceptor. The (possibly modified) response returned by
+        `post_update_synonym_set` will be passed to
+        `post_update_synonym_set_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_operation(
         self,
@@ -482,6 +577,10 @@ class SynonymSetServiceRestTransport(_BaseSynonymSetServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_synonym_set(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_synonym_set_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -744,6 +843,10 @@ class SynonymSetServiceRestTransport(_BaseSynonymSetServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_synonym_set(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_synonym_set_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -892,6 +995,10 @@ class SynonymSetServiceRestTransport(_BaseSynonymSetServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_synonym_sets(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_synonym_sets_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1058,6 +1165,10 @@ class SynonymSetServiceRestTransport(_BaseSynonymSetServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_synonym_set(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_synonym_set_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

@@ -135,11 +135,37 @@ class GenerativeServiceRestInterceptor:
     ) -> generative_service.BatchEmbedContentsResponse:
         """Post-rpc interceptor for batch_embed_contents
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_batch_embed_contents_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the GenerativeService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_batch_embed_contents` interceptor runs
+        before the `post_batch_embed_contents_with_metadata` interceptor.
         """
         return response
+
+    def post_batch_embed_contents_with_metadata(
+        self,
+        response: generative_service.BatchEmbedContentsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        generative_service.BatchEmbedContentsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for batch_embed_contents
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the GenerativeService server but before it is returned to user code.
+
+        We recommend only using this `post_batch_embed_contents_with_metadata`
+        interceptor in new development instead of the `post_batch_embed_contents` interceptor.
+        When both interceptors are used, this `post_batch_embed_contents_with_metadata` interceptor runs after the
+        `post_batch_embed_contents` interceptor. The (possibly modified) response returned by
+        `post_batch_embed_contents` will be passed to
+        `post_batch_embed_contents_with_metadata`.
+        """
+        return response, metadata
 
     def pre_count_tokens(
         self,
@@ -160,11 +186,36 @@ class GenerativeServiceRestInterceptor:
     ) -> generative_service.CountTokensResponse:
         """Post-rpc interceptor for count_tokens
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_count_tokens_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the GenerativeService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_count_tokens` interceptor runs
+        before the `post_count_tokens_with_metadata` interceptor.
         """
         return response
+
+    def post_count_tokens_with_metadata(
+        self,
+        response: generative_service.CountTokensResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        generative_service.CountTokensResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for count_tokens
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the GenerativeService server but before it is returned to user code.
+
+        We recommend only using this `post_count_tokens_with_metadata`
+        interceptor in new development instead of the `post_count_tokens` interceptor.
+        When both interceptors are used, this `post_count_tokens_with_metadata` interceptor runs after the
+        `post_count_tokens` interceptor. The (possibly modified) response returned by
+        `post_count_tokens` will be passed to
+        `post_count_tokens_with_metadata`.
+        """
+        return response, metadata
 
     def pre_embed_content(
         self,
@@ -185,11 +236,36 @@ class GenerativeServiceRestInterceptor:
     ) -> generative_service.EmbedContentResponse:
         """Post-rpc interceptor for embed_content
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_embed_content_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the GenerativeService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_embed_content` interceptor runs
+        before the `post_embed_content_with_metadata` interceptor.
         """
         return response
+
+    def post_embed_content_with_metadata(
+        self,
+        response: generative_service.EmbedContentResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        generative_service.EmbedContentResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for embed_content
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the GenerativeService server but before it is returned to user code.
+
+        We recommend only using this `post_embed_content_with_metadata`
+        interceptor in new development instead of the `post_embed_content` interceptor.
+        When both interceptors are used, this `post_embed_content_with_metadata` interceptor runs after the
+        `post_embed_content` interceptor. The (possibly modified) response returned by
+        `post_embed_content` will be passed to
+        `post_embed_content_with_metadata`.
+        """
+        return response, metadata
 
     def pre_generate_content(
         self,
@@ -211,11 +287,37 @@ class GenerativeServiceRestInterceptor:
     ) -> generative_service.GenerateContentResponse:
         """Post-rpc interceptor for generate_content
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_generate_content_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the GenerativeService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_generate_content` interceptor runs
+        before the `post_generate_content_with_metadata` interceptor.
         """
         return response
+
+    def post_generate_content_with_metadata(
+        self,
+        response: generative_service.GenerateContentResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        generative_service.GenerateContentResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for generate_content
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the GenerativeService server but before it is returned to user code.
+
+        We recommend only using this `post_generate_content_with_metadata`
+        interceptor in new development instead of the `post_generate_content` interceptor.
+        When both interceptors are used, this `post_generate_content_with_metadata` interceptor runs after the
+        `post_generate_content` interceptor. The (possibly modified) response returned by
+        `post_generate_content` will be passed to
+        `post_generate_content_with_metadata`.
+        """
+        return response, metadata
 
     def pre_stream_generate_content(
         self,
@@ -237,11 +339,36 @@ class GenerativeServiceRestInterceptor:
     ) -> rest_streaming.ResponseIterator:
         """Post-rpc interceptor for stream_generate_content
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_stream_generate_content_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the GenerativeService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_stream_generate_content` interceptor runs
+        before the `post_stream_generate_content_with_metadata` interceptor.
         """
         return response
+
+    def post_stream_generate_content_with_metadata(
+        self,
+        response: rest_streaming.ResponseIterator,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        rest_streaming.ResponseIterator, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for stream_generate_content
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the GenerativeService server but before it is returned to user code.
+
+        We recommend only using this `post_stream_generate_content_with_metadata`
+        interceptor in new development instead of the `post_stream_generate_content` interceptor.
+        When both interceptors are used, this `post_stream_generate_content_with_metadata` interceptor runs after the
+        `post_stream_generate_content` interceptor. The (possibly modified) response returned by
+        `post_stream_generate_content` will be passed to
+        `post_stream_generate_content_with_metadata`.
+        """
+        return response, metadata
 
     def pre_cancel_operation(
         self,
@@ -531,6 +658,10 @@ class GenerativeServiceRestTransport(_BaseGenerativeServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_batch_embed_contents(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_batch_embed_contents_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -687,6 +818,10 @@ class GenerativeServiceRestTransport(_BaseGenerativeServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_count_tokens(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_count_tokens_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -836,6 +971,10 @@ class GenerativeServiceRestTransport(_BaseGenerativeServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_embed_content(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_embed_content_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1004,6 +1143,10 @@ class GenerativeServiceRestTransport(_BaseGenerativeServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_generate_content(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_generate_content_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1174,6 +1317,10 @@ class GenerativeServiceRestTransport(_BaseGenerativeServiceRestTransport):
             )
 
             resp = self._interceptor.post_stream_generate_content(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_stream_generate_content_with_metadata(
+                resp, response_metadata
+            )
             return resp
 
     @property

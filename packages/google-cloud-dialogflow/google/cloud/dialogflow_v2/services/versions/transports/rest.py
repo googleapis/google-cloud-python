@@ -131,11 +131,34 @@ class VersionsRestInterceptor:
     def post_create_version(self, response: gcd_version.Version) -> gcd_version.Version:
         """Post-rpc interceptor for create_version
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_version_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Versions server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_version` interceptor runs
+        before the `post_create_version_with_metadata` interceptor.
         """
         return response
+
+    def post_create_version_with_metadata(
+        self,
+        response: gcd_version.Version,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[gcd_version.Version, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_version
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Versions server but before it is returned to user code.
+
+        We recommend only using this `post_create_version_with_metadata`
+        interceptor in new development instead of the `post_create_version` interceptor.
+        When both interceptors are used, this `post_create_version_with_metadata` interceptor runs after the
+        `post_create_version` interceptor. The (possibly modified) response returned by
+        `post_create_version` will be passed to
+        `post_create_version_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_version(
         self,
@@ -164,11 +187,34 @@ class VersionsRestInterceptor:
     def post_get_version(self, response: version.Version) -> version.Version:
         """Post-rpc interceptor for get_version
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_version_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Versions server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_version` interceptor runs
+        before the `post_get_version_with_metadata` interceptor.
         """
         return response
+
+    def post_get_version_with_metadata(
+        self,
+        response: version.Version,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[version.Version, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_version
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Versions server but before it is returned to user code.
+
+        We recommend only using this `post_get_version_with_metadata`
+        interceptor in new development instead of the `post_get_version` interceptor.
+        When both interceptors are used, this `post_get_version_with_metadata` interceptor runs after the
+        `post_get_version` interceptor. The (possibly modified) response returned by
+        `post_get_version` will be passed to
+        `post_get_version_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_versions(
         self,
@@ -187,11 +233,34 @@ class VersionsRestInterceptor:
     ) -> version.ListVersionsResponse:
         """Post-rpc interceptor for list_versions
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_versions_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Versions server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_versions` interceptor runs
+        before the `post_list_versions_with_metadata` interceptor.
         """
         return response
+
+    def post_list_versions_with_metadata(
+        self,
+        response: version.ListVersionsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[version.ListVersionsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for list_versions
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Versions server but before it is returned to user code.
+
+        We recommend only using this `post_list_versions_with_metadata`
+        interceptor in new development instead of the `post_list_versions` interceptor.
+        When both interceptors are used, this `post_list_versions_with_metadata` interceptor runs after the
+        `post_list_versions` interceptor. The (possibly modified) response returned by
+        `post_list_versions` will be passed to
+        `post_list_versions_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_version(
         self,
@@ -210,11 +279,34 @@ class VersionsRestInterceptor:
     def post_update_version(self, response: gcd_version.Version) -> gcd_version.Version:
         """Post-rpc interceptor for update_version
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_version_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Versions server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_version` interceptor runs
+        before the `post_update_version_with_metadata` interceptor.
         """
         return response
+
+    def post_update_version_with_metadata(
+        self,
+        response: gcd_version.Version,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[gcd_version.Version, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_version
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Versions server but before it is returned to user code.
+
+        We recommend only using this `post_update_version_with_metadata`
+        interceptor in new development instead of the `post_update_version` interceptor.
+        When both interceptors are used, this `post_update_version_with_metadata` interceptor runs after the
+        `post_update_version` interceptor. The (possibly modified) response returned by
+        `post_update_version` will be passed to
+        `post_update_version_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_location(
         self,
@@ -573,6 +665,10 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_version(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_version_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -846,6 +942,10 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_version(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_version_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -991,6 +1091,10 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_versions(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_versions_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1161,6 +1265,10 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_version(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_version_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

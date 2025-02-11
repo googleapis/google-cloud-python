@@ -71,6 +71,13 @@ from google.cloud.dialogflowcx_v3beta1.types import (
 from google.cloud.dialogflowcx_v3beta1.types import playbook
 from google.cloud.dialogflowcx_v3beta1.types import playbook as gcdc_playbook
 
+CRED_INFO_JSON = {
+    "credential_source": "/path/to/file",
+    "credential_type": "service account credentials",
+    "principal": "service-account@example.com",
+}
+CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
 
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
@@ -302,6 +309,49 @@ def test__get_universe_domain():
     with pytest.raises(ValueError) as excinfo:
         PlaybooksClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+
+@pytest.mark.parametrize(
+    "error_code,cred_info_json,show_cred_info",
+    [
+        (401, CRED_INFO_JSON, True),
+        (403, CRED_INFO_JSON, True),
+        (404, CRED_INFO_JSON, True),
+        (500, CRED_INFO_JSON, False),
+        (401, None, False),
+        (403, None, False),
+        (404, None, False),
+        (500, None, False),
+    ],
+)
+def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
+    cred = mock.Mock(["get_cred_info"])
+    cred.get_cred_info = mock.Mock(return_value=cred_info_json)
+    client = PlaybooksClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=["foo"])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    if show_cred_info:
+        assert error.details == ["foo", CRED_INFO_STRING]
+    else:
+        assert error.details == ["foo"]
+
+
+@pytest.mark.parametrize("error_code", [401, 403, 404, 500])
+def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
+    cred = mock.Mock([])
+    assert not hasattr(cred, "get_cred_info")
+    client = PlaybooksClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=[])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    assert error.details == []
 
 
 @pytest.mark.parametrize(
@@ -7061,10 +7111,13 @@ def test_create_playbook_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.PlaybooksRestInterceptor, "post_create_playbook"
     ) as post, mock.patch.object(
+        transports.PlaybooksRestInterceptor, "post_create_playbook_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.PlaybooksRestInterceptor, "pre_create_playbook"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = gcdc_playbook.CreatePlaybookRequest.pb(
             gcdc_playbook.CreatePlaybookRequest()
         )
@@ -7088,6 +7141,7 @@ def test_create_playbook_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = gcdc_playbook.Playbook()
+        post_with_metadata.return_value = gcdc_playbook.Playbook(), metadata
 
         client.create_playbook(
             request,
@@ -7099,6 +7153,7 @@ def test_create_playbook_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_playbook_rest_bad_request(request_type=playbook.DeletePlaybookRequest):
@@ -7286,10 +7341,13 @@ def test_list_playbooks_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.PlaybooksRestInterceptor, "post_list_playbooks"
     ) as post, mock.patch.object(
+        transports.PlaybooksRestInterceptor, "post_list_playbooks_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.PlaybooksRestInterceptor, "pre_list_playbooks"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = playbook.ListPlaybooksRequest.pb(playbook.ListPlaybooksRequest())
         transcode.return_value = {
             "method": "post",
@@ -7313,6 +7371,7 @@ def test_list_playbooks_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = playbook.ListPlaybooksResponse()
+        post_with_metadata.return_value = playbook.ListPlaybooksResponse(), metadata
 
         client.list_playbooks(
             request,
@@ -7324,6 +7383,7 @@ def test_list_playbooks_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_playbook_rest_bad_request(request_type=playbook.GetPlaybookRequest):
@@ -7420,10 +7480,13 @@ def test_get_playbook_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.PlaybooksRestInterceptor, "post_get_playbook"
     ) as post, mock.patch.object(
+        transports.PlaybooksRestInterceptor, "post_get_playbook_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.PlaybooksRestInterceptor, "pre_get_playbook"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = playbook.GetPlaybookRequest.pb(playbook.GetPlaybookRequest())
         transcode.return_value = {
             "method": "post",
@@ -7445,6 +7508,7 @@ def test_get_playbook_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = playbook.Playbook()
+        post_with_metadata.return_value = playbook.Playbook(), metadata
 
         client.get_playbook(
             request,
@@ -7456,6 +7520,7 @@ def test_get_playbook_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_playbook_rest_bad_request(
@@ -7648,10 +7713,13 @@ def test_update_playbook_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.PlaybooksRestInterceptor, "post_update_playbook"
     ) as post, mock.patch.object(
+        transports.PlaybooksRestInterceptor, "post_update_playbook_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.PlaybooksRestInterceptor, "pre_update_playbook"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = gcdc_playbook.UpdatePlaybookRequest.pb(
             gcdc_playbook.UpdatePlaybookRequest()
         )
@@ -7675,6 +7743,7 @@ def test_update_playbook_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = gcdc_playbook.Playbook()
+        post_with_metadata.return_value = gcdc_playbook.Playbook(), metadata
 
         client.update_playbook(
             request,
@@ -7686,6 +7755,7 @@ def test_update_playbook_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_playbook_version_rest_bad_request(
@@ -7913,10 +7983,14 @@ def test_create_playbook_version_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.PlaybooksRestInterceptor, "post_create_playbook_version"
     ) as post, mock.patch.object(
+        transports.PlaybooksRestInterceptor,
+        "post_create_playbook_version_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.PlaybooksRestInterceptor, "pre_create_playbook_version"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = playbook.CreatePlaybookVersionRequest.pb(
             playbook.CreatePlaybookVersionRequest()
         )
@@ -7940,6 +8014,7 @@ def test_create_playbook_version_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = playbook.PlaybookVersion()
+        post_with_metadata.return_value = playbook.PlaybookVersion(), metadata
 
         client.create_playbook_version(
             request,
@@ -7951,6 +8026,7 @@ def test_create_playbook_version_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_playbook_version_rest_bad_request(
@@ -8039,10 +8115,13 @@ def test_get_playbook_version_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.PlaybooksRestInterceptor, "post_get_playbook_version"
     ) as post, mock.patch.object(
+        transports.PlaybooksRestInterceptor, "post_get_playbook_version_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.PlaybooksRestInterceptor, "pre_get_playbook_version"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = playbook.GetPlaybookVersionRequest.pb(
             playbook.GetPlaybookVersionRequest()
         )
@@ -8066,6 +8145,7 @@ def test_get_playbook_version_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = playbook.PlaybookVersion()
+        post_with_metadata.return_value = playbook.PlaybookVersion(), metadata
 
         client.get_playbook_version(
             request,
@@ -8077,6 +8157,7 @@ def test_get_playbook_version_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_playbook_versions_rest_bad_request(
@@ -8163,10 +8244,13 @@ def test_list_playbook_versions_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.PlaybooksRestInterceptor, "post_list_playbook_versions"
     ) as post, mock.patch.object(
+        transports.PlaybooksRestInterceptor, "post_list_playbook_versions_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.PlaybooksRestInterceptor, "pre_list_playbook_versions"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = playbook.ListPlaybookVersionsRequest.pb(
             playbook.ListPlaybookVersionsRequest()
         )
@@ -8192,6 +8276,10 @@ def test_list_playbook_versions_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = playbook.ListPlaybookVersionsResponse()
+        post_with_metadata.return_value = (
+            playbook.ListPlaybookVersionsResponse(),
+            metadata,
+        )
 
         client.list_playbook_versions(
             request,
@@ -8203,6 +8291,7 @@ def test_list_playbook_versions_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_playbook_version_rest_bad_request(

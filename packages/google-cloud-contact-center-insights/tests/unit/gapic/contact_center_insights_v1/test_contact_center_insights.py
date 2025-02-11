@@ -80,6 +80,13 @@ from google.cloud.contact_center_insights_v1.types import (
     resources,
 )
 
+CRED_INFO_JSON = {
+    "credential_source": "/path/to/file",
+    "credential_type": "service account credentials",
+    "principal": "service-account@example.com",
+}
+CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
 
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
@@ -353,6 +360,49 @@ def test__get_universe_domain():
     with pytest.raises(ValueError) as excinfo:
         ContactCenterInsightsClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+
+@pytest.mark.parametrize(
+    "error_code,cred_info_json,show_cred_info",
+    [
+        (401, CRED_INFO_JSON, True),
+        (403, CRED_INFO_JSON, True),
+        (404, CRED_INFO_JSON, True),
+        (500, CRED_INFO_JSON, False),
+        (401, None, False),
+        (403, None, False),
+        (404, None, False),
+        (500, None, False),
+    ],
+)
+def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
+    cred = mock.Mock(["get_cred_info"])
+    cred.get_cred_info = mock.Mock(return_value=cred_info_json)
+    client = ContactCenterInsightsClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=["foo"])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    if show_cred_info:
+        assert error.details == ["foo", CRED_INFO_STRING]
+    else:
+        assert error.details == ["foo"]
+
+
+@pytest.mark.parametrize("error_code", [401, 403, 404, 500])
+def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
+    cred = mock.Mock([])
+    assert not hasattr(cred, "get_cred_info")
+    client = ContactCenterInsightsClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=[])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    assert error.details == []
 
 
 @pytest.mark.parametrize(
@@ -47072,10 +47122,14 @@ def test_create_conversation_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ContactCenterInsightsRestInterceptor, "post_create_conversation"
     ) as post, mock.patch.object(
+        transports.ContactCenterInsightsRestInterceptor,
+        "post_create_conversation_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ContactCenterInsightsRestInterceptor, "pre_create_conversation"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = contact_center_insights.CreateConversationRequest.pb(
             contact_center_insights.CreateConversationRequest()
         )
@@ -47099,6 +47153,7 @@ def test_create_conversation_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = resources.Conversation()
+        post_with_metadata.return_value = resources.Conversation(), metadata
 
         client.create_conversation(
             request,
@@ -47110,6 +47165,7 @@ def test_create_conversation_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_upload_conversation_rest_bad_request(
@@ -47190,10 +47246,14 @@ def test_upload_conversation_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.ContactCenterInsightsRestInterceptor, "post_upload_conversation"
     ) as post, mock.patch.object(
+        transports.ContactCenterInsightsRestInterceptor,
+        "post_upload_conversation_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ContactCenterInsightsRestInterceptor, "pre_upload_conversation"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = contact_center_insights.UploadConversationRequest.pb(
             contact_center_insights.UploadConversationRequest()
         )
@@ -47217,6 +47277,7 @@ def test_upload_conversation_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.upload_conversation(
             request,
@@ -47228,6 +47289,7 @@ def test_upload_conversation_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_conversation_rest_bad_request(
@@ -47659,10 +47721,14 @@ def test_update_conversation_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ContactCenterInsightsRestInterceptor, "post_update_conversation"
     ) as post, mock.patch.object(
+        transports.ContactCenterInsightsRestInterceptor,
+        "post_update_conversation_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ContactCenterInsightsRestInterceptor, "pre_update_conversation"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = contact_center_insights.UpdateConversationRequest.pb(
             contact_center_insights.UpdateConversationRequest()
         )
@@ -47686,6 +47752,7 @@ def test_update_conversation_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = resources.Conversation()
+        post_with_metadata.return_value = resources.Conversation(), metadata
 
         client.update_conversation(
             request,
@@ -47697,6 +47764,7 @@ def test_update_conversation_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_conversation_rest_bad_request(
@@ -47793,10 +47861,14 @@ def test_get_conversation_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ContactCenterInsightsRestInterceptor, "post_get_conversation"
     ) as post, mock.patch.object(
+        transports.ContactCenterInsightsRestInterceptor,
+        "post_get_conversation_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ContactCenterInsightsRestInterceptor, "pre_get_conversation"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = contact_center_insights.GetConversationRequest.pb(
             contact_center_insights.GetConversationRequest()
         )
@@ -47820,6 +47892,7 @@ def test_get_conversation_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = resources.Conversation()
+        post_with_metadata.return_value = resources.Conversation(), metadata
 
         client.get_conversation(
             request,
@@ -47831,6 +47904,7 @@ def test_get_conversation_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_conversations_rest_bad_request(
@@ -47917,10 +47991,14 @@ def test_list_conversations_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ContactCenterInsightsRestInterceptor, "post_list_conversations"
     ) as post, mock.patch.object(
+        transports.ContactCenterInsightsRestInterceptor,
+        "post_list_conversations_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ContactCenterInsightsRestInterceptor, "pre_list_conversations"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = contact_center_insights.ListConversationsRequest.pb(
             contact_center_insights.ListConversationsRequest()
         )
@@ -47946,6 +48024,10 @@ def test_list_conversations_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = contact_center_insights.ListConversationsResponse()
+        post_with_metadata.return_value = (
+            contact_center_insights.ListConversationsResponse(),
+            metadata,
+        )
 
         client.list_conversations(
             request,
@@ -47957,6 +48039,7 @@ def test_list_conversations_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_conversation_rest_bad_request(
@@ -48350,10 +48433,14 @@ def test_create_analysis_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.ContactCenterInsightsRestInterceptor, "post_create_analysis"
     ) as post, mock.patch.object(
+        transports.ContactCenterInsightsRestInterceptor,
+        "post_create_analysis_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ContactCenterInsightsRestInterceptor, "pre_create_analysis"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = contact_center_insights.CreateAnalysisRequest.pb(
             contact_center_insights.CreateAnalysisRequest()
         )
@@ -48377,6 +48464,7 @@ def test_create_analysis_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_analysis(
             request,
@@ -48388,6 +48476,7 @@ def test_create_analysis_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_analysis_rest_bad_request(
@@ -48476,10 +48565,14 @@ def test_get_analysis_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ContactCenterInsightsRestInterceptor, "post_get_analysis"
     ) as post, mock.patch.object(
+        transports.ContactCenterInsightsRestInterceptor,
+        "post_get_analysis_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ContactCenterInsightsRestInterceptor, "pre_get_analysis"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = contact_center_insights.GetAnalysisRequest.pb(
             contact_center_insights.GetAnalysisRequest()
         )
@@ -48503,6 +48596,7 @@ def test_get_analysis_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = resources.Analysis()
+        post_with_metadata.return_value = resources.Analysis(), metadata
 
         client.get_analysis(
             request,
@@ -48514,6 +48608,7 @@ def test_get_analysis_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_analyses_rest_bad_request(
@@ -48602,10 +48697,14 @@ def test_list_analyses_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ContactCenterInsightsRestInterceptor, "post_list_analyses"
     ) as post, mock.patch.object(
+        transports.ContactCenterInsightsRestInterceptor,
+        "post_list_analyses_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ContactCenterInsightsRestInterceptor, "pre_list_analyses"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = contact_center_insights.ListAnalysesRequest.pb(
             contact_center_insights.ListAnalysesRequest()
         )
@@ -48631,6 +48730,10 @@ def test_list_analyses_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = contact_center_insights.ListAnalysesResponse()
+        post_with_metadata.return_value = (
+            contact_center_insights.ListAnalysesResponse(),
+            metadata,
+        )
 
         client.list_analyses(
             request,
@@ -48642,6 +48745,7 @@ def test_list_analyses_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_analysis_rest_bad_request(
@@ -48837,10 +48941,14 @@ def test_bulk_analyze_conversations_rest_interceptors(null_interceptor):
         "post_bulk_analyze_conversations",
     ) as post, mock.patch.object(
         transports.ContactCenterInsightsRestInterceptor,
+        "post_bulk_analyze_conversations_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
+        transports.ContactCenterInsightsRestInterceptor,
         "pre_bulk_analyze_conversations",
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = contact_center_insights.BulkAnalyzeConversationsRequest.pb(
             contact_center_insights.BulkAnalyzeConversationsRequest()
         )
@@ -48864,6 +48972,7 @@ def test_bulk_analyze_conversations_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.bulk_analyze_conversations(
             request,
@@ -48875,6 +48984,7 @@ def test_bulk_analyze_conversations_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_bulk_delete_conversations_rest_bad_request(
@@ -48956,10 +49066,14 @@ def test_bulk_delete_conversations_rest_interceptors(null_interceptor):
         transports.ContactCenterInsightsRestInterceptor,
         "post_bulk_delete_conversations",
     ) as post, mock.patch.object(
+        transports.ContactCenterInsightsRestInterceptor,
+        "post_bulk_delete_conversations_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ContactCenterInsightsRestInterceptor, "pre_bulk_delete_conversations"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = contact_center_insights.BulkDeleteConversationsRequest.pb(
             contact_center_insights.BulkDeleteConversationsRequest()
         )
@@ -48983,6 +49097,7 @@ def test_bulk_delete_conversations_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.bulk_delete_conversations(
             request,
@@ -48994,6 +49109,7 @@ def test_bulk_delete_conversations_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_ingest_conversations_rest_bad_request(
@@ -49074,10 +49190,14 @@ def test_ingest_conversations_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.ContactCenterInsightsRestInterceptor, "post_ingest_conversations"
     ) as post, mock.patch.object(
+        transports.ContactCenterInsightsRestInterceptor,
+        "post_ingest_conversations_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ContactCenterInsightsRestInterceptor, "pre_ingest_conversations"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = contact_center_insights.IngestConversationsRequest.pb(
             contact_center_insights.IngestConversationsRequest()
         )
@@ -49101,6 +49221,7 @@ def test_ingest_conversations_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.ingest_conversations(
             request,
@@ -49112,6 +49233,7 @@ def test_ingest_conversations_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_export_insights_data_rest_bad_request(
@@ -49192,10 +49314,14 @@ def test_export_insights_data_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.ContactCenterInsightsRestInterceptor, "post_export_insights_data"
     ) as post, mock.patch.object(
+        transports.ContactCenterInsightsRestInterceptor,
+        "post_export_insights_data_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ContactCenterInsightsRestInterceptor, "pre_export_insights_data"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = contact_center_insights.ExportInsightsDataRequest.pb(
             contact_center_insights.ExportInsightsDataRequest()
         )
@@ -49219,6 +49345,7 @@ def test_export_insights_data_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.export_insights_data(
             request,
@@ -49230,6 +49357,7 @@ def test_export_insights_data_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_issue_model_rest_bad_request(
@@ -49399,10 +49527,14 @@ def test_create_issue_model_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.ContactCenterInsightsRestInterceptor, "post_create_issue_model"
     ) as post, mock.patch.object(
+        transports.ContactCenterInsightsRestInterceptor,
+        "post_create_issue_model_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ContactCenterInsightsRestInterceptor, "pre_create_issue_model"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = contact_center_insights.CreateIssueModelRequest.pb(
             contact_center_insights.CreateIssueModelRequest()
         )
@@ -49426,6 +49558,7 @@ def test_create_issue_model_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_issue_model(
             request,
@@ -49437,6 +49570,7 @@ def test_create_issue_model_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_issue_model_rest_bad_request(
@@ -49628,10 +49762,14 @@ def test_update_issue_model_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ContactCenterInsightsRestInterceptor, "post_update_issue_model"
     ) as post, mock.patch.object(
+        transports.ContactCenterInsightsRestInterceptor,
+        "post_update_issue_model_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ContactCenterInsightsRestInterceptor, "pre_update_issue_model"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = contact_center_insights.UpdateIssueModelRequest.pb(
             contact_center_insights.UpdateIssueModelRequest()
         )
@@ -49655,6 +49793,7 @@ def test_update_issue_model_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = resources.IssueModel()
+        post_with_metadata.return_value = resources.IssueModel(), metadata
 
         client.update_issue_model(
             request,
@@ -49666,6 +49805,7 @@ def test_update_issue_model_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_issue_model_rest_bad_request(
@@ -49760,10 +49900,14 @@ def test_get_issue_model_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ContactCenterInsightsRestInterceptor, "post_get_issue_model"
     ) as post, mock.patch.object(
+        transports.ContactCenterInsightsRestInterceptor,
+        "post_get_issue_model_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ContactCenterInsightsRestInterceptor, "pre_get_issue_model"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = contact_center_insights.GetIssueModelRequest.pb(
             contact_center_insights.GetIssueModelRequest()
         )
@@ -49787,6 +49931,7 @@ def test_get_issue_model_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = resources.IssueModel()
+        post_with_metadata.return_value = resources.IssueModel(), metadata
 
         client.get_issue_model(
             request,
@@ -49798,6 +49943,7 @@ def test_get_issue_model_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_issue_models_rest_bad_request(
@@ -49879,10 +50025,14 @@ def test_list_issue_models_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ContactCenterInsightsRestInterceptor, "post_list_issue_models"
     ) as post, mock.patch.object(
+        transports.ContactCenterInsightsRestInterceptor,
+        "post_list_issue_models_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ContactCenterInsightsRestInterceptor, "pre_list_issue_models"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = contact_center_insights.ListIssueModelsRequest.pb(
             contact_center_insights.ListIssueModelsRequest()
         )
@@ -49908,6 +50058,10 @@ def test_list_issue_models_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = contact_center_insights.ListIssueModelsResponse()
+        post_with_metadata.return_value = (
+            contact_center_insights.ListIssueModelsResponse(),
+            metadata,
+        )
 
         client.list_issue_models(
             request,
@@ -49919,6 +50073,7 @@ def test_list_issue_models_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_issue_model_rest_bad_request(
@@ -49999,10 +50154,14 @@ def test_delete_issue_model_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.ContactCenterInsightsRestInterceptor, "post_delete_issue_model"
     ) as post, mock.patch.object(
+        transports.ContactCenterInsightsRestInterceptor,
+        "post_delete_issue_model_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ContactCenterInsightsRestInterceptor, "pre_delete_issue_model"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = contact_center_insights.DeleteIssueModelRequest.pb(
             contact_center_insights.DeleteIssueModelRequest()
         )
@@ -50026,6 +50185,7 @@ def test_delete_issue_model_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_issue_model(
             request,
@@ -50037,6 +50197,7 @@ def test_delete_issue_model_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_deploy_issue_model_rest_bad_request(
@@ -50117,10 +50278,14 @@ def test_deploy_issue_model_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.ContactCenterInsightsRestInterceptor, "post_deploy_issue_model"
     ) as post, mock.patch.object(
+        transports.ContactCenterInsightsRestInterceptor,
+        "post_deploy_issue_model_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ContactCenterInsightsRestInterceptor, "pre_deploy_issue_model"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = contact_center_insights.DeployIssueModelRequest.pb(
             contact_center_insights.DeployIssueModelRequest()
         )
@@ -50144,6 +50309,7 @@ def test_deploy_issue_model_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.deploy_issue_model(
             request,
@@ -50155,6 +50321,7 @@ def test_deploy_issue_model_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_undeploy_issue_model_rest_bad_request(
@@ -50235,10 +50402,14 @@ def test_undeploy_issue_model_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.ContactCenterInsightsRestInterceptor, "post_undeploy_issue_model"
     ) as post, mock.patch.object(
+        transports.ContactCenterInsightsRestInterceptor,
+        "post_undeploy_issue_model_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ContactCenterInsightsRestInterceptor, "pre_undeploy_issue_model"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = contact_center_insights.UndeployIssueModelRequest.pb(
             contact_center_insights.UndeployIssueModelRequest()
         )
@@ -50262,6 +50433,7 @@ def test_undeploy_issue_model_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.undeploy_issue_model(
             request,
@@ -50273,6 +50445,7 @@ def test_undeploy_issue_model_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_export_issue_model_rest_bad_request(
@@ -50353,10 +50526,14 @@ def test_export_issue_model_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.ContactCenterInsightsRestInterceptor, "post_export_issue_model"
     ) as post, mock.patch.object(
+        transports.ContactCenterInsightsRestInterceptor,
+        "post_export_issue_model_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ContactCenterInsightsRestInterceptor, "pre_export_issue_model"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = contact_center_insights.ExportIssueModelRequest.pb(
             contact_center_insights.ExportIssueModelRequest()
         )
@@ -50380,6 +50557,7 @@ def test_export_issue_model_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.export_issue_model(
             request,
@@ -50391,6 +50569,7 @@ def test_export_issue_model_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_import_issue_model_rest_bad_request(
@@ -50471,10 +50650,14 @@ def test_import_issue_model_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.ContactCenterInsightsRestInterceptor, "post_import_issue_model"
     ) as post, mock.patch.object(
+        transports.ContactCenterInsightsRestInterceptor,
+        "post_import_issue_model_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ContactCenterInsightsRestInterceptor, "pre_import_issue_model"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = contact_center_insights.ImportIssueModelRequest.pb(
             contact_center_insights.ImportIssueModelRequest()
         )
@@ -50498,6 +50681,7 @@ def test_import_issue_model_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.import_issue_model(
             request,
@@ -50509,6 +50693,7 @@ def test_import_issue_model_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_issue_rest_bad_request(
@@ -50603,10 +50788,13 @@ def test_get_issue_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ContactCenterInsightsRestInterceptor, "post_get_issue"
     ) as post, mock.patch.object(
+        transports.ContactCenterInsightsRestInterceptor, "post_get_issue_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ContactCenterInsightsRestInterceptor, "pre_get_issue"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = contact_center_insights.GetIssueRequest.pb(
             contact_center_insights.GetIssueRequest()
         )
@@ -50630,6 +50818,7 @@ def test_get_issue_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = resources.Issue()
+        post_with_metadata.return_value = resources.Issue(), metadata
 
         client.get_issue(
             request,
@@ -50641,6 +50830,7 @@ def test_get_issue_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_issues_rest_bad_request(
@@ -50722,10 +50912,14 @@ def test_list_issues_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ContactCenterInsightsRestInterceptor, "post_list_issues"
     ) as post, mock.patch.object(
+        transports.ContactCenterInsightsRestInterceptor,
+        "post_list_issues_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ContactCenterInsightsRestInterceptor, "pre_list_issues"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = contact_center_insights.ListIssuesRequest.pb(
             contact_center_insights.ListIssuesRequest()
         )
@@ -50751,6 +50945,10 @@ def test_list_issues_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = contact_center_insights.ListIssuesResponse()
+        post_with_metadata.return_value = (
+            contact_center_insights.ListIssuesResponse(),
+            metadata,
+        )
 
         client.list_issues(
             request,
@@ -50762,6 +50960,7 @@ def test_list_issues_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_issue_rest_bad_request(
@@ -50935,10 +51134,14 @@ def test_update_issue_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ContactCenterInsightsRestInterceptor, "post_update_issue"
     ) as post, mock.patch.object(
+        transports.ContactCenterInsightsRestInterceptor,
+        "post_update_issue_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ContactCenterInsightsRestInterceptor, "pre_update_issue"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = contact_center_insights.UpdateIssueRequest.pb(
             contact_center_insights.UpdateIssueRequest()
         )
@@ -50962,6 +51165,7 @@ def test_update_issue_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = resources.Issue()
+        post_with_metadata.return_value = resources.Issue(), metadata
 
         client.update_issue(
             request,
@@ -50973,6 +51177,7 @@ def test_update_issue_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_issue_rest_bad_request(
@@ -51177,10 +51382,14 @@ def test_calculate_issue_model_stats_rest_interceptors(null_interceptor):
         "post_calculate_issue_model_stats",
     ) as post, mock.patch.object(
         transports.ContactCenterInsightsRestInterceptor,
+        "post_calculate_issue_model_stats_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
+        transports.ContactCenterInsightsRestInterceptor,
         "pre_calculate_issue_model_stats",
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = contact_center_insights.CalculateIssueModelStatsRequest.pb(
             contact_center_insights.CalculateIssueModelStatsRequest()
         )
@@ -51206,6 +51415,10 @@ def test_calculate_issue_model_stats_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = contact_center_insights.CalculateIssueModelStatsResponse()
+        post_with_metadata.return_value = (
+            contact_center_insights.CalculateIssueModelStatsResponse(),
+            metadata,
+        )
 
         client.calculate_issue_model_stats(
             request,
@@ -51217,6 +51430,7 @@ def test_calculate_issue_model_stats_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_phrase_matcher_rest_bad_request(
@@ -51406,10 +51620,14 @@ def test_create_phrase_matcher_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ContactCenterInsightsRestInterceptor, "post_create_phrase_matcher"
     ) as post, mock.patch.object(
+        transports.ContactCenterInsightsRestInterceptor,
+        "post_create_phrase_matcher_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ContactCenterInsightsRestInterceptor, "pre_create_phrase_matcher"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = contact_center_insights.CreatePhraseMatcherRequest.pb(
             contact_center_insights.CreatePhraseMatcherRequest()
         )
@@ -51433,6 +51651,7 @@ def test_create_phrase_matcher_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = resources.PhraseMatcher()
+        post_with_metadata.return_value = resources.PhraseMatcher(), metadata
 
         client.create_phrase_matcher(
             request,
@@ -51444,6 +51663,7 @@ def test_create_phrase_matcher_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_phrase_matcher_rest_bad_request(
@@ -51540,10 +51760,14 @@ def test_get_phrase_matcher_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ContactCenterInsightsRestInterceptor, "post_get_phrase_matcher"
     ) as post, mock.patch.object(
+        transports.ContactCenterInsightsRestInterceptor,
+        "post_get_phrase_matcher_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ContactCenterInsightsRestInterceptor, "pre_get_phrase_matcher"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = contact_center_insights.GetPhraseMatcherRequest.pb(
             contact_center_insights.GetPhraseMatcherRequest()
         )
@@ -51567,6 +51791,7 @@ def test_get_phrase_matcher_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = resources.PhraseMatcher()
+        post_with_metadata.return_value = resources.PhraseMatcher(), metadata
 
         client.get_phrase_matcher(
             request,
@@ -51578,6 +51803,7 @@ def test_get_phrase_matcher_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_phrase_matchers_rest_bad_request(
@@ -51664,10 +51890,14 @@ def test_list_phrase_matchers_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ContactCenterInsightsRestInterceptor, "post_list_phrase_matchers"
     ) as post, mock.patch.object(
+        transports.ContactCenterInsightsRestInterceptor,
+        "post_list_phrase_matchers_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ContactCenterInsightsRestInterceptor, "pre_list_phrase_matchers"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = contact_center_insights.ListPhraseMatchersRequest.pb(
             contact_center_insights.ListPhraseMatchersRequest()
         )
@@ -51693,6 +51923,10 @@ def test_list_phrase_matchers_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = contact_center_insights.ListPhraseMatchersResponse()
+        post_with_metadata.return_value = (
+            contact_center_insights.ListPhraseMatchersResponse(),
+            metadata,
+        )
 
         client.list_phrase_matchers(
             request,
@@ -51704,6 +51938,7 @@ def test_list_phrase_matchers_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_phrase_matcher_rest_bad_request(
@@ -52010,10 +52245,14 @@ def test_update_phrase_matcher_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ContactCenterInsightsRestInterceptor, "post_update_phrase_matcher"
     ) as post, mock.patch.object(
+        transports.ContactCenterInsightsRestInterceptor,
+        "post_update_phrase_matcher_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ContactCenterInsightsRestInterceptor, "pre_update_phrase_matcher"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = contact_center_insights.UpdatePhraseMatcherRequest.pb(
             contact_center_insights.UpdatePhraseMatcherRequest()
         )
@@ -52037,6 +52276,7 @@ def test_update_phrase_matcher_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = resources.PhraseMatcher()
+        post_with_metadata.return_value = resources.PhraseMatcher(), metadata
 
         client.update_phrase_matcher(
             request,
@@ -52048,6 +52288,7 @@ def test_update_phrase_matcher_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_calculate_stats_rest_bad_request(
@@ -52134,10 +52375,14 @@ def test_calculate_stats_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ContactCenterInsightsRestInterceptor, "post_calculate_stats"
     ) as post, mock.patch.object(
+        transports.ContactCenterInsightsRestInterceptor,
+        "post_calculate_stats_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ContactCenterInsightsRestInterceptor, "pre_calculate_stats"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = contact_center_insights.CalculateStatsRequest.pb(
             contact_center_insights.CalculateStatsRequest()
         )
@@ -52163,6 +52408,10 @@ def test_calculate_stats_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = contact_center_insights.CalculateStatsResponse()
+        post_with_metadata.return_value = (
+            contact_center_insights.CalculateStatsResponse(),
+            metadata,
+        )
 
         client.calculate_stats(
             request,
@@ -52174,6 +52423,7 @@ def test_calculate_stats_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_settings_rest_bad_request(
@@ -52260,10 +52510,14 @@ def test_get_settings_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ContactCenterInsightsRestInterceptor, "post_get_settings"
     ) as post, mock.patch.object(
+        transports.ContactCenterInsightsRestInterceptor,
+        "post_get_settings_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ContactCenterInsightsRestInterceptor, "pre_get_settings"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = contact_center_insights.GetSettingsRequest.pb(
             contact_center_insights.GetSettingsRequest()
         )
@@ -52287,6 +52541,7 @@ def test_get_settings_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = resources.Settings()
+        post_with_metadata.return_value = resources.Settings(), metadata
 
         client.get_settings(
             request,
@@ -52298,6 +52553,7 @@ def test_get_settings_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_settings_rest_bad_request(
@@ -52493,10 +52749,14 @@ def test_update_settings_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ContactCenterInsightsRestInterceptor, "post_update_settings"
     ) as post, mock.patch.object(
+        transports.ContactCenterInsightsRestInterceptor,
+        "post_update_settings_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ContactCenterInsightsRestInterceptor, "pre_update_settings"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = contact_center_insights.UpdateSettingsRequest.pb(
             contact_center_insights.UpdateSettingsRequest()
         )
@@ -52520,6 +52780,7 @@ def test_update_settings_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = resources.Settings()
+        post_with_metadata.return_value = resources.Settings(), metadata
 
         client.update_settings(
             request,
@@ -52531,6 +52792,7 @@ def test_update_settings_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_analysis_rule_rest_bad_request(
@@ -52726,10 +52988,14 @@ def test_create_analysis_rule_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ContactCenterInsightsRestInterceptor, "post_create_analysis_rule"
     ) as post, mock.patch.object(
+        transports.ContactCenterInsightsRestInterceptor,
+        "post_create_analysis_rule_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ContactCenterInsightsRestInterceptor, "pre_create_analysis_rule"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = contact_center_insights.CreateAnalysisRuleRequest.pb(
             contact_center_insights.CreateAnalysisRuleRequest()
         )
@@ -52753,6 +53019,7 @@ def test_create_analysis_rule_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = resources.AnalysisRule()
+        post_with_metadata.return_value = resources.AnalysisRule(), metadata
 
         client.create_analysis_rule(
             request,
@@ -52764,6 +53031,7 @@ def test_create_analysis_rule_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_analysis_rule_rest_bad_request(
@@ -52856,10 +53124,14 @@ def test_get_analysis_rule_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ContactCenterInsightsRestInterceptor, "post_get_analysis_rule"
     ) as post, mock.patch.object(
+        transports.ContactCenterInsightsRestInterceptor,
+        "post_get_analysis_rule_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ContactCenterInsightsRestInterceptor, "pre_get_analysis_rule"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = contact_center_insights.GetAnalysisRuleRequest.pb(
             contact_center_insights.GetAnalysisRuleRequest()
         )
@@ -52883,6 +53155,7 @@ def test_get_analysis_rule_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = resources.AnalysisRule()
+        post_with_metadata.return_value = resources.AnalysisRule(), metadata
 
         client.get_analysis_rule(
             request,
@@ -52894,6 +53167,7 @@ def test_get_analysis_rule_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_analysis_rules_rest_bad_request(
@@ -52980,10 +53254,14 @@ def test_list_analysis_rules_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ContactCenterInsightsRestInterceptor, "post_list_analysis_rules"
     ) as post, mock.patch.object(
+        transports.ContactCenterInsightsRestInterceptor,
+        "post_list_analysis_rules_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ContactCenterInsightsRestInterceptor, "pre_list_analysis_rules"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = contact_center_insights.ListAnalysisRulesRequest.pb(
             contact_center_insights.ListAnalysisRulesRequest()
         )
@@ -53009,6 +53287,10 @@ def test_list_analysis_rules_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = contact_center_insights.ListAnalysisRulesResponse()
+        post_with_metadata.return_value = (
+            contact_center_insights.ListAnalysisRulesResponse(),
+            metadata,
+        )
 
         client.list_analysis_rules(
             request,
@@ -53020,6 +53302,7 @@ def test_list_analysis_rules_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_analysis_rule_rest_bad_request(
@@ -53223,10 +53506,14 @@ def test_update_analysis_rule_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ContactCenterInsightsRestInterceptor, "post_update_analysis_rule"
     ) as post, mock.patch.object(
+        transports.ContactCenterInsightsRestInterceptor,
+        "post_update_analysis_rule_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ContactCenterInsightsRestInterceptor, "pre_update_analysis_rule"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = contact_center_insights.UpdateAnalysisRuleRequest.pb(
             contact_center_insights.UpdateAnalysisRuleRequest()
         )
@@ -53250,6 +53537,7 @@ def test_update_analysis_rule_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = resources.AnalysisRule()
+        post_with_metadata.return_value = resources.AnalysisRule(), metadata
 
         client.update_analysis_rule(
             request,
@@ -53261,6 +53549,7 @@ def test_update_analysis_rule_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_analysis_rule_rest_bad_request(
@@ -53456,10 +53745,14 @@ def test_get_encryption_spec_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ContactCenterInsightsRestInterceptor, "post_get_encryption_spec"
     ) as post, mock.patch.object(
+        transports.ContactCenterInsightsRestInterceptor,
+        "post_get_encryption_spec_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ContactCenterInsightsRestInterceptor, "pre_get_encryption_spec"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = contact_center_insights.GetEncryptionSpecRequest.pb(
             contact_center_insights.GetEncryptionSpecRequest()
         )
@@ -53483,6 +53776,7 @@ def test_get_encryption_spec_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = resources.EncryptionSpec()
+        post_with_metadata.return_value = resources.EncryptionSpec(), metadata
 
         client.get_encryption_spec(
             request,
@@ -53494,6 +53788,7 @@ def test_get_encryption_spec_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_initialize_encryption_spec_rest_bad_request(
@@ -53580,10 +53875,14 @@ def test_initialize_encryption_spec_rest_interceptors(null_interceptor):
         "post_initialize_encryption_spec",
     ) as post, mock.patch.object(
         transports.ContactCenterInsightsRestInterceptor,
+        "post_initialize_encryption_spec_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
+        transports.ContactCenterInsightsRestInterceptor,
         "pre_initialize_encryption_spec",
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = contact_center_insights.InitializeEncryptionSpecRequest.pb(
             contact_center_insights.InitializeEncryptionSpecRequest()
         )
@@ -53607,6 +53906,7 @@ def test_initialize_encryption_spec_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.initialize_encryption_spec(
             request,
@@ -53618,6 +53918,7 @@ def test_initialize_encryption_spec_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_view_rest_bad_request(
@@ -53780,10 +54081,14 @@ def test_create_view_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ContactCenterInsightsRestInterceptor, "post_create_view"
     ) as post, mock.patch.object(
+        transports.ContactCenterInsightsRestInterceptor,
+        "post_create_view_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ContactCenterInsightsRestInterceptor, "pre_create_view"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = contact_center_insights.CreateViewRequest.pb(
             contact_center_insights.CreateViewRequest()
         )
@@ -53807,6 +54112,7 @@ def test_create_view_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = resources.View()
+        post_with_metadata.return_value = resources.View(), metadata
 
         client.create_view(
             request,
@@ -53818,6 +54124,7 @@ def test_create_view_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_view_rest_bad_request(request_type=contact_center_insights.GetViewRequest):
@@ -53904,10 +54211,13 @@ def test_get_view_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ContactCenterInsightsRestInterceptor, "post_get_view"
     ) as post, mock.patch.object(
+        transports.ContactCenterInsightsRestInterceptor, "post_get_view_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ContactCenterInsightsRestInterceptor, "pre_get_view"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = contact_center_insights.GetViewRequest.pb(
             contact_center_insights.GetViewRequest()
         )
@@ -53931,6 +54241,7 @@ def test_get_view_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = resources.View()
+        post_with_metadata.return_value = resources.View(), metadata
 
         client.get_view(
             request,
@@ -53942,6 +54253,7 @@ def test_get_view_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_views_rest_bad_request(
@@ -54026,10 +54338,13 @@ def test_list_views_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ContactCenterInsightsRestInterceptor, "post_list_views"
     ) as post, mock.patch.object(
+        transports.ContactCenterInsightsRestInterceptor, "post_list_views_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ContactCenterInsightsRestInterceptor, "pre_list_views"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = contact_center_insights.ListViewsRequest.pb(
             contact_center_insights.ListViewsRequest()
         )
@@ -54055,6 +54370,10 @@ def test_list_views_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = contact_center_insights.ListViewsResponse()
+        post_with_metadata.return_value = (
+            contact_center_insights.ListViewsResponse(),
+            metadata,
+        )
 
         client.list_views(
             request,
@@ -54066,6 +54385,7 @@ def test_list_views_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_view_rest_bad_request(
@@ -54232,10 +54552,14 @@ def test_update_view_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ContactCenterInsightsRestInterceptor, "post_update_view"
     ) as post, mock.patch.object(
+        transports.ContactCenterInsightsRestInterceptor,
+        "post_update_view_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ContactCenterInsightsRestInterceptor, "pre_update_view"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = contact_center_insights.UpdateViewRequest.pb(
             contact_center_insights.UpdateViewRequest()
         )
@@ -54259,6 +54583,7 @@ def test_update_view_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = resources.View()
+        post_with_metadata.return_value = resources.View(), metadata
 
         client.update_view(
             request,
@@ -54270,6 +54595,7 @@ def test_update_view_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_view_rest_bad_request(
@@ -54459,10 +54785,14 @@ def test_query_metrics_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.ContactCenterInsightsRestInterceptor, "post_query_metrics"
     ) as post, mock.patch.object(
+        transports.ContactCenterInsightsRestInterceptor,
+        "post_query_metrics_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ContactCenterInsightsRestInterceptor, "pre_query_metrics"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = contact_center_insights.QueryMetricsRequest.pb(
             contact_center_insights.QueryMetricsRequest()
         )
@@ -54486,6 +54816,7 @@ def test_query_metrics_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.query_metrics(
             request,
@@ -54497,6 +54828,7 @@ def test_query_metrics_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_qa_question_rest_bad_request(
@@ -54690,10 +55022,14 @@ def test_create_qa_question_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ContactCenterInsightsRestInterceptor, "post_create_qa_question"
     ) as post, mock.patch.object(
+        transports.ContactCenterInsightsRestInterceptor,
+        "post_create_qa_question_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ContactCenterInsightsRestInterceptor, "pre_create_qa_question"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = contact_center_insights.CreateQaQuestionRequest.pb(
             contact_center_insights.CreateQaQuestionRequest()
         )
@@ -54717,6 +55053,7 @@ def test_create_qa_question_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = resources.QaQuestion()
+        post_with_metadata.return_value = resources.QaQuestion(), metadata
 
         client.create_qa_question(
             request,
@@ -54728,6 +55065,7 @@ def test_create_qa_question_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_qa_question_rest_bad_request(
@@ -54826,10 +55164,14 @@ def test_get_qa_question_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ContactCenterInsightsRestInterceptor, "post_get_qa_question"
     ) as post, mock.patch.object(
+        transports.ContactCenterInsightsRestInterceptor,
+        "post_get_qa_question_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ContactCenterInsightsRestInterceptor, "pre_get_qa_question"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = contact_center_insights.GetQaQuestionRequest.pb(
             contact_center_insights.GetQaQuestionRequest()
         )
@@ -54853,6 +55195,7 @@ def test_get_qa_question_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = resources.QaQuestion()
+        post_with_metadata.return_value = resources.QaQuestion(), metadata
 
         client.get_qa_question(
             request,
@@ -54864,6 +55207,7 @@ def test_get_qa_question_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_qa_question_rest_bad_request(
@@ -55061,10 +55405,14 @@ def test_update_qa_question_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ContactCenterInsightsRestInterceptor, "post_update_qa_question"
     ) as post, mock.patch.object(
+        transports.ContactCenterInsightsRestInterceptor,
+        "post_update_qa_question_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ContactCenterInsightsRestInterceptor, "pre_update_qa_question"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = contact_center_insights.UpdateQaQuestionRequest.pb(
             contact_center_insights.UpdateQaQuestionRequest()
         )
@@ -55088,6 +55436,7 @@ def test_update_qa_question_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = resources.QaQuestion()
+        post_with_metadata.return_value = resources.QaQuestion(), metadata
 
         client.update_qa_question(
             request,
@@ -55099,6 +55448,7 @@ def test_update_qa_question_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_qa_question_rest_bad_request(
@@ -55300,10 +55650,14 @@ def test_list_qa_questions_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ContactCenterInsightsRestInterceptor, "post_list_qa_questions"
     ) as post, mock.patch.object(
+        transports.ContactCenterInsightsRestInterceptor,
+        "post_list_qa_questions_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ContactCenterInsightsRestInterceptor, "pre_list_qa_questions"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = contact_center_insights.ListQaQuestionsRequest.pb(
             contact_center_insights.ListQaQuestionsRequest()
         )
@@ -55329,6 +55683,10 @@ def test_list_qa_questions_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = contact_center_insights.ListQaQuestionsResponse()
+        post_with_metadata.return_value = (
+            contact_center_insights.ListQaQuestionsResponse(),
+            metadata,
+        )
 
         client.list_qa_questions(
             request,
@@ -55340,6 +55698,7 @@ def test_list_qa_questions_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_qa_scorecard_rest_bad_request(
@@ -55504,10 +55863,14 @@ def test_create_qa_scorecard_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ContactCenterInsightsRestInterceptor, "post_create_qa_scorecard"
     ) as post, mock.patch.object(
+        transports.ContactCenterInsightsRestInterceptor,
+        "post_create_qa_scorecard_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ContactCenterInsightsRestInterceptor, "pre_create_qa_scorecard"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = contact_center_insights.CreateQaScorecardRequest.pb(
             contact_center_insights.CreateQaScorecardRequest()
         )
@@ -55531,6 +55894,7 @@ def test_create_qa_scorecard_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = resources.QaScorecard()
+        post_with_metadata.return_value = resources.QaScorecard(), metadata
 
         client.create_qa_scorecard(
             request,
@@ -55542,6 +55906,7 @@ def test_create_qa_scorecard_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_qa_scorecard_rest_bad_request(
@@ -55630,10 +55995,14 @@ def test_get_qa_scorecard_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ContactCenterInsightsRestInterceptor, "post_get_qa_scorecard"
     ) as post, mock.patch.object(
+        transports.ContactCenterInsightsRestInterceptor,
+        "post_get_qa_scorecard_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ContactCenterInsightsRestInterceptor, "pre_get_qa_scorecard"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = contact_center_insights.GetQaScorecardRequest.pb(
             contact_center_insights.GetQaScorecardRequest()
         )
@@ -55657,6 +56026,7 @@ def test_get_qa_scorecard_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = resources.QaScorecard()
+        post_with_metadata.return_value = resources.QaScorecard(), metadata
 
         client.get_qa_scorecard(
             request,
@@ -55668,6 +56038,7 @@ def test_get_qa_scorecard_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_qa_scorecard_rest_bad_request(
@@ -55840,10 +56211,14 @@ def test_update_qa_scorecard_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ContactCenterInsightsRestInterceptor, "post_update_qa_scorecard"
     ) as post, mock.patch.object(
+        transports.ContactCenterInsightsRestInterceptor,
+        "post_update_qa_scorecard_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ContactCenterInsightsRestInterceptor, "pre_update_qa_scorecard"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = contact_center_insights.UpdateQaScorecardRequest.pb(
             contact_center_insights.UpdateQaScorecardRequest()
         )
@@ -55867,6 +56242,7 @@ def test_update_qa_scorecard_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = resources.QaScorecard()
+        post_with_metadata.return_value = resources.QaScorecard(), metadata
 
         client.update_qa_scorecard(
             request,
@@ -55878,6 +56254,7 @@ def test_update_qa_scorecard_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_qa_scorecard_rest_bad_request(
@@ -56071,10 +56448,14 @@ def test_list_qa_scorecards_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ContactCenterInsightsRestInterceptor, "post_list_qa_scorecards"
     ) as post, mock.patch.object(
+        transports.ContactCenterInsightsRestInterceptor,
+        "post_list_qa_scorecards_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ContactCenterInsightsRestInterceptor, "pre_list_qa_scorecards"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = contact_center_insights.ListQaScorecardsRequest.pb(
             contact_center_insights.ListQaScorecardsRequest()
         )
@@ -56100,6 +56481,10 @@ def test_list_qa_scorecards_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = contact_center_insights.ListQaScorecardsResponse()
+        post_with_metadata.return_value = (
+            contact_center_insights.ListQaScorecardsResponse(),
+            metadata,
+        )
 
         client.list_qa_scorecards(
             request,
@@ -56111,6 +56496,7 @@ def test_list_qa_scorecards_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_qa_scorecard_revision_rest_bad_request(
@@ -56285,10 +56671,14 @@ def test_create_qa_scorecard_revision_rest_interceptors(null_interceptor):
         "post_create_qa_scorecard_revision",
     ) as post, mock.patch.object(
         transports.ContactCenterInsightsRestInterceptor,
+        "post_create_qa_scorecard_revision_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
+        transports.ContactCenterInsightsRestInterceptor,
         "pre_create_qa_scorecard_revision",
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = contact_center_insights.CreateQaScorecardRevisionRequest.pb(
             contact_center_insights.CreateQaScorecardRevisionRequest()
         )
@@ -56314,6 +56704,7 @@ def test_create_qa_scorecard_revision_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = resources.QaScorecardRevision()
+        post_with_metadata.return_value = resources.QaScorecardRevision(), metadata
 
         client.create_qa_scorecard_revision(
             request,
@@ -56325,6 +56716,7 @@ def test_create_qa_scorecard_revision_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_qa_scorecard_revision_rest_bad_request(
@@ -56418,10 +56810,14 @@ def test_get_qa_scorecard_revision_rest_interceptors(null_interceptor):
         transports.ContactCenterInsightsRestInterceptor,
         "post_get_qa_scorecard_revision",
     ) as post, mock.patch.object(
+        transports.ContactCenterInsightsRestInterceptor,
+        "post_get_qa_scorecard_revision_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ContactCenterInsightsRestInterceptor, "pre_get_qa_scorecard_revision"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = contact_center_insights.GetQaScorecardRevisionRequest.pb(
             contact_center_insights.GetQaScorecardRevisionRequest()
         )
@@ -56447,6 +56843,7 @@ def test_get_qa_scorecard_revision_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = resources.QaScorecardRevision()
+        post_with_metadata.return_value = resources.QaScorecardRevision(), metadata
 
         client.get_qa_scorecard_revision(
             request,
@@ -56458,6 +56855,7 @@ def test_get_qa_scorecard_revision_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_tune_qa_scorecard_revision_rest_bad_request(
@@ -56544,10 +56942,14 @@ def test_tune_qa_scorecard_revision_rest_interceptors(null_interceptor):
         "post_tune_qa_scorecard_revision",
     ) as post, mock.patch.object(
         transports.ContactCenterInsightsRestInterceptor,
+        "post_tune_qa_scorecard_revision_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
+        transports.ContactCenterInsightsRestInterceptor,
         "pre_tune_qa_scorecard_revision",
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = contact_center_insights.TuneQaScorecardRevisionRequest.pb(
             contact_center_insights.TuneQaScorecardRevisionRequest()
         )
@@ -56571,6 +56973,7 @@ def test_tune_qa_scorecard_revision_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.tune_qa_scorecard_revision(
             request,
@@ -56582,6 +56985,7 @@ def test_tune_qa_scorecard_revision_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_deploy_qa_scorecard_revision_rest_bad_request(
@@ -56676,10 +57080,14 @@ def test_deploy_qa_scorecard_revision_rest_interceptors(null_interceptor):
         "post_deploy_qa_scorecard_revision",
     ) as post, mock.patch.object(
         transports.ContactCenterInsightsRestInterceptor,
+        "post_deploy_qa_scorecard_revision_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
+        transports.ContactCenterInsightsRestInterceptor,
         "pre_deploy_qa_scorecard_revision",
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = contact_center_insights.DeployQaScorecardRevisionRequest.pb(
             contact_center_insights.DeployQaScorecardRevisionRequest()
         )
@@ -56705,6 +57113,7 @@ def test_deploy_qa_scorecard_revision_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = resources.QaScorecardRevision()
+        post_with_metadata.return_value = resources.QaScorecardRevision(), metadata
 
         client.deploy_qa_scorecard_revision(
             request,
@@ -56716,6 +57125,7 @@ def test_deploy_qa_scorecard_revision_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_undeploy_qa_scorecard_revision_rest_bad_request(
@@ -56810,10 +57220,14 @@ def test_undeploy_qa_scorecard_revision_rest_interceptors(null_interceptor):
         "post_undeploy_qa_scorecard_revision",
     ) as post, mock.patch.object(
         transports.ContactCenterInsightsRestInterceptor,
+        "post_undeploy_qa_scorecard_revision_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
+        transports.ContactCenterInsightsRestInterceptor,
         "pre_undeploy_qa_scorecard_revision",
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = contact_center_insights.UndeployQaScorecardRevisionRequest.pb(
             contact_center_insights.UndeployQaScorecardRevisionRequest()
         )
@@ -56839,6 +57253,7 @@ def test_undeploy_qa_scorecard_revision_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = resources.QaScorecardRevision()
+        post_with_metadata.return_value = resources.QaScorecardRevision(), metadata
 
         client.undeploy_qa_scorecard_revision(
             request,
@@ -56850,6 +57265,7 @@ def test_undeploy_qa_scorecard_revision_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_qa_scorecard_revision_rest_bad_request(
@@ -57052,10 +57468,14 @@ def test_list_qa_scorecard_revisions_rest_interceptors(null_interceptor):
         "post_list_qa_scorecard_revisions",
     ) as post, mock.patch.object(
         transports.ContactCenterInsightsRestInterceptor,
+        "post_list_qa_scorecard_revisions_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
+        transports.ContactCenterInsightsRestInterceptor,
         "pre_list_qa_scorecard_revisions",
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = contact_center_insights.ListQaScorecardRevisionsRequest.pb(
             contact_center_insights.ListQaScorecardRevisionsRequest()
         )
@@ -57081,6 +57501,10 @@ def test_list_qa_scorecard_revisions_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = contact_center_insights.ListQaScorecardRevisionsResponse()
+        post_with_metadata.return_value = (
+            contact_center_insights.ListQaScorecardRevisionsResponse(),
+            metadata,
+        )
 
         client.list_qa_scorecard_revisions(
             request,
@@ -57092,6 +57516,7 @@ def test_list_qa_scorecard_revisions_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_feedback_label_rest_bad_request(
@@ -57269,10 +57694,14 @@ def test_create_feedback_label_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ContactCenterInsightsRestInterceptor, "post_create_feedback_label"
     ) as post, mock.patch.object(
+        transports.ContactCenterInsightsRestInterceptor,
+        "post_create_feedback_label_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ContactCenterInsightsRestInterceptor, "pre_create_feedback_label"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = contact_center_insights.CreateFeedbackLabelRequest.pb(
             contact_center_insights.CreateFeedbackLabelRequest()
         )
@@ -57296,6 +57725,7 @@ def test_create_feedback_label_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = resources.FeedbackLabel()
+        post_with_metadata.return_value = resources.FeedbackLabel(), metadata
 
         client.create_feedback_label(
             request,
@@ -57307,6 +57737,7 @@ def test_create_feedback_label_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_feedback_labels_rest_bad_request(
@@ -57397,10 +57828,14 @@ def test_list_feedback_labels_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ContactCenterInsightsRestInterceptor, "post_list_feedback_labels"
     ) as post, mock.patch.object(
+        transports.ContactCenterInsightsRestInterceptor,
+        "post_list_feedback_labels_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ContactCenterInsightsRestInterceptor, "pre_list_feedback_labels"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = contact_center_insights.ListFeedbackLabelsRequest.pb(
             contact_center_insights.ListFeedbackLabelsRequest()
         )
@@ -57426,6 +57861,10 @@ def test_list_feedback_labels_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = contact_center_insights.ListFeedbackLabelsResponse()
+        post_with_metadata.return_value = (
+            contact_center_insights.ListFeedbackLabelsResponse(),
+            metadata,
+        )
 
         client.list_feedback_labels(
             request,
@@ -57437,6 +57876,7 @@ def test_list_feedback_labels_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_feedback_label_rest_bad_request(
@@ -57528,10 +57968,14 @@ def test_get_feedback_label_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ContactCenterInsightsRestInterceptor, "post_get_feedback_label"
     ) as post, mock.patch.object(
+        transports.ContactCenterInsightsRestInterceptor,
+        "post_get_feedback_label_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ContactCenterInsightsRestInterceptor, "pre_get_feedback_label"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = contact_center_insights.GetFeedbackLabelRequest.pb(
             contact_center_insights.GetFeedbackLabelRequest()
         )
@@ -57555,6 +57999,7 @@ def test_get_feedback_label_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = resources.FeedbackLabel()
+        post_with_metadata.return_value = resources.FeedbackLabel(), metadata
 
         client.get_feedback_label(
             request,
@@ -57566,6 +58011,7 @@ def test_get_feedback_label_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_feedback_label_rest_bad_request(
@@ -57747,10 +58193,14 @@ def test_update_feedback_label_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ContactCenterInsightsRestInterceptor, "post_update_feedback_label"
     ) as post, mock.patch.object(
+        transports.ContactCenterInsightsRestInterceptor,
+        "post_update_feedback_label_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ContactCenterInsightsRestInterceptor, "pre_update_feedback_label"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = contact_center_insights.UpdateFeedbackLabelRequest.pb(
             contact_center_insights.UpdateFeedbackLabelRequest()
         )
@@ -57774,6 +58224,7 @@ def test_update_feedback_label_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = resources.FeedbackLabel()
+        post_with_metadata.return_value = resources.FeedbackLabel(), metadata
 
         client.update_feedback_label(
             request,
@@ -57785,6 +58236,7 @@ def test_update_feedback_label_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_feedback_label_rest_bad_request(
@@ -57984,10 +58436,14 @@ def test_list_all_feedback_labels_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ContactCenterInsightsRestInterceptor, "post_list_all_feedback_labels"
     ) as post, mock.patch.object(
+        transports.ContactCenterInsightsRestInterceptor,
+        "post_list_all_feedback_labels_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ContactCenterInsightsRestInterceptor, "pre_list_all_feedback_labels"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = contact_center_insights.ListAllFeedbackLabelsRequest.pb(
             contact_center_insights.ListAllFeedbackLabelsRequest()
         )
@@ -58013,6 +58469,10 @@ def test_list_all_feedback_labels_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = contact_center_insights.ListAllFeedbackLabelsResponse()
+        post_with_metadata.return_value = (
+            contact_center_insights.ListAllFeedbackLabelsResponse(),
+            metadata,
+        )
 
         client.list_all_feedback_labels(
             request,
@@ -58024,6 +58484,7 @@ def test_list_all_feedback_labels_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_bulk_upload_feedback_labels_rest_bad_request(
@@ -58106,10 +58567,14 @@ def test_bulk_upload_feedback_labels_rest_interceptors(null_interceptor):
         "post_bulk_upload_feedback_labels",
     ) as post, mock.patch.object(
         transports.ContactCenterInsightsRestInterceptor,
+        "post_bulk_upload_feedback_labels_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
+        transports.ContactCenterInsightsRestInterceptor,
         "pre_bulk_upload_feedback_labels",
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = contact_center_insights.BulkUploadFeedbackLabelsRequest.pb(
             contact_center_insights.BulkUploadFeedbackLabelsRequest()
         )
@@ -58133,6 +58598,7 @@ def test_bulk_upload_feedback_labels_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.bulk_upload_feedback_labels(
             request,
@@ -58144,6 +58610,7 @@ def test_bulk_upload_feedback_labels_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_bulk_download_feedback_labels_rest_bad_request(
@@ -58226,10 +58693,14 @@ def test_bulk_download_feedback_labels_rest_interceptors(null_interceptor):
         "post_bulk_download_feedback_labels",
     ) as post, mock.patch.object(
         transports.ContactCenterInsightsRestInterceptor,
+        "post_bulk_download_feedback_labels_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
+        transports.ContactCenterInsightsRestInterceptor,
         "pre_bulk_download_feedback_labels",
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = contact_center_insights.BulkDownloadFeedbackLabelsRequest.pb(
             contact_center_insights.BulkDownloadFeedbackLabelsRequest()
         )
@@ -58253,6 +58724,7 @@ def test_bulk_download_feedback_labels_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.bulk_download_feedback_labels(
             request,
@@ -58264,6 +58736,7 @@ def test_bulk_download_feedback_labels_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_cancel_operation_rest_bad_request(

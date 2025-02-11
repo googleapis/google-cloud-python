@@ -139,11 +139,37 @@ class CompletionServiceRestInterceptor:
     ) -> completion_service.CompleteQueryResponse:
         """Post-rpc interceptor for complete_query
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_complete_query_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CompletionService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_complete_query` interceptor runs
+        before the `post_complete_query_with_metadata` interceptor.
         """
         return response
+
+    def post_complete_query_with_metadata(
+        self,
+        response: completion_service.CompleteQueryResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        completion_service.CompleteQueryResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for complete_query
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CompletionService server but before it is returned to user code.
+
+        We recommend only using this `post_complete_query_with_metadata`
+        interceptor in new development instead of the `post_complete_query` interceptor.
+        When both interceptors are used, this `post_complete_query_with_metadata` interceptor runs after the
+        `post_complete_query` interceptor. The (possibly modified) response returned by
+        `post_complete_query` will be passed to
+        `post_complete_query_with_metadata`.
+        """
+        return response, metadata
 
     def pre_import_completion_suggestions(
         self,
@@ -165,11 +191,34 @@ class CompletionServiceRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for import_completion_suggestions
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_import_completion_suggestions_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CompletionService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_import_completion_suggestions` interceptor runs
+        before the `post_import_completion_suggestions_with_metadata` interceptor.
         """
         return response
+
+    def post_import_completion_suggestions_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for import_completion_suggestions
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CompletionService server but before it is returned to user code.
+
+        We recommend only using this `post_import_completion_suggestions_with_metadata`
+        interceptor in new development instead of the `post_import_completion_suggestions` interceptor.
+        When both interceptors are used, this `post_import_completion_suggestions_with_metadata` interceptor runs after the
+        `post_import_completion_suggestions` interceptor. The (possibly modified) response returned by
+        `post_import_completion_suggestions` will be passed to
+        `post_import_completion_suggestions_with_metadata`.
+        """
+        return response, metadata
 
     def pre_import_suggestion_deny_list_entries(
         self,
@@ -191,11 +240,34 @@ class CompletionServiceRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for import_suggestion_deny_list_entries
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_import_suggestion_deny_list_entries_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CompletionService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_import_suggestion_deny_list_entries` interceptor runs
+        before the `post_import_suggestion_deny_list_entries_with_metadata` interceptor.
         """
         return response
+
+    def post_import_suggestion_deny_list_entries_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for import_suggestion_deny_list_entries
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CompletionService server but before it is returned to user code.
+
+        We recommend only using this `post_import_suggestion_deny_list_entries_with_metadata`
+        interceptor in new development instead of the `post_import_suggestion_deny_list_entries` interceptor.
+        When both interceptors are used, this `post_import_suggestion_deny_list_entries_with_metadata` interceptor runs after the
+        `post_import_suggestion_deny_list_entries` interceptor. The (possibly modified) response returned by
+        `post_import_suggestion_deny_list_entries` will be passed to
+        `post_import_suggestion_deny_list_entries_with_metadata`.
+        """
+        return response, metadata
 
     def pre_purge_completion_suggestions(
         self,
@@ -217,11 +289,34 @@ class CompletionServiceRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for purge_completion_suggestions
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_purge_completion_suggestions_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CompletionService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_purge_completion_suggestions` interceptor runs
+        before the `post_purge_completion_suggestions_with_metadata` interceptor.
         """
         return response
+
+    def post_purge_completion_suggestions_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for purge_completion_suggestions
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CompletionService server but before it is returned to user code.
+
+        We recommend only using this `post_purge_completion_suggestions_with_metadata`
+        interceptor in new development instead of the `post_purge_completion_suggestions` interceptor.
+        When both interceptors are used, this `post_purge_completion_suggestions_with_metadata` interceptor runs after the
+        `post_purge_completion_suggestions` interceptor. The (possibly modified) response returned by
+        `post_purge_completion_suggestions` will be passed to
+        `post_purge_completion_suggestions_with_metadata`.
+        """
+        return response, metadata
 
     def pre_purge_suggestion_deny_list_entries(
         self,
@@ -243,11 +338,34 @@ class CompletionServiceRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for purge_suggestion_deny_list_entries
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_purge_suggestion_deny_list_entries_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CompletionService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_purge_suggestion_deny_list_entries` interceptor runs
+        before the `post_purge_suggestion_deny_list_entries_with_metadata` interceptor.
         """
         return response
+
+    def post_purge_suggestion_deny_list_entries_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for purge_suggestion_deny_list_entries
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CompletionService server but before it is returned to user code.
+
+        We recommend only using this `post_purge_suggestion_deny_list_entries_with_metadata`
+        interceptor in new development instead of the `post_purge_suggestion_deny_list_entries` interceptor.
+        When both interceptors are used, this `post_purge_suggestion_deny_list_entries_with_metadata` interceptor runs after the
+        `post_purge_suggestion_deny_list_entries` interceptor. The (possibly modified) response returned by
+        `post_purge_suggestion_deny_list_entries` will be passed to
+        `post_purge_suggestion_deny_list_entries_with_metadata`.
+        """
+        return response, metadata
 
     def pre_cancel_operation(
         self,
@@ -705,6 +823,10 @@ class CompletionServiceRestTransport(_BaseCompletionServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_complete_query(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_complete_query_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -860,6 +982,13 @@ class CompletionServiceRestTransport(_BaseCompletionServiceRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_import_completion_suggestions(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_import_completion_suggestions_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1018,6 +1147,13 @@ class CompletionServiceRestTransport(_BaseCompletionServiceRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_import_suggestion_deny_list_entries(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_import_suggestion_deny_list_entries_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1171,6 +1307,10 @@ class CompletionServiceRestTransport(_BaseCompletionServiceRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_purge_completion_suggestions(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_purge_completion_suggestions_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1327,6 +1467,13 @@ class CompletionServiceRestTransport(_BaseCompletionServiceRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_purge_suggestion_deny_list_entries(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_purge_suggestion_deny_list_entries_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

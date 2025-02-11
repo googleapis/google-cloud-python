@@ -36,6 +36,7 @@ from .job import (
     UpdateJobRequest,
 )
 from .k8s_min import (
+    BuildInfo,
     CloudSqlInstance,
     Container,
     ContainerPort,
@@ -89,6 +90,7 @@ from .traffic_target import (
 )
 from .vendor_settings import (
     BinaryAuthorization,
+    BuildConfig,
     EncryptionKeyRevocationAction,
     ExecutionEnvironment,
     IngressTraffic,
@@ -120,6 +122,7 @@ __all__ = (
     "ListJobsResponse",
     "RunJobRequest",
     "UpdateJobRequest",
+    "BuildInfo",
     "CloudSqlInstance",
     "Container",
     "ContainerPort",
@@ -163,6 +166,7 @@ __all__ = (
     "TrafficTargetStatus",
     "TrafficTargetAllocationType",
     "BinaryAuthorization",
+    "BuildConfig",
     "NodeSelector",
     "RevisionScaling",
     "ServiceMesh",

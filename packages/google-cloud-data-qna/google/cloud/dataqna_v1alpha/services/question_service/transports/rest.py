@@ -137,11 +137,34 @@ class QuestionServiceRestInterceptor:
     ) -> gcd_question.Question:
         """Post-rpc interceptor for create_question
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_question_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the QuestionService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_question` interceptor runs
+        before the `post_create_question_with_metadata` interceptor.
         """
         return response
+
+    def post_create_question_with_metadata(
+        self,
+        response: gcd_question.Question,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[gcd_question.Question, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_question
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the QuestionService server but before it is returned to user code.
+
+        We recommend only using this `post_create_question_with_metadata`
+        interceptor in new development instead of the `post_create_question` interceptor.
+        When both interceptors are used, this `post_create_question_with_metadata` interceptor runs after the
+        `post_create_question` interceptor. The (possibly modified) response returned by
+        `post_create_question` will be passed to
+        `post_create_question_with_metadata`.
+        """
+        return response, metadata
 
     def pre_execute_question(
         self,
@@ -160,11 +183,34 @@ class QuestionServiceRestInterceptor:
     def post_execute_question(self, response: question.Question) -> question.Question:
         """Post-rpc interceptor for execute_question
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_execute_question_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the QuestionService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_execute_question` interceptor runs
+        before the `post_execute_question_with_metadata` interceptor.
         """
         return response
+
+    def post_execute_question_with_metadata(
+        self,
+        response: question.Question,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[question.Question, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for execute_question
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the QuestionService server but before it is returned to user code.
+
+        We recommend only using this `post_execute_question_with_metadata`
+        interceptor in new development instead of the `post_execute_question` interceptor.
+        When both interceptors are used, this `post_execute_question_with_metadata` interceptor runs after the
+        `post_execute_question` interceptor. The (possibly modified) response returned by
+        `post_execute_question` will be passed to
+        `post_execute_question_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_question(
         self,
@@ -183,11 +229,34 @@ class QuestionServiceRestInterceptor:
     def post_get_question(self, response: question.Question) -> question.Question:
         """Post-rpc interceptor for get_question
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_question_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the QuestionService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_question` interceptor runs
+        before the `post_get_question_with_metadata` interceptor.
         """
         return response
+
+    def post_get_question_with_metadata(
+        self,
+        response: question.Question,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[question.Question, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_question
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the QuestionService server but before it is returned to user code.
+
+        We recommend only using this `post_get_question_with_metadata`
+        interceptor in new development instead of the `post_get_question` interceptor.
+        When both interceptors are used, this `post_get_question_with_metadata` interceptor runs after the
+        `post_get_question` interceptor. The (possibly modified) response returned by
+        `post_get_question` will be passed to
+        `post_get_question_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_user_feedback(
         self,
@@ -208,11 +277,34 @@ class QuestionServiceRestInterceptor:
     ) -> user_feedback.UserFeedback:
         """Post-rpc interceptor for get_user_feedback
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_user_feedback_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the QuestionService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_user_feedback` interceptor runs
+        before the `post_get_user_feedback_with_metadata` interceptor.
         """
         return response
+
+    def post_get_user_feedback_with_metadata(
+        self,
+        response: user_feedback.UserFeedback,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[user_feedback.UserFeedback, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_user_feedback
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the QuestionService server but before it is returned to user code.
+
+        We recommend only using this `post_get_user_feedback_with_metadata`
+        interceptor in new development instead of the `post_get_user_feedback` interceptor.
+        When both interceptors are used, this `post_get_user_feedback_with_metadata` interceptor runs after the
+        `post_get_user_feedback` interceptor. The (possibly modified) response returned by
+        `post_get_user_feedback` will be passed to
+        `post_get_user_feedback_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_user_feedback(
         self,
@@ -234,11 +326,34 @@ class QuestionServiceRestInterceptor:
     ) -> gcd_user_feedback.UserFeedback:
         """Post-rpc interceptor for update_user_feedback
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_user_feedback_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the QuestionService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_user_feedback` interceptor runs
+        before the `post_update_user_feedback_with_metadata` interceptor.
         """
         return response
+
+    def post_update_user_feedback_with_metadata(
+        self,
+        response: gcd_user_feedback.UserFeedback,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[gcd_user_feedback.UserFeedback, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_user_feedback
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the QuestionService server but before it is returned to user code.
+
+        We recommend only using this `post_update_user_feedback_with_metadata`
+        interceptor in new development instead of the `post_update_user_feedback` interceptor.
+        When both interceptors are used, this `post_update_user_feedback_with_metadata` interceptor runs after the
+        `post_update_user_feedback` interceptor. The (possibly modified) response returned by
+        `post_update_user_feedback` will be passed to
+        `post_update_user_feedback_with_metadata`.
+        """
+        return response, metadata
 
 
 @dataclasses.dataclass
@@ -476,6 +591,10 @@ class QuestionServiceRestTransport(_BaseQuestionServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_question(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_question_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -629,6 +748,10 @@ class QuestionServiceRestTransport(_BaseQuestionServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_execute_question(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_execute_question_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -775,6 +898,10 @@ class QuestionServiceRestTransport(_BaseQuestionServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_question(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_question_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -917,6 +1044,10 @@ class QuestionServiceRestTransport(_BaseQuestionServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_user_feedback(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_user_feedback_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1066,6 +1197,10 @@ class QuestionServiceRestTransport(_BaseQuestionServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_user_feedback(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_user_feedback_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

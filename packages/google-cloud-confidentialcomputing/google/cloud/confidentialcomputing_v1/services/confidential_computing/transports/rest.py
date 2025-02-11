@@ -106,11 +106,34 @@ class ConfidentialComputingRestInterceptor:
     def post_create_challenge(self, response: service.Challenge) -> service.Challenge:
         """Post-rpc interceptor for create_challenge
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_challenge_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ConfidentialComputing server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_challenge` interceptor runs
+        before the `post_create_challenge_with_metadata` interceptor.
         """
         return response
+
+    def post_create_challenge_with_metadata(
+        self,
+        response: service.Challenge,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.Challenge, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_challenge
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ConfidentialComputing server but before it is returned to user code.
+
+        We recommend only using this `post_create_challenge_with_metadata`
+        interceptor in new development instead of the `post_create_challenge` interceptor.
+        When both interceptors are used, this `post_create_challenge_with_metadata` interceptor runs after the
+        `post_create_challenge` interceptor. The (possibly modified) response returned by
+        `post_create_challenge` will be passed to
+        `post_create_challenge_with_metadata`.
+        """
+        return response, metadata
 
     def pre_verify_attestation(
         self,
@@ -131,11 +154,36 @@ class ConfidentialComputingRestInterceptor:
     ) -> service.VerifyAttestationResponse:
         """Post-rpc interceptor for verify_attestation
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_verify_attestation_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ConfidentialComputing server but before
-        it is returned to user code.
+        it is returned to user code. This `post_verify_attestation` interceptor runs
+        before the `post_verify_attestation_with_metadata` interceptor.
         """
         return response
+
+    def post_verify_attestation_with_metadata(
+        self,
+        response: service.VerifyAttestationResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        service.VerifyAttestationResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for verify_attestation
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ConfidentialComputing server but before it is returned to user code.
+
+        We recommend only using this `post_verify_attestation_with_metadata`
+        interceptor in new development instead of the `post_verify_attestation` interceptor.
+        When both interceptors are used, this `post_verify_attestation_with_metadata` interceptor runs after the
+        `post_verify_attestation` interceptor. The (possibly modified) response returned by
+        `post_verify_attestation` will be passed to
+        `post_verify_attestation_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_location(
         self,
@@ -404,6 +452,10 @@ class ConfidentialComputingRestTransport(_BaseConfidentialComputingRestTransport
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_challenge(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_challenge_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -561,6 +613,10 @@ class ConfidentialComputingRestTransport(_BaseConfidentialComputingRestTransport
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_verify_attestation(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_verify_attestation_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

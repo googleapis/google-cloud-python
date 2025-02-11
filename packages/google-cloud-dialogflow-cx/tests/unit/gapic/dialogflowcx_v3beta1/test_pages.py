@@ -73,6 +73,13 @@ from google.cloud.dialogflowcx_v3beta1.types import page
 from google.cloud.dialogflowcx_v3beta1.types import page as gcdc_page
 from google.cloud.dialogflowcx_v3beta1.types import response_message, tool_call
 
+CRED_INFO_JSON = {
+    "credential_source": "/path/to/file",
+    "credential_type": "service account credentials",
+    "principal": "service-account@example.com",
+}
+CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
 
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
@@ -289,6 +296,49 @@ def test__get_universe_domain():
     with pytest.raises(ValueError) as excinfo:
         PagesClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+
+@pytest.mark.parametrize(
+    "error_code,cred_info_json,show_cred_info",
+    [
+        (401, CRED_INFO_JSON, True),
+        (403, CRED_INFO_JSON, True),
+        (404, CRED_INFO_JSON, True),
+        (500, CRED_INFO_JSON, False),
+        (401, None, False),
+        (403, None, False),
+        (404, None, False),
+        (500, None, False),
+    ],
+)
+def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
+    cred = mock.Mock(["get_cred_info"])
+    cred.get_cred_info = mock.Mock(return_value=cred_info_json)
+    client = PagesClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=["foo"])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    if show_cred_info:
+        assert error.details == ["foo", CRED_INFO_STRING]
+    else:
+        assert error.details == ["foo"]
+
+
+@pytest.mark.parametrize("error_code", [401, 403, 404, 500])
+def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
+    cred = mock.Mock([])
+    assert not hasattr(cred, "get_cred_info")
+    client = PagesClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=[])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    assert error.details == []
 
 
 @pytest.mark.parametrize(
@@ -4300,10 +4350,13 @@ def test_list_pages_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.PagesRestInterceptor, "post_list_pages"
     ) as post, mock.patch.object(
+        transports.PagesRestInterceptor, "post_list_pages_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.PagesRestInterceptor, "pre_list_pages"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = page.ListPagesRequest.pb(page.ListPagesRequest())
         transcode.return_value = {
             "method": "post",
@@ -4325,6 +4378,7 @@ def test_list_pages_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = page.ListPagesResponse()
+        post_with_metadata.return_value = page.ListPagesResponse(), metadata
 
         client.list_pages(
             request,
@@ -4336,6 +4390,7 @@ def test_list_pages_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_page_rest_bad_request(request_type=page.GetPageRequest):
@@ -4426,10 +4481,13 @@ def test_get_page_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.PagesRestInterceptor, "post_get_page"
     ) as post, mock.patch.object(
+        transports.PagesRestInterceptor, "post_get_page_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.PagesRestInterceptor, "pre_get_page"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = page.GetPageRequest.pb(page.GetPageRequest())
         transcode.return_value = {
             "method": "post",
@@ -4451,6 +4509,7 @@ def test_get_page_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = page.Page()
+        post_with_metadata.return_value = page.Page(), metadata
 
         client.get_page(
             request,
@@ -4462,6 +4521,7 @@ def test_get_page_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_page_rest_bad_request(request_type=gcdc_page.CreatePageRequest):
@@ -4764,10 +4824,13 @@ def test_create_page_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.PagesRestInterceptor, "post_create_page"
     ) as post, mock.patch.object(
+        transports.PagesRestInterceptor, "post_create_page_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.PagesRestInterceptor, "pre_create_page"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = gcdc_page.CreatePageRequest.pb(gcdc_page.CreatePageRequest())
         transcode.return_value = {
             "method": "post",
@@ -4789,6 +4852,7 @@ def test_create_page_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = gcdc_page.Page()
+        post_with_metadata.return_value = gcdc_page.Page(), metadata
 
         client.create_page(
             request,
@@ -4800,6 +4864,7 @@ def test_create_page_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_page_rest_bad_request(request_type=gcdc_page.UpdatePageRequest):
@@ -5106,10 +5171,13 @@ def test_update_page_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.PagesRestInterceptor, "post_update_page"
     ) as post, mock.patch.object(
+        transports.PagesRestInterceptor, "post_update_page_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.PagesRestInterceptor, "pre_update_page"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = gcdc_page.UpdatePageRequest.pb(gcdc_page.UpdatePageRequest())
         transcode.return_value = {
             "method": "post",
@@ -5131,6 +5199,7 @@ def test_update_page_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = gcdc_page.Page()
+        post_with_metadata.return_value = gcdc_page.Page(), metadata
 
         client.update_page(
             request,
@@ -5142,6 +5211,7 @@ def test_update_page_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_page_rest_bad_request(request_type=page.DeletePageRequest):

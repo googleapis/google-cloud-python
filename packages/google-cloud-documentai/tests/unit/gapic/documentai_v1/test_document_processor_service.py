@@ -95,6 +95,13 @@ from google.cloud.documentai_v1.types import processor
 from google.cloud.documentai_v1.types import processor as gcd_processor
 from google.cloud.documentai_v1.types import processor_type
 
+CRED_INFO_JSON = {
+    "credential_source": "/path/to/file",
+    "credential_type": "service account credentials",
+    "principal": "service-account@example.com",
+}
+CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
 
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
@@ -368,6 +375,49 @@ def test__get_universe_domain():
     with pytest.raises(ValueError) as excinfo:
         DocumentProcessorServiceClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+
+@pytest.mark.parametrize(
+    "error_code,cred_info_json,show_cred_info",
+    [
+        (401, CRED_INFO_JSON, True),
+        (403, CRED_INFO_JSON, True),
+        (404, CRED_INFO_JSON, True),
+        (500, CRED_INFO_JSON, False),
+        (401, None, False),
+        (403, None, False),
+        (404, None, False),
+        (500, None, False),
+    ],
+)
+def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
+    cred = mock.Mock(["get_cred_info"])
+    cred.get_cred_info = mock.Mock(return_value=cred_info_json)
+    client = DocumentProcessorServiceClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=["foo"])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    if show_cred_info:
+        assert error.details == ["foo", CRED_INFO_STRING]
+    else:
+        assert error.details == ["foo"]
+
+
+@pytest.mark.parametrize("error_code", [401, 403, 404, 500])
+def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
+    cred = mock.Mock([])
+    assert not hasattr(cred, "get_cred_info")
+    client = DocumentProcessorServiceClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=[])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    assert error.details == []
 
 
 @pytest.mark.parametrize(
@@ -14813,10 +14863,14 @@ def test_process_document_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DocumentProcessorServiceRestInterceptor, "post_process_document"
     ) as post, mock.patch.object(
+        transports.DocumentProcessorServiceRestInterceptor,
+        "post_process_document_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.DocumentProcessorServiceRestInterceptor, "pre_process_document"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = document_processor_service.ProcessRequest.pb(
             document_processor_service.ProcessRequest()
         )
@@ -14842,6 +14896,10 @@ def test_process_document_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = document_processor_service.ProcessResponse()
+        post_with_metadata.return_value = (
+            document_processor_service.ProcessResponse(),
+            metadata,
+        )
 
         client.process_document(
             request,
@@ -14853,6 +14911,7 @@ def test_process_document_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_batch_process_documents_rest_bad_request(
@@ -14935,10 +14994,14 @@ def test_batch_process_documents_rest_interceptors(null_interceptor):
         "post_batch_process_documents",
     ) as post, mock.patch.object(
         transports.DocumentProcessorServiceRestInterceptor,
+        "post_batch_process_documents_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
+        transports.DocumentProcessorServiceRestInterceptor,
         "pre_batch_process_documents",
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = document_processor_service.BatchProcessRequest.pb(
             document_processor_service.BatchProcessRequest()
         )
@@ -14962,6 +15025,7 @@ def test_batch_process_documents_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.batch_process_documents(
             request,
@@ -14973,6 +15037,7 @@ def test_batch_process_documents_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_fetch_processor_types_rest_bad_request(
@@ -15056,10 +15121,14 @@ def test_fetch_processor_types_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DocumentProcessorServiceRestInterceptor, "post_fetch_processor_types"
     ) as post, mock.patch.object(
+        transports.DocumentProcessorServiceRestInterceptor,
+        "post_fetch_processor_types_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.DocumentProcessorServiceRestInterceptor, "pre_fetch_processor_types"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = document_processor_service.FetchProcessorTypesRequest.pb(
             document_processor_service.FetchProcessorTypesRequest()
         )
@@ -15085,6 +15154,10 @@ def test_fetch_processor_types_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = document_processor_service.FetchProcessorTypesResponse()
+        post_with_metadata.return_value = (
+            document_processor_service.FetchProcessorTypesResponse(),
+            metadata,
+        )
 
         client.fetch_processor_types(
             request,
@@ -15096,6 +15169,7 @@ def test_fetch_processor_types_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_processor_types_rest_bad_request(
@@ -15182,10 +15256,14 @@ def test_list_processor_types_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DocumentProcessorServiceRestInterceptor, "post_list_processor_types"
     ) as post, mock.patch.object(
+        transports.DocumentProcessorServiceRestInterceptor,
+        "post_list_processor_types_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.DocumentProcessorServiceRestInterceptor, "pre_list_processor_types"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = document_processor_service.ListProcessorTypesRequest.pb(
             document_processor_service.ListProcessorTypesRequest()
         )
@@ -15211,6 +15289,10 @@ def test_list_processor_types_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = document_processor_service.ListProcessorTypesResponse()
+        post_with_metadata.return_value = (
+            document_processor_service.ListProcessorTypesResponse(),
+            metadata,
+        )
 
         client.list_processor_types(
             request,
@@ -15222,6 +15304,7 @@ def test_list_processor_types_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_processor_type_rest_bad_request(
@@ -15316,10 +15399,14 @@ def test_get_processor_type_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DocumentProcessorServiceRestInterceptor, "post_get_processor_type"
     ) as post, mock.patch.object(
+        transports.DocumentProcessorServiceRestInterceptor,
+        "post_get_processor_type_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.DocumentProcessorServiceRestInterceptor, "pre_get_processor_type"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = document_processor_service.GetProcessorTypeRequest.pb(
             document_processor_service.GetProcessorTypeRequest()
         )
@@ -15345,6 +15432,7 @@ def test_get_processor_type_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = processor_type.ProcessorType()
+        post_with_metadata.return_value = processor_type.ProcessorType(), metadata
 
         client.get_processor_type(
             request,
@@ -15356,6 +15444,7 @@ def test_get_processor_type_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_processors_rest_bad_request(
@@ -15442,10 +15531,14 @@ def test_list_processors_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DocumentProcessorServiceRestInterceptor, "post_list_processors"
     ) as post, mock.patch.object(
+        transports.DocumentProcessorServiceRestInterceptor,
+        "post_list_processors_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.DocumentProcessorServiceRestInterceptor, "pre_list_processors"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = document_processor_service.ListProcessorsRequest.pb(
             document_processor_service.ListProcessorsRequest()
         )
@@ -15471,6 +15564,10 @@ def test_list_processors_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = document_processor_service.ListProcessorsResponse()
+        post_with_metadata.return_value = (
+            document_processor_service.ListProcessorsResponse(),
+            metadata,
+        )
 
         client.list_processors(
             request,
@@ -15482,6 +15579,7 @@ def test_list_processors_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_processor_rest_bad_request(
@@ -15582,10 +15680,14 @@ def test_get_processor_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DocumentProcessorServiceRestInterceptor, "post_get_processor"
     ) as post, mock.patch.object(
+        transports.DocumentProcessorServiceRestInterceptor,
+        "post_get_processor_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.DocumentProcessorServiceRestInterceptor, "pre_get_processor"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = document_processor_service.GetProcessorRequest.pb(
             document_processor_service.GetProcessorRequest()
         )
@@ -15609,6 +15711,7 @@ def test_get_processor_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = processor.Processor()
+        post_with_metadata.return_value = processor.Processor(), metadata
 
         client.get_processor(
             request,
@@ -15620,6 +15723,7 @@ def test_get_processor_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_train_processor_version_rest_bad_request(
@@ -15702,10 +15806,14 @@ def test_train_processor_version_rest_interceptors(null_interceptor):
         "post_train_processor_version",
     ) as post, mock.patch.object(
         transports.DocumentProcessorServiceRestInterceptor,
+        "post_train_processor_version_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
+        transports.DocumentProcessorServiceRestInterceptor,
         "pre_train_processor_version",
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = document_processor_service.TrainProcessorVersionRequest.pb(
             document_processor_service.TrainProcessorVersionRequest()
         )
@@ -15729,6 +15837,7 @@ def test_train_processor_version_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.train_processor_version(
             request,
@@ -15740,6 +15849,7 @@ def test_train_processor_version_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_processor_version_rest_bad_request(
@@ -15847,10 +15957,14 @@ def test_get_processor_version_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DocumentProcessorServiceRestInterceptor, "post_get_processor_version"
     ) as post, mock.patch.object(
+        transports.DocumentProcessorServiceRestInterceptor,
+        "post_get_processor_version_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.DocumentProcessorServiceRestInterceptor, "pre_get_processor_version"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = document_processor_service.GetProcessorVersionRequest.pb(
             document_processor_service.GetProcessorVersionRequest()
         )
@@ -15874,6 +15988,7 @@ def test_get_processor_version_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = processor.ProcessorVersion()
+        post_with_metadata.return_value = processor.ProcessorVersion(), metadata
 
         client.get_processor_version(
             request,
@@ -15885,6 +16000,7 @@ def test_get_processor_version_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_processor_versions_rest_bad_request(
@@ -15973,10 +16089,14 @@ def test_list_processor_versions_rest_interceptors(null_interceptor):
         "post_list_processor_versions",
     ) as post, mock.patch.object(
         transports.DocumentProcessorServiceRestInterceptor,
+        "post_list_processor_versions_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
+        transports.DocumentProcessorServiceRestInterceptor,
         "pre_list_processor_versions",
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = document_processor_service.ListProcessorVersionsRequest.pb(
             document_processor_service.ListProcessorVersionsRequest()
         )
@@ -16002,6 +16122,10 @@ def test_list_processor_versions_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = document_processor_service.ListProcessorVersionsResponse()
+        post_with_metadata.return_value = (
+            document_processor_service.ListProcessorVersionsResponse(),
+            metadata,
+        )
 
         client.list_processor_versions(
             request,
@@ -16013,6 +16137,7 @@ def test_list_processor_versions_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_processor_version_rest_bad_request(
@@ -16099,10 +16224,14 @@ def test_delete_processor_version_rest_interceptors(null_interceptor):
         "post_delete_processor_version",
     ) as post, mock.patch.object(
         transports.DocumentProcessorServiceRestInterceptor,
+        "post_delete_processor_version_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
+        transports.DocumentProcessorServiceRestInterceptor,
         "pre_delete_processor_version",
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = document_processor_service.DeleteProcessorVersionRequest.pb(
             document_processor_service.DeleteProcessorVersionRequest()
         )
@@ -16126,6 +16255,7 @@ def test_delete_processor_version_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_processor_version(
             request,
@@ -16137,6 +16267,7 @@ def test_delete_processor_version_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_deploy_processor_version_rest_bad_request(
@@ -16223,10 +16354,14 @@ def test_deploy_processor_version_rest_interceptors(null_interceptor):
         "post_deploy_processor_version",
     ) as post, mock.patch.object(
         transports.DocumentProcessorServiceRestInterceptor,
+        "post_deploy_processor_version_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
+        transports.DocumentProcessorServiceRestInterceptor,
         "pre_deploy_processor_version",
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = document_processor_service.DeployProcessorVersionRequest.pb(
             document_processor_service.DeployProcessorVersionRequest()
         )
@@ -16250,6 +16385,7 @@ def test_deploy_processor_version_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.deploy_processor_version(
             request,
@@ -16261,6 +16397,7 @@ def test_deploy_processor_version_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_undeploy_processor_version_rest_bad_request(
@@ -16347,10 +16484,14 @@ def test_undeploy_processor_version_rest_interceptors(null_interceptor):
         "post_undeploy_processor_version",
     ) as post, mock.patch.object(
         transports.DocumentProcessorServiceRestInterceptor,
+        "post_undeploy_processor_version_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
+        transports.DocumentProcessorServiceRestInterceptor,
         "pre_undeploy_processor_version",
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = document_processor_service.UndeployProcessorVersionRequest.pb(
             document_processor_service.UndeployProcessorVersionRequest()
         )
@@ -16374,6 +16515,7 @@ def test_undeploy_processor_version_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.undeploy_processor_version(
             request,
@@ -16385,6 +16527,7 @@ def test_undeploy_processor_version_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_processor_rest_bad_request(
@@ -16569,10 +16712,14 @@ def test_create_processor_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DocumentProcessorServiceRestInterceptor, "post_create_processor"
     ) as post, mock.patch.object(
+        transports.DocumentProcessorServiceRestInterceptor,
+        "post_create_processor_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.DocumentProcessorServiceRestInterceptor, "pre_create_processor"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = document_processor_service.CreateProcessorRequest.pb(
             document_processor_service.CreateProcessorRequest()
         )
@@ -16596,6 +16743,7 @@ def test_create_processor_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = gcd_processor.Processor()
+        post_with_metadata.return_value = gcd_processor.Processor(), metadata
 
         client.create_processor(
             request,
@@ -16607,6 +16755,7 @@ def test_create_processor_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_processor_rest_bad_request(
@@ -16687,10 +16836,14 @@ def test_delete_processor_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.DocumentProcessorServiceRestInterceptor, "post_delete_processor"
     ) as post, mock.patch.object(
+        transports.DocumentProcessorServiceRestInterceptor,
+        "post_delete_processor_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.DocumentProcessorServiceRestInterceptor, "pre_delete_processor"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = document_processor_service.DeleteProcessorRequest.pb(
             document_processor_service.DeleteProcessorRequest()
         )
@@ -16714,6 +16867,7 @@ def test_delete_processor_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_processor(
             request,
@@ -16725,6 +16879,7 @@ def test_delete_processor_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_enable_processor_rest_bad_request(
@@ -16805,10 +16960,14 @@ def test_enable_processor_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.DocumentProcessorServiceRestInterceptor, "post_enable_processor"
     ) as post, mock.patch.object(
+        transports.DocumentProcessorServiceRestInterceptor,
+        "post_enable_processor_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.DocumentProcessorServiceRestInterceptor, "pre_enable_processor"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = document_processor_service.EnableProcessorRequest.pb(
             document_processor_service.EnableProcessorRequest()
         )
@@ -16832,6 +16991,7 @@ def test_enable_processor_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.enable_processor(
             request,
@@ -16843,6 +17003,7 @@ def test_enable_processor_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_disable_processor_rest_bad_request(
@@ -16923,10 +17084,14 @@ def test_disable_processor_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.DocumentProcessorServiceRestInterceptor, "post_disable_processor"
     ) as post, mock.patch.object(
+        transports.DocumentProcessorServiceRestInterceptor,
+        "post_disable_processor_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.DocumentProcessorServiceRestInterceptor, "pre_disable_processor"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = document_processor_service.DisableProcessorRequest.pb(
             document_processor_service.DisableProcessorRequest()
         )
@@ -16950,6 +17115,7 @@ def test_disable_processor_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.disable_processor(
             request,
@@ -16961,6 +17127,7 @@ def test_disable_processor_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_set_default_processor_version_rest_bad_request(
@@ -17047,10 +17214,14 @@ def test_set_default_processor_version_rest_interceptors(null_interceptor):
         "post_set_default_processor_version",
     ) as post, mock.patch.object(
         transports.DocumentProcessorServiceRestInterceptor,
+        "post_set_default_processor_version_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
+        transports.DocumentProcessorServiceRestInterceptor,
         "pre_set_default_processor_version",
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = document_processor_service.SetDefaultProcessorVersionRequest.pb(
             document_processor_service.SetDefaultProcessorVersionRequest()
         )
@@ -17074,6 +17245,7 @@ def test_set_default_processor_version_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.set_default_processor_version(
             request,
@@ -17085,6 +17257,7 @@ def test_set_default_processor_version_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_review_document_rest_bad_request(
@@ -17169,10 +17342,14 @@ def test_review_document_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.DocumentProcessorServiceRestInterceptor, "post_review_document"
     ) as post, mock.patch.object(
+        transports.DocumentProcessorServiceRestInterceptor,
+        "post_review_document_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.DocumentProcessorServiceRestInterceptor, "pre_review_document"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = document_processor_service.ReviewDocumentRequest.pb(
             document_processor_service.ReviewDocumentRequest()
         )
@@ -17196,6 +17373,7 @@ def test_review_document_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.review_document(
             request,
@@ -17207,6 +17385,7 @@ def test_review_document_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_evaluate_processor_version_rest_bad_request(
@@ -17293,10 +17472,14 @@ def test_evaluate_processor_version_rest_interceptors(null_interceptor):
         "post_evaluate_processor_version",
     ) as post, mock.patch.object(
         transports.DocumentProcessorServiceRestInterceptor,
+        "post_evaluate_processor_version_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
+        transports.DocumentProcessorServiceRestInterceptor,
         "pre_evaluate_processor_version",
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = document_processor_service.EvaluateProcessorVersionRequest.pb(
             document_processor_service.EvaluateProcessorVersionRequest()
         )
@@ -17320,6 +17503,7 @@ def test_evaluate_processor_version_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.evaluate_processor_version(
             request,
@@ -17331,6 +17515,7 @@ def test_evaluate_processor_version_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_evaluation_rest_bad_request(
@@ -17423,10 +17608,14 @@ def test_get_evaluation_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DocumentProcessorServiceRestInterceptor, "post_get_evaluation"
     ) as post, mock.patch.object(
+        transports.DocumentProcessorServiceRestInterceptor,
+        "post_get_evaluation_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.DocumentProcessorServiceRestInterceptor, "pre_get_evaluation"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = document_processor_service.GetEvaluationRequest.pb(
             document_processor_service.GetEvaluationRequest()
         )
@@ -17450,6 +17639,7 @@ def test_get_evaluation_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = evaluation.Evaluation()
+        post_with_metadata.return_value = evaluation.Evaluation(), metadata
 
         client.get_evaluation(
             request,
@@ -17461,6 +17651,7 @@ def test_get_evaluation_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_evaluations_rest_bad_request(
@@ -17551,10 +17742,14 @@ def test_list_evaluations_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DocumentProcessorServiceRestInterceptor, "post_list_evaluations"
     ) as post, mock.patch.object(
+        transports.DocumentProcessorServiceRestInterceptor,
+        "post_list_evaluations_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.DocumentProcessorServiceRestInterceptor, "pre_list_evaluations"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = document_processor_service.ListEvaluationsRequest.pb(
             document_processor_service.ListEvaluationsRequest()
         )
@@ -17580,6 +17775,10 @@ def test_list_evaluations_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = document_processor_service.ListEvaluationsResponse()
+        post_with_metadata.return_value = (
+            document_processor_service.ListEvaluationsResponse(),
+            metadata,
+        )
 
         client.list_evaluations(
             request,
@@ -17591,6 +17790,7 @@ def test_list_evaluations_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_location_rest_bad_request(request_type=locations_pb2.GetLocationRequest):

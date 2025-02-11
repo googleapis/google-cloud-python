@@ -189,11 +189,34 @@ class ConferenceRecordsServiceRestInterceptor:
     ) -> resource.ConferenceRecord:
         """Post-rpc interceptor for get_conference_record
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_conference_record_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ConferenceRecordsService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_conference_record` interceptor runs
+        before the `post_get_conference_record_with_metadata` interceptor.
         """
         return response
+
+    def post_get_conference_record_with_metadata(
+        self,
+        response: resource.ConferenceRecord,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[resource.ConferenceRecord, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_conference_record
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ConferenceRecordsService server but before it is returned to user code.
+
+        We recommend only using this `post_get_conference_record_with_metadata`
+        interceptor in new development instead of the `post_get_conference_record` interceptor.
+        When both interceptors are used, this `post_get_conference_record_with_metadata` interceptor runs after the
+        `post_get_conference_record` interceptor. The (possibly modified) response returned by
+        `post_get_conference_record` will be passed to
+        `post_get_conference_record_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_participant(
         self,
@@ -212,11 +235,34 @@ class ConferenceRecordsServiceRestInterceptor:
     ) -> resource.Participant:
         """Post-rpc interceptor for get_participant
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_participant_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ConferenceRecordsService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_participant` interceptor runs
+        before the `post_get_participant_with_metadata` interceptor.
         """
         return response
+
+    def post_get_participant_with_metadata(
+        self,
+        response: resource.Participant,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[resource.Participant, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_participant
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ConferenceRecordsService server but before it is returned to user code.
+
+        We recommend only using this `post_get_participant_with_metadata`
+        interceptor in new development instead of the `post_get_participant` interceptor.
+        When both interceptors are used, this `post_get_participant_with_metadata` interceptor runs after the
+        `post_get_participant` interceptor. The (possibly modified) response returned by
+        `post_get_participant` will be passed to
+        `post_get_participant_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_participant_session(
         self,
@@ -237,11 +283,34 @@ class ConferenceRecordsServiceRestInterceptor:
     ) -> resource.ParticipantSession:
         """Post-rpc interceptor for get_participant_session
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_participant_session_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ConferenceRecordsService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_participant_session` interceptor runs
+        before the `post_get_participant_session_with_metadata` interceptor.
         """
         return response
+
+    def post_get_participant_session_with_metadata(
+        self,
+        response: resource.ParticipantSession,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[resource.ParticipantSession, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_participant_session
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ConferenceRecordsService server but before it is returned to user code.
+
+        We recommend only using this `post_get_participant_session_with_metadata`
+        interceptor in new development instead of the `post_get_participant_session` interceptor.
+        When both interceptors are used, this `post_get_participant_session_with_metadata` interceptor runs after the
+        `post_get_participant_session` interceptor. The (possibly modified) response returned by
+        `post_get_participant_session` will be passed to
+        `post_get_participant_session_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_recording(
         self,
@@ -258,11 +327,34 @@ class ConferenceRecordsServiceRestInterceptor:
     def post_get_recording(self, response: resource.Recording) -> resource.Recording:
         """Post-rpc interceptor for get_recording
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_recording_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ConferenceRecordsService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_recording` interceptor runs
+        before the `post_get_recording_with_metadata` interceptor.
         """
         return response
+
+    def post_get_recording_with_metadata(
+        self,
+        response: resource.Recording,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[resource.Recording, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_recording
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ConferenceRecordsService server but before it is returned to user code.
+
+        We recommend only using this `post_get_recording_with_metadata`
+        interceptor in new development instead of the `post_get_recording` interceptor.
+        When both interceptors are used, this `post_get_recording_with_metadata` interceptor runs after the
+        `post_get_recording` interceptor. The (possibly modified) response returned by
+        `post_get_recording` will be passed to
+        `post_get_recording_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_transcript(
         self,
@@ -279,11 +371,34 @@ class ConferenceRecordsServiceRestInterceptor:
     def post_get_transcript(self, response: resource.Transcript) -> resource.Transcript:
         """Post-rpc interceptor for get_transcript
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_transcript_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ConferenceRecordsService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_transcript` interceptor runs
+        before the `post_get_transcript_with_metadata` interceptor.
         """
         return response
+
+    def post_get_transcript_with_metadata(
+        self,
+        response: resource.Transcript,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[resource.Transcript, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_transcript
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ConferenceRecordsService server but before it is returned to user code.
+
+        We recommend only using this `post_get_transcript_with_metadata`
+        interceptor in new development instead of the `post_get_transcript` interceptor.
+        When both interceptors are used, this `post_get_transcript_with_metadata` interceptor runs after the
+        `post_get_transcript` interceptor. The (possibly modified) response returned by
+        `post_get_transcript` will be passed to
+        `post_get_transcript_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_transcript_entry(
         self,
@@ -304,11 +419,34 @@ class ConferenceRecordsServiceRestInterceptor:
     ) -> resource.TranscriptEntry:
         """Post-rpc interceptor for get_transcript_entry
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_transcript_entry_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ConferenceRecordsService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_transcript_entry` interceptor runs
+        before the `post_get_transcript_entry_with_metadata` interceptor.
         """
         return response
+
+    def post_get_transcript_entry_with_metadata(
+        self,
+        response: resource.TranscriptEntry,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[resource.TranscriptEntry, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_transcript_entry
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ConferenceRecordsService server but before it is returned to user code.
+
+        We recommend only using this `post_get_transcript_entry_with_metadata`
+        interceptor in new development instead of the `post_get_transcript_entry` interceptor.
+        When both interceptors are used, this `post_get_transcript_entry_with_metadata` interceptor runs after the
+        `post_get_transcript_entry` interceptor. The (possibly modified) response returned by
+        `post_get_transcript_entry` will be passed to
+        `post_get_transcript_entry_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_conference_records(
         self,
@@ -329,11 +467,36 @@ class ConferenceRecordsServiceRestInterceptor:
     ) -> service.ListConferenceRecordsResponse:
         """Post-rpc interceptor for list_conference_records
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_conference_records_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ConferenceRecordsService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_conference_records` interceptor runs
+        before the `post_list_conference_records_with_metadata` interceptor.
         """
         return response
+
+    def post_list_conference_records_with_metadata(
+        self,
+        response: service.ListConferenceRecordsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        service.ListConferenceRecordsResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_conference_records
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ConferenceRecordsService server but before it is returned to user code.
+
+        We recommend only using this `post_list_conference_records_with_metadata`
+        interceptor in new development instead of the `post_list_conference_records` interceptor.
+        When both interceptors are used, this `post_list_conference_records_with_metadata` interceptor runs after the
+        `post_list_conference_records` interceptor. The (possibly modified) response returned by
+        `post_list_conference_records` will be passed to
+        `post_list_conference_records_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_participants(
         self,
@@ -354,11 +517,36 @@ class ConferenceRecordsServiceRestInterceptor:
     ) -> service.ListParticipantsResponse:
         """Post-rpc interceptor for list_participants
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_participants_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ConferenceRecordsService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_participants` interceptor runs
+        before the `post_list_participants_with_metadata` interceptor.
         """
         return response
+
+    def post_list_participants_with_metadata(
+        self,
+        response: service.ListParticipantsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        service.ListParticipantsResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_participants
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ConferenceRecordsService server but before it is returned to user code.
+
+        We recommend only using this `post_list_participants_with_metadata`
+        interceptor in new development instead of the `post_list_participants` interceptor.
+        When both interceptors are used, this `post_list_participants_with_metadata` interceptor runs after the
+        `post_list_participants` interceptor. The (possibly modified) response returned by
+        `post_list_participants` will be passed to
+        `post_list_participants_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_participant_sessions(
         self,
@@ -379,11 +567,36 @@ class ConferenceRecordsServiceRestInterceptor:
     ) -> service.ListParticipantSessionsResponse:
         """Post-rpc interceptor for list_participant_sessions
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_participant_sessions_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ConferenceRecordsService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_participant_sessions` interceptor runs
+        before the `post_list_participant_sessions_with_metadata` interceptor.
         """
         return response
+
+    def post_list_participant_sessions_with_metadata(
+        self,
+        response: service.ListParticipantSessionsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        service.ListParticipantSessionsResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_participant_sessions
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ConferenceRecordsService server but before it is returned to user code.
+
+        We recommend only using this `post_list_participant_sessions_with_metadata`
+        interceptor in new development instead of the `post_list_participant_sessions` interceptor.
+        When both interceptors are used, this `post_list_participant_sessions_with_metadata` interceptor runs after the
+        `post_list_participant_sessions` interceptor. The (possibly modified) response returned by
+        `post_list_participant_sessions` will be passed to
+        `post_list_participant_sessions_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_recordings(
         self,
@@ -402,11 +615,34 @@ class ConferenceRecordsServiceRestInterceptor:
     ) -> service.ListRecordingsResponse:
         """Post-rpc interceptor for list_recordings
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_recordings_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ConferenceRecordsService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_recordings` interceptor runs
+        before the `post_list_recordings_with_metadata` interceptor.
         """
         return response
+
+    def post_list_recordings_with_metadata(
+        self,
+        response: service.ListRecordingsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.ListRecordingsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for list_recordings
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ConferenceRecordsService server but before it is returned to user code.
+
+        We recommend only using this `post_list_recordings_with_metadata`
+        interceptor in new development instead of the `post_list_recordings` interceptor.
+        When both interceptors are used, this `post_list_recordings_with_metadata` interceptor runs after the
+        `post_list_recordings` interceptor. The (possibly modified) response returned by
+        `post_list_recordings` will be passed to
+        `post_list_recordings_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_transcript_entries(
         self,
@@ -427,11 +663,36 @@ class ConferenceRecordsServiceRestInterceptor:
     ) -> service.ListTranscriptEntriesResponse:
         """Post-rpc interceptor for list_transcript_entries
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_transcript_entries_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ConferenceRecordsService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_transcript_entries` interceptor runs
+        before the `post_list_transcript_entries_with_metadata` interceptor.
         """
         return response
+
+    def post_list_transcript_entries_with_metadata(
+        self,
+        response: service.ListTranscriptEntriesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        service.ListTranscriptEntriesResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_transcript_entries
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ConferenceRecordsService server but before it is returned to user code.
+
+        We recommend only using this `post_list_transcript_entries_with_metadata`
+        interceptor in new development instead of the `post_list_transcript_entries` interceptor.
+        When both interceptors are used, this `post_list_transcript_entries_with_metadata` interceptor runs after the
+        `post_list_transcript_entries` interceptor. The (possibly modified) response returned by
+        `post_list_transcript_entries` will be passed to
+        `post_list_transcript_entries_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_transcripts(
         self,
@@ -450,11 +711,36 @@ class ConferenceRecordsServiceRestInterceptor:
     ) -> service.ListTranscriptsResponse:
         """Post-rpc interceptor for list_transcripts
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_transcripts_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ConferenceRecordsService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_transcripts` interceptor runs
+        before the `post_list_transcripts_with_metadata` interceptor.
         """
         return response
+
+    def post_list_transcripts_with_metadata(
+        self,
+        response: service.ListTranscriptsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        service.ListTranscriptsResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_transcripts
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ConferenceRecordsService server but before it is returned to user code.
+
+        We recommend only using this `post_list_transcripts_with_metadata`
+        interceptor in new development instead of the `post_list_transcripts` interceptor.
+        When both interceptors are used, this `post_list_transcripts_with_metadata` interceptor runs after the
+        `post_list_transcripts` interceptor. The (possibly modified) response returned by
+        `post_list_transcripts` will be passed to
+        `post_list_transcripts_with_metadata`.
+        """
+        return response, metadata
 
 
 @dataclasses.dataclass
@@ -665,6 +951,10 @@ class ConferenceRecordsServiceRestTransport(_BaseConferenceRecordsServiceRestTra
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_conference_record(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_conference_record_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -810,6 +1100,10 @@ class ConferenceRecordsServiceRestTransport(_BaseConferenceRecordsServiceRestTra
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_participant(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_participant_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -962,6 +1256,10 @@ class ConferenceRecordsServiceRestTransport(_BaseConferenceRecordsServiceRestTra
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_participant_session(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_participant_session_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1108,6 +1406,10 @@ class ConferenceRecordsServiceRestTransport(_BaseConferenceRecordsServiceRestTra
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_recording(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_recording_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1255,6 +1557,10 @@ class ConferenceRecordsServiceRestTransport(_BaseConferenceRecordsServiceRestTra
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_transcript(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_transcript_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1403,6 +1709,10 @@ class ConferenceRecordsServiceRestTransport(_BaseConferenceRecordsServiceRestTra
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_transcript_entry(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_transcript_entry_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1549,6 +1859,10 @@ class ConferenceRecordsServiceRestTransport(_BaseConferenceRecordsServiceRestTra
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_conference_records(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_conference_records_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1697,6 +2011,10 @@ class ConferenceRecordsServiceRestTransport(_BaseConferenceRecordsServiceRestTra
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_participants(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_participants_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1844,6 +2162,10 @@ class ConferenceRecordsServiceRestTransport(_BaseConferenceRecordsServiceRestTra
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_participant_sessions(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_participant_sessions_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1989,6 +2311,10 @@ class ConferenceRecordsServiceRestTransport(_BaseConferenceRecordsServiceRestTra
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_recordings(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_recordings_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2135,6 +2461,10 @@ class ConferenceRecordsServiceRestTransport(_BaseConferenceRecordsServiceRestTra
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_transcript_entries(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_transcript_entries_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2282,6 +2612,10 @@ class ConferenceRecordsServiceRestTransport(_BaseConferenceRecordsServiceRestTra
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_transcripts(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_transcripts_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
