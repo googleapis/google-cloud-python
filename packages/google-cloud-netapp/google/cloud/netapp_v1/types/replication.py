@@ -422,6 +422,17 @@ class HybridPeeringDetails(proto.Message):
         passphrase (str):
             Optional. Temporary passphrase generated to
             accept cluster peering command.
+        peer_volume_name (str):
+            Optional. Name of the user's local source
+            volume to be peered with the destination volume.
+        peer_cluster_name (str):
+            Optional. Name of the user's local source
+            cluster to be peered with the destination
+            cluster.
+        peer_svm_name (str):
+            Optional. Name of the user's local source
+            vserver svm to be peered with the destination
+            vserver svm.
     """
 
     subnet_ip: str = proto.Field(
@@ -440,6 +451,18 @@ class HybridPeeringDetails(proto.Message):
     passphrase: str = proto.Field(
         proto.STRING,
         number=4,
+    )
+    peer_volume_name: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    peer_cluster_name: str = proto.Field(
+        proto.STRING,
+        number=6,
+    )
+    peer_svm_name: str = proto.Field(
+        proto.STRING,
+        number=7,
     )
 
 

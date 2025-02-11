@@ -66,6 +66,13 @@ from google.cloud.compute_v1.services.target_https_proxies import (
 )
 from google.cloud.compute_v1.types import compute
 
+CRED_INFO_JSON = {
+    "credential_source": "/path/to/file",
+    "credential_type": "service account credentials",
+    "principal": "service-account@example.com",
+}
+CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
 
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
@@ -330,6 +337,49 @@ def test__get_universe_domain():
     with pytest.raises(ValueError) as excinfo:
         TargetHttpsProxiesClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+
+@pytest.mark.parametrize(
+    "error_code,cred_info_json,show_cred_info",
+    [
+        (401, CRED_INFO_JSON, True),
+        (403, CRED_INFO_JSON, True),
+        (404, CRED_INFO_JSON, True),
+        (500, CRED_INFO_JSON, False),
+        (401, None, False),
+        (403, None, False),
+        (404, None, False),
+        (500, None, False),
+    ],
+)
+def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
+    cred = mock.Mock(["get_cred_info"])
+    cred.get_cred_info = mock.Mock(return_value=cred_info_json)
+    client = TargetHttpsProxiesClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=["foo"])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    if show_cred_info:
+        assert error.details == ["foo", CRED_INFO_STRING]
+    else:
+        assert error.details == ["foo"]
+
+
+@pytest.mark.parametrize("error_code", [401, 403, 404, 500])
+def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
+    cred = mock.Mock([])
+    assert not hasattr(cred, "get_cred_info")
+    client = TargetHttpsProxiesClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=[])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    assert error.details == []
 
 
 @pytest.mark.parametrize(
@@ -5108,10 +5158,14 @@ def test_aggregated_list_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.TargetHttpsProxiesRestInterceptor, "post_aggregated_list"
     ) as post, mock.patch.object(
+        transports.TargetHttpsProxiesRestInterceptor,
+        "post_aggregated_list_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.TargetHttpsProxiesRestInterceptor, "pre_aggregated_list"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.AggregatedListTargetHttpsProxiesRequest.pb(
             compute.AggregatedListTargetHttpsProxiesRequest()
         )
@@ -5137,6 +5191,10 @@ def test_aggregated_list_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.TargetHttpsProxyAggregatedList()
+        post_with_metadata.return_value = (
+            compute.TargetHttpsProxyAggregatedList(),
+            metadata,
+        )
 
         client.aggregated_list(
             request,
@@ -5148,6 +5206,7 @@ def test_aggregated_list_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_rest_bad_request(request_type=compute.DeleteTargetHttpsProxyRequest):
@@ -5272,10 +5331,13 @@ def test_delete_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.TargetHttpsProxiesRestInterceptor, "post_delete"
     ) as post, mock.patch.object(
+        transports.TargetHttpsProxiesRestInterceptor, "post_delete_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.TargetHttpsProxiesRestInterceptor, "pre_delete"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.DeleteTargetHttpsProxyRequest.pb(
             compute.DeleteTargetHttpsProxyRequest()
         )
@@ -5299,6 +5361,7 @@ def test_delete_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.Operation()
+        post_with_metadata.return_value = compute.Operation(), metadata
 
         client.delete(
             request,
@@ -5310,6 +5373,7 @@ def test_delete_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_rest_bad_request(request_type=compute.GetTargetHttpsProxyRequest):
@@ -5426,10 +5490,13 @@ def test_get_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.TargetHttpsProxiesRestInterceptor, "post_get"
     ) as post, mock.patch.object(
+        transports.TargetHttpsProxiesRestInterceptor, "post_get_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.TargetHttpsProxiesRestInterceptor, "pre_get"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.GetTargetHttpsProxyRequest.pb(
             compute.GetTargetHttpsProxyRequest()
         )
@@ -5453,6 +5520,7 @@ def test_get_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.TargetHttpsProxy()
+        post_with_metadata.return_value = compute.TargetHttpsProxy(), metadata
 
         client.get(
             request,
@@ -5464,6 +5532,7 @@ def test_get_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_insert_rest_bad_request(request_type=compute.InsertTargetHttpsProxyRequest):
@@ -5681,10 +5750,13 @@ def test_insert_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.TargetHttpsProxiesRestInterceptor, "post_insert"
     ) as post, mock.patch.object(
+        transports.TargetHttpsProxiesRestInterceptor, "post_insert_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.TargetHttpsProxiesRestInterceptor, "pre_insert"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.InsertTargetHttpsProxyRequest.pb(
             compute.InsertTargetHttpsProxyRequest()
         )
@@ -5708,6 +5780,7 @@ def test_insert_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.Operation()
+        post_with_metadata.return_value = compute.Operation(), metadata
 
         client.insert(
             request,
@@ -5719,6 +5792,7 @@ def test_insert_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_rest_bad_request(request_type=compute.ListTargetHttpsProxiesRequest):
@@ -5807,10 +5881,13 @@ def test_list_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.TargetHttpsProxiesRestInterceptor, "post_list"
     ) as post, mock.patch.object(
+        transports.TargetHttpsProxiesRestInterceptor, "post_list_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.TargetHttpsProxiesRestInterceptor, "pre_list"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.ListTargetHttpsProxiesRequest.pb(
             compute.ListTargetHttpsProxiesRequest()
         )
@@ -5836,6 +5913,7 @@ def test_list_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.TargetHttpsProxyList()
+        post_with_metadata.return_value = compute.TargetHttpsProxyList(), metadata
 
         client.list(
             request,
@@ -5847,6 +5925,7 @@ def test_list_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_patch_rest_bad_request(request_type=compute.PatchTargetHttpsProxyRequest):
@@ -6064,10 +6143,13 @@ def test_patch_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.TargetHttpsProxiesRestInterceptor, "post_patch"
     ) as post, mock.patch.object(
+        transports.TargetHttpsProxiesRestInterceptor, "post_patch_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.TargetHttpsProxiesRestInterceptor, "pre_patch"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.PatchTargetHttpsProxyRequest.pb(
             compute.PatchTargetHttpsProxyRequest()
         )
@@ -6091,6 +6173,7 @@ def test_patch_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.Operation()
+        post_with_metadata.return_value = compute.Operation(), metadata
 
         client.patch(
             request,
@@ -6102,6 +6185,7 @@ def test_patch_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_set_certificate_map_rest_bad_request(
@@ -6313,10 +6397,14 @@ def test_set_certificate_map_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.TargetHttpsProxiesRestInterceptor, "post_set_certificate_map"
     ) as post, mock.patch.object(
+        transports.TargetHttpsProxiesRestInterceptor,
+        "post_set_certificate_map_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.TargetHttpsProxiesRestInterceptor, "pre_set_certificate_map"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.SetCertificateMapTargetHttpsProxyRequest.pb(
             compute.SetCertificateMapTargetHttpsProxyRequest()
         )
@@ -6340,6 +6428,7 @@ def test_set_certificate_map_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.Operation()
+        post_with_metadata.return_value = compute.Operation(), metadata
 
         client.set_certificate_map(
             request,
@@ -6351,6 +6440,7 @@ def test_set_certificate_map_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_set_quic_override_rest_bad_request(
@@ -6562,10 +6652,14 @@ def test_set_quic_override_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.TargetHttpsProxiesRestInterceptor, "post_set_quic_override"
     ) as post, mock.patch.object(
+        transports.TargetHttpsProxiesRestInterceptor,
+        "post_set_quic_override_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.TargetHttpsProxiesRestInterceptor, "pre_set_quic_override"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.SetQuicOverrideTargetHttpsProxyRequest.pb(
             compute.SetQuicOverrideTargetHttpsProxyRequest()
         )
@@ -6589,6 +6683,7 @@ def test_set_quic_override_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.Operation()
+        post_with_metadata.return_value = compute.Operation(), metadata
 
         client.set_quic_override(
             request,
@@ -6600,6 +6695,7 @@ def test_set_quic_override_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_set_ssl_certificates_rest_bad_request(
@@ -6811,10 +6907,14 @@ def test_set_ssl_certificates_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.TargetHttpsProxiesRestInterceptor, "post_set_ssl_certificates"
     ) as post, mock.patch.object(
+        transports.TargetHttpsProxiesRestInterceptor,
+        "post_set_ssl_certificates_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.TargetHttpsProxiesRestInterceptor, "pre_set_ssl_certificates"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.SetSslCertificatesTargetHttpsProxyRequest.pb(
             compute.SetSslCertificatesTargetHttpsProxyRequest()
         )
@@ -6838,6 +6938,7 @@ def test_set_ssl_certificates_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.Operation()
+        post_with_metadata.return_value = compute.Operation(), metadata
 
         client.set_ssl_certificates(
             request,
@@ -6849,6 +6950,7 @@ def test_set_ssl_certificates_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_set_ssl_policy_rest_bad_request(
@@ -7051,10 +7153,14 @@ def test_set_ssl_policy_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.TargetHttpsProxiesRestInterceptor, "post_set_ssl_policy"
     ) as post, mock.patch.object(
+        transports.TargetHttpsProxiesRestInterceptor,
+        "post_set_ssl_policy_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.TargetHttpsProxiesRestInterceptor, "pre_set_ssl_policy"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.SetSslPolicyTargetHttpsProxyRequest.pb(
             compute.SetSslPolicyTargetHttpsProxyRequest()
         )
@@ -7078,6 +7184,7 @@ def test_set_ssl_policy_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.Operation()
+        post_with_metadata.return_value = compute.Operation(), metadata
 
         client.set_ssl_policy(
             request,
@@ -7089,6 +7196,7 @@ def test_set_ssl_policy_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_set_url_map_rest_bad_request(
@@ -7289,10 +7397,13 @@ def test_set_url_map_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.TargetHttpsProxiesRestInterceptor, "post_set_url_map"
     ) as post, mock.patch.object(
+        transports.TargetHttpsProxiesRestInterceptor, "post_set_url_map_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.TargetHttpsProxiesRestInterceptor, "pre_set_url_map"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.SetUrlMapTargetHttpsProxyRequest.pb(
             compute.SetUrlMapTargetHttpsProxyRequest()
         )
@@ -7316,6 +7427,7 @@ def test_set_url_map_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.Operation()
+        post_with_metadata.return_value = compute.Operation(), metadata
 
         client.set_url_map(
             request,
@@ -7327,6 +7439,7 @@ def test_set_url_map_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_initialize_client_w_rest():

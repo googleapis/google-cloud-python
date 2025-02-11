@@ -107,11 +107,32 @@ class TasksRestInterceptor:
     def post_get_task(self, response: task.Task) -> task.Task:
         """Post-rpc interceptor for get_task
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_task_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Tasks server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_task` interceptor runs
+        before the `post_get_task_with_metadata` interceptor.
         """
         return response
+
+    def post_get_task_with_metadata(
+        self, response: task.Task, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[task.Task, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_task
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Tasks server but before it is returned to user code.
+
+        We recommend only using this `post_get_task_with_metadata`
+        interceptor in new development instead of the `post_get_task` interceptor.
+        When both interceptors are used, this `post_get_task_with_metadata` interceptor runs after the
+        `post_get_task` interceptor. The (possibly modified) response returned by
+        `post_get_task` will be passed to
+        `post_get_task_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_tasks(
         self,
@@ -130,11 +151,34 @@ class TasksRestInterceptor:
     ) -> task.ListTasksResponse:
         """Post-rpc interceptor for list_tasks
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_tasks_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Tasks server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_tasks` interceptor runs
+        before the `post_list_tasks_with_metadata` interceptor.
         """
         return response
+
+    def post_list_tasks_with_metadata(
+        self,
+        response: task.ListTasksResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[task.ListTasksResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for list_tasks
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Tasks server but before it is returned to user code.
+
+        We recommend only using this `post_list_tasks_with_metadata`
+        interceptor in new development instead of the `post_list_tasks` interceptor.
+        When both interceptors are used, this `post_list_tasks_with_metadata` interceptor runs after the
+        `post_list_tasks` interceptor. The (possibly modified) response returned by
+        `post_list_tasks` will be passed to
+        `post_list_tasks_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_operation(
         self,
@@ -439,6 +483,10 @@ class TasksRestTransport(_BaseTasksRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_task(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_task_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -582,6 +630,10 @@ class TasksRestTransport(_BaseTasksRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_tasks(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_tasks_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

@@ -1091,6 +1091,8 @@ class MountOption(proto.Message):
             Protocol to mount with.
         instructions (str):
             Instructions for mounting
+        ip_address (str):
+            Output only. IP Address.
     """
 
     export: str = proto.Field(
@@ -1109,6 +1111,10 @@ class MountOption(proto.Message):
     instructions: str = proto.Field(
         proto.STRING,
         number=4,
+    )
+    ip_address: str = proto.Field(
+        proto.STRING,
+        number=5,
     )
 
 
