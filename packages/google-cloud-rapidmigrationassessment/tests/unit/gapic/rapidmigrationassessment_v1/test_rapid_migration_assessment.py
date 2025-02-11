@@ -76,6 +76,13 @@ from google.cloud.rapidmigrationassessment_v1.types import (
     rapidmigrationassessment,
 )
 
+CRED_INFO_JSON = {
+    "credential_source": "/path/to/file",
+    "credential_type": "service account credentials",
+    "principal": "service-account@example.com",
+}
+CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
 
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
@@ -349,6 +356,49 @@ def test__get_universe_domain():
     with pytest.raises(ValueError) as excinfo:
         RapidMigrationAssessmentClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+
+@pytest.mark.parametrize(
+    "error_code,cred_info_json,show_cred_info",
+    [
+        (401, CRED_INFO_JSON, True),
+        (403, CRED_INFO_JSON, True),
+        (404, CRED_INFO_JSON, True),
+        (500, CRED_INFO_JSON, False),
+        (401, None, False),
+        (403, None, False),
+        (404, None, False),
+        (500, None, False),
+    ],
+)
+def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
+    cred = mock.Mock(["get_cred_info"])
+    cred.get_cred_info = mock.Mock(return_value=cred_info_json)
+    client = RapidMigrationAssessmentClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=["foo"])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    if show_cred_info:
+        assert error.details == ["foo", CRED_INFO_STRING]
+    else:
+        assert error.details == ["foo"]
+
+
+@pytest.mark.parametrize("error_code", [401, 403, 404, 500])
+def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
+    cred = mock.Mock([])
+    assert not hasattr(cred, "get_cred_info")
+    client = RapidMigrationAssessmentClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=[])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    assert error.details == []
 
 
 @pytest.mark.parametrize(
@@ -7488,10 +7538,14 @@ def test_create_collector_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.RapidMigrationAssessmentRestInterceptor, "post_create_collector"
     ) as post, mock.patch.object(
+        transports.RapidMigrationAssessmentRestInterceptor,
+        "post_create_collector_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.RapidMigrationAssessmentRestInterceptor, "pre_create_collector"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = rapidmigrationassessment.CreateCollectorRequest.pb(
             rapidmigrationassessment.CreateCollectorRequest()
         )
@@ -7515,6 +7569,7 @@ def test_create_collector_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_collector(
             request,
@@ -7526,6 +7581,7 @@ def test_create_collector_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_annotation_rest_bad_request(
@@ -7682,10 +7738,14 @@ def test_create_annotation_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.RapidMigrationAssessmentRestInterceptor, "post_create_annotation"
     ) as post, mock.patch.object(
+        transports.RapidMigrationAssessmentRestInterceptor,
+        "post_create_annotation_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.RapidMigrationAssessmentRestInterceptor, "pre_create_annotation"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = rapidmigrationassessment.CreateAnnotationRequest.pb(
             rapidmigrationassessment.CreateAnnotationRequest()
         )
@@ -7709,6 +7769,7 @@ def test_create_annotation_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_annotation(
             request,
@@ -7720,6 +7781,7 @@ def test_create_annotation_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_annotation_rest_bad_request(
@@ -7806,10 +7868,14 @@ def test_get_annotation_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.RapidMigrationAssessmentRestInterceptor, "post_get_annotation"
     ) as post, mock.patch.object(
+        transports.RapidMigrationAssessmentRestInterceptor,
+        "post_get_annotation_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.RapidMigrationAssessmentRestInterceptor, "pre_get_annotation"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = rapidmigrationassessment.GetAnnotationRequest.pb(
             rapidmigrationassessment.GetAnnotationRequest()
         )
@@ -7833,6 +7899,7 @@ def test_get_annotation_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = api_entities.Annotation()
+        post_with_metadata.return_value = api_entities.Annotation(), metadata
 
         client.get_annotation(
             request,
@@ -7844,6 +7911,7 @@ def test_get_annotation_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_collectors_rest_bad_request(
@@ -7930,10 +7998,14 @@ def test_list_collectors_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.RapidMigrationAssessmentRestInterceptor, "post_list_collectors"
     ) as post, mock.patch.object(
+        transports.RapidMigrationAssessmentRestInterceptor,
+        "post_list_collectors_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.RapidMigrationAssessmentRestInterceptor, "pre_list_collectors"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = rapidmigrationassessment.ListCollectorsRequest.pb(
             rapidmigrationassessment.ListCollectorsRequest()
         )
@@ -7959,6 +8031,10 @@ def test_list_collectors_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = rapidmigrationassessment.ListCollectorsResponse()
+        post_with_metadata.return_value = (
+            rapidmigrationassessment.ListCollectorsResponse(),
+            metadata,
+        )
 
         client.list_collectors(
             request,
@@ -7970,6 +8046,7 @@ def test_list_collectors_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_collector_rest_bad_request(
@@ -8072,10 +8149,14 @@ def test_get_collector_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.RapidMigrationAssessmentRestInterceptor, "post_get_collector"
     ) as post, mock.patch.object(
+        transports.RapidMigrationAssessmentRestInterceptor,
+        "post_get_collector_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.RapidMigrationAssessmentRestInterceptor, "pre_get_collector"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = rapidmigrationassessment.GetCollectorRequest.pb(
             rapidmigrationassessment.GetCollectorRequest()
         )
@@ -8099,6 +8180,7 @@ def test_get_collector_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = api_entities.Collector()
+        post_with_metadata.return_value = api_entities.Collector(), metadata
 
         client.get_collector(
             request,
@@ -8110,6 +8192,7 @@ def test_get_collector_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_collector_rest_bad_request(
@@ -8280,10 +8363,14 @@ def test_update_collector_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.RapidMigrationAssessmentRestInterceptor, "post_update_collector"
     ) as post, mock.patch.object(
+        transports.RapidMigrationAssessmentRestInterceptor,
+        "post_update_collector_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.RapidMigrationAssessmentRestInterceptor, "pre_update_collector"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = rapidmigrationassessment.UpdateCollectorRequest.pb(
             rapidmigrationassessment.UpdateCollectorRequest()
         )
@@ -8307,6 +8394,7 @@ def test_update_collector_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.update_collector(
             request,
@@ -8318,6 +8406,7 @@ def test_update_collector_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_collector_rest_bad_request(
@@ -8398,10 +8487,14 @@ def test_delete_collector_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.RapidMigrationAssessmentRestInterceptor, "post_delete_collector"
     ) as post, mock.patch.object(
+        transports.RapidMigrationAssessmentRestInterceptor,
+        "post_delete_collector_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.RapidMigrationAssessmentRestInterceptor, "pre_delete_collector"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = rapidmigrationassessment.DeleteCollectorRequest.pb(
             rapidmigrationassessment.DeleteCollectorRequest()
         )
@@ -8425,6 +8518,7 @@ def test_delete_collector_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_collector(
             request,
@@ -8436,6 +8530,7 @@ def test_delete_collector_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_resume_collector_rest_bad_request(
@@ -8516,10 +8611,14 @@ def test_resume_collector_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.RapidMigrationAssessmentRestInterceptor, "post_resume_collector"
     ) as post, mock.patch.object(
+        transports.RapidMigrationAssessmentRestInterceptor,
+        "post_resume_collector_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.RapidMigrationAssessmentRestInterceptor, "pre_resume_collector"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = rapidmigrationassessment.ResumeCollectorRequest.pb(
             rapidmigrationassessment.ResumeCollectorRequest()
         )
@@ -8543,6 +8642,7 @@ def test_resume_collector_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.resume_collector(
             request,
@@ -8554,6 +8654,7 @@ def test_resume_collector_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_register_collector_rest_bad_request(
@@ -8634,10 +8735,14 @@ def test_register_collector_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.RapidMigrationAssessmentRestInterceptor, "post_register_collector"
     ) as post, mock.patch.object(
+        transports.RapidMigrationAssessmentRestInterceptor,
+        "post_register_collector_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.RapidMigrationAssessmentRestInterceptor, "pre_register_collector"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = rapidmigrationassessment.RegisterCollectorRequest.pb(
             rapidmigrationassessment.RegisterCollectorRequest()
         )
@@ -8661,6 +8766,7 @@ def test_register_collector_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.register_collector(
             request,
@@ -8672,6 +8778,7 @@ def test_register_collector_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_pause_collector_rest_bad_request(
@@ -8752,10 +8859,14 @@ def test_pause_collector_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.RapidMigrationAssessmentRestInterceptor, "post_pause_collector"
     ) as post, mock.patch.object(
+        transports.RapidMigrationAssessmentRestInterceptor,
+        "post_pause_collector_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.RapidMigrationAssessmentRestInterceptor, "pre_pause_collector"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = rapidmigrationassessment.PauseCollectorRequest.pb(
             rapidmigrationassessment.PauseCollectorRequest()
         )
@@ -8779,6 +8890,7 @@ def test_pause_collector_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.pause_collector(
             request,
@@ -8790,6 +8902,7 @@ def test_pause_collector_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_location_rest_bad_request(request_type=locations_pb2.GetLocationRequest):

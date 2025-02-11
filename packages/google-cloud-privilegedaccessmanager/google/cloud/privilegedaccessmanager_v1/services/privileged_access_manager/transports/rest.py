@@ -208,11 +208,34 @@ class PrivilegedAccessManagerRestInterceptor:
     ) -> privilegedaccessmanager.Grant:
         """Post-rpc interceptor for approve_grant
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_approve_grant_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the PrivilegedAccessManager server but before
-        it is returned to user code.
+        it is returned to user code. This `post_approve_grant` interceptor runs
+        before the `post_approve_grant_with_metadata` interceptor.
         """
         return response
+
+    def post_approve_grant_with_metadata(
+        self,
+        response: privilegedaccessmanager.Grant,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[privilegedaccessmanager.Grant, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for approve_grant
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the PrivilegedAccessManager server but before it is returned to user code.
+
+        We recommend only using this `post_approve_grant_with_metadata`
+        interceptor in new development instead of the `post_approve_grant` interceptor.
+        When both interceptors are used, this `post_approve_grant_with_metadata` interceptor runs after the
+        `post_approve_grant` interceptor. The (possibly modified) response returned by
+        `post_approve_grant` will be passed to
+        `post_approve_grant_with_metadata`.
+        """
+        return response, metadata
 
     def pre_check_onboarding_status(
         self,
@@ -234,11 +257,37 @@ class PrivilegedAccessManagerRestInterceptor:
     ) -> privilegedaccessmanager.CheckOnboardingStatusResponse:
         """Post-rpc interceptor for check_onboarding_status
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_check_onboarding_status_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the PrivilegedAccessManager server but before
-        it is returned to user code.
+        it is returned to user code. This `post_check_onboarding_status` interceptor runs
+        before the `post_check_onboarding_status_with_metadata` interceptor.
         """
         return response
+
+    def post_check_onboarding_status_with_metadata(
+        self,
+        response: privilegedaccessmanager.CheckOnboardingStatusResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        privilegedaccessmanager.CheckOnboardingStatusResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for check_onboarding_status
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the PrivilegedAccessManager server but before it is returned to user code.
+
+        We recommend only using this `post_check_onboarding_status_with_metadata`
+        interceptor in new development instead of the `post_check_onboarding_status` interceptor.
+        When both interceptors are used, this `post_check_onboarding_status_with_metadata` interceptor runs after the
+        `post_check_onboarding_status` interceptor. The (possibly modified) response returned by
+        `post_check_onboarding_status` will be passed to
+        `post_check_onboarding_status_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_entitlement(
         self,
@@ -260,11 +309,34 @@ class PrivilegedAccessManagerRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_entitlement
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_entitlement_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the PrivilegedAccessManager server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_entitlement` interceptor runs
+        before the `post_create_entitlement_with_metadata` interceptor.
         """
         return response
+
+    def post_create_entitlement_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_entitlement
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the PrivilegedAccessManager server but before it is returned to user code.
+
+        We recommend only using this `post_create_entitlement_with_metadata`
+        interceptor in new development instead of the `post_create_entitlement` interceptor.
+        When both interceptors are used, this `post_create_entitlement_with_metadata` interceptor runs after the
+        `post_create_entitlement` interceptor. The (possibly modified) response returned by
+        `post_create_entitlement` will be passed to
+        `post_create_entitlement_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_grant(
         self,
@@ -286,11 +358,34 @@ class PrivilegedAccessManagerRestInterceptor:
     ) -> privilegedaccessmanager.Grant:
         """Post-rpc interceptor for create_grant
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_grant_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the PrivilegedAccessManager server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_grant` interceptor runs
+        before the `post_create_grant_with_metadata` interceptor.
         """
         return response
+
+    def post_create_grant_with_metadata(
+        self,
+        response: privilegedaccessmanager.Grant,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[privilegedaccessmanager.Grant, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_grant
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the PrivilegedAccessManager server but before it is returned to user code.
+
+        We recommend only using this `post_create_grant_with_metadata`
+        interceptor in new development instead of the `post_create_grant` interceptor.
+        When both interceptors are used, this `post_create_grant_with_metadata` interceptor runs after the
+        `post_create_grant` interceptor. The (possibly modified) response returned by
+        `post_create_grant` will be passed to
+        `post_create_grant_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_entitlement(
         self,
@@ -312,11 +407,34 @@ class PrivilegedAccessManagerRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_entitlement
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_entitlement_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the PrivilegedAccessManager server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_entitlement` interceptor runs
+        before the `post_delete_entitlement_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_entitlement_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_entitlement
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the PrivilegedAccessManager server but before it is returned to user code.
+
+        We recommend only using this `post_delete_entitlement_with_metadata`
+        interceptor in new development instead of the `post_delete_entitlement` interceptor.
+        When both interceptors are used, this `post_delete_entitlement_with_metadata` interceptor runs after the
+        `post_delete_entitlement` interceptor. The (possibly modified) response returned by
+        `post_delete_entitlement` will be passed to
+        `post_delete_entitlement_with_metadata`.
+        """
+        return response, metadata
 
     def pre_deny_grant(
         self,
@@ -338,11 +456,34 @@ class PrivilegedAccessManagerRestInterceptor:
     ) -> privilegedaccessmanager.Grant:
         """Post-rpc interceptor for deny_grant
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_deny_grant_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the PrivilegedAccessManager server but before
-        it is returned to user code.
+        it is returned to user code. This `post_deny_grant` interceptor runs
+        before the `post_deny_grant_with_metadata` interceptor.
         """
         return response
+
+    def post_deny_grant_with_metadata(
+        self,
+        response: privilegedaccessmanager.Grant,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[privilegedaccessmanager.Grant, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for deny_grant
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the PrivilegedAccessManager server but before it is returned to user code.
+
+        We recommend only using this `post_deny_grant_with_metadata`
+        interceptor in new development instead of the `post_deny_grant` interceptor.
+        When both interceptors are used, this `post_deny_grant_with_metadata` interceptor runs after the
+        `post_deny_grant` interceptor. The (possibly modified) response returned by
+        `post_deny_grant` will be passed to
+        `post_deny_grant_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_entitlement(
         self,
@@ -364,11 +505,36 @@ class PrivilegedAccessManagerRestInterceptor:
     ) -> privilegedaccessmanager.Entitlement:
         """Post-rpc interceptor for get_entitlement
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_entitlement_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the PrivilegedAccessManager server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_entitlement` interceptor runs
+        before the `post_get_entitlement_with_metadata` interceptor.
         """
         return response
+
+    def post_get_entitlement_with_metadata(
+        self,
+        response: privilegedaccessmanager.Entitlement,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        privilegedaccessmanager.Entitlement, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for get_entitlement
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the PrivilegedAccessManager server but before it is returned to user code.
+
+        We recommend only using this `post_get_entitlement_with_metadata`
+        interceptor in new development instead of the `post_get_entitlement` interceptor.
+        When both interceptors are used, this `post_get_entitlement_with_metadata` interceptor runs after the
+        `post_get_entitlement` interceptor. The (possibly modified) response returned by
+        `post_get_entitlement` will be passed to
+        `post_get_entitlement_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_grant(
         self,
@@ -389,11 +555,34 @@ class PrivilegedAccessManagerRestInterceptor:
     ) -> privilegedaccessmanager.Grant:
         """Post-rpc interceptor for get_grant
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_grant_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the PrivilegedAccessManager server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_grant` interceptor runs
+        before the `post_get_grant_with_metadata` interceptor.
         """
         return response
+
+    def post_get_grant_with_metadata(
+        self,
+        response: privilegedaccessmanager.Grant,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[privilegedaccessmanager.Grant, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_grant
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the PrivilegedAccessManager server but before it is returned to user code.
+
+        We recommend only using this `post_get_grant_with_metadata`
+        interceptor in new development instead of the `post_get_grant` interceptor.
+        When both interceptors are used, this `post_get_grant_with_metadata` interceptor runs after the
+        `post_get_grant` interceptor. The (possibly modified) response returned by
+        `post_get_grant` will be passed to
+        `post_get_grant_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_entitlements(
         self,
@@ -415,11 +604,37 @@ class PrivilegedAccessManagerRestInterceptor:
     ) -> privilegedaccessmanager.ListEntitlementsResponse:
         """Post-rpc interceptor for list_entitlements
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_entitlements_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the PrivilegedAccessManager server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_entitlements` interceptor runs
+        before the `post_list_entitlements_with_metadata` interceptor.
         """
         return response
+
+    def post_list_entitlements_with_metadata(
+        self,
+        response: privilegedaccessmanager.ListEntitlementsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        privilegedaccessmanager.ListEntitlementsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_entitlements
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the PrivilegedAccessManager server but before it is returned to user code.
+
+        We recommend only using this `post_list_entitlements_with_metadata`
+        interceptor in new development instead of the `post_list_entitlements` interceptor.
+        When both interceptors are used, this `post_list_entitlements_with_metadata` interceptor runs after the
+        `post_list_entitlements` interceptor. The (possibly modified) response returned by
+        `post_list_entitlements` will be passed to
+        `post_list_entitlements_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_grants(
         self,
@@ -441,11 +656,37 @@ class PrivilegedAccessManagerRestInterceptor:
     ) -> privilegedaccessmanager.ListGrantsResponse:
         """Post-rpc interceptor for list_grants
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_grants_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the PrivilegedAccessManager server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_grants` interceptor runs
+        before the `post_list_grants_with_metadata` interceptor.
         """
         return response
+
+    def post_list_grants_with_metadata(
+        self,
+        response: privilegedaccessmanager.ListGrantsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        privilegedaccessmanager.ListGrantsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_grants
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the PrivilegedAccessManager server but before it is returned to user code.
+
+        We recommend only using this `post_list_grants_with_metadata`
+        interceptor in new development instead of the `post_list_grants` interceptor.
+        When both interceptors are used, this `post_list_grants_with_metadata` interceptor runs after the
+        `post_list_grants` interceptor. The (possibly modified) response returned by
+        `post_list_grants` will be passed to
+        `post_list_grants_with_metadata`.
+        """
+        return response, metadata
 
     def pre_revoke_grant(
         self,
@@ -467,11 +708,34 @@ class PrivilegedAccessManagerRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for revoke_grant
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_revoke_grant_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the PrivilegedAccessManager server but before
-        it is returned to user code.
+        it is returned to user code. This `post_revoke_grant` interceptor runs
+        before the `post_revoke_grant_with_metadata` interceptor.
         """
         return response
+
+    def post_revoke_grant_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for revoke_grant
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the PrivilegedAccessManager server but before it is returned to user code.
+
+        We recommend only using this `post_revoke_grant_with_metadata`
+        interceptor in new development instead of the `post_revoke_grant` interceptor.
+        When both interceptors are used, this `post_revoke_grant_with_metadata` interceptor runs after the
+        `post_revoke_grant` interceptor. The (possibly modified) response returned by
+        `post_revoke_grant` will be passed to
+        `post_revoke_grant_with_metadata`.
+        """
+        return response, metadata
 
     def pre_search_entitlements(
         self,
@@ -493,11 +757,37 @@ class PrivilegedAccessManagerRestInterceptor:
     ) -> privilegedaccessmanager.SearchEntitlementsResponse:
         """Post-rpc interceptor for search_entitlements
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_search_entitlements_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the PrivilegedAccessManager server but before
-        it is returned to user code.
+        it is returned to user code. This `post_search_entitlements` interceptor runs
+        before the `post_search_entitlements_with_metadata` interceptor.
         """
         return response
+
+    def post_search_entitlements_with_metadata(
+        self,
+        response: privilegedaccessmanager.SearchEntitlementsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        privilegedaccessmanager.SearchEntitlementsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for search_entitlements
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the PrivilegedAccessManager server but before it is returned to user code.
+
+        We recommend only using this `post_search_entitlements_with_metadata`
+        interceptor in new development instead of the `post_search_entitlements` interceptor.
+        When both interceptors are used, this `post_search_entitlements_with_metadata` interceptor runs after the
+        `post_search_entitlements` interceptor. The (possibly modified) response returned by
+        `post_search_entitlements` will be passed to
+        `post_search_entitlements_with_metadata`.
+        """
+        return response, metadata
 
     def pre_search_grants(
         self,
@@ -519,11 +809,37 @@ class PrivilegedAccessManagerRestInterceptor:
     ) -> privilegedaccessmanager.SearchGrantsResponse:
         """Post-rpc interceptor for search_grants
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_search_grants_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the PrivilegedAccessManager server but before
-        it is returned to user code.
+        it is returned to user code. This `post_search_grants` interceptor runs
+        before the `post_search_grants_with_metadata` interceptor.
         """
         return response
+
+    def post_search_grants_with_metadata(
+        self,
+        response: privilegedaccessmanager.SearchGrantsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        privilegedaccessmanager.SearchGrantsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for search_grants
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the PrivilegedAccessManager server but before it is returned to user code.
+
+        We recommend only using this `post_search_grants_with_metadata`
+        interceptor in new development instead of the `post_search_grants` interceptor.
+        When both interceptors are used, this `post_search_grants_with_metadata` interceptor runs after the
+        `post_search_grants` interceptor. The (possibly modified) response returned by
+        `post_search_grants` will be passed to
+        `post_search_grants_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_entitlement(
         self,
@@ -545,11 +861,34 @@ class PrivilegedAccessManagerRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_entitlement
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_entitlement_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the PrivilegedAccessManager server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_entitlement` interceptor runs
+        before the `post_update_entitlement_with_metadata` interceptor.
         """
         return response
+
+    def post_update_entitlement_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_entitlement
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the PrivilegedAccessManager server but before it is returned to user code.
+
+        We recommend only using this `post_update_entitlement_with_metadata`
+        interceptor in new development instead of the `post_update_entitlement` interceptor.
+        When both interceptors are used, this `post_update_entitlement_with_metadata` interceptor runs after the
+        `post_update_entitlement` interceptor. The (possibly modified) response returned by
+        `post_update_entitlement` will be passed to
+        `post_update_entitlement_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_location(
         self,
@@ -981,6 +1320,10 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_approve_grant(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_approve_grant_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1124,6 +1467,10 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_check_onboarding_status(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_check_onboarding_status_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1280,6 +1627,10 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_entitlement(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_entitlement_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1430,6 +1781,10 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_grant(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_grant_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1576,6 +1931,10 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_entitlement(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_entitlement_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1726,6 +2085,10 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_deny_grant(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_deny_grant_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1874,6 +2237,10 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_entitlement(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_entitlement_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2020,6 +2387,10 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_grant(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_grant_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2168,6 +2539,10 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_entitlements(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_entitlements_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2316,6 +2691,10 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_grants(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_grants_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2466,6 +2845,10 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_revoke_grant(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_revoke_grant_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2611,6 +2994,10 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_search_entitlements(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_search_entitlements_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2756,6 +3143,10 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_search_grants(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_search_grants_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2910,6 +3301,10 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_entitlement(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_entitlement_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

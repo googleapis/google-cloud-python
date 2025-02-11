@@ -116,11 +116,34 @@ class TagHoldsRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_tag_hold
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_tag_hold_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the TagHolds server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_tag_hold` interceptor runs
+        before the `post_create_tag_hold_with_metadata` interceptor.
         """
         return response
+
+    def post_create_tag_hold_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_tag_hold
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the TagHolds server but before it is returned to user code.
+
+        We recommend only using this `post_create_tag_hold_with_metadata`
+        interceptor in new development instead of the `post_create_tag_hold` interceptor.
+        When both interceptors are used, this `post_create_tag_hold_with_metadata` interceptor runs after the
+        `post_create_tag_hold` interceptor. The (possibly modified) response returned by
+        `post_create_tag_hold` will be passed to
+        `post_create_tag_hold_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_tag_hold(
         self,
@@ -139,11 +162,34 @@ class TagHoldsRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_tag_hold
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_tag_hold_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the TagHolds server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_tag_hold` interceptor runs
+        before the `post_delete_tag_hold_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_tag_hold_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_tag_hold
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the TagHolds server but before it is returned to user code.
+
+        We recommend only using this `post_delete_tag_hold_with_metadata`
+        interceptor in new development instead of the `post_delete_tag_hold` interceptor.
+        When both interceptors are used, this `post_delete_tag_hold_with_metadata` interceptor runs after the
+        `post_delete_tag_hold` interceptor. The (possibly modified) response returned by
+        `post_delete_tag_hold` will be passed to
+        `post_delete_tag_hold_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_tag_holds(
         self,
@@ -162,11 +208,34 @@ class TagHoldsRestInterceptor:
     ) -> tag_holds.ListTagHoldsResponse:
         """Post-rpc interceptor for list_tag_holds
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_tag_holds_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the TagHolds server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_tag_holds` interceptor runs
+        before the `post_list_tag_holds_with_metadata` interceptor.
         """
         return response
+
+    def post_list_tag_holds_with_metadata(
+        self,
+        response: tag_holds.ListTagHoldsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[tag_holds.ListTagHoldsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for list_tag_holds
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the TagHolds server but before it is returned to user code.
+
+        We recommend only using this `post_list_tag_holds_with_metadata`
+        interceptor in new development instead of the `post_list_tag_holds` interceptor.
+        When both interceptors are used, this `post_list_tag_holds_with_metadata` interceptor runs after the
+        `post_list_tag_holds` interceptor. The (possibly modified) response returned by
+        `post_list_tag_holds` will be passed to
+        `post_list_tag_holds_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_operation(
         self,
@@ -449,6 +518,10 @@ class TagHoldsRestTransport(_BaseTagHoldsRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_tag_hold(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_tag_hold_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -595,6 +668,10 @@ class TagHoldsRestTransport(_BaseTagHoldsRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_tag_hold(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_tag_hold_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -738,6 +815,10 @@ class TagHoldsRestTransport(_BaseTagHoldsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_tag_holds(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_tag_holds_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

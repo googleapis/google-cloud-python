@@ -63,6 +63,13 @@ from google.cloud.cloudquotas_v1.services.cloud_quotas import (
 )
 from google.cloud.cloudquotas_v1.types import cloudquotas, resources
 
+CRED_INFO_JSON = {
+    "credential_source": "/path/to/file",
+    "credential_type": "service account credentials",
+    "principal": "service-account@example.com",
+}
+CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
 
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
@@ -300,6 +307,49 @@ def test__get_universe_domain():
     with pytest.raises(ValueError) as excinfo:
         CloudQuotasClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+
+@pytest.mark.parametrize(
+    "error_code,cred_info_json,show_cred_info",
+    [
+        (401, CRED_INFO_JSON, True),
+        (403, CRED_INFO_JSON, True),
+        (404, CRED_INFO_JSON, True),
+        (500, CRED_INFO_JSON, False),
+        (401, None, False),
+        (403, None, False),
+        (404, None, False),
+        (500, None, False),
+    ],
+)
+def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
+    cred = mock.Mock(["get_cred_info"])
+    cred.get_cred_info = mock.Mock(return_value=cred_info_json)
+    client = CloudQuotasClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=["foo"])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    if show_cred_info:
+        assert error.details == ["foo", CRED_INFO_STRING]
+    else:
+        assert error.details == ["foo"]
+
+
+@pytest.mark.parametrize("error_code", [401, 403, 404, 500])
+def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
+    cred = mock.Mock([])
+    assert not hasattr(cred, "get_cred_info")
+    client = CloudQuotasClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=[])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    assert error.details == []
 
 
 @pytest.mark.parametrize(
@@ -5448,10 +5498,13 @@ def test_list_quota_infos_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.CloudQuotasRestInterceptor, "post_list_quota_infos"
     ) as post, mock.patch.object(
+        transports.CloudQuotasRestInterceptor, "post_list_quota_infos_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.CloudQuotasRestInterceptor, "pre_list_quota_infos"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cloudquotas.ListQuotaInfosRequest.pb(
             cloudquotas.ListQuotaInfosRequest()
         )
@@ -5477,6 +5530,7 @@ def test_list_quota_infos_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = cloudquotas.ListQuotaInfosResponse()
+        post_with_metadata.return_value = cloudquotas.ListQuotaInfosResponse(), metadata
 
         client.list_quota_infos(
             request,
@@ -5488,6 +5542,7 @@ def test_list_quota_infos_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_quota_info_rest_bad_request(request_type=cloudquotas.GetQuotaInfoRequest):
@@ -5600,10 +5655,13 @@ def test_get_quota_info_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.CloudQuotasRestInterceptor, "post_get_quota_info"
     ) as post, mock.patch.object(
+        transports.CloudQuotasRestInterceptor, "post_get_quota_info_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.CloudQuotasRestInterceptor, "pre_get_quota_info"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cloudquotas.GetQuotaInfoRequest.pb(
             cloudquotas.GetQuotaInfoRequest()
         )
@@ -5627,6 +5685,7 @@ def test_get_quota_info_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = resources.QuotaInfo()
+        post_with_metadata.return_value = resources.QuotaInfo(), metadata
 
         client.get_quota_info(
             request,
@@ -5638,6 +5697,7 @@ def test_get_quota_info_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_quota_preferences_rest_bad_request(
@@ -5724,10 +5784,14 @@ def test_list_quota_preferences_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.CloudQuotasRestInterceptor, "post_list_quota_preferences"
     ) as post, mock.patch.object(
+        transports.CloudQuotasRestInterceptor,
+        "post_list_quota_preferences_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.CloudQuotasRestInterceptor, "pre_list_quota_preferences"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cloudquotas.ListQuotaPreferencesRequest.pb(
             cloudquotas.ListQuotaPreferencesRequest()
         )
@@ -5753,6 +5817,10 @@ def test_list_quota_preferences_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = cloudquotas.ListQuotaPreferencesResponse()
+        post_with_metadata.return_value = (
+            cloudquotas.ListQuotaPreferencesResponse(),
+            metadata,
+        )
 
         client.list_quota_preferences(
             request,
@@ -5764,6 +5832,7 @@ def test_list_quota_preferences_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_quota_preference_rest_bad_request(
@@ -5864,10 +5933,13 @@ def test_get_quota_preference_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.CloudQuotasRestInterceptor, "post_get_quota_preference"
     ) as post, mock.patch.object(
+        transports.CloudQuotasRestInterceptor, "post_get_quota_preference_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.CloudQuotasRestInterceptor, "pre_get_quota_preference"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cloudquotas.GetQuotaPreferenceRequest.pb(
             cloudquotas.GetQuotaPreferenceRequest()
         )
@@ -5891,6 +5963,7 @@ def test_get_quota_preference_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = resources.QuotaPreference()
+        post_with_metadata.return_value = resources.QuotaPreference(), metadata
 
         client.get_quota_preference(
             request,
@@ -5902,6 +5975,7 @@ def test_get_quota_preference_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_quota_preference_rest_bad_request(
@@ -6087,10 +6161,14 @@ def test_create_quota_preference_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.CloudQuotasRestInterceptor, "post_create_quota_preference"
     ) as post, mock.patch.object(
+        transports.CloudQuotasRestInterceptor,
+        "post_create_quota_preference_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.CloudQuotasRestInterceptor, "pre_create_quota_preference"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cloudquotas.CreateQuotaPreferenceRequest.pb(
             cloudquotas.CreateQuotaPreferenceRequest()
         )
@@ -6114,6 +6192,7 @@ def test_create_quota_preference_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = resources.QuotaPreference()
+        post_with_metadata.return_value = resources.QuotaPreference(), metadata
 
         client.create_quota_preference(
             request,
@@ -6125,6 +6204,7 @@ def test_create_quota_preference_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_quota_preference_rest_bad_request(
@@ -6318,10 +6398,14 @@ def test_update_quota_preference_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.CloudQuotasRestInterceptor, "post_update_quota_preference"
     ) as post, mock.patch.object(
+        transports.CloudQuotasRestInterceptor,
+        "post_update_quota_preference_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.CloudQuotasRestInterceptor, "pre_update_quota_preference"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cloudquotas.UpdateQuotaPreferenceRequest.pb(
             cloudquotas.UpdateQuotaPreferenceRequest()
         )
@@ -6345,6 +6429,7 @@ def test_update_quota_preference_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = resources.QuotaPreference()
+        post_with_metadata.return_value = resources.QuotaPreference(), metadata
 
         client.update_quota_preference(
             request,
@@ -6356,6 +6441,7 @@ def test_update_quota_preference_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_initialize_client_w_rest():

@@ -64,6 +64,13 @@ from google.cloud.parametermanager_v1.services.parameter_manager import (
 )
 from google.cloud.parametermanager_v1.types import service
 
+CRED_INFO_JSON = {
+    "credential_source": "/path/to/file",
+    "credential_type": "service account credentials",
+    "principal": "service-account@example.com",
+}
+CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
 
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
@@ -321,6 +328,49 @@ def test__get_universe_domain():
     with pytest.raises(ValueError) as excinfo:
         ParameterManagerClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+
+@pytest.mark.parametrize(
+    "error_code,cred_info_json,show_cred_info",
+    [
+        (401, CRED_INFO_JSON, True),
+        (403, CRED_INFO_JSON, True),
+        (404, CRED_INFO_JSON, True),
+        (500, CRED_INFO_JSON, False),
+        (401, None, False),
+        (403, None, False),
+        (404, None, False),
+        (500, None, False),
+    ],
+)
+def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
+    cred = mock.Mock(["get_cred_info"])
+    cred.get_cred_info = mock.Mock(return_value=cred_info_json)
+    client = ParameterManagerClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=["foo"])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    if show_cred_info:
+        assert error.details == ["foo", CRED_INFO_STRING]
+    else:
+        assert error.details == ["foo"]
+
+
+@pytest.mark.parametrize("error_code", [401, 403, 404, 500])
+def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
+    cred = mock.Mock([])
+    assert not hasattr(cred, "get_cred_info")
+    client = ParameterManagerClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=[])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    assert error.details == []
 
 
 @pytest.mark.parametrize(
@@ -8269,10 +8319,13 @@ def test_list_parameters_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ParameterManagerRestInterceptor, "post_list_parameters"
     ) as post, mock.patch.object(
+        transports.ParameterManagerRestInterceptor, "post_list_parameters_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ParameterManagerRestInterceptor, "pre_list_parameters"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.ListParametersRequest.pb(service.ListParametersRequest())
         transcode.return_value = {
             "method": "post",
@@ -8296,6 +8349,7 @@ def test_list_parameters_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = service.ListParametersResponse()
+        post_with_metadata.return_value = service.ListParametersResponse(), metadata
 
         client.list_parameters(
             request,
@@ -8307,6 +8361,7 @@ def test_list_parameters_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_parameter_rest_bad_request(request_type=service.GetParameterRequest):
@@ -8391,10 +8446,13 @@ def test_get_parameter_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ParameterManagerRestInterceptor, "post_get_parameter"
     ) as post, mock.patch.object(
+        transports.ParameterManagerRestInterceptor, "post_get_parameter_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ParameterManagerRestInterceptor, "pre_get_parameter"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.GetParameterRequest.pb(service.GetParameterRequest())
         transcode.return_value = {
             "method": "post",
@@ -8416,6 +8474,7 @@ def test_get_parameter_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = service.Parameter()
+        post_with_metadata.return_value = service.Parameter(), metadata
 
         client.get_parameter(
             request,
@@ -8427,6 +8486,7 @@ def test_get_parameter_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_parameter_rest_bad_request(request_type=service.CreateParameterRequest):
@@ -8589,10 +8649,14 @@ def test_create_parameter_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ParameterManagerRestInterceptor, "post_create_parameter"
     ) as post, mock.patch.object(
+        transports.ParameterManagerRestInterceptor,
+        "post_create_parameter_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ParameterManagerRestInterceptor, "pre_create_parameter"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.CreateParameterRequest.pb(service.CreateParameterRequest())
         transcode.return_value = {
             "method": "post",
@@ -8614,6 +8678,7 @@ def test_create_parameter_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = service.Parameter()
+        post_with_metadata.return_value = service.Parameter(), metadata
 
         client.create_parameter(
             request,
@@ -8625,6 +8690,7 @@ def test_create_parameter_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_parameter_rest_bad_request(request_type=service.UpdateParameterRequest):
@@ -8791,10 +8857,14 @@ def test_update_parameter_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ParameterManagerRestInterceptor, "post_update_parameter"
     ) as post, mock.patch.object(
+        transports.ParameterManagerRestInterceptor,
+        "post_update_parameter_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ParameterManagerRestInterceptor, "pre_update_parameter"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.UpdateParameterRequest.pb(service.UpdateParameterRequest())
         transcode.return_value = {
             "method": "post",
@@ -8816,6 +8886,7 @@ def test_update_parameter_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = service.Parameter()
+        post_with_metadata.return_value = service.Parameter(), metadata
 
         client.update_parameter(
             request,
@@ -8827,6 +8898,7 @@ def test_update_parameter_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_parameter_rest_bad_request(request_type=service.DeleteParameterRequest):
@@ -9018,10 +9090,14 @@ def test_list_parameter_versions_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ParameterManagerRestInterceptor, "post_list_parameter_versions"
     ) as post, mock.patch.object(
+        transports.ParameterManagerRestInterceptor,
+        "post_list_parameter_versions_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ParameterManagerRestInterceptor, "pre_list_parameter_versions"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.ListParameterVersionsRequest.pb(
             service.ListParameterVersionsRequest()
         )
@@ -9047,6 +9123,10 @@ def test_list_parameter_versions_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = service.ListParameterVersionsResponse()
+        post_with_metadata.return_value = (
+            service.ListParameterVersionsResponse(),
+            metadata,
+        )
 
         client.list_parameter_versions(
             request,
@@ -9058,6 +9138,7 @@ def test_list_parameter_versions_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_parameter_version_rest_bad_request(
@@ -9148,10 +9229,14 @@ def test_get_parameter_version_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ParameterManagerRestInterceptor, "post_get_parameter_version"
     ) as post, mock.patch.object(
+        transports.ParameterManagerRestInterceptor,
+        "post_get_parameter_version_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ParameterManagerRestInterceptor, "pre_get_parameter_version"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.GetParameterVersionRequest.pb(
             service.GetParameterVersionRequest()
         )
@@ -9175,6 +9260,7 @@ def test_get_parameter_version_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = service.ParameterVersion()
+        post_with_metadata.return_value = service.ParameterVersion(), metadata
 
         client.get_parameter_version(
             request,
@@ -9186,6 +9272,7 @@ def test_get_parameter_version_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_render_parameter_version_rest_bad_request(
@@ -9276,10 +9363,14 @@ def test_render_parameter_version_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ParameterManagerRestInterceptor, "post_render_parameter_version"
     ) as post, mock.patch.object(
+        transports.ParameterManagerRestInterceptor,
+        "post_render_parameter_version_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ParameterManagerRestInterceptor, "pre_render_parameter_version"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.RenderParameterVersionRequest.pb(
             service.RenderParameterVersionRequest()
         )
@@ -9305,6 +9396,10 @@ def test_render_parameter_version_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = service.RenderParameterVersionResponse()
+        post_with_metadata.return_value = (
+            service.RenderParameterVersionResponse(),
+            metadata,
+        )
 
         client.render_parameter_version(
             request,
@@ -9316,6 +9411,7 @@ def test_render_parameter_version_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_parameter_version_rest_bad_request(
@@ -9476,10 +9572,14 @@ def test_create_parameter_version_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ParameterManagerRestInterceptor, "post_create_parameter_version"
     ) as post, mock.patch.object(
+        transports.ParameterManagerRestInterceptor,
+        "post_create_parameter_version_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ParameterManagerRestInterceptor, "pre_create_parameter_version"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.CreateParameterVersionRequest.pb(
             service.CreateParameterVersionRequest()
         )
@@ -9503,6 +9603,7 @@ def test_create_parameter_version_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = service.ParameterVersion()
+        post_with_metadata.return_value = service.ParameterVersion(), metadata
 
         client.create_parameter_version(
             request,
@@ -9514,6 +9615,7 @@ def test_create_parameter_version_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_parameter_version_rest_bad_request(
@@ -9682,10 +9784,14 @@ def test_update_parameter_version_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ParameterManagerRestInterceptor, "post_update_parameter_version"
     ) as post, mock.patch.object(
+        transports.ParameterManagerRestInterceptor,
+        "post_update_parameter_version_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ParameterManagerRestInterceptor, "pre_update_parameter_version"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.UpdateParameterVersionRequest.pb(
             service.UpdateParameterVersionRequest()
         )
@@ -9709,6 +9815,7 @@ def test_update_parameter_version_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = service.ParameterVersion()
+        post_with_metadata.return_value = service.ParameterVersion(), metadata
 
         client.update_parameter_version(
             request,
@@ -9720,6 +9827,7 @@ def test_update_parameter_version_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_parameter_version_rest_bad_request(

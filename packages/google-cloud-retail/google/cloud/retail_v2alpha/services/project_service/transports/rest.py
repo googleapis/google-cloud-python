@@ -159,11 +159,34 @@ class ProjectServiceRestInterceptor:
     def post_accept_terms(self, response: gcr_project.Project) -> gcr_project.Project:
         """Post-rpc interceptor for accept_terms
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_accept_terms_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ProjectService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_accept_terms` interceptor runs
+        before the `post_accept_terms_with_metadata` interceptor.
         """
         return response
+
+    def post_accept_terms_with_metadata(
+        self,
+        response: gcr_project.Project,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[gcr_project.Project, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for accept_terms
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ProjectService server but before it is returned to user code.
+
+        We recommend only using this `post_accept_terms_with_metadata`
+        interceptor in new development instead of the `post_accept_terms` interceptor.
+        When both interceptors are used, this `post_accept_terms_with_metadata` interceptor runs after the
+        `post_accept_terms` interceptor. The (possibly modified) response returned by
+        `post_accept_terms` will be passed to
+        `post_accept_terms_with_metadata`.
+        """
+        return response, metadata
 
     def pre_enroll_solution(
         self,
@@ -184,11 +207,34 @@ class ProjectServiceRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for enroll_solution
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_enroll_solution_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ProjectService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_enroll_solution` interceptor runs
+        before the `post_enroll_solution_with_metadata` interceptor.
         """
         return response
+
+    def post_enroll_solution_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for enroll_solution
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ProjectService server but before it is returned to user code.
+
+        We recommend only using this `post_enroll_solution_with_metadata`
+        interceptor in new development instead of the `post_enroll_solution` interceptor.
+        When both interceptors are used, this `post_enroll_solution_with_metadata` interceptor runs after the
+        `post_enroll_solution` interceptor. The (possibly modified) response returned by
+        `post_enroll_solution` will be passed to
+        `post_enroll_solution_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_alert_config(
         self,
@@ -209,11 +255,34 @@ class ProjectServiceRestInterceptor:
     ) -> project.AlertConfig:
         """Post-rpc interceptor for get_alert_config
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_alert_config_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ProjectService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_alert_config` interceptor runs
+        before the `post_get_alert_config_with_metadata` interceptor.
         """
         return response
+
+    def post_get_alert_config_with_metadata(
+        self,
+        response: project.AlertConfig,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[project.AlertConfig, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_alert_config
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ProjectService server but before it is returned to user code.
+
+        We recommend only using this `post_get_alert_config_with_metadata`
+        interceptor in new development instead of the `post_get_alert_config` interceptor.
+        When both interceptors are used, this `post_get_alert_config_with_metadata` interceptor runs after the
+        `post_get_alert_config` interceptor. The (possibly modified) response returned by
+        `post_get_alert_config` will be passed to
+        `post_get_alert_config_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_logging_config(
         self,
@@ -234,11 +303,34 @@ class ProjectServiceRestInterceptor:
     ) -> project.LoggingConfig:
         """Post-rpc interceptor for get_logging_config
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_logging_config_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ProjectService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_logging_config` interceptor runs
+        before the `post_get_logging_config_with_metadata` interceptor.
         """
         return response
+
+    def post_get_logging_config_with_metadata(
+        self,
+        response: project.LoggingConfig,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[project.LoggingConfig, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_logging_config
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ProjectService server but before it is returned to user code.
+
+        We recommend only using this `post_get_logging_config_with_metadata`
+        interceptor in new development instead of the `post_get_logging_config` interceptor.
+        When both interceptors are used, this `post_get_logging_config_with_metadata` interceptor runs after the
+        `post_get_logging_config` interceptor. The (possibly modified) response returned by
+        `post_get_logging_config` will be passed to
+        `post_get_logging_config_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_project(
         self,
@@ -257,11 +349,34 @@ class ProjectServiceRestInterceptor:
     def post_get_project(self, response: project.Project) -> project.Project:
         """Post-rpc interceptor for get_project
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_project_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ProjectService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_project` interceptor runs
+        before the `post_get_project_with_metadata` interceptor.
         """
         return response
+
+    def post_get_project_with_metadata(
+        self,
+        response: project.Project,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[project.Project, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_project
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ProjectService server but before it is returned to user code.
+
+        We recommend only using this `post_get_project_with_metadata`
+        interceptor in new development instead of the `post_get_project` interceptor.
+        When both interceptors are used, this `post_get_project_with_metadata` interceptor runs after the
+        `post_get_project` interceptor. The (possibly modified) response returned by
+        `post_get_project` will be passed to
+        `post_get_project_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_enrolled_solutions(
         self,
@@ -283,11 +398,37 @@ class ProjectServiceRestInterceptor:
     ) -> project_service.ListEnrolledSolutionsResponse:
         """Post-rpc interceptor for list_enrolled_solutions
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_enrolled_solutions_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ProjectService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_enrolled_solutions` interceptor runs
+        before the `post_list_enrolled_solutions_with_metadata` interceptor.
         """
         return response
+
+    def post_list_enrolled_solutions_with_metadata(
+        self,
+        response: project_service.ListEnrolledSolutionsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        project_service.ListEnrolledSolutionsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_enrolled_solutions
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ProjectService server but before it is returned to user code.
+
+        We recommend only using this `post_list_enrolled_solutions_with_metadata`
+        interceptor in new development instead of the `post_list_enrolled_solutions` interceptor.
+        When both interceptors are used, this `post_list_enrolled_solutions_with_metadata` interceptor runs after the
+        `post_list_enrolled_solutions` interceptor. The (possibly modified) response returned by
+        `post_list_enrolled_solutions` will be passed to
+        `post_list_enrolled_solutions_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_alert_config(
         self,
@@ -309,11 +450,34 @@ class ProjectServiceRestInterceptor:
     ) -> project.AlertConfig:
         """Post-rpc interceptor for update_alert_config
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_alert_config_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ProjectService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_alert_config` interceptor runs
+        before the `post_update_alert_config_with_metadata` interceptor.
         """
         return response
+
+    def post_update_alert_config_with_metadata(
+        self,
+        response: project.AlertConfig,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[project.AlertConfig, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_alert_config
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ProjectService server but before it is returned to user code.
+
+        We recommend only using this `post_update_alert_config_with_metadata`
+        interceptor in new development instead of the `post_update_alert_config` interceptor.
+        When both interceptors are used, this `post_update_alert_config_with_metadata` interceptor runs after the
+        `post_update_alert_config` interceptor. The (possibly modified) response returned by
+        `post_update_alert_config` will be passed to
+        `post_update_alert_config_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_logging_config(
         self,
@@ -335,11 +499,34 @@ class ProjectServiceRestInterceptor:
     ) -> project.LoggingConfig:
         """Post-rpc interceptor for update_logging_config
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_logging_config_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ProjectService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_logging_config` interceptor runs
+        before the `post_update_logging_config_with_metadata` interceptor.
         """
         return response
+
+    def post_update_logging_config_with_metadata(
+        self,
+        response: project.LoggingConfig,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[project.LoggingConfig, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_logging_config
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ProjectService server but before it is returned to user code.
+
+        We recommend only using this `post_update_logging_config_with_metadata`
+        interceptor in new development instead of the `post_update_logging_config` interceptor.
+        When both interceptors are used, this `post_update_logging_config_with_metadata` interceptor runs after the
+        `post_update_logging_config` interceptor. The (possibly modified) response returned by
+        `post_update_logging_config` will be passed to
+        `post_update_logging_config_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_operation(
         self,
@@ -668,6 +855,10 @@ class ProjectServiceRestTransport(_BaseProjectServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_accept_terms(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_accept_terms_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -815,6 +1006,10 @@ class ProjectServiceRestTransport(_BaseProjectServiceRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_enroll_solution(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_enroll_solution_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -959,6 +1154,10 @@ class ProjectServiceRestTransport(_BaseProjectServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_alert_config(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_alert_config_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1106,6 +1305,10 @@ class ProjectServiceRestTransport(_BaseProjectServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_logging_config(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_logging_config_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1250,6 +1453,10 @@ class ProjectServiceRestTransport(_BaseProjectServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_project(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_project_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1396,6 +1603,10 @@ class ProjectServiceRestTransport(_BaseProjectServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_enrolled_solutions(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_enrolled_solutions_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1548,6 +1759,10 @@ class ProjectServiceRestTransport(_BaseProjectServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_alert_config(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_alert_config_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1702,6 +1917,10 @@ class ProjectServiceRestTransport(_BaseProjectServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_logging_config(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_logging_config_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

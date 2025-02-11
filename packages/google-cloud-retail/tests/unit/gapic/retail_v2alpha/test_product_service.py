@@ -79,6 +79,13 @@ from google.cloud.retail_v2alpha.types import product_service, promotion, purge_
 from google.cloud.retail_v2alpha.types import product
 from google.cloud.retail_v2alpha.types import product as gcr_product
 
+CRED_INFO_JSON = {
+    "credential_source": "/path/to/file",
+    "credential_type": "service account credentials",
+    "principal": "service-account@example.com",
+}
+CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
 
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
@@ -335,6 +342,49 @@ def test__get_universe_domain():
     with pytest.raises(ValueError) as excinfo:
         ProductServiceClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+
+@pytest.mark.parametrize(
+    "error_code,cred_info_json,show_cred_info",
+    [
+        (401, CRED_INFO_JSON, True),
+        (403, CRED_INFO_JSON, True),
+        (404, CRED_INFO_JSON, True),
+        (500, CRED_INFO_JSON, False),
+        (401, None, False),
+        (403, None, False),
+        (404, None, False),
+        (500, None, False),
+    ],
+)
+def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
+    cred = mock.Mock(["get_cred_info"])
+    cred.get_cred_info = mock.Mock(return_value=cred_info_json)
+    client = ProductServiceClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=["foo"])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    if show_cred_info:
+        assert error.details == ["foo", CRED_INFO_STRING]
+    else:
+        assert error.details == ["foo"]
+
+
+@pytest.mark.parametrize("error_code", [401, 403, 404, 500])
+def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
+    cred = mock.Mock([])
+    assert not hasattr(cred, "get_cred_info")
+    client = ProductServiceClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=[])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    assert error.details == []
 
 
 @pytest.mark.parametrize(
@@ -9056,10 +9106,13 @@ def test_create_product_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ProductServiceRestInterceptor, "post_create_product"
     ) as post, mock.patch.object(
+        transports.ProductServiceRestInterceptor, "post_create_product_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ProductServiceRestInterceptor, "pre_create_product"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = product_service.CreateProductRequest.pb(
             product_service.CreateProductRequest()
         )
@@ -9083,6 +9136,7 @@ def test_create_product_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = gcr_product.Product()
+        post_with_metadata.return_value = gcr_product.Product(), metadata
 
         client.create_product(
             request,
@@ -9094,6 +9148,7 @@ def test_create_product_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_product_rest_bad_request(request_type=product_service.GetProductRequest):
@@ -9214,10 +9269,13 @@ def test_get_product_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ProductServiceRestInterceptor, "post_get_product"
     ) as post, mock.patch.object(
+        transports.ProductServiceRestInterceptor, "post_get_product_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ProductServiceRestInterceptor, "pre_get_product"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = product_service.GetProductRequest.pb(
             product_service.GetProductRequest()
         )
@@ -9241,6 +9299,7 @@ def test_get_product_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = product.Product()
+        post_with_metadata.return_value = product.Product(), metadata
 
         client.get_product(
             request,
@@ -9252,6 +9311,7 @@ def test_get_product_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_products_rest_bad_request(
@@ -9342,10 +9402,13 @@ def test_list_products_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ProductServiceRestInterceptor, "post_list_products"
     ) as post, mock.patch.object(
+        transports.ProductServiceRestInterceptor, "post_list_products_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ProductServiceRestInterceptor, "pre_list_products"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = product_service.ListProductsRequest.pb(
             product_service.ListProductsRequest()
         )
@@ -9371,6 +9434,10 @@ def test_list_products_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = product_service.ListProductsResponse()
+        post_with_metadata.return_value = (
+            product_service.ListProductsResponse(),
+            metadata,
+        )
 
         client.list_products(
             request,
@@ -9382,6 +9449,7 @@ def test_list_products_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_product_rest_bad_request(
@@ -9655,10 +9723,13 @@ def test_update_product_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ProductServiceRestInterceptor, "post_update_product"
     ) as post, mock.patch.object(
+        transports.ProductServiceRestInterceptor, "post_update_product_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ProductServiceRestInterceptor, "pre_update_product"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = product_service.UpdateProductRequest.pb(
             product_service.UpdateProductRequest()
         )
@@ -9682,6 +9753,7 @@ def test_update_product_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = gcr_product.Product()
+        post_with_metadata.return_value = gcr_product.Product(), metadata
 
         client.update_product(
             request,
@@ -9693,6 +9765,7 @@ def test_update_product_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_product_rest_bad_request(
@@ -9890,10 +9963,13 @@ def test_purge_products_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.ProductServiceRestInterceptor, "post_purge_products"
     ) as post, mock.patch.object(
+        transports.ProductServiceRestInterceptor, "post_purge_products_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ProductServiceRestInterceptor, "pre_purge_products"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = purge_config.PurgeProductsRequest.pb(
             purge_config.PurgeProductsRequest()
         )
@@ -9917,6 +9993,7 @@ def test_purge_products_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.purge_products(
             request,
@@ -9928,6 +10005,7 @@ def test_purge_products_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_import_products_rest_bad_request(
@@ -10012,10 +10090,13 @@ def test_import_products_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.ProductServiceRestInterceptor, "post_import_products"
     ) as post, mock.patch.object(
+        transports.ProductServiceRestInterceptor, "post_import_products_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ProductServiceRestInterceptor, "pre_import_products"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = import_config.ImportProductsRequest.pb(
             import_config.ImportProductsRequest()
         )
@@ -10039,6 +10120,7 @@ def test_import_products_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.import_products(
             request,
@@ -10050,6 +10132,7 @@ def test_import_products_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_export_products_rest_bad_request(
@@ -10134,10 +10217,13 @@ def test_export_products_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.ProductServiceRestInterceptor, "post_export_products"
     ) as post, mock.patch.object(
+        transports.ProductServiceRestInterceptor, "post_export_products_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ProductServiceRestInterceptor, "pre_export_products"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = export_config.ExportProductsRequest.pb(
             export_config.ExportProductsRequest()
         )
@@ -10161,6 +10247,7 @@ def test_export_products_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.export_products(
             request,
@@ -10172,6 +10259,7 @@ def test_export_products_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_set_inventory_rest_bad_request(
@@ -10260,10 +10348,13 @@ def test_set_inventory_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.ProductServiceRestInterceptor, "post_set_inventory"
     ) as post, mock.patch.object(
+        transports.ProductServiceRestInterceptor, "post_set_inventory_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ProductServiceRestInterceptor, "pre_set_inventory"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = product_service.SetInventoryRequest.pb(
             product_service.SetInventoryRequest()
         )
@@ -10287,6 +10378,7 @@ def test_set_inventory_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.set_inventory(
             request,
@@ -10298,6 +10390,7 @@ def test_set_inventory_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_add_fulfillment_places_rest_bad_request(
@@ -10382,10 +10475,14 @@ def test_add_fulfillment_places_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.ProductServiceRestInterceptor, "post_add_fulfillment_places"
     ) as post, mock.patch.object(
+        transports.ProductServiceRestInterceptor,
+        "post_add_fulfillment_places_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ProductServiceRestInterceptor, "pre_add_fulfillment_places"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = product_service.AddFulfillmentPlacesRequest.pb(
             product_service.AddFulfillmentPlacesRequest()
         )
@@ -10409,6 +10506,7 @@ def test_add_fulfillment_places_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.add_fulfillment_places(
             request,
@@ -10420,6 +10518,7 @@ def test_add_fulfillment_places_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_remove_fulfillment_places_rest_bad_request(
@@ -10504,10 +10603,14 @@ def test_remove_fulfillment_places_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.ProductServiceRestInterceptor, "post_remove_fulfillment_places"
     ) as post, mock.patch.object(
+        transports.ProductServiceRestInterceptor,
+        "post_remove_fulfillment_places_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ProductServiceRestInterceptor, "pre_remove_fulfillment_places"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = product_service.RemoveFulfillmentPlacesRequest.pb(
             product_service.RemoveFulfillmentPlacesRequest()
         )
@@ -10531,6 +10634,7 @@ def test_remove_fulfillment_places_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.remove_fulfillment_places(
             request,
@@ -10542,6 +10646,7 @@ def test_remove_fulfillment_places_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_add_local_inventories_rest_bad_request(
@@ -10626,10 +10731,14 @@ def test_add_local_inventories_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.ProductServiceRestInterceptor, "post_add_local_inventories"
     ) as post, mock.patch.object(
+        transports.ProductServiceRestInterceptor,
+        "post_add_local_inventories_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ProductServiceRestInterceptor, "pre_add_local_inventories"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = product_service.AddLocalInventoriesRequest.pb(
             product_service.AddLocalInventoriesRequest()
         )
@@ -10653,6 +10762,7 @@ def test_add_local_inventories_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.add_local_inventories(
             request,
@@ -10664,6 +10774,7 @@ def test_add_local_inventories_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_remove_local_inventories_rest_bad_request(
@@ -10748,10 +10859,14 @@ def test_remove_local_inventories_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.ProductServiceRestInterceptor, "post_remove_local_inventories"
     ) as post, mock.patch.object(
+        transports.ProductServiceRestInterceptor,
+        "post_remove_local_inventories_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ProductServiceRestInterceptor, "pre_remove_local_inventories"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = product_service.RemoveLocalInventoriesRequest.pb(
             product_service.RemoveLocalInventoriesRequest()
         )
@@ -10775,6 +10890,7 @@ def test_remove_local_inventories_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.remove_local_inventories(
             request,
@@ -10786,6 +10902,7 @@ def test_remove_local_inventories_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_operation_rest_bad_request(

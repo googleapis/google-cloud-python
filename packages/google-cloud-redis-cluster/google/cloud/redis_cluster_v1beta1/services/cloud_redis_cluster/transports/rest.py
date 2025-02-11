@@ -208,11 +208,34 @@ class CloudRedisClusterRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for backup_cluster
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_backup_cluster_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CloudRedisCluster server but before
-        it is returned to user code.
+        it is returned to user code. This `post_backup_cluster` interceptor runs
+        before the `post_backup_cluster_with_metadata` interceptor.
         """
         return response
+
+    def post_backup_cluster_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for backup_cluster
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CloudRedisCluster server but before it is returned to user code.
+
+        We recommend only using this `post_backup_cluster_with_metadata`
+        interceptor in new development instead of the `post_backup_cluster` interceptor.
+        When both interceptors are used, this `post_backup_cluster_with_metadata` interceptor runs after the
+        `post_backup_cluster` interceptor. The (possibly modified) response returned by
+        `post_backup_cluster` will be passed to
+        `post_backup_cluster_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_cluster(
         self,
@@ -234,11 +257,34 @@ class CloudRedisClusterRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_cluster
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_cluster_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CloudRedisCluster server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_cluster` interceptor runs
+        before the `post_create_cluster_with_metadata` interceptor.
         """
         return response
+
+    def post_create_cluster_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_cluster
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CloudRedisCluster server but before it is returned to user code.
+
+        We recommend only using this `post_create_cluster_with_metadata`
+        interceptor in new development instead of the `post_create_cluster` interceptor.
+        When both interceptors are used, this `post_create_cluster_with_metadata` interceptor runs after the
+        `post_create_cluster` interceptor. The (possibly modified) response returned by
+        `post_create_cluster` will be passed to
+        `post_create_cluster_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_backup(
         self,
@@ -259,11 +305,34 @@ class CloudRedisClusterRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_backup
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_backup_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CloudRedisCluster server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_backup` interceptor runs
+        before the `post_delete_backup_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_backup_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_backup
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CloudRedisCluster server but before it is returned to user code.
+
+        We recommend only using this `post_delete_backup_with_metadata`
+        interceptor in new development instead of the `post_delete_backup` interceptor.
+        When both interceptors are used, this `post_delete_backup_with_metadata` interceptor runs after the
+        `post_delete_backup` interceptor. The (possibly modified) response returned by
+        `post_delete_backup` will be passed to
+        `post_delete_backup_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_cluster(
         self,
@@ -285,11 +354,34 @@ class CloudRedisClusterRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_cluster
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_cluster_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CloudRedisCluster server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_cluster` interceptor runs
+        before the `post_delete_cluster_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_cluster_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_cluster
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CloudRedisCluster server but before it is returned to user code.
+
+        We recommend only using this `post_delete_cluster_with_metadata`
+        interceptor in new development instead of the `post_delete_cluster` interceptor.
+        When both interceptors are used, this `post_delete_cluster_with_metadata` interceptor runs after the
+        `post_delete_cluster` interceptor. The (possibly modified) response returned by
+        `post_delete_cluster` will be passed to
+        `post_delete_cluster_with_metadata`.
+        """
+        return response, metadata
 
     def pre_export_backup(
         self,
@@ -310,11 +402,34 @@ class CloudRedisClusterRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for export_backup
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_export_backup_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CloudRedisCluster server but before
-        it is returned to user code.
+        it is returned to user code. This `post_export_backup` interceptor runs
+        before the `post_export_backup_with_metadata` interceptor.
         """
         return response
+
+    def post_export_backup_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for export_backup
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CloudRedisCluster server but before it is returned to user code.
+
+        We recommend only using this `post_export_backup_with_metadata`
+        interceptor in new development instead of the `post_export_backup` interceptor.
+        When both interceptors are used, this `post_export_backup_with_metadata` interceptor runs after the
+        `post_export_backup` interceptor. The (possibly modified) response returned by
+        `post_export_backup` will be passed to
+        `post_export_backup_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_backup(
         self,
@@ -335,11 +450,34 @@ class CloudRedisClusterRestInterceptor:
     ) -> cloud_redis_cluster.Backup:
         """Post-rpc interceptor for get_backup
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_backup_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CloudRedisCluster server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_backup` interceptor runs
+        before the `post_get_backup_with_metadata` interceptor.
         """
         return response
+
+    def post_get_backup_with_metadata(
+        self,
+        response: cloud_redis_cluster.Backup,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[cloud_redis_cluster.Backup, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_backup
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CloudRedisCluster server but before it is returned to user code.
+
+        We recommend only using this `post_get_backup_with_metadata`
+        interceptor in new development instead of the `post_get_backup` interceptor.
+        When both interceptors are used, this `post_get_backup_with_metadata` interceptor runs after the
+        `post_get_backup` interceptor. The (possibly modified) response returned by
+        `post_get_backup` will be passed to
+        `post_get_backup_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_backup_collection(
         self,
@@ -361,11 +499,36 @@ class CloudRedisClusterRestInterceptor:
     ) -> cloud_redis_cluster.BackupCollection:
         """Post-rpc interceptor for get_backup_collection
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_backup_collection_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CloudRedisCluster server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_backup_collection` interceptor runs
+        before the `post_get_backup_collection_with_metadata` interceptor.
         """
         return response
+
+    def post_get_backup_collection_with_metadata(
+        self,
+        response: cloud_redis_cluster.BackupCollection,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloud_redis_cluster.BackupCollection, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for get_backup_collection
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CloudRedisCluster server but before it is returned to user code.
+
+        We recommend only using this `post_get_backup_collection_with_metadata`
+        interceptor in new development instead of the `post_get_backup_collection` interceptor.
+        When both interceptors are used, this `post_get_backup_collection_with_metadata` interceptor runs after the
+        `post_get_backup_collection` interceptor. The (possibly modified) response returned by
+        `post_get_backup_collection` will be passed to
+        `post_get_backup_collection_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_cluster(
         self,
@@ -386,11 +549,34 @@ class CloudRedisClusterRestInterceptor:
     ) -> cloud_redis_cluster.Cluster:
         """Post-rpc interceptor for get_cluster
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_cluster_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CloudRedisCluster server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_cluster` interceptor runs
+        before the `post_get_cluster_with_metadata` interceptor.
         """
         return response
+
+    def post_get_cluster_with_metadata(
+        self,
+        response: cloud_redis_cluster.Cluster,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[cloud_redis_cluster.Cluster, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_cluster
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CloudRedisCluster server but before it is returned to user code.
+
+        We recommend only using this `post_get_cluster_with_metadata`
+        interceptor in new development instead of the `post_get_cluster` interceptor.
+        When both interceptors are used, this `post_get_cluster_with_metadata` interceptor runs after the
+        `post_get_cluster` interceptor. The (possibly modified) response returned by
+        `post_get_cluster` will be passed to
+        `post_get_cluster_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_cluster_certificate_authority(
         self,
@@ -412,11 +598,37 @@ class CloudRedisClusterRestInterceptor:
     ) -> cloud_redis_cluster.CertificateAuthority:
         """Post-rpc interceptor for get_cluster_certificate_authority
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_cluster_certificate_authority_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CloudRedisCluster server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_cluster_certificate_authority` interceptor runs
+        before the `post_get_cluster_certificate_authority_with_metadata` interceptor.
         """
         return response
+
+    def post_get_cluster_certificate_authority_with_metadata(
+        self,
+        response: cloud_redis_cluster.CertificateAuthority,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloud_redis_cluster.CertificateAuthority,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for get_cluster_certificate_authority
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CloudRedisCluster server but before it is returned to user code.
+
+        We recommend only using this `post_get_cluster_certificate_authority_with_metadata`
+        interceptor in new development instead of the `post_get_cluster_certificate_authority` interceptor.
+        When both interceptors are used, this `post_get_cluster_certificate_authority_with_metadata` interceptor runs after the
+        `post_get_cluster_certificate_authority` interceptor. The (possibly modified) response returned by
+        `post_get_cluster_certificate_authority` will be passed to
+        `post_get_cluster_certificate_authority_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_backup_collections(
         self,
@@ -438,11 +650,37 @@ class CloudRedisClusterRestInterceptor:
     ) -> cloud_redis_cluster.ListBackupCollectionsResponse:
         """Post-rpc interceptor for list_backup_collections
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_backup_collections_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CloudRedisCluster server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_backup_collections` interceptor runs
+        before the `post_list_backup_collections_with_metadata` interceptor.
         """
         return response
+
+    def post_list_backup_collections_with_metadata(
+        self,
+        response: cloud_redis_cluster.ListBackupCollectionsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloud_redis_cluster.ListBackupCollectionsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_backup_collections
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CloudRedisCluster server but before it is returned to user code.
+
+        We recommend only using this `post_list_backup_collections_with_metadata`
+        interceptor in new development instead of the `post_list_backup_collections` interceptor.
+        When both interceptors are used, this `post_list_backup_collections_with_metadata` interceptor runs after the
+        `post_list_backup_collections` interceptor. The (possibly modified) response returned by
+        `post_list_backup_collections` will be passed to
+        `post_list_backup_collections_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_backups(
         self,
@@ -463,11 +701,36 @@ class CloudRedisClusterRestInterceptor:
     ) -> cloud_redis_cluster.ListBackupsResponse:
         """Post-rpc interceptor for list_backups
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_backups_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CloudRedisCluster server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_backups` interceptor runs
+        before the `post_list_backups_with_metadata` interceptor.
         """
         return response
+
+    def post_list_backups_with_metadata(
+        self,
+        response: cloud_redis_cluster.ListBackupsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloud_redis_cluster.ListBackupsResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_backups
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CloudRedisCluster server but before it is returned to user code.
+
+        We recommend only using this `post_list_backups_with_metadata`
+        interceptor in new development instead of the `post_list_backups` interceptor.
+        When both interceptors are used, this `post_list_backups_with_metadata` interceptor runs after the
+        `post_list_backups` interceptor. The (possibly modified) response returned by
+        `post_list_backups` will be passed to
+        `post_list_backups_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_clusters(
         self,
@@ -488,11 +751,37 @@ class CloudRedisClusterRestInterceptor:
     ) -> cloud_redis_cluster.ListClustersResponse:
         """Post-rpc interceptor for list_clusters
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_clusters_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CloudRedisCluster server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_clusters` interceptor runs
+        before the `post_list_clusters_with_metadata` interceptor.
         """
         return response
+
+    def post_list_clusters_with_metadata(
+        self,
+        response: cloud_redis_cluster.ListClustersResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloud_redis_cluster.ListClustersResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_clusters
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CloudRedisCluster server but before it is returned to user code.
+
+        We recommend only using this `post_list_clusters_with_metadata`
+        interceptor in new development instead of the `post_list_clusters` interceptor.
+        When both interceptors are used, this `post_list_clusters_with_metadata` interceptor runs after the
+        `post_list_clusters` interceptor. The (possibly modified) response returned by
+        `post_list_clusters` will be passed to
+        `post_list_clusters_with_metadata`.
+        """
+        return response, metadata
 
     def pre_reschedule_cluster_maintenance(
         self,
@@ -514,11 +803,34 @@ class CloudRedisClusterRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for reschedule_cluster_maintenance
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_reschedule_cluster_maintenance_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CloudRedisCluster server but before
-        it is returned to user code.
+        it is returned to user code. This `post_reschedule_cluster_maintenance` interceptor runs
+        before the `post_reschedule_cluster_maintenance_with_metadata` interceptor.
         """
         return response
+
+    def post_reschedule_cluster_maintenance_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for reschedule_cluster_maintenance
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CloudRedisCluster server but before it is returned to user code.
+
+        We recommend only using this `post_reschedule_cluster_maintenance_with_metadata`
+        interceptor in new development instead of the `post_reschedule_cluster_maintenance` interceptor.
+        When both interceptors are used, this `post_reschedule_cluster_maintenance_with_metadata` interceptor runs after the
+        `post_reschedule_cluster_maintenance` interceptor. The (possibly modified) response returned by
+        `post_reschedule_cluster_maintenance` will be passed to
+        `post_reschedule_cluster_maintenance_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_cluster(
         self,
@@ -540,11 +852,34 @@ class CloudRedisClusterRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_cluster
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_cluster_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CloudRedisCluster server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_cluster` interceptor runs
+        before the `post_update_cluster_with_metadata` interceptor.
         """
         return response
+
+    def post_update_cluster_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_cluster
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CloudRedisCluster server but before it is returned to user code.
+
+        We recommend only using this `post_update_cluster_with_metadata`
+        interceptor in new development instead of the `post_update_cluster` interceptor.
+        When both interceptors are used, this `post_update_cluster_with_metadata` interceptor runs after the
+        `post_update_cluster` interceptor. The (possibly modified) response returned by
+        `post_update_cluster` will be passed to
+        `post_update_cluster_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_location(
         self,
@@ -976,6 +1311,10 @@ class CloudRedisClusterRestTransport(_BaseCloudRedisClusterRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_backup_cluster(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_backup_cluster_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1124,6 +1463,10 @@ class CloudRedisClusterRestTransport(_BaseCloudRedisClusterRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_cluster(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_cluster_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1265,6 +1608,10 @@ class CloudRedisClusterRestTransport(_BaseCloudRedisClusterRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_backup(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_backup_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1407,6 +1754,10 @@ class CloudRedisClusterRestTransport(_BaseCloudRedisClusterRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_cluster(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_cluster_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1554,6 +1905,10 @@ class CloudRedisClusterRestTransport(_BaseCloudRedisClusterRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_export_backup(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_export_backup_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1694,6 +2049,10 @@ class CloudRedisClusterRestTransport(_BaseCloudRedisClusterRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_backup(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_backup_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1839,6 +2198,10 @@ class CloudRedisClusterRestTransport(_BaseCloudRedisClusterRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_backup_collection(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_backup_collection_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1981,6 +2344,10 @@ class CloudRedisClusterRestTransport(_BaseCloudRedisClusterRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_cluster(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_cluster_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2126,6 +2493,13 @@ class CloudRedisClusterRestTransport(_BaseCloudRedisClusterRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_cluster_certificate_authority(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_get_cluster_certificate_authority_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2273,6 +2647,10 @@ class CloudRedisClusterRestTransport(_BaseCloudRedisClusterRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_backup_collections(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_backup_collections_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2417,6 +2795,10 @@ class CloudRedisClusterRestTransport(_BaseCloudRedisClusterRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_backups(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_backups_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2559,6 +2941,10 @@ class CloudRedisClusterRestTransport(_BaseCloudRedisClusterRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_clusters(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_clusters_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2713,6 +3099,13 @@ class CloudRedisClusterRestTransport(_BaseCloudRedisClusterRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_reschedule_cluster_maintenance(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_reschedule_cluster_maintenance_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2861,6 +3254,10 @@ class CloudRedisClusterRestTransport(_BaseCloudRedisClusterRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_cluster(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_cluster_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

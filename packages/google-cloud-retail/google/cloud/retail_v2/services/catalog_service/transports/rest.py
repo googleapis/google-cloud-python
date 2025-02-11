@@ -183,11 +183,34 @@ class CatalogServiceRestInterceptor:
     ) -> catalog.AttributesConfig:
         """Post-rpc interceptor for add_catalog_attribute
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_add_catalog_attribute_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CatalogService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_add_catalog_attribute` interceptor runs
+        before the `post_add_catalog_attribute_with_metadata` interceptor.
         """
         return response
+
+    def post_add_catalog_attribute_with_metadata(
+        self,
+        response: catalog.AttributesConfig,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[catalog.AttributesConfig, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for add_catalog_attribute
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CatalogService server but before it is returned to user code.
+
+        We recommend only using this `post_add_catalog_attribute_with_metadata`
+        interceptor in new development instead of the `post_add_catalog_attribute` interceptor.
+        When both interceptors are used, this `post_add_catalog_attribute_with_metadata` interceptor runs after the
+        `post_add_catalog_attribute` interceptor. The (possibly modified) response returned by
+        `post_add_catalog_attribute` will be passed to
+        `post_add_catalog_attribute_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_attributes_config(
         self,
@@ -209,11 +232,34 @@ class CatalogServiceRestInterceptor:
     ) -> catalog.AttributesConfig:
         """Post-rpc interceptor for get_attributes_config
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_attributes_config_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CatalogService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_attributes_config` interceptor runs
+        before the `post_get_attributes_config_with_metadata` interceptor.
         """
         return response
+
+    def post_get_attributes_config_with_metadata(
+        self,
+        response: catalog.AttributesConfig,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[catalog.AttributesConfig, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_attributes_config
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CatalogService server but before it is returned to user code.
+
+        We recommend only using this `post_get_attributes_config_with_metadata`
+        interceptor in new development instead of the `post_get_attributes_config` interceptor.
+        When both interceptors are used, this `post_get_attributes_config_with_metadata` interceptor runs after the
+        `post_get_attributes_config` interceptor. The (possibly modified) response returned by
+        `post_get_attributes_config` will be passed to
+        `post_get_attributes_config_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_completion_config(
         self,
@@ -235,11 +281,34 @@ class CatalogServiceRestInterceptor:
     ) -> catalog.CompletionConfig:
         """Post-rpc interceptor for get_completion_config
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_completion_config_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CatalogService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_completion_config` interceptor runs
+        before the `post_get_completion_config_with_metadata` interceptor.
         """
         return response
+
+    def post_get_completion_config_with_metadata(
+        self,
+        response: catalog.CompletionConfig,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[catalog.CompletionConfig, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_completion_config
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CatalogService server but before it is returned to user code.
+
+        We recommend only using this `post_get_completion_config_with_metadata`
+        interceptor in new development instead of the `post_get_completion_config` interceptor.
+        When both interceptors are used, this `post_get_completion_config_with_metadata` interceptor runs after the
+        `post_get_completion_config` interceptor. The (possibly modified) response returned by
+        `post_get_completion_config` will be passed to
+        `post_get_completion_config_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_default_branch(
         self,
@@ -260,11 +329,37 @@ class CatalogServiceRestInterceptor:
     ) -> catalog_service.GetDefaultBranchResponse:
         """Post-rpc interceptor for get_default_branch
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_default_branch_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CatalogService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_default_branch` interceptor runs
+        before the `post_get_default_branch_with_metadata` interceptor.
         """
         return response
+
+    def post_get_default_branch_with_metadata(
+        self,
+        response: catalog_service.GetDefaultBranchResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        catalog_service.GetDefaultBranchResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for get_default_branch
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CatalogService server but before it is returned to user code.
+
+        We recommend only using this `post_get_default_branch_with_metadata`
+        interceptor in new development instead of the `post_get_default_branch` interceptor.
+        When both interceptors are used, this `post_get_default_branch_with_metadata` interceptor runs after the
+        `post_get_default_branch` interceptor. The (possibly modified) response returned by
+        `post_get_default_branch` will be passed to
+        `post_get_default_branch_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_catalogs(
         self,
@@ -285,11 +380,36 @@ class CatalogServiceRestInterceptor:
     ) -> catalog_service.ListCatalogsResponse:
         """Post-rpc interceptor for list_catalogs
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_catalogs_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CatalogService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_catalogs` interceptor runs
+        before the `post_list_catalogs_with_metadata` interceptor.
         """
         return response
+
+    def post_list_catalogs_with_metadata(
+        self,
+        response: catalog_service.ListCatalogsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        catalog_service.ListCatalogsResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_catalogs
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CatalogService server but before it is returned to user code.
+
+        We recommend only using this `post_list_catalogs_with_metadata`
+        interceptor in new development instead of the `post_list_catalogs` interceptor.
+        When both interceptors are used, this `post_list_catalogs_with_metadata` interceptor runs after the
+        `post_list_catalogs` interceptor. The (possibly modified) response returned by
+        `post_list_catalogs` will be passed to
+        `post_list_catalogs_with_metadata`.
+        """
+        return response, metadata
 
     def pre_remove_catalog_attribute(
         self,
@@ -311,11 +431,34 @@ class CatalogServiceRestInterceptor:
     ) -> catalog.AttributesConfig:
         """Post-rpc interceptor for remove_catalog_attribute
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_remove_catalog_attribute_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CatalogService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_remove_catalog_attribute` interceptor runs
+        before the `post_remove_catalog_attribute_with_metadata` interceptor.
         """
         return response
+
+    def post_remove_catalog_attribute_with_metadata(
+        self,
+        response: catalog.AttributesConfig,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[catalog.AttributesConfig, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for remove_catalog_attribute
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CatalogService server but before it is returned to user code.
+
+        We recommend only using this `post_remove_catalog_attribute_with_metadata`
+        interceptor in new development instead of the `post_remove_catalog_attribute` interceptor.
+        When both interceptors are used, this `post_remove_catalog_attribute_with_metadata` interceptor runs after the
+        `post_remove_catalog_attribute` interceptor. The (possibly modified) response returned by
+        `post_remove_catalog_attribute` will be passed to
+        `post_remove_catalog_attribute_with_metadata`.
+        """
+        return response, metadata
 
     def pre_replace_catalog_attribute(
         self,
@@ -337,11 +480,34 @@ class CatalogServiceRestInterceptor:
     ) -> catalog.AttributesConfig:
         """Post-rpc interceptor for replace_catalog_attribute
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_replace_catalog_attribute_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CatalogService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_replace_catalog_attribute` interceptor runs
+        before the `post_replace_catalog_attribute_with_metadata` interceptor.
         """
         return response
+
+    def post_replace_catalog_attribute_with_metadata(
+        self,
+        response: catalog.AttributesConfig,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[catalog.AttributesConfig, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for replace_catalog_attribute
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CatalogService server but before it is returned to user code.
+
+        We recommend only using this `post_replace_catalog_attribute_with_metadata`
+        interceptor in new development instead of the `post_replace_catalog_attribute` interceptor.
+        When both interceptors are used, this `post_replace_catalog_attribute_with_metadata` interceptor runs after the
+        `post_replace_catalog_attribute` interceptor. The (possibly modified) response returned by
+        `post_replace_catalog_attribute` will be passed to
+        `post_replace_catalog_attribute_with_metadata`.
+        """
+        return response, metadata
 
     def pre_set_default_branch(
         self,
@@ -377,11 +543,34 @@ class CatalogServiceRestInterceptor:
     ) -> catalog.AttributesConfig:
         """Post-rpc interceptor for update_attributes_config
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_attributes_config_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CatalogService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_attributes_config` interceptor runs
+        before the `post_update_attributes_config_with_metadata` interceptor.
         """
         return response
+
+    def post_update_attributes_config_with_metadata(
+        self,
+        response: catalog.AttributesConfig,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[catalog.AttributesConfig, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_attributes_config
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CatalogService server but before it is returned to user code.
+
+        We recommend only using this `post_update_attributes_config_with_metadata`
+        interceptor in new development instead of the `post_update_attributes_config` interceptor.
+        When both interceptors are used, this `post_update_attributes_config_with_metadata` interceptor runs after the
+        `post_update_attributes_config` interceptor. The (possibly modified) response returned by
+        `post_update_attributes_config` will be passed to
+        `post_update_attributes_config_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_catalog(
         self,
@@ -400,11 +589,34 @@ class CatalogServiceRestInterceptor:
     def post_update_catalog(self, response: gcr_catalog.Catalog) -> gcr_catalog.Catalog:
         """Post-rpc interceptor for update_catalog
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_catalog_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CatalogService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_catalog` interceptor runs
+        before the `post_update_catalog_with_metadata` interceptor.
         """
         return response
+
+    def post_update_catalog_with_metadata(
+        self,
+        response: gcr_catalog.Catalog,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[gcr_catalog.Catalog, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_catalog
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CatalogService server but before it is returned to user code.
+
+        We recommend only using this `post_update_catalog_with_metadata`
+        interceptor in new development instead of the `post_update_catalog` interceptor.
+        When both interceptors are used, this `post_update_catalog_with_metadata` interceptor runs after the
+        `post_update_catalog` interceptor. The (possibly modified) response returned by
+        `post_update_catalog` will be passed to
+        `post_update_catalog_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_completion_config(
         self,
@@ -426,11 +638,34 @@ class CatalogServiceRestInterceptor:
     ) -> catalog.CompletionConfig:
         """Post-rpc interceptor for update_completion_config
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_completion_config_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CatalogService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_completion_config` interceptor runs
+        before the `post_update_completion_config_with_metadata` interceptor.
         """
         return response
+
+    def post_update_completion_config_with_metadata(
+        self,
+        response: catalog.CompletionConfig,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[catalog.CompletionConfig, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_completion_config
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CatalogService server but before it is returned to user code.
+
+        We recommend only using this `post_update_completion_config_with_metadata`
+        interceptor in new development instead of the `post_update_completion_config` interceptor.
+        When both interceptors are used, this `post_update_completion_config_with_metadata` interceptor runs after the
+        `post_update_completion_config` interceptor. The (possibly modified) response returned by
+        `post_update_completion_config` will be passed to
+        `post_update_completion_config_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_operation(
         self,
@@ -697,6 +932,10 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_add_catalog_attribute(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_add_catalog_attribute_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -842,6 +1081,10 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_attributes_config(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_attributes_config_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -990,6 +1233,10 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_completion_config(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_completion_config_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1135,6 +1382,10 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_default_branch(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_default_branch_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1282,6 +1533,10 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_catalogs(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_catalogs_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1437,6 +1692,10 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_remove_catalog_attribute(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_remove_catalog_attribute_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1590,6 +1849,10 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_replace_catalog_attribute(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_replace_catalog_attribute_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1858,6 +2121,10 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_attributes_config(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_attributes_config_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2006,6 +2273,10 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_catalog(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_catalog_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2162,6 +2433,10 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_completion_config(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_completion_config_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
