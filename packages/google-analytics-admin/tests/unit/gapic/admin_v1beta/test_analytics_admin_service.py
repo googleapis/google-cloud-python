@@ -67,6 +67,13 @@ from google.analytics.admin_v1beta.types import (
     resources,
 )
 
+CRED_INFO_JSON = {
+    "credential_source": "/path/to/file",
+    "credential_type": "service account credentials",
+    "principal": "service-account@example.com",
+}
+CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
 
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
@@ -340,6 +347,49 @@ def test__get_universe_domain():
     with pytest.raises(ValueError) as excinfo:
         AnalyticsAdminServiceClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+
+@pytest.mark.parametrize(
+    "error_code,cred_info_json,show_cred_info",
+    [
+        (401, CRED_INFO_JSON, True),
+        (403, CRED_INFO_JSON, True),
+        (404, CRED_INFO_JSON, True),
+        (500, CRED_INFO_JSON, False),
+        (401, None, False),
+        (403, None, False),
+        (404, None, False),
+        (500, None, False),
+    ],
+)
+def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
+    cred = mock.Mock(["get_cred_info"])
+    cred.get_cred_info = mock.Mock(return_value=cred_info_json)
+    client = AnalyticsAdminServiceClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=["foo"])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    if show_cred_info:
+        assert error.details == ["foo", CRED_INFO_STRING]
+    else:
+        assert error.details == ["foo"]
+
+
+@pytest.mark.parametrize("error_code", [401, 403, 404, 500])
+def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
+    cred = mock.Mock([])
+    assert not hasattr(cred, "get_cred_info")
+    client = AnalyticsAdminServiceClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=[])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    assert error.details == []
 
 
 @pytest.mark.parametrize(
@@ -18541,6 +18591,7 @@ def test_get_data_retention_settings(request_type, transport: str = "grpc"):
         call.return_value = resources.DataRetentionSettings(
             name="name_value",
             event_data_retention=resources.DataRetentionSettings.RetentionDuration.TWO_MONTHS,
+            user_data_retention=resources.DataRetentionSettings.RetentionDuration.TWO_MONTHS,
             reset_user_data_on_new_activity=True,
         )
         response = client.get_data_retention_settings(request)
@@ -18556,6 +18607,10 @@ def test_get_data_retention_settings(request_type, transport: str = "grpc"):
     assert response.name == "name_value"
     assert (
         response.event_data_retention
+        == resources.DataRetentionSettings.RetentionDuration.TWO_MONTHS
+    )
+    assert (
+        response.user_data_retention
         == resources.DataRetentionSettings.RetentionDuration.TWO_MONTHS
     )
     assert response.reset_user_data_on_new_activity is True
@@ -18696,6 +18751,7 @@ async def test_get_data_retention_settings_async(
             resources.DataRetentionSettings(
                 name="name_value",
                 event_data_retention=resources.DataRetentionSettings.RetentionDuration.TWO_MONTHS,
+                user_data_retention=resources.DataRetentionSettings.RetentionDuration.TWO_MONTHS,
                 reset_user_data_on_new_activity=True,
             )
         )
@@ -18712,6 +18768,10 @@ async def test_get_data_retention_settings_async(
     assert response.name == "name_value"
     assert (
         response.event_data_retention
+        == resources.DataRetentionSettings.RetentionDuration.TWO_MONTHS
+    )
+    assert (
+        response.user_data_retention
         == resources.DataRetentionSettings.RetentionDuration.TWO_MONTHS
     )
     assert response.reset_user_data_on_new_activity is True
@@ -18898,6 +18958,7 @@ def test_update_data_retention_settings(request_type, transport: str = "grpc"):
         call.return_value = resources.DataRetentionSettings(
             name="name_value",
             event_data_retention=resources.DataRetentionSettings.RetentionDuration.TWO_MONTHS,
+            user_data_retention=resources.DataRetentionSettings.RetentionDuration.TWO_MONTHS,
             reset_user_data_on_new_activity=True,
         )
         response = client.update_data_retention_settings(request)
@@ -18913,6 +18974,10 @@ def test_update_data_retention_settings(request_type, transport: str = "grpc"):
     assert response.name == "name_value"
     assert (
         response.event_data_retention
+        == resources.DataRetentionSettings.RetentionDuration.TWO_MONTHS
+    )
+    assert (
+        response.user_data_retention
         == resources.DataRetentionSettings.RetentionDuration.TWO_MONTHS
     )
     assert response.reset_user_data_on_new_activity is True
@@ -19049,6 +19114,7 @@ async def test_update_data_retention_settings_async(
             resources.DataRetentionSettings(
                 name="name_value",
                 event_data_retention=resources.DataRetentionSettings.RetentionDuration.TWO_MONTHS,
+                user_data_retention=resources.DataRetentionSettings.RetentionDuration.TWO_MONTHS,
                 reset_user_data_on_new_activity=True,
             )
         )
@@ -19065,6 +19131,10 @@ async def test_update_data_retention_settings_async(
     assert response.name == "name_value"
     assert (
         response.event_data_retention
+        == resources.DataRetentionSettings.RetentionDuration.TWO_MONTHS
+    )
+    assert (
+        response.user_data_retention
         == resources.DataRetentionSettings.RetentionDuration.TWO_MONTHS
     )
     assert response.reset_user_data_on_new_activity is True
@@ -34301,6 +34371,7 @@ async def test_get_data_retention_settings_empty_call_grpc_asyncio():
             resources.DataRetentionSettings(
                 name="name_value",
                 event_data_retention=resources.DataRetentionSettings.RetentionDuration.TWO_MONTHS,
+                user_data_retention=resources.DataRetentionSettings.RetentionDuration.TWO_MONTHS,
                 reset_user_data_on_new_activity=True,
             )
         )
@@ -34332,6 +34403,7 @@ async def test_update_data_retention_settings_empty_call_grpc_asyncio():
             resources.DataRetentionSettings(
                 name="name_value",
                 event_data_retention=resources.DataRetentionSettings.RetentionDuration.TWO_MONTHS,
+                user_data_retention=resources.DataRetentionSettings.RetentionDuration.TWO_MONTHS,
                 reset_user_data_on_new_activity=True,
             )
         )
@@ -34614,10 +34686,14 @@ def test_get_account_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.AnalyticsAdminServiceRestInterceptor, "post_get_account"
     ) as post, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor,
+        "post_get_account_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.AnalyticsAdminServiceRestInterceptor, "pre_get_account"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = analytics_admin.GetAccountRequest.pb(
             analytics_admin.GetAccountRequest()
         )
@@ -34641,6 +34717,7 @@ def test_get_account_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = resources.Account()
+        post_with_metadata.return_value = resources.Account(), metadata
 
         client.get_account(
             request,
@@ -34652,6 +34729,7 @@ def test_get_account_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_accounts_rest_bad_request(
@@ -34736,10 +34814,14 @@ def test_list_accounts_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.AnalyticsAdminServiceRestInterceptor, "post_list_accounts"
     ) as post, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor,
+        "post_list_accounts_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.AnalyticsAdminServiceRestInterceptor, "pre_list_accounts"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = analytics_admin.ListAccountsRequest.pb(
             analytics_admin.ListAccountsRequest()
         )
@@ -34765,6 +34847,10 @@ def test_list_accounts_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = analytics_admin.ListAccountsResponse()
+        post_with_metadata.return_value = (
+            analytics_admin.ListAccountsResponse(),
+            metadata,
+        )
 
         client.list_accounts(
             request,
@@ -34776,6 +34862,7 @@ def test_list_accounts_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_account_rest_bad_request(
@@ -35053,10 +35140,14 @@ def test_update_account_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.AnalyticsAdminServiceRestInterceptor, "post_update_account"
     ) as post, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor,
+        "post_update_account_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.AnalyticsAdminServiceRestInterceptor, "pre_update_account"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = analytics_admin.UpdateAccountRequest.pb(
             analytics_admin.UpdateAccountRequest()
         )
@@ -35080,6 +35171,7 @@ def test_update_account_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = resources.Account()
+        post_with_metadata.return_value = resources.Account(), metadata
 
         client.update_account(
             request,
@@ -35091,6 +35183,7 @@ def test_update_account_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_provision_account_ticket_rest_bad_request(
@@ -35175,10 +35268,14 @@ def test_provision_account_ticket_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.AnalyticsAdminServiceRestInterceptor, "post_provision_account_ticket"
     ) as post, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor,
+        "post_provision_account_ticket_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.AnalyticsAdminServiceRestInterceptor, "pre_provision_account_ticket"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = analytics_admin.ProvisionAccountTicketRequest.pb(
             analytics_admin.ProvisionAccountTicketRequest()
         )
@@ -35204,6 +35301,10 @@ def test_provision_account_ticket_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = analytics_admin.ProvisionAccountTicketResponse()
+        post_with_metadata.return_value = (
+            analytics_admin.ProvisionAccountTicketResponse(),
+            metadata,
+        )
 
         client.provision_account_ticket(
             request,
@@ -35215,6 +35316,7 @@ def test_provision_account_ticket_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_account_summaries_rest_bad_request(
@@ -35299,10 +35401,14 @@ def test_list_account_summaries_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.AnalyticsAdminServiceRestInterceptor, "post_list_account_summaries"
     ) as post, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor,
+        "post_list_account_summaries_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.AnalyticsAdminServiceRestInterceptor, "pre_list_account_summaries"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = analytics_admin.ListAccountSummariesRequest.pb(
             analytics_admin.ListAccountSummariesRequest()
         )
@@ -35328,6 +35434,10 @@ def test_list_account_summaries_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = analytics_admin.ListAccountSummariesResponse()
+        post_with_metadata.return_value = (
+            analytics_admin.ListAccountSummariesResponse(),
+            metadata,
+        )
 
         client.list_account_summaries(
             request,
@@ -35339,6 +35449,7 @@ def test_list_account_summaries_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_property_rest_bad_request(request_type=analytics_admin.GetPropertyRequest):
@@ -35437,10 +35548,14 @@ def test_get_property_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.AnalyticsAdminServiceRestInterceptor, "post_get_property"
     ) as post, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor,
+        "post_get_property_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.AnalyticsAdminServiceRestInterceptor, "pre_get_property"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = analytics_admin.GetPropertyRequest.pb(
             analytics_admin.GetPropertyRequest()
         )
@@ -35464,6 +35579,7 @@ def test_get_property_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = resources.Property()
+        post_with_metadata.return_value = resources.Property(), metadata
 
         client.get_property(
             request,
@@ -35475,6 +35591,7 @@ def test_get_property_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_properties_rest_bad_request(
@@ -35559,10 +35676,14 @@ def test_list_properties_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.AnalyticsAdminServiceRestInterceptor, "post_list_properties"
     ) as post, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor,
+        "post_list_properties_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.AnalyticsAdminServiceRestInterceptor, "pre_list_properties"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = analytics_admin.ListPropertiesRequest.pb(
             analytics_admin.ListPropertiesRequest()
         )
@@ -35588,6 +35709,10 @@ def test_list_properties_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = analytics_admin.ListPropertiesResponse()
+        post_with_metadata.return_value = (
+            analytics_admin.ListPropertiesResponse(),
+            metadata,
+        )
 
         client.list_properties(
             request,
@@ -35599,6 +35724,7 @@ def test_list_properties_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_property_rest_bad_request(
@@ -35781,10 +35907,14 @@ def test_create_property_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.AnalyticsAdminServiceRestInterceptor, "post_create_property"
     ) as post, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor,
+        "post_create_property_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.AnalyticsAdminServiceRestInterceptor, "pre_create_property"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = analytics_admin.CreatePropertyRequest.pb(
             analytics_admin.CreatePropertyRequest()
         )
@@ -35808,6 +35938,7 @@ def test_create_property_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = resources.Property()
+        post_with_metadata.return_value = resources.Property(), metadata
 
         client.create_property(
             request,
@@ -35819,6 +35950,7 @@ def test_create_property_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_property_rest_bad_request(
@@ -35919,10 +36051,14 @@ def test_delete_property_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.AnalyticsAdminServiceRestInterceptor, "post_delete_property"
     ) as post, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor,
+        "post_delete_property_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.AnalyticsAdminServiceRestInterceptor, "pre_delete_property"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = analytics_admin.DeletePropertyRequest.pb(
             analytics_admin.DeletePropertyRequest()
         )
@@ -35946,6 +36082,7 @@ def test_delete_property_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = resources.Property()
+        post_with_metadata.return_value = resources.Property(), metadata
 
         client.delete_property(
             request,
@@ -35957,6 +36094,7 @@ def test_delete_property_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_property_rest_bad_request(
@@ -36139,10 +36277,14 @@ def test_update_property_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.AnalyticsAdminServiceRestInterceptor, "post_update_property"
     ) as post, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor,
+        "post_update_property_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.AnalyticsAdminServiceRestInterceptor, "pre_update_property"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = analytics_admin.UpdatePropertyRequest.pb(
             analytics_admin.UpdatePropertyRequest()
         )
@@ -36166,6 +36308,7 @@ def test_update_property_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = resources.Property()
+        post_with_metadata.return_value = resources.Property(), metadata
 
         client.update_property(
             request,
@@ -36177,6 +36320,7 @@ def test_update_property_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_firebase_link_rest_bad_request(
@@ -36335,10 +36479,14 @@ def test_create_firebase_link_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.AnalyticsAdminServiceRestInterceptor, "post_create_firebase_link"
     ) as post, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor,
+        "post_create_firebase_link_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.AnalyticsAdminServiceRestInterceptor, "pre_create_firebase_link"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = analytics_admin.CreateFirebaseLinkRequest.pb(
             analytics_admin.CreateFirebaseLinkRequest()
         )
@@ -36362,6 +36510,7 @@ def test_create_firebase_link_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = resources.FirebaseLink()
+        post_with_metadata.return_value = resources.FirebaseLink(), metadata
 
         client.create_firebase_link(
             request,
@@ -36373,6 +36522,7 @@ def test_create_firebase_link_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_firebase_link_rest_bad_request(
@@ -36566,10 +36716,14 @@ def test_list_firebase_links_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.AnalyticsAdminServiceRestInterceptor, "post_list_firebase_links"
     ) as post, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor,
+        "post_list_firebase_links_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.AnalyticsAdminServiceRestInterceptor, "pre_list_firebase_links"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = analytics_admin.ListFirebaseLinksRequest.pb(
             analytics_admin.ListFirebaseLinksRequest()
         )
@@ -36595,6 +36749,10 @@ def test_list_firebase_links_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = analytics_admin.ListFirebaseLinksResponse()
+        post_with_metadata.return_value = (
+            analytics_admin.ListFirebaseLinksResponse(),
+            metadata,
+        )
 
         client.list_firebase_links(
             request,
@@ -36606,6 +36764,7 @@ def test_list_firebase_links_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_google_ads_link_rest_bad_request(
@@ -36774,10 +36933,14 @@ def test_create_google_ads_link_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.AnalyticsAdminServiceRestInterceptor, "post_create_google_ads_link"
     ) as post, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor,
+        "post_create_google_ads_link_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.AnalyticsAdminServiceRestInterceptor, "pre_create_google_ads_link"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = analytics_admin.CreateGoogleAdsLinkRequest.pb(
             analytics_admin.CreateGoogleAdsLinkRequest()
         )
@@ -36801,6 +36964,7 @@ def test_create_google_ads_link_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = resources.GoogleAdsLink()
+        post_with_metadata.return_value = resources.GoogleAdsLink(), metadata
 
         client.create_google_ads_link(
             request,
@@ -36812,6 +36976,7 @@ def test_create_google_ads_link_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_google_ads_link_rest_bad_request(
@@ -36984,10 +37149,14 @@ def test_update_google_ads_link_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.AnalyticsAdminServiceRestInterceptor, "post_update_google_ads_link"
     ) as post, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor,
+        "post_update_google_ads_link_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.AnalyticsAdminServiceRestInterceptor, "pre_update_google_ads_link"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = analytics_admin.UpdateGoogleAdsLinkRequest.pb(
             analytics_admin.UpdateGoogleAdsLinkRequest()
         )
@@ -37011,6 +37180,7 @@ def test_update_google_ads_link_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = resources.GoogleAdsLink()
+        post_with_metadata.return_value = resources.GoogleAdsLink(), metadata
 
         client.update_google_ads_link(
             request,
@@ -37022,6 +37192,7 @@ def test_update_google_ads_link_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_google_ads_link_rest_bad_request(
@@ -37215,10 +37386,14 @@ def test_list_google_ads_links_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.AnalyticsAdminServiceRestInterceptor, "post_list_google_ads_links"
     ) as post, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor,
+        "post_list_google_ads_links_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.AnalyticsAdminServiceRestInterceptor, "pre_list_google_ads_links"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = analytics_admin.ListGoogleAdsLinksRequest.pb(
             analytics_admin.ListGoogleAdsLinksRequest()
         )
@@ -37244,6 +37419,10 @@ def test_list_google_ads_links_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = analytics_admin.ListGoogleAdsLinksResponse()
+        post_with_metadata.return_value = (
+            analytics_admin.ListGoogleAdsLinksResponse(),
+            metadata,
+        )
 
         client.list_google_ads_links(
             request,
@@ -37255,6 +37434,7 @@ def test_list_google_ads_links_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_data_sharing_settings_rest_bad_request(
@@ -37350,10 +37530,14 @@ def test_get_data_sharing_settings_rest_interceptors(null_interceptor):
         transports.AnalyticsAdminServiceRestInterceptor,
         "post_get_data_sharing_settings",
     ) as post, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor,
+        "post_get_data_sharing_settings_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.AnalyticsAdminServiceRestInterceptor, "pre_get_data_sharing_settings"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = analytics_admin.GetDataSharingSettingsRequest.pb(
             analytics_admin.GetDataSharingSettingsRequest()
         )
@@ -37379,6 +37563,7 @@ def test_get_data_sharing_settings_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = resources.DataSharingSettings()
+        post_with_metadata.return_value = resources.DataSharingSettings(), metadata
 
         client.get_data_sharing_settings(
             request,
@@ -37390,6 +37575,7 @@ def test_get_data_sharing_settings_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_measurement_protocol_secret_rest_bad_request(
@@ -37484,10 +37670,14 @@ def test_get_measurement_protocol_secret_rest_interceptors(null_interceptor):
         "post_get_measurement_protocol_secret",
     ) as post, mock.patch.object(
         transports.AnalyticsAdminServiceRestInterceptor,
+        "post_get_measurement_protocol_secret_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor,
         "pre_get_measurement_protocol_secret",
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = analytics_admin.GetMeasurementProtocolSecretRequest.pb(
             analytics_admin.GetMeasurementProtocolSecretRequest()
         )
@@ -37513,6 +37703,10 @@ def test_get_measurement_protocol_secret_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = resources.MeasurementProtocolSecret()
+        post_with_metadata.return_value = (
+            resources.MeasurementProtocolSecret(),
+            metadata,
+        )
 
         client.get_measurement_protocol_secret(
             request,
@@ -37524,6 +37718,7 @@ def test_get_measurement_protocol_secret_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_measurement_protocol_secrets_rest_bad_request(
@@ -37612,10 +37807,14 @@ def test_list_measurement_protocol_secrets_rest_interceptors(null_interceptor):
         "post_list_measurement_protocol_secrets",
     ) as post, mock.patch.object(
         transports.AnalyticsAdminServiceRestInterceptor,
+        "post_list_measurement_protocol_secrets_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor,
         "pre_list_measurement_protocol_secrets",
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = analytics_admin.ListMeasurementProtocolSecretsRequest.pb(
             analytics_admin.ListMeasurementProtocolSecretsRequest()
         )
@@ -37641,6 +37840,10 @@ def test_list_measurement_protocol_secrets_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = analytics_admin.ListMeasurementProtocolSecretsResponse()
+        post_with_metadata.return_value = (
+            analytics_admin.ListMeasurementProtocolSecretsResponse(),
+            metadata,
+        )
 
         client.list_measurement_protocol_secrets(
             request,
@@ -37652,6 +37855,7 @@ def test_list_measurement_protocol_secrets_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_measurement_protocol_secret_rest_bad_request(
@@ -37820,10 +38024,14 @@ def test_create_measurement_protocol_secret_rest_interceptors(null_interceptor):
         "post_create_measurement_protocol_secret",
     ) as post, mock.patch.object(
         transports.AnalyticsAdminServiceRestInterceptor,
+        "post_create_measurement_protocol_secret_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor,
         "pre_create_measurement_protocol_secret",
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = analytics_admin.CreateMeasurementProtocolSecretRequest.pb(
             analytics_admin.CreateMeasurementProtocolSecretRequest()
         )
@@ -37849,6 +38057,10 @@ def test_create_measurement_protocol_secret_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = resources.MeasurementProtocolSecret()
+        post_with_metadata.return_value = (
+            resources.MeasurementProtocolSecret(),
+            metadata,
+        )
 
         client.create_measurement_protocol_secret(
             request,
@@ -37860,6 +38072,7 @@ def test_create_measurement_protocol_secret_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_measurement_protocol_secret_rest_bad_request(
@@ -38150,10 +38363,14 @@ def test_update_measurement_protocol_secret_rest_interceptors(null_interceptor):
         "post_update_measurement_protocol_secret",
     ) as post, mock.patch.object(
         transports.AnalyticsAdminServiceRestInterceptor,
+        "post_update_measurement_protocol_secret_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor,
         "pre_update_measurement_protocol_secret",
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = analytics_admin.UpdateMeasurementProtocolSecretRequest.pb(
             analytics_admin.UpdateMeasurementProtocolSecretRequest()
         )
@@ -38179,6 +38396,10 @@ def test_update_measurement_protocol_secret_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = resources.MeasurementProtocolSecret()
+        post_with_metadata.return_value = (
+            resources.MeasurementProtocolSecret(),
+            metadata,
+        )
 
         client.update_measurement_protocol_secret(
             request,
@@ -38190,6 +38411,7 @@ def test_update_measurement_protocol_secret_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_acknowledge_user_data_collection_rest_bad_request(
@@ -38275,10 +38497,14 @@ def test_acknowledge_user_data_collection_rest_interceptors(null_interceptor):
         "post_acknowledge_user_data_collection",
     ) as post, mock.patch.object(
         transports.AnalyticsAdminServiceRestInterceptor,
+        "post_acknowledge_user_data_collection_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor,
         "pre_acknowledge_user_data_collection",
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = analytics_admin.AcknowledgeUserDataCollectionRequest.pb(
             analytics_admin.AcknowledgeUserDataCollectionRequest()
         )
@@ -38304,6 +38530,10 @@ def test_acknowledge_user_data_collection_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = analytics_admin.AcknowledgeUserDataCollectionResponse()
+        post_with_metadata.return_value = (
+            analytics_admin.AcknowledgeUserDataCollectionResponse(),
+            metadata,
+        )
 
         client.acknowledge_user_data_collection(
             request,
@@ -38315,6 +38545,7 @@ def test_acknowledge_user_data_collection_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_search_change_history_events_rest_bad_request(
@@ -38403,10 +38634,14 @@ def test_search_change_history_events_rest_interceptors(null_interceptor):
         "post_search_change_history_events",
     ) as post, mock.patch.object(
         transports.AnalyticsAdminServiceRestInterceptor,
+        "post_search_change_history_events_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor,
         "pre_search_change_history_events",
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = analytics_admin.SearchChangeHistoryEventsRequest.pb(
             analytics_admin.SearchChangeHistoryEventsRequest()
         )
@@ -38432,6 +38667,10 @@ def test_search_change_history_events_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = analytics_admin.SearchChangeHistoryEventsResponse()
+        post_with_metadata.return_value = (
+            analytics_admin.SearchChangeHistoryEventsResponse(),
+            metadata,
+        )
 
         client.search_change_history_events(
             request,
@@ -38443,6 +38682,7 @@ def test_search_change_history_events_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_conversion_event_rest_bad_request(
@@ -38619,10 +38859,14 @@ def test_create_conversion_event_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.AnalyticsAdminServiceRestInterceptor, "post_create_conversion_event"
     ) as post, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor,
+        "post_create_conversion_event_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.AnalyticsAdminServiceRestInterceptor, "pre_create_conversion_event"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = analytics_admin.CreateConversionEventRequest.pb(
             analytics_admin.CreateConversionEventRequest()
         )
@@ -38646,6 +38890,7 @@ def test_create_conversion_event_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = resources.ConversionEvent()
+        post_with_metadata.return_value = resources.ConversionEvent(), metadata
 
         client.create_conversion_event(
             request,
@@ -38657,6 +38902,7 @@ def test_create_conversion_event_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_conversion_event_rest_bad_request(
@@ -38837,10 +39083,14 @@ def test_update_conversion_event_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.AnalyticsAdminServiceRestInterceptor, "post_update_conversion_event"
     ) as post, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor,
+        "post_update_conversion_event_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.AnalyticsAdminServiceRestInterceptor, "pre_update_conversion_event"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = analytics_admin.UpdateConversionEventRequest.pb(
             analytics_admin.UpdateConversionEventRequest()
         )
@@ -38864,6 +39114,7 @@ def test_update_conversion_event_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = resources.ConversionEvent()
+        post_with_metadata.return_value = resources.ConversionEvent(), metadata
 
         client.update_conversion_event(
             request,
@@ -38875,6 +39126,7 @@ def test_update_conversion_event_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_conversion_event_rest_bad_request(
@@ -38970,10 +39222,14 @@ def test_get_conversion_event_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.AnalyticsAdminServiceRestInterceptor, "post_get_conversion_event"
     ) as post, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor,
+        "post_get_conversion_event_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.AnalyticsAdminServiceRestInterceptor, "pre_get_conversion_event"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = analytics_admin.GetConversionEventRequest.pb(
             analytics_admin.GetConversionEventRequest()
         )
@@ -38997,6 +39253,7 @@ def test_get_conversion_event_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = resources.ConversionEvent()
+        post_with_metadata.return_value = resources.ConversionEvent(), metadata
 
         client.get_conversion_event(
             request,
@@ -39008,6 +39265,7 @@ def test_get_conversion_event_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_conversion_event_rest_bad_request(
@@ -39201,10 +39459,14 @@ def test_list_conversion_events_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.AnalyticsAdminServiceRestInterceptor, "post_list_conversion_events"
     ) as post, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor,
+        "post_list_conversion_events_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.AnalyticsAdminServiceRestInterceptor, "pre_list_conversion_events"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = analytics_admin.ListConversionEventsRequest.pb(
             analytics_admin.ListConversionEventsRequest()
         )
@@ -39230,6 +39492,10 @@ def test_list_conversion_events_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = analytics_admin.ListConversionEventsResponse()
+        post_with_metadata.return_value = (
+            analytics_admin.ListConversionEventsResponse(),
+            metadata,
+        )
 
         client.list_conversion_events(
             request,
@@ -39241,6 +39507,7 @@ def test_list_conversion_events_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_key_event_rest_bad_request(
@@ -39412,10 +39679,14 @@ def test_create_key_event_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.AnalyticsAdminServiceRestInterceptor, "post_create_key_event"
     ) as post, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor,
+        "post_create_key_event_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.AnalyticsAdminServiceRestInterceptor, "pre_create_key_event"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = analytics_admin.CreateKeyEventRequest.pb(
             analytics_admin.CreateKeyEventRequest()
         )
@@ -39439,6 +39710,7 @@ def test_create_key_event_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = resources.KeyEvent()
+        post_with_metadata.return_value = resources.KeyEvent(), metadata
 
         client.create_key_event(
             request,
@@ -39450,6 +39722,7 @@ def test_create_key_event_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_key_event_rest_bad_request(
@@ -39621,10 +39894,14 @@ def test_update_key_event_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.AnalyticsAdminServiceRestInterceptor, "post_update_key_event"
     ) as post, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor,
+        "post_update_key_event_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.AnalyticsAdminServiceRestInterceptor, "pre_update_key_event"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = analytics_admin.UpdateKeyEventRequest.pb(
             analytics_admin.UpdateKeyEventRequest()
         )
@@ -39648,6 +39925,7 @@ def test_update_key_event_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = resources.KeyEvent()
+        post_with_metadata.return_value = resources.KeyEvent(), metadata
 
         client.update_key_event(
             request,
@@ -39659,6 +39937,7 @@ def test_update_key_event_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_key_event_rest_bad_request(
@@ -39751,10 +40030,14 @@ def test_get_key_event_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.AnalyticsAdminServiceRestInterceptor, "post_get_key_event"
     ) as post, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor,
+        "post_get_key_event_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.AnalyticsAdminServiceRestInterceptor, "pre_get_key_event"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = analytics_admin.GetKeyEventRequest.pb(
             analytics_admin.GetKeyEventRequest()
         )
@@ -39778,6 +40061,7 @@ def test_get_key_event_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = resources.KeyEvent()
+        post_with_metadata.return_value = resources.KeyEvent(), metadata
 
         client.get_key_event(
             request,
@@ -39789,6 +40073,7 @@ def test_get_key_event_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_key_event_rest_bad_request(
@@ -39982,10 +40267,14 @@ def test_list_key_events_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.AnalyticsAdminServiceRestInterceptor, "post_list_key_events"
     ) as post, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor,
+        "post_list_key_events_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.AnalyticsAdminServiceRestInterceptor, "pre_list_key_events"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = analytics_admin.ListKeyEventsRequest.pb(
             analytics_admin.ListKeyEventsRequest()
         )
@@ -40011,6 +40300,10 @@ def test_list_key_events_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = analytics_admin.ListKeyEventsResponse()
+        post_with_metadata.return_value = (
+            analytics_admin.ListKeyEventsResponse(),
+            metadata,
+        )
 
         client.list_key_events(
             request,
@@ -40022,6 +40315,7 @@ def test_list_key_events_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_custom_dimension_rest_bad_request(
@@ -40193,10 +40487,14 @@ def test_create_custom_dimension_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.AnalyticsAdminServiceRestInterceptor, "post_create_custom_dimension"
     ) as post, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor,
+        "post_create_custom_dimension_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.AnalyticsAdminServiceRestInterceptor, "pre_create_custom_dimension"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = analytics_admin.CreateCustomDimensionRequest.pb(
             analytics_admin.CreateCustomDimensionRequest()
         )
@@ -40220,6 +40518,7 @@ def test_create_custom_dimension_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = resources.CustomDimension()
+        post_with_metadata.return_value = resources.CustomDimension(), metadata
 
         client.create_custom_dimension(
             request,
@@ -40231,6 +40530,7 @@ def test_create_custom_dimension_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_custom_dimension_rest_bad_request(
@@ -40406,10 +40706,14 @@ def test_update_custom_dimension_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.AnalyticsAdminServiceRestInterceptor, "post_update_custom_dimension"
     ) as post, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor,
+        "post_update_custom_dimension_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.AnalyticsAdminServiceRestInterceptor, "pre_update_custom_dimension"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = analytics_admin.UpdateCustomDimensionRequest.pb(
             analytics_admin.UpdateCustomDimensionRequest()
         )
@@ -40433,6 +40737,7 @@ def test_update_custom_dimension_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = resources.CustomDimension()
+        post_with_metadata.return_value = resources.CustomDimension(), metadata
 
         client.update_custom_dimension(
             request,
@@ -40444,6 +40749,7 @@ def test_update_custom_dimension_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_custom_dimensions_rest_bad_request(
@@ -40528,10 +40834,14 @@ def test_list_custom_dimensions_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.AnalyticsAdminServiceRestInterceptor, "post_list_custom_dimensions"
     ) as post, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor,
+        "post_list_custom_dimensions_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.AnalyticsAdminServiceRestInterceptor, "pre_list_custom_dimensions"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = analytics_admin.ListCustomDimensionsRequest.pb(
             analytics_admin.ListCustomDimensionsRequest()
         )
@@ -40557,6 +40867,10 @@ def test_list_custom_dimensions_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = analytics_admin.ListCustomDimensionsResponse()
+        post_with_metadata.return_value = (
+            analytics_admin.ListCustomDimensionsResponse(),
+            metadata,
+        )
 
         client.list_custom_dimensions(
             request,
@@ -40568,6 +40882,7 @@ def test_list_custom_dimensions_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_archive_custom_dimension_rest_bad_request(
@@ -40771,10 +41086,14 @@ def test_get_custom_dimension_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.AnalyticsAdminServiceRestInterceptor, "post_get_custom_dimension"
     ) as post, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor,
+        "post_get_custom_dimension_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.AnalyticsAdminServiceRestInterceptor, "pre_get_custom_dimension"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = analytics_admin.GetCustomDimensionRequest.pb(
             analytics_admin.GetCustomDimensionRequest()
         )
@@ -40798,6 +41117,7 @@ def test_get_custom_dimension_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = resources.CustomDimension()
+        post_with_metadata.return_value = resources.CustomDimension(), metadata
 
         client.get_custom_dimension(
             request,
@@ -40809,6 +41129,7 @@ def test_get_custom_dimension_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_custom_metric_rest_bad_request(
@@ -40985,10 +41306,14 @@ def test_create_custom_metric_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.AnalyticsAdminServiceRestInterceptor, "post_create_custom_metric"
     ) as post, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor,
+        "post_create_custom_metric_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.AnalyticsAdminServiceRestInterceptor, "pre_create_custom_metric"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = analytics_admin.CreateCustomMetricRequest.pb(
             analytics_admin.CreateCustomMetricRequest()
         )
@@ -41012,6 +41337,7 @@ def test_create_custom_metric_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = resources.CustomMetric()
+        post_with_metadata.return_value = resources.CustomMetric(), metadata
 
         client.create_custom_metric(
             request,
@@ -41023,6 +41349,7 @@ def test_create_custom_metric_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_custom_metric_rest_bad_request(
@@ -41203,10 +41530,14 @@ def test_update_custom_metric_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.AnalyticsAdminServiceRestInterceptor, "post_update_custom_metric"
     ) as post, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor,
+        "post_update_custom_metric_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.AnalyticsAdminServiceRestInterceptor, "pre_update_custom_metric"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = analytics_admin.UpdateCustomMetricRequest.pb(
             analytics_admin.UpdateCustomMetricRequest()
         )
@@ -41230,6 +41561,7 @@ def test_update_custom_metric_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = resources.CustomMetric()
+        post_with_metadata.return_value = resources.CustomMetric(), metadata
 
         client.update_custom_metric(
             request,
@@ -41241,6 +41573,7 @@ def test_update_custom_metric_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_custom_metrics_rest_bad_request(
@@ -41325,10 +41658,14 @@ def test_list_custom_metrics_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.AnalyticsAdminServiceRestInterceptor, "post_list_custom_metrics"
     ) as post, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor,
+        "post_list_custom_metrics_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.AnalyticsAdminServiceRestInterceptor, "pre_list_custom_metrics"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = analytics_admin.ListCustomMetricsRequest.pb(
             analytics_admin.ListCustomMetricsRequest()
         )
@@ -41354,6 +41691,10 @@ def test_list_custom_metrics_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = analytics_admin.ListCustomMetricsResponse()
+        post_with_metadata.return_value = (
+            analytics_admin.ListCustomMetricsResponse(),
+            metadata,
+        )
 
         client.list_custom_metrics(
             request,
@@ -41365,6 +41706,7 @@ def test_list_custom_metrics_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_archive_custom_metric_rest_bad_request(
@@ -41574,10 +41916,14 @@ def test_get_custom_metric_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.AnalyticsAdminServiceRestInterceptor, "post_get_custom_metric"
     ) as post, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor,
+        "post_get_custom_metric_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.AnalyticsAdminServiceRestInterceptor, "pre_get_custom_metric"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = analytics_admin.GetCustomMetricRequest.pb(
             analytics_admin.GetCustomMetricRequest()
         )
@@ -41601,6 +41947,7 @@ def test_get_custom_metric_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = resources.CustomMetric()
+        post_with_metadata.return_value = resources.CustomMetric(), metadata
 
         client.get_custom_metric(
             request,
@@ -41612,6 +41959,7 @@ def test_get_custom_metric_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_data_retention_settings_rest_bad_request(
@@ -41661,6 +42009,7 @@ def test_get_data_retention_settings_rest_call_success(request_type):
         return_value = resources.DataRetentionSettings(
             name="name_value",
             event_data_retention=resources.DataRetentionSettings.RetentionDuration.TWO_MONTHS,
+            user_data_retention=resources.DataRetentionSettings.RetentionDuration.TWO_MONTHS,
             reset_user_data_on_new_activity=True,
         )
 
@@ -41681,6 +42030,10 @@ def test_get_data_retention_settings_rest_call_success(request_type):
     assert response.name == "name_value"
     assert (
         response.event_data_retention
+        == resources.DataRetentionSettings.RetentionDuration.TWO_MONTHS
+    )
+    assert (
+        response.user_data_retention
         == resources.DataRetentionSettings.RetentionDuration.TWO_MONTHS
     )
     assert response.reset_user_data_on_new_activity is True
@@ -41705,10 +42058,14 @@ def test_get_data_retention_settings_rest_interceptors(null_interceptor):
         "post_get_data_retention_settings",
     ) as post, mock.patch.object(
         transports.AnalyticsAdminServiceRestInterceptor,
+        "post_get_data_retention_settings_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor,
         "pre_get_data_retention_settings",
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = analytics_admin.GetDataRetentionSettingsRequest.pb(
             analytics_admin.GetDataRetentionSettingsRequest()
         )
@@ -41734,6 +42091,7 @@ def test_get_data_retention_settings_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = resources.DataRetentionSettings()
+        post_with_metadata.return_value = resources.DataRetentionSettings(), metadata
 
         client.get_data_retention_settings(
             request,
@@ -41745,6 +42103,7 @@ def test_get_data_retention_settings_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_data_retention_settings_rest_bad_request(
@@ -41793,6 +42152,7 @@ def test_update_data_retention_settings_rest_call_success(request_type):
     request_init["data_retention_settings"] = {
         "name": "properties/sample1/dataRetentionSettings",
         "event_data_retention": 1,
+        "user_data_retention": 1,
         "reset_user_data_on_new_activity": True,
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
@@ -41874,6 +42234,7 @@ def test_update_data_retention_settings_rest_call_success(request_type):
         return_value = resources.DataRetentionSettings(
             name="name_value",
             event_data_retention=resources.DataRetentionSettings.RetentionDuration.TWO_MONTHS,
+            user_data_retention=resources.DataRetentionSettings.RetentionDuration.TWO_MONTHS,
             reset_user_data_on_new_activity=True,
         )
 
@@ -41894,6 +42255,10 @@ def test_update_data_retention_settings_rest_call_success(request_type):
     assert response.name == "name_value"
     assert (
         response.event_data_retention
+        == resources.DataRetentionSettings.RetentionDuration.TWO_MONTHS
+    )
+    assert (
+        response.user_data_retention
         == resources.DataRetentionSettings.RetentionDuration.TWO_MONTHS
     )
     assert response.reset_user_data_on_new_activity is True
@@ -41918,10 +42283,14 @@ def test_update_data_retention_settings_rest_interceptors(null_interceptor):
         "post_update_data_retention_settings",
     ) as post, mock.patch.object(
         transports.AnalyticsAdminServiceRestInterceptor,
+        "post_update_data_retention_settings_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor,
         "pre_update_data_retention_settings",
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = analytics_admin.UpdateDataRetentionSettingsRequest.pb(
             analytics_admin.UpdateDataRetentionSettingsRequest()
         )
@@ -41947,6 +42316,7 @@ def test_update_data_retention_settings_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = resources.DataRetentionSettings()
+        post_with_metadata.return_value = resources.DataRetentionSettings(), metadata
 
         client.update_data_retention_settings(
             request,
@@ -41958,6 +42328,7 @@ def test_update_data_retention_settings_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_data_stream_rest_bad_request(
@@ -42133,10 +42504,14 @@ def test_create_data_stream_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.AnalyticsAdminServiceRestInterceptor, "post_create_data_stream"
     ) as post, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor,
+        "post_create_data_stream_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.AnalyticsAdminServiceRestInterceptor, "pre_create_data_stream"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = analytics_admin.CreateDataStreamRequest.pb(
             analytics_admin.CreateDataStreamRequest()
         )
@@ -42160,6 +42535,7 @@ def test_create_data_stream_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = resources.DataStream()
+        post_with_metadata.return_value = resources.DataStream(), metadata
 
         client.create_data_stream(
             request,
@@ -42171,6 +42547,7 @@ def test_create_data_stream_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_data_stream_rest_bad_request(
@@ -42455,10 +42832,14 @@ def test_update_data_stream_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.AnalyticsAdminServiceRestInterceptor, "post_update_data_stream"
     ) as post, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor,
+        "post_update_data_stream_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.AnalyticsAdminServiceRestInterceptor, "pre_update_data_stream"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = analytics_admin.UpdateDataStreamRequest.pb(
             analytics_admin.UpdateDataStreamRequest()
         )
@@ -42482,6 +42863,7 @@ def test_update_data_stream_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = resources.DataStream()
+        post_with_metadata.return_value = resources.DataStream(), metadata
 
         client.update_data_stream(
             request,
@@ -42493,6 +42875,7 @@ def test_update_data_stream_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_data_streams_rest_bad_request(
@@ -42577,10 +42960,14 @@ def test_list_data_streams_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.AnalyticsAdminServiceRestInterceptor, "post_list_data_streams"
     ) as post, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor,
+        "post_list_data_streams_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.AnalyticsAdminServiceRestInterceptor, "pre_list_data_streams"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = analytics_admin.ListDataStreamsRequest.pb(
             analytics_admin.ListDataStreamsRequest()
         )
@@ -42606,6 +42993,10 @@ def test_list_data_streams_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = analytics_admin.ListDataStreamsResponse()
+        post_with_metadata.return_value = (
+            analytics_admin.ListDataStreamsResponse(),
+            metadata,
+        )
 
         client.list_data_streams(
             request,
@@ -42617,6 +43008,7 @@ def test_list_data_streams_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_data_stream_rest_bad_request(
@@ -42705,10 +43097,14 @@ def test_get_data_stream_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.AnalyticsAdminServiceRestInterceptor, "post_get_data_stream"
     ) as post, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor,
+        "post_get_data_stream_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.AnalyticsAdminServiceRestInterceptor, "pre_get_data_stream"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = analytics_admin.GetDataStreamRequest.pb(
             analytics_admin.GetDataStreamRequest()
         )
@@ -42732,6 +43128,7 @@ def test_get_data_stream_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = resources.DataStream()
+        post_with_metadata.return_value = resources.DataStream(), metadata
 
         client.get_data_stream(
             request,
@@ -42743,6 +43140,7 @@ def test_get_data_stream_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_run_access_report_rest_bad_request(
@@ -42827,10 +43225,14 @@ def test_run_access_report_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.AnalyticsAdminServiceRestInterceptor, "post_run_access_report"
     ) as post, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor,
+        "post_run_access_report_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.AnalyticsAdminServiceRestInterceptor, "pre_run_access_report"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = analytics_admin.RunAccessReportRequest.pb(
             analytics_admin.RunAccessReportRequest()
         )
@@ -42856,6 +43258,10 @@ def test_run_access_report_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = analytics_admin.RunAccessReportResponse()
+        post_with_metadata.return_value = (
+            analytics_admin.RunAccessReportResponse(),
+            metadata,
+        )
 
         client.run_access_report(
             request,
@@ -42867,6 +43273,7 @@ def test_run_access_report_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_initialize_client_w_rest():

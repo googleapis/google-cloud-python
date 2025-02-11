@@ -57,6 +57,7 @@ from google.cloud.run_v2.types.job import (
     UpdateJobRequest,
 )
 from google.cloud.run_v2.types.k8s_min import (
+    BuildInfo,
     CloudSqlInstance,
     Container,
     ContainerPort,
@@ -110,6 +111,7 @@ from google.cloud.run_v2.types.traffic_target import (
 )
 from google.cloud.run_v2.types.vendor_settings import (
     BinaryAuthorization,
+    BuildConfig,
     EncryptionKeyRevocationAction,
     ExecutionEnvironment,
     IngressTraffic,
@@ -153,6 +155,7 @@ __all__ = (
     "ListJobsResponse",
     "RunJobRequest",
     "UpdateJobRequest",
+    "BuildInfo",
     "CloudSqlInstance",
     "Container",
     "ContainerPort",
@@ -196,6 +199,7 @@ __all__ = (
     "TrafficTargetStatus",
     "TrafficTargetAllocationType",
     "BinaryAuthorization",
+    "BuildConfig",
     "NodeSelector",
     "RevisionScaling",
     "ServiceMesh",

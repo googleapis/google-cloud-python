@@ -66,6 +66,13 @@ from google.cloud.compute_v1.services.instant_snapshots import (
 )
 from google.cloud.compute_v1.types import compute
 
+CRED_INFO_JSON = {
+    "credential_source": "/path/to/file",
+    "credential_type": "service account credentials",
+    "principal": "service-account@example.com",
+}
+CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
 
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
@@ -318,6 +325,49 @@ def test__get_universe_domain():
     with pytest.raises(ValueError) as excinfo:
         InstantSnapshotsClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+
+@pytest.mark.parametrize(
+    "error_code,cred_info_json,show_cred_info",
+    [
+        (401, CRED_INFO_JSON, True),
+        (403, CRED_INFO_JSON, True),
+        (404, CRED_INFO_JSON, True),
+        (500, CRED_INFO_JSON, False),
+        (401, None, False),
+        (403, None, False),
+        (404, None, False),
+        (500, None, False),
+    ],
+)
+def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
+    cred = mock.Mock(["get_cred_info"])
+    cred.get_cred_info = mock.Mock(return_value=cred_info_json)
+    client = InstantSnapshotsClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=["foo"])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    if show_cred_info:
+        assert error.details == ["foo", CRED_INFO_STRING]
+    else:
+        assert error.details == ["foo"]
+
+
+@pytest.mark.parametrize("error_code", [401, 403, 404, 500])
+def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
+    cred = mock.Mock([])
+    assert not hasattr(cred, "get_cred_info")
+    client = InstantSnapshotsClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=[])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    assert error.details == []
 
 
 @pytest.mark.parametrize(
@@ -3733,10 +3783,13 @@ def test_aggregated_list_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.InstantSnapshotsRestInterceptor, "post_aggregated_list"
     ) as post, mock.patch.object(
+        transports.InstantSnapshotsRestInterceptor, "post_aggregated_list_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.InstantSnapshotsRestInterceptor, "pre_aggregated_list"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.AggregatedListInstantSnapshotsRequest.pb(
             compute.AggregatedListInstantSnapshotsRequest()
         )
@@ -3762,6 +3815,10 @@ def test_aggregated_list_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.InstantSnapshotAggregatedList()
+        post_with_metadata.return_value = (
+            compute.InstantSnapshotAggregatedList(),
+            metadata,
+        )
 
         client.aggregated_list(
             request,
@@ -3773,6 +3830,7 @@ def test_aggregated_list_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_rest_bad_request(request_type=compute.DeleteInstantSnapshotRequest):
@@ -3905,10 +3963,13 @@ def test_delete_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.InstantSnapshotsRestInterceptor, "post_delete"
     ) as post, mock.patch.object(
+        transports.InstantSnapshotsRestInterceptor, "post_delete_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.InstantSnapshotsRestInterceptor, "pre_delete"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.DeleteInstantSnapshotRequest.pb(
             compute.DeleteInstantSnapshotRequest()
         )
@@ -3932,6 +3993,7 @@ def test_delete_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.Operation()
+        post_with_metadata.return_value = compute.Operation(), metadata
 
         client.delete(
             request,
@@ -3943,6 +4005,7 @@ def test_delete_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_rest_bad_request(request_type=compute.GetInstantSnapshotRequest):
@@ -4065,10 +4128,13 @@ def test_get_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.InstantSnapshotsRestInterceptor, "post_get"
     ) as post, mock.patch.object(
+        transports.InstantSnapshotsRestInterceptor, "post_get_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.InstantSnapshotsRestInterceptor, "pre_get"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.GetInstantSnapshotRequest.pb(
             compute.GetInstantSnapshotRequest()
         )
@@ -4092,6 +4158,7 @@ def test_get_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.InstantSnapshot()
+        post_with_metadata.return_value = compute.InstantSnapshot(), metadata
 
         client.get(
             request,
@@ -4103,6 +4170,7 @@ def test_get_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_iam_policy_rest_bad_request(
@@ -4191,10 +4259,13 @@ def test_get_iam_policy_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.InstantSnapshotsRestInterceptor, "post_get_iam_policy"
     ) as post, mock.patch.object(
+        transports.InstantSnapshotsRestInterceptor, "post_get_iam_policy_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.InstantSnapshotsRestInterceptor, "pre_get_iam_policy"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.GetIamPolicyInstantSnapshotRequest.pb(
             compute.GetIamPolicyInstantSnapshotRequest()
         )
@@ -4218,6 +4289,7 @@ def test_get_iam_policy_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.Policy()
+        post_with_metadata.return_value = compute.Policy(), metadata
 
         client.get_iam_policy(
             request,
@@ -4229,6 +4301,7 @@ def test_get_iam_policy_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_insert_rest_bad_request(request_type=compute.InsertInstantSnapshotRequest):
@@ -4447,10 +4520,13 @@ def test_insert_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.InstantSnapshotsRestInterceptor, "post_insert"
     ) as post, mock.patch.object(
+        transports.InstantSnapshotsRestInterceptor, "post_insert_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.InstantSnapshotsRestInterceptor, "pre_insert"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.InsertInstantSnapshotRequest.pb(
             compute.InsertInstantSnapshotRequest()
         )
@@ -4474,6 +4550,7 @@ def test_insert_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.Operation()
+        post_with_metadata.return_value = compute.Operation(), metadata
 
         client.insert(
             request,
@@ -4485,6 +4562,7 @@ def test_insert_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_rest_bad_request(request_type=compute.ListInstantSnapshotsRequest):
@@ -4573,10 +4651,13 @@ def test_list_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.InstantSnapshotsRestInterceptor, "post_list"
     ) as post, mock.patch.object(
+        transports.InstantSnapshotsRestInterceptor, "post_list_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.InstantSnapshotsRestInterceptor, "pre_list"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.ListInstantSnapshotsRequest.pb(
             compute.ListInstantSnapshotsRequest()
         )
@@ -4602,6 +4683,7 @@ def test_list_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.InstantSnapshotList()
+        post_with_metadata.return_value = compute.InstantSnapshotList(), metadata
 
         client.list(
             request,
@@ -4613,6 +4695,7 @@ def test_list_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_set_iam_policy_rest_bad_request(
@@ -4817,10 +4900,13 @@ def test_set_iam_policy_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.InstantSnapshotsRestInterceptor, "post_set_iam_policy"
     ) as post, mock.patch.object(
+        transports.InstantSnapshotsRestInterceptor, "post_set_iam_policy_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.InstantSnapshotsRestInterceptor, "pre_set_iam_policy"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.SetIamPolicyInstantSnapshotRequest.pb(
             compute.SetIamPolicyInstantSnapshotRequest()
         )
@@ -4844,6 +4930,7 @@ def test_set_iam_policy_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.Policy()
+        post_with_metadata.return_value = compute.Policy(), metadata
 
         client.set_iam_policy(
             request,
@@ -4855,6 +4942,7 @@ def test_set_iam_policy_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_set_labels_rest_bad_request(
@@ -5060,10 +5148,13 @@ def test_set_labels_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.InstantSnapshotsRestInterceptor, "post_set_labels"
     ) as post, mock.patch.object(
+        transports.InstantSnapshotsRestInterceptor, "post_set_labels_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.InstantSnapshotsRestInterceptor, "pre_set_labels"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.SetLabelsInstantSnapshotRequest.pb(
             compute.SetLabelsInstantSnapshotRequest()
         )
@@ -5087,6 +5178,7 @@ def test_set_labels_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.Operation()
+        post_with_metadata.return_value = compute.Operation(), metadata
 
         client.set_labels(
             request,
@@ -5098,6 +5190,7 @@ def test_set_labels_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_test_iam_permissions_rest_bad_request(
@@ -5260,10 +5353,14 @@ def test_test_iam_permissions_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.InstantSnapshotsRestInterceptor, "post_test_iam_permissions"
     ) as post, mock.patch.object(
+        transports.InstantSnapshotsRestInterceptor,
+        "post_test_iam_permissions_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.InstantSnapshotsRestInterceptor, "pre_test_iam_permissions"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.TestIamPermissionsInstantSnapshotRequest.pb(
             compute.TestIamPermissionsInstantSnapshotRequest()
         )
@@ -5289,6 +5386,7 @@ def test_test_iam_permissions_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.TestPermissionsResponse()
+        post_with_metadata.return_value = compute.TestPermissionsResponse(), metadata
 
         client.test_iam_permissions(
             request,
@@ -5300,6 +5398,7 @@ def test_test_iam_permissions_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_initialize_client_w_rest():

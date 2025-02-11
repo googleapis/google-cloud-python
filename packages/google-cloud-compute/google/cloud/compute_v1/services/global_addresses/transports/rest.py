@@ -139,11 +139,34 @@ class GlobalAddressesRestInterceptor:
     def post_delete(self, response: compute.Operation) -> compute.Operation:
         """Post-rpc interceptor for delete
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the GlobalAddresses server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete` interceptor runs
+        before the `post_delete_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_with_metadata(
+        self,
+        response: compute.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the GlobalAddresses server but before it is returned to user code.
+
+        We recommend only using this `post_delete_with_metadata`
+        interceptor in new development instead of the `post_delete` interceptor.
+        When both interceptors are used, this `post_delete_with_metadata` interceptor runs after the
+        `post_delete` interceptor. The (possibly modified) response returned by
+        `post_delete` will be passed to
+        `post_delete_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get(
         self,
@@ -162,11 +185,34 @@ class GlobalAddressesRestInterceptor:
     def post_get(self, response: compute.Address) -> compute.Address:
         """Post-rpc interceptor for get
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the GlobalAddresses server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get` interceptor runs
+        before the `post_get_with_metadata` interceptor.
         """
         return response
+
+    def post_get_with_metadata(
+        self,
+        response: compute.Address,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[compute.Address, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the GlobalAddresses server but before it is returned to user code.
+
+        We recommend only using this `post_get_with_metadata`
+        interceptor in new development instead of the `post_get` interceptor.
+        When both interceptors are used, this `post_get_with_metadata` interceptor runs after the
+        `post_get` interceptor. The (possibly modified) response returned by
+        `post_get` will be passed to
+        `post_get_with_metadata`.
+        """
+        return response, metadata
 
     def pre_insert(
         self,
@@ -185,11 +231,34 @@ class GlobalAddressesRestInterceptor:
     def post_insert(self, response: compute.Operation) -> compute.Operation:
         """Post-rpc interceptor for insert
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_insert_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the GlobalAddresses server but before
-        it is returned to user code.
+        it is returned to user code. This `post_insert` interceptor runs
+        before the `post_insert_with_metadata` interceptor.
         """
         return response
+
+    def post_insert_with_metadata(
+        self,
+        response: compute.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for insert
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the GlobalAddresses server but before it is returned to user code.
+
+        We recommend only using this `post_insert_with_metadata`
+        interceptor in new development instead of the `post_insert` interceptor.
+        When both interceptors are used, this `post_insert_with_metadata` interceptor runs after the
+        `post_insert` interceptor. The (possibly modified) response returned by
+        `post_insert` will be passed to
+        `post_insert_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list(
         self,
@@ -208,11 +277,34 @@ class GlobalAddressesRestInterceptor:
     def post_list(self, response: compute.AddressList) -> compute.AddressList:
         """Post-rpc interceptor for list
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the GlobalAddresses server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list` interceptor runs
+        before the `post_list_with_metadata` interceptor.
         """
         return response
+
+    def post_list_with_metadata(
+        self,
+        response: compute.AddressList,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[compute.AddressList, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for list
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the GlobalAddresses server but before it is returned to user code.
+
+        We recommend only using this `post_list_with_metadata`
+        interceptor in new development instead of the `post_list` interceptor.
+        When both interceptors are used, this `post_list_with_metadata` interceptor runs after the
+        `post_list` interceptor. The (possibly modified) response returned by
+        `post_list` will be passed to
+        `post_list_with_metadata`.
+        """
+        return response, metadata
 
     def pre_move(
         self,
@@ -231,11 +323,34 @@ class GlobalAddressesRestInterceptor:
     def post_move(self, response: compute.Operation) -> compute.Operation:
         """Post-rpc interceptor for move
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_move_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the GlobalAddresses server but before
-        it is returned to user code.
+        it is returned to user code. This `post_move` interceptor runs
+        before the `post_move_with_metadata` interceptor.
         """
         return response
+
+    def post_move_with_metadata(
+        self,
+        response: compute.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for move
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the GlobalAddresses server but before it is returned to user code.
+
+        We recommend only using this `post_move_with_metadata`
+        interceptor in new development instead of the `post_move` interceptor.
+        When both interceptors are used, this `post_move_with_metadata` interceptor runs after the
+        `post_move` interceptor. The (possibly modified) response returned by
+        `post_move` will be passed to
+        `post_move_with_metadata`.
+        """
+        return response, metadata
 
     def pre_set_labels(
         self,
@@ -254,11 +369,34 @@ class GlobalAddressesRestInterceptor:
     def post_set_labels(self, response: compute.Operation) -> compute.Operation:
         """Post-rpc interceptor for set_labels
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_set_labels_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the GlobalAddresses server but before
-        it is returned to user code.
+        it is returned to user code. This `post_set_labels` interceptor runs
+        before the `post_set_labels_with_metadata` interceptor.
         """
         return response
+
+    def post_set_labels_with_metadata(
+        self,
+        response: compute.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for set_labels
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the GlobalAddresses server but before it is returned to user code.
+
+        We recommend only using this `post_set_labels_with_metadata`
+        interceptor in new development instead of the `post_set_labels` interceptor.
+        When both interceptors are used, this `post_set_labels_with_metadata` interceptor runs after the
+        `post_set_labels` interceptor. The (possibly modified) response returned by
+        `post_set_labels` will be passed to
+        `post_set_labels_with_metadata`.
+        """
+        return response, metadata
 
 
 @dataclasses.dataclass
@@ -491,6 +629,10 @@ class GlobalAddressesRestTransport(_BaseGlobalAddressesRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -642,6 +784,8 @@ class GlobalAddressesRestTransport(_BaseGlobalAddressesRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_with_metadata(resp, response_metadata)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -811,6 +955,10 @@ class GlobalAddressesRestTransport(_BaseGlobalAddressesRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_insert(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_insert_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -955,6 +1103,8 @@ class GlobalAddressesRestTransport(_BaseGlobalAddressesRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_with_metadata(resp, response_metadata)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1122,6 +1272,8 @@ class GlobalAddressesRestTransport(_BaseGlobalAddressesRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_move(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_move_with_metadata(resp, response_metadata)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1291,6 +1443,10 @@ class GlobalAddressesRestTransport(_BaseGlobalAddressesRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_set_labels(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_set_labels_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

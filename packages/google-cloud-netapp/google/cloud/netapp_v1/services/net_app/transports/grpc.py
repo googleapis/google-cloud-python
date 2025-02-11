@@ -39,6 +39,8 @@ from google.cloud.netapp_v1.types import backup_policy as gcn_backup_policy
 from google.cloud.netapp_v1.types import backup_vault
 from google.cloud.netapp_v1.types import backup_vault as gcn_backup_vault
 from google.cloud.netapp_v1.types import kms
+from google.cloud.netapp_v1.types import quota_rule
+from google.cloud.netapp_v1.types import quota_rule as gcn_quota_rule
 from google.cloud.netapp_v1.types import replication
 from google.cloud.netapp_v1.types import replication as gcn_replication
 from google.cloud.netapp_v1.types import snapshot
@@ -1848,6 +1850,138 @@ class NetAppGrpcTransport(NetAppTransport):
                 response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["delete_backup_policy"]
+
+    @property
+    def list_quota_rules(
+        self,
+    ) -> Callable[
+        [quota_rule.ListQuotaRulesRequest], quota_rule.ListQuotaRulesResponse
+    ]:
+        r"""Return a callable for the list quota rules method over gRPC.
+
+        Returns list of all quota rules in a location.
+
+        Returns:
+            Callable[[~.ListQuotaRulesRequest],
+                    ~.ListQuotaRulesResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_quota_rules" not in self._stubs:
+            self._stubs["list_quota_rules"] = self._logged_channel.unary_unary(
+                "/google.cloud.netapp.v1.NetApp/ListQuotaRules",
+                request_serializer=quota_rule.ListQuotaRulesRequest.serialize,
+                response_deserializer=quota_rule.ListQuotaRulesResponse.deserialize,
+            )
+        return self._stubs["list_quota_rules"]
+
+    @property
+    def get_quota_rule(
+        self,
+    ) -> Callable[[quota_rule.GetQuotaRuleRequest], quota_rule.QuotaRule]:
+        r"""Return a callable for the get quota rule method over gRPC.
+
+        Returns details of the specified quota rule.
+
+        Returns:
+            Callable[[~.GetQuotaRuleRequest],
+                    ~.QuotaRule]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_quota_rule" not in self._stubs:
+            self._stubs["get_quota_rule"] = self._logged_channel.unary_unary(
+                "/google.cloud.netapp.v1.NetApp/GetQuotaRule",
+                request_serializer=quota_rule.GetQuotaRuleRequest.serialize,
+                response_deserializer=quota_rule.QuotaRule.deserialize,
+            )
+        return self._stubs["get_quota_rule"]
+
+    @property
+    def create_quota_rule(
+        self,
+    ) -> Callable[[gcn_quota_rule.CreateQuotaRuleRequest], operations_pb2.Operation]:
+        r"""Return a callable for the create quota rule method over gRPC.
+
+        Creates a new quota rule.
+
+        Returns:
+            Callable[[~.CreateQuotaRuleRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_quota_rule" not in self._stubs:
+            self._stubs["create_quota_rule"] = self._logged_channel.unary_unary(
+                "/google.cloud.netapp.v1.NetApp/CreateQuotaRule",
+                request_serializer=gcn_quota_rule.CreateQuotaRuleRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["create_quota_rule"]
+
+    @property
+    def update_quota_rule(
+        self,
+    ) -> Callable[[gcn_quota_rule.UpdateQuotaRuleRequest], operations_pb2.Operation]:
+        r"""Return a callable for the update quota rule method over gRPC.
+
+        Updates a quota rule.
+
+        Returns:
+            Callable[[~.UpdateQuotaRuleRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_quota_rule" not in self._stubs:
+            self._stubs["update_quota_rule"] = self._logged_channel.unary_unary(
+                "/google.cloud.netapp.v1.NetApp/UpdateQuotaRule",
+                request_serializer=gcn_quota_rule.UpdateQuotaRuleRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["update_quota_rule"]
+
+    @property
+    def delete_quota_rule(
+        self,
+    ) -> Callable[[quota_rule.DeleteQuotaRuleRequest], operations_pb2.Operation]:
+        r"""Return a callable for the delete quota rule method over gRPC.
+
+        Deletes a quota rule.
+
+        Returns:
+            Callable[[~.DeleteQuotaRuleRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_quota_rule" not in self._stubs:
+            self._stubs["delete_quota_rule"] = self._logged_channel.unary_unary(
+                "/google.cloud.netapp.v1.NetApp/DeleteQuotaRule",
+                request_serializer=quota_rule.DeleteQuotaRuleRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["delete_quota_rule"]
 
     def close(self):
         self._logged_channel.close()

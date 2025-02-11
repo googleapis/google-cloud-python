@@ -365,11 +365,10 @@ class DataQualityRuleResult(proto.Message):
                automatically failing rule evaluation, or
             -  exclude ``null`` rows from the ``evaluated_count``, by
                setting ``ignore_nulls = true``.
+
+            This field is not set for rule SqlAssertion.
         passed_count (int):
-            The number of rows which passed a rule
-            evaluation.
-            This field is only valid for row-level type
-            rules.
+            This field is not set for rule SqlAssertion.
         null_count (int):
             The number of rows with null values in the
             specified column.
