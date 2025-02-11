@@ -49,11 +49,13 @@ jobs:
       with:
         name: coverage-artifact-${{ '{{' }} matrix.python {{ '}}' }}
         path: .coverage-${{ matrix.python }}
-  prerelease:
+  unit-extended:
+    name: ${{ matrix.option }}
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python: ['3.13']
+        python: ["3.13"]
+        option: ["prerelease", "core_deps_from_source"]
     steps:
     - name: Checkout
       uses: actions/checkout@v4
@@ -70,10 +72,10 @@ jobs:
       run: |
         python -m pip install --upgrade setuptools pip wheel
         python -m pip install nox
-    - name: Run prerelease tests
+    - name: Run ${{ matrix.option }} tests
       env:
         BUILD_TYPE: presubmit
-        TEST_TYPE: prerelease
+        TEST_TYPE: ${{ matrix.option }}
         PY_VERSION: ${{ matrix.python }}
       run: |
         ci/run_conditional_tests.sh
