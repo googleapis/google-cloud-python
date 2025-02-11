@@ -134,11 +134,34 @@ class SessionControllerRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_session
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_session_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the SessionController server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_session` interceptor runs
+        before the `post_create_session_with_metadata` interceptor.
         """
         return response
+
+    def post_create_session_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_session
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the SessionController server but before it is returned to user code.
+
+        We recommend only using this `post_create_session_with_metadata`
+        interceptor in new development instead of the `post_create_session` interceptor.
+        When both interceptors are used, this `post_create_session_with_metadata` interceptor runs after the
+        `post_create_session` interceptor. The (possibly modified) response returned by
+        `post_create_session` will be passed to
+        `post_create_session_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_session(
         self,
@@ -157,11 +180,34 @@ class SessionControllerRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_session
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_session_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the SessionController server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_session` interceptor runs
+        before the `post_delete_session_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_session_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_session
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the SessionController server but before it is returned to user code.
+
+        We recommend only using this `post_delete_session_with_metadata`
+        interceptor in new development instead of the `post_delete_session` interceptor.
+        When both interceptors are used, this `post_delete_session_with_metadata` interceptor runs after the
+        `post_delete_session` interceptor. The (possibly modified) response returned by
+        `post_delete_session` will be passed to
+        `post_delete_session_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_session(
         self,
@@ -178,11 +224,34 @@ class SessionControllerRestInterceptor:
     def post_get_session(self, response: sessions.Session) -> sessions.Session:
         """Post-rpc interceptor for get_session
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_session_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the SessionController server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_session` interceptor runs
+        before the `post_get_session_with_metadata` interceptor.
         """
         return response
+
+    def post_get_session_with_metadata(
+        self,
+        response: sessions.Session,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[sessions.Session, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_session
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the SessionController server but before it is returned to user code.
+
+        We recommend only using this `post_get_session_with_metadata`
+        interceptor in new development instead of the `post_get_session` interceptor.
+        When both interceptors are used, this `post_get_session_with_metadata` interceptor runs after the
+        `post_get_session` interceptor. The (possibly modified) response returned by
+        `post_get_session` will be passed to
+        `post_get_session_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_sessions(
         self,
@@ -201,11 +270,34 @@ class SessionControllerRestInterceptor:
     ) -> sessions.ListSessionsResponse:
         """Post-rpc interceptor for list_sessions
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_sessions_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the SessionController server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_sessions` interceptor runs
+        before the `post_list_sessions_with_metadata` interceptor.
         """
         return response
+
+    def post_list_sessions_with_metadata(
+        self,
+        response: sessions.ListSessionsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[sessions.ListSessionsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for list_sessions
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the SessionController server but before it is returned to user code.
+
+        We recommend only using this `post_list_sessions_with_metadata`
+        interceptor in new development instead of the `post_list_sessions` interceptor.
+        When both interceptors are used, this `post_list_sessions_with_metadata` interceptor runs after the
+        `post_list_sessions` interceptor. The (possibly modified) response returned by
+        `post_list_sessions` will be passed to
+        `post_list_sessions_with_metadata`.
+        """
+        return response, metadata
 
     def pre_terminate_session(
         self,
@@ -226,11 +318,34 @@ class SessionControllerRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for terminate_session
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_terminate_session_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the SessionController server but before
-        it is returned to user code.
+        it is returned to user code. This `post_terminate_session` interceptor runs
+        before the `post_terminate_session_with_metadata` interceptor.
         """
         return response
+
+    def post_terminate_session_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for terminate_session
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the SessionController server but before it is returned to user code.
+
+        We recommend only using this `post_terminate_session_with_metadata`
+        interceptor in new development instead of the `post_terminate_session` interceptor.
+        When both interceptors are used, this `post_terminate_session_with_metadata` interceptor runs after the
+        `post_terminate_session` interceptor. The (possibly modified) response returned by
+        `post_terminate_session` will be passed to
+        `post_terminate_session_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_iam_policy(
         self,
@@ -682,6 +797,10 @@ class SessionControllerRestTransport(_BaseSessionControllerRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_session(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_session_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -824,6 +943,10 @@ class SessionControllerRestTransport(_BaseSessionControllerRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_session(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_session_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -965,6 +1088,10 @@ class SessionControllerRestTransport(_BaseSessionControllerRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_session(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_session_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1106,6 +1233,10 @@ class SessionControllerRestTransport(_BaseSessionControllerRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_sessions(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_sessions_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1257,6 +1388,10 @@ class SessionControllerRestTransport(_BaseSessionControllerRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_terminate_session(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_terminate_session_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

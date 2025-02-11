@@ -70,6 +70,13 @@ from google.cloud.dlp_v2.services.dlp_service import (
 )
 from google.cloud.dlp_v2.types import dlp, storage
 
+CRED_INFO_JSON = {
+    "credential_source": "/path/to/file",
+    "credential_type": "service account credentials",
+    "principal": "service-account@example.com",
+}
+CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
 
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
@@ -303,6 +310,49 @@ def test__get_universe_domain():
     with pytest.raises(ValueError) as excinfo:
         DlpServiceClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+
+@pytest.mark.parametrize(
+    "error_code,cred_info_json,show_cred_info",
+    [
+        (401, CRED_INFO_JSON, True),
+        (403, CRED_INFO_JSON, True),
+        (404, CRED_INFO_JSON, True),
+        (500, CRED_INFO_JSON, False),
+        (401, None, False),
+        (403, None, False),
+        (404, None, False),
+        (500, None, False),
+    ],
+)
+def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
+    cred = mock.Mock(["get_cred_info"])
+    cred.get_cred_info = mock.Mock(return_value=cred_info_json)
+    client = DlpServiceClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=["foo"])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    if show_cred_info:
+        assert error.details == ["foo", CRED_INFO_STRING]
+    else:
+        assert error.details == ["foo"]
+
+
+@pytest.mark.parametrize("error_code", [401, 403, 404, 500])
+def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
+    cred = mock.Mock([])
+    assert not hasattr(cred, "get_cred_info")
+    client = DlpServiceClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=[])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    assert error.details == []
 
 
 @pytest.mark.parametrize(
@@ -35158,10 +35208,13 @@ def test_inspect_content_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DlpServiceRestInterceptor, "post_inspect_content"
     ) as post, mock.patch.object(
+        transports.DlpServiceRestInterceptor, "post_inspect_content_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.DlpServiceRestInterceptor, "pre_inspect_content"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = dlp.InspectContentRequest.pb(dlp.InspectContentRequest())
         transcode.return_value = {
             "method": "post",
@@ -35183,6 +35236,7 @@ def test_inspect_content_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = dlp.InspectContentResponse()
+        post_with_metadata.return_value = dlp.InspectContentResponse(), metadata
 
         client.inspect_content(
             request,
@@ -35194,6 +35248,7 @@ def test_inspect_content_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_redact_image_rest_bad_request(request_type=dlp.RedactImageRequest):
@@ -35278,10 +35333,13 @@ def test_redact_image_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DlpServiceRestInterceptor, "post_redact_image"
     ) as post, mock.patch.object(
+        transports.DlpServiceRestInterceptor, "post_redact_image_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.DlpServiceRestInterceptor, "pre_redact_image"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = dlp.RedactImageRequest.pb(dlp.RedactImageRequest())
         transcode.return_value = {
             "method": "post",
@@ -35303,6 +35361,7 @@ def test_redact_image_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = dlp.RedactImageResponse()
+        post_with_metadata.return_value = dlp.RedactImageResponse(), metadata
 
         client.redact_image(
             request,
@@ -35314,6 +35373,7 @@ def test_redact_image_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_deidentify_content_rest_bad_request(request_type=dlp.DeidentifyContentRequest):
@@ -35393,10 +35453,13 @@ def test_deidentify_content_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DlpServiceRestInterceptor, "post_deidentify_content"
     ) as post, mock.patch.object(
+        transports.DlpServiceRestInterceptor, "post_deidentify_content_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.DlpServiceRestInterceptor, "pre_deidentify_content"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = dlp.DeidentifyContentRequest.pb(dlp.DeidentifyContentRequest())
         transcode.return_value = {
             "method": "post",
@@ -35420,6 +35483,7 @@ def test_deidentify_content_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = dlp.DeidentifyContentResponse()
+        post_with_metadata.return_value = dlp.DeidentifyContentResponse(), metadata
 
         client.deidentify_content(
             request,
@@ -35431,6 +35495,7 @@ def test_deidentify_content_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_reidentify_content_rest_bad_request(request_type=dlp.ReidentifyContentRequest):
@@ -35510,10 +35575,13 @@ def test_reidentify_content_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DlpServiceRestInterceptor, "post_reidentify_content"
     ) as post, mock.patch.object(
+        transports.DlpServiceRestInterceptor, "post_reidentify_content_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.DlpServiceRestInterceptor, "pre_reidentify_content"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = dlp.ReidentifyContentRequest.pb(dlp.ReidentifyContentRequest())
         transcode.return_value = {
             "method": "post",
@@ -35537,6 +35605,7 @@ def test_reidentify_content_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = dlp.ReidentifyContentResponse()
+        post_with_metadata.return_value = dlp.ReidentifyContentResponse(), metadata
 
         client.reidentify_content(
             request,
@@ -35548,6 +35617,7 @@ def test_reidentify_content_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_info_types_rest_bad_request(request_type=dlp.ListInfoTypesRequest):
@@ -35627,10 +35697,13 @@ def test_list_info_types_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DlpServiceRestInterceptor, "post_list_info_types"
     ) as post, mock.patch.object(
+        transports.DlpServiceRestInterceptor, "post_list_info_types_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.DlpServiceRestInterceptor, "pre_list_info_types"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = dlp.ListInfoTypesRequest.pb(dlp.ListInfoTypesRequest())
         transcode.return_value = {
             "method": "post",
@@ -35652,6 +35725,7 @@ def test_list_info_types_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = dlp.ListInfoTypesResponse()
+        post_with_metadata.return_value = dlp.ListInfoTypesResponse(), metadata
 
         client.list_info_types(
             request,
@@ -35663,6 +35737,7 @@ def test_list_info_types_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_inspect_template_rest_bad_request(
@@ -35751,10 +35826,14 @@ def test_create_inspect_template_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DlpServiceRestInterceptor, "post_create_inspect_template"
     ) as post, mock.patch.object(
+        transports.DlpServiceRestInterceptor,
+        "post_create_inspect_template_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.DlpServiceRestInterceptor, "pre_create_inspect_template"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = dlp.CreateInspectTemplateRequest.pb(
             dlp.CreateInspectTemplateRequest()
         )
@@ -35778,6 +35857,7 @@ def test_create_inspect_template_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = dlp.InspectTemplate()
+        post_with_metadata.return_value = dlp.InspectTemplate(), metadata
 
         client.create_inspect_template(
             request,
@@ -35789,6 +35869,7 @@ def test_create_inspect_template_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_inspect_template_rest_bad_request(
@@ -35881,10 +35962,14 @@ def test_update_inspect_template_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DlpServiceRestInterceptor, "post_update_inspect_template"
     ) as post, mock.patch.object(
+        transports.DlpServiceRestInterceptor,
+        "post_update_inspect_template_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.DlpServiceRestInterceptor, "pre_update_inspect_template"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = dlp.UpdateInspectTemplateRequest.pb(
             dlp.UpdateInspectTemplateRequest()
         )
@@ -35908,6 +35993,7 @@ def test_update_inspect_template_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = dlp.InspectTemplate()
+        post_with_metadata.return_value = dlp.InspectTemplate(), metadata
 
         client.update_inspect_template(
             request,
@@ -35919,6 +36005,7 @@ def test_update_inspect_template_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_inspect_template_rest_bad_request(
@@ -36011,10 +36098,13 @@ def test_get_inspect_template_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DlpServiceRestInterceptor, "post_get_inspect_template"
     ) as post, mock.patch.object(
+        transports.DlpServiceRestInterceptor, "post_get_inspect_template_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.DlpServiceRestInterceptor, "pre_get_inspect_template"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = dlp.GetInspectTemplateRequest.pb(dlp.GetInspectTemplateRequest())
         transcode.return_value = {
             "method": "post",
@@ -36036,6 +36126,7 @@ def test_get_inspect_template_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = dlp.InspectTemplate()
+        post_with_metadata.return_value = dlp.InspectTemplate(), metadata
 
         client.get_inspect_template(
             request,
@@ -36047,6 +36138,7 @@ def test_get_inspect_template_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_inspect_templates_rest_bad_request(
@@ -36131,10 +36223,14 @@ def test_list_inspect_templates_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DlpServiceRestInterceptor, "post_list_inspect_templates"
     ) as post, mock.patch.object(
+        transports.DlpServiceRestInterceptor,
+        "post_list_inspect_templates_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.DlpServiceRestInterceptor, "pre_list_inspect_templates"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = dlp.ListInspectTemplatesRequest.pb(
             dlp.ListInspectTemplatesRequest()
         )
@@ -36160,6 +36256,7 @@ def test_list_inspect_templates_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = dlp.ListInspectTemplatesResponse()
+        post_with_metadata.return_value = dlp.ListInspectTemplatesResponse(), metadata
 
         client.list_inspect_templates(
             request,
@@ -36171,6 +36268,7 @@ def test_list_inspect_templates_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_inspect_template_rest_bad_request(
@@ -36372,10 +36470,14 @@ def test_create_deidentify_template_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DlpServiceRestInterceptor, "post_create_deidentify_template"
     ) as post, mock.patch.object(
+        transports.DlpServiceRestInterceptor,
+        "post_create_deidentify_template_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.DlpServiceRestInterceptor, "pre_create_deidentify_template"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = dlp.CreateDeidentifyTemplateRequest.pb(
             dlp.CreateDeidentifyTemplateRequest()
         )
@@ -36399,6 +36501,7 @@ def test_create_deidentify_template_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = dlp.DeidentifyTemplate()
+        post_with_metadata.return_value = dlp.DeidentifyTemplate(), metadata
 
         client.create_deidentify_template(
             request,
@@ -36410,6 +36513,7 @@ def test_create_deidentify_template_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_deidentify_template_rest_bad_request(
@@ -36498,10 +36602,14 @@ def test_update_deidentify_template_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DlpServiceRestInterceptor, "post_update_deidentify_template"
     ) as post, mock.patch.object(
+        transports.DlpServiceRestInterceptor,
+        "post_update_deidentify_template_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.DlpServiceRestInterceptor, "pre_update_deidentify_template"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = dlp.UpdateDeidentifyTemplateRequest.pb(
             dlp.UpdateDeidentifyTemplateRequest()
         )
@@ -36525,6 +36633,7 @@ def test_update_deidentify_template_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = dlp.DeidentifyTemplate()
+        post_with_metadata.return_value = dlp.DeidentifyTemplate(), metadata
 
         client.update_deidentify_template(
             request,
@@ -36536,6 +36645,7 @@ def test_update_deidentify_template_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_deidentify_template_rest_bad_request(
@@ -36624,10 +36734,14 @@ def test_get_deidentify_template_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DlpServiceRestInterceptor, "post_get_deidentify_template"
     ) as post, mock.patch.object(
+        transports.DlpServiceRestInterceptor,
+        "post_get_deidentify_template_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.DlpServiceRestInterceptor, "pre_get_deidentify_template"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = dlp.GetDeidentifyTemplateRequest.pb(
             dlp.GetDeidentifyTemplateRequest()
         )
@@ -36651,6 +36765,7 @@ def test_get_deidentify_template_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = dlp.DeidentifyTemplate()
+        post_with_metadata.return_value = dlp.DeidentifyTemplate(), metadata
 
         client.get_deidentify_template(
             request,
@@ -36662,6 +36777,7 @@ def test_get_deidentify_template_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_deidentify_templates_rest_bad_request(
@@ -36746,10 +36862,14 @@ def test_list_deidentify_templates_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DlpServiceRestInterceptor, "post_list_deidentify_templates"
     ) as post, mock.patch.object(
+        transports.DlpServiceRestInterceptor,
+        "post_list_deidentify_templates_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.DlpServiceRestInterceptor, "pre_list_deidentify_templates"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = dlp.ListDeidentifyTemplatesRequest.pb(
             dlp.ListDeidentifyTemplatesRequest()
         )
@@ -36775,6 +36895,10 @@ def test_list_deidentify_templates_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = dlp.ListDeidentifyTemplatesResponse()
+        post_with_metadata.return_value = (
+            dlp.ListDeidentifyTemplatesResponse(),
+            metadata,
+        )
 
         client.list_deidentify_templates(
             request,
@@ -36786,6 +36910,7 @@ def test_list_deidentify_templates_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_deidentify_template_rest_bad_request(
@@ -36983,10 +37108,13 @@ def test_create_job_trigger_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DlpServiceRestInterceptor, "post_create_job_trigger"
     ) as post, mock.patch.object(
+        transports.DlpServiceRestInterceptor, "post_create_job_trigger_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.DlpServiceRestInterceptor, "pre_create_job_trigger"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = dlp.CreateJobTriggerRequest.pb(dlp.CreateJobTriggerRequest())
         transcode.return_value = {
             "method": "post",
@@ -37008,6 +37136,7 @@ def test_create_job_trigger_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = dlp.JobTrigger()
+        post_with_metadata.return_value = dlp.JobTrigger(), metadata
 
         client.create_job_trigger(
             request,
@@ -37019,6 +37148,7 @@ def test_create_job_trigger_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_job_trigger_rest_bad_request(request_type=dlp.UpdateJobTriggerRequest):
@@ -37107,10 +37237,13 @@ def test_update_job_trigger_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DlpServiceRestInterceptor, "post_update_job_trigger"
     ) as post, mock.patch.object(
+        transports.DlpServiceRestInterceptor, "post_update_job_trigger_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.DlpServiceRestInterceptor, "pre_update_job_trigger"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = dlp.UpdateJobTriggerRequest.pb(dlp.UpdateJobTriggerRequest())
         transcode.return_value = {
             "method": "post",
@@ -37132,6 +37265,7 @@ def test_update_job_trigger_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = dlp.JobTrigger()
+        post_with_metadata.return_value = dlp.JobTrigger(), metadata
 
         client.update_job_trigger(
             request,
@@ -37143,6 +37277,7 @@ def test_update_job_trigger_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_hybrid_inspect_job_trigger_rest_bad_request(
@@ -37224,10 +37359,14 @@ def test_hybrid_inspect_job_trigger_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DlpServiceRestInterceptor, "post_hybrid_inspect_job_trigger"
     ) as post, mock.patch.object(
+        transports.DlpServiceRestInterceptor,
+        "post_hybrid_inspect_job_trigger_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.DlpServiceRestInterceptor, "pre_hybrid_inspect_job_trigger"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = dlp.HybridInspectJobTriggerRequest.pb(
             dlp.HybridInspectJobTriggerRequest()
         )
@@ -37251,6 +37390,7 @@ def test_hybrid_inspect_job_trigger_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = dlp.HybridInspectResponse()
+        post_with_metadata.return_value = dlp.HybridInspectResponse(), metadata
 
         client.hybrid_inspect_job_trigger(
             request,
@@ -37262,6 +37402,7 @@ def test_hybrid_inspect_job_trigger_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_job_trigger_rest_bad_request(request_type=dlp.GetJobTriggerRequest):
@@ -37350,10 +37491,13 @@ def test_get_job_trigger_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DlpServiceRestInterceptor, "post_get_job_trigger"
     ) as post, mock.patch.object(
+        transports.DlpServiceRestInterceptor, "post_get_job_trigger_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.DlpServiceRestInterceptor, "pre_get_job_trigger"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = dlp.GetJobTriggerRequest.pb(dlp.GetJobTriggerRequest())
         transcode.return_value = {
             "method": "post",
@@ -37375,6 +37519,7 @@ def test_get_job_trigger_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = dlp.JobTrigger()
+        post_with_metadata.return_value = dlp.JobTrigger(), metadata
 
         client.get_job_trigger(
             request,
@@ -37386,6 +37531,7 @@ def test_get_job_trigger_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_job_triggers_rest_bad_request(request_type=dlp.ListJobTriggersRequest):
@@ -37468,10 +37614,13 @@ def test_list_job_triggers_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DlpServiceRestInterceptor, "post_list_job_triggers"
     ) as post, mock.patch.object(
+        transports.DlpServiceRestInterceptor, "post_list_job_triggers_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.DlpServiceRestInterceptor, "pre_list_job_triggers"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = dlp.ListJobTriggersRequest.pb(dlp.ListJobTriggersRequest())
         transcode.return_value = {
             "method": "post",
@@ -37495,6 +37644,7 @@ def test_list_job_triggers_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = dlp.ListJobTriggersResponse()
+        post_with_metadata.return_value = dlp.ListJobTriggersResponse(), metadata
 
         client.list_job_triggers(
             request,
@@ -37506,6 +37656,7 @@ def test_list_job_triggers_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_job_trigger_rest_bad_request(request_type=dlp.DeleteJobTriggerRequest):
@@ -37701,10 +37852,13 @@ def test_activate_job_trigger_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DlpServiceRestInterceptor, "post_activate_job_trigger"
     ) as post, mock.patch.object(
+        transports.DlpServiceRestInterceptor, "post_activate_job_trigger_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.DlpServiceRestInterceptor, "pre_activate_job_trigger"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = dlp.ActivateJobTriggerRequest.pb(dlp.ActivateJobTriggerRequest())
         transcode.return_value = {
             "method": "post",
@@ -37726,6 +37880,7 @@ def test_activate_job_trigger_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = dlp.DlpJob()
+        post_with_metadata.return_value = dlp.DlpJob(), metadata
 
         client.activate_job_trigger(
             request,
@@ -37737,6 +37892,7 @@ def test_activate_job_trigger_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_discovery_config_rest_bad_request(
@@ -37827,10 +37983,14 @@ def test_create_discovery_config_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DlpServiceRestInterceptor, "post_create_discovery_config"
     ) as post, mock.patch.object(
+        transports.DlpServiceRestInterceptor,
+        "post_create_discovery_config_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.DlpServiceRestInterceptor, "pre_create_discovery_config"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = dlp.CreateDiscoveryConfigRequest.pb(
             dlp.CreateDiscoveryConfigRequest()
         )
@@ -37854,6 +38014,7 @@ def test_create_discovery_config_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = dlp.DiscoveryConfig()
+        post_with_metadata.return_value = dlp.DiscoveryConfig(), metadata
 
         client.create_discovery_config(
             request,
@@ -37865,6 +38026,7 @@ def test_create_discovery_config_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_discovery_config_rest_bad_request(
@@ -37959,10 +38121,14 @@ def test_update_discovery_config_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DlpServiceRestInterceptor, "post_update_discovery_config"
     ) as post, mock.patch.object(
+        transports.DlpServiceRestInterceptor,
+        "post_update_discovery_config_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.DlpServiceRestInterceptor, "pre_update_discovery_config"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = dlp.UpdateDiscoveryConfigRequest.pb(
             dlp.UpdateDiscoveryConfigRequest()
         )
@@ -37986,6 +38152,7 @@ def test_update_discovery_config_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = dlp.DiscoveryConfig()
+        post_with_metadata.return_value = dlp.DiscoveryConfig(), metadata
 
         client.update_discovery_config(
             request,
@@ -37997,6 +38164,7 @@ def test_update_discovery_config_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_discovery_config_rest_bad_request(
@@ -38091,10 +38259,13 @@ def test_get_discovery_config_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DlpServiceRestInterceptor, "post_get_discovery_config"
     ) as post, mock.patch.object(
+        transports.DlpServiceRestInterceptor, "post_get_discovery_config_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.DlpServiceRestInterceptor, "pre_get_discovery_config"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = dlp.GetDiscoveryConfigRequest.pb(dlp.GetDiscoveryConfigRequest())
         transcode.return_value = {
             "method": "post",
@@ -38116,6 +38287,7 @@ def test_get_discovery_config_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = dlp.DiscoveryConfig()
+        post_with_metadata.return_value = dlp.DiscoveryConfig(), metadata
 
         client.get_discovery_config(
             request,
@@ -38127,6 +38299,7 @@ def test_get_discovery_config_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_discovery_configs_rest_bad_request(
@@ -38211,10 +38384,14 @@ def test_list_discovery_configs_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DlpServiceRestInterceptor, "post_list_discovery_configs"
     ) as post, mock.patch.object(
+        transports.DlpServiceRestInterceptor,
+        "post_list_discovery_configs_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.DlpServiceRestInterceptor, "pre_list_discovery_configs"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = dlp.ListDiscoveryConfigsRequest.pb(
             dlp.ListDiscoveryConfigsRequest()
         )
@@ -38240,6 +38417,7 @@ def test_list_discovery_configs_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = dlp.ListDiscoveryConfigsResponse()
+        post_with_metadata.return_value = dlp.ListDiscoveryConfigsResponse(), metadata
 
         client.list_discovery_configs(
             request,
@@ -38251,6 +38429,7 @@ def test_list_discovery_configs_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_discovery_config_rest_bad_request(
@@ -38452,10 +38631,13 @@ def test_create_dlp_job_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DlpServiceRestInterceptor, "post_create_dlp_job"
     ) as post, mock.patch.object(
+        transports.DlpServiceRestInterceptor, "post_create_dlp_job_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.DlpServiceRestInterceptor, "pre_create_dlp_job"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = dlp.CreateDlpJobRequest.pb(dlp.CreateDlpJobRequest())
         transcode.return_value = {
             "method": "post",
@@ -38477,6 +38659,7 @@ def test_create_dlp_job_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = dlp.DlpJob()
+        post_with_metadata.return_value = dlp.DlpJob(), metadata
 
         client.create_dlp_job(
             request,
@@ -38488,6 +38671,7 @@ def test_create_dlp_job_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_dlp_jobs_rest_bad_request(request_type=dlp.ListDlpJobsRequest):
@@ -38570,10 +38754,13 @@ def test_list_dlp_jobs_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DlpServiceRestInterceptor, "post_list_dlp_jobs"
     ) as post, mock.patch.object(
+        transports.DlpServiceRestInterceptor, "post_list_dlp_jobs_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.DlpServiceRestInterceptor, "pre_list_dlp_jobs"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = dlp.ListDlpJobsRequest.pb(dlp.ListDlpJobsRequest())
         transcode.return_value = {
             "method": "post",
@@ -38595,6 +38782,7 @@ def test_list_dlp_jobs_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = dlp.ListDlpJobsResponse()
+        post_with_metadata.return_value = dlp.ListDlpJobsResponse(), metadata
 
         client.list_dlp_jobs(
             request,
@@ -38606,6 +38794,7 @@ def test_list_dlp_jobs_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_dlp_job_rest_bad_request(request_type=dlp.GetDlpJobRequest):
@@ -38694,10 +38883,13 @@ def test_get_dlp_job_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DlpServiceRestInterceptor, "post_get_dlp_job"
     ) as post, mock.patch.object(
+        transports.DlpServiceRestInterceptor, "post_get_dlp_job_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.DlpServiceRestInterceptor, "pre_get_dlp_job"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = dlp.GetDlpJobRequest.pb(dlp.GetDlpJobRequest())
         transcode.return_value = {
             "method": "post",
@@ -38719,6 +38911,7 @@ def test_get_dlp_job_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = dlp.DlpJob()
+        post_with_metadata.return_value = dlp.DlpJob(), metadata
 
         client.get_dlp_job(
             request,
@@ -38730,6 +38923,7 @@ def test_get_dlp_job_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_dlp_job_rest_bad_request(request_type=dlp.DeleteDlpJobRequest):
@@ -39024,10 +39218,14 @@ def test_create_stored_info_type_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DlpServiceRestInterceptor, "post_create_stored_info_type"
     ) as post, mock.patch.object(
+        transports.DlpServiceRestInterceptor,
+        "post_create_stored_info_type_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.DlpServiceRestInterceptor, "pre_create_stored_info_type"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = dlp.CreateStoredInfoTypeRequest.pb(
             dlp.CreateStoredInfoTypeRequest()
         )
@@ -39051,6 +39249,7 @@ def test_create_stored_info_type_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = dlp.StoredInfoType()
+        post_with_metadata.return_value = dlp.StoredInfoType(), metadata
 
         client.create_stored_info_type(
             request,
@@ -39062,6 +39261,7 @@ def test_create_stored_info_type_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_stored_info_type_rest_bad_request(
@@ -39146,10 +39346,14 @@ def test_update_stored_info_type_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DlpServiceRestInterceptor, "post_update_stored_info_type"
     ) as post, mock.patch.object(
+        transports.DlpServiceRestInterceptor,
+        "post_update_stored_info_type_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.DlpServiceRestInterceptor, "pre_update_stored_info_type"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = dlp.UpdateStoredInfoTypeRequest.pb(
             dlp.UpdateStoredInfoTypeRequest()
         )
@@ -39173,6 +39377,7 @@ def test_update_stored_info_type_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = dlp.StoredInfoType()
+        post_with_metadata.return_value = dlp.StoredInfoType(), metadata
 
         client.update_stored_info_type(
             request,
@@ -39184,6 +39389,7 @@ def test_update_stored_info_type_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_stored_info_type_rest_bad_request(
@@ -39268,10 +39474,13 @@ def test_get_stored_info_type_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DlpServiceRestInterceptor, "post_get_stored_info_type"
     ) as post, mock.patch.object(
+        transports.DlpServiceRestInterceptor, "post_get_stored_info_type_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.DlpServiceRestInterceptor, "pre_get_stored_info_type"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = dlp.GetStoredInfoTypeRequest.pb(dlp.GetStoredInfoTypeRequest())
         transcode.return_value = {
             "method": "post",
@@ -39293,6 +39502,7 @@ def test_get_stored_info_type_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = dlp.StoredInfoType()
+        post_with_metadata.return_value = dlp.StoredInfoType(), metadata
 
         client.get_stored_info_type(
             request,
@@ -39304,6 +39514,7 @@ def test_get_stored_info_type_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_stored_info_types_rest_bad_request(
@@ -39388,10 +39599,14 @@ def test_list_stored_info_types_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DlpServiceRestInterceptor, "post_list_stored_info_types"
     ) as post, mock.patch.object(
+        transports.DlpServiceRestInterceptor,
+        "post_list_stored_info_types_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.DlpServiceRestInterceptor, "pre_list_stored_info_types"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = dlp.ListStoredInfoTypesRequest.pb(dlp.ListStoredInfoTypesRequest())
         transcode.return_value = {
             "method": "post",
@@ -39415,6 +39630,7 @@ def test_list_stored_info_types_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = dlp.ListStoredInfoTypesResponse()
+        post_with_metadata.return_value = dlp.ListStoredInfoTypesResponse(), metadata
 
         client.list_stored_info_types(
             request,
@@ -39426,6 +39642,7 @@ def test_list_stored_info_types_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_stored_info_type_rest_bad_request(
@@ -39619,10 +39836,14 @@ def test_list_project_data_profiles_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DlpServiceRestInterceptor, "post_list_project_data_profiles"
     ) as post, mock.patch.object(
+        transports.DlpServiceRestInterceptor,
+        "post_list_project_data_profiles_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.DlpServiceRestInterceptor, "pre_list_project_data_profiles"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = dlp.ListProjectDataProfilesRequest.pb(
             dlp.ListProjectDataProfilesRequest()
         )
@@ -39648,6 +39869,10 @@ def test_list_project_data_profiles_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = dlp.ListProjectDataProfilesResponse()
+        post_with_metadata.return_value = (
+            dlp.ListProjectDataProfilesResponse(),
+            metadata,
+        )
 
         client.list_project_data_profiles(
             request,
@@ -39659,6 +39884,7 @@ def test_list_project_data_profiles_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_table_data_profiles_rest_bad_request(
@@ -39743,10 +39969,14 @@ def test_list_table_data_profiles_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DlpServiceRestInterceptor, "post_list_table_data_profiles"
     ) as post, mock.patch.object(
+        transports.DlpServiceRestInterceptor,
+        "post_list_table_data_profiles_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.DlpServiceRestInterceptor, "pre_list_table_data_profiles"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = dlp.ListTableDataProfilesRequest.pb(
             dlp.ListTableDataProfilesRequest()
         )
@@ -39772,6 +40002,7 @@ def test_list_table_data_profiles_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = dlp.ListTableDataProfilesResponse()
+        post_with_metadata.return_value = dlp.ListTableDataProfilesResponse(), metadata
 
         client.list_table_data_profiles(
             request,
@@ -39783,6 +40014,7 @@ def test_list_table_data_profiles_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_column_data_profiles_rest_bad_request(
@@ -39867,10 +40099,14 @@ def test_list_column_data_profiles_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DlpServiceRestInterceptor, "post_list_column_data_profiles"
     ) as post, mock.patch.object(
+        transports.DlpServiceRestInterceptor,
+        "post_list_column_data_profiles_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.DlpServiceRestInterceptor, "pre_list_column_data_profiles"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = dlp.ListColumnDataProfilesRequest.pb(
             dlp.ListColumnDataProfilesRequest()
         )
@@ -39896,6 +40132,7 @@ def test_list_column_data_profiles_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = dlp.ListColumnDataProfilesResponse()
+        post_with_metadata.return_value = dlp.ListColumnDataProfilesResponse(), metadata
 
         client.list_column_data_profiles(
             request,
@@ -39907,6 +40144,7 @@ def test_list_column_data_profiles_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_project_data_profile_rest_bad_request(
@@ -40001,10 +40239,14 @@ def test_get_project_data_profile_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DlpServiceRestInterceptor, "post_get_project_data_profile"
     ) as post, mock.patch.object(
+        transports.DlpServiceRestInterceptor,
+        "post_get_project_data_profile_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.DlpServiceRestInterceptor, "pre_get_project_data_profile"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = dlp.GetProjectDataProfileRequest.pb(
             dlp.GetProjectDataProfileRequest()
         )
@@ -40028,6 +40270,7 @@ def test_get_project_data_profile_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = dlp.ProjectDataProfile()
+        post_with_metadata.return_value = dlp.ProjectDataProfile(), metadata
 
         client.get_project_data_profile(
             request,
@@ -40039,6 +40282,7 @@ def test_get_project_data_profile_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_file_store_data_profiles_rest_bad_request(
@@ -40123,10 +40367,14 @@ def test_list_file_store_data_profiles_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DlpServiceRestInterceptor, "post_list_file_store_data_profiles"
     ) as post, mock.patch.object(
+        transports.DlpServiceRestInterceptor,
+        "post_list_file_store_data_profiles_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.DlpServiceRestInterceptor, "pre_list_file_store_data_profiles"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = dlp.ListFileStoreDataProfilesRequest.pb(
             dlp.ListFileStoreDataProfilesRequest()
         )
@@ -40152,6 +40400,10 @@ def test_list_file_store_data_profiles_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = dlp.ListFileStoreDataProfilesResponse()
+        post_with_metadata.return_value = (
+            dlp.ListFileStoreDataProfilesResponse(),
+            metadata,
+        )
 
         client.list_file_store_data_profiles(
             request,
@@ -40163,6 +40415,7 @@ def test_list_file_store_data_profiles_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_file_store_data_profile_rest_bad_request(
@@ -40274,10 +40527,14 @@ def test_get_file_store_data_profile_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DlpServiceRestInterceptor, "post_get_file_store_data_profile"
     ) as post, mock.patch.object(
+        transports.DlpServiceRestInterceptor,
+        "post_get_file_store_data_profile_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.DlpServiceRestInterceptor, "pre_get_file_store_data_profile"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = dlp.GetFileStoreDataProfileRequest.pb(
             dlp.GetFileStoreDataProfileRequest()
         )
@@ -40301,6 +40558,7 @@ def test_get_file_store_data_profile_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = dlp.FileStoreDataProfile()
+        post_with_metadata.return_value = dlp.FileStoreDataProfile(), metadata
 
         client.get_file_store_data_profile(
             request,
@@ -40312,6 +40570,7 @@ def test_get_file_store_data_profile_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_file_store_data_profile_rest_bad_request(
@@ -40542,10 +40801,14 @@ def test_get_table_data_profile_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DlpServiceRestInterceptor, "post_get_table_data_profile"
     ) as post, mock.patch.object(
+        transports.DlpServiceRestInterceptor,
+        "post_get_table_data_profile_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.DlpServiceRestInterceptor, "pre_get_table_data_profile"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = dlp.GetTableDataProfileRequest.pb(dlp.GetTableDataProfileRequest())
         transcode.return_value = {
             "method": "post",
@@ -40567,6 +40830,7 @@ def test_get_table_data_profile_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = dlp.TableDataProfile()
+        post_with_metadata.return_value = dlp.TableDataProfile(), metadata
 
         client.get_table_data_profile(
             request,
@@ -40578,6 +40842,7 @@ def test_get_table_data_profile_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_column_data_profile_rest_bad_request(
@@ -40701,10 +40966,14 @@ def test_get_column_data_profile_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DlpServiceRestInterceptor, "post_get_column_data_profile"
     ) as post, mock.patch.object(
+        transports.DlpServiceRestInterceptor,
+        "post_get_column_data_profile_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.DlpServiceRestInterceptor, "pre_get_column_data_profile"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = dlp.GetColumnDataProfileRequest.pb(
             dlp.GetColumnDataProfileRequest()
         )
@@ -40728,6 +40997,7 @@ def test_get_column_data_profile_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = dlp.ColumnDataProfile()
+        post_with_metadata.return_value = dlp.ColumnDataProfile(), metadata
 
         client.get_column_data_profile(
             request,
@@ -40739,6 +41009,7 @@ def test_get_column_data_profile_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_table_data_profile_rest_bad_request(
@@ -40933,10 +41204,14 @@ def test_hybrid_inspect_dlp_job_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DlpServiceRestInterceptor, "post_hybrid_inspect_dlp_job"
     ) as post, mock.patch.object(
+        transports.DlpServiceRestInterceptor,
+        "post_hybrid_inspect_dlp_job_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.DlpServiceRestInterceptor, "pre_hybrid_inspect_dlp_job"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = dlp.HybridInspectDlpJobRequest.pb(dlp.HybridInspectDlpJobRequest())
         transcode.return_value = {
             "method": "post",
@@ -40958,6 +41233,7 @@ def test_hybrid_inspect_dlp_job_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = dlp.HybridInspectResponse()
+        post_with_metadata.return_value = dlp.HybridInspectResponse(), metadata
 
         client.hybrid_inspect_dlp_job(
             request,
@@ -40969,6 +41245,7 @@ def test_hybrid_inspect_dlp_job_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_finish_dlp_job_rest_bad_request(request_type=dlp.FinishDlpJobRequest):
@@ -41158,10 +41435,13 @@ def test_create_connection_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DlpServiceRestInterceptor, "post_create_connection"
     ) as post, mock.patch.object(
+        transports.DlpServiceRestInterceptor, "post_create_connection_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.DlpServiceRestInterceptor, "pre_create_connection"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = dlp.CreateConnectionRequest.pb(dlp.CreateConnectionRequest())
         transcode.return_value = {
             "method": "post",
@@ -41183,6 +41463,7 @@ def test_create_connection_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = dlp.Connection()
+        post_with_metadata.return_value = dlp.Connection(), metadata
 
         client.create_connection(
             request,
@@ -41194,6 +41475,7 @@ def test_create_connection_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_connection_rest_bad_request(request_type=dlp.GetConnectionRequest):
@@ -41278,10 +41560,13 @@ def test_get_connection_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DlpServiceRestInterceptor, "post_get_connection"
     ) as post, mock.patch.object(
+        transports.DlpServiceRestInterceptor, "post_get_connection_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.DlpServiceRestInterceptor, "pre_get_connection"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = dlp.GetConnectionRequest.pb(dlp.GetConnectionRequest())
         transcode.return_value = {
             "method": "post",
@@ -41303,6 +41588,7 @@ def test_get_connection_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = dlp.Connection()
+        post_with_metadata.return_value = dlp.Connection(), metadata
 
         client.get_connection(
             request,
@@ -41314,6 +41600,7 @@ def test_get_connection_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_connections_rest_bad_request(request_type=dlp.ListConnectionsRequest):
@@ -41396,10 +41683,13 @@ def test_list_connections_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DlpServiceRestInterceptor, "post_list_connections"
     ) as post, mock.patch.object(
+        transports.DlpServiceRestInterceptor, "post_list_connections_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.DlpServiceRestInterceptor, "pre_list_connections"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = dlp.ListConnectionsRequest.pb(dlp.ListConnectionsRequest())
         transcode.return_value = {
             "method": "post",
@@ -41423,6 +41713,7 @@ def test_list_connections_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = dlp.ListConnectionsResponse()
+        post_with_metadata.return_value = dlp.ListConnectionsResponse(), metadata
 
         client.list_connections(
             request,
@@ -41434,6 +41725,7 @@ def test_list_connections_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_search_connections_rest_bad_request(request_type=dlp.SearchConnectionsRequest):
@@ -41516,10 +41808,13 @@ def test_search_connections_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DlpServiceRestInterceptor, "post_search_connections"
     ) as post, mock.patch.object(
+        transports.DlpServiceRestInterceptor, "post_search_connections_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.DlpServiceRestInterceptor, "pre_search_connections"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = dlp.SearchConnectionsRequest.pb(dlp.SearchConnectionsRequest())
         transcode.return_value = {
             "method": "post",
@@ -41543,6 +41838,7 @@ def test_search_connections_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = dlp.SearchConnectionsResponse()
+        post_with_metadata.return_value = dlp.SearchConnectionsResponse(), metadata
 
         client.search_connections(
             request,
@@ -41554,6 +41850,7 @@ def test_search_connections_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_connection_rest_bad_request(request_type=dlp.DeleteConnectionRequest):
@@ -41743,10 +42040,13 @@ def test_update_connection_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DlpServiceRestInterceptor, "post_update_connection"
     ) as post, mock.patch.object(
+        transports.DlpServiceRestInterceptor, "post_update_connection_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.DlpServiceRestInterceptor, "pre_update_connection"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = dlp.UpdateConnectionRequest.pb(dlp.UpdateConnectionRequest())
         transcode.return_value = {
             "method": "post",
@@ -41768,6 +42068,7 @@ def test_update_connection_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = dlp.Connection()
+        post_with_metadata.return_value = dlp.Connection(), metadata
 
         client.update_connection(
             request,
@@ -41779,6 +42080,7 @@ def test_update_connection_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_initialize_client_w_rest():

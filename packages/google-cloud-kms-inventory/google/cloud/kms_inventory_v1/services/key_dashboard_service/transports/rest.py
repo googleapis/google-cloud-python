@@ -102,11 +102,37 @@ class KeyDashboardServiceRestInterceptor:
     ) -> key_dashboard_service.ListCryptoKeysResponse:
         """Post-rpc interceptor for list_crypto_keys
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_crypto_keys_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the KeyDashboardService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_crypto_keys` interceptor runs
+        before the `post_list_crypto_keys_with_metadata` interceptor.
         """
         return response
+
+    def post_list_crypto_keys_with_metadata(
+        self,
+        response: key_dashboard_service.ListCryptoKeysResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        key_dashboard_service.ListCryptoKeysResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_crypto_keys
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the KeyDashboardService server but before it is returned to user code.
+
+        We recommend only using this `post_list_crypto_keys_with_metadata`
+        interceptor in new development instead of the `post_list_crypto_keys` interceptor.
+        When both interceptors are used, this `post_list_crypto_keys_with_metadata` interceptor runs after the
+        `post_list_crypto_keys` interceptor. The (possibly modified) response returned by
+        `post_list_crypto_keys` will be passed to
+        `post_list_crypto_keys_with_metadata`.
+        """
+        return response, metadata
 
 
 @dataclasses.dataclass
@@ -319,6 +345,10 @@ class KeyDashboardServiceRestTransport(_BaseKeyDashboardServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_crypto_keys(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_crypto_keys_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

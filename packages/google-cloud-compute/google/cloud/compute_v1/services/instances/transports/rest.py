@@ -475,11 +475,34 @@ class InstancesRestInterceptor:
     def post_add_access_config(self, response: compute.Operation) -> compute.Operation:
         """Post-rpc interceptor for add_access_config
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_add_access_config_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Instances server but before
-        it is returned to user code.
+        it is returned to user code. This `post_add_access_config` interceptor runs
+        before the `post_add_access_config_with_metadata` interceptor.
         """
         return response
+
+    def post_add_access_config_with_metadata(
+        self,
+        response: compute.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for add_access_config
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Instances server but before it is returned to user code.
+
+        We recommend only using this `post_add_access_config_with_metadata`
+        interceptor in new development instead of the `post_add_access_config` interceptor.
+        When both interceptors are used, this `post_add_access_config_with_metadata` interceptor runs after the
+        `post_add_access_config` interceptor. The (possibly modified) response returned by
+        `post_add_access_config` will be passed to
+        `post_add_access_config_with_metadata`.
+        """
+        return response, metadata
 
     def pre_add_resource_policies(
         self,
@@ -501,11 +524,34 @@ class InstancesRestInterceptor:
     ) -> compute.Operation:
         """Post-rpc interceptor for add_resource_policies
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_add_resource_policies_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Instances server but before
-        it is returned to user code.
+        it is returned to user code. This `post_add_resource_policies` interceptor runs
+        before the `post_add_resource_policies_with_metadata` interceptor.
         """
         return response
+
+    def post_add_resource_policies_with_metadata(
+        self,
+        response: compute.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for add_resource_policies
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Instances server but before it is returned to user code.
+
+        We recommend only using this `post_add_resource_policies_with_metadata`
+        interceptor in new development instead of the `post_add_resource_policies` interceptor.
+        When both interceptors are used, this `post_add_resource_policies_with_metadata` interceptor runs after the
+        `post_add_resource_policies` interceptor. The (possibly modified) response returned by
+        `post_add_resource_policies` will be passed to
+        `post_add_resource_policies_with_metadata`.
+        """
+        return response, metadata
 
     def pre_aggregated_list(
         self,
@@ -526,11 +572,34 @@ class InstancesRestInterceptor:
     ) -> compute.InstanceAggregatedList:
         """Post-rpc interceptor for aggregated_list
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_aggregated_list_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Instances server but before
-        it is returned to user code.
+        it is returned to user code. This `post_aggregated_list` interceptor runs
+        before the `post_aggregated_list_with_metadata` interceptor.
         """
         return response
+
+    def post_aggregated_list_with_metadata(
+        self,
+        response: compute.InstanceAggregatedList,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[compute.InstanceAggregatedList, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for aggregated_list
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Instances server but before it is returned to user code.
+
+        We recommend only using this `post_aggregated_list_with_metadata`
+        interceptor in new development instead of the `post_aggregated_list` interceptor.
+        When both interceptors are used, this `post_aggregated_list_with_metadata` interceptor runs after the
+        `post_aggregated_list` interceptor. The (possibly modified) response returned by
+        `post_aggregated_list` will be passed to
+        `post_aggregated_list_with_metadata`.
+        """
+        return response, metadata
 
     def pre_attach_disk(
         self,
@@ -549,11 +618,34 @@ class InstancesRestInterceptor:
     def post_attach_disk(self, response: compute.Operation) -> compute.Operation:
         """Post-rpc interceptor for attach_disk
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_attach_disk_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Instances server but before
-        it is returned to user code.
+        it is returned to user code. This `post_attach_disk` interceptor runs
+        before the `post_attach_disk_with_metadata` interceptor.
         """
         return response
+
+    def post_attach_disk_with_metadata(
+        self,
+        response: compute.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for attach_disk
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Instances server but before it is returned to user code.
+
+        We recommend only using this `post_attach_disk_with_metadata`
+        interceptor in new development instead of the `post_attach_disk` interceptor.
+        When both interceptors are used, this `post_attach_disk_with_metadata` interceptor runs after the
+        `post_attach_disk` interceptor. The (possibly modified) response returned by
+        `post_attach_disk` will be passed to
+        `post_attach_disk_with_metadata`.
+        """
+        return response, metadata
 
     def pre_bulk_insert(
         self,
@@ -572,11 +664,34 @@ class InstancesRestInterceptor:
     def post_bulk_insert(self, response: compute.Operation) -> compute.Operation:
         """Post-rpc interceptor for bulk_insert
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_bulk_insert_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Instances server but before
-        it is returned to user code.
+        it is returned to user code. This `post_bulk_insert` interceptor runs
+        before the `post_bulk_insert_with_metadata` interceptor.
         """
         return response
+
+    def post_bulk_insert_with_metadata(
+        self,
+        response: compute.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for bulk_insert
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Instances server but before it is returned to user code.
+
+        We recommend only using this `post_bulk_insert_with_metadata`
+        interceptor in new development instead of the `post_bulk_insert` interceptor.
+        When both interceptors are used, this `post_bulk_insert_with_metadata` interceptor runs after the
+        `post_bulk_insert` interceptor. The (possibly modified) response returned by
+        `post_bulk_insert` will be passed to
+        `post_bulk_insert_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete(
         self,
@@ -593,11 +708,34 @@ class InstancesRestInterceptor:
     def post_delete(self, response: compute.Operation) -> compute.Operation:
         """Post-rpc interceptor for delete
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Instances server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete` interceptor runs
+        before the `post_delete_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_with_metadata(
+        self,
+        response: compute.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Instances server but before it is returned to user code.
+
+        We recommend only using this `post_delete_with_metadata`
+        interceptor in new development instead of the `post_delete` interceptor.
+        When both interceptors are used, this `post_delete_with_metadata` interceptor runs after the
+        `post_delete` interceptor. The (possibly modified) response returned by
+        `post_delete` will be passed to
+        `post_delete_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_access_config(
         self,
@@ -619,11 +757,34 @@ class InstancesRestInterceptor:
     ) -> compute.Operation:
         """Post-rpc interceptor for delete_access_config
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_access_config_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Instances server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_access_config` interceptor runs
+        before the `post_delete_access_config_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_access_config_with_metadata(
+        self,
+        response: compute.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_access_config
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Instances server but before it is returned to user code.
+
+        We recommend only using this `post_delete_access_config_with_metadata`
+        interceptor in new development instead of the `post_delete_access_config` interceptor.
+        When both interceptors are used, this `post_delete_access_config_with_metadata` interceptor runs after the
+        `post_delete_access_config` interceptor. The (possibly modified) response returned by
+        `post_delete_access_config` will be passed to
+        `post_delete_access_config_with_metadata`.
+        """
+        return response, metadata
 
     def pre_detach_disk(
         self,
@@ -642,11 +803,34 @@ class InstancesRestInterceptor:
     def post_detach_disk(self, response: compute.Operation) -> compute.Operation:
         """Post-rpc interceptor for detach_disk
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_detach_disk_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Instances server but before
-        it is returned to user code.
+        it is returned to user code. This `post_detach_disk` interceptor runs
+        before the `post_detach_disk_with_metadata` interceptor.
         """
         return response
+
+    def post_detach_disk_with_metadata(
+        self,
+        response: compute.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for detach_disk
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Instances server but before it is returned to user code.
+
+        We recommend only using this `post_detach_disk_with_metadata`
+        interceptor in new development instead of the `post_detach_disk` interceptor.
+        When both interceptors are used, this `post_detach_disk_with_metadata` interceptor runs after the
+        `post_detach_disk` interceptor. The (possibly modified) response returned by
+        `post_detach_disk` will be passed to
+        `post_detach_disk_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get(
         self,
@@ -663,11 +847,34 @@ class InstancesRestInterceptor:
     def post_get(self, response: compute.Instance) -> compute.Instance:
         """Post-rpc interceptor for get
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Instances server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get` interceptor runs
+        before the `post_get_with_metadata` interceptor.
         """
         return response
+
+    def post_get_with_metadata(
+        self,
+        response: compute.Instance,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[compute.Instance, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Instances server but before it is returned to user code.
+
+        We recommend only using this `post_get_with_metadata`
+        interceptor in new development instead of the `post_get` interceptor.
+        When both interceptors are used, this `post_get_with_metadata` interceptor runs after the
+        `post_get` interceptor. The (possibly modified) response returned by
+        `post_get` will be passed to
+        `post_get_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_effective_firewalls(
         self,
@@ -689,11 +896,37 @@ class InstancesRestInterceptor:
     ) -> compute.InstancesGetEffectiveFirewallsResponse:
         """Post-rpc interceptor for get_effective_firewalls
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_effective_firewalls_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Instances server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_effective_firewalls` interceptor runs
+        before the `post_get_effective_firewalls_with_metadata` interceptor.
         """
         return response
+
+    def post_get_effective_firewalls_with_metadata(
+        self,
+        response: compute.InstancesGetEffectiveFirewallsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.InstancesGetEffectiveFirewallsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for get_effective_firewalls
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Instances server but before it is returned to user code.
+
+        We recommend only using this `post_get_effective_firewalls_with_metadata`
+        interceptor in new development instead of the `post_get_effective_firewalls` interceptor.
+        When both interceptors are used, this `post_get_effective_firewalls_with_metadata` interceptor runs after the
+        `post_get_effective_firewalls` interceptor. The (possibly modified) response returned by
+        `post_get_effective_firewalls` will be passed to
+        `post_get_effective_firewalls_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_guest_attributes(
         self,
@@ -715,11 +948,34 @@ class InstancesRestInterceptor:
     ) -> compute.GuestAttributes:
         """Post-rpc interceptor for get_guest_attributes
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_guest_attributes_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Instances server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_guest_attributes` interceptor runs
+        before the `post_get_guest_attributes_with_metadata` interceptor.
         """
         return response
+
+    def post_get_guest_attributes_with_metadata(
+        self,
+        response: compute.GuestAttributes,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[compute.GuestAttributes, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_guest_attributes
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Instances server but before it is returned to user code.
+
+        We recommend only using this `post_get_guest_attributes_with_metadata`
+        interceptor in new development instead of the `post_get_guest_attributes` interceptor.
+        When both interceptors are used, this `post_get_guest_attributes_with_metadata` interceptor runs after the
+        `post_get_guest_attributes` interceptor. The (possibly modified) response returned by
+        `post_get_guest_attributes` will be passed to
+        `post_get_guest_attributes_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_iam_policy(
         self,
@@ -738,11 +994,34 @@ class InstancesRestInterceptor:
     def post_get_iam_policy(self, response: compute.Policy) -> compute.Policy:
         """Post-rpc interceptor for get_iam_policy
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_iam_policy_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Instances server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_iam_policy` interceptor runs
+        before the `post_get_iam_policy_with_metadata` interceptor.
         """
         return response
+
+    def post_get_iam_policy_with_metadata(
+        self,
+        response: compute.Policy,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[compute.Policy, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_iam_policy
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Instances server but before it is returned to user code.
+
+        We recommend only using this `post_get_iam_policy_with_metadata`
+        interceptor in new development instead of the `post_get_iam_policy` interceptor.
+        When both interceptors are used, this `post_get_iam_policy_with_metadata` interceptor runs after the
+        `post_get_iam_policy` interceptor. The (possibly modified) response returned by
+        `post_get_iam_policy` will be passed to
+        `post_get_iam_policy_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_screenshot(
         self,
@@ -761,11 +1040,34 @@ class InstancesRestInterceptor:
     def post_get_screenshot(self, response: compute.Screenshot) -> compute.Screenshot:
         """Post-rpc interceptor for get_screenshot
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_screenshot_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Instances server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_screenshot` interceptor runs
+        before the `post_get_screenshot_with_metadata` interceptor.
         """
         return response
+
+    def post_get_screenshot_with_metadata(
+        self,
+        response: compute.Screenshot,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[compute.Screenshot, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_screenshot
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Instances server but before it is returned to user code.
+
+        We recommend only using this `post_get_screenshot_with_metadata`
+        interceptor in new development instead of the `post_get_screenshot` interceptor.
+        When both interceptors are used, this `post_get_screenshot_with_metadata` interceptor runs after the
+        `post_get_screenshot` interceptor. The (possibly modified) response returned by
+        `post_get_screenshot` will be passed to
+        `post_get_screenshot_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_serial_port_output(
         self,
@@ -787,11 +1089,34 @@ class InstancesRestInterceptor:
     ) -> compute.SerialPortOutput:
         """Post-rpc interceptor for get_serial_port_output
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_serial_port_output_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Instances server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_serial_port_output` interceptor runs
+        before the `post_get_serial_port_output_with_metadata` interceptor.
         """
         return response
+
+    def post_get_serial_port_output_with_metadata(
+        self,
+        response: compute.SerialPortOutput,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[compute.SerialPortOutput, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_serial_port_output
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Instances server but before it is returned to user code.
+
+        We recommend only using this `post_get_serial_port_output_with_metadata`
+        interceptor in new development instead of the `post_get_serial_port_output` interceptor.
+        When both interceptors are used, this `post_get_serial_port_output_with_metadata` interceptor runs after the
+        `post_get_serial_port_output` interceptor. The (possibly modified) response returned by
+        `post_get_serial_port_output` will be passed to
+        `post_get_serial_port_output_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_shielded_instance_identity(
         self,
@@ -813,11 +1138,36 @@ class InstancesRestInterceptor:
     ) -> compute.ShieldedInstanceIdentity:
         """Post-rpc interceptor for get_shielded_instance_identity
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_shielded_instance_identity_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Instances server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_shielded_instance_identity` interceptor runs
+        before the `post_get_shielded_instance_identity_with_metadata` interceptor.
         """
         return response
+
+    def post_get_shielded_instance_identity_with_metadata(
+        self,
+        response: compute.ShieldedInstanceIdentity,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.ShieldedInstanceIdentity, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for get_shielded_instance_identity
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Instances server but before it is returned to user code.
+
+        We recommend only using this `post_get_shielded_instance_identity_with_metadata`
+        interceptor in new development instead of the `post_get_shielded_instance_identity` interceptor.
+        When both interceptors are used, this `post_get_shielded_instance_identity_with_metadata` interceptor runs after the
+        `post_get_shielded_instance_identity` interceptor. The (possibly modified) response returned by
+        `post_get_shielded_instance_identity` will be passed to
+        `post_get_shielded_instance_identity_with_metadata`.
+        """
+        return response, metadata
 
     def pre_insert(
         self,
@@ -834,11 +1184,34 @@ class InstancesRestInterceptor:
     def post_insert(self, response: compute.Operation) -> compute.Operation:
         """Post-rpc interceptor for insert
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_insert_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Instances server but before
-        it is returned to user code.
+        it is returned to user code. This `post_insert` interceptor runs
+        before the `post_insert_with_metadata` interceptor.
         """
         return response
+
+    def post_insert_with_metadata(
+        self,
+        response: compute.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for insert
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Instances server but before it is returned to user code.
+
+        We recommend only using this `post_insert_with_metadata`
+        interceptor in new development instead of the `post_insert` interceptor.
+        When both interceptors are used, this `post_insert_with_metadata` interceptor runs after the
+        `post_insert` interceptor. The (possibly modified) response returned by
+        `post_insert` will be passed to
+        `post_insert_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list(
         self,
@@ -855,11 +1228,34 @@ class InstancesRestInterceptor:
     def post_list(self, response: compute.InstanceList) -> compute.InstanceList:
         """Post-rpc interceptor for list
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Instances server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list` interceptor runs
+        before the `post_list_with_metadata` interceptor.
         """
         return response
+
+    def post_list_with_metadata(
+        self,
+        response: compute.InstanceList,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[compute.InstanceList, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for list
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Instances server but before it is returned to user code.
+
+        We recommend only using this `post_list_with_metadata`
+        interceptor in new development instead of the `post_list` interceptor.
+        When both interceptors are used, this `post_list_with_metadata` interceptor runs after the
+        `post_list` interceptor. The (possibly modified) response returned by
+        `post_list` will be passed to
+        `post_list_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_referrers(
         self,
@@ -880,11 +1276,34 @@ class InstancesRestInterceptor:
     ) -> compute.InstanceListReferrers:
         """Post-rpc interceptor for list_referrers
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_referrers_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Instances server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_referrers` interceptor runs
+        before the `post_list_referrers_with_metadata` interceptor.
         """
         return response
+
+    def post_list_referrers_with_metadata(
+        self,
+        response: compute.InstanceListReferrers,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[compute.InstanceListReferrers, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for list_referrers
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Instances server but before it is returned to user code.
+
+        We recommend only using this `post_list_referrers_with_metadata`
+        interceptor in new development instead of the `post_list_referrers` interceptor.
+        When both interceptors are used, this `post_list_referrers_with_metadata` interceptor runs after the
+        `post_list_referrers` interceptor. The (possibly modified) response returned by
+        `post_list_referrers` will be passed to
+        `post_list_referrers_with_metadata`.
+        """
+        return response, metadata
 
     def pre_perform_maintenance(
         self,
@@ -906,11 +1325,34 @@ class InstancesRestInterceptor:
     ) -> compute.Operation:
         """Post-rpc interceptor for perform_maintenance
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_perform_maintenance_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Instances server but before
-        it is returned to user code.
+        it is returned to user code. This `post_perform_maintenance` interceptor runs
+        before the `post_perform_maintenance_with_metadata` interceptor.
         """
         return response
+
+    def post_perform_maintenance_with_metadata(
+        self,
+        response: compute.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for perform_maintenance
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Instances server but before it is returned to user code.
+
+        We recommend only using this `post_perform_maintenance_with_metadata`
+        interceptor in new development instead of the `post_perform_maintenance` interceptor.
+        When both interceptors are used, this `post_perform_maintenance_with_metadata` interceptor runs after the
+        `post_perform_maintenance` interceptor. The (possibly modified) response returned by
+        `post_perform_maintenance` will be passed to
+        `post_perform_maintenance_with_metadata`.
+        """
+        return response, metadata
 
     def pre_remove_resource_policies(
         self,
@@ -932,11 +1374,34 @@ class InstancesRestInterceptor:
     ) -> compute.Operation:
         """Post-rpc interceptor for remove_resource_policies
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_remove_resource_policies_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Instances server but before
-        it is returned to user code.
+        it is returned to user code. This `post_remove_resource_policies` interceptor runs
+        before the `post_remove_resource_policies_with_metadata` interceptor.
         """
         return response
+
+    def post_remove_resource_policies_with_metadata(
+        self,
+        response: compute.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for remove_resource_policies
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Instances server but before it is returned to user code.
+
+        We recommend only using this `post_remove_resource_policies_with_metadata`
+        interceptor in new development instead of the `post_remove_resource_policies` interceptor.
+        When both interceptors are used, this `post_remove_resource_policies_with_metadata` interceptor runs after the
+        `post_remove_resource_policies` interceptor. The (possibly modified) response returned by
+        `post_remove_resource_policies` will be passed to
+        `post_remove_resource_policies_with_metadata`.
+        """
+        return response, metadata
 
     def pre_reset(
         self,
@@ -953,11 +1418,34 @@ class InstancesRestInterceptor:
     def post_reset(self, response: compute.Operation) -> compute.Operation:
         """Post-rpc interceptor for reset
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_reset_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Instances server but before
-        it is returned to user code.
+        it is returned to user code. This `post_reset` interceptor runs
+        before the `post_reset_with_metadata` interceptor.
         """
         return response
+
+    def post_reset_with_metadata(
+        self,
+        response: compute.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for reset
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Instances server but before it is returned to user code.
+
+        We recommend only using this `post_reset_with_metadata`
+        interceptor in new development instead of the `post_reset` interceptor.
+        When both interceptors are used, this `post_reset_with_metadata` interceptor runs after the
+        `post_reset` interceptor. The (possibly modified) response returned by
+        `post_reset` will be passed to
+        `post_reset_with_metadata`.
+        """
+        return response, metadata
 
     def pre_resume(
         self,
@@ -974,11 +1462,34 @@ class InstancesRestInterceptor:
     def post_resume(self, response: compute.Operation) -> compute.Operation:
         """Post-rpc interceptor for resume
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_resume_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Instances server but before
-        it is returned to user code.
+        it is returned to user code. This `post_resume` interceptor runs
+        before the `post_resume_with_metadata` interceptor.
         """
         return response
+
+    def post_resume_with_metadata(
+        self,
+        response: compute.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for resume
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Instances server but before it is returned to user code.
+
+        We recommend only using this `post_resume_with_metadata`
+        interceptor in new development instead of the `post_resume` interceptor.
+        When both interceptors are used, this `post_resume_with_metadata` interceptor runs after the
+        `post_resume` interceptor. The (possibly modified) response returned by
+        `post_resume` will be passed to
+        `post_resume_with_metadata`.
+        """
+        return response, metadata
 
     def pre_send_diagnostic_interrupt(
         self,
@@ -1000,11 +1511,37 @@ class InstancesRestInterceptor:
     ) -> compute.SendDiagnosticInterruptInstanceResponse:
         """Post-rpc interceptor for send_diagnostic_interrupt
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_send_diagnostic_interrupt_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Instances server but before
-        it is returned to user code.
+        it is returned to user code. This `post_send_diagnostic_interrupt` interceptor runs
+        before the `post_send_diagnostic_interrupt_with_metadata` interceptor.
         """
         return response
+
+    def post_send_diagnostic_interrupt_with_metadata(
+        self,
+        response: compute.SendDiagnosticInterruptInstanceResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.SendDiagnosticInterruptInstanceResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for send_diagnostic_interrupt
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Instances server but before it is returned to user code.
+
+        We recommend only using this `post_send_diagnostic_interrupt_with_metadata`
+        interceptor in new development instead of the `post_send_diagnostic_interrupt` interceptor.
+        When both interceptors are used, this `post_send_diagnostic_interrupt_with_metadata` interceptor runs after the
+        `post_send_diagnostic_interrupt` interceptor. The (possibly modified) response returned by
+        `post_send_diagnostic_interrupt` will be passed to
+        `post_send_diagnostic_interrupt_with_metadata`.
+        """
+        return response, metadata
 
     def pre_set_deletion_protection(
         self,
@@ -1026,11 +1563,34 @@ class InstancesRestInterceptor:
     ) -> compute.Operation:
         """Post-rpc interceptor for set_deletion_protection
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_set_deletion_protection_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Instances server but before
-        it is returned to user code.
+        it is returned to user code. This `post_set_deletion_protection` interceptor runs
+        before the `post_set_deletion_protection_with_metadata` interceptor.
         """
         return response
+
+    def post_set_deletion_protection_with_metadata(
+        self,
+        response: compute.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for set_deletion_protection
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Instances server but before it is returned to user code.
+
+        We recommend only using this `post_set_deletion_protection_with_metadata`
+        interceptor in new development instead of the `post_set_deletion_protection` interceptor.
+        When both interceptors are used, this `post_set_deletion_protection_with_metadata` interceptor runs after the
+        `post_set_deletion_protection` interceptor. The (possibly modified) response returned by
+        `post_set_deletion_protection` will be passed to
+        `post_set_deletion_protection_with_metadata`.
+        """
+        return response, metadata
 
     def pre_set_disk_auto_delete(
         self,
@@ -1052,11 +1612,34 @@ class InstancesRestInterceptor:
     ) -> compute.Operation:
         """Post-rpc interceptor for set_disk_auto_delete
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_set_disk_auto_delete_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Instances server but before
-        it is returned to user code.
+        it is returned to user code. This `post_set_disk_auto_delete` interceptor runs
+        before the `post_set_disk_auto_delete_with_metadata` interceptor.
         """
         return response
+
+    def post_set_disk_auto_delete_with_metadata(
+        self,
+        response: compute.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for set_disk_auto_delete
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Instances server but before it is returned to user code.
+
+        We recommend only using this `post_set_disk_auto_delete_with_metadata`
+        interceptor in new development instead of the `post_set_disk_auto_delete` interceptor.
+        When both interceptors are used, this `post_set_disk_auto_delete_with_metadata` interceptor runs after the
+        `post_set_disk_auto_delete` interceptor. The (possibly modified) response returned by
+        `post_set_disk_auto_delete` will be passed to
+        `post_set_disk_auto_delete_with_metadata`.
+        """
+        return response, metadata
 
     def pre_set_iam_policy(
         self,
@@ -1075,11 +1658,34 @@ class InstancesRestInterceptor:
     def post_set_iam_policy(self, response: compute.Policy) -> compute.Policy:
         """Post-rpc interceptor for set_iam_policy
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_set_iam_policy_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Instances server but before
-        it is returned to user code.
+        it is returned to user code. This `post_set_iam_policy` interceptor runs
+        before the `post_set_iam_policy_with_metadata` interceptor.
         """
         return response
+
+    def post_set_iam_policy_with_metadata(
+        self,
+        response: compute.Policy,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[compute.Policy, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for set_iam_policy
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Instances server but before it is returned to user code.
+
+        We recommend only using this `post_set_iam_policy_with_metadata`
+        interceptor in new development instead of the `post_set_iam_policy` interceptor.
+        When both interceptors are used, this `post_set_iam_policy_with_metadata` interceptor runs after the
+        `post_set_iam_policy` interceptor. The (possibly modified) response returned by
+        `post_set_iam_policy` will be passed to
+        `post_set_iam_policy_with_metadata`.
+        """
+        return response, metadata
 
     def pre_set_labels(
         self,
@@ -1098,11 +1704,34 @@ class InstancesRestInterceptor:
     def post_set_labels(self, response: compute.Operation) -> compute.Operation:
         """Post-rpc interceptor for set_labels
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_set_labels_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Instances server but before
-        it is returned to user code.
+        it is returned to user code. This `post_set_labels` interceptor runs
+        before the `post_set_labels_with_metadata` interceptor.
         """
         return response
+
+    def post_set_labels_with_metadata(
+        self,
+        response: compute.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for set_labels
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Instances server but before it is returned to user code.
+
+        We recommend only using this `post_set_labels_with_metadata`
+        interceptor in new development instead of the `post_set_labels` interceptor.
+        When both interceptors are used, this `post_set_labels_with_metadata` interceptor runs after the
+        `post_set_labels` interceptor. The (possibly modified) response returned by
+        `post_set_labels` will be passed to
+        `post_set_labels_with_metadata`.
+        """
+        return response, metadata
 
     def pre_set_machine_resources(
         self,
@@ -1124,11 +1753,34 @@ class InstancesRestInterceptor:
     ) -> compute.Operation:
         """Post-rpc interceptor for set_machine_resources
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_set_machine_resources_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Instances server but before
-        it is returned to user code.
+        it is returned to user code. This `post_set_machine_resources` interceptor runs
+        before the `post_set_machine_resources_with_metadata` interceptor.
         """
         return response
+
+    def post_set_machine_resources_with_metadata(
+        self,
+        response: compute.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for set_machine_resources
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Instances server but before it is returned to user code.
+
+        We recommend only using this `post_set_machine_resources_with_metadata`
+        interceptor in new development instead of the `post_set_machine_resources` interceptor.
+        When both interceptors are used, this `post_set_machine_resources_with_metadata` interceptor runs after the
+        `post_set_machine_resources` interceptor. The (possibly modified) response returned by
+        `post_set_machine_resources` will be passed to
+        `post_set_machine_resources_with_metadata`.
+        """
+        return response, metadata
 
     def pre_set_machine_type(
         self,
@@ -1147,11 +1799,34 @@ class InstancesRestInterceptor:
     def post_set_machine_type(self, response: compute.Operation) -> compute.Operation:
         """Post-rpc interceptor for set_machine_type
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_set_machine_type_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Instances server but before
-        it is returned to user code.
+        it is returned to user code. This `post_set_machine_type` interceptor runs
+        before the `post_set_machine_type_with_metadata` interceptor.
         """
         return response
+
+    def post_set_machine_type_with_metadata(
+        self,
+        response: compute.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for set_machine_type
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Instances server but before it is returned to user code.
+
+        We recommend only using this `post_set_machine_type_with_metadata`
+        interceptor in new development instead of the `post_set_machine_type` interceptor.
+        When both interceptors are used, this `post_set_machine_type_with_metadata` interceptor runs after the
+        `post_set_machine_type` interceptor. The (possibly modified) response returned by
+        `post_set_machine_type` will be passed to
+        `post_set_machine_type_with_metadata`.
+        """
+        return response, metadata
 
     def pre_set_metadata(
         self,
@@ -1170,11 +1845,34 @@ class InstancesRestInterceptor:
     def post_set_metadata(self, response: compute.Operation) -> compute.Operation:
         """Post-rpc interceptor for set_metadata
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_set_metadata_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Instances server but before
-        it is returned to user code.
+        it is returned to user code. This `post_set_metadata` interceptor runs
+        before the `post_set_metadata_with_metadata` interceptor.
         """
         return response
+
+    def post_set_metadata_with_metadata(
+        self,
+        response: compute.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for set_metadata
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Instances server but before it is returned to user code.
+
+        We recommend only using this `post_set_metadata_with_metadata`
+        interceptor in new development instead of the `post_set_metadata` interceptor.
+        When both interceptors are used, this `post_set_metadata_with_metadata` interceptor runs after the
+        `post_set_metadata` interceptor. The (possibly modified) response returned by
+        `post_set_metadata` will be passed to
+        `post_set_metadata_with_metadata`.
+        """
+        return response, metadata
 
     def pre_set_min_cpu_platform(
         self,
@@ -1196,11 +1894,34 @@ class InstancesRestInterceptor:
     ) -> compute.Operation:
         """Post-rpc interceptor for set_min_cpu_platform
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_set_min_cpu_platform_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Instances server but before
-        it is returned to user code.
+        it is returned to user code. This `post_set_min_cpu_platform` interceptor runs
+        before the `post_set_min_cpu_platform_with_metadata` interceptor.
         """
         return response
+
+    def post_set_min_cpu_platform_with_metadata(
+        self,
+        response: compute.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for set_min_cpu_platform
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Instances server but before it is returned to user code.
+
+        We recommend only using this `post_set_min_cpu_platform_with_metadata`
+        interceptor in new development instead of the `post_set_min_cpu_platform` interceptor.
+        When both interceptors are used, this `post_set_min_cpu_platform_with_metadata` interceptor runs after the
+        `post_set_min_cpu_platform` interceptor. The (possibly modified) response returned by
+        `post_set_min_cpu_platform` will be passed to
+        `post_set_min_cpu_platform_with_metadata`.
+        """
+        return response, metadata
 
     def pre_set_name(
         self,
@@ -1217,11 +1938,34 @@ class InstancesRestInterceptor:
     def post_set_name(self, response: compute.Operation) -> compute.Operation:
         """Post-rpc interceptor for set_name
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_set_name_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Instances server but before
-        it is returned to user code.
+        it is returned to user code. This `post_set_name` interceptor runs
+        before the `post_set_name_with_metadata` interceptor.
         """
         return response
+
+    def post_set_name_with_metadata(
+        self,
+        response: compute.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for set_name
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Instances server but before it is returned to user code.
+
+        We recommend only using this `post_set_name_with_metadata`
+        interceptor in new development instead of the `post_set_name` interceptor.
+        When both interceptors are used, this `post_set_name_with_metadata` interceptor runs after the
+        `post_set_name` interceptor. The (possibly modified) response returned by
+        `post_set_name` will be passed to
+        `post_set_name_with_metadata`.
+        """
+        return response, metadata
 
     def pre_set_scheduling(
         self,
@@ -1240,11 +1984,34 @@ class InstancesRestInterceptor:
     def post_set_scheduling(self, response: compute.Operation) -> compute.Operation:
         """Post-rpc interceptor for set_scheduling
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_set_scheduling_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Instances server but before
-        it is returned to user code.
+        it is returned to user code. This `post_set_scheduling` interceptor runs
+        before the `post_set_scheduling_with_metadata` interceptor.
         """
         return response
+
+    def post_set_scheduling_with_metadata(
+        self,
+        response: compute.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for set_scheduling
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Instances server but before it is returned to user code.
+
+        We recommend only using this `post_set_scheduling_with_metadata`
+        interceptor in new development instead of the `post_set_scheduling` interceptor.
+        When both interceptors are used, this `post_set_scheduling_with_metadata` interceptor runs after the
+        `post_set_scheduling` interceptor. The (possibly modified) response returned by
+        `post_set_scheduling` will be passed to
+        `post_set_scheduling_with_metadata`.
+        """
+        return response, metadata
 
     def pre_set_security_policy(
         self,
@@ -1266,11 +2033,34 @@ class InstancesRestInterceptor:
     ) -> compute.Operation:
         """Post-rpc interceptor for set_security_policy
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_set_security_policy_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Instances server but before
-        it is returned to user code.
+        it is returned to user code. This `post_set_security_policy` interceptor runs
+        before the `post_set_security_policy_with_metadata` interceptor.
         """
         return response
+
+    def post_set_security_policy_with_metadata(
+        self,
+        response: compute.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for set_security_policy
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Instances server but before it is returned to user code.
+
+        We recommend only using this `post_set_security_policy_with_metadata`
+        interceptor in new development instead of the `post_set_security_policy` interceptor.
+        When both interceptors are used, this `post_set_security_policy_with_metadata` interceptor runs after the
+        `post_set_security_policy` interceptor. The (possibly modified) response returned by
+        `post_set_security_policy` will be passed to
+        `post_set_security_policy_with_metadata`.
+        """
+        return response, metadata
 
     def pre_set_service_account(
         self,
@@ -1292,11 +2082,34 @@ class InstancesRestInterceptor:
     ) -> compute.Operation:
         """Post-rpc interceptor for set_service_account
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_set_service_account_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Instances server but before
-        it is returned to user code.
+        it is returned to user code. This `post_set_service_account` interceptor runs
+        before the `post_set_service_account_with_metadata` interceptor.
         """
         return response
+
+    def post_set_service_account_with_metadata(
+        self,
+        response: compute.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for set_service_account
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Instances server but before it is returned to user code.
+
+        We recommend only using this `post_set_service_account_with_metadata`
+        interceptor in new development instead of the `post_set_service_account` interceptor.
+        When both interceptors are used, this `post_set_service_account_with_metadata` interceptor runs after the
+        `post_set_service_account` interceptor. The (possibly modified) response returned by
+        `post_set_service_account` will be passed to
+        `post_set_service_account_with_metadata`.
+        """
+        return response, metadata
 
     def pre_set_shielded_instance_integrity_policy(
         self,
@@ -1318,11 +2131,34 @@ class InstancesRestInterceptor:
     ) -> compute.Operation:
         """Post-rpc interceptor for set_shielded_instance_integrity_policy
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_set_shielded_instance_integrity_policy_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Instances server but before
-        it is returned to user code.
+        it is returned to user code. This `post_set_shielded_instance_integrity_policy` interceptor runs
+        before the `post_set_shielded_instance_integrity_policy_with_metadata` interceptor.
         """
         return response
+
+    def post_set_shielded_instance_integrity_policy_with_metadata(
+        self,
+        response: compute.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for set_shielded_instance_integrity_policy
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Instances server but before it is returned to user code.
+
+        We recommend only using this `post_set_shielded_instance_integrity_policy_with_metadata`
+        interceptor in new development instead of the `post_set_shielded_instance_integrity_policy` interceptor.
+        When both interceptors are used, this `post_set_shielded_instance_integrity_policy_with_metadata` interceptor runs after the
+        `post_set_shielded_instance_integrity_policy` interceptor. The (possibly modified) response returned by
+        `post_set_shielded_instance_integrity_policy` will be passed to
+        `post_set_shielded_instance_integrity_policy_with_metadata`.
+        """
+        return response, metadata
 
     def pre_set_tags(
         self,
@@ -1339,11 +2175,34 @@ class InstancesRestInterceptor:
     def post_set_tags(self, response: compute.Operation) -> compute.Operation:
         """Post-rpc interceptor for set_tags
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_set_tags_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Instances server but before
-        it is returned to user code.
+        it is returned to user code. This `post_set_tags` interceptor runs
+        before the `post_set_tags_with_metadata` interceptor.
         """
         return response
+
+    def post_set_tags_with_metadata(
+        self,
+        response: compute.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for set_tags
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Instances server but before it is returned to user code.
+
+        We recommend only using this `post_set_tags_with_metadata`
+        interceptor in new development instead of the `post_set_tags` interceptor.
+        When both interceptors are used, this `post_set_tags_with_metadata` interceptor runs after the
+        `post_set_tags` interceptor. The (possibly modified) response returned by
+        `post_set_tags` will be passed to
+        `post_set_tags_with_metadata`.
+        """
+        return response, metadata
 
     def pre_simulate_maintenance_event(
         self,
@@ -1365,11 +2224,34 @@ class InstancesRestInterceptor:
     ) -> compute.Operation:
         """Post-rpc interceptor for simulate_maintenance_event
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_simulate_maintenance_event_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Instances server but before
-        it is returned to user code.
+        it is returned to user code. This `post_simulate_maintenance_event` interceptor runs
+        before the `post_simulate_maintenance_event_with_metadata` interceptor.
         """
         return response
+
+    def post_simulate_maintenance_event_with_metadata(
+        self,
+        response: compute.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for simulate_maintenance_event
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Instances server but before it is returned to user code.
+
+        We recommend only using this `post_simulate_maintenance_event_with_metadata`
+        interceptor in new development instead of the `post_simulate_maintenance_event` interceptor.
+        When both interceptors are used, this `post_simulate_maintenance_event_with_metadata` interceptor runs after the
+        `post_simulate_maintenance_event` interceptor. The (possibly modified) response returned by
+        `post_simulate_maintenance_event` will be passed to
+        `post_simulate_maintenance_event_with_metadata`.
+        """
+        return response, metadata
 
     def pre_start(
         self,
@@ -1386,11 +2268,34 @@ class InstancesRestInterceptor:
     def post_start(self, response: compute.Operation) -> compute.Operation:
         """Post-rpc interceptor for start
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_start_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Instances server but before
-        it is returned to user code.
+        it is returned to user code. This `post_start` interceptor runs
+        before the `post_start_with_metadata` interceptor.
         """
         return response
+
+    def post_start_with_metadata(
+        self,
+        response: compute.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for start
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Instances server but before it is returned to user code.
+
+        We recommend only using this `post_start_with_metadata`
+        interceptor in new development instead of the `post_start` interceptor.
+        When both interceptors are used, this `post_start_with_metadata` interceptor runs after the
+        `post_start` interceptor. The (possibly modified) response returned by
+        `post_start` will be passed to
+        `post_start_with_metadata`.
+        """
+        return response, metadata
 
     def pre_start_with_encryption_key(
         self,
@@ -1412,11 +2317,34 @@ class InstancesRestInterceptor:
     ) -> compute.Operation:
         """Post-rpc interceptor for start_with_encryption_key
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_start_with_encryption_key_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Instances server but before
-        it is returned to user code.
+        it is returned to user code. This `post_start_with_encryption_key` interceptor runs
+        before the `post_start_with_encryption_key_with_metadata` interceptor.
         """
         return response
+
+    def post_start_with_encryption_key_with_metadata(
+        self,
+        response: compute.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for start_with_encryption_key
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Instances server but before it is returned to user code.
+
+        We recommend only using this `post_start_with_encryption_key_with_metadata`
+        interceptor in new development instead of the `post_start_with_encryption_key` interceptor.
+        When both interceptors are used, this `post_start_with_encryption_key_with_metadata` interceptor runs after the
+        `post_start_with_encryption_key` interceptor. The (possibly modified) response returned by
+        `post_start_with_encryption_key` will be passed to
+        `post_start_with_encryption_key_with_metadata`.
+        """
+        return response, metadata
 
     def pre_stop(
         self,
@@ -1433,11 +2361,34 @@ class InstancesRestInterceptor:
     def post_stop(self, response: compute.Operation) -> compute.Operation:
         """Post-rpc interceptor for stop
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_stop_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Instances server but before
-        it is returned to user code.
+        it is returned to user code. This `post_stop` interceptor runs
+        before the `post_stop_with_metadata` interceptor.
         """
         return response
+
+    def post_stop_with_metadata(
+        self,
+        response: compute.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for stop
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Instances server but before it is returned to user code.
+
+        We recommend only using this `post_stop_with_metadata`
+        interceptor in new development instead of the `post_stop` interceptor.
+        When both interceptors are used, this `post_stop_with_metadata` interceptor runs after the
+        `post_stop` interceptor. The (possibly modified) response returned by
+        `post_stop` will be passed to
+        `post_stop_with_metadata`.
+        """
+        return response, metadata
 
     def pre_suspend(
         self,
@@ -1454,11 +2405,34 @@ class InstancesRestInterceptor:
     def post_suspend(self, response: compute.Operation) -> compute.Operation:
         """Post-rpc interceptor for suspend
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_suspend_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Instances server but before
-        it is returned to user code.
+        it is returned to user code. This `post_suspend` interceptor runs
+        before the `post_suspend_with_metadata` interceptor.
         """
         return response
+
+    def post_suspend_with_metadata(
+        self,
+        response: compute.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for suspend
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Instances server but before it is returned to user code.
+
+        We recommend only using this `post_suspend_with_metadata`
+        interceptor in new development instead of the `post_suspend` interceptor.
+        When both interceptors are used, this `post_suspend_with_metadata` interceptor runs after the
+        `post_suspend` interceptor. The (possibly modified) response returned by
+        `post_suspend` will be passed to
+        `post_suspend_with_metadata`.
+        """
+        return response, metadata
 
     def pre_test_iam_permissions(
         self,
@@ -1480,11 +2454,36 @@ class InstancesRestInterceptor:
     ) -> compute.TestPermissionsResponse:
         """Post-rpc interceptor for test_iam_permissions
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_test_iam_permissions_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Instances server but before
-        it is returned to user code.
+        it is returned to user code. This `post_test_iam_permissions` interceptor runs
+        before the `post_test_iam_permissions_with_metadata` interceptor.
         """
         return response
+
+    def post_test_iam_permissions_with_metadata(
+        self,
+        response: compute.TestPermissionsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.TestPermissionsResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for test_iam_permissions
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Instances server but before it is returned to user code.
+
+        We recommend only using this `post_test_iam_permissions_with_metadata`
+        interceptor in new development instead of the `post_test_iam_permissions` interceptor.
+        When both interceptors are used, this `post_test_iam_permissions_with_metadata` interceptor runs after the
+        `post_test_iam_permissions` interceptor. The (possibly modified) response returned by
+        `post_test_iam_permissions` will be passed to
+        `post_test_iam_permissions_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update(
         self,
@@ -1501,11 +2500,34 @@ class InstancesRestInterceptor:
     def post_update(self, response: compute.Operation) -> compute.Operation:
         """Post-rpc interceptor for update
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Instances server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update` interceptor runs
+        before the `post_update_with_metadata` interceptor.
         """
         return response
+
+    def post_update_with_metadata(
+        self,
+        response: compute.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Instances server but before it is returned to user code.
+
+        We recommend only using this `post_update_with_metadata`
+        interceptor in new development instead of the `post_update` interceptor.
+        When both interceptors are used, this `post_update_with_metadata` interceptor runs after the
+        `post_update` interceptor. The (possibly modified) response returned by
+        `post_update` will be passed to
+        `post_update_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_access_config(
         self,
@@ -1527,11 +2549,34 @@ class InstancesRestInterceptor:
     ) -> compute.Operation:
         """Post-rpc interceptor for update_access_config
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_access_config_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Instances server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_access_config` interceptor runs
+        before the `post_update_access_config_with_metadata` interceptor.
         """
         return response
+
+    def post_update_access_config_with_metadata(
+        self,
+        response: compute.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_access_config
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Instances server but before it is returned to user code.
+
+        We recommend only using this `post_update_access_config_with_metadata`
+        interceptor in new development instead of the `post_update_access_config` interceptor.
+        When both interceptors are used, this `post_update_access_config_with_metadata` interceptor runs after the
+        `post_update_access_config` interceptor. The (possibly modified) response returned by
+        `post_update_access_config` will be passed to
+        `post_update_access_config_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_display_device(
         self,
@@ -1553,11 +2598,34 @@ class InstancesRestInterceptor:
     ) -> compute.Operation:
         """Post-rpc interceptor for update_display_device
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_display_device_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Instances server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_display_device` interceptor runs
+        before the `post_update_display_device_with_metadata` interceptor.
         """
         return response
+
+    def post_update_display_device_with_metadata(
+        self,
+        response: compute.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_display_device
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Instances server but before it is returned to user code.
+
+        We recommend only using this `post_update_display_device_with_metadata`
+        interceptor in new development instead of the `post_update_display_device` interceptor.
+        When both interceptors are used, this `post_update_display_device_with_metadata` interceptor runs after the
+        `post_update_display_device` interceptor. The (possibly modified) response returned by
+        `post_update_display_device` will be passed to
+        `post_update_display_device_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_network_interface(
         self,
@@ -1579,11 +2647,34 @@ class InstancesRestInterceptor:
     ) -> compute.Operation:
         """Post-rpc interceptor for update_network_interface
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_network_interface_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Instances server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_network_interface` interceptor runs
+        before the `post_update_network_interface_with_metadata` interceptor.
         """
         return response
+
+    def post_update_network_interface_with_metadata(
+        self,
+        response: compute.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_network_interface
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Instances server but before it is returned to user code.
+
+        We recommend only using this `post_update_network_interface_with_metadata`
+        interceptor in new development instead of the `post_update_network_interface` interceptor.
+        When both interceptors are used, this `post_update_network_interface_with_metadata` interceptor runs after the
+        `post_update_network_interface` interceptor. The (possibly modified) response returned by
+        `post_update_network_interface` will be passed to
+        `post_update_network_interface_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_shielded_instance_config(
         self,
@@ -1605,11 +2696,34 @@ class InstancesRestInterceptor:
     ) -> compute.Operation:
         """Post-rpc interceptor for update_shielded_instance_config
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_shielded_instance_config_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Instances server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_shielded_instance_config` interceptor runs
+        before the `post_update_shielded_instance_config_with_metadata` interceptor.
         """
         return response
+
+    def post_update_shielded_instance_config_with_metadata(
+        self,
+        response: compute.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_shielded_instance_config
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Instances server but before it is returned to user code.
+
+        We recommend only using this `post_update_shielded_instance_config_with_metadata`
+        interceptor in new development instead of the `post_update_shielded_instance_config` interceptor.
+        When both interceptors are used, this `post_update_shielded_instance_config_with_metadata` interceptor runs after the
+        `post_update_shielded_instance_config` interceptor. The (possibly modified) response returned by
+        `post_update_shielded_instance_config` will be passed to
+        `post_update_shielded_instance_config_with_metadata`.
+        """
+        return response, metadata
 
 
 @dataclasses.dataclass
@@ -1850,6 +2964,10 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_add_access_config(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_add_access_config_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2017,6 +3135,10 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_add_resource_policies(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_add_resource_policies_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2163,6 +3285,10 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_aggregated_list(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_aggregated_list_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2330,6 +3456,10 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_attach_disk(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_attach_disk_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2497,6 +3627,10 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_bulk_insert(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_bulk_insert_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2656,6 +3790,10 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2817,6 +3955,10 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_access_config(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_access_config_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2978,6 +4120,10 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_detach_disk(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_detach_disk_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3122,6 +4268,8 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_with_metadata(resp, response_metadata)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3266,6 +4414,10 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_effective_firewalls(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_effective_firewalls_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3412,6 +4564,10 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_guest_attributes(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_guest_attributes_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3581,6 +4737,10 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_iam_policy(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_iam_policy_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3727,6 +4887,10 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_screenshot(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_screenshot_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3871,6 +5035,10 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_serial_port_output(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_serial_port_output_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4018,6 +5186,13 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_shielded_instance_identity(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_get_shielded_instance_identity_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4185,6 +5360,10 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_insert(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_insert_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4324,6 +5503,8 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_with_metadata(resp, response_metadata)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4472,6 +5653,10 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_referrers(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_referrers_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4633,6 +5818,10 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_perform_maintenance(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_perform_maintenance_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4800,6 +5989,10 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_remove_resource_policies(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_remove_resource_policies_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4959,6 +6152,10 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_reset(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_reset_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -5118,6 +6315,10 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_resume(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_resume_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -5265,6 +6466,10 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_send_diagnostic_interrupt(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_send_diagnostic_interrupt_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -5430,6 +6635,10 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_set_deletion_protection(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_set_deletion_protection_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -5591,6 +6800,10 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_set_disk_auto_delete(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_set_disk_auto_delete_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -5766,6 +6979,10 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_set_iam_policy(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_set_iam_policy_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -5933,6 +7150,10 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_set_labels(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_set_labels_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -6100,6 +7321,10 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_set_machine_resources(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_set_machine_resources_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -6273,6 +7498,10 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_set_machine_type(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_set_machine_type_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -6440,6 +7669,10 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_set_metadata(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_set_metadata_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -6607,6 +7840,10 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_set_min_cpu_platform(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_set_min_cpu_platform_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -6772,6 +8009,10 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_set_name(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_set_name_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -6943,6 +8184,10 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_set_scheduling(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_set_scheduling_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -7110,6 +8355,10 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_set_security_policy(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_set_security_policy_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -7277,6 +8526,10 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_set_service_account(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_set_service_account_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -7449,6 +8702,13 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_set_shielded_instance_integrity_policy(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_set_shielded_instance_integrity_policy_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -7614,6 +8874,10 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_set_tags(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_set_tags_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -7776,6 +9040,10 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_simulate_maintenance_event(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_simulate_maintenance_event_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -7935,6 +9203,10 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_start(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_start_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -8102,6 +9374,10 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_start_with_encryption_key(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_start_with_encryption_key_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -8258,6 +9534,8 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_stop(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_stop_with_metadata(resp, response_metadata)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -8417,6 +9695,10 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_suspend(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_suspend_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -8567,6 +9849,10 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_test_iam_permissions(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_test_iam_permissions_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -8732,6 +10018,10 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -8899,6 +10189,10 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_access_config(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_access_config_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -9066,6 +10360,10 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_display_device(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_display_device_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -9233,6 +10531,10 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_network_interface(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_network_interface_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -9403,6 +10705,13 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_shielded_instance_config(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_update_shielded_instance_config_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

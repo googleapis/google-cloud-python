@@ -313,7 +313,7 @@ class Service(proto.Message):
             populated as a response to a Delete request.
         expire_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. For a deleted resource, the time
-            after which it will be permamently deleted.
+            after which it will be permanently deleted.
         creator (str):
             Output only. Email address of the
             authenticated creator.
@@ -339,11 +339,9 @@ class Service(proto.Message):
             that stage. On read (or output), describes whether the
             resource uses preview features.
 
-            .. raw:: html
-
-                <p>
-                For example, if ALPHA is provided as input, but only BETA and GA-level
-                features are used, this field will be BETA on output.
+            For example, if ALPHA is provided as input, but only BETA
+            and GA-level features are used, this field will be BETA on
+            output.
         binary_authorization (google.cloud.run_v2.types.BinaryAuthorization):
             Optional. Settings for the Binary
             Authorization feature.
@@ -413,6 +411,9 @@ class Service(proto.Message):
             Service is serving traffic.
         satisfies_pzs (bool):
             Output only. Reserved for future use.
+        build_config (google.cloud.run_v2.types.BuildConfig):
+            Optional. Configuration for building a Cloud
+            Run function.
         reconciling (bool):
             Output only. Returns true if the Service is currently being
             acted upon by the system to bring it into the desired state.
@@ -422,7 +423,7 @@ class Service(proto.Message):
             steps to bring the Service to the desired serving state.
             This process is called reconciliation. While reconciliation
             is in process, ``observed_generation``,
-            ``latest_ready_revison``, ``traffic_statuses``, and ``uri``
+            ``latest_ready_revision``, ``traffic_statuses``, and ``uri``
             will have transient values that might mismatch the intended
             state: Once reconciliation is over (and this field is
             false), there are two possible outcomes: reconciliation
@@ -591,6 +592,11 @@ class Service(proto.Message):
     satisfies_pzs: bool = proto.Field(
         proto.BOOL,
         number=38,
+    )
+    build_config: vendor_settings.BuildConfig = proto.Field(
+        proto.MESSAGE,
+        number=41,
+        message=vendor_settings.BuildConfig,
     )
     reconciling: bool = proto.Field(
         proto.BOOL,

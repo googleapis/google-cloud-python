@@ -107,11 +107,34 @@ class CloudControlsPartnerMonitoringRestInterceptor:
     ) -> violations.Violation:
         """Post-rpc interceptor for get_violation
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_violation_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CloudControlsPartnerMonitoring server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_violation` interceptor runs
+        before the `post_get_violation_with_metadata` interceptor.
         """
         return response
+
+    def post_get_violation_with_metadata(
+        self,
+        response: violations.Violation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[violations.Violation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_violation
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CloudControlsPartnerMonitoring server but before it is returned to user code.
+
+        We recommend only using this `post_get_violation_with_metadata`
+        interceptor in new development instead of the `post_get_violation` interceptor.
+        When both interceptors are used, this `post_get_violation_with_metadata` interceptor runs after the
+        `post_get_violation` interceptor. The (possibly modified) response returned by
+        `post_get_violation` will be passed to
+        `post_get_violation_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_violations(
         self,
@@ -132,11 +155,36 @@ class CloudControlsPartnerMonitoringRestInterceptor:
     ) -> violations.ListViolationsResponse:
         """Post-rpc interceptor for list_violations
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_violations_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CloudControlsPartnerMonitoring server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_violations` interceptor runs
+        before the `post_list_violations_with_metadata` interceptor.
         """
         return response
+
+    def post_list_violations_with_metadata(
+        self,
+        response: violations.ListViolationsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        violations.ListViolationsResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_violations
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CloudControlsPartnerMonitoring server but before it is returned to user code.
+
+        We recommend only using this `post_list_violations_with_metadata`
+        interceptor in new development instead of the `post_list_violations` interceptor.
+        When both interceptors are used, this `post_list_violations_with_metadata` interceptor runs after the
+        `post_list_violations` interceptor. The (possibly modified) response returned by
+        `post_list_violations` will be passed to
+        `post_list_violations_with_metadata`.
+        """
+        return response, metadata
 
 
 @dataclasses.dataclass
@@ -349,6 +397,10 @@ class CloudControlsPartnerMonitoringRestTransport(
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_violation(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_violation_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -493,6 +545,10 @@ class CloudControlsPartnerMonitoringRestTransport(
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_violations(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_violations_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

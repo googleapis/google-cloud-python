@@ -75,6 +75,13 @@ from google.cloud.dialogflow_v2beta1.types import participant as gcd_participant
 from google.cloud.dialogflow_v2beta1.types import participant
 from google.cloud.dialogflow_v2beta1.types import session, session_entity_type
 
+CRED_INFO_JSON = {
+    "credential_source": "/path/to/file",
+    "credential_type": "service account credentials",
+    "principal": "service-account@example.com",
+}
+CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
 
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
@@ -316,6 +323,49 @@ def test__get_universe_domain():
     with pytest.raises(ValueError) as excinfo:
         ParticipantsClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+
+@pytest.mark.parametrize(
+    "error_code,cred_info_json,show_cred_info",
+    [
+        (401, CRED_INFO_JSON, True),
+        (403, CRED_INFO_JSON, True),
+        (404, CRED_INFO_JSON, True),
+        (500, CRED_INFO_JSON, False),
+        (401, None, False),
+        (403, None, False),
+        (404, None, False),
+        (500, None, False),
+    ],
+)
+def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
+    cred = mock.Mock(["get_cred_info"])
+    cred.get_cred_info = mock.Mock(return_value=cred_info_json)
+    client = ParticipantsClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=["foo"])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    if show_cred_info:
+        assert error.details == ["foo", CRED_INFO_STRING]
+    else:
+        assert error.details == ["foo"]
+
+
+@pytest.mark.parametrize("error_code", [401, 403, 404, 500])
+def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
+    cred = mock.Mock([])
+    assert not hasattr(cred, "get_cred_info")
+    client = ParticipantsClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=[])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    assert error.details == []
 
 
 @pytest.mark.parametrize(
@@ -7867,10 +7917,13 @@ def test_create_participant_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ParticipantsRestInterceptor, "post_create_participant"
     ) as post, mock.patch.object(
+        transports.ParticipantsRestInterceptor, "post_create_participant_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ParticipantsRestInterceptor, "pre_create_participant"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = gcd_participant.CreateParticipantRequest.pb(
             gcd_participant.CreateParticipantRequest()
         )
@@ -7896,6 +7949,7 @@ def test_create_participant_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = gcd_participant.Participant()
+        post_with_metadata.return_value = gcd_participant.Participant(), metadata
 
         client.create_participant(
             request,
@@ -7907,6 +7961,7 @@ def test_create_participant_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_participant_rest_bad_request(
@@ -7999,10 +8054,13 @@ def test_get_participant_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ParticipantsRestInterceptor, "post_get_participant"
     ) as post, mock.patch.object(
+        transports.ParticipantsRestInterceptor, "post_get_participant_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ParticipantsRestInterceptor, "pre_get_participant"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = participant.GetParticipantRequest.pb(
             participant.GetParticipantRequest()
         )
@@ -8026,6 +8084,7 @@ def test_get_participant_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = participant.Participant()
+        post_with_metadata.return_value = participant.Participant(), metadata
 
         client.get_participant(
             request,
@@ -8037,6 +8096,7 @@ def test_get_participant_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_participants_rest_bad_request(
@@ -8121,10 +8181,13 @@ def test_list_participants_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ParticipantsRestInterceptor, "post_list_participants"
     ) as post, mock.patch.object(
+        transports.ParticipantsRestInterceptor, "post_list_participants_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ParticipantsRestInterceptor, "pre_list_participants"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = participant.ListParticipantsRequest.pb(
             participant.ListParticipantsRequest()
         )
@@ -8150,6 +8213,10 @@ def test_list_participants_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = participant.ListParticipantsResponse()
+        post_with_metadata.return_value = (
+            participant.ListParticipantsResponse(),
+            metadata,
+        )
 
         client.list_participants(
             request,
@@ -8161,6 +8228,7 @@ def test_list_participants_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_participant_rest_bad_request(
@@ -8330,10 +8398,13 @@ def test_update_participant_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ParticipantsRestInterceptor, "post_update_participant"
     ) as post, mock.patch.object(
+        transports.ParticipantsRestInterceptor, "post_update_participant_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ParticipantsRestInterceptor, "pre_update_participant"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = gcd_participant.UpdateParticipantRequest.pb(
             gcd_participant.UpdateParticipantRequest()
         )
@@ -8359,6 +8430,7 @@ def test_update_participant_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = gcd_participant.Participant()
+        post_with_metadata.return_value = gcd_participant.Participant(), metadata
 
         client.update_participant(
             request,
@@ -8370,6 +8442,7 @@ def test_update_participant_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_analyze_content_rest_bad_request(
@@ -8458,10 +8531,13 @@ def test_analyze_content_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ParticipantsRestInterceptor, "post_analyze_content"
     ) as post, mock.patch.object(
+        transports.ParticipantsRestInterceptor, "post_analyze_content_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ParticipantsRestInterceptor, "pre_analyze_content"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = gcd_participant.AnalyzeContentRequest.pb(
             gcd_participant.AnalyzeContentRequest()
         )
@@ -8487,6 +8563,10 @@ def test_analyze_content_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = gcd_participant.AnalyzeContentResponse()
+        post_with_metadata.return_value = (
+            gcd_participant.AnalyzeContentResponse(),
+            metadata,
+        )
 
         client.analyze_content(
             request,
@@ -8498,6 +8578,7 @@ def test_analyze_content_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_streaming_analyze_content_rest_error():
@@ -8600,10 +8681,13 @@ def test_suggest_articles_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ParticipantsRestInterceptor, "post_suggest_articles"
     ) as post, mock.patch.object(
+        transports.ParticipantsRestInterceptor, "post_suggest_articles_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ParticipantsRestInterceptor, "pre_suggest_articles"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = participant.SuggestArticlesRequest.pb(
             participant.SuggestArticlesRequest()
         )
@@ -8629,6 +8713,10 @@ def test_suggest_articles_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = participant.SuggestArticlesResponse()
+        post_with_metadata.return_value = (
+            participant.SuggestArticlesResponse(),
+            metadata,
+        )
 
         client.suggest_articles(
             request,
@@ -8640,6 +8728,7 @@ def test_suggest_articles_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_suggest_faq_answers_rest_bad_request(
@@ -8730,10 +8819,13 @@ def test_suggest_faq_answers_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ParticipantsRestInterceptor, "post_suggest_faq_answers"
     ) as post, mock.patch.object(
+        transports.ParticipantsRestInterceptor, "post_suggest_faq_answers_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ParticipantsRestInterceptor, "pre_suggest_faq_answers"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = participant.SuggestFaqAnswersRequest.pb(
             participant.SuggestFaqAnswersRequest()
         )
@@ -8759,6 +8851,10 @@ def test_suggest_faq_answers_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = participant.SuggestFaqAnswersResponse()
+        post_with_metadata.return_value = (
+            participant.SuggestFaqAnswersResponse(),
+            metadata,
+        )
 
         client.suggest_faq_answers(
             request,
@@ -8770,6 +8866,7 @@ def test_suggest_faq_answers_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_suggest_smart_replies_rest_bad_request(
@@ -8860,10 +8957,14 @@ def test_suggest_smart_replies_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ParticipantsRestInterceptor, "post_suggest_smart_replies"
     ) as post, mock.patch.object(
+        transports.ParticipantsRestInterceptor,
+        "post_suggest_smart_replies_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ParticipantsRestInterceptor, "pre_suggest_smart_replies"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = participant.SuggestSmartRepliesRequest.pb(
             participant.SuggestSmartRepliesRequest()
         )
@@ -8889,6 +8990,10 @@ def test_suggest_smart_replies_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = participant.SuggestSmartRepliesResponse()
+        post_with_metadata.return_value = (
+            participant.SuggestSmartRepliesResponse(),
+            metadata,
+        )
 
         client.suggest_smart_replies(
             request,
@@ -8900,6 +9005,7 @@ def test_suggest_smart_replies_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_suggest_knowledge_assist_rest_bad_request(
@@ -8990,10 +9096,14 @@ def test_suggest_knowledge_assist_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ParticipantsRestInterceptor, "post_suggest_knowledge_assist"
     ) as post, mock.patch.object(
+        transports.ParticipantsRestInterceptor,
+        "post_suggest_knowledge_assist_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ParticipantsRestInterceptor, "pre_suggest_knowledge_assist"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = participant.SuggestKnowledgeAssistRequest.pb(
             participant.SuggestKnowledgeAssistRequest()
         )
@@ -9019,6 +9129,10 @@ def test_suggest_knowledge_assist_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = participant.SuggestKnowledgeAssistResponse()
+        post_with_metadata.return_value = (
+            participant.SuggestKnowledgeAssistResponse(),
+            metadata,
+        )
 
         client.suggest_knowledge_assist(
             request,
@@ -9030,6 +9144,7 @@ def test_suggest_knowledge_assist_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_suggestions_rest_bad_request(
@@ -9118,10 +9233,13 @@ def test_list_suggestions_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ParticipantsRestInterceptor, "post_list_suggestions"
     ) as post, mock.patch.object(
+        transports.ParticipantsRestInterceptor, "post_list_suggestions_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ParticipantsRestInterceptor, "pre_list_suggestions"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = participant.ListSuggestionsRequest.pb(
             participant.ListSuggestionsRequest()
         )
@@ -9147,6 +9265,10 @@ def test_list_suggestions_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = participant.ListSuggestionsResponse()
+        post_with_metadata.return_value = (
+            participant.ListSuggestionsResponse(),
+            metadata,
+        )
 
         client.list_suggestions(
             request,
@@ -9158,6 +9280,7 @@ def test_list_suggestions_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_compile_suggestion_rest_bad_request(
@@ -9248,10 +9371,13 @@ def test_compile_suggestion_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ParticipantsRestInterceptor, "post_compile_suggestion"
     ) as post, mock.patch.object(
+        transports.ParticipantsRestInterceptor, "post_compile_suggestion_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ParticipantsRestInterceptor, "pre_compile_suggestion"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = participant.CompileSuggestionRequest.pb(
             participant.CompileSuggestionRequest()
         )
@@ -9277,6 +9403,10 @@ def test_compile_suggestion_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = participant.CompileSuggestionResponse()
+        post_with_metadata.return_value = (
+            participant.CompileSuggestionResponse(),
+            metadata,
+        )
 
         client.compile_suggestion(
             request,
@@ -9288,6 +9418,7 @@ def test_compile_suggestion_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_location_rest_bad_request(request_type=locations_pb2.GetLocationRequest):

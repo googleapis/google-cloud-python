@@ -120,11 +120,34 @@ class AnswerRecordsRestInterceptor:
     ) -> answer_record.AnswerRecord:
         """Post-rpc interceptor for get_answer_record
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_answer_record_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AnswerRecords server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_answer_record` interceptor runs
+        before the `post_get_answer_record_with_metadata` interceptor.
         """
         return response
+
+    def post_get_answer_record_with_metadata(
+        self,
+        response: answer_record.AnswerRecord,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[answer_record.AnswerRecord, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_answer_record
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AnswerRecords server but before it is returned to user code.
+
+        We recommend only using this `post_get_answer_record_with_metadata`
+        interceptor in new development instead of the `post_get_answer_record` interceptor.
+        When both interceptors are used, this `post_get_answer_record_with_metadata` interceptor runs after the
+        `post_get_answer_record` interceptor. The (possibly modified) response returned by
+        `post_get_answer_record` will be passed to
+        `post_get_answer_record_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_answer_records(
         self,
@@ -145,11 +168,36 @@ class AnswerRecordsRestInterceptor:
     ) -> answer_record.ListAnswerRecordsResponse:
         """Post-rpc interceptor for list_answer_records
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_answer_records_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AnswerRecords server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_answer_records` interceptor runs
+        before the `post_list_answer_records_with_metadata` interceptor.
         """
         return response
+
+    def post_list_answer_records_with_metadata(
+        self,
+        response: answer_record.ListAnswerRecordsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        answer_record.ListAnswerRecordsResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_answer_records
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AnswerRecords server but before it is returned to user code.
+
+        We recommend only using this `post_list_answer_records_with_metadata`
+        interceptor in new development instead of the `post_list_answer_records` interceptor.
+        When both interceptors are used, this `post_list_answer_records_with_metadata` interceptor runs after the
+        `post_list_answer_records` interceptor. The (possibly modified) response returned by
+        `post_list_answer_records` will be passed to
+        `post_list_answer_records_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_answer_record(
         self,
@@ -171,11 +219,34 @@ class AnswerRecordsRestInterceptor:
     ) -> gcd_answer_record.AnswerRecord:
         """Post-rpc interceptor for update_answer_record
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_answer_record_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AnswerRecords server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_answer_record` interceptor runs
+        before the `post_update_answer_record_with_metadata` interceptor.
         """
         return response
+
+    def post_update_answer_record_with_metadata(
+        self,
+        response: gcd_answer_record.AnswerRecord,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[gcd_answer_record.AnswerRecord, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_answer_record
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AnswerRecords server but before it is returned to user code.
+
+        We recommend only using this `post_update_answer_record_with_metadata`
+        interceptor in new development instead of the `post_update_answer_record` interceptor.
+        When both interceptors are used, this `post_update_answer_record_with_metadata` interceptor runs after the
+        `post_update_answer_record` interceptor. The (possibly modified) response returned by
+        `post_update_answer_record` will be passed to
+        `post_update_answer_record_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_location(
         self,
@@ -539,6 +610,10 @@ class AnswerRecordsRestTransport(_BaseAnswerRecordsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_answer_record(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_answer_record_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -684,6 +759,10 @@ class AnswerRecordsRestTransport(_BaseAnswerRecordsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_answer_records(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_answer_records_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -866,6 +945,10 @@ class AnswerRecordsRestTransport(_BaseAnswerRecordsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_answer_record(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_answer_record_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

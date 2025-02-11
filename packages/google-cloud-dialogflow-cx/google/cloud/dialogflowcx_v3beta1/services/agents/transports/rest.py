@@ -181,11 +181,34 @@ class AgentsRestInterceptor:
     def post_create_agent(self, response: gcdc_agent.Agent) -> gcdc_agent.Agent:
         """Post-rpc interceptor for create_agent
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_agent_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Agents server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_agent` interceptor runs
+        before the `post_create_agent_with_metadata` interceptor.
         """
         return response
+
+    def post_create_agent_with_metadata(
+        self,
+        response: gcdc_agent.Agent,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[gcdc_agent.Agent, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_agent
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Agents server but before it is returned to user code.
+
+        We recommend only using this `post_create_agent_with_metadata`
+        interceptor in new development instead of the `post_create_agent` interceptor.
+        When both interceptors are used, this `post_create_agent_with_metadata` interceptor runs after the
+        `post_create_agent` interceptor. The (possibly modified) response returned by
+        `post_create_agent` will be passed to
+        `post_create_agent_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_agent(
         self,
@@ -216,11 +239,34 @@ class AgentsRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for export_agent
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_export_agent_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Agents server but before
-        it is returned to user code.
+        it is returned to user code. This `post_export_agent` interceptor runs
+        before the `post_export_agent_with_metadata` interceptor.
         """
         return response
+
+    def post_export_agent_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for export_agent
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Agents server but before it is returned to user code.
+
+        We recommend only using this `post_export_agent_with_metadata`
+        interceptor in new development instead of the `post_export_agent` interceptor.
+        When both interceptors are used, this `post_export_agent_with_metadata` interceptor runs after the
+        `post_export_agent` interceptor. The (possibly modified) response returned by
+        `post_export_agent` will be passed to
+        `post_export_agent_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_agent(
         self,
@@ -237,11 +283,32 @@ class AgentsRestInterceptor:
     def post_get_agent(self, response: agent.Agent) -> agent.Agent:
         """Post-rpc interceptor for get_agent
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_agent_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Agents server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_agent` interceptor runs
+        before the `post_get_agent_with_metadata` interceptor.
         """
         return response
+
+    def post_get_agent_with_metadata(
+        self, response: agent.Agent, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[agent.Agent, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_agent
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Agents server but before it is returned to user code.
+
+        We recommend only using this `post_get_agent_with_metadata`
+        interceptor in new development instead of the `post_get_agent` interceptor.
+        When both interceptors are used, this `post_get_agent_with_metadata` interceptor runs after the
+        `post_get_agent` interceptor. The (possibly modified) response returned by
+        `post_get_agent` will be passed to
+        `post_get_agent_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_agent_validation_result(
         self,
@@ -262,11 +329,34 @@ class AgentsRestInterceptor:
     ) -> agent.AgentValidationResult:
         """Post-rpc interceptor for get_agent_validation_result
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_agent_validation_result_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Agents server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_agent_validation_result` interceptor runs
+        before the `post_get_agent_validation_result_with_metadata` interceptor.
         """
         return response
+
+    def post_get_agent_validation_result_with_metadata(
+        self,
+        response: agent.AgentValidationResult,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[agent.AgentValidationResult, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_agent_validation_result
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Agents server but before it is returned to user code.
+
+        We recommend only using this `post_get_agent_validation_result_with_metadata`
+        interceptor in new development instead of the `post_get_agent_validation_result` interceptor.
+        When both interceptors are used, this `post_get_agent_validation_result_with_metadata` interceptor runs after the
+        `post_get_agent_validation_result` interceptor. The (possibly modified) response returned by
+        `post_get_agent_validation_result` will be passed to
+        `post_get_agent_validation_result_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_generative_settings(
         self,
@@ -287,11 +377,36 @@ class AgentsRestInterceptor:
     ) -> generative_settings.GenerativeSettings:
         """Post-rpc interceptor for get_generative_settings
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_generative_settings_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Agents server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_generative_settings` interceptor runs
+        before the `post_get_generative_settings_with_metadata` interceptor.
         """
         return response
+
+    def post_get_generative_settings_with_metadata(
+        self,
+        response: generative_settings.GenerativeSettings,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        generative_settings.GenerativeSettings, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for get_generative_settings
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Agents server but before it is returned to user code.
+
+        We recommend only using this `post_get_generative_settings_with_metadata`
+        interceptor in new development instead of the `post_get_generative_settings` interceptor.
+        When both interceptors are used, this `post_get_generative_settings_with_metadata` interceptor runs after the
+        `post_get_generative_settings` interceptor. The (possibly modified) response returned by
+        `post_get_generative_settings` will be passed to
+        `post_get_generative_settings_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_agents(
         self,
@@ -310,11 +425,34 @@ class AgentsRestInterceptor:
     ) -> agent.ListAgentsResponse:
         """Post-rpc interceptor for list_agents
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_agents_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Agents server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_agents` interceptor runs
+        before the `post_list_agents_with_metadata` interceptor.
         """
         return response
+
+    def post_list_agents_with_metadata(
+        self,
+        response: agent.ListAgentsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[agent.ListAgentsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for list_agents
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Agents server but before it is returned to user code.
+
+        We recommend only using this `post_list_agents_with_metadata`
+        interceptor in new development instead of the `post_list_agents` interceptor.
+        When both interceptors are used, this `post_list_agents_with_metadata` interceptor runs after the
+        `post_list_agents` interceptor. The (possibly modified) response returned by
+        `post_list_agents` will be passed to
+        `post_list_agents_with_metadata`.
+        """
+        return response, metadata
 
     def pre_restore_agent(
         self,
@@ -333,11 +471,34 @@ class AgentsRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for restore_agent
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_restore_agent_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Agents server but before
-        it is returned to user code.
+        it is returned to user code. This `post_restore_agent` interceptor runs
+        before the `post_restore_agent_with_metadata` interceptor.
         """
         return response
+
+    def post_restore_agent_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for restore_agent
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Agents server but before it is returned to user code.
+
+        We recommend only using this `post_restore_agent_with_metadata`
+        interceptor in new development instead of the `post_restore_agent` interceptor.
+        When both interceptors are used, this `post_restore_agent_with_metadata` interceptor runs after the
+        `post_restore_agent` interceptor. The (possibly modified) response returned by
+        `post_restore_agent` will be passed to
+        `post_restore_agent_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_agent(
         self,
@@ -354,11 +515,34 @@ class AgentsRestInterceptor:
     def post_update_agent(self, response: gcdc_agent.Agent) -> gcdc_agent.Agent:
         """Post-rpc interceptor for update_agent
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_agent_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Agents server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_agent` interceptor runs
+        before the `post_update_agent_with_metadata` interceptor.
         """
         return response
+
+    def post_update_agent_with_metadata(
+        self,
+        response: gcdc_agent.Agent,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[gcdc_agent.Agent, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_agent
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Agents server but before it is returned to user code.
+
+        We recommend only using this `post_update_agent_with_metadata`
+        interceptor in new development instead of the `post_update_agent` interceptor.
+        When both interceptors are used, this `post_update_agent_with_metadata` interceptor runs after the
+        `post_update_agent` interceptor. The (possibly modified) response returned by
+        `post_update_agent` will be passed to
+        `post_update_agent_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_generative_settings(
         self,
@@ -379,11 +563,37 @@ class AgentsRestInterceptor:
     ) -> gcdc_generative_settings.GenerativeSettings:
         """Post-rpc interceptor for update_generative_settings
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_generative_settings_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Agents server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_generative_settings` interceptor runs
+        before the `post_update_generative_settings_with_metadata` interceptor.
         """
         return response
+
+    def post_update_generative_settings_with_metadata(
+        self,
+        response: gcdc_generative_settings.GenerativeSettings,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        gcdc_generative_settings.GenerativeSettings,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for update_generative_settings
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Agents server but before it is returned to user code.
+
+        We recommend only using this `post_update_generative_settings_with_metadata`
+        interceptor in new development instead of the `post_update_generative_settings` interceptor.
+        When both interceptors are used, this `post_update_generative_settings_with_metadata` interceptor runs after the
+        `post_update_generative_settings` interceptor. The (possibly modified) response returned by
+        `post_update_generative_settings` will be passed to
+        `post_update_generative_settings_with_metadata`.
+        """
+        return response, metadata
 
     def pre_validate_agent(
         self,
@@ -402,11 +612,34 @@ class AgentsRestInterceptor:
     ) -> agent.AgentValidationResult:
         """Post-rpc interceptor for validate_agent
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_validate_agent_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Agents server but before
-        it is returned to user code.
+        it is returned to user code. This `post_validate_agent` interceptor runs
+        before the `post_validate_agent_with_metadata` interceptor.
         """
         return response
+
+    def post_validate_agent_with_metadata(
+        self,
+        response: agent.AgentValidationResult,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[agent.AgentValidationResult, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for validate_agent
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Agents server but before it is returned to user code.
+
+        We recommend only using this `post_validate_agent_with_metadata`
+        interceptor in new development instead of the `post_validate_agent` interceptor.
+        When both interceptors are used, this `post_validate_agent_with_metadata` interceptor runs after the
+        `post_validate_agent` interceptor. The (possibly modified) response returned by
+        `post_validate_agent` will be passed to
+        `post_validate_agent_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_location(
         self,
@@ -817,6 +1050,10 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_agent(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_agent_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1072,6 +1309,10 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_export_agent(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_export_agent_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1228,6 +1469,10 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_agent(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_agent_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1374,6 +1619,10 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_agent_validation_result(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_agent_validation_result_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1518,6 +1767,10 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_generative_settings(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_generative_settings_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1663,6 +1916,10 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_agents(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_agents_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1813,6 +2070,10 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_restore_agent(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_restore_agent_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1975,6 +2236,10 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_agent(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_agent_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2126,6 +2391,10 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_generative_settings(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_generative_settings_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2279,6 +2548,10 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_validate_agent(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_validate_agent_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

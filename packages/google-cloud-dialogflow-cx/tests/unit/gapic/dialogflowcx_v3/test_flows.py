@@ -86,6 +86,13 @@ from google.cloud.dialogflowcx_v3.types import (
 from google.cloud.dialogflowcx_v3.types import flow
 from google.cloud.dialogflowcx_v3.types import flow as gcdc_flow
 
+CRED_INFO_JSON = {
+    "credential_source": "/path/to/file",
+    "credential_type": "service account credentials",
+    "principal": "service-account@example.com",
+}
+CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
 
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
@@ -302,6 +309,49 @@ def test__get_universe_domain():
     with pytest.raises(ValueError) as excinfo:
         FlowsClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+
+@pytest.mark.parametrize(
+    "error_code,cred_info_json,show_cred_info",
+    [
+        (401, CRED_INFO_JSON, True),
+        (403, CRED_INFO_JSON, True),
+        (404, CRED_INFO_JSON, True),
+        (500, CRED_INFO_JSON, False),
+        (401, None, False),
+        (403, None, False),
+        (404, None, False),
+        (500, None, False),
+    ],
+)
+def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
+    cred = mock.Mock(["get_cred_info"])
+    cred.get_cred_info = mock.Mock(return_value=cred_info_json)
+    client = FlowsClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=["foo"])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    if show_cred_info:
+        assert error.details == ["foo", CRED_INFO_STRING]
+    else:
+        assert error.details == ["foo"]
+
+
+@pytest.mark.parametrize("error_code", [401, 403, 404, 500])
+def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
+    cred = mock.Mock([])
+    assert not hasattr(cred, "get_cred_info")
+    client = FlowsClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=[])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    assert error.details == []
 
 
 @pytest.mark.parametrize(
@@ -6900,10 +6950,13 @@ def test_create_flow_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.FlowsRestInterceptor, "post_create_flow"
     ) as post, mock.patch.object(
+        transports.FlowsRestInterceptor, "post_create_flow_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.FlowsRestInterceptor, "pre_create_flow"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = gcdc_flow.CreateFlowRequest.pb(gcdc_flow.CreateFlowRequest())
         transcode.return_value = {
             "method": "post",
@@ -6925,6 +6978,7 @@ def test_create_flow_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = gcdc_flow.Flow()
+        post_with_metadata.return_value = gcdc_flow.Flow(), metadata
 
         client.create_flow(
             request,
@@ -6936,6 +6990,7 @@ def test_create_flow_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_flow_rest_bad_request(request_type=flow.DeleteFlowRequest):
@@ -7123,10 +7178,13 @@ def test_list_flows_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.FlowsRestInterceptor, "post_list_flows"
     ) as post, mock.patch.object(
+        transports.FlowsRestInterceptor, "post_list_flows_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.FlowsRestInterceptor, "pre_list_flows"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = flow.ListFlowsRequest.pb(flow.ListFlowsRequest())
         transcode.return_value = {
             "method": "post",
@@ -7148,6 +7206,7 @@ def test_list_flows_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = flow.ListFlowsResponse()
+        post_with_metadata.return_value = flow.ListFlowsResponse(), metadata
 
         client.list_flows(
             request,
@@ -7159,6 +7218,7 @@ def test_list_flows_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_flow_rest_bad_request(request_type=flow.GetFlowRequest):
@@ -7251,10 +7311,13 @@ def test_get_flow_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.FlowsRestInterceptor, "post_get_flow"
     ) as post, mock.patch.object(
+        transports.FlowsRestInterceptor, "post_get_flow_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.FlowsRestInterceptor, "pre_get_flow"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = flow.GetFlowRequest.pb(flow.GetFlowRequest())
         transcode.return_value = {
             "method": "post",
@@ -7276,6 +7339,7 @@ def test_get_flow_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = flow.Flow()
+        post_with_metadata.return_value = flow.Flow(), metadata
 
         client.get_flow(
             request,
@@ -7287,6 +7351,7 @@ def test_get_flow_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_flow_rest_bad_request(request_type=gcdc_flow.UpdateFlowRequest):
@@ -7589,10 +7654,13 @@ def test_update_flow_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.FlowsRestInterceptor, "post_update_flow"
     ) as post, mock.patch.object(
+        transports.FlowsRestInterceptor, "post_update_flow_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.FlowsRestInterceptor, "pre_update_flow"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = gcdc_flow.UpdateFlowRequest.pb(gcdc_flow.UpdateFlowRequest())
         transcode.return_value = {
             "method": "post",
@@ -7614,6 +7682,7 @@ def test_update_flow_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = gcdc_flow.Flow()
+        post_with_metadata.return_value = gcdc_flow.Flow(), metadata
 
         client.update_flow(
             request,
@@ -7625,6 +7694,7 @@ def test_update_flow_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_train_flow_rest_bad_request(request_type=flow.TrainFlowRequest):
@@ -7705,10 +7775,13 @@ def test_train_flow_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.FlowsRestInterceptor, "post_train_flow"
     ) as post, mock.patch.object(
+        transports.FlowsRestInterceptor, "post_train_flow_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.FlowsRestInterceptor, "pre_train_flow"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = flow.TrainFlowRequest.pb(flow.TrainFlowRequest())
         transcode.return_value = {
             "method": "post",
@@ -7730,6 +7803,7 @@ def test_train_flow_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.train_flow(
             request,
@@ -7741,6 +7815,7 @@ def test_train_flow_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_validate_flow_rest_bad_request(request_type=flow.ValidateFlowRequest):
@@ -7825,10 +7900,13 @@ def test_validate_flow_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.FlowsRestInterceptor, "post_validate_flow"
     ) as post, mock.patch.object(
+        transports.FlowsRestInterceptor, "post_validate_flow_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.FlowsRestInterceptor, "pre_validate_flow"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = flow.ValidateFlowRequest.pb(flow.ValidateFlowRequest())
         transcode.return_value = {
             "method": "post",
@@ -7850,6 +7928,7 @@ def test_validate_flow_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = flow.FlowValidationResult()
+        post_with_metadata.return_value = flow.FlowValidationResult(), metadata
 
         client.validate_flow(
             request,
@@ -7861,6 +7940,7 @@ def test_validate_flow_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_flow_validation_result_rest_bad_request(
@@ -7947,10 +8027,13 @@ def test_get_flow_validation_result_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.FlowsRestInterceptor, "post_get_flow_validation_result"
     ) as post, mock.patch.object(
+        transports.FlowsRestInterceptor, "post_get_flow_validation_result_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.FlowsRestInterceptor, "pre_get_flow_validation_result"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = flow.GetFlowValidationResultRequest.pb(
             flow.GetFlowValidationResultRequest()
         )
@@ -7974,6 +8057,7 @@ def test_get_flow_validation_result_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = flow.FlowValidationResult()
+        post_with_metadata.return_value = flow.FlowValidationResult(), metadata
 
         client.get_flow_validation_result(
             request,
@@ -7985,6 +8069,7 @@ def test_get_flow_validation_result_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_import_flow_rest_bad_request(request_type=flow.ImportFlowRequest):
@@ -8061,10 +8146,13 @@ def test_import_flow_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.FlowsRestInterceptor, "post_import_flow"
     ) as post, mock.patch.object(
+        transports.FlowsRestInterceptor, "post_import_flow_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.FlowsRestInterceptor, "pre_import_flow"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = flow.ImportFlowRequest.pb(flow.ImportFlowRequest())
         transcode.return_value = {
             "method": "post",
@@ -8086,6 +8174,7 @@ def test_import_flow_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.import_flow(
             request,
@@ -8097,6 +8186,7 @@ def test_import_flow_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_export_flow_rest_bad_request(request_type=flow.ExportFlowRequest):
@@ -8177,10 +8267,13 @@ def test_export_flow_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.FlowsRestInterceptor, "post_export_flow"
     ) as post, mock.patch.object(
+        transports.FlowsRestInterceptor, "post_export_flow_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.FlowsRestInterceptor, "pre_export_flow"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = flow.ExportFlowRequest.pb(flow.ExportFlowRequest())
         transcode.return_value = {
             "method": "post",
@@ -8202,6 +8295,7 @@ def test_export_flow_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.export_flow(
             request,
@@ -8213,6 +8307,7 @@ def test_export_flow_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_location_rest_bad_request(request_type=locations_pb2.GetLocationRequest):

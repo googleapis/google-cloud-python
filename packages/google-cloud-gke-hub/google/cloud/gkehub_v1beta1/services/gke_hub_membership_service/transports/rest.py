@@ -161,11 +161,34 @@ class GkeHubMembershipServiceRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_membership
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_membership_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the GkeHubMembershipService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_membership` interceptor runs
+        before the `post_create_membership_with_metadata` interceptor.
         """
         return response
+
+    def post_create_membership_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_membership
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the GkeHubMembershipService server but before it is returned to user code.
+
+        We recommend only using this `post_create_membership_with_metadata`
+        interceptor in new development instead of the `post_create_membership` interceptor.
+        When both interceptors are used, this `post_create_membership_with_metadata` interceptor runs after the
+        `post_create_membership` interceptor. The (possibly modified) response returned by
+        `post_create_membership` will be passed to
+        `post_create_membership_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_membership(
         self,
@@ -186,11 +209,34 @@ class GkeHubMembershipServiceRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_membership
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_membership_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the GkeHubMembershipService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_membership` interceptor runs
+        before the `post_delete_membership_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_membership_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_membership
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the GkeHubMembershipService server but before it is returned to user code.
+
+        We recommend only using this `post_delete_membership_with_metadata`
+        interceptor in new development instead of the `post_delete_membership` interceptor.
+        When both interceptors are used, this `post_delete_membership_with_metadata` interceptor runs after the
+        `post_delete_membership` interceptor. The (possibly modified) response returned by
+        `post_delete_membership` will be passed to
+        `post_delete_membership_with_metadata`.
+        """
+        return response, metadata
 
     def pre_generate_connect_manifest(
         self,
@@ -212,11 +258,37 @@ class GkeHubMembershipServiceRestInterceptor:
     ) -> membership.GenerateConnectManifestResponse:
         """Post-rpc interceptor for generate_connect_manifest
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_generate_connect_manifest_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the GkeHubMembershipService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_generate_connect_manifest` interceptor runs
+        before the `post_generate_connect_manifest_with_metadata` interceptor.
         """
         return response
+
+    def post_generate_connect_manifest_with_metadata(
+        self,
+        response: membership.GenerateConnectManifestResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        membership.GenerateConnectManifestResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for generate_connect_manifest
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the GkeHubMembershipService server but before it is returned to user code.
+
+        We recommend only using this `post_generate_connect_manifest_with_metadata`
+        interceptor in new development instead of the `post_generate_connect_manifest` interceptor.
+        When both interceptors are used, this `post_generate_connect_manifest_with_metadata` interceptor runs after the
+        `post_generate_connect_manifest` interceptor. The (possibly modified) response returned by
+        `post_generate_connect_manifest` will be passed to
+        `post_generate_connect_manifest_with_metadata`.
+        """
+        return response, metadata
 
     def pre_generate_exclusivity_manifest(
         self,
@@ -238,11 +310,37 @@ class GkeHubMembershipServiceRestInterceptor:
     ) -> membership.GenerateExclusivityManifestResponse:
         """Post-rpc interceptor for generate_exclusivity_manifest
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_generate_exclusivity_manifest_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the GkeHubMembershipService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_generate_exclusivity_manifest` interceptor runs
+        before the `post_generate_exclusivity_manifest_with_metadata` interceptor.
         """
         return response
+
+    def post_generate_exclusivity_manifest_with_metadata(
+        self,
+        response: membership.GenerateExclusivityManifestResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        membership.GenerateExclusivityManifestResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for generate_exclusivity_manifest
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the GkeHubMembershipService server but before it is returned to user code.
+
+        We recommend only using this `post_generate_exclusivity_manifest_with_metadata`
+        interceptor in new development instead of the `post_generate_exclusivity_manifest` interceptor.
+        When both interceptors are used, this `post_generate_exclusivity_manifest_with_metadata` interceptor runs after the
+        `post_generate_exclusivity_manifest` interceptor. The (possibly modified) response returned by
+        `post_generate_exclusivity_manifest` will be passed to
+        `post_generate_exclusivity_manifest_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_membership(
         self,
@@ -263,11 +361,34 @@ class GkeHubMembershipServiceRestInterceptor:
     ) -> membership.Membership:
         """Post-rpc interceptor for get_membership
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_membership_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the GkeHubMembershipService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_membership` interceptor runs
+        before the `post_get_membership_with_metadata` interceptor.
         """
         return response
+
+    def post_get_membership_with_metadata(
+        self,
+        response: membership.Membership,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[membership.Membership, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_membership
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the GkeHubMembershipService server but before it is returned to user code.
+
+        We recommend only using this `post_get_membership_with_metadata`
+        interceptor in new development instead of the `post_get_membership` interceptor.
+        When both interceptors are used, this `post_get_membership_with_metadata` interceptor runs after the
+        `post_get_membership` interceptor. The (possibly modified) response returned by
+        `post_get_membership` will be passed to
+        `post_get_membership_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_memberships(
         self,
@@ -288,11 +409,36 @@ class GkeHubMembershipServiceRestInterceptor:
     ) -> membership.ListMembershipsResponse:
         """Post-rpc interceptor for list_memberships
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_memberships_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the GkeHubMembershipService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_memberships` interceptor runs
+        before the `post_list_memberships_with_metadata` interceptor.
         """
         return response
+
+    def post_list_memberships_with_metadata(
+        self,
+        response: membership.ListMembershipsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        membership.ListMembershipsResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_memberships
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the GkeHubMembershipService server but before it is returned to user code.
+
+        We recommend only using this `post_list_memberships_with_metadata`
+        interceptor in new development instead of the `post_list_memberships` interceptor.
+        When both interceptors are used, this `post_list_memberships_with_metadata` interceptor runs after the
+        `post_list_memberships` interceptor. The (possibly modified) response returned by
+        `post_list_memberships` will be passed to
+        `post_list_memberships_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_membership(
         self,
@@ -313,11 +459,34 @@ class GkeHubMembershipServiceRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_membership
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_membership_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the GkeHubMembershipService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_membership` interceptor runs
+        before the `post_update_membership_with_metadata` interceptor.
         """
         return response
+
+    def post_update_membership_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_membership
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the GkeHubMembershipService server but before it is returned to user code.
+
+        We recommend only using this `post_update_membership_with_metadata`
+        interceptor in new development instead of the `post_update_membership` interceptor.
+        When both interceptors are used, this `post_update_membership_with_metadata` interceptor runs after the
+        `post_update_membership` interceptor. The (possibly modified) response returned by
+        `post_update_membership` will be passed to
+        `post_update_membership_with_metadata`.
+        """
+        return response, metadata
 
     def pre_validate_exclusivity(
         self,
@@ -338,11 +507,36 @@ class GkeHubMembershipServiceRestInterceptor:
     ) -> membership.ValidateExclusivityResponse:
         """Post-rpc interceptor for validate_exclusivity
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_validate_exclusivity_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the GkeHubMembershipService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_validate_exclusivity` interceptor runs
+        before the `post_validate_exclusivity_with_metadata` interceptor.
         """
         return response
+
+    def post_validate_exclusivity_with_metadata(
+        self,
+        response: membership.ValidateExclusivityResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        membership.ValidateExclusivityResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for validate_exclusivity
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the GkeHubMembershipService server but before it is returned to user code.
+
+        We recommend only using this `post_validate_exclusivity_with_metadata`
+        interceptor in new development instead of the `post_validate_exclusivity` interceptor.
+        When both interceptors are used, this `post_validate_exclusivity_with_metadata` interceptor runs after the
+        `post_validate_exclusivity` interceptor. The (possibly modified) response returned by
+        `post_validate_exclusivity` will be passed to
+        `post_validate_exclusivity_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_location(
         self,
@@ -842,6 +1036,10 @@ class GkeHubMembershipServiceRestTransport(_BaseGkeHubMembershipServiceRestTrans
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_membership(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_membership_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -989,6 +1187,10 @@ class GkeHubMembershipServiceRestTransport(_BaseGkeHubMembershipServiceRestTrans
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_membership(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_membership_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1137,6 +1339,10 @@ class GkeHubMembershipServiceRestTransport(_BaseGkeHubMembershipServiceRestTrans
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_generate_connect_manifest(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_generate_connect_manifest_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1289,6 +1495,13 @@ class GkeHubMembershipServiceRestTransport(_BaseGkeHubMembershipServiceRestTrans
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_generate_exclusivity_manifest(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_generate_exclusivity_manifest_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1437,6 +1650,10 @@ class GkeHubMembershipServiceRestTransport(_BaseGkeHubMembershipServiceRestTrans
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_membership(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_membership_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1585,6 +1802,10 @@ class GkeHubMembershipServiceRestTransport(_BaseGkeHubMembershipServiceRestTrans
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_memberships(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_memberships_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1740,6 +1961,10 @@ class GkeHubMembershipServiceRestTransport(_BaseGkeHubMembershipServiceRestTrans
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_membership(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_membership_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1889,6 +2114,10 @@ class GkeHubMembershipServiceRestTransport(_BaseGkeHubMembershipServiceRestTrans
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_validate_exclusivity(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_validate_exclusivity_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

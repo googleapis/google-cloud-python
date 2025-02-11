@@ -62,6 +62,13 @@ from google.area120.tables_v1alpha1.services.tables_service import (
 )
 from google.area120.tables_v1alpha1.types import tables
 
+CRED_INFO_JSON = {
+    "credential_source": "/path/to/file",
+    "credential_type": "service account credentials",
+    "principal": "service-account@example.com",
+}
+CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
 
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
@@ -314,6 +321,49 @@ def test__get_universe_domain():
     with pytest.raises(ValueError) as excinfo:
         TablesServiceClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+
+@pytest.mark.parametrize(
+    "error_code,cred_info_json,show_cred_info",
+    [
+        (401, CRED_INFO_JSON, True),
+        (403, CRED_INFO_JSON, True),
+        (404, CRED_INFO_JSON, True),
+        (500, CRED_INFO_JSON, False),
+        (401, None, False),
+        (403, None, False),
+        (404, None, False),
+        (500, None, False),
+    ],
+)
+def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
+    cred = mock.Mock(["get_cred_info"])
+    cred.get_cred_info = mock.Mock(return_value=cred_info_json)
+    client = TablesServiceClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=["foo"])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    if show_cred_info:
+        assert error.details == ["foo", CRED_INFO_STRING]
+    else:
+        assert error.details == ["foo"]
+
+
+@pytest.mark.parametrize("error_code", [401, 403, 404, 500])
+def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
+    cred = mock.Mock([])
+    assert not hasattr(cred, "get_cred_info")
+    client = TablesServiceClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=[])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    assert error.details == []
 
 
 @pytest.mark.parametrize(
@@ -7679,10 +7729,13 @@ def test_get_table_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.TablesServiceRestInterceptor, "post_get_table"
     ) as post, mock.patch.object(
+        transports.TablesServiceRestInterceptor, "post_get_table_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.TablesServiceRestInterceptor, "pre_get_table"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = tables.GetTableRequest.pb(tables.GetTableRequest())
         transcode.return_value = {
             "method": "post",
@@ -7704,6 +7757,7 @@ def test_get_table_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = tables.Table()
+        post_with_metadata.return_value = tables.Table(), metadata
 
         client.get_table(
             request,
@@ -7715,6 +7769,7 @@ def test_get_table_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_tables_rest_bad_request(request_type=tables.ListTablesRequest):
@@ -7797,10 +7852,13 @@ def test_list_tables_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.TablesServiceRestInterceptor, "post_list_tables"
     ) as post, mock.patch.object(
+        transports.TablesServiceRestInterceptor, "post_list_tables_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.TablesServiceRestInterceptor, "pre_list_tables"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = tables.ListTablesRequest.pb(tables.ListTablesRequest())
         transcode.return_value = {
             "method": "post",
@@ -7822,6 +7880,7 @@ def test_list_tables_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = tables.ListTablesResponse()
+        post_with_metadata.return_value = tables.ListTablesResponse(), metadata
 
         client.list_tables(
             request,
@@ -7833,6 +7892,7 @@ def test_list_tables_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_workspace_rest_bad_request(request_type=tables.GetWorkspaceRequest):
@@ -7917,10 +7977,13 @@ def test_get_workspace_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.TablesServiceRestInterceptor, "post_get_workspace"
     ) as post, mock.patch.object(
+        transports.TablesServiceRestInterceptor, "post_get_workspace_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.TablesServiceRestInterceptor, "pre_get_workspace"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = tables.GetWorkspaceRequest.pb(tables.GetWorkspaceRequest())
         transcode.return_value = {
             "method": "post",
@@ -7942,6 +8005,7 @@ def test_get_workspace_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = tables.Workspace()
+        post_with_metadata.return_value = tables.Workspace(), metadata
 
         client.get_workspace(
             request,
@@ -7953,6 +8017,7 @@ def test_get_workspace_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_workspaces_rest_bad_request(request_type=tables.ListWorkspacesRequest):
@@ -8035,10 +8100,13 @@ def test_list_workspaces_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.TablesServiceRestInterceptor, "post_list_workspaces"
     ) as post, mock.patch.object(
+        transports.TablesServiceRestInterceptor, "post_list_workspaces_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.TablesServiceRestInterceptor, "pre_list_workspaces"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = tables.ListWorkspacesRequest.pb(tables.ListWorkspacesRequest())
         transcode.return_value = {
             "method": "post",
@@ -8062,6 +8130,7 @@ def test_list_workspaces_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = tables.ListWorkspacesResponse()
+        post_with_metadata.return_value = tables.ListWorkspacesResponse(), metadata
 
         client.list_workspaces(
             request,
@@ -8073,6 +8142,7 @@ def test_list_workspaces_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_row_rest_bad_request(request_type=tables.GetRowRequest):
@@ -8155,10 +8225,13 @@ def test_get_row_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.TablesServiceRestInterceptor, "post_get_row"
     ) as post, mock.patch.object(
+        transports.TablesServiceRestInterceptor, "post_get_row_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.TablesServiceRestInterceptor, "pre_get_row"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = tables.GetRowRequest.pb(tables.GetRowRequest())
         transcode.return_value = {
             "method": "post",
@@ -8180,6 +8253,7 @@ def test_get_row_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = tables.Row()
+        post_with_metadata.return_value = tables.Row(), metadata
 
         client.get_row(
             request,
@@ -8191,6 +8265,7 @@ def test_get_row_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_rows_rest_bad_request(request_type=tables.ListRowsRequest):
@@ -8273,10 +8348,13 @@ def test_list_rows_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.TablesServiceRestInterceptor, "post_list_rows"
     ) as post, mock.patch.object(
+        transports.TablesServiceRestInterceptor, "post_list_rows_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.TablesServiceRestInterceptor, "pre_list_rows"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = tables.ListRowsRequest.pb(tables.ListRowsRequest())
         transcode.return_value = {
             "method": "post",
@@ -8298,6 +8376,7 @@ def test_list_rows_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = tables.ListRowsResponse()
+        post_with_metadata.return_value = tables.ListRowsResponse(), metadata
 
         client.list_rows(
             request,
@@ -8309,6 +8388,7 @@ def test_list_rows_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_row_rest_bad_request(request_type=tables.CreateRowRequest):
@@ -8459,10 +8539,13 @@ def test_create_row_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.TablesServiceRestInterceptor, "post_create_row"
     ) as post, mock.patch.object(
+        transports.TablesServiceRestInterceptor, "post_create_row_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.TablesServiceRestInterceptor, "pre_create_row"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = tables.CreateRowRequest.pb(tables.CreateRowRequest())
         transcode.return_value = {
             "method": "post",
@@ -8484,6 +8567,7 @@ def test_create_row_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = tables.Row()
+        post_with_metadata.return_value = tables.Row(), metadata
 
         client.create_row(
             request,
@@ -8495,6 +8579,7 @@ def test_create_row_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_batch_create_rows_rest_bad_request(request_type=tables.BatchCreateRowsRequest):
@@ -8574,10 +8659,13 @@ def test_batch_create_rows_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.TablesServiceRestInterceptor, "post_batch_create_rows"
     ) as post, mock.patch.object(
+        transports.TablesServiceRestInterceptor, "post_batch_create_rows_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.TablesServiceRestInterceptor, "pre_batch_create_rows"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = tables.BatchCreateRowsRequest.pb(tables.BatchCreateRowsRequest())
         transcode.return_value = {
             "method": "post",
@@ -8601,6 +8689,7 @@ def test_batch_create_rows_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = tables.BatchCreateRowsResponse()
+        post_with_metadata.return_value = tables.BatchCreateRowsResponse(), metadata
 
         client.batch_create_rows(
             request,
@@ -8612,6 +8701,7 @@ def test_batch_create_rows_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_row_rest_bad_request(request_type=tables.UpdateRowRequest):
@@ -8762,10 +8852,13 @@ def test_update_row_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.TablesServiceRestInterceptor, "post_update_row"
     ) as post, mock.patch.object(
+        transports.TablesServiceRestInterceptor, "post_update_row_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.TablesServiceRestInterceptor, "pre_update_row"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = tables.UpdateRowRequest.pb(tables.UpdateRowRequest())
         transcode.return_value = {
             "method": "post",
@@ -8787,6 +8880,7 @@ def test_update_row_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = tables.Row()
+        post_with_metadata.return_value = tables.Row(), metadata
 
         client.update_row(
             request,
@@ -8798,6 +8892,7 @@ def test_update_row_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_batch_update_rows_rest_bad_request(request_type=tables.BatchUpdateRowsRequest):
@@ -8877,10 +8972,13 @@ def test_batch_update_rows_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.TablesServiceRestInterceptor, "post_batch_update_rows"
     ) as post, mock.patch.object(
+        transports.TablesServiceRestInterceptor, "post_batch_update_rows_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.TablesServiceRestInterceptor, "pre_batch_update_rows"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = tables.BatchUpdateRowsRequest.pb(tables.BatchUpdateRowsRequest())
         transcode.return_value = {
             "method": "post",
@@ -8904,6 +9002,7 @@ def test_batch_update_rows_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = tables.BatchUpdateRowsResponse()
+        post_with_metadata.return_value = tables.BatchUpdateRowsResponse(), metadata
 
         client.batch_update_rows(
             request,
@@ -8915,6 +9014,7 @@ def test_batch_update_rows_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_row_rest_bad_request(request_type=tables.DeleteRowRequest):

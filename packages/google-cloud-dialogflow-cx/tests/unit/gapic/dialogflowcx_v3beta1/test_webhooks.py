@@ -65,6 +65,13 @@ from google.cloud.dialogflowcx_v3beta1.services.webhooks import (
 from google.cloud.dialogflowcx_v3beta1.types import webhook
 from google.cloud.dialogflowcx_v3beta1.types import webhook as gcdc_webhook
 
+CRED_INFO_JSON = {
+    "credential_source": "/path/to/file",
+    "credential_type": "service account credentials",
+    "principal": "service-account@example.com",
+}
+CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
 
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
@@ -293,6 +300,49 @@ def test__get_universe_domain():
     with pytest.raises(ValueError) as excinfo:
         WebhooksClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+
+@pytest.mark.parametrize(
+    "error_code,cred_info_json,show_cred_info",
+    [
+        (401, CRED_INFO_JSON, True),
+        (403, CRED_INFO_JSON, True),
+        (404, CRED_INFO_JSON, True),
+        (500, CRED_INFO_JSON, False),
+        (401, None, False),
+        (403, None, False),
+        (404, None, False),
+        (500, None, False),
+    ],
+)
+def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
+    cred = mock.Mock(["get_cred_info"])
+    cred.get_cred_info = mock.Mock(return_value=cred_info_json)
+    client = WebhooksClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=["foo"])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    if show_cred_info:
+        assert error.details == ["foo", CRED_INFO_STRING]
+    else:
+        assert error.details == ["foo"]
+
+
+@pytest.mark.parametrize("error_code", [401, 403, 404, 500])
+def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
+    cred = mock.Mock([])
+    assert not hasattr(cred, "get_cred_info")
+    client = WebhooksClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=[])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    assert error.details == []
 
 
 @pytest.mark.parametrize(
@@ -4270,10 +4320,13 @@ def test_list_webhooks_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.WebhooksRestInterceptor, "post_list_webhooks"
     ) as post, mock.patch.object(
+        transports.WebhooksRestInterceptor, "post_list_webhooks_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.WebhooksRestInterceptor, "pre_list_webhooks"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = webhook.ListWebhooksRequest.pb(webhook.ListWebhooksRequest())
         transcode.return_value = {
             "method": "post",
@@ -4297,6 +4350,7 @@ def test_list_webhooks_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = webhook.ListWebhooksResponse()
+        post_with_metadata.return_value = webhook.ListWebhooksResponse(), metadata
 
         client.list_webhooks(
             request,
@@ -4308,6 +4362,7 @@ def test_list_webhooks_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_webhook_rest_bad_request(request_type=webhook.GetWebhookRequest):
@@ -4396,10 +4451,13 @@ def test_get_webhook_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.WebhooksRestInterceptor, "post_get_webhook"
     ) as post, mock.patch.object(
+        transports.WebhooksRestInterceptor, "post_get_webhook_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.WebhooksRestInterceptor, "pre_get_webhook"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = webhook.GetWebhookRequest.pb(webhook.GetWebhookRequest())
         transcode.return_value = {
             "method": "post",
@@ -4421,6 +4479,7 @@ def test_get_webhook_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = webhook.Webhook()
+        post_with_metadata.return_value = webhook.Webhook(), metadata
 
         client.get_webhook(
             request,
@@ -4432,6 +4491,7 @@ def test_get_webhook_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_webhook_rest_bad_request(
@@ -4610,10 +4670,13 @@ def test_create_webhook_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.WebhooksRestInterceptor, "post_create_webhook"
     ) as post, mock.patch.object(
+        transports.WebhooksRestInterceptor, "post_create_webhook_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.WebhooksRestInterceptor, "pre_create_webhook"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = gcdc_webhook.CreateWebhookRequest.pb(
             gcdc_webhook.CreateWebhookRequest()
         )
@@ -4637,6 +4700,7 @@ def test_create_webhook_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = gcdc_webhook.Webhook()
+        post_with_metadata.return_value = gcdc_webhook.Webhook(), metadata
 
         client.create_webhook(
             request,
@@ -4648,6 +4712,7 @@ def test_create_webhook_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_webhook_rest_bad_request(
@@ -4834,10 +4899,13 @@ def test_update_webhook_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.WebhooksRestInterceptor, "post_update_webhook"
     ) as post, mock.patch.object(
+        transports.WebhooksRestInterceptor, "post_update_webhook_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.WebhooksRestInterceptor, "pre_update_webhook"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = gcdc_webhook.UpdateWebhookRequest.pb(
             gcdc_webhook.UpdateWebhookRequest()
         )
@@ -4861,6 +4929,7 @@ def test_update_webhook_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = gcdc_webhook.Webhook()
+        post_with_metadata.return_value = gcdc_webhook.Webhook(), metadata
 
         client.update_webhook(
             request,
@@ -4872,6 +4941,7 @@ def test_update_webhook_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_webhook_rest_bad_request(request_type=webhook.DeleteWebhookRequest):

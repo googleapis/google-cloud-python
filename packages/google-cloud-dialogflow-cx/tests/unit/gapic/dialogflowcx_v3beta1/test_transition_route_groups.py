@@ -76,6 +76,13 @@ from google.cloud.dialogflowcx_v3beta1.types import (
 )
 from google.cloud.dialogflowcx_v3beta1.types import transition_route_group
 
+CRED_INFO_JSON = {
+    "credential_source": "/path/to/file",
+    "credential_type": "service account credentials",
+    "principal": "service-account@example.com",
+}
+CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
 
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
@@ -349,6 +356,49 @@ def test__get_universe_domain():
     with pytest.raises(ValueError) as excinfo:
         TransitionRouteGroupsClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+
+@pytest.mark.parametrize(
+    "error_code,cred_info_json,show_cred_info",
+    [
+        (401, CRED_INFO_JSON, True),
+        (403, CRED_INFO_JSON, True),
+        (404, CRED_INFO_JSON, True),
+        (500, CRED_INFO_JSON, False),
+        (401, None, False),
+        (403, None, False),
+        (404, None, False),
+        (500, None, False),
+    ],
+)
+def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
+    cred = mock.Mock(["get_cred_info"])
+    cred.get_cred_info = mock.Mock(return_value=cred_info_json)
+    client = TransitionRouteGroupsClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=["foo"])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    if show_cred_info:
+        assert error.details == ["foo", CRED_INFO_STRING]
+    else:
+        assert error.details == ["foo"]
+
+
+@pytest.mark.parametrize("error_code", [401, 403, 404, 500])
+def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
+    cred = mock.Mock([])
+    assert not hasattr(cred, "get_cred_info")
+    client = TransitionRouteGroupsClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=[])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    assert error.details == []
 
 
 @pytest.mark.parametrize(
@@ -4644,10 +4694,14 @@ def test_list_transition_route_groups_rest_interceptors(null_interceptor):
         "post_list_transition_route_groups",
     ) as post, mock.patch.object(
         transports.TransitionRouteGroupsRestInterceptor,
+        "post_list_transition_route_groups_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
+        transports.TransitionRouteGroupsRestInterceptor,
         "pre_list_transition_route_groups",
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = transition_route_group.ListTransitionRouteGroupsRequest.pb(
             transition_route_group.ListTransitionRouteGroupsRequest()
         )
@@ -4673,6 +4727,10 @@ def test_list_transition_route_groups_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = transition_route_group.ListTransitionRouteGroupsResponse()
+        post_with_metadata.return_value = (
+            transition_route_group.ListTransitionRouteGroupsResponse(),
+            metadata,
+        )
 
         client.list_transition_route_groups(
             request,
@@ -4684,6 +4742,7 @@ def test_list_transition_route_groups_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_transition_route_group_rest_bad_request(
@@ -4776,10 +4835,14 @@ def test_get_transition_route_group_rest_interceptors(null_interceptor):
         "post_get_transition_route_group",
     ) as post, mock.patch.object(
         transports.TransitionRouteGroupsRestInterceptor,
+        "post_get_transition_route_group_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
+        transports.TransitionRouteGroupsRestInterceptor,
         "pre_get_transition_route_group",
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = transition_route_group.GetTransitionRouteGroupRequest.pb(
             transition_route_group.GetTransitionRouteGroupRequest()
         )
@@ -4805,6 +4868,10 @@ def test_get_transition_route_group_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = transition_route_group.TransitionRouteGroup()
+        post_with_metadata.return_value = (
+            transition_route_group.TransitionRouteGroup(),
+            metadata,
+        )
 
         client.get_transition_route_group(
             request,
@@ -4816,6 +4883,7 @@ def test_get_transition_route_group_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_transition_route_group_rest_bad_request(
@@ -5087,10 +5155,14 @@ def test_create_transition_route_group_rest_interceptors(null_interceptor):
         "post_create_transition_route_group",
     ) as post, mock.patch.object(
         transports.TransitionRouteGroupsRestInterceptor,
+        "post_create_transition_route_group_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
+        transports.TransitionRouteGroupsRestInterceptor,
         "pre_create_transition_route_group",
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = gcdc_transition_route_group.CreateTransitionRouteGroupRequest.pb(
             gcdc_transition_route_group.CreateTransitionRouteGroupRequest()
         )
@@ -5116,6 +5188,10 @@ def test_create_transition_route_group_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = gcdc_transition_route_group.TransitionRouteGroup()
+        post_with_metadata.return_value = (
+            gcdc_transition_route_group.TransitionRouteGroup(),
+            metadata,
+        )
 
         client.create_transition_route_group(
             request,
@@ -5127,6 +5203,7 @@ def test_create_transition_route_group_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_transition_route_group_rest_bad_request(
@@ -5402,10 +5479,14 @@ def test_update_transition_route_group_rest_interceptors(null_interceptor):
         "post_update_transition_route_group",
     ) as post, mock.patch.object(
         transports.TransitionRouteGroupsRestInterceptor,
+        "post_update_transition_route_group_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
+        transports.TransitionRouteGroupsRestInterceptor,
         "pre_update_transition_route_group",
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = gcdc_transition_route_group.UpdateTransitionRouteGroupRequest.pb(
             gcdc_transition_route_group.UpdateTransitionRouteGroupRequest()
         )
@@ -5431,6 +5512,10 @@ def test_update_transition_route_group_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = gcdc_transition_route_group.TransitionRouteGroup()
+        post_with_metadata.return_value = (
+            gcdc_transition_route_group.TransitionRouteGroup(),
+            metadata,
+        )
 
         client.update_transition_route_group(
             request,
@@ -5442,6 +5527,7 @@ def test_update_transition_route_group_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_transition_route_group_rest_bad_request(

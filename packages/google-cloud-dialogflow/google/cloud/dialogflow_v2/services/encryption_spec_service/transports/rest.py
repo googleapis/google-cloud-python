@@ -113,11 +113,34 @@ class EncryptionSpecServiceRestInterceptor:
     ) -> encryption_spec.EncryptionSpec:
         """Post-rpc interceptor for get_encryption_spec
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_encryption_spec_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the EncryptionSpecService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_encryption_spec` interceptor runs
+        before the `post_get_encryption_spec_with_metadata` interceptor.
         """
         return response
+
+    def post_get_encryption_spec_with_metadata(
+        self,
+        response: encryption_spec.EncryptionSpec,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[encryption_spec.EncryptionSpec, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_encryption_spec
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the EncryptionSpecService server but before it is returned to user code.
+
+        We recommend only using this `post_get_encryption_spec_with_metadata`
+        interceptor in new development instead of the `post_get_encryption_spec` interceptor.
+        When both interceptors are used, this `post_get_encryption_spec_with_metadata` interceptor runs after the
+        `post_get_encryption_spec` interceptor. The (possibly modified) response returned by
+        `post_get_encryption_spec` will be passed to
+        `post_get_encryption_spec_with_metadata`.
+        """
+        return response, metadata
 
     def pre_initialize_encryption_spec(
         self,
@@ -139,11 +162,34 @@ class EncryptionSpecServiceRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for initialize_encryption_spec
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_initialize_encryption_spec_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the EncryptionSpecService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_initialize_encryption_spec` interceptor runs
+        before the `post_initialize_encryption_spec_with_metadata` interceptor.
         """
         return response
+
+    def post_initialize_encryption_spec_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for initialize_encryption_spec
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the EncryptionSpecService server but before it is returned to user code.
+
+        We recommend only using this `post_initialize_encryption_spec_with_metadata`
+        interceptor in new development instead of the `post_initialize_encryption_spec` interceptor.
+        When both interceptors are used, this `post_initialize_encryption_spec_with_metadata` interceptor runs after the
+        `post_initialize_encryption_spec` interceptor. The (possibly modified) response returned by
+        `post_initialize_encryption_spec` will be passed to
+        `post_initialize_encryption_spec_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_location(
         self,
@@ -541,6 +587,10 @@ class EncryptionSpecServiceRestTransport(_BaseEncryptionSpecServiceRestTransport
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_encryption_spec(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_encryption_spec_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -693,6 +743,10 @@ class EncryptionSpecServiceRestTransport(_BaseEncryptionSpecServiceRestTransport
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_initialize_encryption_spec(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_initialize_encryption_spec_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

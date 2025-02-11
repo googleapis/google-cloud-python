@@ -140,11 +140,36 @@ class EssentialContactsServiceRestInterceptor:
     ) -> service.ComputeContactsResponse:
         """Post-rpc interceptor for compute_contacts
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_compute_contacts_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the EssentialContactsService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_compute_contacts` interceptor runs
+        before the `post_compute_contacts_with_metadata` interceptor.
         """
         return response
+
+    def post_compute_contacts_with_metadata(
+        self,
+        response: service.ComputeContactsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        service.ComputeContactsResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for compute_contacts
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the EssentialContactsService server but before it is returned to user code.
+
+        We recommend only using this `post_compute_contacts_with_metadata`
+        interceptor in new development instead of the `post_compute_contacts` interceptor.
+        When both interceptors are used, this `post_compute_contacts_with_metadata` interceptor runs after the
+        `post_compute_contacts` interceptor. The (possibly modified) response returned by
+        `post_compute_contacts` will be passed to
+        `post_compute_contacts_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_contact(
         self,
@@ -161,11 +186,34 @@ class EssentialContactsServiceRestInterceptor:
     def post_create_contact(self, response: service.Contact) -> service.Contact:
         """Post-rpc interceptor for create_contact
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_contact_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the EssentialContactsService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_contact` interceptor runs
+        before the `post_create_contact_with_metadata` interceptor.
         """
         return response
+
+    def post_create_contact_with_metadata(
+        self,
+        response: service.Contact,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.Contact, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_contact
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the EssentialContactsService server but before it is returned to user code.
+
+        We recommend only using this `post_create_contact_with_metadata`
+        interceptor in new development instead of the `post_create_contact` interceptor.
+        When both interceptors are used, this `post_create_contact_with_metadata` interceptor runs after the
+        `post_create_contact` interceptor. The (possibly modified) response returned by
+        `post_create_contact` will be passed to
+        `post_create_contact_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_contact(
         self,
@@ -194,11 +242,34 @@ class EssentialContactsServiceRestInterceptor:
     def post_get_contact(self, response: service.Contact) -> service.Contact:
         """Post-rpc interceptor for get_contact
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_contact_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the EssentialContactsService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_contact` interceptor runs
+        before the `post_get_contact_with_metadata` interceptor.
         """
         return response
+
+    def post_get_contact_with_metadata(
+        self,
+        response: service.Contact,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.Contact, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_contact
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the EssentialContactsService server but before it is returned to user code.
+
+        We recommend only using this `post_get_contact_with_metadata`
+        interceptor in new development instead of the `post_get_contact` interceptor.
+        When both interceptors are used, this `post_get_contact_with_metadata` interceptor runs after the
+        `post_get_contact` interceptor. The (possibly modified) response returned by
+        `post_get_contact` will be passed to
+        `post_get_contact_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_contacts(
         self,
@@ -217,11 +288,34 @@ class EssentialContactsServiceRestInterceptor:
     ) -> service.ListContactsResponse:
         """Post-rpc interceptor for list_contacts
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_contacts_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the EssentialContactsService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_contacts` interceptor runs
+        before the `post_list_contacts_with_metadata` interceptor.
         """
         return response
+
+    def post_list_contacts_with_metadata(
+        self,
+        response: service.ListContactsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.ListContactsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for list_contacts
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the EssentialContactsService server but before it is returned to user code.
+
+        We recommend only using this `post_list_contacts_with_metadata`
+        interceptor in new development instead of the `post_list_contacts` interceptor.
+        When both interceptors are used, this `post_list_contacts_with_metadata` interceptor runs after the
+        `post_list_contacts` interceptor. The (possibly modified) response returned by
+        `post_list_contacts` will be passed to
+        `post_list_contacts_with_metadata`.
+        """
+        return response, metadata
 
     def pre_send_test_message(
         self,
@@ -250,11 +344,34 @@ class EssentialContactsServiceRestInterceptor:
     def post_update_contact(self, response: service.Contact) -> service.Contact:
         """Post-rpc interceptor for update_contact
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_contact_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the EssentialContactsService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_contact` interceptor runs
+        before the `post_update_contact_with_metadata` interceptor.
         """
         return response
+
+    def post_update_contact_with_metadata(
+        self,
+        response: service.Contact,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.Contact, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_contact
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the EssentialContactsService server but before it is returned to user code.
+
+        We recommend only using this `post_update_contact_with_metadata`
+        interceptor in new development instead of the `post_update_contact` interceptor.
+        When both interceptors are used, this `post_update_contact_with_metadata` interceptor runs after the
+        `post_update_contact` interceptor. The (possibly modified) response returned by
+        `post_update_contact` will be passed to
+        `post_update_contact_with_metadata`.
+        """
+        return response, metadata
 
 
 @dataclasses.dataclass
@@ -468,6 +585,10 @@ class EssentialContactsServiceRestTransport(_BaseEssentialContactsServiceRestTra
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_compute_contacts(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_compute_contacts_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -620,6 +741,10 @@ class EssentialContactsServiceRestTransport(_BaseEssentialContactsServiceRestTra
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_contact(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_contact_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -874,6 +999,10 @@ class EssentialContactsServiceRestTransport(_BaseEssentialContactsServiceRestTra
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_contact(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_contact_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1020,6 +1149,10 @@ class EssentialContactsServiceRestTransport(_BaseEssentialContactsServiceRestTra
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_contacts(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_contacts_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1290,6 +1423,10 @@ class EssentialContactsServiceRestTransport(_BaseEssentialContactsServiceRestTra
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_contact(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_contact_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

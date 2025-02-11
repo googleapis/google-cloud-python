@@ -70,6 +70,13 @@ from google.cloud.dialogflowcx_v3beta1.types import (
     page,
 )
 
+CRED_INFO_JSON = {
+    "credential_source": "/path/to/file",
+    "credential_type": "service account credentials",
+    "principal": "service-account@example.com",
+}
+CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
 
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
@@ -341,6 +348,49 @@ def test__get_universe_domain():
     with pytest.raises(ValueError) as excinfo:
         ConversationHistoryClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+
+@pytest.mark.parametrize(
+    "error_code,cred_info_json,show_cred_info",
+    [
+        (401, CRED_INFO_JSON, True),
+        (403, CRED_INFO_JSON, True),
+        (404, CRED_INFO_JSON, True),
+        (500, CRED_INFO_JSON, False),
+        (401, None, False),
+        (403, None, False),
+        (404, None, False),
+        (500, None, False),
+    ],
+)
+def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
+    cred = mock.Mock(["get_cred_info"])
+    cred.get_cred_info = mock.Mock(return_value=cred_info_json)
+    client = ConversationHistoryClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=["foo"])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    if show_cred_info:
+        assert error.details == ["foo", CRED_INFO_STRING]
+    else:
+        assert error.details == ["foo"]
+
+
+@pytest.mark.parametrize("error_code", [401, 403, 404, 500])
+def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
+    cred = mock.Mock([])
+    assert not hasattr(cred, "get_cred_info")
+    client = ConversationHistoryClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=[])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    assert error.details == []
 
 
 @pytest.mark.parametrize(
@@ -3329,10 +3379,14 @@ def test_list_conversations_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ConversationHistoryRestInterceptor, "post_list_conversations"
     ) as post, mock.patch.object(
+        transports.ConversationHistoryRestInterceptor,
+        "post_list_conversations_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ConversationHistoryRestInterceptor, "pre_list_conversations"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = conversation_history.ListConversationsRequest.pb(
             conversation_history.ListConversationsRequest()
         )
@@ -3358,6 +3412,10 @@ def test_list_conversations_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = conversation_history.ListConversationsResponse()
+        post_with_metadata.return_value = (
+            conversation_history.ListConversationsResponse(),
+            metadata,
+        )
 
         client.list_conversations(
             request,
@@ -3369,6 +3427,7 @@ def test_list_conversations_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_conversation_rest_bad_request(
@@ -3461,10 +3520,14 @@ def test_get_conversation_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ConversationHistoryRestInterceptor, "post_get_conversation"
     ) as post, mock.patch.object(
+        transports.ConversationHistoryRestInterceptor,
+        "post_get_conversation_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ConversationHistoryRestInterceptor, "pre_get_conversation"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = conversation_history.GetConversationRequest.pb(
             conversation_history.GetConversationRequest()
         )
@@ -3490,6 +3553,7 @@ def test_get_conversation_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = conversation_history.Conversation()
+        post_with_metadata.return_value = conversation_history.Conversation(), metadata
 
         client.get_conversation(
             request,
@@ -3501,6 +3565,7 @@ def test_get_conversation_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_conversation_rest_bad_request(

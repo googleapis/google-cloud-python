@@ -61,6 +61,13 @@ from google.apps.meet_v2beta.services.spaces_service import (
 )
 from google.apps.meet_v2beta.types import resource, service
 
+CRED_INFO_JSON = {
+    "credential_source": "/path/to/file",
+    "credential_type": "service account credentials",
+    "principal": "service-account@example.com",
+}
+CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
 
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
@@ -313,6 +320,49 @@ def test__get_universe_domain():
     with pytest.raises(ValueError) as excinfo:
         SpacesServiceClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+
+@pytest.mark.parametrize(
+    "error_code,cred_info_json,show_cred_info",
+    [
+        (401, CRED_INFO_JSON, True),
+        (403, CRED_INFO_JSON, True),
+        (404, CRED_INFO_JSON, True),
+        (500, CRED_INFO_JSON, False),
+        (401, None, False),
+        (403, None, False),
+        (404, None, False),
+        (500, None, False),
+    ],
+)
+def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
+    cred = mock.Mock(["get_cred_info"])
+    cred.get_cred_info = mock.Mock(return_value=cred_info_json)
+    client = SpacesServiceClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=["foo"])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    if show_cred_info:
+        assert error.details == ["foo", CRED_INFO_STRING]
+    else:
+        assert error.details == ["foo"]
+
+
+@pytest.mark.parametrize("error_code", [401, 403, 404, 500])
+def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
+    cred = mock.Mock([])
+    assert not hasattr(cred, "get_cred_info")
+    client = SpacesServiceClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=[])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    assert error.details == []
 
 
 @pytest.mark.parametrize(
@@ -5902,10 +5952,13 @@ def test_create_space_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.SpacesServiceRestInterceptor, "post_create_space"
     ) as post, mock.patch.object(
+        transports.SpacesServiceRestInterceptor, "post_create_space_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.SpacesServiceRestInterceptor, "pre_create_space"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.CreateSpaceRequest.pb(service.CreateSpaceRequest())
         transcode.return_value = {
             "method": "post",
@@ -5927,6 +5980,7 @@ def test_create_space_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = resource.Space()
+        post_with_metadata.return_value = resource.Space(), metadata
 
         client.create_space(
             request,
@@ -5938,6 +5992,7 @@ def test_create_space_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_space_rest_bad_request(request_type=service.GetSpaceRequest):
@@ -6024,10 +6079,13 @@ def test_get_space_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.SpacesServiceRestInterceptor, "post_get_space"
     ) as post, mock.patch.object(
+        transports.SpacesServiceRestInterceptor, "post_get_space_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.SpacesServiceRestInterceptor, "pre_get_space"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.GetSpaceRequest.pb(service.GetSpaceRequest())
         transcode.return_value = {
             "method": "post",
@@ -6049,6 +6107,7 @@ def test_get_space_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = resource.Space()
+        post_with_metadata.return_value = resource.Space(), metadata
 
         client.get_space(
             request,
@@ -6060,6 +6119,7 @@ def test_get_space_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_space_rest_bad_request(request_type=service.UpdateSpaceRequest):
@@ -6236,10 +6296,13 @@ def test_update_space_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.SpacesServiceRestInterceptor, "post_update_space"
     ) as post, mock.patch.object(
+        transports.SpacesServiceRestInterceptor, "post_update_space_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.SpacesServiceRestInterceptor, "pre_update_space"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.UpdateSpaceRequest.pb(service.UpdateSpaceRequest())
         transcode.return_value = {
             "method": "post",
@@ -6261,6 +6324,7 @@ def test_update_space_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = resource.Space()
+        post_with_metadata.return_value = resource.Space(), metadata
 
         client.update_space(
             request,
@@ -6272,6 +6336,7 @@ def test_update_space_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_end_active_conference_rest_bad_request(
@@ -6542,10 +6607,13 @@ def test_create_member_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.SpacesServiceRestInterceptor, "post_create_member"
     ) as post, mock.patch.object(
+        transports.SpacesServiceRestInterceptor, "post_create_member_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.SpacesServiceRestInterceptor, "pre_create_member"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.CreateMemberRequest.pb(service.CreateMemberRequest())
         transcode.return_value = {
             "method": "post",
@@ -6567,6 +6635,7 @@ def test_create_member_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = resource.Member()
+        post_with_metadata.return_value = resource.Member(), metadata
 
         client.create_member(
             request,
@@ -6578,6 +6647,7 @@ def test_create_member_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_member_rest_bad_request(request_type=service.GetMemberRequest):
@@ -6666,10 +6736,13 @@ def test_get_member_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.SpacesServiceRestInterceptor, "post_get_member"
     ) as post, mock.patch.object(
+        transports.SpacesServiceRestInterceptor, "post_get_member_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.SpacesServiceRestInterceptor, "pre_get_member"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.GetMemberRequest.pb(service.GetMemberRequest())
         transcode.return_value = {
             "method": "post",
@@ -6691,6 +6764,7 @@ def test_get_member_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = resource.Member()
+        post_with_metadata.return_value = resource.Member(), metadata
 
         client.get_member(
             request,
@@ -6702,6 +6776,7 @@ def test_get_member_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_members_rest_bad_request(request_type=service.ListMembersRequest):
@@ -6784,10 +6859,13 @@ def test_list_members_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.SpacesServiceRestInterceptor, "post_list_members"
     ) as post, mock.patch.object(
+        transports.SpacesServiceRestInterceptor, "post_list_members_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.SpacesServiceRestInterceptor, "pre_list_members"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.ListMembersRequest.pb(service.ListMembersRequest())
         transcode.return_value = {
             "method": "post",
@@ -6811,6 +6889,7 @@ def test_list_members_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = service.ListMembersResponse()
+        post_with_metadata.return_value = service.ListMembersResponse(), metadata
 
         client.list_members(
             request,
@@ -6822,6 +6901,7 @@ def test_list_members_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_member_rest_bad_request(request_type=service.DeleteMemberRequest):

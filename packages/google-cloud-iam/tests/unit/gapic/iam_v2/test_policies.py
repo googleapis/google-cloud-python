@@ -74,6 +74,13 @@ from google.cloud.iam_v2.types import deny
 from google.cloud.iam_v2.types import policy
 from google.cloud.iam_v2.types import policy as gi_policy
 
+CRED_INFO_JSON = {
+    "credential_source": "/path/to/file",
+    "credential_type": "service account credentials",
+    "principal": "service-account@example.com",
+}
+CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
 
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
@@ -302,6 +309,49 @@ def test__get_universe_domain():
     with pytest.raises(ValueError) as excinfo:
         PoliciesClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+
+@pytest.mark.parametrize(
+    "error_code,cred_info_json,show_cred_info",
+    [
+        (401, CRED_INFO_JSON, True),
+        (403, CRED_INFO_JSON, True),
+        (404, CRED_INFO_JSON, True),
+        (500, CRED_INFO_JSON, False),
+        (401, None, False),
+        (403, None, False),
+        (404, None, False),
+        (500, None, False),
+    ],
+)
+def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
+    cred = mock.Mock(["get_cred_info"])
+    cred.get_cred_info = mock.Mock(return_value=cred_info_json)
+    client = PoliciesClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=["foo"])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    if show_cred_info:
+        assert error.details == ["foo", CRED_INFO_STRING]
+    else:
+        assert error.details == ["foo"]
+
+
+@pytest.mark.parametrize("error_code", [401, 403, 404, 500])
+def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
+    cred = mock.Mock([])
+    assert not hasattr(cred, "get_cred_info")
+    client = PoliciesClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=[])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    assert error.details == []
 
 
 @pytest.mark.parametrize(
@@ -4139,10 +4189,13 @@ def test_list_policies_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.PoliciesRestInterceptor, "post_list_policies"
     ) as post, mock.patch.object(
+        transports.PoliciesRestInterceptor, "post_list_policies_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.PoliciesRestInterceptor, "pre_list_policies"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = policy.ListPoliciesRequest.pb(policy.ListPoliciesRequest())
         transcode.return_value = {
             "method": "post",
@@ -4166,6 +4219,7 @@ def test_list_policies_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = policy.ListPoliciesResponse()
+        post_with_metadata.return_value = policy.ListPoliciesResponse(), metadata
 
         client.list_policies(
             request,
@@ -4177,6 +4231,7 @@ def test_list_policies_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_policy_rest_bad_request(request_type=policy.GetPolicyRequest):
@@ -4267,10 +4322,13 @@ def test_get_policy_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.PoliciesRestInterceptor, "post_get_policy"
     ) as post, mock.patch.object(
+        transports.PoliciesRestInterceptor, "post_get_policy_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.PoliciesRestInterceptor, "pre_get_policy"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = policy.GetPolicyRequest.pb(policy.GetPolicyRequest())
         transcode.return_value = {
             "method": "post",
@@ -4292,6 +4350,7 @@ def test_get_policy_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = policy.Policy()
+        post_with_metadata.return_value = policy.Policy(), metadata
 
         client.get_policy(
             request,
@@ -4303,6 +4362,7 @@ def test_get_policy_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_policy_rest_bad_request(request_type=gi_policy.CreatePolicyRequest):
@@ -4487,10 +4547,13 @@ def test_create_policy_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.PoliciesRestInterceptor, "post_create_policy"
     ) as post, mock.patch.object(
+        transports.PoliciesRestInterceptor, "post_create_policy_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.PoliciesRestInterceptor, "pre_create_policy"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = gi_policy.CreatePolicyRequest.pb(gi_policy.CreatePolicyRequest())
         transcode.return_value = {
             "method": "post",
@@ -4512,6 +4575,7 @@ def test_create_policy_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_policy(
             request,
@@ -4523,6 +4587,7 @@ def test_create_policy_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_policy_rest_bad_request(request_type=policy.UpdatePolicyRequest):
@@ -4707,10 +4772,13 @@ def test_update_policy_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.PoliciesRestInterceptor, "post_update_policy"
     ) as post, mock.patch.object(
+        transports.PoliciesRestInterceptor, "post_update_policy_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.PoliciesRestInterceptor, "pre_update_policy"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = policy.UpdatePolicyRequest.pb(policy.UpdatePolicyRequest())
         transcode.return_value = {
             "method": "post",
@@ -4732,6 +4800,7 @@ def test_update_policy_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.update_policy(
             request,
@@ -4743,6 +4812,7 @@ def test_update_policy_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_policy_rest_bad_request(request_type=policy.DeletePolicyRequest):
@@ -4819,10 +4889,13 @@ def test_delete_policy_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.PoliciesRestInterceptor, "post_delete_policy"
     ) as post, mock.patch.object(
+        transports.PoliciesRestInterceptor, "post_delete_policy_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.PoliciesRestInterceptor, "pre_delete_policy"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = policy.DeletePolicyRequest.pb(policy.DeletePolicyRequest())
         transcode.return_value = {
             "method": "post",
@@ -4844,6 +4917,7 @@ def test_delete_policy_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_policy(
             request,
@@ -4855,6 +4929,7 @@ def test_delete_policy_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_operation_rest_bad_request(

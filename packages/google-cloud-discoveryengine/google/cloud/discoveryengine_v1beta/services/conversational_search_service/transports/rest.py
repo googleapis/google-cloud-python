@@ -198,11 +198,37 @@ class ConversationalSearchServiceRestInterceptor:
     ) -> conversational_search_service.AnswerQueryResponse:
         """Post-rpc interceptor for answer_query
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_answer_query_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ConversationalSearchService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_answer_query` interceptor runs
+        before the `post_answer_query_with_metadata` interceptor.
         """
         return response
+
+    def post_answer_query_with_metadata(
+        self,
+        response: conversational_search_service.AnswerQueryResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        conversational_search_service.AnswerQueryResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for answer_query
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ConversationalSearchService server but before it is returned to user code.
+
+        We recommend only using this `post_answer_query_with_metadata`
+        interceptor in new development instead of the `post_answer_query` interceptor.
+        When both interceptors are used, this `post_answer_query_with_metadata` interceptor runs after the
+        `post_answer_query` interceptor. The (possibly modified) response returned by
+        `post_answer_query` will be passed to
+        `post_answer_query_with_metadata`.
+        """
+        return response, metadata
 
     def pre_converse_conversation(
         self,
@@ -224,11 +250,37 @@ class ConversationalSearchServiceRestInterceptor:
     ) -> conversational_search_service.ConverseConversationResponse:
         """Post-rpc interceptor for converse_conversation
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_converse_conversation_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ConversationalSearchService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_converse_conversation` interceptor runs
+        before the `post_converse_conversation_with_metadata` interceptor.
         """
         return response
+
+    def post_converse_conversation_with_metadata(
+        self,
+        response: conversational_search_service.ConverseConversationResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        conversational_search_service.ConverseConversationResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for converse_conversation
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ConversationalSearchService server but before it is returned to user code.
+
+        We recommend only using this `post_converse_conversation_with_metadata`
+        interceptor in new development instead of the `post_converse_conversation` interceptor.
+        When both interceptors are used, this `post_converse_conversation_with_metadata` interceptor runs after the
+        `post_converse_conversation` interceptor. The (possibly modified) response returned by
+        `post_converse_conversation` will be passed to
+        `post_converse_conversation_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_conversation(
         self,
@@ -250,11 +302,34 @@ class ConversationalSearchServiceRestInterceptor:
     ) -> gcd_conversation.Conversation:
         """Post-rpc interceptor for create_conversation
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_conversation_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ConversationalSearchService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_conversation` interceptor runs
+        before the `post_create_conversation_with_metadata` interceptor.
         """
         return response
+
+    def post_create_conversation_with_metadata(
+        self,
+        response: gcd_conversation.Conversation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[gcd_conversation.Conversation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_conversation
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ConversationalSearchService server but before it is returned to user code.
+
+        We recommend only using this `post_create_conversation_with_metadata`
+        interceptor in new development instead of the `post_create_conversation` interceptor.
+        When both interceptors are used, this `post_create_conversation_with_metadata` interceptor runs after the
+        `post_create_conversation` interceptor. The (possibly modified) response returned by
+        `post_create_conversation` will be passed to
+        `post_create_conversation_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_session(
         self,
@@ -274,11 +349,34 @@ class ConversationalSearchServiceRestInterceptor:
     def post_create_session(self, response: gcd_session.Session) -> gcd_session.Session:
         """Post-rpc interceptor for create_session
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_session_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ConversationalSearchService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_session` interceptor runs
+        before the `post_create_session_with_metadata` interceptor.
         """
         return response
+
+    def post_create_session_with_metadata(
+        self,
+        response: gcd_session.Session,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[gcd_session.Session, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_session
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ConversationalSearchService server but before it is returned to user code.
+
+        We recommend only using this `post_create_session_with_metadata`
+        interceptor in new development instead of the `post_create_session` interceptor.
+        When both interceptors are used, this `post_create_session_with_metadata` interceptor runs after the
+        `post_create_session` interceptor. The (possibly modified) response returned by
+        `post_create_session` will be passed to
+        `post_create_session_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_conversation(
         self,
@@ -328,11 +426,32 @@ class ConversationalSearchServiceRestInterceptor:
     def post_get_answer(self, response: answer.Answer) -> answer.Answer:
         """Post-rpc interceptor for get_answer
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_answer_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ConversationalSearchService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_answer` interceptor runs
+        before the `post_get_answer_with_metadata` interceptor.
         """
         return response
+
+    def post_get_answer_with_metadata(
+        self, response: answer.Answer, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[answer.Answer, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_answer
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ConversationalSearchService server but before it is returned to user code.
+
+        We recommend only using this `post_get_answer_with_metadata`
+        interceptor in new development instead of the `post_get_answer` interceptor.
+        When both interceptors are used, this `post_get_answer_with_metadata` interceptor runs after the
+        `post_get_answer` interceptor. The (possibly modified) response returned by
+        `post_get_answer` will be passed to
+        `post_get_answer_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_conversation(
         self,
@@ -354,11 +473,34 @@ class ConversationalSearchServiceRestInterceptor:
     ) -> conversation.Conversation:
         """Post-rpc interceptor for get_conversation
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_conversation_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ConversationalSearchService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_conversation` interceptor runs
+        before the `post_get_conversation_with_metadata` interceptor.
         """
         return response
+
+    def post_get_conversation_with_metadata(
+        self,
+        response: conversation.Conversation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[conversation.Conversation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_conversation
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ConversationalSearchService server but before it is returned to user code.
+
+        We recommend only using this `post_get_conversation_with_metadata`
+        interceptor in new development instead of the `post_get_conversation` interceptor.
+        When both interceptors are used, this `post_get_conversation_with_metadata` interceptor runs after the
+        `post_get_conversation` interceptor. The (possibly modified) response returned by
+        `post_get_conversation` will be passed to
+        `post_get_conversation_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_session(
         self,
@@ -378,11 +520,34 @@ class ConversationalSearchServiceRestInterceptor:
     def post_get_session(self, response: session.Session) -> session.Session:
         """Post-rpc interceptor for get_session
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_session_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ConversationalSearchService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_session` interceptor runs
+        before the `post_get_session_with_metadata` interceptor.
         """
         return response
+
+    def post_get_session_with_metadata(
+        self,
+        response: session.Session,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[session.Session, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_session
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ConversationalSearchService server but before it is returned to user code.
+
+        We recommend only using this `post_get_session_with_metadata`
+        interceptor in new development instead of the `post_get_session` interceptor.
+        When both interceptors are used, this `post_get_session_with_metadata` interceptor runs after the
+        `post_get_session` interceptor. The (possibly modified) response returned by
+        `post_get_session` will be passed to
+        `post_get_session_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_conversations(
         self,
@@ -404,11 +569,37 @@ class ConversationalSearchServiceRestInterceptor:
     ) -> conversational_search_service.ListConversationsResponse:
         """Post-rpc interceptor for list_conversations
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_conversations_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ConversationalSearchService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_conversations` interceptor runs
+        before the `post_list_conversations_with_metadata` interceptor.
         """
         return response
+
+    def post_list_conversations_with_metadata(
+        self,
+        response: conversational_search_service.ListConversationsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        conversational_search_service.ListConversationsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_conversations
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ConversationalSearchService server but before it is returned to user code.
+
+        We recommend only using this `post_list_conversations_with_metadata`
+        interceptor in new development instead of the `post_list_conversations` interceptor.
+        When both interceptors are used, this `post_list_conversations_with_metadata` interceptor runs after the
+        `post_list_conversations` interceptor. The (possibly modified) response returned by
+        `post_list_conversations` will be passed to
+        `post_list_conversations_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_sessions(
         self,
@@ -430,11 +621,37 @@ class ConversationalSearchServiceRestInterceptor:
     ) -> conversational_search_service.ListSessionsResponse:
         """Post-rpc interceptor for list_sessions
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_sessions_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ConversationalSearchService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_sessions` interceptor runs
+        before the `post_list_sessions_with_metadata` interceptor.
         """
         return response
+
+    def post_list_sessions_with_metadata(
+        self,
+        response: conversational_search_service.ListSessionsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        conversational_search_service.ListSessionsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_sessions
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ConversationalSearchService server but before it is returned to user code.
+
+        We recommend only using this `post_list_sessions_with_metadata`
+        interceptor in new development instead of the `post_list_sessions` interceptor.
+        When both interceptors are used, this `post_list_sessions_with_metadata` interceptor runs after the
+        `post_list_sessions` interceptor. The (possibly modified) response returned by
+        `post_list_sessions` will be passed to
+        `post_list_sessions_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_conversation(
         self,
@@ -456,11 +673,34 @@ class ConversationalSearchServiceRestInterceptor:
     ) -> gcd_conversation.Conversation:
         """Post-rpc interceptor for update_conversation
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_conversation_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ConversationalSearchService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_conversation` interceptor runs
+        before the `post_update_conversation_with_metadata` interceptor.
         """
         return response
+
+    def post_update_conversation_with_metadata(
+        self,
+        response: gcd_conversation.Conversation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[gcd_conversation.Conversation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_conversation
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ConversationalSearchService server but before it is returned to user code.
+
+        We recommend only using this `post_update_conversation_with_metadata`
+        interceptor in new development instead of the `post_update_conversation` interceptor.
+        When both interceptors are used, this `post_update_conversation_with_metadata` interceptor runs after the
+        `post_update_conversation` interceptor. The (possibly modified) response returned by
+        `post_update_conversation` will be passed to
+        `post_update_conversation_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_session(
         self,
@@ -480,11 +720,34 @@ class ConversationalSearchServiceRestInterceptor:
     def post_update_session(self, response: gcd_session.Session) -> gcd_session.Session:
         """Post-rpc interceptor for update_session
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_session_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ConversationalSearchService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_session` interceptor runs
+        before the `post_update_session_with_metadata` interceptor.
         """
         return response
+
+    def post_update_session_with_metadata(
+        self,
+        response: gcd_session.Session,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[gcd_session.Session, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_session
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ConversationalSearchService server but before it is returned to user code.
+
+        We recommend only using this `post_update_session_with_metadata`
+        interceptor in new development instead of the `post_update_session` interceptor.
+        When both interceptors are used, this `post_update_session_with_metadata` interceptor runs after the
+        `post_update_session` interceptor. The (possibly modified) response returned by
+        `post_update_session` will be passed to
+        `post_update_session_with_metadata`.
+        """
+        return response, metadata
 
     def pre_cancel_operation(
         self,
@@ -779,6 +1042,10 @@ class ConversationalSearchServiceRestTransport(
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_answer_query(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_answer_query_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -939,6 +1206,10 @@ class ConversationalSearchServiceRestTransport(
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_converse_conversation(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_converse_conversation_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1093,6 +1364,10 @@ class ConversationalSearchServiceRestTransport(
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_conversation(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_conversation_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1242,6 +1517,10 @@ class ConversationalSearchServiceRestTransport(
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_session(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_session_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1604,6 +1883,10 @@ class ConversationalSearchServiceRestTransport(
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_answer(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_answer_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1751,6 +2034,10 @@ class ConversationalSearchServiceRestTransport(
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_conversation(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_conversation_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1894,6 +2181,10 @@ class ConversationalSearchServiceRestTransport(
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_session(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_session_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2039,6 +2330,10 @@ class ConversationalSearchServiceRestTransport(
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_conversations(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_conversations_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2186,6 +2481,10 @@ class ConversationalSearchServiceRestTransport(
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_sessions(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_sessions_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2342,6 +2641,10 @@ class ConversationalSearchServiceRestTransport(
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_conversation(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_conversation_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2491,6 +2794,10 @@ class ConversationalSearchServiceRestTransport(
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_session(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_session_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

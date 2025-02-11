@@ -67,6 +67,13 @@ from google.cloud.kms_v1.services.ekm_service import (
 )
 from google.cloud.kms_v1.types import ekm_service
 
+CRED_INFO_JSON = {
+    "credential_source": "/path/to/file",
+    "credential_type": "service account credentials",
+    "principal": "service-account@example.com",
+}
+CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
 
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
@@ -300,6 +307,49 @@ def test__get_universe_domain():
     with pytest.raises(ValueError) as excinfo:
         EkmServiceClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+
+@pytest.mark.parametrize(
+    "error_code,cred_info_json,show_cred_info",
+    [
+        (401, CRED_INFO_JSON, True),
+        (403, CRED_INFO_JSON, True),
+        (404, CRED_INFO_JSON, True),
+        (500, CRED_INFO_JSON, False),
+        (401, None, False),
+        (403, None, False),
+        (404, None, False),
+        (500, None, False),
+    ],
+)
+def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
+    cred = mock.Mock(["get_cred_info"])
+    cred.get_cred_info = mock.Mock(return_value=cred_info_json)
+    client = EkmServiceClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=["foo"])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    if show_cred_info:
+        assert error.details == ["foo", CRED_INFO_STRING]
+    else:
+        assert error.details == ["foo"]
+
+
+@pytest.mark.parametrize("error_code", [401, 403, 404, 500])
+def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
+    cred = mock.Mock([])
+    assert not hasattr(cred, "get_cred_info")
+    client = EkmServiceClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=[])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    assert error.details == []
 
 
 @pytest.mark.parametrize(
@@ -5687,10 +5737,13 @@ def test_list_ekm_connections_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.EkmServiceRestInterceptor, "post_list_ekm_connections"
     ) as post, mock.patch.object(
+        transports.EkmServiceRestInterceptor, "post_list_ekm_connections_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.EkmServiceRestInterceptor, "pre_list_ekm_connections"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = ekm_service.ListEkmConnectionsRequest.pb(
             ekm_service.ListEkmConnectionsRequest()
         )
@@ -5716,6 +5769,10 @@ def test_list_ekm_connections_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = ekm_service.ListEkmConnectionsResponse()
+        post_with_metadata.return_value = (
+            ekm_service.ListEkmConnectionsResponse(),
+            metadata,
+        )
 
         client.list_ekm_connections(
             request,
@@ -5727,6 +5784,7 @@ def test_list_ekm_connections_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_ekm_connection_rest_bad_request(
@@ -5820,10 +5878,13 @@ def test_get_ekm_connection_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.EkmServiceRestInterceptor, "post_get_ekm_connection"
     ) as post, mock.patch.object(
+        transports.EkmServiceRestInterceptor, "post_get_ekm_connection_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.EkmServiceRestInterceptor, "pre_get_ekm_connection"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = ekm_service.GetEkmConnectionRequest.pb(
             ekm_service.GetEkmConnectionRequest()
         )
@@ -5847,6 +5908,7 @@ def test_get_ekm_connection_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = ekm_service.EkmConnection()
+        post_with_metadata.return_value = ekm_service.EkmConnection(), metadata
 
         client.get_ekm_connection(
             request,
@@ -5858,6 +5920,7 @@ def test_get_ekm_connection_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_ekm_connection_rest_bad_request(
@@ -6048,10 +6111,13 @@ def test_create_ekm_connection_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.EkmServiceRestInterceptor, "post_create_ekm_connection"
     ) as post, mock.patch.object(
+        transports.EkmServiceRestInterceptor, "post_create_ekm_connection_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.EkmServiceRestInterceptor, "pre_create_ekm_connection"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = ekm_service.CreateEkmConnectionRequest.pb(
             ekm_service.CreateEkmConnectionRequest()
         )
@@ -6075,6 +6141,7 @@ def test_create_ekm_connection_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = ekm_service.EkmConnection()
+        post_with_metadata.return_value = ekm_service.EkmConnection(), metadata
 
         client.create_ekm_connection(
             request,
@@ -6086,6 +6153,7 @@ def test_create_ekm_connection_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_ekm_connection_rest_bad_request(
@@ -6284,10 +6352,13 @@ def test_update_ekm_connection_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.EkmServiceRestInterceptor, "post_update_ekm_connection"
     ) as post, mock.patch.object(
+        transports.EkmServiceRestInterceptor, "post_update_ekm_connection_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.EkmServiceRestInterceptor, "pre_update_ekm_connection"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = ekm_service.UpdateEkmConnectionRequest.pb(
             ekm_service.UpdateEkmConnectionRequest()
         )
@@ -6311,6 +6382,7 @@ def test_update_ekm_connection_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = ekm_service.EkmConnection()
+        post_with_metadata.return_value = ekm_service.EkmConnection(), metadata
 
         client.update_ekm_connection(
             request,
@@ -6322,6 +6394,7 @@ def test_update_ekm_connection_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_ekm_config_rest_bad_request(request_type=ekm_service.GetEkmConfigRequest):
@@ -6406,10 +6479,13 @@ def test_get_ekm_config_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.EkmServiceRestInterceptor, "post_get_ekm_config"
     ) as post, mock.patch.object(
+        transports.EkmServiceRestInterceptor, "post_get_ekm_config_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.EkmServiceRestInterceptor, "pre_get_ekm_config"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = ekm_service.GetEkmConfigRequest.pb(
             ekm_service.GetEkmConfigRequest()
         )
@@ -6433,6 +6509,7 @@ def test_get_ekm_config_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = ekm_service.EkmConfig()
+        post_with_metadata.return_value = ekm_service.EkmConfig(), metadata
 
         client.get_ekm_config(
             request,
@@ -6444,6 +6521,7 @@ def test_get_ekm_config_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_ekm_config_rest_bad_request(
@@ -6605,10 +6683,13 @@ def test_update_ekm_config_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.EkmServiceRestInterceptor, "post_update_ekm_config"
     ) as post, mock.patch.object(
+        transports.EkmServiceRestInterceptor, "post_update_ekm_config_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.EkmServiceRestInterceptor, "pre_update_ekm_config"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = ekm_service.UpdateEkmConfigRequest.pb(
             ekm_service.UpdateEkmConfigRequest()
         )
@@ -6632,6 +6713,7 @@ def test_update_ekm_config_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = ekm_service.EkmConfig()
+        post_with_metadata.return_value = ekm_service.EkmConfig(), metadata
 
         client.update_ekm_config(
             request,
@@ -6643,6 +6725,7 @@ def test_update_ekm_config_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_verify_connectivity_rest_bad_request(
@@ -6724,10 +6807,13 @@ def test_verify_connectivity_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.EkmServiceRestInterceptor, "post_verify_connectivity"
     ) as post, mock.patch.object(
+        transports.EkmServiceRestInterceptor, "post_verify_connectivity_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.EkmServiceRestInterceptor, "pre_verify_connectivity"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = ekm_service.VerifyConnectivityRequest.pb(
             ekm_service.VerifyConnectivityRequest()
         )
@@ -6753,6 +6839,10 @@ def test_verify_connectivity_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = ekm_service.VerifyConnectivityResponse()
+        post_with_metadata.return_value = (
+            ekm_service.VerifyConnectivityResponse(),
+            metadata,
+        )
 
         client.verify_connectivity(
             request,
@@ -6764,6 +6854,7 @@ def test_verify_connectivity_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_location_rest_bad_request(request_type=locations_pb2.GetLocationRequest):

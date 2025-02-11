@@ -153,11 +153,34 @@ class EkmServiceRestInterceptor:
     ) -> ekm_service.EkmConnection:
         """Post-rpc interceptor for create_ekm_connection
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_ekm_connection_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the EkmService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_ekm_connection` interceptor runs
+        before the `post_create_ekm_connection_with_metadata` interceptor.
         """
         return response
+
+    def post_create_ekm_connection_with_metadata(
+        self,
+        response: ekm_service.EkmConnection,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[ekm_service.EkmConnection, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_ekm_connection
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the EkmService server but before it is returned to user code.
+
+        We recommend only using this `post_create_ekm_connection_with_metadata`
+        interceptor in new development instead of the `post_create_ekm_connection` interceptor.
+        When both interceptors are used, this `post_create_ekm_connection_with_metadata` interceptor runs after the
+        `post_create_ekm_connection` interceptor. The (possibly modified) response returned by
+        `post_create_ekm_connection` will be passed to
+        `post_create_ekm_connection_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_ekm_config(
         self,
@@ -178,11 +201,34 @@ class EkmServiceRestInterceptor:
     ) -> ekm_service.EkmConfig:
         """Post-rpc interceptor for get_ekm_config
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_ekm_config_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the EkmService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_ekm_config` interceptor runs
+        before the `post_get_ekm_config_with_metadata` interceptor.
         """
         return response
+
+    def post_get_ekm_config_with_metadata(
+        self,
+        response: ekm_service.EkmConfig,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[ekm_service.EkmConfig, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_ekm_config
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the EkmService server but before it is returned to user code.
+
+        We recommend only using this `post_get_ekm_config_with_metadata`
+        interceptor in new development instead of the `post_get_ekm_config` interceptor.
+        When both interceptors are used, this `post_get_ekm_config_with_metadata` interceptor runs after the
+        `post_get_ekm_config` interceptor. The (possibly modified) response returned by
+        `post_get_ekm_config` will be passed to
+        `post_get_ekm_config_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_ekm_connection(
         self,
@@ -203,11 +249,34 @@ class EkmServiceRestInterceptor:
     ) -> ekm_service.EkmConnection:
         """Post-rpc interceptor for get_ekm_connection
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_ekm_connection_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the EkmService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_ekm_connection` interceptor runs
+        before the `post_get_ekm_connection_with_metadata` interceptor.
         """
         return response
+
+    def post_get_ekm_connection_with_metadata(
+        self,
+        response: ekm_service.EkmConnection,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[ekm_service.EkmConnection, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_ekm_connection
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the EkmService server but before it is returned to user code.
+
+        We recommend only using this `post_get_ekm_connection_with_metadata`
+        interceptor in new development instead of the `post_get_ekm_connection` interceptor.
+        When both interceptors are used, this `post_get_ekm_connection_with_metadata` interceptor runs after the
+        `post_get_ekm_connection` interceptor. The (possibly modified) response returned by
+        `post_get_ekm_connection` will be passed to
+        `post_get_ekm_connection_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_ekm_connections(
         self,
@@ -228,11 +297,36 @@ class EkmServiceRestInterceptor:
     ) -> ekm_service.ListEkmConnectionsResponse:
         """Post-rpc interceptor for list_ekm_connections
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_ekm_connections_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the EkmService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_ekm_connections` interceptor runs
+        before the `post_list_ekm_connections_with_metadata` interceptor.
         """
         return response
+
+    def post_list_ekm_connections_with_metadata(
+        self,
+        response: ekm_service.ListEkmConnectionsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        ekm_service.ListEkmConnectionsResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_ekm_connections
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the EkmService server but before it is returned to user code.
+
+        We recommend only using this `post_list_ekm_connections_with_metadata`
+        interceptor in new development instead of the `post_list_ekm_connections` interceptor.
+        When both interceptors are used, this `post_list_ekm_connections_with_metadata` interceptor runs after the
+        `post_list_ekm_connections` interceptor. The (possibly modified) response returned by
+        `post_list_ekm_connections` will be passed to
+        `post_list_ekm_connections_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_ekm_config(
         self,
@@ -253,11 +347,34 @@ class EkmServiceRestInterceptor:
     ) -> ekm_service.EkmConfig:
         """Post-rpc interceptor for update_ekm_config
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_ekm_config_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the EkmService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_ekm_config` interceptor runs
+        before the `post_update_ekm_config_with_metadata` interceptor.
         """
         return response
+
+    def post_update_ekm_config_with_metadata(
+        self,
+        response: ekm_service.EkmConfig,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[ekm_service.EkmConfig, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_ekm_config
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the EkmService server but before it is returned to user code.
+
+        We recommend only using this `post_update_ekm_config_with_metadata`
+        interceptor in new development instead of the `post_update_ekm_config` interceptor.
+        When both interceptors are used, this `post_update_ekm_config_with_metadata` interceptor runs after the
+        `post_update_ekm_config` interceptor. The (possibly modified) response returned by
+        `post_update_ekm_config` will be passed to
+        `post_update_ekm_config_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_ekm_connection(
         self,
@@ -278,11 +395,34 @@ class EkmServiceRestInterceptor:
     ) -> ekm_service.EkmConnection:
         """Post-rpc interceptor for update_ekm_connection
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_ekm_connection_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the EkmService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_ekm_connection` interceptor runs
+        before the `post_update_ekm_connection_with_metadata` interceptor.
         """
         return response
+
+    def post_update_ekm_connection_with_metadata(
+        self,
+        response: ekm_service.EkmConnection,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[ekm_service.EkmConnection, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_ekm_connection
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the EkmService server but before it is returned to user code.
+
+        We recommend only using this `post_update_ekm_connection_with_metadata`
+        interceptor in new development instead of the `post_update_ekm_connection` interceptor.
+        When both interceptors are used, this `post_update_ekm_connection_with_metadata` interceptor runs after the
+        `post_update_ekm_connection` interceptor. The (possibly modified) response returned by
+        `post_update_ekm_connection` will be passed to
+        `post_update_ekm_connection_with_metadata`.
+        """
+        return response, metadata
 
     def pre_verify_connectivity(
         self,
@@ -303,11 +443,36 @@ class EkmServiceRestInterceptor:
     ) -> ekm_service.VerifyConnectivityResponse:
         """Post-rpc interceptor for verify_connectivity
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_verify_connectivity_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the EkmService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_verify_connectivity` interceptor runs
+        before the `post_verify_connectivity_with_metadata` interceptor.
         """
         return response
+
+    def post_verify_connectivity_with_metadata(
+        self,
+        response: ekm_service.VerifyConnectivityResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        ekm_service.VerifyConnectivityResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for verify_connectivity
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the EkmService server but before it is returned to user code.
+
+        We recommend only using this `post_verify_connectivity_with_metadata`
+        interceptor in new development instead of the `post_verify_connectivity` interceptor.
+        When both interceptors are used, this `post_verify_connectivity_with_metadata` interceptor runs after the
+        `post_verify_connectivity` interceptor. The (possibly modified) response returned by
+        `post_verify_connectivity` will be passed to
+        `post_verify_connectivity_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_location(
         self,
@@ -686,6 +851,10 @@ class EkmServiceRestTransport(_BaseEkmServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_ekm_connection(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_ekm_connection_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -841,6 +1010,10 @@ class EkmServiceRestTransport(_BaseEkmServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_ekm_config(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_ekm_config_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -996,6 +1169,10 @@ class EkmServiceRestTransport(_BaseEkmServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_ekm_connection(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_ekm_connection_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1141,6 +1318,10 @@ class EkmServiceRestTransport(_BaseEkmServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_ekm_connections(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_ekm_connections_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1302,6 +1483,10 @@ class EkmServiceRestTransport(_BaseEkmServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_ekm_config(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_ekm_config_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1463,6 +1648,10 @@ class EkmServiceRestTransport(_BaseEkmServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_ekm_connection(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_ekm_connection_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1608,6 +1797,10 @@ class EkmServiceRestTransport(_BaseEkmServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_verify_connectivity(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_verify_connectivity_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
