@@ -73,6 +73,14 @@ class BatchServiceRestInterceptor:
 
     .. code-block:: python
         class MyCustomBatchServiceInterceptor(BatchServiceRestInterceptor):
+            def pre_cancel_job(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_cancel_job(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_create_job(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -127,6 +135,52 @@ class BatchServiceRestInterceptor:
 
     """
 
+    def pre_cancel_job(
+        self,
+        request: batch.CancelJobRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[batch.CancelJobRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Pre-rpc interceptor for cancel_job
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the BatchService server.
+        """
+        return request, metadata
+
+    def post_cancel_job(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for cancel_job
+
+        DEPRECATED. Please use the `post_cancel_job_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the BatchService server but before
+        it is returned to user code. This `post_cancel_job` interceptor runs
+        before the `post_cancel_job_with_metadata` interceptor.
+        """
+        return response
+
+    def post_cancel_job_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for cancel_job
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the BatchService server but before it is returned to user code.
+
+        We recommend only using this `post_cancel_job_with_metadata`
+        interceptor in new development instead of the `post_cancel_job` interceptor.
+        When both interceptors are used, this `post_cancel_job_with_metadata` interceptor runs after the
+        `post_cancel_job` interceptor. The (possibly modified) response returned by
+        `post_cancel_job` will be passed to
+        `post_cancel_job_with_metadata`.
+        """
+        return response, metadata
+
     def pre_create_job(
         self,
         request: batch.CreateJobRequest,
@@ -142,11 +196,32 @@ class BatchServiceRestInterceptor:
     def post_create_job(self, response: gcb_job.Job) -> gcb_job.Job:
         """Post-rpc interceptor for create_job
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_job_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the BatchService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_job` interceptor runs
+        before the `post_create_job_with_metadata` interceptor.
         """
         return response
+
+    def post_create_job_with_metadata(
+        self, response: gcb_job.Job, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gcb_job.Job, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_job
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the BatchService server but before it is returned to user code.
+
+        We recommend only using this `post_create_job_with_metadata`
+        interceptor in new development instead of the `post_create_job` interceptor.
+        When both interceptors are used, this `post_create_job_with_metadata` interceptor runs after the
+        `post_create_job` interceptor. The (possibly modified) response returned by
+        `post_create_job` will be passed to
+        `post_create_job_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_job(
         self,
@@ -165,11 +240,34 @@ class BatchServiceRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_job
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_job_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the BatchService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_job` interceptor runs
+        before the `post_delete_job_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_job_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_job
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the BatchService server but before it is returned to user code.
+
+        We recommend only using this `post_delete_job_with_metadata`
+        interceptor in new development instead of the `post_delete_job` interceptor.
+        When both interceptors are used, this `post_delete_job_with_metadata` interceptor runs after the
+        `post_delete_job` interceptor. The (possibly modified) response returned by
+        `post_delete_job` will be passed to
+        `post_delete_job_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_job(
         self,
@@ -186,11 +284,32 @@ class BatchServiceRestInterceptor:
     def post_get_job(self, response: job.Job) -> job.Job:
         """Post-rpc interceptor for get_job
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_job_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the BatchService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_job` interceptor runs
+        before the `post_get_job_with_metadata` interceptor.
         """
         return response
+
+    def post_get_job_with_metadata(
+        self, response: job.Job, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[job.Job, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_job
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the BatchService server but before it is returned to user code.
+
+        We recommend only using this `post_get_job_with_metadata`
+        interceptor in new development instead of the `post_get_job` interceptor.
+        When both interceptors are used, this `post_get_job_with_metadata` interceptor runs after the
+        `post_get_job` interceptor. The (possibly modified) response returned by
+        `post_get_job` will be passed to
+        `post_get_job_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_task(
         self,
@@ -207,11 +326,32 @@ class BatchServiceRestInterceptor:
     def post_get_task(self, response: task.Task) -> task.Task:
         """Post-rpc interceptor for get_task
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_task_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the BatchService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_task` interceptor runs
+        before the `post_get_task_with_metadata` interceptor.
         """
         return response
+
+    def post_get_task_with_metadata(
+        self, response: task.Task, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[task.Task, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_task
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the BatchService server but before it is returned to user code.
+
+        We recommend only using this `post_get_task_with_metadata`
+        interceptor in new development instead of the `post_get_task` interceptor.
+        When both interceptors are used, this `post_get_task_with_metadata` interceptor runs after the
+        `post_get_task` interceptor. The (possibly modified) response returned by
+        `post_get_task` will be passed to
+        `post_get_task_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_jobs(
         self,
@@ -230,11 +370,34 @@ class BatchServiceRestInterceptor:
     ) -> batch.ListJobsResponse:
         """Post-rpc interceptor for list_jobs
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_jobs_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the BatchService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_jobs` interceptor runs
+        before the `post_list_jobs_with_metadata` interceptor.
         """
         return response
+
+    def post_list_jobs_with_metadata(
+        self,
+        response: batch.ListJobsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[batch.ListJobsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for list_jobs
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the BatchService server but before it is returned to user code.
+
+        We recommend only using this `post_list_jobs_with_metadata`
+        interceptor in new development instead of the `post_list_jobs` interceptor.
+        When both interceptors are used, this `post_list_jobs_with_metadata` interceptor runs after the
+        `post_list_jobs` interceptor. The (possibly modified) response returned by
+        `post_list_jobs` will be passed to
+        `post_list_jobs_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_tasks(
         self,
@@ -253,11 +416,34 @@ class BatchServiceRestInterceptor:
     ) -> batch.ListTasksResponse:
         """Post-rpc interceptor for list_tasks
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_tasks_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the BatchService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_tasks` interceptor runs
+        before the `post_list_tasks_with_metadata` interceptor.
         """
         return response
+
+    def post_list_tasks_with_metadata(
+        self,
+        response: batch.ListTasksResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[batch.ListTasksResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for list_tasks
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the BatchService server but before it is returned to user code.
+
+        We recommend only using this `post_list_tasks_with_metadata`
+        interceptor in new development instead of the `post_list_tasks` interceptor.
+        When both interceptors are used, this `post_list_tasks_with_metadata` interceptor runs after the
+        `post_list_tasks` interceptor. The (possibly modified) response returned by
+        `post_list_tasks` will be passed to
+        `post_list_tasks_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_location(
         self,
@@ -548,6 +734,161 @@ class BatchServiceRestTransport(_BaseBatchServiceRestTransport):
         # Return the client from cache.
         return self._operations_client
 
+    class _CancelJob(
+        _BaseBatchServiceRestTransport._BaseCancelJob, BatchServiceRestStub
+    ):
+        def __hash__(self):
+            return hash("BatchServiceRestTransport.CancelJob")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: batch.CancelJobRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the cancel job method over HTTP.
+
+            Args:
+                request (~.batch.CancelJobRequest):
+                    The request object. CancelJob Request.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options = (
+                _BaseBatchServiceRestTransport._BaseCancelJob._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_cancel_job(request, metadata)
+            transcoded_request = (
+                _BaseBatchServiceRestTransport._BaseCancelJob._get_transcoded_request(
+                    http_options, request
+                )
+            )
+
+            body = _BaseBatchServiceRestTransport._BaseCancelJob._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseBatchServiceRestTransport._BaseCancelJob._get_query_params_json(
+                    transcoded_request
+                )
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.batch_v1.BatchServiceClient.CancelJob",
+                    extra={
+                        "serviceName": "google.cloud.batch.v1.BatchService",
+                        "rpcName": "CancelJob",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = BatchServiceRestTransport._CancelJob._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_cancel_job(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_cancel_job_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.batch_v1.BatchServiceClient.cancel_job",
+                    extra={
+                        "serviceName": "google.cloud.batch.v1.BatchService",
+                        "rpcName": "CancelJob",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     class _CreateJob(
         _BaseBatchServiceRestTransport._BaseCreateJob, BatchServiceRestStub
     ):
@@ -675,6 +1016,10 @@ class BatchServiceRestTransport(_BaseBatchServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_job(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_job_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -820,6 +1165,10 @@ class BatchServiceRestTransport(_BaseBatchServiceRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_job(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_job_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -962,6 +1311,10 @@ class BatchServiceRestTransport(_BaseBatchServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_job(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_job_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1104,6 +1457,10 @@ class BatchServiceRestTransport(_BaseBatchServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_task(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_task_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1246,6 +1603,10 @@ class BatchServiceRestTransport(_BaseBatchServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_jobs(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_jobs_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1390,6 +1751,10 @@ class BatchServiceRestTransport(_BaseBatchServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_tasks(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_tasks_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1412,6 +1777,14 @@ class BatchServiceRestTransport(_BaseBatchServiceRestTransport):
                     },
                 )
             return resp
+
+    @property
+    def cancel_job(
+        self,
+    ) -> Callable[[batch.CancelJobRequest], operations_pb2.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._CancelJob(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def create_job(self) -> Callable[[batch.CreateJobRequest], gcb_job.Job]:

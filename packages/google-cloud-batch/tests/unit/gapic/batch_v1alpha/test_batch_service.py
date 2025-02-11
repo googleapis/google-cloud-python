@@ -84,6 +84,13 @@ from google.cloud.batch_v1alpha.types import notification
 from google.cloud.batch_v1alpha.types import resource_allowance
 from google.cloud.batch_v1alpha.types import task, volume
 
+CRED_INFO_JSON = {
+    "credential_source": "/path/to/file",
+    "credential_type": "service account credentials",
+    "principal": "service-account@example.com",
+}
+CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
 
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
@@ -325,6 +332,49 @@ def test__get_universe_domain():
     with pytest.raises(ValueError) as excinfo:
         BatchServiceClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+
+@pytest.mark.parametrize(
+    "error_code,cred_info_json,show_cred_info",
+    [
+        (401, CRED_INFO_JSON, True),
+        (403, CRED_INFO_JSON, True),
+        (404, CRED_INFO_JSON, True),
+        (500, CRED_INFO_JSON, False),
+        (401, None, False),
+        (403, None, False),
+        (404, None, False),
+        (500, None, False),
+    ],
+)
+def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
+    cred = mock.Mock(["get_cred_info"])
+    cred.get_cred_info = mock.Mock(return_value=cred_info_json)
+    client = BatchServiceClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=["foo"])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    if show_cred_info:
+        assert error.details == ["foo", CRED_INFO_STRING]
+    else:
+        assert error.details == ["foo"]
+
+
+@pytest.mark.parametrize("error_code", [401, 403, 404, 500])
+def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
+    cred = mock.Mock([])
+    assert not hasattr(cred, "get_cred_info")
+    client = BatchServiceClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=[])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    assert error.details == []
 
 
 @pytest.mark.parametrize(
@@ -9796,10 +9846,13 @@ def test_create_job_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.BatchServiceRestInterceptor, "post_create_job"
     ) as post, mock.patch.object(
+        transports.BatchServiceRestInterceptor, "post_create_job_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.BatchServiceRestInterceptor, "pre_create_job"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = batch.CreateJobRequest.pb(batch.CreateJobRequest())
         transcode.return_value = {
             "method": "post",
@@ -9821,6 +9874,7 @@ def test_create_job_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = gcb_job.Job()
+        post_with_metadata.return_value = gcb_job.Job(), metadata
 
         client.create_job(
             request,
@@ -9832,6 +9886,7 @@ def test_create_job_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_job_rest_bad_request(request_type=batch.GetJobRequest):
@@ -9920,10 +9975,13 @@ def test_get_job_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.BatchServiceRestInterceptor, "post_get_job"
     ) as post, mock.patch.object(
+        transports.BatchServiceRestInterceptor, "post_get_job_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.BatchServiceRestInterceptor, "pre_get_job"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = batch.GetJobRequest.pb(batch.GetJobRequest())
         transcode.return_value = {
             "method": "post",
@@ -9945,6 +10003,7 @@ def test_get_job_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = job.Job()
+        post_with_metadata.return_value = job.Job(), metadata
 
         client.get_job(
             request,
@@ -9956,6 +10015,7 @@ def test_get_job_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_job_rest_bad_request(request_type=batch.DeleteJobRequest):
@@ -10034,10 +10094,13 @@ def test_delete_job_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.BatchServiceRestInterceptor, "post_delete_job"
     ) as post, mock.patch.object(
+        transports.BatchServiceRestInterceptor, "post_delete_job_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.BatchServiceRestInterceptor, "pre_delete_job"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = batch.DeleteJobRequest.pb(batch.DeleteJobRequest())
         transcode.return_value = {
             "method": "post",
@@ -10059,6 +10122,7 @@ def test_delete_job_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_job(
             request,
@@ -10070,6 +10134,7 @@ def test_delete_job_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_cancel_job_rest_bad_request(request_type=batch.CancelJobRequest):
@@ -10148,10 +10213,13 @@ def test_cancel_job_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.BatchServiceRestInterceptor, "post_cancel_job"
     ) as post, mock.patch.object(
+        transports.BatchServiceRestInterceptor, "post_cancel_job_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.BatchServiceRestInterceptor, "pre_cancel_job"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = batch.CancelJobRequest.pb(batch.CancelJobRequest())
         transcode.return_value = {
             "method": "post",
@@ -10173,6 +10241,7 @@ def test_cancel_job_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.cancel_job(
             request,
@@ -10184,6 +10253,7 @@ def test_cancel_job_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_job_rest_bad_request(request_type=batch.UpdateJobRequest):
@@ -10539,10 +10609,13 @@ def test_update_job_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.BatchServiceRestInterceptor, "post_update_job"
     ) as post, mock.patch.object(
+        transports.BatchServiceRestInterceptor, "post_update_job_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.BatchServiceRestInterceptor, "pre_update_job"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = batch.UpdateJobRequest.pb(batch.UpdateJobRequest())
         transcode.return_value = {
             "method": "post",
@@ -10564,6 +10637,7 @@ def test_update_job_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = gcb_job.Job()
+        post_with_metadata.return_value = gcb_job.Job(), metadata
 
         client.update_job(
             request,
@@ -10575,6 +10649,7 @@ def test_update_job_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_jobs_rest_bad_request(request_type=batch.ListJobsRequest):
@@ -10659,10 +10734,13 @@ def test_list_jobs_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.BatchServiceRestInterceptor, "post_list_jobs"
     ) as post, mock.patch.object(
+        transports.BatchServiceRestInterceptor, "post_list_jobs_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.BatchServiceRestInterceptor, "pre_list_jobs"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = batch.ListJobsRequest.pb(batch.ListJobsRequest())
         transcode.return_value = {
             "method": "post",
@@ -10684,6 +10762,7 @@ def test_list_jobs_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = batch.ListJobsResponse()
+        post_with_metadata.return_value = batch.ListJobsResponse(), metadata
 
         client.list_jobs(
             request,
@@ -10695,6 +10774,7 @@ def test_list_jobs_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_task_rest_bad_request(request_type=batch.GetTaskRequest):
@@ -10781,10 +10861,13 @@ def test_get_task_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.BatchServiceRestInterceptor, "post_get_task"
     ) as post, mock.patch.object(
+        transports.BatchServiceRestInterceptor, "post_get_task_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.BatchServiceRestInterceptor, "pre_get_task"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = batch.GetTaskRequest.pb(batch.GetTaskRequest())
         transcode.return_value = {
             "method": "post",
@@ -10806,6 +10889,7 @@ def test_get_task_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = task.Task()
+        post_with_metadata.return_value = task.Task(), metadata
 
         client.get_task(
             request,
@@ -10817,6 +10901,7 @@ def test_get_task_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_tasks_rest_bad_request(request_type=batch.ListTasksRequest):
@@ -10905,10 +10990,13 @@ def test_list_tasks_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.BatchServiceRestInterceptor, "post_list_tasks"
     ) as post, mock.patch.object(
+        transports.BatchServiceRestInterceptor, "post_list_tasks_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.BatchServiceRestInterceptor, "pre_list_tasks"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = batch.ListTasksRequest.pb(batch.ListTasksRequest())
         transcode.return_value = {
             "method": "post",
@@ -10930,6 +11018,7 @@ def test_list_tasks_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = batch.ListTasksResponse()
+        post_with_metadata.return_value = batch.ListTasksResponse(), metadata
 
         client.list_tasks(
             request,
@@ -10941,6 +11030,7 @@ def test_list_tasks_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_resource_allowance_rest_bad_request(
@@ -11119,10 +11209,14 @@ def test_create_resource_allowance_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.BatchServiceRestInterceptor, "post_create_resource_allowance"
     ) as post, mock.patch.object(
+        transports.BatchServiceRestInterceptor,
+        "post_create_resource_allowance_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.BatchServiceRestInterceptor, "pre_create_resource_allowance"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = batch.CreateResourceAllowanceRequest.pb(
             batch.CreateResourceAllowanceRequest()
         )
@@ -11148,6 +11242,10 @@ def test_create_resource_allowance_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = gcb_resource_allowance.ResourceAllowance()
+        post_with_metadata.return_value = (
+            gcb_resource_allowance.ResourceAllowance(),
+            metadata,
+        )
 
         client.create_resource_allowance(
             request,
@@ -11159,6 +11257,7 @@ def test_create_resource_allowance_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_resource_allowance_rest_bad_request(
@@ -11249,10 +11348,14 @@ def test_get_resource_allowance_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.BatchServiceRestInterceptor, "post_get_resource_allowance"
     ) as post, mock.patch.object(
+        transports.BatchServiceRestInterceptor,
+        "post_get_resource_allowance_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.BatchServiceRestInterceptor, "pre_get_resource_allowance"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = batch.GetResourceAllowanceRequest.pb(
             batch.GetResourceAllowanceRequest()
         )
@@ -11278,6 +11381,10 @@ def test_get_resource_allowance_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = resource_allowance.ResourceAllowance()
+        post_with_metadata.return_value = (
+            resource_allowance.ResourceAllowance(),
+            metadata,
+        )
 
         client.get_resource_allowance(
             request,
@@ -11289,6 +11396,7 @@ def test_get_resource_allowance_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_resource_allowance_rest_bad_request(
@@ -11373,10 +11481,14 @@ def test_delete_resource_allowance_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.BatchServiceRestInterceptor, "post_delete_resource_allowance"
     ) as post, mock.patch.object(
+        transports.BatchServiceRestInterceptor,
+        "post_delete_resource_allowance_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.BatchServiceRestInterceptor, "pre_delete_resource_allowance"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = batch.DeleteResourceAllowanceRequest.pb(
             batch.DeleteResourceAllowanceRequest()
         )
@@ -11400,6 +11512,7 @@ def test_delete_resource_allowance_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_resource_allowance(
             request,
@@ -11411,6 +11524,7 @@ def test_delete_resource_allowance_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_resource_allowances_rest_bad_request(
@@ -11497,10 +11611,14 @@ def test_list_resource_allowances_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.BatchServiceRestInterceptor, "post_list_resource_allowances"
     ) as post, mock.patch.object(
+        transports.BatchServiceRestInterceptor,
+        "post_list_resource_allowances_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.BatchServiceRestInterceptor, "pre_list_resource_allowances"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = batch.ListResourceAllowancesRequest.pb(
             batch.ListResourceAllowancesRequest()
         )
@@ -11526,6 +11644,10 @@ def test_list_resource_allowances_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = batch.ListResourceAllowancesResponse()
+        post_with_metadata.return_value = (
+            batch.ListResourceAllowancesResponse(),
+            metadata,
+        )
 
         client.list_resource_allowances(
             request,
@@ -11537,6 +11659,7 @@ def test_list_resource_allowances_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_resource_allowance_rest_bad_request(
@@ -11723,10 +11846,14 @@ def test_update_resource_allowance_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.BatchServiceRestInterceptor, "post_update_resource_allowance"
     ) as post, mock.patch.object(
+        transports.BatchServiceRestInterceptor,
+        "post_update_resource_allowance_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.BatchServiceRestInterceptor, "pre_update_resource_allowance"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = batch.UpdateResourceAllowanceRequest.pb(
             batch.UpdateResourceAllowanceRequest()
         )
@@ -11752,6 +11879,10 @@ def test_update_resource_allowance_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = gcb_resource_allowance.ResourceAllowance()
+        post_with_metadata.return_value = (
+            gcb_resource_allowance.ResourceAllowance(),
+            metadata,
+        )
 
         client.update_resource_allowance(
             request,
@@ -11763,6 +11894,7 @@ def test_update_resource_allowance_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_location_rest_bad_request(request_type=locations_pb2.GetLocationRequest):

@@ -204,11 +204,34 @@ class BatchServiceRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for cancel_job
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_cancel_job_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the BatchService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_cancel_job` interceptor runs
+        before the `post_cancel_job_with_metadata` interceptor.
         """
         return response
+
+    def post_cancel_job_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for cancel_job
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the BatchService server but before it is returned to user code.
+
+        We recommend only using this `post_cancel_job_with_metadata`
+        interceptor in new development instead of the `post_cancel_job` interceptor.
+        When both interceptors are used, this `post_cancel_job_with_metadata` interceptor runs after the
+        `post_cancel_job` interceptor. The (possibly modified) response returned by
+        `post_cancel_job` will be passed to
+        `post_cancel_job_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_job(
         self,
@@ -225,11 +248,32 @@ class BatchServiceRestInterceptor:
     def post_create_job(self, response: gcb_job.Job) -> gcb_job.Job:
         """Post-rpc interceptor for create_job
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_job_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the BatchService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_job` interceptor runs
+        before the `post_create_job_with_metadata` interceptor.
         """
         return response
+
+    def post_create_job_with_metadata(
+        self, response: gcb_job.Job, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gcb_job.Job, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_job
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the BatchService server but before it is returned to user code.
+
+        We recommend only using this `post_create_job_with_metadata`
+        interceptor in new development instead of the `post_create_job` interceptor.
+        When both interceptors are used, this `post_create_job_with_metadata` interceptor runs after the
+        `post_create_job` interceptor. The (possibly modified) response returned by
+        `post_create_job` will be passed to
+        `post_create_job_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_resource_allowance(
         self,
@@ -250,11 +294,37 @@ class BatchServiceRestInterceptor:
     ) -> gcb_resource_allowance.ResourceAllowance:
         """Post-rpc interceptor for create_resource_allowance
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_resource_allowance_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the BatchService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_resource_allowance` interceptor runs
+        before the `post_create_resource_allowance_with_metadata` interceptor.
         """
         return response
+
+    def post_create_resource_allowance_with_metadata(
+        self,
+        response: gcb_resource_allowance.ResourceAllowance,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        gcb_resource_allowance.ResourceAllowance,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for create_resource_allowance
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the BatchService server but before it is returned to user code.
+
+        We recommend only using this `post_create_resource_allowance_with_metadata`
+        interceptor in new development instead of the `post_create_resource_allowance` interceptor.
+        When both interceptors are used, this `post_create_resource_allowance_with_metadata` interceptor runs after the
+        `post_create_resource_allowance` interceptor. The (possibly modified) response returned by
+        `post_create_resource_allowance` will be passed to
+        `post_create_resource_allowance_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_job(
         self,
@@ -273,11 +343,34 @@ class BatchServiceRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_job
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_job_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the BatchService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_job` interceptor runs
+        before the `post_delete_job_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_job_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_job
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the BatchService server but before it is returned to user code.
+
+        We recommend only using this `post_delete_job_with_metadata`
+        interceptor in new development instead of the `post_delete_job` interceptor.
+        When both interceptors are used, this `post_delete_job_with_metadata` interceptor runs after the
+        `post_delete_job` interceptor. The (possibly modified) response returned by
+        `post_delete_job` will be passed to
+        `post_delete_job_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_resource_allowance(
         self,
@@ -298,11 +391,34 @@ class BatchServiceRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_resource_allowance
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_resource_allowance_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the BatchService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_resource_allowance` interceptor runs
+        before the `post_delete_resource_allowance_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_resource_allowance_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_resource_allowance
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the BatchService server but before it is returned to user code.
+
+        We recommend only using this `post_delete_resource_allowance_with_metadata`
+        interceptor in new development instead of the `post_delete_resource_allowance` interceptor.
+        When both interceptors are used, this `post_delete_resource_allowance_with_metadata` interceptor runs after the
+        `post_delete_resource_allowance` interceptor. The (possibly modified) response returned by
+        `post_delete_resource_allowance` will be passed to
+        `post_delete_resource_allowance_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_job(
         self,
@@ -319,11 +435,32 @@ class BatchServiceRestInterceptor:
     def post_get_job(self, response: job.Job) -> job.Job:
         """Post-rpc interceptor for get_job
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_job_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the BatchService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_job` interceptor runs
+        before the `post_get_job_with_metadata` interceptor.
         """
         return response
+
+    def post_get_job_with_metadata(
+        self, response: job.Job, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[job.Job, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_job
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the BatchService server but before it is returned to user code.
+
+        We recommend only using this `post_get_job_with_metadata`
+        interceptor in new development instead of the `post_get_job` interceptor.
+        When both interceptors are used, this `post_get_job_with_metadata` interceptor runs after the
+        `post_get_job` interceptor. The (possibly modified) response returned by
+        `post_get_job` will be passed to
+        `post_get_job_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_resource_allowance(
         self,
@@ -344,11 +481,36 @@ class BatchServiceRestInterceptor:
     ) -> resource_allowance.ResourceAllowance:
         """Post-rpc interceptor for get_resource_allowance
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_resource_allowance_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the BatchService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_resource_allowance` interceptor runs
+        before the `post_get_resource_allowance_with_metadata` interceptor.
         """
         return response
+
+    def post_get_resource_allowance_with_metadata(
+        self,
+        response: resource_allowance.ResourceAllowance,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        resource_allowance.ResourceAllowance, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for get_resource_allowance
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the BatchService server but before it is returned to user code.
+
+        We recommend only using this `post_get_resource_allowance_with_metadata`
+        interceptor in new development instead of the `post_get_resource_allowance` interceptor.
+        When both interceptors are used, this `post_get_resource_allowance_with_metadata` interceptor runs after the
+        `post_get_resource_allowance` interceptor. The (possibly modified) response returned by
+        `post_get_resource_allowance` will be passed to
+        `post_get_resource_allowance_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_task(
         self,
@@ -365,11 +527,32 @@ class BatchServiceRestInterceptor:
     def post_get_task(self, response: task.Task) -> task.Task:
         """Post-rpc interceptor for get_task
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_task_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the BatchService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_task` interceptor runs
+        before the `post_get_task_with_metadata` interceptor.
         """
         return response
+
+    def post_get_task_with_metadata(
+        self, response: task.Task, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[task.Task, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_task
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the BatchService server but before it is returned to user code.
+
+        We recommend only using this `post_get_task_with_metadata`
+        interceptor in new development instead of the `post_get_task` interceptor.
+        When both interceptors are used, this `post_get_task_with_metadata` interceptor runs after the
+        `post_get_task` interceptor. The (possibly modified) response returned by
+        `post_get_task` will be passed to
+        `post_get_task_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_jobs(
         self,
@@ -388,11 +571,34 @@ class BatchServiceRestInterceptor:
     ) -> batch.ListJobsResponse:
         """Post-rpc interceptor for list_jobs
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_jobs_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the BatchService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_jobs` interceptor runs
+        before the `post_list_jobs_with_metadata` interceptor.
         """
         return response
+
+    def post_list_jobs_with_metadata(
+        self,
+        response: batch.ListJobsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[batch.ListJobsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for list_jobs
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the BatchService server but before it is returned to user code.
+
+        We recommend only using this `post_list_jobs_with_metadata`
+        interceptor in new development instead of the `post_list_jobs` interceptor.
+        When both interceptors are used, this `post_list_jobs_with_metadata` interceptor runs after the
+        `post_list_jobs` interceptor. The (possibly modified) response returned by
+        `post_list_jobs` will be passed to
+        `post_list_jobs_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_resource_allowances(
         self,
@@ -413,11 +619,36 @@ class BatchServiceRestInterceptor:
     ) -> batch.ListResourceAllowancesResponse:
         """Post-rpc interceptor for list_resource_allowances
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_resource_allowances_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the BatchService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_resource_allowances` interceptor runs
+        before the `post_list_resource_allowances_with_metadata` interceptor.
         """
         return response
+
+    def post_list_resource_allowances_with_metadata(
+        self,
+        response: batch.ListResourceAllowancesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        batch.ListResourceAllowancesResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_resource_allowances
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the BatchService server but before it is returned to user code.
+
+        We recommend only using this `post_list_resource_allowances_with_metadata`
+        interceptor in new development instead of the `post_list_resource_allowances` interceptor.
+        When both interceptors are used, this `post_list_resource_allowances_with_metadata` interceptor runs after the
+        `post_list_resource_allowances` interceptor. The (possibly modified) response returned by
+        `post_list_resource_allowances` will be passed to
+        `post_list_resource_allowances_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_tasks(
         self,
@@ -436,11 +667,34 @@ class BatchServiceRestInterceptor:
     ) -> batch.ListTasksResponse:
         """Post-rpc interceptor for list_tasks
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_tasks_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the BatchService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_tasks` interceptor runs
+        before the `post_list_tasks_with_metadata` interceptor.
         """
         return response
+
+    def post_list_tasks_with_metadata(
+        self,
+        response: batch.ListTasksResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[batch.ListTasksResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for list_tasks
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the BatchService server but before it is returned to user code.
+
+        We recommend only using this `post_list_tasks_with_metadata`
+        interceptor in new development instead of the `post_list_tasks` interceptor.
+        When both interceptors are used, this `post_list_tasks_with_metadata` interceptor runs after the
+        `post_list_tasks` interceptor. The (possibly modified) response returned by
+        `post_list_tasks` will be passed to
+        `post_list_tasks_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_job(
         self,
@@ -457,11 +711,32 @@ class BatchServiceRestInterceptor:
     def post_update_job(self, response: gcb_job.Job) -> gcb_job.Job:
         """Post-rpc interceptor for update_job
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_job_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the BatchService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_job` interceptor runs
+        before the `post_update_job_with_metadata` interceptor.
         """
         return response
+
+    def post_update_job_with_metadata(
+        self, response: gcb_job.Job, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gcb_job.Job, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_job
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the BatchService server but before it is returned to user code.
+
+        We recommend only using this `post_update_job_with_metadata`
+        interceptor in new development instead of the `post_update_job` interceptor.
+        When both interceptors are used, this `post_update_job_with_metadata` interceptor runs after the
+        `post_update_job` interceptor. The (possibly modified) response returned by
+        `post_update_job` will be passed to
+        `post_update_job_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_resource_allowance(
         self,
@@ -482,11 +757,37 @@ class BatchServiceRestInterceptor:
     ) -> gcb_resource_allowance.ResourceAllowance:
         """Post-rpc interceptor for update_resource_allowance
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_resource_allowance_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the BatchService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_resource_allowance` interceptor runs
+        before the `post_update_resource_allowance_with_metadata` interceptor.
         """
         return response
+
+    def post_update_resource_allowance_with_metadata(
+        self,
+        response: gcb_resource_allowance.ResourceAllowance,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        gcb_resource_allowance.ResourceAllowance,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for update_resource_allowance
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the BatchService server but before it is returned to user code.
+
+        We recommend only using this `post_update_resource_allowance_with_metadata`
+        interceptor in new development instead of the `post_update_resource_allowance` interceptor.
+        When both interceptors are used, this `post_update_resource_allowance_with_metadata` interceptor runs after the
+        `post_update_resource_allowance` interceptor. The (possibly modified) response returned by
+        `post_update_resource_allowance` will be passed to
+        `post_update_resource_allowance_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_location(
         self,
@@ -905,6 +1206,10 @@ class BatchServiceRestTransport(_BaseBatchServiceRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_cancel_job(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_cancel_job_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1055,6 +1360,10 @@ class BatchServiceRestTransport(_BaseBatchServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_job(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_job_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1208,6 +1517,10 @@ class BatchServiceRestTransport(_BaseBatchServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_resource_allowance(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_resource_allowance_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1355,6 +1668,10 @@ class BatchServiceRestTransport(_BaseBatchServiceRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_job(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_job_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1499,6 +1816,10 @@ class BatchServiceRestTransport(_BaseBatchServiceRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_resource_allowance(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_resource_allowance_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1641,6 +1962,10 @@ class BatchServiceRestTransport(_BaseBatchServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_job(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_job_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1787,6 +2112,10 @@ class BatchServiceRestTransport(_BaseBatchServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_resource_allowance(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_resource_allowance_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1931,6 +2260,10 @@ class BatchServiceRestTransport(_BaseBatchServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_task(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_task_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2073,6 +2406,10 @@ class BatchServiceRestTransport(_BaseBatchServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_jobs(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_jobs_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2215,6 +2552,10 @@ class BatchServiceRestTransport(_BaseBatchServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_resource_allowances(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_resource_allowances_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2361,6 +2702,10 @@ class BatchServiceRestTransport(_BaseBatchServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_tasks(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_tasks_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2511,6 +2856,10 @@ class BatchServiceRestTransport(_BaseBatchServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_job(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_job_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2664,6 +3013,10 @@ class BatchServiceRestTransport(_BaseBatchServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_resource_allowance(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_resource_allowance_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

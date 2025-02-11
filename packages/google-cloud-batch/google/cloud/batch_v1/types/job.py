@@ -263,6 +263,14 @@ class JobStatus(proto.Message):
                 The Job will be deleted, but has not been
                 deleted yet. Typically this is because resources
                 used by the Job are still being cleaned up.
+            CANCELLATION_IN_PROGRESS (7):
+                The Job cancellation is in progress, this is
+                because the resources used by the Job are still
+                being cleaned up.
+            CANCELLED (8):
+                The Job has been cancelled, the task
+                executions were stopped and the resources were
+                cleaned up.
         """
         STATE_UNSPECIFIED = 0
         QUEUED = 1
@@ -271,6 +279,8 @@ class JobStatus(proto.Message):
         SUCCEEDED = 4
         FAILED = 5
         DELETION_IN_PROGRESS = 6
+        CANCELLATION_IN_PROGRESS = 7
+        CANCELLED = 8
 
     class InstanceStatus(proto.Message):
         r"""VM instance status.
