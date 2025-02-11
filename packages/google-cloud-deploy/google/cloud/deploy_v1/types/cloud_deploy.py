@@ -269,19 +269,19 @@ class DeliveryPipeline(proto.Message):
 
     Attributes:
         name (str):
-            Optional. Name of the ``DeliveryPipeline``. Format is
+            Identifier. Name of the ``DeliveryPipeline``. Format is
             ``projects/{project}/locations/{location}/deliveryPipelines/{deliveryPipeline}``.
             The ``deliveryPipeline`` component must match
             ``[a-z]([a-z0-9-]{0,61}[a-z0-9])?``
         uid (str):
             Output only. Unique identifier of the ``DeliveryPipeline``.
         description (str):
-            Description of the ``DeliveryPipeline``. Max length is 255
-            characters.
+            Optional. Description of the ``DeliveryPipeline``. Max
+            length is 255 characters.
         annotations (MutableMapping[str, str]):
-            User annotations. These attributes can only
-            be set and used by the user, and not by Cloud
-            Deploy.
+            Optional. User annotations. These attributes
+            can only be set and used by the user, and not by
+            Cloud Deploy.
         labels (MutableMapping[str, str]):
             Labels are attributes that can be set and used by both the
             user and by Cloud Deploy. Labels must meet the following
@@ -304,8 +304,8 @@ class DeliveryPipeline(proto.Message):
             Output only. Most recent time at which the
             pipeline was updated.
         serial_pipeline (google.cloud.deploy_v1.types.SerialPipeline):
-            SerialPipeline defines a sequential set of stages for a
-            ``DeliveryPipeline``.
+            Optional. SerialPipeline defines a sequential set of stages
+            for a ``DeliveryPipeline``.
 
             This field is a member of `oneof`_ ``pipeline``.
         condition (google.cloud.deploy_v1.types.PipelineCondition):
@@ -317,9 +317,9 @@ class DeliveryPipeline(proto.Message):
             update and delete requests to ensure the client
             has an up-to-date value before proceeding.
         suspended (bool):
-            When suspended, no new releases or rollouts
-            can be created, but in-progress ones will
-            complete.
+            Optional. When suspended, no new releases or
+            rollouts can be created, but in-progress ones
+            will complete.
     """
 
     name: str = proto.Field(
@@ -381,8 +381,9 @@ class SerialPipeline(proto.Message):
 
     Attributes:
         stages (MutableSequence[google.cloud.deploy_v1.types.Stage]):
-            Each stage specifies configuration for a ``Target``. The
-            ordering of this list defines the promotion flow.
+            Optional. Each stage specifies configuration for a
+            ``Target``. The ordering of this list defines the promotion
+            flow.
     """
 
     stages: MutableSequence["Stage"] = proto.RepeatedField(
@@ -397,16 +398,17 @@ class Stage(proto.Message):
 
     Attributes:
         target_id (str):
-            The target_id to which this stage points. This field refers
-            exclusively to the last segment of a target name. For
-            example, this field would just be ``my-target`` (rather than
+            Optional. The target_id to which this stage points. This
+            field refers exclusively to the last segment of a target
+            name. For example, this field would just be ``my-target``
+            (rather than
             ``projects/project/locations/location/targets/my-target``).
             The location of the ``Target`` is inferred to be the same as
             the location of the ``DeliveryPipeline`` that contains this
             ``Stage``.
         profiles (MutableSequence[str]):
-            Skaffold profiles to use when rendering the manifest for
-            this stage's ``Target``.
+            Optional. Skaffold profiles to use when rendering the
+            manifest for this stage's ``Target``.
         strategy (google.cloud.deploy_v1.types.Strategy):
             Optional. The strategy to use for a ``Rollout`` to this
             stage.
@@ -473,13 +475,13 @@ class Strategy(proto.Message):
 
     Attributes:
         standard (google.cloud.deploy_v1.types.Standard):
-            Standard deployment strategy executes a
-            single deploy and allows verifying the
-            deployment.
+            Optional. Standard deployment strategy
+            executes a single deploy and allows verifying
+            the deployment.
 
             This field is a member of `oneof`_ ``deployment_strategy``.
         canary (google.cloud.deploy_v1.types.Canary):
-            Canary deployment strategy provides
+            Optional. Canary deployment strategy provides
             progressive percentage based deployments to a
             Target.
 
@@ -539,7 +541,7 @@ class Standard(proto.Message):
 
     Attributes:
         verify (bool):
-            Whether to verify a deployment.
+            Optional. Whether to verify a deployment.
         predeploy (google.cloud.deploy_v1.types.Predeploy):
             Optional. Configuration for the predeploy
             job. If this is not configured, predeploy job
@@ -584,15 +586,15 @@ class Canary(proto.Message):
             Deploy will split traffic to enable a
             progressive deployment.
         canary_deployment (google.cloud.deploy_v1.types.CanaryDeployment):
-            Configures the progressive based deployment
-            for a Target.
+            Optional. Configures the progressive based
+            deployment for a Target.
 
             This field is a member of `oneof`_ ``mode``.
         custom_canary_deployment (google.cloud.deploy_v1.types.CustomCanaryDeployment):
-            Configures the progressive based deployment
-            for a Target, but allows customizing at the
-            phase level where a phase represents each of the
-            percentage deployments.
+            Optional. Configures the progressive based
+            deployment for a Target, but allows customizing
+            at the phase level where a phase represents each
+            of the percentage deployments.
 
             This field is a member of `oneof`_ ``mode``.
     """
@@ -628,8 +630,8 @@ class CanaryDeployment(proto.Message):
             GatewayServiceMesh is configured for Kubernetes, then the
             range for n is 0 <= n <= 100.
         verify (bool):
-            Whether to run verify tests after each
-            percentage deployment.
+            Optional. Whether to run verify tests after
+            each percentage deployment.
         predeploy (google.cloud.deploy_v1.types.Predeploy):
             Optional. Configuration for the predeploy job
             of the first phase. If this is not configured,
@@ -687,12 +689,12 @@ class CustomCanaryDeployment(proto.Message):
                 Required. Percentage deployment for the
                 phase.
             profiles (MutableSequence[str]):
-                Skaffold profiles to use when rendering the manifest for
-                this phase. These are in addition to the profiles list
-                specified in the ``DeliveryPipeline`` stage.
+                Optional. Skaffold profiles to use when rendering the
+                manifest for this phase. These are in addition to the
+                profiles list specified in the ``DeliveryPipeline`` stage.
             verify (bool):
-                Whether to run verify tests after the
-                deployment.
+                Optional. Whether to run verify tests after
+                the deployment.
             predeploy (google.cloud.deploy_v1.types.Predeploy):
                 Optional. Configuration for the predeploy job
                 of this phase. If this is not configured, there
@@ -750,12 +752,13 @@ class KubernetesConfig(proto.Message):
 
     Attributes:
         gateway_service_mesh (google.cloud.deploy_v1.types.KubernetesConfig.GatewayServiceMesh):
-            Kubernetes Gateway API service mesh
+            Optional. Kubernetes Gateway API service mesh
             configuration.
 
             This field is a member of `oneof`_ ``service_definition``.
         service_networking (google.cloud.deploy_v1.types.KubernetesConfig.ServiceNetworking):
-            Kubernetes Service networking configuration.
+            Optional. Kubernetes Service networking
+            configuration.
 
             This field is a member of `oneof`_ ``service_definition``.
     """
@@ -926,8 +929,8 @@ class CloudRunConfig(proto.Message):
 
     Attributes:
         automatic_traffic_control (bool):
-            Whether Cloud Deploy should update the
-            traffic stanza in a Cloud Run Service on the
+            Optional. Whether Cloud Deploy should update
+            the traffic stanza in a Cloud Run Service on the
             user's behalf to facilitate traffic splitting.
             This is required to be true for
             CanaryDeployments, but optional for
@@ -977,11 +980,11 @@ class RuntimeConfig(proto.Message):
 
     Attributes:
         kubernetes (google.cloud.deploy_v1.types.KubernetesConfig):
-            Kubernetes runtime configuration.
+            Optional. Kubernetes runtime configuration.
 
             This field is a member of `oneof`_ ``runtime_config``.
         cloud_run (google.cloud.deploy_v1.types.CloudRunConfig):
-            Cloud Run runtime configuration.
+            Optional. Cloud Run runtime configuration.
 
             This field is a member of `oneof`_ ``runtime_config``.
     """
@@ -1530,7 +1533,7 @@ class Target(proto.Message):
 
     Attributes:
         name (str):
-            Optional. Name of the ``Target``. Format is
+            Identifier. Name of the ``Target``. Format is
             ``projects/{project}/locations/{location}/targets/{target}``.
             The ``target`` component must match
             ``[a-z]([a-z0-9-]{0,61}[a-z0-9])?``
@@ -1612,14 +1615,14 @@ class Target(proto.Message):
             ensure the client has an up-to-date value before
             proceeding.
         execution_configs (MutableSequence[google.cloud.deploy_v1.types.ExecutionConfig]):
-            Configurations for all execution that relates to this
-            ``Target``. Each ``ExecutionEnvironmentUsage`` value may
-            only be used in a single configuration; using the same value
-            multiple times is an error. When one or more configurations
-            are specified, they must include the ``RENDER`` and
-            ``DEPLOY`` ``ExecutionEnvironmentUsage`` values. When no
-            configurations are specified, execution will use the default
-            specified in ``DefaultPool``.
+            Optional. Configurations for all execution that relates to
+            this ``Target``. Each ``ExecutionEnvironmentUsage`` value
+            may only be used in a single configuration; using the same
+            value multiple times is an error. When one or more
+            configurations are specified, they must include the
+            ``RENDER`` and ``DEPLOY`` ``ExecutionEnvironmentUsage``
+            values. When no configurations are specified, execution will
+            use the default specified in ``DefaultPool``.
         deploy_parameters (MutableMapping[str, str]):
             Optional. The deploy parameters to use for
             this target.
@@ -1922,8 +1925,8 @@ class GkeCluster(proto.Message):
             to the Kubernetes server.
         dns_endpoint (bool):
             Optional. If set, the cluster will be accessed using the DNS
-            endpoint. Note that ``dns_endpoint`` and ``internal_ip``
-            cannot both be set to true.
+            endpoint. Note that both ``dns_endpoint`` and
+            ``internal_ip`` cannot be set to true.
     """
 
     cluster: str = proto.Field(
@@ -2331,7 +2334,7 @@ class CustomTargetType(proto.Message):
 
     Attributes:
         name (str):
-            Optional. Name of the ``CustomTargetType``. Format is
+            Identifier. Name of the ``CustomTargetType``. Format is
             ``projects/{project}/locations/{location}/customTargetTypes/{customTargetType}``.
             The ``customTargetType`` component must match
             ``[a-z]([a-z0-9-]{0,61}[a-z0-9])?``
@@ -2376,8 +2379,8 @@ class CustomTargetType(proto.Message):
             ensure the client has an up-to-date value before
             proceeding.
         custom_actions (google.cloud.deploy_v1.types.CustomTargetSkaffoldActions):
-            Configures render and deploy for the ``CustomTargetType``
-            using Skaffold custom actions.
+            Optional. Configures render and deploy for the
+            ``CustomTargetType`` using Skaffold custom actions.
 
             This field is a member of `oneof`_ ``definition``.
     """
@@ -2478,18 +2481,18 @@ class SkaffoldModules(proto.Message):
             Optional. The Skaffold Config modules to use
             from the specified source.
         git (google.cloud.deploy_v1.types.SkaffoldModules.SkaffoldGitSource):
-            Remote git repository containing the Skaffold
-            Config modules.
+            Optional. Remote git repository containing
+            the Skaffold Config modules.
 
             This field is a member of `oneof`_ ``source``.
         google_cloud_storage (google.cloud.deploy_v1.types.SkaffoldModules.SkaffoldGCSSource):
-            Cloud Storage bucket containing the Skaffold
-            Config modules.
+            Optional. Cloud Storage bucket containing the
+            Skaffold Config modules.
 
             This field is a member of `oneof`_ ``source``.
         google_cloud_build_repo (google.cloud.deploy_v1.types.SkaffoldModules.SkaffoldGCBRepoSource):
-            Cloud Build V2 repository containing the
-            Skaffold Config modules.
+            Optional. Cloud Build V2 repository
+            containing the Skaffold Config modules.
 
             This field is a member of `oneof`_ ``source``.
     """
@@ -2906,12 +2909,12 @@ class DeployPolicy(proto.Message):
         uid (str):
             Output only. Unique identifier of the ``DeployPolicy``.
         description (str):
-            Description of the ``DeployPolicy``. Max length is 255
-            characters.
+            Optional. Description of the ``DeployPolicy``. Max length is
+            255 characters.
         annotations (MutableMapping[str, str]):
-            User annotations. These attributes can only be set and used
-            by the user, and not by Cloud Deploy. Annotations must meet
-            the following constraints:
+            Optional. User annotations. These attributes can only be set
+            and used by the user, and not by Cloud Deploy. Annotations
+            must meet the following constraints:
 
             -  Annotations are key/value pairs.
             -  Valid annotation keys have two segments: an optional
@@ -2950,9 +2953,9 @@ class DeployPolicy(proto.Message):
             Output only. Most recent time at which the
             deploy policy was updated.
         suspended (bool):
-            When suspended, the policy will not prevent
-            actions from occurring, even if the action
-            violates the policy.
+            Optional. When suspended, the policy will not
+            prevent actions from occurring, even if the
+            action violates the policy.
         selectors (MutableSequence[google.cloud.deploy_v1.types.DeployPolicyResourceSelector]):
             Required. Selected resources to which the
             policy will be applied. At least one selector is
@@ -3074,8 +3077,8 @@ class DeliveryPipelineAttribute(proto.Message):
 
     Attributes:
         id (str):
-            ID of the ``DeliveryPipeline``. The value of this field
-            could be one of the following:
+            Optional. ID of the ``DeliveryPipeline``. The value of this
+            field could be one of the following:
 
             -  The last segment of a pipeline name
             -  "*", all delivery pipelines in a location
@@ -3100,8 +3103,8 @@ class TargetAttribute(proto.Message):
 
     Attributes:
         id (str):
-            ID of the ``Target``. The value of this field could be one
-            of the following:
+            Optional. ID of the ``Target``. The value of this field
+            could be one of the following:
 
             -  The last segment of a target name
             -  "*", all targets in a location
@@ -3127,7 +3130,7 @@ class PolicyRule(proto.Message):
 
     Attributes:
         rollout_restriction (google.cloud.deploy_v1.types.RolloutRestriction):
-            Rollout restrictions.
+            Optional. Rollout restrictions.
 
             This field is a member of `oneof`_ ``rule``.
     """
@@ -3384,19 +3387,19 @@ class Release(proto.Message):
 
     Attributes:
         name (str):
-            Optional. Name of the ``Release``. Format is
+            Identifier. Name of the ``Release``. Format is
             ``projects/{project}/locations/{location}/deliveryPipelines/{deliveryPipeline}/releases/{release}``.
             The ``release`` component must match
             ``[a-z]([a-z0-9-]{0,61}[a-z0-9])?``
         uid (str):
             Output only. Unique identifier of the ``Release``.
         description (str):
-            Description of the ``Release``. Max length is 255
+            Optional. Description of the ``Release``. Max length is 255
             characters.
         annotations (MutableMapping[str, str]):
-            User annotations. These attributes can only
-            be set and used by the user, and not by Cloud
-            Deploy. See
+            Optional. User annotations. These attributes
+            can only be set and used by the user, and not by
+            Cloud Deploy. See
             https://google.aip.dev/128#annotations for more
             details such as format and size limitations.
         labels (MutableMapping[str, str]):
@@ -3425,14 +3428,14 @@ class Release(proto.Message):
             Output only. Time at which the render
             completed.
         skaffold_config_uri (str):
-            Cloud Storage URI of tar.gz archive
+            Optional. Cloud Storage URI of tar.gz archive
             containing Skaffold configuration.
         skaffold_config_path (str):
-            Filepath of the Skaffold config inside of the
-            config URI.
+            Optional. Filepath of the Skaffold config
+            inside of the config URI.
         build_artifacts (MutableSequence[google.cloud.deploy_v1.types.BuildArtifact]):
-            List of artifacts to pass through to Skaffold
-            command.
+            Optional. List of artifacts to pass through
+            to Skaffold command.
         delivery_pipeline_snapshot (google.cloud.deploy_v1.types.DeliveryPipeline):
             Output only. Snapshot of the parent pipeline
             taken at release creation time.
@@ -4093,10 +4096,11 @@ class BuildArtifact(proto.Message):
 
     Attributes:
         image (str):
-            Image name in Skaffold configuration.
+            Optional. Image name in Skaffold
+            configuration.
         tag (str):
-            Image tag to use. This will generally be the
-            full path to an image, such as
+            Optional. Image tag to use. This will
+            generally be the full path to an image, such as
             "gcr.io/my-project/busybox:1.2.3" or
             "gcr.io/my-project/busybox@sha256:abc123".
     """
@@ -4427,19 +4431,19 @@ class Rollout(proto.Message):
 
     Attributes:
         name (str):
-            Optional. Name of the ``Rollout``. Format is
+            Identifier. Name of the ``Rollout``. Format is
             ``projects/{project}/locations/{location}/deliveryPipelines/{deliveryPipeline}/releases/{release}/rollouts/{rollout}``.
             The ``rollout`` component must match
             ``[a-z]([a-z0-9-]{0,61}[a-z0-9])?``
         uid (str):
             Output only. Unique identifier of the ``Rollout``.
         description (str):
-            Description of the ``Rollout`` for user purposes. Max length
-            is 255 characters.
+            Optional. Description of the ``Rollout`` for user purposes.
+            Max length is 255 characters.
         annotations (MutableMapping[str, str]):
-            User annotations. These attributes can only
-            be set and used by the user, and not by Cloud
-            Deploy. See
+            Optional. User annotations. These attributes
+            can only be set and used by the user, and not by
+            Cloud Deploy. See
             https://google.aip.dev/128#annotations for more
             details such as format and size limitations.
         labels (MutableMapping[str, str]):
@@ -4977,20 +4981,25 @@ class DeploymentJobs(proto.Message):
     r"""Deployment job composition.
 
     Attributes:
+        predeploy_job (google.cloud.deploy_v1.types.Job):
+            Output only. The predeploy Job, which is the
+            first job on the phase.
         deploy_job (google.cloud.deploy_v1.types.Job):
             Output only. The deploy Job. This is the
             deploy job in the phase.
         verify_job (google.cloud.deploy_v1.types.Job):
             Output only. The verify Job. Runs after a
             deploy if the deploy succeeds.
-        predeploy_job (google.cloud.deploy_v1.types.Job):
-            Output only. The predeploy Job, which is the
-            first job on the phase.
         postdeploy_job (google.cloud.deploy_v1.types.Job):
             Output only. The postdeploy Job, which is the
             last job on the phase.
     """
 
+    predeploy_job: "Job" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="Job",
+    )
     deploy_job: "Job" = proto.Field(
         proto.MESSAGE,
         number=1,
@@ -4999,11 +5008,6 @@ class DeploymentJobs(proto.Message):
     verify_job: "Job" = proto.Field(
         proto.MESSAGE,
         number=2,
-        message="Job",
-    )
-    predeploy_job: "Job" = proto.Field(
-        proto.MESSAGE,
-        number=3,
         message="Job",
     )
     postdeploy_job: "Job" = proto.Field(
@@ -5659,7 +5663,7 @@ class JobRun(proto.Message):
 
     Attributes:
         name (str):
-            Optional. Name of the ``JobRun``. Format is
+            Output only. Name of the ``JobRun``. Format is
             ``projects/{project}/locations/{location}/deliveryPipelines/{deliveryPipeline}/releases/{releases}/rollouts/{rollouts}/jobRuns/{uuid}``.
         uid (str):
             Output only. Unique identifier of the ``JobRun``.
@@ -6497,7 +6501,7 @@ class AutomationResourceSelector(proto.Message):
 
     Attributes:
         targets (MutableSequence[google.cloud.deploy_v1.types.TargetAttribute]):
-            Contains attributes about a target.
+            Optional. Contains attributes about a target.
     """
 
     targets: MutableSequence["TargetAttribute"] = proto.RepeatedField(

@@ -2509,6 +2509,10 @@ class _BaseCloudDeployRestTransport(CloudDeployTransport):
                     "method": "get",
                     "uri": "/v1/{resource=projects/*/locations/*/customTargetTypes/*}:getIamPolicy",
                 },
+                {
+                    "method": "get",
+                    "uri": "/v1/{resource=projects/*/locations/*/deployPolicies/*}:getIamPolicy",
+                },
             ]
             return http_options
 
@@ -2543,6 +2547,11 @@ class _BaseCloudDeployRestTransport(CloudDeployTransport):
                 {
                     "method": "post",
                     "uri": "/v1/{resource=projects/*/locations/*/customTargetTypes/*}:setIamPolicy",
+                    "body": "*",
+                },
+                {
+                    "method": "post",
+                    "uri": "/v1/{resource=projects/*/locations/*/deployPolicies/*}:setIamPolicy",
                     "body": "*",
                 },
             ]
