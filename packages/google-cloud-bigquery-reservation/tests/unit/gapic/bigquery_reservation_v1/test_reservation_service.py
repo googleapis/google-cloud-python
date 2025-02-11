@@ -65,6 +65,13 @@ from google.cloud.bigquery_reservation_v1.services.reservation_service import (
 from google.cloud.bigquery_reservation_v1.types import reservation as gcbr_reservation
 from google.cloud.bigquery_reservation_v1.types import reservation
 
+CRED_INFO_JSON = {
+    "credential_source": "/path/to/file",
+    "credential_type": "service account credentials",
+    "principal": "service-account@example.com",
+}
+CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
 
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
@@ -334,6 +341,49 @@ def test__get_universe_domain():
     with pytest.raises(ValueError) as excinfo:
         ReservationServiceClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+
+@pytest.mark.parametrize(
+    "error_code,cred_info_json,show_cred_info",
+    [
+        (401, CRED_INFO_JSON, True),
+        (403, CRED_INFO_JSON, True),
+        (404, CRED_INFO_JSON, True),
+        (500, CRED_INFO_JSON, False),
+        (401, None, False),
+        (403, None, False),
+        (404, None, False),
+        (500, None, False),
+    ],
+)
+def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
+    cred = mock.Mock(["get_cred_info"])
+    cred.get_cred_info = mock.Mock(return_value=cred_info_json)
+    client = ReservationServiceClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=["foo"])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    if show_cred_info:
+        assert error.details == ["foo", CRED_INFO_STRING]
+    else:
+        assert error.details == ["foo"]
+
+
+@pytest.mark.parametrize("error_code", [401, 403, 404, 500])
+def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
+    cred = mock.Mock([])
+    assert not hasattr(cred, "get_cred_info")
+    client = ReservationServiceClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=[])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    assert error.details == []
 
 
 @pytest.mark.parametrize(
@@ -15349,10 +15399,14 @@ def test_create_reservation_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ReservationServiceRestInterceptor, "post_create_reservation"
     ) as post, mock.patch.object(
+        transports.ReservationServiceRestInterceptor,
+        "post_create_reservation_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ReservationServiceRestInterceptor, "pre_create_reservation"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = gcbr_reservation.CreateReservationRequest.pb(
             gcbr_reservation.CreateReservationRequest()
         )
@@ -15378,6 +15432,7 @@ def test_create_reservation_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = gcbr_reservation.Reservation()
+        post_with_metadata.return_value = gcbr_reservation.Reservation(), metadata
 
         client.create_reservation(
             request,
@@ -15389,6 +15444,7 @@ def test_create_reservation_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_reservations_rest_bad_request(
@@ -15473,10 +15529,14 @@ def test_list_reservations_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ReservationServiceRestInterceptor, "post_list_reservations"
     ) as post, mock.patch.object(
+        transports.ReservationServiceRestInterceptor,
+        "post_list_reservations_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ReservationServiceRestInterceptor, "pre_list_reservations"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = reservation.ListReservationsRequest.pb(
             reservation.ListReservationsRequest()
         )
@@ -15502,6 +15562,10 @@ def test_list_reservations_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = reservation.ListReservationsResponse()
+        post_with_metadata.return_value = (
+            reservation.ListReservationsResponse(),
+            metadata,
+        )
 
         client.list_reservations(
             request,
@@ -15513,6 +15577,7 @@ def test_list_reservations_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_reservation_rest_bad_request(
@@ -15613,10 +15678,14 @@ def test_get_reservation_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ReservationServiceRestInterceptor, "post_get_reservation"
     ) as post, mock.patch.object(
+        transports.ReservationServiceRestInterceptor,
+        "post_get_reservation_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ReservationServiceRestInterceptor, "pre_get_reservation"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = reservation.GetReservationRequest.pb(
             reservation.GetReservationRequest()
         )
@@ -15640,6 +15709,7 @@ def test_get_reservation_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = reservation.Reservation()
+        post_with_metadata.return_value = reservation.Reservation(), metadata
 
         client.get_reservation(
             request,
@@ -15651,6 +15721,7 @@ def test_get_reservation_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_reservation_rest_bad_request(
@@ -15949,10 +16020,14 @@ def test_update_reservation_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ReservationServiceRestInterceptor, "post_update_reservation"
     ) as post, mock.patch.object(
+        transports.ReservationServiceRestInterceptor,
+        "post_update_reservation_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ReservationServiceRestInterceptor, "pre_update_reservation"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = gcbr_reservation.UpdateReservationRequest.pb(
             gcbr_reservation.UpdateReservationRequest()
         )
@@ -15978,6 +16053,7 @@ def test_update_reservation_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = gcbr_reservation.Reservation()
+        post_with_metadata.return_value = gcbr_reservation.Reservation(), metadata
 
         client.update_reservation(
             request,
@@ -15989,6 +16065,7 @@ def test_update_reservation_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_failover_reservation_rest_bad_request(
@@ -16089,10 +16166,14 @@ def test_failover_reservation_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ReservationServiceRestInterceptor, "post_failover_reservation"
     ) as post, mock.patch.object(
+        transports.ReservationServiceRestInterceptor,
+        "post_failover_reservation_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ReservationServiceRestInterceptor, "pre_failover_reservation"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = reservation.FailoverReservationRequest.pb(
             reservation.FailoverReservationRequest()
         )
@@ -16116,6 +16197,7 @@ def test_failover_reservation_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = reservation.Reservation()
+        post_with_metadata.return_value = reservation.Reservation(), metadata
 
         client.failover_reservation(
             request,
@@ -16127,6 +16209,7 @@ def test_failover_reservation_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_capacity_commitment_rest_bad_request(
@@ -16316,10 +16399,14 @@ def test_create_capacity_commitment_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ReservationServiceRestInterceptor, "post_create_capacity_commitment"
     ) as post, mock.patch.object(
+        transports.ReservationServiceRestInterceptor,
+        "post_create_capacity_commitment_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ReservationServiceRestInterceptor, "pre_create_capacity_commitment"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = reservation.CreateCapacityCommitmentRequest.pb(
             reservation.CreateCapacityCommitmentRequest()
         )
@@ -16345,6 +16432,7 @@ def test_create_capacity_commitment_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = reservation.CapacityCommitment()
+        post_with_metadata.return_value = reservation.CapacityCommitment(), metadata
 
         client.create_capacity_commitment(
             request,
@@ -16356,6 +16444,7 @@ def test_create_capacity_commitment_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_capacity_commitments_rest_bad_request(
@@ -16440,10 +16529,14 @@ def test_list_capacity_commitments_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ReservationServiceRestInterceptor, "post_list_capacity_commitments"
     ) as post, mock.patch.object(
+        transports.ReservationServiceRestInterceptor,
+        "post_list_capacity_commitments_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ReservationServiceRestInterceptor, "pre_list_capacity_commitments"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = reservation.ListCapacityCommitmentsRequest.pb(
             reservation.ListCapacityCommitmentsRequest()
         )
@@ -16469,6 +16562,10 @@ def test_list_capacity_commitments_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = reservation.ListCapacityCommitmentsResponse()
+        post_with_metadata.return_value = (
+            reservation.ListCapacityCommitmentsResponse(),
+            metadata,
+        )
 
         client.list_capacity_commitments(
             request,
@@ -16480,6 +16577,7 @@ def test_list_capacity_commitments_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_capacity_commitment_rest_bad_request(
@@ -16582,10 +16680,14 @@ def test_get_capacity_commitment_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ReservationServiceRestInterceptor, "post_get_capacity_commitment"
     ) as post, mock.patch.object(
+        transports.ReservationServiceRestInterceptor,
+        "post_get_capacity_commitment_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ReservationServiceRestInterceptor, "pre_get_capacity_commitment"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = reservation.GetCapacityCommitmentRequest.pb(
             reservation.GetCapacityCommitmentRequest()
         )
@@ -16611,6 +16713,7 @@ def test_get_capacity_commitment_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = reservation.CapacityCommitment()
+        post_with_metadata.return_value = reservation.CapacityCommitment(), metadata
 
         client.get_capacity_commitment(
             request,
@@ -16622,6 +16725,7 @@ def test_get_capacity_commitment_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_capacity_commitment_rest_bad_request(
@@ -16932,10 +17036,14 @@ def test_update_capacity_commitment_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ReservationServiceRestInterceptor, "post_update_capacity_commitment"
     ) as post, mock.patch.object(
+        transports.ReservationServiceRestInterceptor,
+        "post_update_capacity_commitment_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ReservationServiceRestInterceptor, "pre_update_capacity_commitment"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = reservation.UpdateCapacityCommitmentRequest.pb(
             reservation.UpdateCapacityCommitmentRequest()
         )
@@ -16961,6 +17069,7 @@ def test_update_capacity_commitment_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = reservation.CapacityCommitment()
+        post_with_metadata.return_value = reservation.CapacityCommitment(), metadata
 
         client.update_capacity_commitment(
             request,
@@ -16972,6 +17081,7 @@ def test_update_capacity_commitment_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_split_capacity_commitment_rest_bad_request(
@@ -17057,10 +17167,14 @@ def test_split_capacity_commitment_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ReservationServiceRestInterceptor, "post_split_capacity_commitment"
     ) as post, mock.patch.object(
+        transports.ReservationServiceRestInterceptor,
+        "post_split_capacity_commitment_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ReservationServiceRestInterceptor, "pre_split_capacity_commitment"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = reservation.SplitCapacityCommitmentRequest.pb(
             reservation.SplitCapacityCommitmentRequest()
         )
@@ -17086,6 +17200,10 @@ def test_split_capacity_commitment_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = reservation.SplitCapacityCommitmentResponse()
+        post_with_metadata.return_value = (
+            reservation.SplitCapacityCommitmentResponse(),
+            metadata,
+        )
 
         client.split_capacity_commitment(
             request,
@@ -17097,6 +17215,7 @@ def test_split_capacity_commitment_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_merge_capacity_commitments_rest_bad_request(
@@ -17195,10 +17314,14 @@ def test_merge_capacity_commitments_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ReservationServiceRestInterceptor, "post_merge_capacity_commitments"
     ) as post, mock.patch.object(
+        transports.ReservationServiceRestInterceptor,
+        "post_merge_capacity_commitments_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ReservationServiceRestInterceptor, "pre_merge_capacity_commitments"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = reservation.MergeCapacityCommitmentsRequest.pb(
             reservation.MergeCapacityCommitmentsRequest()
         )
@@ -17224,6 +17347,7 @@ def test_merge_capacity_commitments_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = reservation.CapacityCommitment()
+        post_with_metadata.return_value = reservation.CapacityCommitment(), metadata
 
         client.merge_capacity_commitments(
             request,
@@ -17235,6 +17359,7 @@ def test_merge_capacity_commitments_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_assignment_rest_bad_request(
@@ -17398,10 +17523,14 @@ def test_create_assignment_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ReservationServiceRestInterceptor, "post_create_assignment"
     ) as post, mock.patch.object(
+        transports.ReservationServiceRestInterceptor,
+        "post_create_assignment_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ReservationServiceRestInterceptor, "pre_create_assignment"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = reservation.CreateAssignmentRequest.pb(
             reservation.CreateAssignmentRequest()
         )
@@ -17425,6 +17554,7 @@ def test_create_assignment_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = reservation.Assignment()
+        post_with_metadata.return_value = reservation.Assignment(), metadata
 
         client.create_assignment(
             request,
@@ -17436,6 +17566,7 @@ def test_create_assignment_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_assignments_rest_bad_request(
@@ -17520,10 +17651,14 @@ def test_list_assignments_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ReservationServiceRestInterceptor, "post_list_assignments"
     ) as post, mock.patch.object(
+        transports.ReservationServiceRestInterceptor,
+        "post_list_assignments_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ReservationServiceRestInterceptor, "pre_list_assignments"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = reservation.ListAssignmentsRequest.pb(
             reservation.ListAssignmentsRequest()
         )
@@ -17549,6 +17684,10 @@ def test_list_assignments_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = reservation.ListAssignmentsResponse()
+        post_with_metadata.return_value = (
+            reservation.ListAssignmentsResponse(),
+            metadata,
+        )
 
         client.list_assignments(
             request,
@@ -17560,6 +17699,7 @@ def test_list_assignments_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_assignment_rest_bad_request(
@@ -17757,10 +17897,14 @@ def test_search_assignments_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ReservationServiceRestInterceptor, "post_search_assignments"
     ) as post, mock.patch.object(
+        transports.ReservationServiceRestInterceptor,
+        "post_search_assignments_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ReservationServiceRestInterceptor, "pre_search_assignments"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = reservation.SearchAssignmentsRequest.pb(
             reservation.SearchAssignmentsRequest()
         )
@@ -17786,6 +17930,10 @@ def test_search_assignments_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = reservation.SearchAssignmentsResponse()
+        post_with_metadata.return_value = (
+            reservation.SearchAssignmentsResponse(),
+            metadata,
+        )
 
         client.search_assignments(
             request,
@@ -17797,6 +17945,7 @@ def test_search_assignments_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_search_all_assignments_rest_bad_request(
@@ -17881,10 +18030,14 @@ def test_search_all_assignments_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ReservationServiceRestInterceptor, "post_search_all_assignments"
     ) as post, mock.patch.object(
+        transports.ReservationServiceRestInterceptor,
+        "post_search_all_assignments_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ReservationServiceRestInterceptor, "pre_search_all_assignments"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = reservation.SearchAllAssignmentsRequest.pb(
             reservation.SearchAllAssignmentsRequest()
         )
@@ -17910,6 +18063,10 @@ def test_search_all_assignments_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = reservation.SearchAllAssignmentsResponse()
+        post_with_metadata.return_value = (
+            reservation.SearchAllAssignmentsResponse(),
+            metadata,
+        )
 
         client.search_all_assignments(
             request,
@@ -17921,6 +18078,7 @@ def test_search_all_assignments_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_move_assignment_rest_bad_request(
@@ -18015,10 +18173,14 @@ def test_move_assignment_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ReservationServiceRestInterceptor, "post_move_assignment"
     ) as post, mock.patch.object(
+        transports.ReservationServiceRestInterceptor,
+        "post_move_assignment_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ReservationServiceRestInterceptor, "pre_move_assignment"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = reservation.MoveAssignmentRequest.pb(
             reservation.MoveAssignmentRequest()
         )
@@ -18042,6 +18204,7 @@ def test_move_assignment_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = reservation.Assignment()
+        post_with_metadata.return_value = reservation.Assignment(), metadata
 
         client.move_assignment(
             request,
@@ -18053,6 +18216,7 @@ def test_move_assignment_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_assignment_rest_bad_request(
@@ -18224,10 +18388,14 @@ def test_update_assignment_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ReservationServiceRestInterceptor, "post_update_assignment"
     ) as post, mock.patch.object(
+        transports.ReservationServiceRestInterceptor,
+        "post_update_assignment_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ReservationServiceRestInterceptor, "pre_update_assignment"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = reservation.UpdateAssignmentRequest.pb(
             reservation.UpdateAssignmentRequest()
         )
@@ -18251,6 +18419,7 @@ def test_update_assignment_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = reservation.Assignment()
+        post_with_metadata.return_value = reservation.Assignment(), metadata
 
         client.update_assignment(
             request,
@@ -18262,6 +18431,7 @@ def test_update_assignment_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_bi_reservation_rest_bad_request(
@@ -18348,10 +18518,14 @@ def test_get_bi_reservation_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ReservationServiceRestInterceptor, "post_get_bi_reservation"
     ) as post, mock.patch.object(
+        transports.ReservationServiceRestInterceptor,
+        "post_get_bi_reservation_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ReservationServiceRestInterceptor, "pre_get_bi_reservation"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = reservation.GetBiReservationRequest.pb(
             reservation.GetBiReservationRequest()
         )
@@ -18375,6 +18549,7 @@ def test_get_bi_reservation_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = reservation.BiReservation()
+        post_with_metadata.return_value = reservation.BiReservation(), metadata
 
         client.get_bi_reservation(
             request,
@@ -18386,6 +18561,7 @@ def test_get_bi_reservation_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_bi_reservation_rest_bad_request(
@@ -18555,10 +18731,14 @@ def test_update_bi_reservation_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ReservationServiceRestInterceptor, "post_update_bi_reservation"
     ) as post, mock.patch.object(
+        transports.ReservationServiceRestInterceptor,
+        "post_update_bi_reservation_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ReservationServiceRestInterceptor, "pre_update_bi_reservation"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = reservation.UpdateBiReservationRequest.pb(
             reservation.UpdateBiReservationRequest()
         )
@@ -18582,6 +18762,7 @@ def test_update_bi_reservation_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = reservation.BiReservation()
+        post_with_metadata.return_value = reservation.BiReservation(), metadata
 
         client.update_bi_reservation(
             request,
@@ -18593,6 +18774,7 @@ def test_update_bi_reservation_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_initialize_client_w_rest():

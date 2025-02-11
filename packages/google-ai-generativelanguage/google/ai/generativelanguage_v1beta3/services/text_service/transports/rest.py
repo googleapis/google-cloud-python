@@ -126,11 +126,36 @@ class TextServiceRestInterceptor:
     ) -> text_service.BatchEmbedTextResponse:
         """Post-rpc interceptor for batch_embed_text
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_batch_embed_text_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the TextService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_batch_embed_text` interceptor runs
+        before the `post_batch_embed_text_with_metadata` interceptor.
         """
         return response
+
+    def post_batch_embed_text_with_metadata(
+        self,
+        response: text_service.BatchEmbedTextResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        text_service.BatchEmbedTextResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for batch_embed_text
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the TextService server but before it is returned to user code.
+
+        We recommend only using this `post_batch_embed_text_with_metadata`
+        interceptor in new development instead of the `post_batch_embed_text` interceptor.
+        When both interceptors are used, this `post_batch_embed_text_with_metadata` interceptor runs after the
+        `post_batch_embed_text` interceptor. The (possibly modified) response returned by
+        `post_batch_embed_text` will be passed to
+        `post_batch_embed_text_with_metadata`.
+        """
+        return response, metadata
 
     def pre_count_text_tokens(
         self,
@@ -151,11 +176,36 @@ class TextServiceRestInterceptor:
     ) -> text_service.CountTextTokensResponse:
         """Post-rpc interceptor for count_text_tokens
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_count_text_tokens_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the TextService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_count_text_tokens` interceptor runs
+        before the `post_count_text_tokens_with_metadata` interceptor.
         """
         return response
+
+    def post_count_text_tokens_with_metadata(
+        self,
+        response: text_service.CountTextTokensResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        text_service.CountTextTokensResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for count_text_tokens
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the TextService server but before it is returned to user code.
+
+        We recommend only using this `post_count_text_tokens_with_metadata`
+        interceptor in new development instead of the `post_count_text_tokens` interceptor.
+        When both interceptors are used, this `post_count_text_tokens_with_metadata` interceptor runs after the
+        `post_count_text_tokens` interceptor. The (possibly modified) response returned by
+        `post_count_text_tokens` will be passed to
+        `post_count_text_tokens_with_metadata`.
+        """
+        return response, metadata
 
     def pre_embed_text(
         self,
@@ -174,11 +224,34 @@ class TextServiceRestInterceptor:
     ) -> text_service.EmbedTextResponse:
         """Post-rpc interceptor for embed_text
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_embed_text_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the TextService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_embed_text` interceptor runs
+        before the `post_embed_text_with_metadata` interceptor.
         """
         return response
+
+    def post_embed_text_with_metadata(
+        self,
+        response: text_service.EmbedTextResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[text_service.EmbedTextResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for embed_text
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the TextService server but before it is returned to user code.
+
+        We recommend only using this `post_embed_text_with_metadata`
+        interceptor in new development instead of the `post_embed_text` interceptor.
+        When both interceptors are used, this `post_embed_text_with_metadata` interceptor runs after the
+        `post_embed_text` interceptor. The (possibly modified) response returned by
+        `post_embed_text` will be passed to
+        `post_embed_text_with_metadata`.
+        """
+        return response, metadata
 
     def pre_generate_text(
         self,
@@ -199,11 +272,36 @@ class TextServiceRestInterceptor:
     ) -> text_service.GenerateTextResponse:
         """Post-rpc interceptor for generate_text
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_generate_text_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the TextService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_generate_text` interceptor runs
+        before the `post_generate_text_with_metadata` interceptor.
         """
         return response
+
+    def post_generate_text_with_metadata(
+        self,
+        response: text_service.GenerateTextResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        text_service.GenerateTextResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for generate_text
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the TextService server but before it is returned to user code.
+
+        We recommend only using this `post_generate_text_with_metadata`
+        interceptor in new development instead of the `post_generate_text` interceptor.
+        When both interceptors are used, this `post_generate_text_with_metadata` interceptor runs after the
+        `post_generate_text` interceptor. The (possibly modified) response returned by
+        `post_generate_text` will be passed to
+        `post_generate_text_with_metadata`.
+        """
+        return response, metadata
 
 
 @dataclasses.dataclass
@@ -421,6 +519,10 @@ class TextServiceRestTransport(_BaseTextServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_batch_embed_text(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_batch_embed_text_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -579,6 +681,10 @@ class TextServiceRestTransport(_BaseTextServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_count_text_tokens(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_count_text_tokens_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -730,6 +836,10 @@ class TextServiceRestTransport(_BaseTextServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_embed_text(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_embed_text_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -885,6 +995,10 @@ class TextServiceRestTransport(_BaseTextServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_generate_text(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_generate_text_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

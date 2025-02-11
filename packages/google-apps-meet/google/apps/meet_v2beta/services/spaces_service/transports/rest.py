@@ -146,11 +146,34 @@ class SpacesServiceRestInterceptor:
     def post_create_member(self, response: resource.Member) -> resource.Member:
         """Post-rpc interceptor for create_member
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_member_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the SpacesService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_member` interceptor runs
+        before the `post_create_member_with_metadata` interceptor.
         """
         return response
+
+    def post_create_member_with_metadata(
+        self,
+        response: resource.Member,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[resource.Member, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_member
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the SpacesService server but before it is returned to user code.
+
+        We recommend only using this `post_create_member_with_metadata`
+        interceptor in new development instead of the `post_create_member` interceptor.
+        When both interceptors are used, this `post_create_member_with_metadata` interceptor runs after the
+        `post_create_member` interceptor. The (possibly modified) response returned by
+        `post_create_member` will be passed to
+        `post_create_member_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_space(
         self,
@@ -167,11 +190,34 @@ class SpacesServiceRestInterceptor:
     def post_create_space(self, response: resource.Space) -> resource.Space:
         """Post-rpc interceptor for create_space
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_space_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the SpacesService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_space` interceptor runs
+        before the `post_create_space_with_metadata` interceptor.
         """
         return response
+
+    def post_create_space_with_metadata(
+        self,
+        response: resource.Space,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[resource.Space, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_space
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the SpacesService server but before it is returned to user code.
+
+        We recommend only using this `post_create_space_with_metadata`
+        interceptor in new development instead of the `post_create_space` interceptor.
+        When both interceptors are used, this `post_create_space_with_metadata` interceptor runs after the
+        `post_create_space` interceptor. The (possibly modified) response returned by
+        `post_create_space` will be passed to
+        `post_create_space_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_member(
         self,
@@ -214,11 +260,34 @@ class SpacesServiceRestInterceptor:
     def post_get_member(self, response: resource.Member) -> resource.Member:
         """Post-rpc interceptor for get_member
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_member_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the SpacesService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_member` interceptor runs
+        before the `post_get_member_with_metadata` interceptor.
         """
         return response
+
+    def post_get_member_with_metadata(
+        self,
+        response: resource.Member,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[resource.Member, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_member
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the SpacesService server but before it is returned to user code.
+
+        We recommend only using this `post_get_member_with_metadata`
+        interceptor in new development instead of the `post_get_member` interceptor.
+        When both interceptors are used, this `post_get_member_with_metadata` interceptor runs after the
+        `post_get_member` interceptor. The (possibly modified) response returned by
+        `post_get_member` will be passed to
+        `post_get_member_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_space(
         self,
@@ -235,11 +304,34 @@ class SpacesServiceRestInterceptor:
     def post_get_space(self, response: resource.Space) -> resource.Space:
         """Post-rpc interceptor for get_space
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_space_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the SpacesService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_space` interceptor runs
+        before the `post_get_space_with_metadata` interceptor.
         """
         return response
+
+    def post_get_space_with_metadata(
+        self,
+        response: resource.Space,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[resource.Space, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_space
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the SpacesService server but before it is returned to user code.
+
+        We recommend only using this `post_get_space_with_metadata`
+        interceptor in new development instead of the `post_get_space` interceptor.
+        When both interceptors are used, this `post_get_space_with_metadata` interceptor runs after the
+        `post_get_space` interceptor. The (possibly modified) response returned by
+        `post_get_space` will be passed to
+        `post_get_space_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_members(
         self,
@@ -258,11 +350,34 @@ class SpacesServiceRestInterceptor:
     ) -> service.ListMembersResponse:
         """Post-rpc interceptor for list_members
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_members_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the SpacesService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_members` interceptor runs
+        before the `post_list_members_with_metadata` interceptor.
         """
         return response
+
+    def post_list_members_with_metadata(
+        self,
+        response: service.ListMembersResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.ListMembersResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for list_members
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the SpacesService server but before it is returned to user code.
+
+        We recommend only using this `post_list_members_with_metadata`
+        interceptor in new development instead of the `post_list_members` interceptor.
+        When both interceptors are used, this `post_list_members_with_metadata` interceptor runs after the
+        `post_list_members` interceptor. The (possibly modified) response returned by
+        `post_list_members` will be passed to
+        `post_list_members_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_space(
         self,
@@ -279,11 +394,34 @@ class SpacesServiceRestInterceptor:
     def post_update_space(self, response: resource.Space) -> resource.Space:
         """Post-rpc interceptor for update_space
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_space_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the SpacesService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_space` interceptor runs
+        before the `post_update_space_with_metadata` interceptor.
         """
         return response
+
+    def post_update_space_with_metadata(
+        self,
+        response: resource.Space,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[resource.Space, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_space
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the SpacesService server but before it is returned to user code.
+
+        We recommend only using this `post_update_space_with_metadata`
+        interceptor in new development instead of the `post_update_space` interceptor.
+        When both interceptors are used, this `post_update_space_with_metadata` interceptor runs after the
+        `post_update_space` interceptor. The (possibly modified) response returned by
+        `post_update_space` will be passed to
+        `post_update_space_with_metadata`.
+        """
+        return response, metadata
 
 
 @dataclasses.dataclass
@@ -499,6 +637,10 @@ class SpacesServiceRestTransport(_BaseSpacesServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_member(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_member_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -652,6 +794,10 @@ class SpacesServiceRestTransport(_BaseSpacesServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_space(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_space_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1021,6 +1167,10 @@ class SpacesServiceRestTransport(_BaseSpacesServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_member(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_member_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1168,6 +1318,10 @@ class SpacesServiceRestTransport(_BaseSpacesServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_space(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_space_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1311,6 +1465,10 @@ class SpacesServiceRestTransport(_BaseSpacesServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_members(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_members_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1464,6 +1622,10 @@ class SpacesServiceRestTransport(_BaseSpacesServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_space(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_space_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

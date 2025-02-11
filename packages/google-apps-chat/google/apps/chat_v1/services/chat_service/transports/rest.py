@@ -326,11 +326,36 @@ class ChatServiceRestInterceptor:
     ) -> space.CompleteImportSpaceResponse:
         """Post-rpc interceptor for complete_import_space
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_complete_import_space_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ChatService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_complete_import_space` interceptor runs
+        before the `post_complete_import_space_with_metadata` interceptor.
         """
         return response
+
+    def post_complete_import_space_with_metadata(
+        self,
+        response: space.CompleteImportSpaceResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        space.CompleteImportSpaceResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for complete_import_space
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ChatService server but before it is returned to user code.
+
+        We recommend only using this `post_complete_import_space_with_metadata`
+        interceptor in new development instead of the `post_complete_import_space` interceptor.
+        When both interceptors are used, this `post_complete_import_space_with_metadata` interceptor runs after the
+        `post_complete_import_space` interceptor. The (possibly modified) response returned by
+        `post_complete_import_space` will be passed to
+        `post_complete_import_space_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_membership(
         self,
@@ -351,11 +376,34 @@ class ChatServiceRestInterceptor:
     ) -> gc_membership.Membership:
         """Post-rpc interceptor for create_membership
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_membership_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ChatService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_membership` interceptor runs
+        before the `post_create_membership_with_metadata` interceptor.
         """
         return response
+
+    def post_create_membership_with_metadata(
+        self,
+        response: gc_membership.Membership,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[gc_membership.Membership, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_membership
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ChatService server but before it is returned to user code.
+
+        We recommend only using this `post_create_membership_with_metadata`
+        interceptor in new development instead of the `post_create_membership` interceptor.
+        When both interceptors are used, this `post_create_membership_with_metadata` interceptor runs after the
+        `post_create_membership` interceptor. The (possibly modified) response returned by
+        `post_create_membership` will be passed to
+        `post_create_membership_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_message(
         self,
@@ -374,11 +422,34 @@ class ChatServiceRestInterceptor:
     def post_create_message(self, response: gc_message.Message) -> gc_message.Message:
         """Post-rpc interceptor for create_message
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_message_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ChatService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_message` interceptor runs
+        before the `post_create_message_with_metadata` interceptor.
         """
         return response
+
+    def post_create_message_with_metadata(
+        self,
+        response: gc_message.Message,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[gc_message.Message, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_message
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ChatService server but before it is returned to user code.
+
+        We recommend only using this `post_create_message_with_metadata`
+        interceptor in new development instead of the `post_create_message` interceptor.
+        When both interceptors are used, this `post_create_message_with_metadata` interceptor runs after the
+        `post_create_message` interceptor. The (possibly modified) response returned by
+        `post_create_message` will be passed to
+        `post_create_message_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_reaction(
         self,
@@ -399,11 +470,34 @@ class ChatServiceRestInterceptor:
     ) -> gc_reaction.Reaction:
         """Post-rpc interceptor for create_reaction
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_reaction_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ChatService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_reaction` interceptor runs
+        before the `post_create_reaction_with_metadata` interceptor.
         """
         return response
+
+    def post_create_reaction_with_metadata(
+        self,
+        response: gc_reaction.Reaction,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[gc_reaction.Reaction, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_reaction
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ChatService server but before it is returned to user code.
+
+        We recommend only using this `post_create_reaction_with_metadata`
+        interceptor in new development instead of the `post_create_reaction` interceptor.
+        When both interceptors are used, this `post_create_reaction_with_metadata` interceptor runs after the
+        `post_create_reaction` interceptor. The (possibly modified) response returned by
+        `post_create_reaction` will be passed to
+        `post_create_reaction_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_space(
         self,
@@ -420,11 +514,34 @@ class ChatServiceRestInterceptor:
     def post_create_space(self, response: gc_space.Space) -> gc_space.Space:
         """Post-rpc interceptor for create_space
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_space_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ChatService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_space` interceptor runs
+        before the `post_create_space_with_metadata` interceptor.
         """
         return response
+
+    def post_create_space_with_metadata(
+        self,
+        response: gc_space.Space,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[gc_space.Space, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_space
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ChatService server but before it is returned to user code.
+
+        We recommend only using this `post_create_space_with_metadata`
+        interceptor in new development instead of the `post_create_space` interceptor.
+        When both interceptors are used, this `post_create_space_with_metadata` interceptor runs after the
+        `post_create_space` interceptor. The (possibly modified) response returned by
+        `post_create_space` will be passed to
+        `post_create_space_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_membership(
         self,
@@ -445,11 +562,34 @@ class ChatServiceRestInterceptor:
     ) -> membership.Membership:
         """Post-rpc interceptor for delete_membership
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_membership_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ChatService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_membership` interceptor runs
+        before the `post_delete_membership_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_membership_with_metadata(
+        self,
+        response: membership.Membership,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[membership.Membership, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_membership
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ChatService server but before it is returned to user code.
+
+        We recommend only using this `post_delete_membership_with_metadata`
+        interceptor in new development instead of the `post_delete_membership` interceptor.
+        When both interceptors are used, this `post_delete_membership_with_metadata` interceptor runs after the
+        `post_delete_membership` interceptor. The (possibly modified) response returned by
+        `post_delete_membership` will be passed to
+        `post_delete_membership_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_message(
         self,
@@ -502,11 +642,32 @@ class ChatServiceRestInterceptor:
     def post_find_direct_message(self, response: space.Space) -> space.Space:
         """Post-rpc interceptor for find_direct_message
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_find_direct_message_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ChatService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_find_direct_message` interceptor runs
+        before the `post_find_direct_message_with_metadata` interceptor.
         """
         return response
+
+    def post_find_direct_message_with_metadata(
+        self, response: space.Space, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[space.Space, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for find_direct_message
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ChatService server but before it is returned to user code.
+
+        We recommend only using this `post_find_direct_message_with_metadata`
+        interceptor in new development instead of the `post_find_direct_message` interceptor.
+        When both interceptors are used, this `post_find_direct_message_with_metadata` interceptor runs after the
+        `post_find_direct_message` interceptor. The (possibly modified) response returned by
+        `post_find_direct_message` will be passed to
+        `post_find_direct_message_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_attachment(
         self,
@@ -527,11 +688,34 @@ class ChatServiceRestInterceptor:
     ) -> attachment.Attachment:
         """Post-rpc interceptor for get_attachment
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_attachment_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ChatService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_attachment` interceptor runs
+        before the `post_get_attachment_with_metadata` interceptor.
         """
         return response
+
+    def post_get_attachment_with_metadata(
+        self,
+        response: attachment.Attachment,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[attachment.Attachment, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_attachment
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ChatService server but before it is returned to user code.
+
+        We recommend only using this `post_get_attachment_with_metadata`
+        interceptor in new development instead of the `post_get_attachment` interceptor.
+        When both interceptors are used, this `post_get_attachment_with_metadata` interceptor runs after the
+        `post_get_attachment` interceptor. The (possibly modified) response returned by
+        `post_get_attachment` will be passed to
+        `post_get_attachment_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_membership(
         self,
@@ -552,11 +736,34 @@ class ChatServiceRestInterceptor:
     ) -> membership.Membership:
         """Post-rpc interceptor for get_membership
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_membership_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ChatService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_membership` interceptor runs
+        before the `post_get_membership_with_metadata` interceptor.
         """
         return response
+
+    def post_get_membership_with_metadata(
+        self,
+        response: membership.Membership,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[membership.Membership, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_membership
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ChatService server but before it is returned to user code.
+
+        We recommend only using this `post_get_membership_with_metadata`
+        interceptor in new development instead of the `post_get_membership` interceptor.
+        When both interceptors are used, this `post_get_membership_with_metadata` interceptor runs after the
+        `post_get_membership` interceptor. The (possibly modified) response returned by
+        `post_get_membership` will be passed to
+        `post_get_membership_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_message(
         self,
@@ -573,11 +780,34 @@ class ChatServiceRestInterceptor:
     def post_get_message(self, response: message.Message) -> message.Message:
         """Post-rpc interceptor for get_message
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_message_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ChatService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_message` interceptor runs
+        before the `post_get_message_with_metadata` interceptor.
         """
         return response
+
+    def post_get_message_with_metadata(
+        self,
+        response: message.Message,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[message.Message, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_message
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ChatService server but before it is returned to user code.
+
+        We recommend only using this `post_get_message_with_metadata`
+        interceptor in new development instead of the `post_get_message` interceptor.
+        When both interceptors are used, this `post_get_message_with_metadata` interceptor runs after the
+        `post_get_message` interceptor. The (possibly modified) response returned by
+        `post_get_message` will be passed to
+        `post_get_message_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_space(
         self,
@@ -594,11 +824,32 @@ class ChatServiceRestInterceptor:
     def post_get_space(self, response: space.Space) -> space.Space:
         """Post-rpc interceptor for get_space
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_space_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ChatService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_space` interceptor runs
+        before the `post_get_space_with_metadata` interceptor.
         """
         return response
+
+    def post_get_space_with_metadata(
+        self, response: space.Space, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[space.Space, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_space
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ChatService server but before it is returned to user code.
+
+        We recommend only using this `post_get_space_with_metadata`
+        interceptor in new development instead of the `post_get_space` interceptor.
+        When both interceptors are used, this `post_get_space_with_metadata` interceptor runs after the
+        `post_get_space` interceptor. The (possibly modified) response returned by
+        `post_get_space` will be passed to
+        `post_get_space_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_space_event(
         self,
@@ -619,11 +870,34 @@ class ChatServiceRestInterceptor:
     ) -> space_event.SpaceEvent:
         """Post-rpc interceptor for get_space_event
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_space_event_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ChatService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_space_event` interceptor runs
+        before the `post_get_space_event_with_metadata` interceptor.
         """
         return response
+
+    def post_get_space_event_with_metadata(
+        self,
+        response: space_event.SpaceEvent,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[space_event.SpaceEvent, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_space_event
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ChatService server but before it is returned to user code.
+
+        We recommend only using this `post_get_space_event_with_metadata`
+        interceptor in new development instead of the `post_get_space_event` interceptor.
+        When both interceptors are used, this `post_get_space_event_with_metadata` interceptor runs after the
+        `post_get_space_event` interceptor. The (possibly modified) response returned by
+        `post_get_space_event` will be passed to
+        `post_get_space_event_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_space_read_state(
         self,
@@ -645,11 +919,36 @@ class ChatServiceRestInterceptor:
     ) -> space_read_state.SpaceReadState:
         """Post-rpc interceptor for get_space_read_state
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_space_read_state_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ChatService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_space_read_state` interceptor runs
+        before the `post_get_space_read_state_with_metadata` interceptor.
         """
         return response
+
+    def post_get_space_read_state_with_metadata(
+        self,
+        response: space_read_state.SpaceReadState,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        space_read_state.SpaceReadState, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for get_space_read_state
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ChatService server but before it is returned to user code.
+
+        We recommend only using this `post_get_space_read_state_with_metadata`
+        interceptor in new development instead of the `post_get_space_read_state` interceptor.
+        When both interceptors are used, this `post_get_space_read_state_with_metadata` interceptor runs after the
+        `post_get_space_read_state` interceptor. The (possibly modified) response returned by
+        `post_get_space_read_state` will be passed to
+        `post_get_space_read_state_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_thread_read_state(
         self,
@@ -671,11 +970,36 @@ class ChatServiceRestInterceptor:
     ) -> thread_read_state.ThreadReadState:
         """Post-rpc interceptor for get_thread_read_state
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_thread_read_state_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ChatService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_thread_read_state` interceptor runs
+        before the `post_get_thread_read_state_with_metadata` interceptor.
         """
         return response
+
+    def post_get_thread_read_state_with_metadata(
+        self,
+        response: thread_read_state.ThreadReadState,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        thread_read_state.ThreadReadState, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for get_thread_read_state
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ChatService server but before it is returned to user code.
+
+        We recommend only using this `post_get_thread_read_state_with_metadata`
+        interceptor in new development instead of the `post_get_thread_read_state` interceptor.
+        When both interceptors are used, this `post_get_thread_read_state_with_metadata` interceptor runs after the
+        `post_get_thread_read_state` interceptor. The (possibly modified) response returned by
+        `post_get_thread_read_state` will be passed to
+        `post_get_thread_read_state_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_memberships(
         self,
@@ -696,11 +1020,36 @@ class ChatServiceRestInterceptor:
     ) -> membership.ListMembershipsResponse:
         """Post-rpc interceptor for list_memberships
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_memberships_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ChatService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_memberships` interceptor runs
+        before the `post_list_memberships_with_metadata` interceptor.
         """
         return response
+
+    def post_list_memberships_with_metadata(
+        self,
+        response: membership.ListMembershipsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        membership.ListMembershipsResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_memberships
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ChatService server but before it is returned to user code.
+
+        We recommend only using this `post_list_memberships_with_metadata`
+        interceptor in new development instead of the `post_list_memberships` interceptor.
+        When both interceptors are used, this `post_list_memberships_with_metadata` interceptor runs after the
+        `post_list_memberships` interceptor. The (possibly modified) response returned by
+        `post_list_memberships` will be passed to
+        `post_list_memberships_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_messages(
         self,
@@ -719,11 +1068,34 @@ class ChatServiceRestInterceptor:
     ) -> message.ListMessagesResponse:
         """Post-rpc interceptor for list_messages
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_messages_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ChatService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_messages` interceptor runs
+        before the `post_list_messages_with_metadata` interceptor.
         """
         return response
+
+    def post_list_messages_with_metadata(
+        self,
+        response: message.ListMessagesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[message.ListMessagesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for list_messages
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ChatService server but before it is returned to user code.
+
+        We recommend only using this `post_list_messages_with_metadata`
+        interceptor in new development instead of the `post_list_messages` interceptor.
+        When both interceptors are used, this `post_list_messages_with_metadata` interceptor runs after the
+        `post_list_messages` interceptor. The (possibly modified) response returned by
+        `post_list_messages` will be passed to
+        `post_list_messages_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_reactions(
         self,
@@ -742,11 +1114,34 @@ class ChatServiceRestInterceptor:
     ) -> reaction.ListReactionsResponse:
         """Post-rpc interceptor for list_reactions
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_reactions_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ChatService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_reactions` interceptor runs
+        before the `post_list_reactions_with_metadata` interceptor.
         """
         return response
+
+    def post_list_reactions_with_metadata(
+        self,
+        response: reaction.ListReactionsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[reaction.ListReactionsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for list_reactions
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ChatService server but before it is returned to user code.
+
+        We recommend only using this `post_list_reactions_with_metadata`
+        interceptor in new development instead of the `post_list_reactions` interceptor.
+        When both interceptors are used, this `post_list_reactions_with_metadata` interceptor runs after the
+        `post_list_reactions` interceptor. The (possibly modified) response returned by
+        `post_list_reactions` will be passed to
+        `post_list_reactions_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_space_events(
         self,
@@ -767,11 +1162,36 @@ class ChatServiceRestInterceptor:
     ) -> space_event.ListSpaceEventsResponse:
         """Post-rpc interceptor for list_space_events
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_space_events_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ChatService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_space_events` interceptor runs
+        before the `post_list_space_events_with_metadata` interceptor.
         """
         return response
+
+    def post_list_space_events_with_metadata(
+        self,
+        response: space_event.ListSpaceEventsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        space_event.ListSpaceEventsResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_space_events
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ChatService server but before it is returned to user code.
+
+        We recommend only using this `post_list_space_events_with_metadata`
+        interceptor in new development instead of the `post_list_space_events` interceptor.
+        When both interceptors are used, this `post_list_space_events_with_metadata` interceptor runs after the
+        `post_list_space_events` interceptor. The (possibly modified) response returned by
+        `post_list_space_events` will be passed to
+        `post_list_space_events_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_spaces(
         self,
@@ -790,11 +1210,34 @@ class ChatServiceRestInterceptor:
     ) -> space.ListSpacesResponse:
         """Post-rpc interceptor for list_spaces
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_spaces_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ChatService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_spaces` interceptor runs
+        before the `post_list_spaces_with_metadata` interceptor.
         """
         return response
+
+    def post_list_spaces_with_metadata(
+        self,
+        response: space.ListSpacesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[space.ListSpacesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for list_spaces
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ChatService server but before it is returned to user code.
+
+        We recommend only using this `post_list_spaces_with_metadata`
+        interceptor in new development instead of the `post_list_spaces` interceptor.
+        When both interceptors are used, this `post_list_spaces_with_metadata` interceptor runs after the
+        `post_list_spaces` interceptor. The (possibly modified) response returned by
+        `post_list_spaces` will be passed to
+        `post_list_spaces_with_metadata`.
+        """
+        return response, metadata
 
     def pre_search_spaces(
         self,
@@ -813,11 +1256,34 @@ class ChatServiceRestInterceptor:
     ) -> space.SearchSpacesResponse:
         """Post-rpc interceptor for search_spaces
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_search_spaces_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ChatService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_search_spaces` interceptor runs
+        before the `post_search_spaces_with_metadata` interceptor.
         """
         return response
+
+    def post_search_spaces_with_metadata(
+        self,
+        response: space.SearchSpacesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[space.SearchSpacesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for search_spaces
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ChatService server but before it is returned to user code.
+
+        We recommend only using this `post_search_spaces_with_metadata`
+        interceptor in new development instead of the `post_search_spaces` interceptor.
+        When both interceptors are used, this `post_search_spaces_with_metadata` interceptor runs after the
+        `post_search_spaces` interceptor. The (possibly modified) response returned by
+        `post_search_spaces` will be passed to
+        `post_search_spaces_with_metadata`.
+        """
+        return response, metadata
 
     def pre_set_up_space(
         self,
@@ -834,11 +1300,32 @@ class ChatServiceRestInterceptor:
     def post_set_up_space(self, response: space.Space) -> space.Space:
         """Post-rpc interceptor for set_up_space
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_set_up_space_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ChatService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_set_up_space` interceptor runs
+        before the `post_set_up_space_with_metadata` interceptor.
         """
         return response
+
+    def post_set_up_space_with_metadata(
+        self, response: space.Space, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[space.Space, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for set_up_space
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ChatService server but before it is returned to user code.
+
+        We recommend only using this `post_set_up_space_with_metadata`
+        interceptor in new development instead of the `post_set_up_space` interceptor.
+        When both interceptors are used, this `post_set_up_space_with_metadata` interceptor runs after the
+        `post_set_up_space` interceptor. The (possibly modified) response returned by
+        `post_set_up_space` will be passed to
+        `post_set_up_space_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_membership(
         self,
@@ -859,11 +1346,34 @@ class ChatServiceRestInterceptor:
     ) -> gc_membership.Membership:
         """Post-rpc interceptor for update_membership
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_membership_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ChatService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_membership` interceptor runs
+        before the `post_update_membership_with_metadata` interceptor.
         """
         return response
+
+    def post_update_membership_with_metadata(
+        self,
+        response: gc_membership.Membership,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[gc_membership.Membership, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_membership
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ChatService server but before it is returned to user code.
+
+        We recommend only using this `post_update_membership_with_metadata`
+        interceptor in new development instead of the `post_update_membership` interceptor.
+        When both interceptors are used, this `post_update_membership_with_metadata` interceptor runs after the
+        `post_update_membership` interceptor. The (possibly modified) response returned by
+        `post_update_membership` will be passed to
+        `post_update_membership_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_message(
         self,
@@ -882,11 +1392,34 @@ class ChatServiceRestInterceptor:
     def post_update_message(self, response: gc_message.Message) -> gc_message.Message:
         """Post-rpc interceptor for update_message
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_message_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ChatService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_message` interceptor runs
+        before the `post_update_message_with_metadata` interceptor.
         """
         return response
+
+    def post_update_message_with_metadata(
+        self,
+        response: gc_message.Message,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[gc_message.Message, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_message
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ChatService server but before it is returned to user code.
+
+        We recommend only using this `post_update_message_with_metadata`
+        interceptor in new development instead of the `post_update_message` interceptor.
+        When both interceptors are used, this `post_update_message_with_metadata` interceptor runs after the
+        `post_update_message` interceptor. The (possibly modified) response returned by
+        `post_update_message` will be passed to
+        `post_update_message_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_space(
         self,
@@ -903,11 +1436,34 @@ class ChatServiceRestInterceptor:
     def post_update_space(self, response: gc_space.Space) -> gc_space.Space:
         """Post-rpc interceptor for update_space
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_space_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ChatService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_space` interceptor runs
+        before the `post_update_space_with_metadata` interceptor.
         """
         return response
+
+    def post_update_space_with_metadata(
+        self,
+        response: gc_space.Space,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[gc_space.Space, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_space
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ChatService server but before it is returned to user code.
+
+        We recommend only using this `post_update_space_with_metadata`
+        interceptor in new development instead of the `post_update_space` interceptor.
+        When both interceptors are used, this `post_update_space_with_metadata` interceptor runs after the
+        `post_update_space` interceptor. The (possibly modified) response returned by
+        `post_update_space` will be passed to
+        `post_update_space_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_space_read_state(
         self,
@@ -929,11 +1485,36 @@ class ChatServiceRestInterceptor:
     ) -> gc_space_read_state.SpaceReadState:
         """Post-rpc interceptor for update_space_read_state
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_space_read_state_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ChatService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_space_read_state` interceptor runs
+        before the `post_update_space_read_state_with_metadata` interceptor.
         """
         return response
+
+    def post_update_space_read_state_with_metadata(
+        self,
+        response: gc_space_read_state.SpaceReadState,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        gc_space_read_state.SpaceReadState, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for update_space_read_state
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ChatService server but before it is returned to user code.
+
+        We recommend only using this `post_update_space_read_state_with_metadata`
+        interceptor in new development instead of the `post_update_space_read_state` interceptor.
+        When both interceptors are used, this `post_update_space_read_state_with_metadata` interceptor runs after the
+        `post_update_space_read_state` interceptor. The (possibly modified) response returned by
+        `post_update_space_read_state` will be passed to
+        `post_update_space_read_state_with_metadata`.
+        """
+        return response, metadata
 
     def pre_upload_attachment(
         self,
@@ -954,11 +1535,36 @@ class ChatServiceRestInterceptor:
     ) -> attachment.UploadAttachmentResponse:
         """Post-rpc interceptor for upload_attachment
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_upload_attachment_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ChatService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_upload_attachment` interceptor runs
+        before the `post_upload_attachment_with_metadata` interceptor.
         """
         return response
+
+    def post_upload_attachment_with_metadata(
+        self,
+        response: attachment.UploadAttachmentResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        attachment.UploadAttachmentResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for upload_attachment
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ChatService server but before it is returned to user code.
+
+        We recommend only using this `post_upload_attachment_with_metadata`
+        interceptor in new development instead of the `post_upload_attachment` interceptor.
+        When both interceptors are used, this `post_upload_attachment_with_metadata` interceptor runs after the
+        `post_upload_attachment` interceptor. The (possibly modified) response returned by
+        `post_upload_attachment` will be passed to
+        `post_upload_attachment_with_metadata`.
+        """
+        return response, metadata
 
 
 @dataclasses.dataclass
@@ -1176,6 +1782,10 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_complete_import_space(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_complete_import_space_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1331,6 +1941,10 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_membership(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_membership_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1481,6 +2095,10 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_message(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_message_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1627,6 +2245,10 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_reaction(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_reaction_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1784,6 +2406,10 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_space(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_space_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1931,6 +2557,10 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_membership(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_membership_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2402,6 +3032,10 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_find_direct_message(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_find_direct_message_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2544,6 +3178,10 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_attachment(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_attachment_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2691,6 +3329,10 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_membership(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_membership_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2835,6 +3477,10 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_message(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_message_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2981,6 +3627,10 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_space(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_space_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3128,6 +3778,10 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_space_event(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_space_event_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3274,6 +3928,10 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_space_read_state(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_space_read_state_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3420,6 +4078,10 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_thread_read_state(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_thread_read_state_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3567,6 +4229,10 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_memberships(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_memberships_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3716,6 +4382,10 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_messages(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_messages_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3858,6 +4528,10 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_reactions(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_reactions_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4003,6 +4677,10 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_space_events(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_space_events_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4152,6 +4830,10 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_spaces(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_spaces_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4300,6 +4982,10 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_search_spaces(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_search_spaces_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4455,6 +5141,10 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_set_up_space(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_set_up_space_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4608,6 +5298,10 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_membership(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_membership_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4758,6 +5452,10 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_message(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_message_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4914,6 +5612,10 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_space(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_space_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -5066,6 +5768,10 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_space_read_state(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_space_read_state_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -5216,6 +5922,10 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_upload_attachment(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_upload_attachment_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

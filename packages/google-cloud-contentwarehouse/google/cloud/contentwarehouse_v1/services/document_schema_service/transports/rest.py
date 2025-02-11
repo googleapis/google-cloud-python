@@ -136,11 +136,36 @@ class DocumentSchemaServiceRestInterceptor:
     ) -> gcc_document_schema.DocumentSchema:
         """Post-rpc interceptor for create_document_schema
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_document_schema_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the DocumentSchemaService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_document_schema` interceptor runs
+        before the `post_create_document_schema_with_metadata` interceptor.
         """
         return response
+
+    def post_create_document_schema_with_metadata(
+        self,
+        response: gcc_document_schema.DocumentSchema,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        gcc_document_schema.DocumentSchema, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for create_document_schema
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the DocumentSchemaService server but before it is returned to user code.
+
+        We recommend only using this `post_create_document_schema_with_metadata`
+        interceptor in new development instead of the `post_create_document_schema` interceptor.
+        When both interceptors are used, this `post_create_document_schema_with_metadata` interceptor runs after the
+        `post_create_document_schema` interceptor. The (possibly modified) response returned by
+        `post_create_document_schema` will be passed to
+        `post_create_document_schema_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_document_schema(
         self,
@@ -177,11 +202,34 @@ class DocumentSchemaServiceRestInterceptor:
     ) -> document_schema.DocumentSchema:
         """Post-rpc interceptor for get_document_schema
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_document_schema_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the DocumentSchemaService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_document_schema` interceptor runs
+        before the `post_get_document_schema_with_metadata` interceptor.
         """
         return response
+
+    def post_get_document_schema_with_metadata(
+        self,
+        response: document_schema.DocumentSchema,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[document_schema.DocumentSchema, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_document_schema
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the DocumentSchemaService server but before it is returned to user code.
+
+        We recommend only using this `post_get_document_schema_with_metadata`
+        interceptor in new development instead of the `post_get_document_schema` interceptor.
+        When both interceptors are used, this `post_get_document_schema_with_metadata` interceptor runs after the
+        `post_get_document_schema` interceptor. The (possibly modified) response returned by
+        `post_get_document_schema` will be passed to
+        `post_get_document_schema_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_document_schemas(
         self,
@@ -203,11 +251,37 @@ class DocumentSchemaServiceRestInterceptor:
     ) -> document_schema_service.ListDocumentSchemasResponse:
         """Post-rpc interceptor for list_document_schemas
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_document_schemas_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the DocumentSchemaService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_document_schemas` interceptor runs
+        before the `post_list_document_schemas_with_metadata` interceptor.
         """
         return response
+
+    def post_list_document_schemas_with_metadata(
+        self,
+        response: document_schema_service.ListDocumentSchemasResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        document_schema_service.ListDocumentSchemasResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_document_schemas
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the DocumentSchemaService server but before it is returned to user code.
+
+        We recommend only using this `post_list_document_schemas_with_metadata`
+        interceptor in new development instead of the `post_list_document_schemas` interceptor.
+        When both interceptors are used, this `post_list_document_schemas_with_metadata` interceptor runs after the
+        `post_list_document_schemas` interceptor. The (possibly modified) response returned by
+        `post_list_document_schemas` will be passed to
+        `post_list_document_schemas_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_document_schema(
         self,
@@ -229,11 +303,36 @@ class DocumentSchemaServiceRestInterceptor:
     ) -> gcc_document_schema.DocumentSchema:
         """Post-rpc interceptor for update_document_schema
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_document_schema_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the DocumentSchemaService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_document_schema` interceptor runs
+        before the `post_update_document_schema_with_metadata` interceptor.
         """
         return response
+
+    def post_update_document_schema_with_metadata(
+        self,
+        response: gcc_document_schema.DocumentSchema,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        gcc_document_schema.DocumentSchema, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for update_document_schema
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the DocumentSchemaService server but before it is returned to user code.
+
+        We recommend only using this `post_update_document_schema_with_metadata`
+        interceptor in new development instead of the `post_update_document_schema` interceptor.
+        When both interceptors are used, this `post_update_document_schema_with_metadata` interceptor runs after the
+        `post_update_document_schema` interceptor. The (possibly modified) response returned by
+        `post_update_document_schema` will be passed to
+        `post_update_document_schema_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_operation(
         self,
@@ -478,6 +577,10 @@ class DocumentSchemaServiceRestTransport(_BaseDocumentSchemaServiceRestTransport
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_document_schema(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_document_schema_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -740,6 +843,10 @@ class DocumentSchemaServiceRestTransport(_BaseDocumentSchemaServiceRestTransport
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_document_schema(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_document_schema_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -888,6 +995,10 @@ class DocumentSchemaServiceRestTransport(_BaseDocumentSchemaServiceRestTransport
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_document_schemas(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_document_schemas_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1046,6 +1157,10 @@ class DocumentSchemaServiceRestTransport(_BaseDocumentSchemaServiceRestTransport
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_document_schema(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_document_schema_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

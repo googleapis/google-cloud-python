@@ -69,6 +69,13 @@ from google.cloud.apigee_registry_v1.services.registry import (
 )
 from google.cloud.apigee_registry_v1.types import registry_models, registry_service
 
+CRED_INFO_JSON = {
+    "credential_source": "/path/to/file",
+    "credential_type": "service account credentials",
+    "principal": "service-account@example.com",
+}
+CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
 
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
@@ -297,6 +304,49 @@ def test__get_universe_domain():
     with pytest.raises(ValueError) as excinfo:
         RegistryClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+
+@pytest.mark.parametrize(
+    "error_code,cred_info_json,show_cred_info",
+    [
+        (401, CRED_INFO_JSON, True),
+        (403, CRED_INFO_JSON, True),
+        (404, CRED_INFO_JSON, True),
+        (500, CRED_INFO_JSON, False),
+        (401, None, False),
+        (403, None, False),
+        (404, None, False),
+        (500, None, False),
+    ],
+)
+def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
+    cred = mock.Mock(["get_cred_info"])
+    cred.get_cred_info = mock.Mock(return_value=cred_info_json)
+    client = RegistryClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=["foo"])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    if show_cred_info:
+        assert error.details == ["foo", CRED_INFO_STRING]
+    else:
+        assert error.details == ["foo"]
+
+
+@pytest.mark.parametrize("error_code", [401, 403, 404, 500])
+def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
+    cred = mock.Mock([])
+    assert not hasattr(cred, "get_cred_info")
+    client = RegistryClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=[])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    assert error.details == []
 
 
 @pytest.mark.parametrize(
@@ -23045,10 +23095,13 @@ def test_list_apis_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.RegistryRestInterceptor, "post_list_apis"
     ) as post, mock.patch.object(
+        transports.RegistryRestInterceptor, "post_list_apis_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.RegistryRestInterceptor, "pre_list_apis"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = registry_service.ListApisRequest.pb(
             registry_service.ListApisRequest()
         )
@@ -23074,6 +23127,7 @@ def test_list_apis_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = registry_service.ListApisResponse()
+        post_with_metadata.return_value = registry_service.ListApisResponse(), metadata
 
         client.list_apis(
             request,
@@ -23085,6 +23139,7 @@ def test_list_apis_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_api_rest_bad_request(request_type=registry_service.GetApiRequest):
@@ -23175,10 +23230,13 @@ def test_get_api_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.RegistryRestInterceptor, "post_get_api"
     ) as post, mock.patch.object(
+        transports.RegistryRestInterceptor, "post_get_api_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.RegistryRestInterceptor, "pre_get_api"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = registry_service.GetApiRequest.pb(registry_service.GetApiRequest())
         transcode.return_value = {
             "method": "post",
@@ -23200,6 +23258,7 @@ def test_get_api_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = registry_models.Api()
+        post_with_metadata.return_value = registry_models.Api(), metadata
 
         client.get_api(
             request,
@@ -23211,6 +23270,7 @@ def test_get_api_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_api_rest_bad_request(request_type=registry_service.CreateApiRequest):
@@ -23380,10 +23440,13 @@ def test_create_api_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.RegistryRestInterceptor, "post_create_api"
     ) as post, mock.patch.object(
+        transports.RegistryRestInterceptor, "post_create_api_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.RegistryRestInterceptor, "pre_create_api"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = registry_service.CreateApiRequest.pb(
             registry_service.CreateApiRequest()
         )
@@ -23407,6 +23470,7 @@ def test_create_api_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = registry_models.Api()
+        post_with_metadata.return_value = registry_models.Api(), metadata
 
         client.create_api(
             request,
@@ -23418,6 +23482,7 @@ def test_create_api_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_api_rest_bad_request(request_type=registry_service.UpdateApiRequest):
@@ -23587,10 +23652,13 @@ def test_update_api_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.RegistryRestInterceptor, "post_update_api"
     ) as post, mock.patch.object(
+        transports.RegistryRestInterceptor, "post_update_api_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.RegistryRestInterceptor, "pre_update_api"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = registry_service.UpdateApiRequest.pb(
             registry_service.UpdateApiRequest()
         )
@@ -23614,6 +23682,7 @@ def test_update_api_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = registry_models.Api()
+        post_with_metadata.return_value = registry_models.Api(), metadata
 
         client.update_api(
             request,
@@ -23625,6 +23694,7 @@ def test_update_api_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_api_rest_bad_request(request_type=registry_service.DeleteApiRequest):
@@ -23812,10 +23882,13 @@ def test_list_api_versions_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.RegistryRestInterceptor, "post_list_api_versions"
     ) as post, mock.patch.object(
+        transports.RegistryRestInterceptor, "post_list_api_versions_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.RegistryRestInterceptor, "pre_list_api_versions"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = registry_service.ListApiVersionsRequest.pb(
             registry_service.ListApiVersionsRequest()
         )
@@ -23841,6 +23914,10 @@ def test_list_api_versions_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = registry_service.ListApiVersionsResponse()
+        post_with_metadata.return_value = (
+            registry_service.ListApiVersionsResponse(),
+            metadata,
+        )
 
         client.list_api_versions(
             request,
@@ -23852,6 +23929,7 @@ def test_list_api_versions_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_api_version_rest_bad_request(
@@ -23944,10 +24022,13 @@ def test_get_api_version_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.RegistryRestInterceptor, "post_get_api_version"
     ) as post, mock.patch.object(
+        transports.RegistryRestInterceptor, "post_get_api_version_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.RegistryRestInterceptor, "pre_get_api_version"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = registry_service.GetApiVersionRequest.pb(
             registry_service.GetApiVersionRequest()
         )
@@ -23971,6 +24052,7 @@ def test_get_api_version_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = registry_models.ApiVersion()
+        post_with_metadata.return_value = registry_models.ApiVersion(), metadata
 
         client.get_api_version(
             request,
@@ -23982,6 +24064,7 @@ def test_get_api_version_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_api_version_rest_bad_request(
@@ -24147,10 +24230,13 @@ def test_create_api_version_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.RegistryRestInterceptor, "post_create_api_version"
     ) as post, mock.patch.object(
+        transports.RegistryRestInterceptor, "post_create_api_version_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.RegistryRestInterceptor, "pre_create_api_version"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = registry_service.CreateApiVersionRequest.pb(
             registry_service.CreateApiVersionRequest()
         )
@@ -24174,6 +24260,7 @@ def test_create_api_version_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = registry_models.ApiVersion()
+        post_with_metadata.return_value = registry_models.ApiVersion(), metadata
 
         client.create_api_version(
             request,
@@ -24185,6 +24272,7 @@ def test_create_api_version_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_api_version_rest_bad_request(
@@ -24358,10 +24446,13 @@ def test_update_api_version_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.RegistryRestInterceptor, "post_update_api_version"
     ) as post, mock.patch.object(
+        transports.RegistryRestInterceptor, "post_update_api_version_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.RegistryRestInterceptor, "pre_update_api_version"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = registry_service.UpdateApiVersionRequest.pb(
             registry_service.UpdateApiVersionRequest()
         )
@@ -24385,6 +24476,7 @@ def test_update_api_version_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = registry_models.ApiVersion()
+        post_with_metadata.return_value = registry_models.ApiVersion(), metadata
 
         client.update_api_version(
             request,
@@ -24396,6 +24488,7 @@ def test_update_api_version_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_api_version_rest_bad_request(
@@ -24593,10 +24686,13 @@ def test_list_api_specs_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.RegistryRestInterceptor, "post_list_api_specs"
     ) as post, mock.patch.object(
+        transports.RegistryRestInterceptor, "post_list_api_specs_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.RegistryRestInterceptor, "pre_list_api_specs"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = registry_service.ListApiSpecsRequest.pb(
             registry_service.ListApiSpecsRequest()
         )
@@ -24622,6 +24718,10 @@ def test_list_api_specs_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = registry_service.ListApiSpecsResponse()
+        post_with_metadata.return_value = (
+            registry_service.ListApiSpecsResponse(),
+            metadata,
+        )
 
         client.list_api_specs(
             request,
@@ -24633,6 +24733,7 @@ def test_list_api_specs_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_api_spec_rest_bad_request(request_type=registry_service.GetApiSpecRequest):
@@ -24733,10 +24834,13 @@ def test_get_api_spec_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.RegistryRestInterceptor, "post_get_api_spec"
     ) as post, mock.patch.object(
+        transports.RegistryRestInterceptor, "post_get_api_spec_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.RegistryRestInterceptor, "pre_get_api_spec"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = registry_service.GetApiSpecRequest.pb(
             registry_service.GetApiSpecRequest()
         )
@@ -24760,6 +24864,7 @@ def test_get_api_spec_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = registry_models.ApiSpec()
+        post_with_metadata.return_value = registry_models.ApiSpec(), metadata
 
         client.get_api_spec(
             request,
@@ -24771,6 +24876,7 @@ def test_get_api_spec_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_api_spec_contents_rest_bad_request(
@@ -24856,10 +24962,13 @@ def test_get_api_spec_contents_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.RegistryRestInterceptor, "post_get_api_spec_contents"
     ) as post, mock.patch.object(
+        transports.RegistryRestInterceptor, "post_get_api_spec_contents_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.RegistryRestInterceptor, "pre_get_api_spec_contents"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = registry_service.GetApiSpecContentsRequest.pb(
             registry_service.GetApiSpecContentsRequest()
         )
@@ -24883,6 +24992,7 @@ def test_get_api_spec_contents_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = httpbody_pb2.HttpBody()
+        post_with_metadata.return_value = httpbody_pb2.HttpBody(), metadata
 
         client.get_api_spec_contents(
             request,
@@ -24894,6 +25004,7 @@ def test_get_api_spec_contents_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_api_spec_rest_bad_request(
@@ -25079,10 +25190,13 @@ def test_create_api_spec_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.RegistryRestInterceptor, "post_create_api_spec"
     ) as post, mock.patch.object(
+        transports.RegistryRestInterceptor, "post_create_api_spec_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.RegistryRestInterceptor, "pre_create_api_spec"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = registry_service.CreateApiSpecRequest.pb(
             registry_service.CreateApiSpecRequest()
         )
@@ -25106,6 +25220,7 @@ def test_create_api_spec_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = registry_models.ApiSpec()
+        post_with_metadata.return_value = registry_models.ApiSpec(), metadata
 
         client.create_api_spec(
             request,
@@ -25117,6 +25232,7 @@ def test_create_api_spec_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_api_spec_rest_bad_request(
@@ -25306,10 +25422,13 @@ def test_update_api_spec_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.RegistryRestInterceptor, "post_update_api_spec"
     ) as post, mock.patch.object(
+        transports.RegistryRestInterceptor, "post_update_api_spec_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.RegistryRestInterceptor, "pre_update_api_spec"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = registry_service.UpdateApiSpecRequest.pb(
             registry_service.UpdateApiSpecRequest()
         )
@@ -25333,6 +25452,7 @@ def test_update_api_spec_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = registry_models.ApiSpec()
+        post_with_metadata.return_value = registry_models.ApiSpec(), metadata
 
         client.update_api_spec(
             request,
@@ -25344,6 +25464,7 @@ def test_update_api_spec_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_api_spec_rest_bad_request(
@@ -25557,10 +25678,13 @@ def test_tag_api_spec_revision_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.RegistryRestInterceptor, "post_tag_api_spec_revision"
     ) as post, mock.patch.object(
+        transports.RegistryRestInterceptor, "post_tag_api_spec_revision_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.RegistryRestInterceptor, "pre_tag_api_spec_revision"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = registry_service.TagApiSpecRevisionRequest.pb(
             registry_service.TagApiSpecRevisionRequest()
         )
@@ -25584,6 +25708,7 @@ def test_tag_api_spec_revision_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = registry_models.ApiSpec()
+        post_with_metadata.return_value = registry_models.ApiSpec(), metadata
 
         client.tag_api_spec_revision(
             request,
@@ -25595,6 +25720,7 @@ def test_tag_api_spec_revision_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_api_spec_revisions_rest_bad_request(
@@ -25681,10 +25807,13 @@ def test_list_api_spec_revisions_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.RegistryRestInterceptor, "post_list_api_spec_revisions"
     ) as post, mock.patch.object(
+        transports.RegistryRestInterceptor, "post_list_api_spec_revisions_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.RegistryRestInterceptor, "pre_list_api_spec_revisions"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = registry_service.ListApiSpecRevisionsRequest.pb(
             registry_service.ListApiSpecRevisionsRequest()
         )
@@ -25710,6 +25839,10 @@ def test_list_api_spec_revisions_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = registry_service.ListApiSpecRevisionsResponse()
+        post_with_metadata.return_value = (
+            registry_service.ListApiSpecRevisionsResponse(),
+            metadata,
+        )
 
         client.list_api_spec_revisions(
             request,
@@ -25721,6 +25854,7 @@ def test_list_api_spec_revisions_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_rollback_api_spec_rest_bad_request(
@@ -25823,10 +25957,13 @@ def test_rollback_api_spec_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.RegistryRestInterceptor, "post_rollback_api_spec"
     ) as post, mock.patch.object(
+        transports.RegistryRestInterceptor, "post_rollback_api_spec_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.RegistryRestInterceptor, "pre_rollback_api_spec"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = registry_service.RollbackApiSpecRequest.pb(
             registry_service.RollbackApiSpecRequest()
         )
@@ -25850,6 +25987,7 @@ def test_rollback_api_spec_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = registry_models.ApiSpec()
+        post_with_metadata.return_value = registry_models.ApiSpec(), metadata
 
         client.rollback_api_spec(
             request,
@@ -25861,6 +25999,7 @@ def test_rollback_api_spec_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_api_spec_revision_rest_bad_request(
@@ -25963,10 +26102,14 @@ def test_delete_api_spec_revision_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.RegistryRestInterceptor, "post_delete_api_spec_revision"
     ) as post, mock.patch.object(
+        transports.RegistryRestInterceptor,
+        "post_delete_api_spec_revision_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.RegistryRestInterceptor, "pre_delete_api_spec_revision"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = registry_service.DeleteApiSpecRevisionRequest.pb(
             registry_service.DeleteApiSpecRevisionRequest()
         )
@@ -25990,6 +26133,7 @@ def test_delete_api_spec_revision_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = registry_models.ApiSpec()
+        post_with_metadata.return_value = registry_models.ApiSpec(), metadata
 
         client.delete_api_spec_revision(
             request,
@@ -26001,6 +26145,7 @@ def test_delete_api_spec_revision_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_api_deployments_rest_bad_request(
@@ -26083,10 +26228,13 @@ def test_list_api_deployments_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.RegistryRestInterceptor, "post_list_api_deployments"
     ) as post, mock.patch.object(
+        transports.RegistryRestInterceptor, "post_list_api_deployments_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.RegistryRestInterceptor, "pre_list_api_deployments"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = registry_service.ListApiDeploymentsRequest.pb(
             registry_service.ListApiDeploymentsRequest()
         )
@@ -26112,6 +26260,10 @@ def test_list_api_deployments_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = registry_service.ListApiDeploymentsResponse()
+        post_with_metadata.return_value = (
+            registry_service.ListApiDeploymentsResponse(),
+            metadata,
+        )
 
         client.list_api_deployments(
             request,
@@ -26123,6 +26275,7 @@ def test_list_api_deployments_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_api_deployment_rest_bad_request(
@@ -26225,10 +26378,13 @@ def test_get_api_deployment_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.RegistryRestInterceptor, "post_get_api_deployment"
     ) as post, mock.patch.object(
+        transports.RegistryRestInterceptor, "post_get_api_deployment_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.RegistryRestInterceptor, "pre_get_api_deployment"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = registry_service.GetApiDeploymentRequest.pb(
             registry_service.GetApiDeploymentRequest()
         )
@@ -26254,6 +26410,7 @@ def test_get_api_deployment_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = registry_models.ApiDeployment()
+        post_with_metadata.return_value = registry_models.ApiDeployment(), metadata
 
         client.get_api_deployment(
             request,
@@ -26265,6 +26422,7 @@ def test_get_api_deployment_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_api_deployment_rest_bad_request(
@@ -26448,10 +26606,13 @@ def test_create_api_deployment_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.RegistryRestInterceptor, "post_create_api_deployment"
     ) as post, mock.patch.object(
+        transports.RegistryRestInterceptor, "post_create_api_deployment_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.RegistryRestInterceptor, "pre_create_api_deployment"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = registry_service.CreateApiDeploymentRequest.pb(
             registry_service.CreateApiDeploymentRequest()
         )
@@ -26477,6 +26638,7 @@ def test_create_api_deployment_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = registry_models.ApiDeployment()
+        post_with_metadata.return_value = registry_models.ApiDeployment(), metadata
 
         client.create_api_deployment(
             request,
@@ -26488,6 +26650,7 @@ def test_create_api_deployment_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_api_deployment_rest_bad_request(
@@ -26679,10 +26842,13 @@ def test_update_api_deployment_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.RegistryRestInterceptor, "post_update_api_deployment"
     ) as post, mock.patch.object(
+        transports.RegistryRestInterceptor, "post_update_api_deployment_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.RegistryRestInterceptor, "pre_update_api_deployment"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = registry_service.UpdateApiDeploymentRequest.pb(
             registry_service.UpdateApiDeploymentRequest()
         )
@@ -26708,6 +26874,7 @@ def test_update_api_deployment_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = registry_models.ApiDeployment()
+        post_with_metadata.return_value = registry_models.ApiDeployment(), metadata
 
         client.update_api_deployment(
             request,
@@ -26719,6 +26886,7 @@ def test_update_api_deployment_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_api_deployment_rest_bad_request(
@@ -26932,10 +27100,14 @@ def test_tag_api_deployment_revision_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.RegistryRestInterceptor, "post_tag_api_deployment_revision"
     ) as post, mock.patch.object(
+        transports.RegistryRestInterceptor,
+        "post_tag_api_deployment_revision_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.RegistryRestInterceptor, "pre_tag_api_deployment_revision"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = registry_service.TagApiDeploymentRevisionRequest.pb(
             registry_service.TagApiDeploymentRevisionRequest()
         )
@@ -26961,6 +27133,7 @@ def test_tag_api_deployment_revision_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = registry_models.ApiDeployment()
+        post_with_metadata.return_value = registry_models.ApiDeployment(), metadata
 
         client.tag_api_deployment_revision(
             request,
@@ -26972,6 +27145,7 @@ def test_tag_api_deployment_revision_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_api_deployment_revisions_rest_bad_request(
@@ -27060,10 +27234,14 @@ def test_list_api_deployment_revisions_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.RegistryRestInterceptor, "post_list_api_deployment_revisions"
     ) as post, mock.patch.object(
+        transports.RegistryRestInterceptor,
+        "post_list_api_deployment_revisions_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.RegistryRestInterceptor, "pre_list_api_deployment_revisions"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = registry_service.ListApiDeploymentRevisionsRequest.pb(
             registry_service.ListApiDeploymentRevisionsRequest()
         )
@@ -27089,6 +27267,10 @@ def test_list_api_deployment_revisions_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = registry_service.ListApiDeploymentRevisionsResponse()
+        post_with_metadata.return_value = (
+            registry_service.ListApiDeploymentRevisionsResponse(),
+            metadata,
+        )
 
         client.list_api_deployment_revisions(
             request,
@@ -27100,6 +27282,7 @@ def test_list_api_deployment_revisions_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_rollback_api_deployment_rest_bad_request(
@@ -27202,10 +27385,13 @@ def test_rollback_api_deployment_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.RegistryRestInterceptor, "post_rollback_api_deployment"
     ) as post, mock.patch.object(
+        transports.RegistryRestInterceptor, "post_rollback_api_deployment_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.RegistryRestInterceptor, "pre_rollback_api_deployment"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = registry_service.RollbackApiDeploymentRequest.pb(
             registry_service.RollbackApiDeploymentRequest()
         )
@@ -27231,6 +27417,7 @@ def test_rollback_api_deployment_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = registry_models.ApiDeployment()
+        post_with_metadata.return_value = registry_models.ApiDeployment(), metadata
 
         client.rollback_api_deployment(
             request,
@@ -27242,6 +27429,7 @@ def test_rollback_api_deployment_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_api_deployment_revision_rest_bad_request(
@@ -27344,10 +27532,14 @@ def test_delete_api_deployment_revision_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.RegistryRestInterceptor, "post_delete_api_deployment_revision"
     ) as post, mock.patch.object(
+        transports.RegistryRestInterceptor,
+        "post_delete_api_deployment_revision_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.RegistryRestInterceptor, "pre_delete_api_deployment_revision"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = registry_service.DeleteApiDeploymentRevisionRequest.pb(
             registry_service.DeleteApiDeploymentRevisionRequest()
         )
@@ -27373,6 +27565,7 @@ def test_delete_api_deployment_revision_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = registry_models.ApiDeployment()
+        post_with_metadata.return_value = registry_models.ApiDeployment(), metadata
 
         client.delete_api_deployment_revision(
             request,
@@ -27384,6 +27577,7 @@ def test_delete_api_deployment_revision_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_artifacts_rest_bad_request(
@@ -27466,10 +27660,13 @@ def test_list_artifacts_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.RegistryRestInterceptor, "post_list_artifacts"
     ) as post, mock.patch.object(
+        transports.RegistryRestInterceptor, "post_list_artifacts_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.RegistryRestInterceptor, "pre_list_artifacts"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = registry_service.ListArtifactsRequest.pb(
             registry_service.ListArtifactsRequest()
         )
@@ -27495,6 +27692,10 @@ def test_list_artifacts_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = registry_service.ListArtifactsResponse()
+        post_with_metadata.return_value = (
+            registry_service.ListArtifactsResponse(),
+            metadata,
+        )
 
         client.list_artifacts(
             request,
@@ -27506,6 +27707,7 @@ def test_list_artifacts_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_artifact_rest_bad_request(
@@ -27596,10 +27798,13 @@ def test_get_artifact_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.RegistryRestInterceptor, "post_get_artifact"
     ) as post, mock.patch.object(
+        transports.RegistryRestInterceptor, "post_get_artifact_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.RegistryRestInterceptor, "pre_get_artifact"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = registry_service.GetArtifactRequest.pb(
             registry_service.GetArtifactRequest()
         )
@@ -27623,6 +27828,7 @@ def test_get_artifact_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = registry_models.Artifact()
+        post_with_metadata.return_value = registry_models.Artifact(), metadata
 
         client.get_artifact(
             request,
@@ -27634,6 +27840,7 @@ def test_get_artifact_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_artifact_contents_rest_bad_request(
@@ -27715,10 +27922,13 @@ def test_get_artifact_contents_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.RegistryRestInterceptor, "post_get_artifact_contents"
     ) as post, mock.patch.object(
+        transports.RegistryRestInterceptor, "post_get_artifact_contents_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.RegistryRestInterceptor, "pre_get_artifact_contents"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = registry_service.GetArtifactContentsRequest.pb(
             registry_service.GetArtifactContentsRequest()
         )
@@ -27742,6 +27952,7 @@ def test_get_artifact_contents_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = httpbody_pb2.HttpBody()
+        post_with_metadata.return_value = httpbody_pb2.HttpBody(), metadata
 
         client.get_artifact_contents(
             request,
@@ -27753,6 +27964,7 @@ def test_get_artifact_contents_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_artifact_rest_bad_request(
@@ -27919,10 +28131,13 @@ def test_create_artifact_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.RegistryRestInterceptor, "post_create_artifact"
     ) as post, mock.patch.object(
+        transports.RegistryRestInterceptor, "post_create_artifact_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.RegistryRestInterceptor, "pre_create_artifact"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = registry_service.CreateArtifactRequest.pb(
             registry_service.CreateArtifactRequest()
         )
@@ -27946,6 +28161,7 @@ def test_create_artifact_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = registry_models.Artifact()
+        post_with_metadata.return_value = registry_models.Artifact(), metadata
 
         client.create_artifact(
             request,
@@ -27957,6 +28173,7 @@ def test_create_artifact_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_replace_artifact_rest_bad_request(
@@ -28127,10 +28344,13 @@ def test_replace_artifact_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.RegistryRestInterceptor, "post_replace_artifact"
     ) as post, mock.patch.object(
+        transports.RegistryRestInterceptor, "post_replace_artifact_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.RegistryRestInterceptor, "pre_replace_artifact"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = registry_service.ReplaceArtifactRequest.pb(
             registry_service.ReplaceArtifactRequest()
         )
@@ -28154,6 +28374,7 @@ def test_replace_artifact_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = registry_models.Artifact()
+        post_with_metadata.return_value = registry_models.Artifact(), metadata
 
         client.replace_artifact(
             request,
@@ -28165,6 +28386,7 @@ def test_replace_artifact_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_artifact_rest_bad_request(
