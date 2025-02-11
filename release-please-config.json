@@ -2105,7 +2105,12 @@
             "component": "google-cloud-org-policy",
             "extra-files": [
                 "google/cloud/orgpolicy/gapic_version.py",
-                "google/cloud/orgpolicy_v2/gapic_version.py"
+                "google/cloud/orgpolicy_v2/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.orgpolicy.v2.json",
+                    "type": "json"
+                }
             ],
             "release-type": "python"
         },
