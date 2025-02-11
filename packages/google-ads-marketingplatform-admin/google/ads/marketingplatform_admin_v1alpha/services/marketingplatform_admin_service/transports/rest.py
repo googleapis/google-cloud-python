@@ -134,11 +134,34 @@ class MarketingplatformAdminServiceRestInterceptor:
     ) -> resources.AnalyticsAccountLink:
         """Post-rpc interceptor for create_analytics_account_link
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_analytics_account_link_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the MarketingplatformAdminService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_analytics_account_link` interceptor runs
+        before the `post_create_analytics_account_link_with_metadata` interceptor.
         """
         return response
+
+    def post_create_analytics_account_link_with_metadata(
+        self,
+        response: resources.AnalyticsAccountLink,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[resources.AnalyticsAccountLink, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_analytics_account_link
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the MarketingplatformAdminService server but before it is returned to user code.
+
+        We recommend only using this `post_create_analytics_account_link_with_metadata`
+        interceptor in new development instead of the `post_create_analytics_account_link` interceptor.
+        When both interceptors are used, this `post_create_analytics_account_link_with_metadata` interceptor runs after the
+        `post_create_analytics_account_link` interceptor. The (possibly modified) response returned by
+        `post_create_analytics_account_link` will be passed to
+        `post_create_analytics_account_link_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_analytics_account_link(
         self,
@@ -175,11 +198,34 @@ class MarketingplatformAdminServiceRestInterceptor:
     ) -> resources.Organization:
         """Post-rpc interceptor for get_organization
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_organization_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the MarketingplatformAdminService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_organization` interceptor runs
+        before the `post_get_organization_with_metadata` interceptor.
         """
         return response
+
+    def post_get_organization_with_metadata(
+        self,
+        response: resources.Organization,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[resources.Organization, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_organization
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the MarketingplatformAdminService server but before it is returned to user code.
+
+        We recommend only using this `post_get_organization_with_metadata`
+        interceptor in new development instead of the `post_get_organization` interceptor.
+        When both interceptors are used, this `post_get_organization_with_metadata` interceptor runs after the
+        `post_get_organization` interceptor. The (possibly modified) response returned by
+        `post_get_organization` will be passed to
+        `post_get_organization_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_analytics_account_links(
         self,
@@ -201,11 +247,37 @@ class MarketingplatformAdminServiceRestInterceptor:
     ) -> marketingplatform_admin.ListAnalyticsAccountLinksResponse:
         """Post-rpc interceptor for list_analytics_account_links
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_analytics_account_links_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the MarketingplatformAdminService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_analytics_account_links` interceptor runs
+        before the `post_list_analytics_account_links_with_metadata` interceptor.
         """
         return response
+
+    def post_list_analytics_account_links_with_metadata(
+        self,
+        response: marketingplatform_admin.ListAnalyticsAccountLinksResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        marketingplatform_admin.ListAnalyticsAccountLinksResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_analytics_account_links
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the MarketingplatformAdminService server but before it is returned to user code.
+
+        We recommend only using this `post_list_analytics_account_links_with_metadata`
+        interceptor in new development instead of the `post_list_analytics_account_links` interceptor.
+        When both interceptors are used, this `post_list_analytics_account_links_with_metadata` interceptor runs after the
+        `post_list_analytics_account_links` interceptor. The (possibly modified) response returned by
+        `post_list_analytics_account_links` will be passed to
+        `post_list_analytics_account_links_with_metadata`.
+        """
+        return response, metadata
 
     def pre_set_property_service_level(
         self,
@@ -227,11 +299,37 @@ class MarketingplatformAdminServiceRestInterceptor:
     ) -> marketingplatform_admin.SetPropertyServiceLevelResponse:
         """Post-rpc interceptor for set_property_service_level
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_set_property_service_level_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the MarketingplatformAdminService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_set_property_service_level` interceptor runs
+        before the `post_set_property_service_level_with_metadata` interceptor.
         """
         return response
+
+    def post_set_property_service_level_with_metadata(
+        self,
+        response: marketingplatform_admin.SetPropertyServiceLevelResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        marketingplatform_admin.SetPropertyServiceLevelResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for set_property_service_level
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the MarketingplatformAdminService server but before it is returned to user code.
+
+        We recommend only using this `post_set_property_service_level_with_metadata`
+        interceptor in new development instead of the `post_set_property_service_level` interceptor.
+        When both interceptors are used, this `post_set_property_service_level_with_metadata` interceptor runs after the
+        `post_set_property_service_level` interceptor. The (possibly modified) response returned by
+        `post_set_property_service_level` will be passed to
+        `post_set_property_service_level_with_metadata`.
+        """
+        return response, metadata
 
 
 @dataclasses.dataclass
@@ -459,6 +557,13 @@ class MarketingplatformAdminServiceRestTransport(
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_analytics_account_link(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_create_analytics_account_link_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -718,6 +823,10 @@ class MarketingplatformAdminServiceRestTransport(
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_organization(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_organization_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -867,6 +976,10 @@ class MarketingplatformAdminServiceRestTransport(
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_analytics_account_links(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_analytics_account_links_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1024,6 +1137,10 @@ class MarketingplatformAdminServiceRestTransport(
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_set_property_service_level(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_set_property_service_level_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

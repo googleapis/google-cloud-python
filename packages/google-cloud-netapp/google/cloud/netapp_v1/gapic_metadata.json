@@ -35,6 +35,11 @@
                 "create_kms_config"
               ]
             },
+            "CreateQuotaRule": {
+              "methods": [
+                "create_quota_rule"
+              ]
+            },
             "CreateReplication": {
               "methods": [
                 "create_replication"
@@ -78,6 +83,11 @@
             "DeleteKmsConfig": {
               "methods": [
                 "delete_kms_config"
+              ]
+            },
+            "DeleteQuotaRule": {
+              "methods": [
+                "delete_quota_rule"
               ]
             },
             "DeleteReplication": {
@@ -135,6 +145,11 @@
                 "get_kms_config"
               ]
             },
+            "GetQuotaRule": {
+              "methods": [
+                "get_quota_rule"
+              ]
+            },
             "GetReplication": {
               "methods": [
                 "get_replication"
@@ -178,6 +193,11 @@
             "ListKmsConfigs": {
               "methods": [
                 "list_kms_configs"
+              ]
+            },
+            "ListQuotaRules": {
+              "methods": [
+                "list_quota_rules"
               ]
             },
             "ListReplications": {
@@ -253,6 +273,11 @@
             "UpdateKmsConfig": {
               "methods": [
                 "update_kms_config"
+              ]
+            },
+            "UpdateQuotaRule": {
+              "methods": [
+                "update_quota_rule"
               ]
             },
             "UpdateReplication": {
@@ -315,6 +340,11 @@
                 "create_kms_config"
               ]
             },
+            "CreateQuotaRule": {
+              "methods": [
+                "create_quota_rule"
+              ]
+            },
             "CreateReplication": {
               "methods": [
                 "create_replication"
@@ -358,6 +388,11 @@
             "DeleteKmsConfig": {
               "methods": [
                 "delete_kms_config"
+              ]
+            },
+            "DeleteQuotaRule": {
+              "methods": [
+                "delete_quota_rule"
               ]
             },
             "DeleteReplication": {
@@ -415,6 +450,11 @@
                 "get_kms_config"
               ]
             },
+            "GetQuotaRule": {
+              "methods": [
+                "get_quota_rule"
+              ]
+            },
             "GetReplication": {
               "methods": [
                 "get_replication"
@@ -458,6 +498,11 @@
             "ListKmsConfigs": {
               "methods": [
                 "list_kms_configs"
+              ]
+            },
+            "ListQuotaRules": {
+              "methods": [
+                "list_quota_rules"
               ]
             },
             "ListReplications": {
@@ -533,6 +578,11 @@
             "UpdateKmsConfig": {
               "methods": [
                 "update_kms_config"
+              ]
+            },
+            "UpdateQuotaRule": {
+              "methods": [
+                "update_quota_rule"
               ]
             },
             "UpdateReplication": {
@@ -595,6 +645,11 @@
                 "create_kms_config"
               ]
             },
+            "CreateQuotaRule": {
+              "methods": [
+                "create_quota_rule"
+              ]
+            },
             "CreateReplication": {
               "methods": [
                 "create_replication"
@@ -638,6 +693,11 @@
             "DeleteKmsConfig": {
               "methods": [
                 "delete_kms_config"
+              ]
+            },
+            "DeleteQuotaRule": {
+              "methods": [
+                "delete_quota_rule"
               ]
             },
             "DeleteReplication": {
@@ -695,6 +755,11 @@
                 "get_kms_config"
               ]
             },
+            "GetQuotaRule": {
+              "methods": [
+                "get_quota_rule"
+              ]
+            },
             "GetReplication": {
               "methods": [
                 "get_replication"
@@ -738,6 +803,11 @@
             "ListKmsConfigs": {
               "methods": [
                 "list_kms_configs"
+              ]
+            },
+            "ListQuotaRules": {
+              "methods": [
+                "list_quota_rules"
               ]
             },
             "ListReplications": {
@@ -813,6 +883,11 @@
             "UpdateKmsConfig": {
               "methods": [
                 "update_kms_config"
+              ]
+            },
+            "UpdateQuotaRule": {
+              "methods": [
+                "update_quota_rule"
               ]
             },
             "UpdateReplication": {

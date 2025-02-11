@@ -111,11 +111,37 @@ class DiscussServiceRestInterceptor:
     ) -> discuss_service.CountMessageTokensResponse:
         """Post-rpc interceptor for count_message_tokens
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_count_message_tokens_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the DiscussService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_count_message_tokens` interceptor runs
+        before the `post_count_message_tokens_with_metadata` interceptor.
         """
         return response
+
+    def post_count_message_tokens_with_metadata(
+        self,
+        response: discuss_service.CountMessageTokensResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        discuss_service.CountMessageTokensResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for count_message_tokens
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the DiscussService server but before it is returned to user code.
+
+        We recommend only using this `post_count_message_tokens_with_metadata`
+        interceptor in new development instead of the `post_count_message_tokens` interceptor.
+        When both interceptors are used, this `post_count_message_tokens_with_metadata` interceptor runs after the
+        `post_count_message_tokens` interceptor. The (possibly modified) response returned by
+        `post_count_message_tokens` will be passed to
+        `post_count_message_tokens_with_metadata`.
+        """
+        return response, metadata
 
     def pre_generate_message(
         self,
@@ -136,11 +162,36 @@ class DiscussServiceRestInterceptor:
     ) -> discuss_service.GenerateMessageResponse:
         """Post-rpc interceptor for generate_message
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_generate_message_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the DiscussService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_generate_message` interceptor runs
+        before the `post_generate_message_with_metadata` interceptor.
         """
         return response
+
+    def post_generate_message_with_metadata(
+        self,
+        response: discuss_service.GenerateMessageResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        discuss_service.GenerateMessageResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for generate_message
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the DiscussService server but before it is returned to user code.
+
+        We recommend only using this `post_generate_message_with_metadata`
+        interceptor in new development instead of the `post_generate_message` interceptor.
+        When both interceptors are used, this `post_generate_message_with_metadata` interceptor runs after the
+        `post_generate_message` interceptor. The (possibly modified) response returned by
+        `post_generate_message` will be passed to
+        `post_generate_message_with_metadata`.
+        """
+        return response, metadata
 
 
 @dataclasses.dataclass
@@ -365,6 +416,10 @@ class DiscussServiceRestTransport(_BaseDiscussServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_count_message_tokens(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_count_message_tokens_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -521,6 +576,10 @@ class DiscussServiceRestTransport(_BaseDiscussServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_generate_message(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_generate_message_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

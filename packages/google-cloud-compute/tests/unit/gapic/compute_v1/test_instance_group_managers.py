@@ -66,6 +66,13 @@ from google.cloud.compute_v1.services.instance_group_managers import (
 )
 from google.cloud.compute_v1.types import compute
 
+CRED_INFO_JSON = {
+    "credential_source": "/path/to/file",
+    "credential_type": "service account credentials",
+    "principal": "service-account@example.com",
+}
+CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
 
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
@@ -334,6 +341,49 @@ def test__get_universe_domain():
     with pytest.raises(ValueError) as excinfo:
         InstanceGroupManagersClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+
+@pytest.mark.parametrize(
+    "error_code,cred_info_json,show_cred_info",
+    [
+        (401, CRED_INFO_JSON, True),
+        (403, CRED_INFO_JSON, True),
+        (404, CRED_INFO_JSON, True),
+        (500, CRED_INFO_JSON, False),
+        (401, None, False),
+        (403, None, False),
+        (404, None, False),
+        (500, None, False),
+    ],
+)
+def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
+    cred = mock.Mock(["get_cred_info"])
+    cred.get_cred_info = mock.Mock(return_value=cred_info_json)
+    client = InstanceGroupManagersClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=["foo"])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    if show_cred_info:
+        assert error.details == ["foo", CRED_INFO_STRING]
+    else:
+        assert error.details == ["foo"]
+
+
+@pytest.mark.parametrize("error_code", [401, 403, 404, 500])
+def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
+    cred = mock.Mock([])
+    assert not hasattr(cred, "get_cred_info")
+    client = InstanceGroupManagersClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=[])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    assert error.details == []
 
 
 @pytest.mark.parametrize(
@@ -10815,10 +10865,14 @@ def test_abandon_instances_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.InstanceGroupManagersRestInterceptor, "post_abandon_instances"
     ) as post, mock.patch.object(
+        transports.InstanceGroupManagersRestInterceptor,
+        "post_abandon_instances_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.InstanceGroupManagersRestInterceptor, "pre_abandon_instances"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.AbandonInstancesInstanceGroupManagerRequest.pb(
             compute.AbandonInstancesInstanceGroupManagerRequest()
         )
@@ -10842,6 +10896,7 @@ def test_abandon_instances_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.Operation()
+        post_with_metadata.return_value = compute.Operation(), metadata
 
         client.abandon_instances(
             request,
@@ -10853,6 +10908,7 @@ def test_abandon_instances_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_aggregated_list_rest_bad_request(
@@ -10945,10 +11001,14 @@ def test_aggregated_list_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.InstanceGroupManagersRestInterceptor, "post_aggregated_list"
     ) as post, mock.patch.object(
+        transports.InstanceGroupManagersRestInterceptor,
+        "post_aggregated_list_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.InstanceGroupManagersRestInterceptor, "pre_aggregated_list"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.AggregatedListInstanceGroupManagersRequest.pb(
             compute.AggregatedListInstanceGroupManagersRequest()
         )
@@ -10974,6 +11034,10 @@ def test_aggregated_list_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.InstanceGroupManagerAggregatedList()
+        post_with_metadata.return_value = (
+            compute.InstanceGroupManagerAggregatedList(),
+            metadata,
+        )
 
         client.aggregated_list(
             request,
@@ -10985,6 +11049,7 @@ def test_aggregated_list_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_apply_updates_to_instances_rest_bad_request(
@@ -11209,10 +11274,14 @@ def test_apply_updates_to_instances_rest_interceptors(null_interceptor):
         "post_apply_updates_to_instances",
     ) as post, mock.patch.object(
         transports.InstanceGroupManagersRestInterceptor,
+        "post_apply_updates_to_instances_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
+        transports.InstanceGroupManagersRestInterceptor,
         "pre_apply_updates_to_instances",
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.ApplyUpdatesToInstancesInstanceGroupManagerRequest.pb(
             compute.ApplyUpdatesToInstancesInstanceGroupManagerRequest()
         )
@@ -11236,6 +11305,7 @@ def test_apply_updates_to_instances_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.Operation()
+        post_with_metadata.return_value = compute.Operation(), metadata
 
         client.apply_updates_to_instances(
             request,
@@ -11247,6 +11317,7 @@ def test_apply_updates_to_instances_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_instances_rest_bad_request(
@@ -11478,10 +11549,14 @@ def test_create_instances_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.InstanceGroupManagersRestInterceptor, "post_create_instances"
     ) as post, mock.patch.object(
+        transports.InstanceGroupManagersRestInterceptor,
+        "post_create_instances_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.InstanceGroupManagersRestInterceptor, "pre_create_instances"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.CreateInstancesInstanceGroupManagerRequest.pb(
             compute.CreateInstancesInstanceGroupManagerRequest()
         )
@@ -11505,6 +11580,7 @@ def test_create_instances_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.Operation()
+        post_with_metadata.return_value = compute.Operation(), metadata
 
         client.create_instances(
             request,
@@ -11516,6 +11592,7 @@ def test_create_instances_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_rest_bad_request(
@@ -11650,10 +11727,13 @@ def test_delete_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.InstanceGroupManagersRestInterceptor, "post_delete"
     ) as post, mock.patch.object(
+        transports.InstanceGroupManagersRestInterceptor, "post_delete_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.InstanceGroupManagersRestInterceptor, "pre_delete"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.DeleteInstanceGroupManagerRequest.pb(
             compute.DeleteInstanceGroupManagerRequest()
         )
@@ -11677,6 +11757,7 @@ def test_delete_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.Operation()
+        post_with_metadata.return_value = compute.Operation(), metadata
 
         client.delete(
             request,
@@ -11688,6 +11769,7 @@ def test_delete_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_instances_rest_bad_request(
@@ -11908,10 +11990,14 @@ def test_delete_instances_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.InstanceGroupManagersRestInterceptor, "post_delete_instances"
     ) as post, mock.patch.object(
+        transports.InstanceGroupManagersRestInterceptor,
+        "post_delete_instances_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.InstanceGroupManagersRestInterceptor, "pre_delete_instances"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.DeleteInstancesInstanceGroupManagerRequest.pb(
             compute.DeleteInstancesInstanceGroupManagerRequest()
         )
@@ -11935,6 +12021,7 @@ def test_delete_instances_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.Operation()
+        post_with_metadata.return_value = compute.Operation(), metadata
 
         client.delete_instances(
             request,
@@ -11946,6 +12033,7 @@ def test_delete_instances_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_per_instance_configs_rest_bad_request(
@@ -12169,10 +12257,14 @@ def test_delete_per_instance_configs_rest_interceptors(null_interceptor):
         "post_delete_per_instance_configs",
     ) as post, mock.patch.object(
         transports.InstanceGroupManagersRestInterceptor,
+        "post_delete_per_instance_configs_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
+        transports.InstanceGroupManagersRestInterceptor,
         "pre_delete_per_instance_configs",
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.DeletePerInstanceConfigsInstanceGroupManagerRequest.pb(
             compute.DeletePerInstanceConfigsInstanceGroupManagerRequest()
         )
@@ -12196,6 +12288,7 @@ def test_delete_per_instance_configs_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.Operation()
+        post_with_metadata.return_value = compute.Operation(), metadata
 
         client.delete_per_instance_configs(
             request,
@@ -12207,6 +12300,7 @@ def test_delete_per_instance_configs_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_rest_bad_request(request_type=compute.GetInstanceGroupManagerRequest):
@@ -12336,10 +12430,13 @@ def test_get_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.InstanceGroupManagersRestInterceptor, "post_get"
     ) as post, mock.patch.object(
+        transports.InstanceGroupManagersRestInterceptor, "post_get_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.InstanceGroupManagersRestInterceptor, "pre_get"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.GetInstanceGroupManagerRequest.pb(
             compute.GetInstanceGroupManagerRequest()
         )
@@ -12365,6 +12462,7 @@ def test_get_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.InstanceGroupManager()
+        post_with_metadata.return_value = compute.InstanceGroupManager(), metadata
 
         client.get(
             request,
@@ -12376,6 +12474,7 @@ def test_get_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_insert_rest_bad_request(
@@ -12660,10 +12759,13 @@ def test_insert_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.InstanceGroupManagersRestInterceptor, "post_insert"
     ) as post, mock.patch.object(
+        transports.InstanceGroupManagersRestInterceptor, "post_insert_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.InstanceGroupManagersRestInterceptor, "pre_insert"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.InsertInstanceGroupManagerRequest.pb(
             compute.InsertInstanceGroupManagerRequest()
         )
@@ -12687,6 +12789,7 @@ def test_insert_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.Operation()
+        post_with_metadata.return_value = compute.Operation(), metadata
 
         client.insert(
             request,
@@ -12698,6 +12801,7 @@ def test_insert_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_rest_bad_request(request_type=compute.ListInstanceGroupManagersRequest):
@@ -12786,10 +12890,13 @@ def test_list_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.InstanceGroupManagersRestInterceptor, "post_list"
     ) as post, mock.patch.object(
+        transports.InstanceGroupManagersRestInterceptor, "post_list_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.InstanceGroupManagersRestInterceptor, "pre_list"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.ListInstanceGroupManagersRequest.pb(
             compute.ListInstanceGroupManagersRequest()
         )
@@ -12815,6 +12922,7 @@ def test_list_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.InstanceGroupManagerList()
+        post_with_metadata.return_value = compute.InstanceGroupManagerList(), metadata
 
         client.list(
             request,
@@ -12826,6 +12934,7 @@ def test_list_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_errors_rest_bad_request(
@@ -12918,10 +13027,14 @@ def test_list_errors_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.InstanceGroupManagersRestInterceptor, "post_list_errors"
     ) as post, mock.patch.object(
+        transports.InstanceGroupManagersRestInterceptor,
+        "post_list_errors_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.InstanceGroupManagersRestInterceptor, "pre_list_errors"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.ListErrorsInstanceGroupManagersRequest.pb(
             compute.ListErrorsInstanceGroupManagersRequest()
         )
@@ -12947,6 +13060,10 @@ def test_list_errors_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.InstanceGroupManagersListErrorsResponse()
+        post_with_metadata.return_value = (
+            compute.InstanceGroupManagersListErrorsResponse(),
+            metadata,
+        )
 
         client.list_errors(
             request,
@@ -12958,6 +13075,7 @@ def test_list_errors_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_managed_instances_rest_bad_request(
@@ -13052,10 +13170,14 @@ def test_list_managed_instances_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.InstanceGroupManagersRestInterceptor, "post_list_managed_instances"
     ) as post, mock.patch.object(
+        transports.InstanceGroupManagersRestInterceptor,
+        "post_list_managed_instances_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.InstanceGroupManagersRestInterceptor, "pre_list_managed_instances"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.ListManagedInstancesInstanceGroupManagersRequest.pb(
             compute.ListManagedInstancesInstanceGroupManagersRequest()
         )
@@ -13083,6 +13205,10 @@ def test_list_managed_instances_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.InstanceGroupManagersListManagedInstancesResponse()
+        post_with_metadata.return_value = (
+            compute.InstanceGroupManagersListManagedInstancesResponse(),
+            metadata,
+        )
 
         client.list_managed_instances(
             request,
@@ -13094,6 +13220,7 @@ def test_list_managed_instances_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_per_instance_configs_rest_bad_request(
@@ -13189,10 +13316,14 @@ def test_list_per_instance_configs_rest_interceptors(null_interceptor):
         transports.InstanceGroupManagersRestInterceptor,
         "post_list_per_instance_configs",
     ) as post, mock.patch.object(
+        transports.InstanceGroupManagersRestInterceptor,
+        "post_list_per_instance_configs_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.InstanceGroupManagersRestInterceptor, "pre_list_per_instance_configs"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.ListPerInstanceConfigsInstanceGroupManagersRequest.pb(
             compute.ListPerInstanceConfigsInstanceGroupManagersRequest()
         )
@@ -13218,6 +13349,10 @@ def test_list_per_instance_configs_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.InstanceGroupManagersListPerInstanceConfigsResp()
+        post_with_metadata.return_value = (
+            compute.InstanceGroupManagersListPerInstanceConfigsResp(),
+            metadata,
+        )
 
         client.list_per_instance_configs(
             request,
@@ -13229,6 +13364,7 @@ def test_list_per_instance_configs_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_patch_rest_bad_request(request_type=compute.PatchInstanceGroupManagerRequest):
@@ -13519,10 +13655,13 @@ def test_patch_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.InstanceGroupManagersRestInterceptor, "post_patch"
     ) as post, mock.patch.object(
+        transports.InstanceGroupManagersRestInterceptor, "post_patch_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.InstanceGroupManagersRestInterceptor, "pre_patch"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.PatchInstanceGroupManagerRequest.pb(
             compute.PatchInstanceGroupManagerRequest()
         )
@@ -13546,6 +13685,7 @@ def test_patch_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.Operation()
+        post_with_metadata.return_value = compute.Operation(), metadata
 
         client.patch(
             request,
@@ -13557,6 +13697,7 @@ def test_patch_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_patch_per_instance_configs_rest_bad_request(
@@ -13790,10 +13931,14 @@ def test_patch_per_instance_configs_rest_interceptors(null_interceptor):
         "post_patch_per_instance_configs",
     ) as post, mock.patch.object(
         transports.InstanceGroupManagersRestInterceptor,
+        "post_patch_per_instance_configs_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
+        transports.InstanceGroupManagersRestInterceptor,
         "pre_patch_per_instance_configs",
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.PatchPerInstanceConfigsInstanceGroupManagerRequest.pb(
             compute.PatchPerInstanceConfigsInstanceGroupManagerRequest()
         )
@@ -13817,6 +13962,7 @@ def test_patch_per_instance_configs_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.Operation()
+        post_with_metadata.return_value = compute.Operation(), metadata
 
         client.patch_per_instance_configs(
             request,
@@ -13828,6 +13974,7 @@ def test_patch_per_instance_configs_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_recreate_instances_rest_bad_request(
@@ -14047,10 +14194,14 @@ def test_recreate_instances_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.InstanceGroupManagersRestInterceptor, "post_recreate_instances"
     ) as post, mock.patch.object(
+        transports.InstanceGroupManagersRestInterceptor,
+        "post_recreate_instances_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.InstanceGroupManagersRestInterceptor, "pre_recreate_instances"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.RecreateInstancesInstanceGroupManagerRequest.pb(
             compute.RecreateInstancesInstanceGroupManagerRequest()
         )
@@ -14074,6 +14225,7 @@ def test_recreate_instances_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.Operation()
+        post_with_metadata.return_value = compute.Operation(), metadata
 
         client.recreate_instances(
             request,
@@ -14085,6 +14237,7 @@ def test_recreate_instances_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_resize_rest_bad_request(
@@ -14219,10 +14372,13 @@ def test_resize_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.InstanceGroupManagersRestInterceptor, "post_resize"
     ) as post, mock.patch.object(
+        transports.InstanceGroupManagersRestInterceptor, "post_resize_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.InstanceGroupManagersRestInterceptor, "pre_resize"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.ResizeInstanceGroupManagerRequest.pb(
             compute.ResizeInstanceGroupManagerRequest()
         )
@@ -14246,6 +14402,7 @@ def test_resize_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.Operation()
+        post_with_metadata.return_value = compute.Operation(), metadata
 
         client.resize(
             request,
@@ -14257,6 +14414,7 @@ def test_resize_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_resume_instances_rest_bad_request(
@@ -14476,10 +14634,14 @@ def test_resume_instances_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.InstanceGroupManagersRestInterceptor, "post_resume_instances"
     ) as post, mock.patch.object(
+        transports.InstanceGroupManagersRestInterceptor,
+        "post_resume_instances_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.InstanceGroupManagersRestInterceptor, "pre_resume_instances"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.ResumeInstancesInstanceGroupManagerRequest.pb(
             compute.ResumeInstancesInstanceGroupManagerRequest()
         )
@@ -14503,6 +14665,7 @@ def test_resume_instances_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.Operation()
+        post_with_metadata.return_value = compute.Operation(), metadata
 
         client.resume_instances(
             request,
@@ -14514,6 +14677,7 @@ def test_resume_instances_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_set_instance_template_rest_bad_request(
@@ -14733,10 +14897,14 @@ def test_set_instance_template_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.InstanceGroupManagersRestInterceptor, "post_set_instance_template"
     ) as post, mock.patch.object(
+        transports.InstanceGroupManagersRestInterceptor,
+        "post_set_instance_template_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.InstanceGroupManagersRestInterceptor, "pre_set_instance_template"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.SetInstanceTemplateInstanceGroupManagerRequest.pb(
             compute.SetInstanceTemplateInstanceGroupManagerRequest()
         )
@@ -14760,6 +14928,7 @@ def test_set_instance_template_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.Operation()
+        post_with_metadata.return_value = compute.Operation(), metadata
 
         client.set_instance_template(
             request,
@@ -14771,6 +14940,7 @@ def test_set_instance_template_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_set_target_pools_rest_bad_request(
@@ -14991,10 +15161,14 @@ def test_set_target_pools_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.InstanceGroupManagersRestInterceptor, "post_set_target_pools"
     ) as post, mock.patch.object(
+        transports.InstanceGroupManagersRestInterceptor,
+        "post_set_target_pools_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.InstanceGroupManagersRestInterceptor, "pre_set_target_pools"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.SetTargetPoolsInstanceGroupManagerRequest.pb(
             compute.SetTargetPoolsInstanceGroupManagerRequest()
         )
@@ -15018,6 +15192,7 @@ def test_set_target_pools_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.Operation()
+        post_with_metadata.return_value = compute.Operation(), metadata
 
         client.set_target_pools(
             request,
@@ -15029,6 +15204,7 @@ def test_set_target_pools_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_start_instances_rest_bad_request(
@@ -15248,10 +15424,14 @@ def test_start_instances_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.InstanceGroupManagersRestInterceptor, "post_start_instances"
     ) as post, mock.patch.object(
+        transports.InstanceGroupManagersRestInterceptor,
+        "post_start_instances_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.InstanceGroupManagersRestInterceptor, "pre_start_instances"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.StartInstancesInstanceGroupManagerRequest.pb(
             compute.StartInstancesInstanceGroupManagerRequest()
         )
@@ -15275,6 +15455,7 @@ def test_start_instances_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.Operation()
+        post_with_metadata.return_value = compute.Operation(), metadata
 
         client.start_instances(
             request,
@@ -15286,6 +15467,7 @@ def test_start_instances_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_stop_instances_rest_bad_request(
@@ -15506,10 +15688,14 @@ def test_stop_instances_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.InstanceGroupManagersRestInterceptor, "post_stop_instances"
     ) as post, mock.patch.object(
+        transports.InstanceGroupManagersRestInterceptor,
+        "post_stop_instances_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.InstanceGroupManagersRestInterceptor, "pre_stop_instances"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.StopInstancesInstanceGroupManagerRequest.pb(
             compute.StopInstancesInstanceGroupManagerRequest()
         )
@@ -15533,6 +15719,7 @@ def test_stop_instances_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.Operation()
+        post_with_metadata.return_value = compute.Operation(), metadata
 
         client.stop_instances(
             request,
@@ -15544,6 +15731,7 @@ def test_stop_instances_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_suspend_instances_rest_bad_request(
@@ -15764,10 +15952,14 @@ def test_suspend_instances_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.InstanceGroupManagersRestInterceptor, "post_suspend_instances"
     ) as post, mock.patch.object(
+        transports.InstanceGroupManagersRestInterceptor,
+        "post_suspend_instances_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.InstanceGroupManagersRestInterceptor, "pre_suspend_instances"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.SuspendInstancesInstanceGroupManagerRequest.pb(
             compute.SuspendInstancesInstanceGroupManagerRequest()
         )
@@ -15791,6 +15983,7 @@ def test_suspend_instances_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.Operation()
+        post_with_metadata.return_value = compute.Operation(), metadata
 
         client.suspend_instances(
             request,
@@ -15802,6 +15995,7 @@ def test_suspend_instances_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_per_instance_configs_rest_bad_request(
@@ -16037,10 +16231,14 @@ def test_update_per_instance_configs_rest_interceptors(null_interceptor):
         "post_update_per_instance_configs",
     ) as post, mock.patch.object(
         transports.InstanceGroupManagersRestInterceptor,
+        "post_update_per_instance_configs_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
+        transports.InstanceGroupManagersRestInterceptor,
         "pre_update_per_instance_configs",
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.UpdatePerInstanceConfigsInstanceGroupManagerRequest.pb(
             compute.UpdatePerInstanceConfigsInstanceGroupManagerRequest()
         )
@@ -16064,6 +16262,7 @@ def test_update_per_instance_configs_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.Operation()
+        post_with_metadata.return_value = compute.Operation(), metadata
 
         client.update_per_instance_configs(
             request,
@@ -16075,6 +16274,7 @@ def test_update_per_instance_configs_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_initialize_client_w_rest():

@@ -59,6 +59,13 @@ from google.protobuf import timestamp_pb2  # type: ignore
 from google.cloud.apihub_v1.services.api_hub import ApiHubClient, pagers, transports
 from google.cloud.apihub_v1.types import apihub_service, common_fields
 
+CRED_INFO_JSON = {
+    "credential_source": "/path/to/file",
+    "credential_type": "service account credentials",
+    "principal": "service-account@example.com",
+}
+CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
 
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
@@ -274,6 +281,49 @@ def test__get_universe_domain():
     with pytest.raises(ValueError) as excinfo:
         ApiHubClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+
+@pytest.mark.parametrize(
+    "error_code,cred_info_json,show_cred_info",
+    [
+        (401, CRED_INFO_JSON, True),
+        (403, CRED_INFO_JSON, True),
+        (404, CRED_INFO_JSON, True),
+        (500, CRED_INFO_JSON, False),
+        (401, None, False),
+        (403, None, False),
+        (404, None, False),
+        (500, None, False),
+    ],
+)
+def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
+    cred = mock.Mock(["get_cred_info"])
+    cred.get_cred_info = mock.Mock(return_value=cred_info_json)
+    client = ApiHubClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=["foo"])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    if show_cred_info:
+        assert error.details == ["foo", CRED_INFO_STRING]
+    else:
+        assert error.details == ["foo"]
+
+
+@pytest.mark.parametrize("error_code", [401, 403, 404, 500])
+def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
+    cred = mock.Mock([])
+    assert not hasattr(cred, "get_cred_info")
+    client = ApiHubClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=[])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    assert error.details == []
 
 
 @pytest.mark.parametrize(
@@ -8170,10 +8220,13 @@ def test_create_api_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ApiHubRestInterceptor, "post_create_api"
     ) as post, mock.patch.object(
+        transports.ApiHubRestInterceptor, "post_create_api_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ApiHubRestInterceptor, "pre_create_api"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = apihub_service.CreateApiRequest.pb(
             apihub_service.CreateApiRequest()
         )
@@ -8197,6 +8250,7 @@ def test_create_api_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = common_fields.Api()
+        post_with_metadata.return_value = common_fields.Api(), metadata
 
         client.create_api(
             request,
@@ -8208,6 +8262,7 @@ def test_create_api_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_api_rest_bad_request(request_type=apihub_service.GetApiRequest):
@@ -8296,10 +8351,13 @@ def test_get_api_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ApiHubRestInterceptor, "post_get_api"
     ) as post, mock.patch.object(
+        transports.ApiHubRestInterceptor, "post_get_api_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ApiHubRestInterceptor, "pre_get_api"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = apihub_service.GetApiRequest.pb(apihub_service.GetApiRequest())
         transcode.return_value = {
             "method": "post",
@@ -8321,6 +8379,7 @@ def test_get_api_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = common_fields.Api()
+        post_with_metadata.return_value = common_fields.Api(), metadata
 
         client.get_api(
             request,
@@ -8332,6 +8391,7 @@ def test_get_api_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_apis_rest_bad_request(request_type=apihub_service.ListApisRequest):
@@ -8412,10 +8472,13 @@ def test_list_apis_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ApiHubRestInterceptor, "post_list_apis"
     ) as post, mock.patch.object(
+        transports.ApiHubRestInterceptor, "post_list_apis_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ApiHubRestInterceptor, "pre_list_apis"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = apihub_service.ListApisRequest.pb(apihub_service.ListApisRequest())
         transcode.return_value = {
             "method": "post",
@@ -8439,6 +8502,7 @@ def test_list_apis_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = apihub_service.ListApisResponse()
+        post_with_metadata.return_value = apihub_service.ListApisResponse(), metadata
 
         client.list_apis(
             request,
@@ -8450,6 +8514,7 @@ def test_list_apis_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_api_rest_bad_request(request_type=apihub_service.UpdateApiRequest):
@@ -8636,10 +8701,13 @@ def test_update_api_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ApiHubRestInterceptor, "post_update_api"
     ) as post, mock.patch.object(
+        transports.ApiHubRestInterceptor, "post_update_api_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ApiHubRestInterceptor, "pre_update_api"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = apihub_service.UpdateApiRequest.pb(
             apihub_service.UpdateApiRequest()
         )
@@ -8663,6 +8731,7 @@ def test_update_api_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = common_fields.Api()
+        post_with_metadata.return_value = common_fields.Api(), metadata
 
         client.update_api(
             request,
@@ -8674,6 +8743,7 @@ def test_update_api_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_api_rest_bad_request(request_type=apihub_service.DeleteApiRequest):
@@ -8973,10 +9043,13 @@ def test_create_version_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ApiHubRestInterceptor, "post_create_version"
     ) as post, mock.patch.object(
+        transports.ApiHubRestInterceptor, "post_create_version_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ApiHubRestInterceptor, "pre_create_version"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = apihub_service.CreateVersionRequest.pb(
             apihub_service.CreateVersionRequest()
         )
@@ -9000,6 +9073,7 @@ def test_create_version_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = common_fields.Version()
+        post_with_metadata.return_value = common_fields.Version(), metadata
 
         client.create_version(
             request,
@@ -9011,6 +9085,7 @@ def test_create_version_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_version_rest_bad_request(request_type=apihub_service.GetVersionRequest):
@@ -9109,10 +9184,13 @@ def test_get_version_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ApiHubRestInterceptor, "post_get_version"
     ) as post, mock.patch.object(
+        transports.ApiHubRestInterceptor, "post_get_version_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ApiHubRestInterceptor, "pre_get_version"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = apihub_service.GetVersionRequest.pb(
             apihub_service.GetVersionRequest()
         )
@@ -9136,6 +9214,7 @@ def test_get_version_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = common_fields.Version()
+        post_with_metadata.return_value = common_fields.Version(), metadata
 
         client.get_version(
             request,
@@ -9147,6 +9226,7 @@ def test_get_version_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_versions_rest_bad_request(
@@ -9229,10 +9309,13 @@ def test_list_versions_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ApiHubRestInterceptor, "post_list_versions"
     ) as post, mock.patch.object(
+        transports.ApiHubRestInterceptor, "post_list_versions_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ApiHubRestInterceptor, "pre_list_versions"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = apihub_service.ListVersionsRequest.pb(
             apihub_service.ListVersionsRequest()
         )
@@ -9258,6 +9341,10 @@ def test_list_versions_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = apihub_service.ListVersionsResponse()
+        post_with_metadata.return_value = (
+            apihub_service.ListVersionsResponse(),
+            metadata,
+        )
 
         client.list_versions(
             request,
@@ -9269,6 +9356,7 @@ def test_list_versions_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_version_rest_bad_request(
@@ -9471,10 +9559,13 @@ def test_update_version_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ApiHubRestInterceptor, "post_update_version"
     ) as post, mock.patch.object(
+        transports.ApiHubRestInterceptor, "post_update_version_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ApiHubRestInterceptor, "pre_update_version"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = apihub_service.UpdateVersionRequest.pb(
             apihub_service.UpdateVersionRequest()
         )
@@ -9498,6 +9589,7 @@ def test_update_version_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = common_fields.Version()
+        post_with_metadata.return_value = common_fields.Version(), metadata
 
         client.update_version(
             request,
@@ -9509,6 +9601,7 @@ def test_update_version_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_version_rest_bad_request(
@@ -9827,10 +9920,13 @@ def test_create_spec_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ApiHubRestInterceptor, "post_create_spec"
     ) as post, mock.patch.object(
+        transports.ApiHubRestInterceptor, "post_create_spec_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ApiHubRestInterceptor, "pre_create_spec"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = apihub_service.CreateSpecRequest.pb(
             apihub_service.CreateSpecRequest()
         )
@@ -9854,6 +9950,7 @@ def test_create_spec_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = common_fields.Spec()
+        post_with_metadata.return_value = common_fields.Spec(), metadata
 
         client.create_spec(
             request,
@@ -9865,6 +9962,7 @@ def test_create_spec_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_spec_rest_bad_request(request_type=apihub_service.GetSpecRequest):
@@ -9955,10 +10053,13 @@ def test_get_spec_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ApiHubRestInterceptor, "post_get_spec"
     ) as post, mock.patch.object(
+        transports.ApiHubRestInterceptor, "post_get_spec_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ApiHubRestInterceptor, "pre_get_spec"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = apihub_service.GetSpecRequest.pb(apihub_service.GetSpecRequest())
         transcode.return_value = {
             "method": "post",
@@ -9980,6 +10081,7 @@ def test_get_spec_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = common_fields.Spec()
+        post_with_metadata.return_value = common_fields.Spec(), metadata
 
         client.get_spec(
             request,
@@ -9991,6 +10093,7 @@ def test_get_spec_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_spec_contents_rest_bad_request(
@@ -10079,10 +10182,13 @@ def test_get_spec_contents_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ApiHubRestInterceptor, "post_get_spec_contents"
     ) as post, mock.patch.object(
+        transports.ApiHubRestInterceptor, "post_get_spec_contents_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ApiHubRestInterceptor, "pre_get_spec_contents"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = apihub_service.GetSpecContentsRequest.pb(
             apihub_service.GetSpecContentsRequest()
         )
@@ -10106,6 +10212,7 @@ def test_get_spec_contents_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = common_fields.SpecContents()
+        post_with_metadata.return_value = common_fields.SpecContents(), metadata
 
         client.get_spec_contents(
             request,
@@ -10117,6 +10224,7 @@ def test_get_spec_contents_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_specs_rest_bad_request(request_type=apihub_service.ListSpecsRequest):
@@ -10201,10 +10309,13 @@ def test_list_specs_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ApiHubRestInterceptor, "post_list_specs"
     ) as post, mock.patch.object(
+        transports.ApiHubRestInterceptor, "post_list_specs_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ApiHubRestInterceptor, "pre_list_specs"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = apihub_service.ListSpecsRequest.pb(
             apihub_service.ListSpecsRequest()
         )
@@ -10230,6 +10341,7 @@ def test_list_specs_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = apihub_service.ListSpecsResponse()
+        post_with_metadata.return_value = apihub_service.ListSpecsResponse(), metadata
 
         client.list_specs(
             request,
@@ -10241,6 +10353,7 @@ def test_list_specs_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_spec_rest_bad_request(request_type=apihub_service.UpdateSpecRequest):
@@ -10452,10 +10565,13 @@ def test_update_spec_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ApiHubRestInterceptor, "post_update_spec"
     ) as post, mock.patch.object(
+        transports.ApiHubRestInterceptor, "post_update_spec_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ApiHubRestInterceptor, "pre_update_spec"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = apihub_service.UpdateSpecRequest.pb(
             apihub_service.UpdateSpecRequest()
         )
@@ -10479,6 +10595,7 @@ def test_update_spec_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = common_fields.Spec()
+        post_with_metadata.return_value = common_fields.Spec(), metadata
 
         client.update_spec(
             request,
@@ -10490,6 +10607,7 @@ def test_update_spec_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_spec_rest_bad_request(request_type=apihub_service.DeleteSpecRequest):
@@ -10687,10 +10805,13 @@ def test_get_api_operation_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ApiHubRestInterceptor, "post_get_api_operation"
     ) as post, mock.patch.object(
+        transports.ApiHubRestInterceptor, "post_get_api_operation_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ApiHubRestInterceptor, "pre_get_api_operation"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = apihub_service.GetApiOperationRequest.pb(
             apihub_service.GetApiOperationRequest()
         )
@@ -10714,6 +10835,7 @@ def test_get_api_operation_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = common_fields.ApiOperation()
+        post_with_metadata.return_value = common_fields.ApiOperation(), metadata
 
         client.get_api_operation(
             request,
@@ -10725,6 +10847,7 @@ def test_get_api_operation_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_api_operations_rest_bad_request(
@@ -10811,10 +10934,13 @@ def test_list_api_operations_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ApiHubRestInterceptor, "post_list_api_operations"
     ) as post, mock.patch.object(
+        transports.ApiHubRestInterceptor, "post_list_api_operations_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ApiHubRestInterceptor, "pre_list_api_operations"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = apihub_service.ListApiOperationsRequest.pb(
             apihub_service.ListApiOperationsRequest()
         )
@@ -10840,6 +10966,10 @@ def test_list_api_operations_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = apihub_service.ListApiOperationsResponse()
+        post_with_metadata.return_value = (
+            apihub_service.ListApiOperationsResponse(),
+            metadata,
+        )
 
         client.list_api_operations(
             request,
@@ -10851,6 +10981,7 @@ def test_list_api_operations_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_definition_rest_bad_request(
@@ -10941,10 +11072,13 @@ def test_get_definition_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ApiHubRestInterceptor, "post_get_definition"
     ) as post, mock.patch.object(
+        transports.ApiHubRestInterceptor, "post_get_definition_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ApiHubRestInterceptor, "pre_get_definition"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = apihub_service.GetDefinitionRequest.pb(
             apihub_service.GetDefinitionRequest()
         )
@@ -10968,6 +11102,7 @@ def test_get_definition_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = common_fields.Definition()
+        post_with_metadata.return_value = common_fields.Definition(), metadata
 
         client.get_definition(
             request,
@@ -10979,6 +11114,7 @@ def test_get_definition_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_deployment_rest_bad_request(
@@ -11167,10 +11303,13 @@ def test_create_deployment_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ApiHubRestInterceptor, "post_create_deployment"
     ) as post, mock.patch.object(
+        transports.ApiHubRestInterceptor, "post_create_deployment_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ApiHubRestInterceptor, "pre_create_deployment"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = apihub_service.CreateDeploymentRequest.pb(
             apihub_service.CreateDeploymentRequest()
         )
@@ -11194,6 +11333,7 @@ def test_create_deployment_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = common_fields.Deployment()
+        post_with_metadata.return_value = common_fields.Deployment(), metadata
 
         client.create_deployment(
             request,
@@ -11205,6 +11345,7 @@ def test_create_deployment_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_deployment_rest_bad_request(
@@ -11297,10 +11438,13 @@ def test_get_deployment_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ApiHubRestInterceptor, "post_get_deployment"
     ) as post, mock.patch.object(
+        transports.ApiHubRestInterceptor, "post_get_deployment_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ApiHubRestInterceptor, "pre_get_deployment"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = apihub_service.GetDeploymentRequest.pb(
             apihub_service.GetDeploymentRequest()
         )
@@ -11324,6 +11468,7 @@ def test_get_deployment_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = common_fields.Deployment()
+        post_with_metadata.return_value = common_fields.Deployment(), metadata
 
         client.get_deployment(
             request,
@@ -11335,6 +11480,7 @@ def test_get_deployment_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_deployments_rest_bad_request(
@@ -11417,10 +11563,13 @@ def test_list_deployments_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ApiHubRestInterceptor, "post_list_deployments"
     ) as post, mock.patch.object(
+        transports.ApiHubRestInterceptor, "post_list_deployments_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ApiHubRestInterceptor, "pre_list_deployments"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = apihub_service.ListDeploymentsRequest.pb(
             apihub_service.ListDeploymentsRequest()
         )
@@ -11446,6 +11595,10 @@ def test_list_deployments_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = apihub_service.ListDeploymentsResponse()
+        post_with_metadata.return_value = (
+            apihub_service.ListDeploymentsResponse(),
+            metadata,
+        )
 
         client.list_deployments(
             request,
@@ -11457,6 +11610,7 @@ def test_list_deployments_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_deployment_rest_bad_request(
@@ -11649,10 +11803,13 @@ def test_update_deployment_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ApiHubRestInterceptor, "post_update_deployment"
     ) as post, mock.patch.object(
+        transports.ApiHubRestInterceptor, "post_update_deployment_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ApiHubRestInterceptor, "pre_update_deployment"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = apihub_service.UpdateDeploymentRequest.pb(
             apihub_service.UpdateDeploymentRequest()
         )
@@ -11676,6 +11833,7 @@ def test_update_deployment_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = common_fields.Deployment()
+        post_with_metadata.return_value = common_fields.Deployment(), metadata
 
         client.update_deployment(
             request,
@@ -11687,6 +11845,7 @@ def test_update_deployment_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_deployment_rest_bad_request(
@@ -11980,10 +12139,13 @@ def test_create_attribute_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ApiHubRestInterceptor, "post_create_attribute"
     ) as post, mock.patch.object(
+        transports.ApiHubRestInterceptor, "post_create_attribute_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ApiHubRestInterceptor, "pre_create_attribute"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = apihub_service.CreateAttributeRequest.pb(
             apihub_service.CreateAttributeRequest()
         )
@@ -12007,6 +12169,7 @@ def test_create_attribute_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = common_fields.Attribute()
+        post_with_metadata.return_value = common_fields.Attribute(), metadata
 
         client.create_attribute(
             request,
@@ -12018,6 +12181,7 @@ def test_create_attribute_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_attribute_rest_bad_request(
@@ -12117,10 +12281,13 @@ def test_get_attribute_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ApiHubRestInterceptor, "post_get_attribute"
     ) as post, mock.patch.object(
+        transports.ApiHubRestInterceptor, "post_get_attribute_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ApiHubRestInterceptor, "pre_get_attribute"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = apihub_service.GetAttributeRequest.pb(
             apihub_service.GetAttributeRequest()
         )
@@ -12144,6 +12311,7 @@ def test_get_attribute_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = common_fields.Attribute()
+        post_with_metadata.return_value = common_fields.Attribute(), metadata
 
         client.get_attribute(
             request,
@@ -12155,6 +12323,7 @@ def test_get_attribute_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_attribute_rest_bad_request(
@@ -12345,10 +12514,13 @@ def test_update_attribute_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ApiHubRestInterceptor, "post_update_attribute"
     ) as post, mock.patch.object(
+        transports.ApiHubRestInterceptor, "post_update_attribute_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ApiHubRestInterceptor, "pre_update_attribute"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = apihub_service.UpdateAttributeRequest.pb(
             apihub_service.UpdateAttributeRequest()
         )
@@ -12372,6 +12544,7 @@ def test_update_attribute_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = common_fields.Attribute()
+        post_with_metadata.return_value = common_fields.Attribute(), metadata
 
         client.update_attribute(
             request,
@@ -12383,6 +12556,7 @@ def test_update_attribute_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_attribute_rest_bad_request(
@@ -12572,10 +12746,13 @@ def test_list_attributes_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ApiHubRestInterceptor, "post_list_attributes"
     ) as post, mock.patch.object(
+        transports.ApiHubRestInterceptor, "post_list_attributes_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ApiHubRestInterceptor, "pre_list_attributes"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = apihub_service.ListAttributesRequest.pb(
             apihub_service.ListAttributesRequest()
         )
@@ -12601,6 +12778,10 @@ def test_list_attributes_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = apihub_service.ListAttributesResponse()
+        post_with_metadata.return_value = (
+            apihub_service.ListAttributesResponse(),
+            metadata,
+        )
 
         client.list_attributes(
             request,
@@ -12612,6 +12793,7 @@ def test_list_attributes_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_search_resources_rest_bad_request(
@@ -12694,10 +12876,13 @@ def test_search_resources_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ApiHubRestInterceptor, "post_search_resources"
     ) as post, mock.patch.object(
+        transports.ApiHubRestInterceptor, "post_search_resources_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ApiHubRestInterceptor, "pre_search_resources"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = apihub_service.SearchResourcesRequest.pb(
             apihub_service.SearchResourcesRequest()
         )
@@ -12723,6 +12908,10 @@ def test_search_resources_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = apihub_service.SearchResourcesResponse()
+        post_with_metadata.return_value = (
+            apihub_service.SearchResourcesResponse(),
+            metadata,
+        )
 
         client.search_resources(
             request,
@@ -12734,6 +12923,7 @@ def test_search_resources_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_external_api_rest_bad_request(
@@ -12902,10 +13092,13 @@ def test_create_external_api_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ApiHubRestInterceptor, "post_create_external_api"
     ) as post, mock.patch.object(
+        transports.ApiHubRestInterceptor, "post_create_external_api_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ApiHubRestInterceptor, "pre_create_external_api"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = apihub_service.CreateExternalApiRequest.pb(
             apihub_service.CreateExternalApiRequest()
         )
@@ -12929,6 +13122,7 @@ def test_create_external_api_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = common_fields.ExternalApi()
+        post_with_metadata.return_value = common_fields.ExternalApi(), metadata
 
         client.create_external_api(
             request,
@@ -12940,6 +13134,7 @@ def test_create_external_api_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_external_api_rest_bad_request(
@@ -13030,10 +13225,13 @@ def test_get_external_api_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ApiHubRestInterceptor, "post_get_external_api"
     ) as post, mock.patch.object(
+        transports.ApiHubRestInterceptor, "post_get_external_api_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ApiHubRestInterceptor, "pre_get_external_api"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = apihub_service.GetExternalApiRequest.pb(
             apihub_service.GetExternalApiRequest()
         )
@@ -13057,6 +13255,7 @@ def test_get_external_api_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = common_fields.ExternalApi()
+        post_with_metadata.return_value = common_fields.ExternalApi(), metadata
 
         client.get_external_api(
             request,
@@ -13068,6 +13267,7 @@ def test_get_external_api_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_external_api_rest_bad_request(
@@ -13244,10 +13444,13 @@ def test_update_external_api_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ApiHubRestInterceptor, "post_update_external_api"
     ) as post, mock.patch.object(
+        transports.ApiHubRestInterceptor, "post_update_external_api_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ApiHubRestInterceptor, "pre_update_external_api"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = apihub_service.UpdateExternalApiRequest.pb(
             apihub_service.UpdateExternalApiRequest()
         )
@@ -13271,6 +13474,7 @@ def test_update_external_api_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = common_fields.ExternalApi()
+        post_with_metadata.return_value = common_fields.ExternalApi(), metadata
 
         client.update_external_api(
             request,
@@ -13282,6 +13486,7 @@ def test_update_external_api_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_external_api_rest_bad_request(
@@ -13471,10 +13676,13 @@ def test_list_external_apis_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ApiHubRestInterceptor, "post_list_external_apis"
     ) as post, mock.patch.object(
+        transports.ApiHubRestInterceptor, "post_list_external_apis_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ApiHubRestInterceptor, "pre_list_external_apis"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = apihub_service.ListExternalApisRequest.pb(
             apihub_service.ListExternalApisRequest()
         )
@@ -13500,6 +13708,10 @@ def test_list_external_apis_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = apihub_service.ListExternalApisResponse()
+        post_with_metadata.return_value = (
+            apihub_service.ListExternalApisResponse(),
+            metadata,
+        )
 
         client.list_external_apis(
             request,
@@ -13511,6 +13723,7 @@ def test_list_external_apis_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_location_rest_bad_request(request_type=locations_pb2.GetLocationRequest):

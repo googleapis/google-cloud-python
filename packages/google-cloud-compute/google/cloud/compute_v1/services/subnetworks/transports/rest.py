@@ -190,11 +190,36 @@ class SubnetworksRestInterceptor:
     ) -> compute.SubnetworkAggregatedList:
         """Post-rpc interceptor for aggregated_list
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_aggregated_list_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Subnetworks server but before
-        it is returned to user code.
+        it is returned to user code. This `post_aggregated_list` interceptor runs
+        before the `post_aggregated_list_with_metadata` interceptor.
         """
         return response
+
+    def post_aggregated_list_with_metadata(
+        self,
+        response: compute.SubnetworkAggregatedList,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.SubnetworkAggregatedList, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for aggregated_list
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Subnetworks server but before it is returned to user code.
+
+        We recommend only using this `post_aggregated_list_with_metadata`
+        interceptor in new development instead of the `post_aggregated_list` interceptor.
+        When both interceptors are used, this `post_aggregated_list_with_metadata` interceptor runs after the
+        `post_aggregated_list` interceptor. The (possibly modified) response returned by
+        `post_aggregated_list` will be passed to
+        `post_aggregated_list_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete(
         self,
@@ -213,11 +238,34 @@ class SubnetworksRestInterceptor:
     def post_delete(self, response: compute.Operation) -> compute.Operation:
         """Post-rpc interceptor for delete
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Subnetworks server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete` interceptor runs
+        before the `post_delete_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_with_metadata(
+        self,
+        response: compute.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Subnetworks server but before it is returned to user code.
+
+        We recommend only using this `post_delete_with_metadata`
+        interceptor in new development instead of the `post_delete` interceptor.
+        When both interceptors are used, this `post_delete_with_metadata` interceptor runs after the
+        `post_delete` interceptor. The (possibly modified) response returned by
+        `post_delete` will be passed to
+        `post_delete_with_metadata`.
+        """
+        return response, metadata
 
     def pre_expand_ip_cidr_range(
         self,
@@ -239,11 +287,34 @@ class SubnetworksRestInterceptor:
     ) -> compute.Operation:
         """Post-rpc interceptor for expand_ip_cidr_range
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_expand_ip_cidr_range_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Subnetworks server but before
-        it is returned to user code.
+        it is returned to user code. This `post_expand_ip_cidr_range` interceptor runs
+        before the `post_expand_ip_cidr_range_with_metadata` interceptor.
         """
         return response
+
+    def post_expand_ip_cidr_range_with_metadata(
+        self,
+        response: compute.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for expand_ip_cidr_range
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Subnetworks server but before it is returned to user code.
+
+        We recommend only using this `post_expand_ip_cidr_range_with_metadata`
+        interceptor in new development instead of the `post_expand_ip_cidr_range` interceptor.
+        When both interceptors are used, this `post_expand_ip_cidr_range_with_metadata` interceptor runs after the
+        `post_expand_ip_cidr_range` interceptor. The (possibly modified) response returned by
+        `post_expand_ip_cidr_range` will be passed to
+        `post_expand_ip_cidr_range_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get(
         self,
@@ -260,11 +331,34 @@ class SubnetworksRestInterceptor:
     def post_get(self, response: compute.Subnetwork) -> compute.Subnetwork:
         """Post-rpc interceptor for get
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Subnetworks server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get` interceptor runs
+        before the `post_get_with_metadata` interceptor.
         """
         return response
+
+    def post_get_with_metadata(
+        self,
+        response: compute.Subnetwork,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[compute.Subnetwork, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Subnetworks server but before it is returned to user code.
+
+        We recommend only using this `post_get_with_metadata`
+        interceptor in new development instead of the `post_get` interceptor.
+        When both interceptors are used, this `post_get_with_metadata` interceptor runs after the
+        `post_get` interceptor. The (possibly modified) response returned by
+        `post_get` will be passed to
+        `post_get_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_iam_policy(
         self,
@@ -283,11 +377,34 @@ class SubnetworksRestInterceptor:
     def post_get_iam_policy(self, response: compute.Policy) -> compute.Policy:
         """Post-rpc interceptor for get_iam_policy
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_iam_policy_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Subnetworks server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_iam_policy` interceptor runs
+        before the `post_get_iam_policy_with_metadata` interceptor.
         """
         return response
+
+    def post_get_iam_policy_with_metadata(
+        self,
+        response: compute.Policy,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[compute.Policy, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_iam_policy
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Subnetworks server but before it is returned to user code.
+
+        We recommend only using this `post_get_iam_policy_with_metadata`
+        interceptor in new development instead of the `post_get_iam_policy` interceptor.
+        When both interceptors are used, this `post_get_iam_policy_with_metadata` interceptor runs after the
+        `post_get_iam_policy` interceptor. The (possibly modified) response returned by
+        `post_get_iam_policy` will be passed to
+        `post_get_iam_policy_with_metadata`.
+        """
+        return response, metadata
 
     def pre_insert(
         self,
@@ -306,11 +423,34 @@ class SubnetworksRestInterceptor:
     def post_insert(self, response: compute.Operation) -> compute.Operation:
         """Post-rpc interceptor for insert
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_insert_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Subnetworks server but before
-        it is returned to user code.
+        it is returned to user code. This `post_insert` interceptor runs
+        before the `post_insert_with_metadata` interceptor.
         """
         return response
+
+    def post_insert_with_metadata(
+        self,
+        response: compute.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for insert
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Subnetworks server but before it is returned to user code.
+
+        We recommend only using this `post_insert_with_metadata`
+        interceptor in new development instead of the `post_insert` interceptor.
+        When both interceptors are used, this `post_insert_with_metadata` interceptor runs after the
+        `post_insert` interceptor. The (possibly modified) response returned by
+        `post_insert` will be passed to
+        `post_insert_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list(
         self,
@@ -327,11 +467,34 @@ class SubnetworksRestInterceptor:
     def post_list(self, response: compute.SubnetworkList) -> compute.SubnetworkList:
         """Post-rpc interceptor for list
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Subnetworks server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list` interceptor runs
+        before the `post_list_with_metadata` interceptor.
         """
         return response
+
+    def post_list_with_metadata(
+        self,
+        response: compute.SubnetworkList,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[compute.SubnetworkList, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for list
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Subnetworks server but before it is returned to user code.
+
+        We recommend only using this `post_list_with_metadata`
+        interceptor in new development instead of the `post_list` interceptor.
+        When both interceptors are used, this `post_list_with_metadata` interceptor runs after the
+        `post_list` interceptor. The (possibly modified) response returned by
+        `post_list` will be passed to
+        `post_list_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_usable(
         self,
@@ -352,11 +515,36 @@ class SubnetworksRestInterceptor:
     ) -> compute.UsableSubnetworksAggregatedList:
         """Post-rpc interceptor for list_usable
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_usable_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Subnetworks server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_usable` interceptor runs
+        before the `post_list_usable_with_metadata` interceptor.
         """
         return response
+
+    def post_list_usable_with_metadata(
+        self,
+        response: compute.UsableSubnetworksAggregatedList,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.UsableSubnetworksAggregatedList, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_usable
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Subnetworks server but before it is returned to user code.
+
+        We recommend only using this `post_list_usable_with_metadata`
+        interceptor in new development instead of the `post_list_usable` interceptor.
+        When both interceptors are used, this `post_list_usable_with_metadata` interceptor runs after the
+        `post_list_usable` interceptor. The (possibly modified) response returned by
+        `post_list_usable` will be passed to
+        `post_list_usable_with_metadata`.
+        """
+        return response, metadata
 
     def pre_patch(
         self,
@@ -373,11 +561,34 @@ class SubnetworksRestInterceptor:
     def post_patch(self, response: compute.Operation) -> compute.Operation:
         """Post-rpc interceptor for patch
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_patch_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Subnetworks server but before
-        it is returned to user code.
+        it is returned to user code. This `post_patch` interceptor runs
+        before the `post_patch_with_metadata` interceptor.
         """
         return response
+
+    def post_patch_with_metadata(
+        self,
+        response: compute.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for patch
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Subnetworks server but before it is returned to user code.
+
+        We recommend only using this `post_patch_with_metadata`
+        interceptor in new development instead of the `post_patch` interceptor.
+        When both interceptors are used, this `post_patch_with_metadata` interceptor runs after the
+        `post_patch` interceptor. The (possibly modified) response returned by
+        `post_patch` will be passed to
+        `post_patch_with_metadata`.
+        """
+        return response, metadata
 
     def pre_set_iam_policy(
         self,
@@ -396,11 +607,34 @@ class SubnetworksRestInterceptor:
     def post_set_iam_policy(self, response: compute.Policy) -> compute.Policy:
         """Post-rpc interceptor for set_iam_policy
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_set_iam_policy_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Subnetworks server but before
-        it is returned to user code.
+        it is returned to user code. This `post_set_iam_policy` interceptor runs
+        before the `post_set_iam_policy_with_metadata` interceptor.
         """
         return response
+
+    def post_set_iam_policy_with_metadata(
+        self,
+        response: compute.Policy,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[compute.Policy, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for set_iam_policy
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Subnetworks server but before it is returned to user code.
+
+        We recommend only using this `post_set_iam_policy_with_metadata`
+        interceptor in new development instead of the `post_set_iam_policy` interceptor.
+        When both interceptors are used, this `post_set_iam_policy_with_metadata` interceptor runs after the
+        `post_set_iam_policy` interceptor. The (possibly modified) response returned by
+        `post_set_iam_policy` will be passed to
+        `post_set_iam_policy_with_metadata`.
+        """
+        return response, metadata
 
     def pre_set_private_ip_google_access(
         self,
@@ -422,11 +656,34 @@ class SubnetworksRestInterceptor:
     ) -> compute.Operation:
         """Post-rpc interceptor for set_private_ip_google_access
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_set_private_ip_google_access_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Subnetworks server but before
-        it is returned to user code.
+        it is returned to user code. This `post_set_private_ip_google_access` interceptor runs
+        before the `post_set_private_ip_google_access_with_metadata` interceptor.
         """
         return response
+
+    def post_set_private_ip_google_access_with_metadata(
+        self,
+        response: compute.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for set_private_ip_google_access
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Subnetworks server but before it is returned to user code.
+
+        We recommend only using this `post_set_private_ip_google_access_with_metadata`
+        interceptor in new development instead of the `post_set_private_ip_google_access` interceptor.
+        When both interceptors are used, this `post_set_private_ip_google_access_with_metadata` interceptor runs after the
+        `post_set_private_ip_google_access` interceptor. The (possibly modified) response returned by
+        `post_set_private_ip_google_access` will be passed to
+        `post_set_private_ip_google_access_with_metadata`.
+        """
+        return response, metadata
 
     def pre_test_iam_permissions(
         self,
@@ -448,11 +705,36 @@ class SubnetworksRestInterceptor:
     ) -> compute.TestPermissionsResponse:
         """Post-rpc interceptor for test_iam_permissions
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_test_iam_permissions_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Subnetworks server but before
-        it is returned to user code.
+        it is returned to user code. This `post_test_iam_permissions` interceptor runs
+        before the `post_test_iam_permissions_with_metadata` interceptor.
         """
         return response
+
+    def post_test_iam_permissions_with_metadata(
+        self,
+        response: compute.TestPermissionsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.TestPermissionsResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for test_iam_permissions
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Subnetworks server but before it is returned to user code.
+
+        We recommend only using this `post_test_iam_permissions_with_metadata`
+        interceptor in new development instead of the `post_test_iam_permissions` interceptor.
+        When both interceptors are used, this `post_test_iam_permissions_with_metadata` interceptor runs after the
+        `post_test_iam_permissions` interceptor. The (possibly modified) response returned by
+        `post_test_iam_permissions` will be passed to
+        `post_test_iam_permissions_with_metadata`.
+        """
+        return response, metadata
 
 
 @dataclasses.dataclass
@@ -664,6 +946,10 @@ class SubnetworksRestTransport(_BaseSubnetworksRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_aggregated_list(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_aggregated_list_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -825,6 +1111,10 @@ class SubnetworksRestTransport(_BaseSubnetworksRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -992,6 +1282,10 @@ class SubnetworksRestTransport(_BaseSubnetworksRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_expand_ip_cidr_range(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_expand_ip_cidr_range_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1141,6 +1435,8 @@ class SubnetworksRestTransport(_BaseSubnetworksRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_with_metadata(resp, response_metadata)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1310,6 +1606,10 @@ class SubnetworksRestTransport(_BaseSubnetworksRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_iam_policy(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_iam_policy_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1475,6 +1775,10 @@ class SubnetworksRestTransport(_BaseSubnetworksRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_insert(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_insert_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1619,6 +1923,8 @@ class SubnetworksRestTransport(_BaseSubnetworksRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_with_metadata(resp, response_metadata)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1765,6 +2071,10 @@ class SubnetworksRestTransport(_BaseSubnetworksRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_usable(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_usable_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1932,6 +2242,10 @@ class SubnetworksRestTransport(_BaseSubnetworksRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_patch(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_patch_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2109,6 +2423,10 @@ class SubnetworksRestTransport(_BaseSubnetworksRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_set_iam_policy(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_set_iam_policy_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2277,6 +2595,10 @@ class SubnetworksRestTransport(_BaseSubnetworksRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_set_private_ip_google_access(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_set_private_ip_google_access_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2427,6 +2749,10 @@ class SubnetworksRestTransport(_BaseSubnetworksRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_test_iam_permissions(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_test_iam_permissions_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

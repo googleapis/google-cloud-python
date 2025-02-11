@@ -77,6 +77,13 @@ from google.maps.places_v1.types import (
     travel_mode,
 )
 
+CRED_INFO_JSON = {
+    "credential_source": "/path/to/file",
+    "credential_type": "service account credentials",
+    "principal": "service-account@example.com",
+}
+CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
 
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
@@ -297,6 +304,49 @@ def test__get_universe_domain():
     with pytest.raises(ValueError) as excinfo:
         PlacesClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+
+@pytest.mark.parametrize(
+    "error_code,cred_info_json,show_cred_info",
+    [
+        (401, CRED_INFO_JSON, True),
+        (403, CRED_INFO_JSON, True),
+        (404, CRED_INFO_JSON, True),
+        (500, CRED_INFO_JSON, False),
+        (401, None, False),
+        (403, None, False),
+        (404, None, False),
+        (500, None, False),
+    ],
+)
+def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
+    cred = mock.Mock(["get_cred_info"])
+    cred.get_cred_info = mock.Mock(return_value=cred_info_json)
+    client = PlacesClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=["foo"])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    if show_cred_info:
+        assert error.details == ["foo", CRED_INFO_STRING]
+    else:
+        assert error.details == ["foo"]
+
+
+@pytest.mark.parametrize("error_code", [401, 403, 404, 500])
+def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
+    cred = mock.Mock([])
+    assert not hasattr(cred, "get_cred_info")
+    client = PlacesClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=[])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    assert error.details == []
 
 
 @pytest.mark.parametrize(
@@ -998,7 +1048,7 @@ def test_places_client_create_channel_credentials_file(
             credentials=file_creds,
             credentials_file=None,
             quota_project_id=None,
-            default_scopes=(),
+            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
             scopes=None,
             default_host="places.googleapis.com",
             ssl_credentials=None,
@@ -3600,10 +3650,13 @@ def test_search_nearby_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.PlacesRestInterceptor, "post_search_nearby"
     ) as post, mock.patch.object(
+        transports.PlacesRestInterceptor, "post_search_nearby_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.PlacesRestInterceptor, "pre_search_nearby"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = places_service.SearchNearbyRequest.pb(
             places_service.SearchNearbyRequest()
         )
@@ -3629,6 +3682,10 @@ def test_search_nearby_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = places_service.SearchNearbyResponse()
+        post_with_metadata.return_value = (
+            places_service.SearchNearbyResponse(),
+            metadata,
+        )
 
         client.search_nearby(
             request,
@@ -3640,6 +3697,7 @@ def test_search_nearby_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_search_text_rest_bad_request(request_type=places_service.SearchTextRequest):
@@ -3717,10 +3775,13 @@ def test_search_text_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.PlacesRestInterceptor, "post_search_text"
     ) as post, mock.patch.object(
+        transports.PlacesRestInterceptor, "post_search_text_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.PlacesRestInterceptor, "pre_search_text"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = places_service.SearchTextRequest.pb(
             places_service.SearchTextRequest()
         )
@@ -3746,6 +3807,7 @@ def test_search_text_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = places_service.SearchTextResponse()
+        post_with_metadata.return_value = places_service.SearchTextResponse(), metadata
 
         client.search_text(
             request,
@@ -3757,6 +3819,7 @@ def test_search_text_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_photo_media_rest_bad_request(
@@ -3841,10 +3904,13 @@ def test_get_photo_media_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.PlacesRestInterceptor, "post_get_photo_media"
     ) as post, mock.patch.object(
+        transports.PlacesRestInterceptor, "post_get_photo_media_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.PlacesRestInterceptor, "pre_get_photo_media"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = places_service.GetPhotoMediaRequest.pb(
             places_service.GetPhotoMediaRequest()
         )
@@ -3868,6 +3934,7 @@ def test_get_photo_media_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = places_service.PhotoMedia()
+        post_with_metadata.return_value = places_service.PhotoMedia(), metadata
 
         client.get_photo_media(
             request,
@@ -3879,6 +3946,7 @@ def test_get_photo_media_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_place_rest_bad_request(request_type=places_service.GetPlaceRequest):
@@ -4041,10 +4109,13 @@ def test_get_place_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.PlacesRestInterceptor, "post_get_place"
     ) as post, mock.patch.object(
+        transports.PlacesRestInterceptor, "post_get_place_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.PlacesRestInterceptor, "pre_get_place"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = places_service.GetPlaceRequest.pb(places_service.GetPlaceRequest())
         transcode.return_value = {
             "method": "post",
@@ -4066,6 +4137,7 @@ def test_get_place_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = place.Place()
+        post_with_metadata.return_value = place.Place(), metadata
 
         client.get_place(
             request,
@@ -4077,6 +4149,7 @@ def test_get_place_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_autocomplete_places_rest_bad_request(
@@ -4156,10 +4229,13 @@ def test_autocomplete_places_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.PlacesRestInterceptor, "post_autocomplete_places"
     ) as post, mock.patch.object(
+        transports.PlacesRestInterceptor, "post_autocomplete_places_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.PlacesRestInterceptor, "pre_autocomplete_places"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = places_service.AutocompletePlacesRequest.pb(
             places_service.AutocompletePlacesRequest()
         )
@@ -4185,6 +4261,10 @@ def test_autocomplete_places_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = places_service.AutocompletePlacesResponse()
+        post_with_metadata.return_value = (
+            places_service.AutocompletePlacesResponse(),
+            metadata,
+        )
 
         client.autocomplete_places(
             request,
@@ -4196,6 +4276,7 @@ def test_autocomplete_places_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_initialize_client_w_rest():
@@ -4378,7 +4459,7 @@ def test_places_base_transport_with_credentials_file():
         load_creds.assert_called_once_with(
             "credentials.json",
             scopes=None,
-            default_scopes=(),
+            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
             quota_project_id="octopus",
         )
 
@@ -4401,7 +4482,7 @@ def test_places_auth_adc():
         PlacesClient()
         adc.assert_called_once_with(
             scopes=None,
-            default_scopes=(),
+            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
             quota_project_id=None,
         )
 
@@ -4421,7 +4502,7 @@ def test_places_transport_auth_adc(transport_class):
         transport_class(quota_project_id="octopus", scopes=["1", "2"])
         adc.assert_called_once_with(
             scopes=["1", "2"],
-            default_scopes=(),
+            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
             quota_project_id="octopus",
         )
 
@@ -4473,7 +4554,7 @@ def test_places_transport_create_channel(transport_class, grpc_helpers):
             credentials=creds,
             credentials_file=None,
             quota_project_id="octopus",
-            default_scopes=(),
+            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
             scopes=["1", "2"],
             default_host="places.googleapis.com",
             ssl_credentials=None,

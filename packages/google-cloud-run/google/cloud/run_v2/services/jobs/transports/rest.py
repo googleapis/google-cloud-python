@@ -168,11 +168,34 @@ class JobsRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_job
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_job_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Jobs server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_job` interceptor runs
+        before the `post_create_job_with_metadata` interceptor.
         """
         return response
+
+    def post_create_job_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_job
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Jobs server but before it is returned to user code.
+
+        We recommend only using this `post_create_job_with_metadata`
+        interceptor in new development instead of the `post_create_job` interceptor.
+        When both interceptors are used, this `post_create_job_with_metadata` interceptor runs after the
+        `post_create_job` interceptor. The (possibly modified) response returned by
+        `post_create_job` will be passed to
+        `post_create_job_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_job(
         self,
@@ -191,11 +214,34 @@ class JobsRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_job
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_job_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Jobs server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_job` interceptor runs
+        before the `post_delete_job_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_job_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_job
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Jobs server but before it is returned to user code.
+
+        We recommend only using this `post_delete_job_with_metadata`
+        interceptor in new development instead of the `post_delete_job` interceptor.
+        When both interceptors are used, this `post_delete_job_with_metadata` interceptor runs after the
+        `post_delete_job` interceptor. The (possibly modified) response returned by
+        `post_delete_job` will be passed to
+        `post_delete_job_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_iam_policy(
         self,
@@ -214,11 +260,34 @@ class JobsRestInterceptor:
     def post_get_iam_policy(self, response: policy_pb2.Policy) -> policy_pb2.Policy:
         """Post-rpc interceptor for get_iam_policy
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_iam_policy_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Jobs server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_iam_policy` interceptor runs
+        before the `post_get_iam_policy_with_metadata` interceptor.
         """
         return response
+
+    def post_get_iam_policy_with_metadata(
+        self,
+        response: policy_pb2.Policy,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[policy_pb2.Policy, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_iam_policy
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Jobs server but before it is returned to user code.
+
+        We recommend only using this `post_get_iam_policy_with_metadata`
+        interceptor in new development instead of the `post_get_iam_policy` interceptor.
+        When both interceptors are used, this `post_get_iam_policy_with_metadata` interceptor runs after the
+        `post_get_iam_policy` interceptor. The (possibly modified) response returned by
+        `post_get_iam_policy` will be passed to
+        `post_get_iam_policy_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_job(
         self,
@@ -235,11 +304,32 @@ class JobsRestInterceptor:
     def post_get_job(self, response: job.Job) -> job.Job:
         """Post-rpc interceptor for get_job
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_job_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Jobs server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_job` interceptor runs
+        before the `post_get_job_with_metadata` interceptor.
         """
         return response
+
+    def post_get_job_with_metadata(
+        self, response: job.Job, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[job.Job, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_job
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Jobs server but before it is returned to user code.
+
+        We recommend only using this `post_get_job_with_metadata`
+        interceptor in new development instead of the `post_get_job` interceptor.
+        When both interceptors are used, this `post_get_job_with_metadata` interceptor runs after the
+        `post_get_job` interceptor. The (possibly modified) response returned by
+        `post_get_job` will be passed to
+        `post_get_job_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_jobs(
         self,
@@ -256,11 +346,34 @@ class JobsRestInterceptor:
     def post_list_jobs(self, response: job.ListJobsResponse) -> job.ListJobsResponse:
         """Post-rpc interceptor for list_jobs
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_jobs_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Jobs server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_jobs` interceptor runs
+        before the `post_list_jobs_with_metadata` interceptor.
         """
         return response
+
+    def post_list_jobs_with_metadata(
+        self,
+        response: job.ListJobsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[job.ListJobsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for list_jobs
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Jobs server but before it is returned to user code.
+
+        We recommend only using this `post_list_jobs_with_metadata`
+        interceptor in new development instead of the `post_list_jobs` interceptor.
+        When both interceptors are used, this `post_list_jobs_with_metadata` interceptor runs after the
+        `post_list_jobs` interceptor. The (possibly modified) response returned by
+        `post_list_jobs` will be passed to
+        `post_list_jobs_with_metadata`.
+        """
+        return response, metadata
 
     def pre_run_job(
         self,
@@ -279,11 +392,34 @@ class JobsRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for run_job
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_run_job_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Jobs server but before
-        it is returned to user code.
+        it is returned to user code. This `post_run_job` interceptor runs
+        before the `post_run_job_with_metadata` interceptor.
         """
         return response
+
+    def post_run_job_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for run_job
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Jobs server but before it is returned to user code.
+
+        We recommend only using this `post_run_job_with_metadata`
+        interceptor in new development instead of the `post_run_job` interceptor.
+        When both interceptors are used, this `post_run_job_with_metadata` interceptor runs after the
+        `post_run_job` interceptor. The (possibly modified) response returned by
+        `post_run_job` will be passed to
+        `post_run_job_with_metadata`.
+        """
+        return response, metadata
 
     def pre_set_iam_policy(
         self,
@@ -302,11 +438,34 @@ class JobsRestInterceptor:
     def post_set_iam_policy(self, response: policy_pb2.Policy) -> policy_pb2.Policy:
         """Post-rpc interceptor for set_iam_policy
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_set_iam_policy_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Jobs server but before
-        it is returned to user code.
+        it is returned to user code. This `post_set_iam_policy` interceptor runs
+        before the `post_set_iam_policy_with_metadata` interceptor.
         """
         return response
+
+    def post_set_iam_policy_with_metadata(
+        self,
+        response: policy_pb2.Policy,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[policy_pb2.Policy, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for set_iam_policy
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Jobs server but before it is returned to user code.
+
+        We recommend only using this `post_set_iam_policy_with_metadata`
+        interceptor in new development instead of the `post_set_iam_policy` interceptor.
+        When both interceptors are used, this `post_set_iam_policy_with_metadata` interceptor runs after the
+        `post_set_iam_policy` interceptor. The (possibly modified) response returned by
+        `post_set_iam_policy` will be passed to
+        `post_set_iam_policy_with_metadata`.
+        """
+        return response, metadata
 
     def pre_test_iam_permissions(
         self,
@@ -328,11 +487,37 @@ class JobsRestInterceptor:
     ) -> iam_policy_pb2.TestIamPermissionsResponse:
         """Post-rpc interceptor for test_iam_permissions
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_test_iam_permissions_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Jobs server but before
-        it is returned to user code.
+        it is returned to user code. This `post_test_iam_permissions` interceptor runs
+        before the `post_test_iam_permissions_with_metadata` interceptor.
         """
         return response
+
+    def post_test_iam_permissions_with_metadata(
+        self,
+        response: iam_policy_pb2.TestIamPermissionsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        iam_policy_pb2.TestIamPermissionsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for test_iam_permissions
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Jobs server but before it is returned to user code.
+
+        We recommend only using this `post_test_iam_permissions_with_metadata`
+        interceptor in new development instead of the `post_test_iam_permissions` interceptor.
+        When both interceptors are used, this `post_test_iam_permissions_with_metadata` interceptor runs after the
+        `post_test_iam_permissions` interceptor. The (possibly modified) response returned by
+        `post_test_iam_permissions` will be passed to
+        `post_test_iam_permissions_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_job(
         self,
@@ -351,11 +536,34 @@ class JobsRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_job
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_job_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Jobs server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_job` interceptor runs
+        before the `post_update_job_with_metadata` interceptor.
         """
         return response
+
+    def post_update_job_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_job
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Jobs server but before it is returned to user code.
+
+        We recommend only using this `post_update_job_with_metadata`
+        interceptor in new development instead of the `post_update_job` interceptor.
+        When both interceptors are used, this `post_update_job_with_metadata` interceptor runs after the
+        `post_update_job` interceptor. The (possibly modified) response returned by
+        `post_update_job` will be passed to
+        `post_update_job_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_operation(
         self,
@@ -718,6 +926,10 @@ class JobsRestTransport(_BaseJobsRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_job(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_job_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -858,6 +1070,10 @@ class JobsRestTransport(_BaseJobsRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_job(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_job_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1073,6 +1289,10 @@ class JobsRestTransport(_BaseJobsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_iam_policy(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_iam_policy_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1215,6 +1435,10 @@ class JobsRestTransport(_BaseJobsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_job(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_job_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1356,6 +1580,10 @@ class JobsRestTransport(_BaseJobsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_jobs(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_jobs_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1502,6 +1730,10 @@ class JobsRestTransport(_BaseJobsRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_run_job(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_run_job_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1723,6 +1955,10 @@ class JobsRestTransport(_BaseJobsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_set_iam_policy(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_set_iam_policy_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1877,6 +2113,10 @@ class JobsRestTransport(_BaseJobsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_test_iam_permissions(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_test_iam_permissions_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2022,6 +2262,10 @@ class JobsRestTransport(_BaseJobsRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_job(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_job_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
