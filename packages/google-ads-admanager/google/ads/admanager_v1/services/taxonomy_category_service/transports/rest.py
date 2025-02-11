@@ -114,11 +114,37 @@ class TaxonomyCategoryServiceRestInterceptor:
     ) -> taxonomy_category_messages.TaxonomyCategory:
         """Post-rpc interceptor for get_taxonomy_category
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_taxonomy_category_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the TaxonomyCategoryService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_taxonomy_category` interceptor runs
+        before the `post_get_taxonomy_category_with_metadata` interceptor.
         """
         return response
+
+    def post_get_taxonomy_category_with_metadata(
+        self,
+        response: taxonomy_category_messages.TaxonomyCategory,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        taxonomy_category_messages.TaxonomyCategory,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for get_taxonomy_category
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the TaxonomyCategoryService server but before it is returned to user code.
+
+        We recommend only using this `post_get_taxonomy_category_with_metadata`
+        interceptor in new development instead of the `post_get_taxonomy_category` interceptor.
+        When both interceptors are used, this `post_get_taxonomy_category_with_metadata` interceptor runs after the
+        `post_get_taxonomy_category` interceptor. The (possibly modified) response returned by
+        `post_get_taxonomy_category` will be passed to
+        `post_get_taxonomy_category_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_taxonomy_categories(
         self,
@@ -140,11 +166,37 @@ class TaxonomyCategoryServiceRestInterceptor:
     ) -> taxonomy_category_service.ListTaxonomyCategoriesResponse:
         """Post-rpc interceptor for list_taxonomy_categories
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_taxonomy_categories_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the TaxonomyCategoryService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_taxonomy_categories` interceptor runs
+        before the `post_list_taxonomy_categories_with_metadata` interceptor.
         """
         return response
+
+    def post_list_taxonomy_categories_with_metadata(
+        self,
+        response: taxonomy_category_service.ListTaxonomyCategoriesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        taxonomy_category_service.ListTaxonomyCategoriesResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_taxonomy_categories
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the TaxonomyCategoryService server but before it is returned to user code.
+
+        We recommend only using this `post_list_taxonomy_categories_with_metadata`
+        interceptor in new development instead of the `post_list_taxonomy_categories` interceptor.
+        When both interceptors are used, this `post_list_taxonomy_categories_with_metadata` interceptor runs after the
+        `post_list_taxonomy_categories` interceptor. The (possibly modified) response returned by
+        `post_list_taxonomy_categories` will be passed to
+        `post_list_taxonomy_categories_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_operation(
         self,
@@ -380,6 +432,10 @@ class TaxonomyCategoryServiceRestTransport(_BaseTaxonomyCategoryServiceRestTrans
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_taxonomy_category(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_taxonomy_category_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -527,6 +583,10 @@ class TaxonomyCategoryServiceRestTransport(_BaseTaxonomyCategoryServiceRestTrans
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_taxonomy_categories(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_taxonomy_categories_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

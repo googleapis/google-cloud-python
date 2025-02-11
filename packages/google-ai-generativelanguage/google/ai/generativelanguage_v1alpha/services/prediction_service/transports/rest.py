@@ -102,11 +102,36 @@ class PredictionServiceRestInterceptor:
     ) -> prediction_service.PredictResponse:
         """Post-rpc interceptor for predict
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_predict_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the PredictionService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_predict` interceptor runs
+        before the `post_predict_with_metadata` interceptor.
         """
         return response
+
+    def post_predict_with_metadata(
+        self,
+        response: prediction_service.PredictResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        prediction_service.PredictResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for predict
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the PredictionService server but before it is returned to user code.
+
+        We recommend only using this `post_predict_with_metadata`
+        interceptor in new development instead of the `post_predict` interceptor.
+        When both interceptors are used, this `post_predict_with_metadata` interceptor runs after the
+        `post_predict` interceptor. The (possibly modified) response returned by
+        `post_predict` will be passed to
+        `post_predict_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_operation(
         self,
@@ -373,6 +398,10 @@ class PredictionServiceRestTransport(_BasePredictionServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_predict(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_predict_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

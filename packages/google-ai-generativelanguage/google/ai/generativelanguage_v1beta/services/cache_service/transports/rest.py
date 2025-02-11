@@ -136,11 +136,36 @@ class CacheServiceRestInterceptor:
     ) -> gag_cached_content.CachedContent:
         """Post-rpc interceptor for create_cached_content
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_cached_content_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CacheService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_cached_content` interceptor runs
+        before the `post_create_cached_content_with_metadata` interceptor.
         """
         return response
+
+    def post_create_cached_content_with_metadata(
+        self,
+        response: gag_cached_content.CachedContent,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        gag_cached_content.CachedContent, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for create_cached_content
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CacheService server but before it is returned to user code.
+
+        We recommend only using this `post_create_cached_content_with_metadata`
+        interceptor in new development instead of the `post_create_cached_content` interceptor.
+        When both interceptors are used, this `post_create_cached_content_with_metadata` interceptor runs after the
+        `post_create_cached_content` interceptor. The (possibly modified) response returned by
+        `post_create_cached_content` will be passed to
+        `post_create_cached_content_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_cached_content(
         self,
@@ -176,11 +201,34 @@ class CacheServiceRestInterceptor:
     ) -> cached_content.CachedContent:
         """Post-rpc interceptor for get_cached_content
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_cached_content_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CacheService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_cached_content` interceptor runs
+        before the `post_get_cached_content_with_metadata` interceptor.
         """
         return response
+
+    def post_get_cached_content_with_metadata(
+        self,
+        response: cached_content.CachedContent,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[cached_content.CachedContent, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_cached_content
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CacheService server but before it is returned to user code.
+
+        We recommend only using this `post_get_cached_content_with_metadata`
+        interceptor in new development instead of the `post_get_cached_content` interceptor.
+        When both interceptors are used, this `post_get_cached_content_with_metadata` interceptor runs after the
+        `post_get_cached_content` interceptor. The (possibly modified) response returned by
+        `post_get_cached_content` will be passed to
+        `post_get_cached_content_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_cached_contents(
         self,
@@ -201,11 +249,37 @@ class CacheServiceRestInterceptor:
     ) -> cache_service.ListCachedContentsResponse:
         """Post-rpc interceptor for list_cached_contents
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_cached_contents_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CacheService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_cached_contents` interceptor runs
+        before the `post_list_cached_contents_with_metadata` interceptor.
         """
         return response
+
+    def post_list_cached_contents_with_metadata(
+        self,
+        response: cache_service.ListCachedContentsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cache_service.ListCachedContentsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_cached_contents
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CacheService server but before it is returned to user code.
+
+        We recommend only using this `post_list_cached_contents_with_metadata`
+        interceptor in new development instead of the `post_list_cached_contents` interceptor.
+        When both interceptors are used, this `post_list_cached_contents_with_metadata` interceptor runs after the
+        `post_list_cached_contents` interceptor. The (possibly modified) response returned by
+        `post_list_cached_contents` will be passed to
+        `post_list_cached_contents_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_cached_content(
         self,
@@ -227,11 +301,36 @@ class CacheServiceRestInterceptor:
     ) -> gag_cached_content.CachedContent:
         """Post-rpc interceptor for update_cached_content
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_cached_content_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CacheService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_cached_content` interceptor runs
+        before the `post_update_cached_content_with_metadata` interceptor.
         """
         return response
+
+    def post_update_cached_content_with_metadata(
+        self,
+        response: gag_cached_content.CachedContent,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        gag_cached_content.CachedContent, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for update_cached_content
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CacheService server but before it is returned to user code.
+
+        We recommend only using this `post_update_cached_content_with_metadata`
+        interceptor in new development instead of the `post_update_cached_content` interceptor.
+        When both interceptors are used, this `post_update_cached_content_with_metadata` interceptor runs after the
+        `post_update_cached_content` interceptor. The (possibly modified) response returned by
+        `post_update_cached_content` will be passed to
+        `post_update_cached_content_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_operation(
         self,
@@ -505,6 +604,10 @@ class CacheServiceRestTransport(_BaseCacheServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_cached_content(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_cached_content_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -763,6 +866,10 @@ class CacheServiceRestTransport(_BaseCacheServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_cached_content(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_cached_content_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -905,6 +1012,10 @@ class CacheServiceRestTransport(_BaseCacheServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_cached_contents(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_cached_contents_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1061,6 +1172,10 @@ class CacheServiceRestTransport(_BaseCacheServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_cached_content(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_cached_content_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

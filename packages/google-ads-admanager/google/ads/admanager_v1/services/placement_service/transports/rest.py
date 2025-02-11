@@ -110,11 +110,34 @@ class PlacementServiceRestInterceptor:
     ) -> placement_messages.Placement:
         """Post-rpc interceptor for get_placement
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_placement_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the PlacementService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_placement` interceptor runs
+        before the `post_get_placement_with_metadata` interceptor.
         """
         return response
+
+    def post_get_placement_with_metadata(
+        self,
+        response: placement_messages.Placement,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[placement_messages.Placement, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_placement
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the PlacementService server but before it is returned to user code.
+
+        We recommend only using this `post_get_placement_with_metadata`
+        interceptor in new development instead of the `post_get_placement` interceptor.
+        When both interceptors are used, this `post_get_placement_with_metadata` interceptor runs after the
+        `post_get_placement` interceptor. The (possibly modified) response returned by
+        `post_get_placement` will be passed to
+        `post_get_placement_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_placements(
         self,
@@ -135,11 +158,37 @@ class PlacementServiceRestInterceptor:
     ) -> placement_service.ListPlacementsResponse:
         """Post-rpc interceptor for list_placements
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_placements_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the PlacementService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_placements` interceptor runs
+        before the `post_list_placements_with_metadata` interceptor.
         """
         return response
+
+    def post_list_placements_with_metadata(
+        self,
+        response: placement_service.ListPlacementsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        placement_service.ListPlacementsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_placements
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the PlacementService server but before it is returned to user code.
+
+        We recommend only using this `post_list_placements_with_metadata`
+        interceptor in new development instead of the `post_list_placements` interceptor.
+        When both interceptors are used, this `post_list_placements_with_metadata` interceptor runs after the
+        `post_list_placements` interceptor. The (possibly modified) response returned by
+        `post_list_placements` will be passed to
+        `post_list_placements_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_operation(
         self,
@@ -370,6 +419,10 @@ class PlacementServiceRestTransport(_BasePlacementServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_placement(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_placement_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -512,6 +565,10 @@ class PlacementServiceRestTransport(_BasePlacementServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_placements(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_placements_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

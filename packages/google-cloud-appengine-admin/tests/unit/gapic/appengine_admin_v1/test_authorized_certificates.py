@@ -62,6 +62,13 @@ from google.cloud.appengine_admin_v1.services.authorized_certificates import (
 )
 from google.cloud.appengine_admin_v1.types import appengine, certificate
 
+CRED_INFO_JSON = {
+    "credential_source": "/path/to/file",
+    "credential_type": "service account credentials",
+    "principal": "service-account@example.com",
+}
+CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
 
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
@@ -335,6 +342,49 @@ def test__get_universe_domain():
     with pytest.raises(ValueError) as excinfo:
         AuthorizedCertificatesClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+
+@pytest.mark.parametrize(
+    "error_code,cred_info_json,show_cred_info",
+    [
+        (401, CRED_INFO_JSON, True),
+        (403, CRED_INFO_JSON, True),
+        (404, CRED_INFO_JSON, True),
+        (500, CRED_INFO_JSON, False),
+        (401, None, False),
+        (403, None, False),
+        (404, None, False),
+        (500, None, False),
+    ],
+)
+def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
+    cred = mock.Mock(["get_cred_info"])
+    cred.get_cred_info = mock.Mock(return_value=cred_info_json)
+    client = AuthorizedCertificatesClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=["foo"])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    if show_cred_info:
+        assert error.details == ["foo", CRED_INFO_STRING]
+    else:
+        assert error.details == ["foo"]
+
+
+@pytest.mark.parametrize("error_code", [401, 403, 404, 500])
+def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
+    cred = mock.Mock([])
+    assert not hasattr(cred, "get_cred_info")
+    client = AuthorizedCertificatesClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=[])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    assert error.details == []
 
 
 @pytest.mark.parametrize(
@@ -3419,10 +3469,14 @@ def test_list_authorized_certificates_rest_interceptors(null_interceptor):
         "post_list_authorized_certificates",
     ) as post, mock.patch.object(
         transports.AuthorizedCertificatesRestInterceptor,
+        "post_list_authorized_certificates_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
+        transports.AuthorizedCertificatesRestInterceptor,
         "pre_list_authorized_certificates",
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = appengine.ListAuthorizedCertificatesRequest.pb(
             appengine.ListAuthorizedCertificatesRequest()
         )
@@ -3448,6 +3502,10 @@ def test_list_authorized_certificates_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = appengine.ListAuthorizedCertificatesResponse()
+        post_with_metadata.return_value = (
+            appengine.ListAuthorizedCertificatesResponse(),
+            metadata,
+        )
 
         client.list_authorized_certificates(
             request,
@@ -3459,6 +3517,7 @@ def test_list_authorized_certificates_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_authorized_certificate_rest_bad_request(
@@ -3555,10 +3614,14 @@ def test_get_authorized_certificate_rest_interceptors(null_interceptor):
         "post_get_authorized_certificate",
     ) as post, mock.patch.object(
         transports.AuthorizedCertificatesRestInterceptor,
+        "post_get_authorized_certificate_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
+        transports.AuthorizedCertificatesRestInterceptor,
         "pre_get_authorized_certificate",
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = appengine.GetAuthorizedCertificateRequest.pb(
             appengine.GetAuthorizedCertificateRequest()
         )
@@ -3584,6 +3647,7 @@ def test_get_authorized_certificate_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = certificate.AuthorizedCertificate()
+        post_with_metadata.return_value = certificate.AuthorizedCertificate(), metadata
 
         client.get_authorized_certificate(
             request,
@@ -3595,6 +3659,7 @@ def test_get_authorized_certificate_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_authorized_certificate_rest_bad_request(
@@ -3775,10 +3840,14 @@ def test_create_authorized_certificate_rest_interceptors(null_interceptor):
         "post_create_authorized_certificate",
     ) as post, mock.patch.object(
         transports.AuthorizedCertificatesRestInterceptor,
+        "post_create_authorized_certificate_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
+        transports.AuthorizedCertificatesRestInterceptor,
         "pre_create_authorized_certificate",
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = appengine.CreateAuthorizedCertificateRequest.pb(
             appengine.CreateAuthorizedCertificateRequest()
         )
@@ -3804,6 +3873,7 @@ def test_create_authorized_certificate_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = certificate.AuthorizedCertificate()
+        post_with_metadata.return_value = certificate.AuthorizedCertificate(), metadata
 
         client.create_authorized_certificate(
             request,
@@ -3815,6 +3885,7 @@ def test_create_authorized_certificate_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_authorized_certificate_rest_bad_request(
@@ -3995,10 +4066,14 @@ def test_update_authorized_certificate_rest_interceptors(null_interceptor):
         "post_update_authorized_certificate",
     ) as post, mock.patch.object(
         transports.AuthorizedCertificatesRestInterceptor,
+        "post_update_authorized_certificate_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
+        transports.AuthorizedCertificatesRestInterceptor,
         "pre_update_authorized_certificate",
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = appengine.UpdateAuthorizedCertificateRequest.pb(
             appengine.UpdateAuthorizedCertificateRequest()
         )
@@ -4024,6 +4099,7 @@ def test_update_authorized_certificate_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = certificate.AuthorizedCertificate()
+        post_with_metadata.return_value = certificate.AuthorizedCertificate(), metadata
 
         client.update_authorized_certificate(
             request,
@@ -4035,6 +4111,7 @@ def test_update_authorized_certificate_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_authorized_certificate_rest_bad_request(

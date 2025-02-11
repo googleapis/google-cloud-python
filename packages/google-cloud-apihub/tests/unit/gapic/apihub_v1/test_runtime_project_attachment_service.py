@@ -62,6 +62,13 @@ from google.cloud.apihub_v1.services.runtime_project_attachment_service import (
 )
 from google.cloud.apihub_v1.types import runtime_project_attachment_service
 
+CRED_INFO_JSON = {
+    "credential_source": "/path/to/file",
+    "credential_type": "service account credentials",
+    "principal": "service-account@example.com",
+}
+CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
 
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
@@ -349,6 +356,49 @@ def test__get_universe_domain():
     with pytest.raises(ValueError) as excinfo:
         RuntimeProjectAttachmentServiceClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+
+@pytest.mark.parametrize(
+    "error_code,cred_info_json,show_cred_info",
+    [
+        (401, CRED_INFO_JSON, True),
+        (403, CRED_INFO_JSON, True),
+        (404, CRED_INFO_JSON, True),
+        (500, CRED_INFO_JSON, False),
+        (401, None, False),
+        (403, None, False),
+        (404, None, False),
+        (500, None, False),
+    ],
+)
+def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
+    cred = mock.Mock(["get_cred_info"])
+    cred.get_cred_info = mock.Mock(return_value=cred_info_json)
+    client = RuntimeProjectAttachmentServiceClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=["foo"])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    if show_cred_info:
+        assert error.details == ["foo", CRED_INFO_STRING]
+    else:
+        assert error.details == ["foo"]
+
+
+@pytest.mark.parametrize("error_code", [401, 403, 404, 500])
+def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
+    cred = mock.Mock([])
+    assert not hasattr(cred, "get_cred_info")
+    client = RuntimeProjectAttachmentServiceClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=[])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    assert error.details == []
 
 
 @pytest.mark.parametrize(
@@ -2312,10 +2362,14 @@ def test_create_runtime_project_attachment_rest_interceptors(null_interceptor):
         "post_create_runtime_project_attachment",
     ) as post, mock.patch.object(
         transports.RuntimeProjectAttachmentServiceRestInterceptor,
+        "post_create_runtime_project_attachment_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
+        transports.RuntimeProjectAttachmentServiceRestInterceptor,
         "pre_create_runtime_project_attachment",
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = runtime_project_attachment_service.CreateRuntimeProjectAttachmentRequest.pb(
             runtime_project_attachment_service.CreateRuntimeProjectAttachmentRequest()
         )
@@ -2347,6 +2401,10 @@ def test_create_runtime_project_attachment_rest_interceptors(null_interceptor):
         post.return_value = (
             runtime_project_attachment_service.RuntimeProjectAttachment()
         )
+        post_with_metadata.return_value = (
+            runtime_project_attachment_service.RuntimeProjectAttachment(),
+            metadata,
+        )
 
         client.create_runtime_project_attachment(
             request,
@@ -2358,6 +2416,7 @@ def test_create_runtime_project_attachment_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_runtime_project_attachment_rest_bad_request(
@@ -2454,10 +2513,14 @@ def test_get_runtime_project_attachment_rest_interceptors(null_interceptor):
         "post_get_runtime_project_attachment",
     ) as post, mock.patch.object(
         transports.RuntimeProjectAttachmentServiceRestInterceptor,
+        "post_get_runtime_project_attachment_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
+        transports.RuntimeProjectAttachmentServiceRestInterceptor,
         "pre_get_runtime_project_attachment",
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = (
             runtime_project_attachment_service.GetRuntimeProjectAttachmentRequest.pb(
                 runtime_project_attachment_service.GetRuntimeProjectAttachmentRequest()
@@ -2491,6 +2554,10 @@ def test_get_runtime_project_attachment_rest_interceptors(null_interceptor):
         post.return_value = (
             runtime_project_attachment_service.RuntimeProjectAttachment()
         )
+        post_with_metadata.return_value = (
+            runtime_project_attachment_service.RuntimeProjectAttachment(),
+            metadata,
+        )
 
         client.get_runtime_project_attachment(
             request,
@@ -2502,6 +2569,7 @@ def test_get_runtime_project_attachment_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_runtime_project_attachments_rest_bad_request(
@@ -2594,10 +2662,14 @@ def test_list_runtime_project_attachments_rest_interceptors(null_interceptor):
         "post_list_runtime_project_attachments",
     ) as post, mock.patch.object(
         transports.RuntimeProjectAttachmentServiceRestInterceptor,
+        "post_list_runtime_project_attachments_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
+        transports.RuntimeProjectAttachmentServiceRestInterceptor,
         "pre_list_runtime_project_attachments",
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = runtime_project_attachment_service.ListRuntimeProjectAttachmentsRequest.pb(
             runtime_project_attachment_service.ListRuntimeProjectAttachmentsRequest()
         )
@@ -2627,6 +2699,10 @@ def test_list_runtime_project_attachments_rest_interceptors(null_interceptor):
         post.return_value = (
             runtime_project_attachment_service.ListRuntimeProjectAttachmentsResponse()
         )
+        post_with_metadata.return_value = (
+            runtime_project_attachment_service.ListRuntimeProjectAttachmentsResponse(),
+            metadata,
+        )
 
         client.list_runtime_project_attachments(
             request,
@@ -2638,6 +2714,7 @@ def test_list_runtime_project_attachments_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_runtime_project_attachment_rest_bad_request(
@@ -2844,10 +2921,14 @@ def test_lookup_runtime_project_attachment_rest_interceptors(null_interceptor):
         "post_lookup_runtime_project_attachment",
     ) as post, mock.patch.object(
         transports.RuntimeProjectAttachmentServiceRestInterceptor,
+        "post_lookup_runtime_project_attachment_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
+        transports.RuntimeProjectAttachmentServiceRestInterceptor,
         "pre_lookup_runtime_project_attachment",
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = runtime_project_attachment_service.LookupRuntimeProjectAttachmentRequest.pb(
             runtime_project_attachment_service.LookupRuntimeProjectAttachmentRequest()
         )
@@ -2877,6 +2958,10 @@ def test_lookup_runtime_project_attachment_rest_interceptors(null_interceptor):
         post.return_value = (
             runtime_project_attachment_service.LookupRuntimeProjectAttachmentResponse()
         )
+        post_with_metadata.return_value = (
+            runtime_project_attachment_service.LookupRuntimeProjectAttachmentResponse(),
+            metadata,
+        )
 
         client.lookup_runtime_project_attachment(
             request,
@@ -2888,6 +2973,7 @@ def test_lookup_runtime_project_attachment_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_location_rest_bad_request(request_type=locations_pb2.GetLocationRequest):
