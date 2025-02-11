@@ -108,11 +108,34 @@ class CommentServiceRestInterceptor:
     def post_create_comment(self, response: gcs_comment.Comment) -> gcs_comment.Comment:
         """Post-rpc interceptor for create_comment
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_comment_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CommentService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_comment` interceptor runs
+        before the `post_create_comment_with_metadata` interceptor.
         """
         return response
+
+    def post_create_comment_with_metadata(
+        self,
+        response: gcs_comment.Comment,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[gcs_comment.Comment, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_comment
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CommentService server but before it is returned to user code.
+
+        We recommend only using this `post_create_comment_with_metadata`
+        interceptor in new development instead of the `post_create_comment` interceptor.
+        When both interceptors are used, this `post_create_comment_with_metadata` interceptor runs after the
+        `post_create_comment` interceptor. The (possibly modified) response returned by
+        `post_create_comment` will be passed to
+        `post_create_comment_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_comments(
         self,
@@ -133,11 +156,36 @@ class CommentServiceRestInterceptor:
     ) -> comment_service.ListCommentsResponse:
         """Post-rpc interceptor for list_comments
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_comments_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CommentService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_comments` interceptor runs
+        before the `post_list_comments_with_metadata` interceptor.
         """
         return response
+
+    def post_list_comments_with_metadata(
+        self,
+        response: comment_service.ListCommentsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        comment_service.ListCommentsResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_comments
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CommentService server but before it is returned to user code.
+
+        We recommend only using this `post_list_comments_with_metadata`
+        interceptor in new development instead of the `post_list_comments` interceptor.
+        When both interceptors are used, this `post_list_comments_with_metadata` interceptor runs after the
+        `post_list_comments` interceptor. The (possibly modified) response returned by
+        `post_list_comments` will be passed to
+        `post_list_comments_with_metadata`.
+        """
+        return response, metadata
 
 
 @dataclasses.dataclass
@@ -352,6 +400,10 @@ class CommentServiceRestTransport(_BaseCommentServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_comment(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_comment_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -495,6 +547,10 @@ class CommentServiceRestTransport(_BaseCommentServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_comments(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_comments_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

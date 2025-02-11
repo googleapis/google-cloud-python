@@ -103,11 +103,34 @@ class TextToSpeechLongAudioSynthesizeRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for synthesize_long_audio
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_synthesize_long_audio_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the TextToSpeechLongAudioSynthesize server but before
-        it is returned to user code.
+        it is returned to user code. This `post_synthesize_long_audio` interceptor runs
+        before the `post_synthesize_long_audio_with_metadata` interceptor.
         """
         return response
+
+    def post_synthesize_long_audio_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for synthesize_long_audio
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the TextToSpeechLongAudioSynthesize server but before it is returned to user code.
+
+        We recommend only using this `post_synthesize_long_audio_with_metadata`
+        interceptor in new development instead of the `post_synthesize_long_audio` interceptor.
+        When both interceptors are used, this `post_synthesize_long_audio_with_metadata` interceptor runs after the
+        `post_synthesize_long_audio` interceptor. The (possibly modified) response returned by
+        `post_synthesize_long_audio` will be passed to
+        `post_synthesize_long_audio_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_operation(
         self,
@@ -425,6 +448,10 @@ class TextToSpeechLongAudioSynthesizeRestTransport(
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_synthesize_long_audio(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_synthesize_long_audio_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

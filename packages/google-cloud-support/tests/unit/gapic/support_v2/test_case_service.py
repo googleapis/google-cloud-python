@@ -65,6 +65,13 @@ from google.cloud.support_v2.types import case
 from google.cloud.support_v2.types import case as gcs_case
 from google.cloud.support_v2.types import case_service, escalation
 
+CRED_INFO_JSON = {
+    "credential_source": "/path/to/file",
+    "credential_type": "service account credentials",
+    "principal": "service-account@example.com",
+}
+CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
 
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
@@ -302,6 +309,49 @@ def test__get_universe_domain():
     with pytest.raises(ValueError) as excinfo:
         CaseServiceClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+
+@pytest.mark.parametrize(
+    "error_code,cred_info_json,show_cred_info",
+    [
+        (401, CRED_INFO_JSON, True),
+        (403, CRED_INFO_JSON, True),
+        (404, CRED_INFO_JSON, True),
+        (500, CRED_INFO_JSON, False),
+        (401, None, False),
+        (403, None, False),
+        (404, None, False),
+        (500, None, False),
+    ],
+)
+def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
+    cred = mock.Mock(["get_cred_info"])
+    cred.get_cred_info = mock.Mock(return_value=cred_info_json)
+    client = CaseServiceClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=["foo"])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    if show_cred_info:
+        assert error.details == ["foo", CRED_INFO_STRING]
+    else:
+        assert error.details == ["foo"]
+
+
+@pytest.mark.parametrize("error_code", [401, 403, 404, 500])
+def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
+    cred = mock.Mock([])
+    assert not hasattr(cred, "get_cred_info")
+    client = CaseServiceClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=[])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    assert error.details == []
 
 
 @pytest.mark.parametrize(
@@ -5919,10 +5969,13 @@ def test_get_case_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.CaseServiceRestInterceptor, "post_get_case"
     ) as post, mock.patch.object(
+        transports.CaseServiceRestInterceptor, "post_get_case_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.CaseServiceRestInterceptor, "pre_get_case"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = case_service.GetCaseRequest.pb(case_service.GetCaseRequest())
         transcode.return_value = {
             "method": "post",
@@ -5944,6 +5997,7 @@ def test_get_case_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = case.Case()
+        post_with_metadata.return_value = case.Case(), metadata
 
         client.get_case(
             request,
@@ -5955,6 +6009,7 @@ def test_get_case_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_cases_rest_bad_request(request_type=case_service.ListCasesRequest):
@@ -6037,10 +6092,13 @@ def test_list_cases_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.CaseServiceRestInterceptor, "post_list_cases"
     ) as post, mock.patch.object(
+        transports.CaseServiceRestInterceptor, "post_list_cases_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.CaseServiceRestInterceptor, "pre_list_cases"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = case_service.ListCasesRequest.pb(case_service.ListCasesRequest())
         transcode.return_value = {
             "method": "post",
@@ -6064,6 +6122,7 @@ def test_list_cases_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = case_service.ListCasesResponse()
+        post_with_metadata.return_value = case_service.ListCasesResponse(), metadata
 
         client.list_cases(
             request,
@@ -6075,6 +6134,7 @@ def test_list_cases_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_search_cases_rest_bad_request(request_type=case_service.SearchCasesRequest):
@@ -6157,10 +6217,13 @@ def test_search_cases_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.CaseServiceRestInterceptor, "post_search_cases"
     ) as post, mock.patch.object(
+        transports.CaseServiceRestInterceptor, "post_search_cases_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.CaseServiceRestInterceptor, "pre_search_cases"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = case_service.SearchCasesRequest.pb(
             case_service.SearchCasesRequest()
         )
@@ -6186,6 +6249,7 @@ def test_search_cases_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = case_service.SearchCasesResponse()
+        post_with_metadata.return_value = case_service.SearchCasesResponse(), metadata
 
         client.search_cases(
             request,
@@ -6197,6 +6261,7 @@ def test_search_cases_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_case_rest_bad_request(request_type=case_service.CreateCaseRequest):
@@ -6390,10 +6455,13 @@ def test_create_case_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.CaseServiceRestInterceptor, "post_create_case"
     ) as post, mock.patch.object(
+        transports.CaseServiceRestInterceptor, "post_create_case_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.CaseServiceRestInterceptor, "pre_create_case"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = case_service.CreateCaseRequest.pb(case_service.CreateCaseRequest())
         transcode.return_value = {
             "method": "post",
@@ -6415,6 +6483,7 @@ def test_create_case_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = gcs_case.Case()
+        post_with_metadata.return_value = gcs_case.Case(), metadata
 
         client.create_case(
             request,
@@ -6426,6 +6495,7 @@ def test_create_case_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_case_rest_bad_request(request_type=case_service.UpdateCaseRequest):
@@ -6619,10 +6689,13 @@ def test_update_case_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.CaseServiceRestInterceptor, "post_update_case"
     ) as post, mock.patch.object(
+        transports.CaseServiceRestInterceptor, "post_update_case_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.CaseServiceRestInterceptor, "pre_update_case"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = case_service.UpdateCaseRequest.pb(case_service.UpdateCaseRequest())
         transcode.return_value = {
             "method": "post",
@@ -6644,6 +6717,7 @@ def test_update_case_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = gcs_case.Case()
+        post_with_metadata.return_value = gcs_case.Case(), metadata
 
         client.update_case(
             request,
@@ -6655,6 +6729,7 @@ def test_update_case_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_escalate_case_rest_bad_request(request_type=case_service.EscalateCaseRequest):
@@ -6757,10 +6832,13 @@ def test_escalate_case_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.CaseServiceRestInterceptor, "post_escalate_case"
     ) as post, mock.patch.object(
+        transports.CaseServiceRestInterceptor, "post_escalate_case_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.CaseServiceRestInterceptor, "pre_escalate_case"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = case_service.EscalateCaseRequest.pb(
             case_service.EscalateCaseRequest()
         )
@@ -6784,6 +6862,7 @@ def test_escalate_case_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = case.Case()
+        post_with_metadata.return_value = case.Case(), metadata
 
         client.escalate_case(
             request,
@@ -6795,6 +6874,7 @@ def test_escalate_case_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_close_case_rest_bad_request(request_type=case_service.CloseCaseRequest):
@@ -6897,10 +6977,13 @@ def test_close_case_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.CaseServiceRestInterceptor, "post_close_case"
     ) as post, mock.patch.object(
+        transports.CaseServiceRestInterceptor, "post_close_case_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.CaseServiceRestInterceptor, "pre_close_case"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = case_service.CloseCaseRequest.pb(case_service.CloseCaseRequest())
         transcode.return_value = {
             "method": "post",
@@ -6922,6 +7005,7 @@ def test_close_case_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = case.Case()
+        post_with_metadata.return_value = case.Case(), metadata
 
         client.close_case(
             request,
@@ -6933,6 +7017,7 @@ def test_close_case_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_search_case_classifications_rest_bad_request(
@@ -7017,10 +7102,14 @@ def test_search_case_classifications_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.CaseServiceRestInterceptor, "post_search_case_classifications"
     ) as post, mock.patch.object(
+        transports.CaseServiceRestInterceptor,
+        "post_search_case_classifications_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.CaseServiceRestInterceptor, "pre_search_case_classifications"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = case_service.SearchCaseClassificationsRequest.pb(
             case_service.SearchCaseClassificationsRequest()
         )
@@ -7046,6 +7135,10 @@ def test_search_case_classifications_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = case_service.SearchCaseClassificationsResponse()
+        post_with_metadata.return_value = (
+            case_service.SearchCaseClassificationsResponse(),
+            metadata,
+        )
 
         client.search_case_classifications(
             request,
@@ -7057,6 +7150,7 @@ def test_search_case_classifications_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_initialize_client_w_rest():

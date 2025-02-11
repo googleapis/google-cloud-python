@@ -76,6 +76,13 @@ from google.cloud.storage_transfer_v1.services.storage_transfer_service import (
 )
 from google.cloud.storage_transfer_v1.types import transfer, transfer_types
 
+CRED_INFO_JSON = {
+    "credential_source": "/path/to/file",
+    "credential_type": "service account credentials",
+    "principal": "service-account@example.com",
+}
+CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
 
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
@@ -349,6 +356,49 @@ def test__get_universe_domain():
     with pytest.raises(ValueError) as excinfo:
         StorageTransferServiceClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+
+@pytest.mark.parametrize(
+    "error_code,cred_info_json,show_cred_info",
+    [
+        (401, CRED_INFO_JSON, True),
+        (403, CRED_INFO_JSON, True),
+        (404, CRED_INFO_JSON, True),
+        (500, CRED_INFO_JSON, False),
+        (401, None, False),
+        (403, None, False),
+        (404, None, False),
+        (500, None, False),
+    ],
+)
+def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
+    cred = mock.Mock(["get_cred_info"])
+    cred.get_cred_info = mock.Mock(return_value=cred_info_json)
+    client = StorageTransferServiceClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=["foo"])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    if show_cred_info:
+        assert error.details == ["foo", CRED_INFO_STRING]
+    else:
+        assert error.details == ["foo"]
+
+
+@pytest.mark.parametrize("error_code", [401, 403, 404, 500])
+def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
+    cred = mock.Mock([])
+    assert not hasattr(cred, "get_cred_info")
+    client = StorageTransferServiceClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=[])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    assert error.details == []
 
 
 @pytest.mark.parametrize(
@@ -8600,10 +8650,14 @@ def test_get_google_service_account_rest_interceptors(null_interceptor):
         "post_get_google_service_account",
     ) as post, mock.patch.object(
         transports.StorageTransferServiceRestInterceptor,
+        "post_get_google_service_account_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
+        transports.StorageTransferServiceRestInterceptor,
         "pre_get_google_service_account",
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = transfer.GetGoogleServiceAccountRequest.pb(
             transfer.GetGoogleServiceAccountRequest()
         )
@@ -8629,6 +8683,10 @@ def test_get_google_service_account_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = transfer_types.GoogleServiceAccount()
+        post_with_metadata.return_value = (
+            transfer_types.GoogleServiceAccount(),
+            metadata,
+        )
 
         client.get_google_service_account(
             request,
@@ -8640,6 +8698,7 @@ def test_get_google_service_account_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_transfer_job_rest_bad_request(
@@ -8923,10 +8982,14 @@ def test_create_transfer_job_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.StorageTransferServiceRestInterceptor, "post_create_transfer_job"
     ) as post, mock.patch.object(
+        transports.StorageTransferServiceRestInterceptor,
+        "post_create_transfer_job_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.StorageTransferServiceRestInterceptor, "pre_create_transfer_job"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = transfer.CreateTransferJobRequest.pb(
             transfer.CreateTransferJobRequest()
         )
@@ -8950,6 +9013,7 @@ def test_create_transfer_job_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = transfer_types.TransferJob()
+        post_with_metadata.return_value = transfer_types.TransferJob(), metadata
 
         client.create_transfer_job(
             request,
@@ -8961,6 +9025,7 @@ def test_create_transfer_job_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_transfer_job_rest_bad_request(
@@ -9053,10 +9118,14 @@ def test_update_transfer_job_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.StorageTransferServiceRestInterceptor, "post_update_transfer_job"
     ) as post, mock.patch.object(
+        transports.StorageTransferServiceRestInterceptor,
+        "post_update_transfer_job_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.StorageTransferServiceRestInterceptor, "pre_update_transfer_job"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = transfer.UpdateTransferJobRequest.pb(
             transfer.UpdateTransferJobRequest()
         )
@@ -9080,6 +9149,7 @@ def test_update_transfer_job_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = transfer_types.TransferJob()
+        post_with_metadata.return_value = transfer_types.TransferJob(), metadata
 
         client.update_transfer_job(
             request,
@@ -9091,6 +9161,7 @@ def test_update_transfer_job_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_transfer_job_rest_bad_request(request_type=transfer.GetTransferJobRequest):
@@ -9181,10 +9252,14 @@ def test_get_transfer_job_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.StorageTransferServiceRestInterceptor, "post_get_transfer_job"
     ) as post, mock.patch.object(
+        transports.StorageTransferServiceRestInterceptor,
+        "post_get_transfer_job_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.StorageTransferServiceRestInterceptor, "pre_get_transfer_job"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = transfer.GetTransferJobRequest.pb(transfer.GetTransferJobRequest())
         transcode.return_value = {
             "method": "post",
@@ -9206,6 +9281,7 @@ def test_get_transfer_job_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = transfer_types.TransferJob()
+        post_with_metadata.return_value = transfer_types.TransferJob(), metadata
 
         client.get_transfer_job(
             request,
@@ -9217,6 +9293,7 @@ def test_get_transfer_job_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_transfer_jobs_rest_bad_request(
@@ -9301,10 +9378,14 @@ def test_list_transfer_jobs_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.StorageTransferServiceRestInterceptor, "post_list_transfer_jobs"
     ) as post, mock.patch.object(
+        transports.StorageTransferServiceRestInterceptor,
+        "post_list_transfer_jobs_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.StorageTransferServiceRestInterceptor, "pre_list_transfer_jobs"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = transfer.ListTransferJobsRequest.pb(
             transfer.ListTransferJobsRequest()
         )
@@ -9330,6 +9411,7 @@ def test_list_transfer_jobs_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = transfer.ListTransferJobsResponse()
+        post_with_metadata.return_value = transfer.ListTransferJobsResponse(), metadata
 
         client.list_transfer_jobs(
             request,
@@ -9341,6 +9423,7 @@ def test_list_transfer_jobs_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_pause_transfer_operation_rest_bad_request(
@@ -9638,10 +9721,14 @@ def test_run_transfer_job_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.StorageTransferServiceRestInterceptor, "post_run_transfer_job"
     ) as post, mock.patch.object(
+        transports.StorageTransferServiceRestInterceptor,
+        "post_run_transfer_job_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.StorageTransferServiceRestInterceptor, "pre_run_transfer_job"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = transfer.RunTransferJobRequest.pb(transfer.RunTransferJobRequest())
         transcode.return_value = {
             "method": "post",
@@ -9663,6 +9750,7 @@ def test_run_transfer_job_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.run_transfer_job(
             request,
@@ -9674,6 +9762,7 @@ def test_run_transfer_job_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_transfer_job_rest_bad_request(
@@ -9944,10 +10033,14 @@ def test_create_agent_pool_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.StorageTransferServiceRestInterceptor, "post_create_agent_pool"
     ) as post, mock.patch.object(
+        transports.StorageTransferServiceRestInterceptor,
+        "post_create_agent_pool_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.StorageTransferServiceRestInterceptor, "pre_create_agent_pool"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = transfer.CreateAgentPoolRequest.pb(
             transfer.CreateAgentPoolRequest()
         )
@@ -9971,6 +10064,7 @@ def test_create_agent_pool_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = transfer_types.AgentPool()
+        post_with_metadata.return_value = transfer_types.AgentPool(), metadata
 
         client.create_agent_pool(
             request,
@@ -9982,6 +10076,7 @@ def test_create_agent_pool_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_agent_pool_rest_bad_request(
@@ -10143,10 +10238,14 @@ def test_update_agent_pool_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.StorageTransferServiceRestInterceptor, "post_update_agent_pool"
     ) as post, mock.patch.object(
+        transports.StorageTransferServiceRestInterceptor,
+        "post_update_agent_pool_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.StorageTransferServiceRestInterceptor, "pre_update_agent_pool"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = transfer.UpdateAgentPoolRequest.pb(
             transfer.UpdateAgentPoolRequest()
         )
@@ -10170,6 +10269,7 @@ def test_update_agent_pool_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = transfer_types.AgentPool()
+        post_with_metadata.return_value = transfer_types.AgentPool(), metadata
 
         client.update_agent_pool(
             request,
@@ -10181,6 +10281,7 @@ def test_update_agent_pool_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_agent_pool_rest_bad_request(request_type=transfer.GetAgentPoolRequest):
@@ -10267,10 +10368,14 @@ def test_get_agent_pool_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.StorageTransferServiceRestInterceptor, "post_get_agent_pool"
     ) as post, mock.patch.object(
+        transports.StorageTransferServiceRestInterceptor,
+        "post_get_agent_pool_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.StorageTransferServiceRestInterceptor, "pre_get_agent_pool"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = transfer.GetAgentPoolRequest.pb(transfer.GetAgentPoolRequest())
         transcode.return_value = {
             "method": "post",
@@ -10292,6 +10397,7 @@ def test_get_agent_pool_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = transfer_types.AgentPool()
+        post_with_metadata.return_value = transfer_types.AgentPool(), metadata
 
         client.get_agent_pool(
             request,
@@ -10303,6 +10409,7 @@ def test_get_agent_pool_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_agent_pools_rest_bad_request(request_type=transfer.ListAgentPoolsRequest):
@@ -10385,10 +10492,14 @@ def test_list_agent_pools_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.StorageTransferServiceRestInterceptor, "post_list_agent_pools"
     ) as post, mock.patch.object(
+        transports.StorageTransferServiceRestInterceptor,
+        "post_list_agent_pools_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.StorageTransferServiceRestInterceptor, "pre_list_agent_pools"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = transfer.ListAgentPoolsRequest.pb(transfer.ListAgentPoolsRequest())
         transcode.return_value = {
             "method": "post",
@@ -10412,6 +10523,7 @@ def test_list_agent_pools_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = transfer.ListAgentPoolsResponse()
+        post_with_metadata.return_value = transfer.ListAgentPoolsResponse(), metadata
 
         client.list_agent_pools(
             request,
@@ -10423,6 +10535,7 @@ def test_list_agent_pools_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_agent_pool_rest_bad_request(

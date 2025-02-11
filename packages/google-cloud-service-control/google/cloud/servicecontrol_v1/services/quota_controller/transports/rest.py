@@ -101,11 +101,36 @@ class QuotaControllerRestInterceptor:
     ) -> quota_controller.AllocateQuotaResponse:
         """Post-rpc interceptor for allocate_quota
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_allocate_quota_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the QuotaController server but before
-        it is returned to user code.
+        it is returned to user code. This `post_allocate_quota` interceptor runs
+        before the `post_allocate_quota_with_metadata` interceptor.
         """
         return response
+
+    def post_allocate_quota_with_metadata(
+        self,
+        response: quota_controller.AllocateQuotaResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        quota_controller.AllocateQuotaResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for allocate_quota
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the QuotaController server but before it is returned to user code.
+
+        We recommend only using this `post_allocate_quota_with_metadata`
+        interceptor in new development instead of the `post_allocate_quota` interceptor.
+        When both interceptors are used, this `post_allocate_quota_with_metadata` interceptor runs after the
+        `post_allocate_quota` interceptor. The (possibly modified) response returned by
+        `post_allocate_quota` will be passed to
+        `post_allocate_quota_with_metadata`.
+        """
+        return response, metadata
 
 
 @dataclasses.dataclass
@@ -323,6 +348,10 @@ class QuotaControllerRestTransport(_BaseQuotaControllerRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_allocate_quota(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_allocate_quota_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

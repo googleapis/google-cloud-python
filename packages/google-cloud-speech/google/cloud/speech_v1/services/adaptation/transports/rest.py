@@ -168,11 +168,34 @@ class AdaptationRestInterceptor:
     ) -> resource.CustomClass:
         """Post-rpc interceptor for create_custom_class
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_custom_class_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Adaptation server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_custom_class` interceptor runs
+        before the `post_create_custom_class_with_metadata` interceptor.
         """
         return response
+
+    def post_create_custom_class_with_metadata(
+        self,
+        response: resource.CustomClass,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[resource.CustomClass, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_custom_class
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Adaptation server but before it is returned to user code.
+
+        We recommend only using this `post_create_custom_class_with_metadata`
+        interceptor in new development instead of the `post_create_custom_class` interceptor.
+        When both interceptors are used, this `post_create_custom_class_with_metadata` interceptor runs after the
+        `post_create_custom_class` interceptor. The (possibly modified) response returned by
+        `post_create_custom_class` will be passed to
+        `post_create_custom_class_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_phrase_set(
         self,
@@ -194,11 +217,34 @@ class AdaptationRestInterceptor:
     ) -> resource.PhraseSet:
         """Post-rpc interceptor for create_phrase_set
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_phrase_set_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Adaptation server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_phrase_set` interceptor runs
+        before the `post_create_phrase_set_with_metadata` interceptor.
         """
         return response
+
+    def post_create_phrase_set_with_metadata(
+        self,
+        response: resource.PhraseSet,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[resource.PhraseSet, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_phrase_set
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Adaptation server but before it is returned to user code.
+
+        We recommend only using this `post_create_phrase_set_with_metadata`
+        interceptor in new development instead of the `post_create_phrase_set` interceptor.
+        When both interceptors are used, this `post_create_phrase_set_with_metadata` interceptor runs after the
+        `post_create_phrase_set` interceptor. The (possibly modified) response returned by
+        `post_create_phrase_set` will be passed to
+        `post_create_phrase_set_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_custom_class(
         self,
@@ -250,11 +296,34 @@ class AdaptationRestInterceptor:
     ) -> resource.CustomClass:
         """Post-rpc interceptor for get_custom_class
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_custom_class_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Adaptation server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_custom_class` interceptor runs
+        before the `post_get_custom_class_with_metadata` interceptor.
         """
         return response
+
+    def post_get_custom_class_with_metadata(
+        self,
+        response: resource.CustomClass,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[resource.CustomClass, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_custom_class
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Adaptation server but before it is returned to user code.
+
+        We recommend only using this `post_get_custom_class_with_metadata`
+        interceptor in new development instead of the `post_get_custom_class` interceptor.
+        When both interceptors are used, this `post_get_custom_class_with_metadata` interceptor runs after the
+        `post_get_custom_class` interceptor. The (possibly modified) response returned by
+        `post_get_custom_class` will be passed to
+        `post_get_custom_class_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_phrase_set(
         self,
@@ -274,11 +343,34 @@ class AdaptationRestInterceptor:
     def post_get_phrase_set(self, response: resource.PhraseSet) -> resource.PhraseSet:
         """Post-rpc interceptor for get_phrase_set
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_phrase_set_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Adaptation server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_phrase_set` interceptor runs
+        before the `post_get_phrase_set_with_metadata` interceptor.
         """
         return response
+
+    def post_get_phrase_set_with_metadata(
+        self,
+        response: resource.PhraseSet,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[resource.PhraseSet, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_phrase_set
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Adaptation server but before it is returned to user code.
+
+        We recommend only using this `post_get_phrase_set_with_metadata`
+        interceptor in new development instead of the `post_get_phrase_set` interceptor.
+        When both interceptors are used, this `post_get_phrase_set_with_metadata` interceptor runs after the
+        `post_get_phrase_set` interceptor. The (possibly modified) response returned by
+        `post_get_phrase_set` will be passed to
+        `post_get_phrase_set_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_custom_classes(
         self,
@@ -300,11 +392,37 @@ class AdaptationRestInterceptor:
     ) -> cloud_speech_adaptation.ListCustomClassesResponse:
         """Post-rpc interceptor for list_custom_classes
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_custom_classes_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Adaptation server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_custom_classes` interceptor runs
+        before the `post_list_custom_classes_with_metadata` interceptor.
         """
         return response
+
+    def post_list_custom_classes_with_metadata(
+        self,
+        response: cloud_speech_adaptation.ListCustomClassesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloud_speech_adaptation.ListCustomClassesResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_custom_classes
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Adaptation server but before it is returned to user code.
+
+        We recommend only using this `post_list_custom_classes_with_metadata`
+        interceptor in new development instead of the `post_list_custom_classes` interceptor.
+        When both interceptors are used, this `post_list_custom_classes_with_metadata` interceptor runs after the
+        `post_list_custom_classes` interceptor. The (possibly modified) response returned by
+        `post_list_custom_classes` will be passed to
+        `post_list_custom_classes_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_phrase_set(
         self,
@@ -326,11 +444,37 @@ class AdaptationRestInterceptor:
     ) -> cloud_speech_adaptation.ListPhraseSetResponse:
         """Post-rpc interceptor for list_phrase_set
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_phrase_set_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Adaptation server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_phrase_set` interceptor runs
+        before the `post_list_phrase_set_with_metadata` interceptor.
         """
         return response
+
+    def post_list_phrase_set_with_metadata(
+        self,
+        response: cloud_speech_adaptation.ListPhraseSetResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloud_speech_adaptation.ListPhraseSetResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_phrase_set
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Adaptation server but before it is returned to user code.
+
+        We recommend only using this `post_list_phrase_set_with_metadata`
+        interceptor in new development instead of the `post_list_phrase_set` interceptor.
+        When both interceptors are used, this `post_list_phrase_set_with_metadata` interceptor runs after the
+        `post_list_phrase_set` interceptor. The (possibly modified) response returned by
+        `post_list_phrase_set` will be passed to
+        `post_list_phrase_set_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_custom_class(
         self,
@@ -352,11 +496,34 @@ class AdaptationRestInterceptor:
     ) -> resource.CustomClass:
         """Post-rpc interceptor for update_custom_class
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_custom_class_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Adaptation server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_custom_class` interceptor runs
+        before the `post_update_custom_class_with_metadata` interceptor.
         """
         return response
+
+    def post_update_custom_class_with_metadata(
+        self,
+        response: resource.CustomClass,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[resource.CustomClass, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_custom_class
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Adaptation server but before it is returned to user code.
+
+        We recommend only using this `post_update_custom_class_with_metadata`
+        interceptor in new development instead of the `post_update_custom_class` interceptor.
+        When both interceptors are used, this `post_update_custom_class_with_metadata` interceptor runs after the
+        `post_update_custom_class` interceptor. The (possibly modified) response returned by
+        `post_update_custom_class` will be passed to
+        `post_update_custom_class_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_phrase_set(
         self,
@@ -378,11 +545,34 @@ class AdaptationRestInterceptor:
     ) -> resource.PhraseSet:
         """Post-rpc interceptor for update_phrase_set
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_phrase_set_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Adaptation server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_phrase_set` interceptor runs
+        before the `post_update_phrase_set_with_metadata` interceptor.
         """
         return response
+
+    def post_update_phrase_set_with_metadata(
+        self,
+        response: resource.PhraseSet,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[resource.PhraseSet, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_phrase_set
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Adaptation server but before it is returned to user code.
+
+        We recommend only using this `post_update_phrase_set_with_metadata`
+        interceptor in new development instead of the `post_update_phrase_set` interceptor.
+        When both interceptors are used, this `post_update_phrase_set_with_metadata` interceptor runs after the
+        `post_update_phrase_set` interceptor. The (possibly modified) response returned by
+        `post_update_phrase_set` will be passed to
+        `post_update_phrase_set_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_operation(
         self,
@@ -654,6 +844,10 @@ class AdaptationRestTransport(_BaseAdaptationRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_custom_class(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_custom_class_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -806,6 +1000,10 @@ class AdaptationRestTransport(_BaseAdaptationRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_phrase_set(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_phrase_set_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1176,6 +1374,10 @@ class AdaptationRestTransport(_BaseAdaptationRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_custom_class(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_custom_class_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1324,6 +1526,10 @@ class AdaptationRestTransport(_BaseAdaptationRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_phrase_set(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_phrase_set_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1469,6 +1675,10 @@ class AdaptationRestTransport(_BaseAdaptationRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_custom_classes(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_custom_classes_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1620,6 +1830,10 @@ class AdaptationRestTransport(_BaseAdaptationRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_phrase_set(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_phrase_set_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1778,6 +1992,10 @@ class AdaptationRestTransport(_BaseAdaptationRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_custom_class(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_custom_class_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1930,6 +2148,10 @@ class AdaptationRestTransport(_BaseAdaptationRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_phrase_set(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_phrase_set_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

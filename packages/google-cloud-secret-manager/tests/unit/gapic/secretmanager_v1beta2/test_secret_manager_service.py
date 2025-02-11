@@ -68,6 +68,13 @@ from google.cloud.secretmanager_v1beta2.services.secret_manager_service import (
 )
 from google.cloud.secretmanager_v1beta2.types import resources, service
 
+CRED_INFO_JSON = {
+    "credential_source": "/path/to/file",
+    "credential_type": "service account credentials",
+    "principal": "service-account@example.com",
+}
+CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
 
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
@@ -339,6 +346,49 @@ def test__get_universe_domain():
     with pytest.raises(ValueError) as excinfo:
         SecretManagerServiceClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+
+@pytest.mark.parametrize(
+    "error_code,cred_info_json,show_cred_info",
+    [
+        (401, CRED_INFO_JSON, True),
+        (403, CRED_INFO_JSON, True),
+        (404, CRED_INFO_JSON, True),
+        (500, CRED_INFO_JSON, False),
+        (401, None, False),
+        (403, None, False),
+        (404, None, False),
+        (500, None, False),
+    ],
+)
+def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
+    cred = mock.Mock(["get_cred_info"])
+    cred.get_cred_info = mock.Mock(return_value=cred_info_json)
+    client = SecretManagerServiceClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=["foo"])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    if show_cred_info:
+        assert error.details == ["foo", CRED_INFO_STRING]
+    else:
+        assert error.details == ["foo"]
+
+
+@pytest.mark.parametrize("error_code", [401, 403, 404, 500])
+def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
+    cred = mock.Mock([])
+    assert not hasattr(cred, "get_cred_info")
+    client = SecretManagerServiceClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=[])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    assert error.details == []
 
 
 @pytest.mark.parametrize(
@@ -10150,10 +10200,14 @@ def test_list_secrets_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.SecretManagerServiceRestInterceptor, "post_list_secrets"
     ) as post, mock.patch.object(
+        transports.SecretManagerServiceRestInterceptor,
+        "post_list_secrets_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.SecretManagerServiceRestInterceptor, "pre_list_secrets"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.ListSecretsRequest.pb(service.ListSecretsRequest())
         transcode.return_value = {
             "method": "post",
@@ -10177,6 +10231,7 @@ def test_list_secrets_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = service.ListSecretsResponse()
+        post_with_metadata.return_value = service.ListSecretsResponse(), metadata
 
         client.list_secrets(
             request,
@@ -10188,6 +10243,7 @@ def test_list_secrets_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_secret_rest_bad_request(request_type=service.CreateSecretRequest):
@@ -10363,10 +10419,14 @@ def test_create_secret_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.SecretManagerServiceRestInterceptor, "post_create_secret"
     ) as post, mock.patch.object(
+        transports.SecretManagerServiceRestInterceptor,
+        "post_create_secret_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.SecretManagerServiceRestInterceptor, "pre_create_secret"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.CreateSecretRequest.pb(service.CreateSecretRequest())
         transcode.return_value = {
             "method": "post",
@@ -10388,6 +10448,7 @@ def test_create_secret_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = resources.Secret()
+        post_with_metadata.return_value = resources.Secret(), metadata
 
         client.create_secret(
             request,
@@ -10399,6 +10460,7 @@ def test_create_secret_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_add_secret_version_rest_bad_request(
@@ -10489,10 +10551,14 @@ def test_add_secret_version_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.SecretManagerServiceRestInterceptor, "post_add_secret_version"
     ) as post, mock.patch.object(
+        transports.SecretManagerServiceRestInterceptor,
+        "post_add_secret_version_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.SecretManagerServiceRestInterceptor, "pre_add_secret_version"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.AddSecretVersionRequest.pb(
             service.AddSecretVersionRequest()
         )
@@ -10516,6 +10582,7 @@ def test_add_secret_version_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = resources.SecretVersion()
+        post_with_metadata.return_value = resources.SecretVersion(), metadata
 
         client.add_secret_version(
             request,
@@ -10527,6 +10594,7 @@ def test_add_secret_version_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_secret_rest_bad_request(request_type=service.GetSecretRequest):
@@ -10611,10 +10679,13 @@ def test_get_secret_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.SecretManagerServiceRestInterceptor, "post_get_secret"
     ) as post, mock.patch.object(
+        transports.SecretManagerServiceRestInterceptor, "post_get_secret_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.SecretManagerServiceRestInterceptor, "pre_get_secret"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.GetSecretRequest.pb(service.GetSecretRequest())
         transcode.return_value = {
             "method": "post",
@@ -10636,6 +10707,7 @@ def test_get_secret_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = resources.Secret()
+        post_with_metadata.return_value = resources.Secret(), metadata
 
         client.get_secret(
             request,
@@ -10647,6 +10719,7 @@ def test_get_secret_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_secret_rest_bad_request(request_type=service.UpdateSecretRequest):
@@ -10822,10 +10895,14 @@ def test_update_secret_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.SecretManagerServiceRestInterceptor, "post_update_secret"
     ) as post, mock.patch.object(
+        transports.SecretManagerServiceRestInterceptor,
+        "post_update_secret_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.SecretManagerServiceRestInterceptor, "pre_update_secret"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.UpdateSecretRequest.pb(service.UpdateSecretRequest())
         transcode.return_value = {
             "method": "post",
@@ -10847,6 +10924,7 @@ def test_update_secret_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = resources.Secret()
+        post_with_metadata.return_value = resources.Secret(), metadata
 
         client.update_secret(
             request,
@@ -10858,6 +10936,7 @@ def test_update_secret_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_secret_rest_bad_request(request_type=service.DeleteSecretRequest):
@@ -11049,10 +11128,14 @@ def test_list_secret_versions_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.SecretManagerServiceRestInterceptor, "post_list_secret_versions"
     ) as post, mock.patch.object(
+        transports.SecretManagerServiceRestInterceptor,
+        "post_list_secret_versions_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.SecretManagerServiceRestInterceptor, "pre_list_secret_versions"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.ListSecretVersionsRequest.pb(
             service.ListSecretVersionsRequest()
         )
@@ -11078,6 +11161,7 @@ def test_list_secret_versions_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = service.ListSecretVersionsResponse()
+        post_with_metadata.return_value = service.ListSecretVersionsResponse(), metadata
 
         client.list_secret_versions(
             request,
@@ -11089,6 +11173,7 @@ def test_list_secret_versions_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_secret_version_rest_bad_request(
@@ -11179,10 +11264,14 @@ def test_get_secret_version_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.SecretManagerServiceRestInterceptor, "post_get_secret_version"
     ) as post, mock.patch.object(
+        transports.SecretManagerServiceRestInterceptor,
+        "post_get_secret_version_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.SecretManagerServiceRestInterceptor, "pre_get_secret_version"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.GetSecretVersionRequest.pb(
             service.GetSecretVersionRequest()
         )
@@ -11206,6 +11295,7 @@ def test_get_secret_version_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = resources.SecretVersion()
+        post_with_metadata.return_value = resources.SecretVersion(), metadata
 
         client.get_secret_version(
             request,
@@ -11217,6 +11307,7 @@ def test_get_secret_version_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_access_secret_version_rest_bad_request(
@@ -11301,10 +11392,14 @@ def test_access_secret_version_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.SecretManagerServiceRestInterceptor, "post_access_secret_version"
     ) as post, mock.patch.object(
+        transports.SecretManagerServiceRestInterceptor,
+        "post_access_secret_version_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.SecretManagerServiceRestInterceptor, "pre_access_secret_version"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.AccessSecretVersionRequest.pb(
             service.AccessSecretVersionRequest()
         )
@@ -11330,6 +11425,10 @@ def test_access_secret_version_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = service.AccessSecretVersionResponse()
+        post_with_metadata.return_value = (
+            service.AccessSecretVersionResponse(),
+            metadata,
+        )
 
         client.access_secret_version(
             request,
@@ -11341,6 +11440,7 @@ def test_access_secret_version_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_disable_secret_version_rest_bad_request(
@@ -11431,10 +11531,14 @@ def test_disable_secret_version_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.SecretManagerServiceRestInterceptor, "post_disable_secret_version"
     ) as post, mock.patch.object(
+        transports.SecretManagerServiceRestInterceptor,
+        "post_disable_secret_version_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.SecretManagerServiceRestInterceptor, "pre_disable_secret_version"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.DisableSecretVersionRequest.pb(
             service.DisableSecretVersionRequest()
         )
@@ -11458,6 +11562,7 @@ def test_disable_secret_version_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = resources.SecretVersion()
+        post_with_metadata.return_value = resources.SecretVersion(), metadata
 
         client.disable_secret_version(
             request,
@@ -11469,6 +11574,7 @@ def test_disable_secret_version_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_enable_secret_version_rest_bad_request(
@@ -11559,10 +11665,14 @@ def test_enable_secret_version_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.SecretManagerServiceRestInterceptor, "post_enable_secret_version"
     ) as post, mock.patch.object(
+        transports.SecretManagerServiceRestInterceptor,
+        "post_enable_secret_version_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.SecretManagerServiceRestInterceptor, "pre_enable_secret_version"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.EnableSecretVersionRequest.pb(
             service.EnableSecretVersionRequest()
         )
@@ -11586,6 +11696,7 @@ def test_enable_secret_version_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = resources.SecretVersion()
+        post_with_metadata.return_value = resources.SecretVersion(), metadata
 
         client.enable_secret_version(
             request,
@@ -11597,6 +11708,7 @@ def test_enable_secret_version_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_destroy_secret_version_rest_bad_request(
@@ -11687,10 +11799,14 @@ def test_destroy_secret_version_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.SecretManagerServiceRestInterceptor, "post_destroy_secret_version"
     ) as post, mock.patch.object(
+        transports.SecretManagerServiceRestInterceptor,
+        "post_destroy_secret_version_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.SecretManagerServiceRestInterceptor, "pre_destroy_secret_version"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.DestroySecretVersionRequest.pb(
             service.DestroySecretVersionRequest()
         )
@@ -11714,6 +11830,7 @@ def test_destroy_secret_version_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = resources.SecretVersion()
+        post_with_metadata.return_value = resources.SecretVersion(), metadata
 
         client.destroy_secret_version(
             request,
@@ -11725,6 +11842,7 @@ def test_destroy_secret_version_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_set_iam_policy_rest_bad_request(
@@ -11808,10 +11926,14 @@ def test_set_iam_policy_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.SecretManagerServiceRestInterceptor, "post_set_iam_policy"
     ) as post, mock.patch.object(
+        transports.SecretManagerServiceRestInterceptor,
+        "post_set_iam_policy_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.SecretManagerServiceRestInterceptor, "pre_set_iam_policy"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = iam_policy_pb2.SetIamPolicyRequest()
         transcode.return_value = {
             "method": "post",
@@ -11833,6 +11955,7 @@ def test_set_iam_policy_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = policy_pb2.Policy()
+        post_with_metadata.return_value = policy_pb2.Policy(), metadata
 
         client.set_iam_policy(
             request,
@@ -11844,6 +11967,7 @@ def test_set_iam_policy_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_iam_policy_rest_bad_request(
@@ -11927,10 +12051,14 @@ def test_get_iam_policy_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.SecretManagerServiceRestInterceptor, "post_get_iam_policy"
     ) as post, mock.patch.object(
+        transports.SecretManagerServiceRestInterceptor,
+        "post_get_iam_policy_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.SecretManagerServiceRestInterceptor, "pre_get_iam_policy"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = iam_policy_pb2.GetIamPolicyRequest()
         transcode.return_value = {
             "method": "post",
@@ -11952,6 +12080,7 @@ def test_get_iam_policy_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = policy_pb2.Policy()
+        post_with_metadata.return_value = policy_pb2.Policy(), metadata
 
         client.get_iam_policy(
             request,
@@ -11963,6 +12092,7 @@ def test_get_iam_policy_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_test_iam_permissions_rest_bad_request(
@@ -12044,10 +12174,14 @@ def test_test_iam_permissions_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.SecretManagerServiceRestInterceptor, "post_test_iam_permissions"
     ) as post, mock.patch.object(
+        transports.SecretManagerServiceRestInterceptor,
+        "post_test_iam_permissions_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.SecretManagerServiceRestInterceptor, "pre_test_iam_permissions"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = iam_policy_pb2.TestIamPermissionsRequest()
         transcode.return_value = {
             "method": "post",
@@ -12071,6 +12205,10 @@ def test_test_iam_permissions_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = iam_policy_pb2.TestIamPermissionsResponse()
+        post_with_metadata.return_value = (
+            iam_policy_pb2.TestIamPermissionsResponse(),
+            metadata,
+        )
 
         client.test_iam_permissions(
             request,
@@ -12082,6 +12220,7 @@ def test_test_iam_permissions_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_location_rest_bad_request(request_type=locations_pb2.GetLocationRequest):
