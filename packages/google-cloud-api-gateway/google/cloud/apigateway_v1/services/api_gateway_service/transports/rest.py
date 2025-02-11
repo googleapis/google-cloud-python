@@ -212,11 +212,34 @@ class ApiGatewayServiceRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_api
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_api_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ApiGatewayService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_api` interceptor runs
+        before the `post_create_api_with_metadata` interceptor.
         """
         return response
+
+    def post_create_api_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_api
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ApiGatewayService server but before it is returned to user code.
+
+        We recommend only using this `post_create_api_with_metadata`
+        interceptor in new development instead of the `post_create_api` interceptor.
+        When both interceptors are used, this `post_create_api_with_metadata` interceptor runs after the
+        `post_create_api` interceptor. The (possibly modified) response returned by
+        `post_create_api` will be passed to
+        `post_create_api_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_api_config(
         self,
@@ -237,11 +260,34 @@ class ApiGatewayServiceRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_api_config
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_api_config_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ApiGatewayService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_api_config` interceptor runs
+        before the `post_create_api_config_with_metadata` interceptor.
         """
         return response
+
+    def post_create_api_config_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_api_config
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ApiGatewayService server but before it is returned to user code.
+
+        We recommend only using this `post_create_api_config_with_metadata`
+        interceptor in new development instead of the `post_create_api_config` interceptor.
+        When both interceptors are used, this `post_create_api_config_with_metadata` interceptor runs after the
+        `post_create_api_config` interceptor. The (possibly modified) response returned by
+        `post_create_api_config` will be passed to
+        `post_create_api_config_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_gateway(
         self,
@@ -262,11 +308,34 @@ class ApiGatewayServiceRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_gateway
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_gateway_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ApiGatewayService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_gateway` interceptor runs
+        before the `post_create_gateway_with_metadata` interceptor.
         """
         return response
+
+    def post_create_gateway_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_gateway
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ApiGatewayService server but before it is returned to user code.
+
+        We recommend only using this `post_create_gateway_with_metadata`
+        interceptor in new development instead of the `post_create_gateway` interceptor.
+        When both interceptors are used, this `post_create_gateway_with_metadata` interceptor runs after the
+        `post_create_gateway` interceptor. The (possibly modified) response returned by
+        `post_create_gateway` will be passed to
+        `post_create_gateway_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_api(
         self,
@@ -285,11 +354,34 @@ class ApiGatewayServiceRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_api
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_api_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ApiGatewayService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_api` interceptor runs
+        before the `post_delete_api_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_api_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_api
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ApiGatewayService server but before it is returned to user code.
+
+        We recommend only using this `post_delete_api_with_metadata`
+        interceptor in new development instead of the `post_delete_api` interceptor.
+        When both interceptors are used, this `post_delete_api_with_metadata` interceptor runs after the
+        `post_delete_api` interceptor. The (possibly modified) response returned by
+        `post_delete_api` will be passed to
+        `post_delete_api_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_api_config(
         self,
@@ -310,11 +402,34 @@ class ApiGatewayServiceRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_api_config
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_api_config_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ApiGatewayService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_api_config` interceptor runs
+        before the `post_delete_api_config_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_api_config_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_api_config
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ApiGatewayService server but before it is returned to user code.
+
+        We recommend only using this `post_delete_api_config_with_metadata`
+        interceptor in new development instead of the `post_delete_api_config` interceptor.
+        When both interceptors are used, this `post_delete_api_config_with_metadata` interceptor runs after the
+        `post_delete_api_config` interceptor. The (possibly modified) response returned by
+        `post_delete_api_config` will be passed to
+        `post_delete_api_config_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_gateway(
         self,
@@ -335,11 +450,34 @@ class ApiGatewayServiceRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_gateway
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_gateway_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ApiGatewayService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_gateway` interceptor runs
+        before the `post_delete_gateway_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_gateway_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_gateway
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ApiGatewayService server but before it is returned to user code.
+
+        We recommend only using this `post_delete_gateway_with_metadata`
+        interceptor in new development instead of the `post_delete_gateway` interceptor.
+        When both interceptors are used, this `post_delete_gateway_with_metadata` interceptor runs after the
+        `post_delete_gateway` interceptor. The (possibly modified) response returned by
+        `post_delete_gateway` will be passed to
+        `post_delete_gateway_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_api(
         self,
@@ -356,11 +494,34 @@ class ApiGatewayServiceRestInterceptor:
     def post_get_api(self, response: apigateway.Api) -> apigateway.Api:
         """Post-rpc interceptor for get_api
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_api_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ApiGatewayService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_api` interceptor runs
+        before the `post_get_api_with_metadata` interceptor.
         """
         return response
+
+    def post_get_api_with_metadata(
+        self,
+        response: apigateway.Api,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[apigateway.Api, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_api
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ApiGatewayService server but before it is returned to user code.
+
+        We recommend only using this `post_get_api_with_metadata`
+        interceptor in new development instead of the `post_get_api` interceptor.
+        When both interceptors are used, this `post_get_api_with_metadata` interceptor runs after the
+        `post_get_api` interceptor. The (possibly modified) response returned by
+        `post_get_api` will be passed to
+        `post_get_api_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_api_config(
         self,
@@ -379,11 +540,34 @@ class ApiGatewayServiceRestInterceptor:
     ) -> apigateway.ApiConfig:
         """Post-rpc interceptor for get_api_config
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_api_config_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ApiGatewayService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_api_config` interceptor runs
+        before the `post_get_api_config_with_metadata` interceptor.
         """
         return response
+
+    def post_get_api_config_with_metadata(
+        self,
+        response: apigateway.ApiConfig,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[apigateway.ApiConfig, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_api_config
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ApiGatewayService server but before it is returned to user code.
+
+        We recommend only using this `post_get_api_config_with_metadata`
+        interceptor in new development instead of the `post_get_api_config` interceptor.
+        When both interceptors are used, this `post_get_api_config_with_metadata` interceptor runs after the
+        `post_get_api_config` interceptor. The (possibly modified) response returned by
+        `post_get_api_config` will be passed to
+        `post_get_api_config_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_gateway(
         self,
@@ -400,11 +584,34 @@ class ApiGatewayServiceRestInterceptor:
     def post_get_gateway(self, response: apigateway.Gateway) -> apigateway.Gateway:
         """Post-rpc interceptor for get_gateway
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_gateway_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ApiGatewayService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_gateway` interceptor runs
+        before the `post_get_gateway_with_metadata` interceptor.
         """
         return response
+
+    def post_get_gateway_with_metadata(
+        self,
+        response: apigateway.Gateway,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[apigateway.Gateway, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_gateway
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ApiGatewayService server but before it is returned to user code.
+
+        We recommend only using this `post_get_gateway_with_metadata`
+        interceptor in new development instead of the `post_get_gateway` interceptor.
+        When both interceptors are used, this `post_get_gateway_with_metadata` interceptor runs after the
+        `post_get_gateway` interceptor. The (possibly modified) response returned by
+        `post_get_gateway` will be passed to
+        `post_get_gateway_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_api_configs(
         self,
@@ -425,11 +632,36 @@ class ApiGatewayServiceRestInterceptor:
     ) -> apigateway.ListApiConfigsResponse:
         """Post-rpc interceptor for list_api_configs
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_api_configs_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ApiGatewayService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_api_configs` interceptor runs
+        before the `post_list_api_configs_with_metadata` interceptor.
         """
         return response
+
+    def post_list_api_configs_with_metadata(
+        self,
+        response: apigateway.ListApiConfigsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        apigateway.ListApiConfigsResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_api_configs
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ApiGatewayService server but before it is returned to user code.
+
+        We recommend only using this `post_list_api_configs_with_metadata`
+        interceptor in new development instead of the `post_list_api_configs` interceptor.
+        When both interceptors are used, this `post_list_api_configs_with_metadata` interceptor runs after the
+        `post_list_api_configs` interceptor. The (possibly modified) response returned by
+        `post_list_api_configs` will be passed to
+        `post_list_api_configs_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_apis(
         self,
@@ -448,11 +680,34 @@ class ApiGatewayServiceRestInterceptor:
     ) -> apigateway.ListApisResponse:
         """Post-rpc interceptor for list_apis
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_apis_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ApiGatewayService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_apis` interceptor runs
+        before the `post_list_apis_with_metadata` interceptor.
         """
         return response
+
+    def post_list_apis_with_metadata(
+        self,
+        response: apigateway.ListApisResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[apigateway.ListApisResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for list_apis
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ApiGatewayService server but before it is returned to user code.
+
+        We recommend only using this `post_list_apis_with_metadata`
+        interceptor in new development instead of the `post_list_apis` interceptor.
+        When both interceptors are used, this `post_list_apis_with_metadata` interceptor runs after the
+        `post_list_apis` interceptor. The (possibly modified) response returned by
+        `post_list_apis` will be passed to
+        `post_list_apis_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_gateways(
         self,
@@ -471,11 +726,36 @@ class ApiGatewayServiceRestInterceptor:
     ) -> apigateway.ListGatewaysResponse:
         """Post-rpc interceptor for list_gateways
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_gateways_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ApiGatewayService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_gateways` interceptor runs
+        before the `post_list_gateways_with_metadata` interceptor.
         """
         return response
+
+    def post_list_gateways_with_metadata(
+        self,
+        response: apigateway.ListGatewaysResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        apigateway.ListGatewaysResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_gateways
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ApiGatewayService server but before it is returned to user code.
+
+        We recommend only using this `post_list_gateways_with_metadata`
+        interceptor in new development instead of the `post_list_gateways` interceptor.
+        When both interceptors are used, this `post_list_gateways_with_metadata` interceptor runs after the
+        `post_list_gateways` interceptor. The (possibly modified) response returned by
+        `post_list_gateways` will be passed to
+        `post_list_gateways_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_api(
         self,
@@ -494,11 +774,34 @@ class ApiGatewayServiceRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_api
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_api_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ApiGatewayService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_api` interceptor runs
+        before the `post_update_api_with_metadata` interceptor.
         """
         return response
+
+    def post_update_api_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_api
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ApiGatewayService server but before it is returned to user code.
+
+        We recommend only using this `post_update_api_with_metadata`
+        interceptor in new development instead of the `post_update_api` interceptor.
+        When both interceptors are used, this `post_update_api_with_metadata` interceptor runs after the
+        `post_update_api` interceptor. The (possibly modified) response returned by
+        `post_update_api` will be passed to
+        `post_update_api_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_api_config(
         self,
@@ -519,11 +822,34 @@ class ApiGatewayServiceRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_api_config
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_api_config_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ApiGatewayService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_api_config` interceptor runs
+        before the `post_update_api_config_with_metadata` interceptor.
         """
         return response
+
+    def post_update_api_config_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_api_config
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ApiGatewayService server but before it is returned to user code.
+
+        We recommend only using this `post_update_api_config_with_metadata`
+        interceptor in new development instead of the `post_update_api_config` interceptor.
+        When both interceptors are used, this `post_update_api_config_with_metadata` interceptor runs after the
+        `post_update_api_config` interceptor. The (possibly modified) response returned by
+        `post_update_api_config` will be passed to
+        `post_update_api_config_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_gateway(
         self,
@@ -544,11 +870,34 @@ class ApiGatewayServiceRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_gateway
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_gateway_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ApiGatewayService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_gateway` interceptor runs
+        before the `post_update_gateway_with_metadata` interceptor.
         """
         return response
+
+    def post_update_gateway_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_gateway
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ApiGatewayService server but before it is returned to user code.
+
+        We recommend only using this `post_update_gateway_with_metadata`
+        interceptor in new development instead of the `post_update_gateway` interceptor.
+        When both interceptors are used, this `post_update_gateway_with_metadata` interceptor runs after the
+        `post_update_gateway` interceptor. The (possibly modified) response returned by
+        `post_update_gateway` will be passed to
+        `post_update_gateway_with_metadata`.
+        """
+        return response, metadata
 
 
 @dataclasses.dataclass
@@ -817,6 +1166,10 @@ class ApiGatewayServiceRestTransport(_BaseApiGatewayServiceRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_api(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_api_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -968,6 +1321,10 @@ class ApiGatewayServiceRestTransport(_BaseApiGatewayServiceRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_api_config(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_api_config_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1117,6 +1474,10 @@ class ApiGatewayServiceRestTransport(_BaseApiGatewayServiceRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_gateway(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_gateway_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1259,6 +1620,10 @@ class ApiGatewayServiceRestTransport(_BaseApiGatewayServiceRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_api(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_api_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1404,6 +1769,10 @@ class ApiGatewayServiceRestTransport(_BaseApiGatewayServiceRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_api_config(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_api_config_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1547,6 +1916,10 @@ class ApiGatewayServiceRestTransport(_BaseApiGatewayServiceRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_gateway(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_gateway_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1694,6 +2067,10 @@ class ApiGatewayServiceRestTransport(_BaseApiGatewayServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_api(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_api_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1838,6 +2215,10 @@ class ApiGatewayServiceRestTransport(_BaseApiGatewayServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_api_config(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_api_config_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1985,6 +2366,10 @@ class ApiGatewayServiceRestTransport(_BaseApiGatewayServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_gateway(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_gateway_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2131,6 +2516,10 @@ class ApiGatewayServiceRestTransport(_BaseApiGatewayServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_api_configs(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_api_configs_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2276,6 +2665,10 @@ class ApiGatewayServiceRestTransport(_BaseApiGatewayServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_apis(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_apis_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2419,6 +2812,10 @@ class ApiGatewayServiceRestTransport(_BaseApiGatewayServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_gateways(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_gateways_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2567,6 +2964,10 @@ class ApiGatewayServiceRestTransport(_BaseApiGatewayServiceRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_api(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_api_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2718,6 +3119,10 @@ class ApiGatewayServiceRestTransport(_BaseApiGatewayServiceRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_api_config(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_api_config_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2867,6 +3272,10 @@ class ApiGatewayServiceRestTransport(_BaseApiGatewayServiceRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_gateway(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_gateway_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

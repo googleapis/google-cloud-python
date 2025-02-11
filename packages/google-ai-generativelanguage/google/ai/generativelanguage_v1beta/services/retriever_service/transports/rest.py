@@ -240,11 +240,37 @@ class RetrieverServiceRestInterceptor:
     ) -> retriever_service.BatchCreateChunksResponse:
         """Post-rpc interceptor for batch_create_chunks
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_batch_create_chunks_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the RetrieverService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_batch_create_chunks` interceptor runs
+        before the `post_batch_create_chunks_with_metadata` interceptor.
         """
         return response
+
+    def post_batch_create_chunks_with_metadata(
+        self,
+        response: retriever_service.BatchCreateChunksResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        retriever_service.BatchCreateChunksResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for batch_create_chunks
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the RetrieverService server but before it is returned to user code.
+
+        We recommend only using this `post_batch_create_chunks_with_metadata`
+        interceptor in new development instead of the `post_batch_create_chunks` interceptor.
+        When both interceptors are used, this `post_batch_create_chunks_with_metadata` interceptor runs after the
+        `post_batch_create_chunks` interceptor. The (possibly modified) response returned by
+        `post_batch_create_chunks` will be passed to
+        `post_batch_create_chunks_with_metadata`.
+        """
+        return response, metadata
 
     def pre_batch_delete_chunks(
         self,
@@ -281,11 +307,37 @@ class RetrieverServiceRestInterceptor:
     ) -> retriever_service.BatchUpdateChunksResponse:
         """Post-rpc interceptor for batch_update_chunks
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_batch_update_chunks_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the RetrieverService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_batch_update_chunks` interceptor runs
+        before the `post_batch_update_chunks_with_metadata` interceptor.
         """
         return response
+
+    def post_batch_update_chunks_with_metadata(
+        self,
+        response: retriever_service.BatchUpdateChunksResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        retriever_service.BatchUpdateChunksResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for batch_update_chunks
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the RetrieverService server but before it is returned to user code.
+
+        We recommend only using this `post_batch_update_chunks_with_metadata`
+        interceptor in new development instead of the `post_batch_update_chunks` interceptor.
+        When both interceptors are used, this `post_batch_update_chunks_with_metadata` interceptor runs after the
+        `post_batch_update_chunks` interceptor. The (possibly modified) response returned by
+        `post_batch_update_chunks` will be passed to
+        `post_batch_update_chunks_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_chunk(
         self,
@@ -304,11 +356,34 @@ class RetrieverServiceRestInterceptor:
     def post_create_chunk(self, response: retriever.Chunk) -> retriever.Chunk:
         """Post-rpc interceptor for create_chunk
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_chunk_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the RetrieverService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_chunk` interceptor runs
+        before the `post_create_chunk_with_metadata` interceptor.
         """
         return response
+
+    def post_create_chunk_with_metadata(
+        self,
+        response: retriever.Chunk,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[retriever.Chunk, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_chunk
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the RetrieverService server but before it is returned to user code.
+
+        We recommend only using this `post_create_chunk_with_metadata`
+        interceptor in new development instead of the `post_create_chunk` interceptor.
+        When both interceptors are used, this `post_create_chunk_with_metadata` interceptor runs after the
+        `post_create_chunk` interceptor. The (possibly modified) response returned by
+        `post_create_chunk` will be passed to
+        `post_create_chunk_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_corpus(
         self,
@@ -327,11 +402,34 @@ class RetrieverServiceRestInterceptor:
     def post_create_corpus(self, response: retriever.Corpus) -> retriever.Corpus:
         """Post-rpc interceptor for create_corpus
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_corpus_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the RetrieverService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_corpus` interceptor runs
+        before the `post_create_corpus_with_metadata` interceptor.
         """
         return response
+
+    def post_create_corpus_with_metadata(
+        self,
+        response: retriever.Corpus,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[retriever.Corpus, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_corpus
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the RetrieverService server but before it is returned to user code.
+
+        We recommend only using this `post_create_corpus_with_metadata`
+        interceptor in new development instead of the `post_create_corpus` interceptor.
+        When both interceptors are used, this `post_create_corpus_with_metadata` interceptor runs after the
+        `post_create_corpus` interceptor. The (possibly modified) response returned by
+        `post_create_corpus` will be passed to
+        `post_create_corpus_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_document(
         self,
@@ -350,11 +448,34 @@ class RetrieverServiceRestInterceptor:
     def post_create_document(self, response: retriever.Document) -> retriever.Document:
         """Post-rpc interceptor for create_document
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_document_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the RetrieverService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_document` interceptor runs
+        before the `post_create_document_with_metadata` interceptor.
         """
         return response
+
+    def post_create_document_with_metadata(
+        self,
+        response: retriever.Document,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[retriever.Document, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_document
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the RetrieverService server but before it is returned to user code.
+
+        We recommend only using this `post_create_document_with_metadata`
+        interceptor in new development instead of the `post_create_document` interceptor.
+        When both interceptors are used, this `post_create_document_with_metadata` interceptor runs after the
+        `post_create_document` interceptor. The (possibly modified) response returned by
+        `post_create_document` will be passed to
+        `post_create_document_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_chunk(
         self,
@@ -415,11 +536,34 @@ class RetrieverServiceRestInterceptor:
     def post_get_chunk(self, response: retriever.Chunk) -> retriever.Chunk:
         """Post-rpc interceptor for get_chunk
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_chunk_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the RetrieverService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_chunk` interceptor runs
+        before the `post_get_chunk_with_metadata` interceptor.
         """
         return response
+
+    def post_get_chunk_with_metadata(
+        self,
+        response: retriever.Chunk,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[retriever.Chunk, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_chunk
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the RetrieverService server but before it is returned to user code.
+
+        We recommend only using this `post_get_chunk_with_metadata`
+        interceptor in new development instead of the `post_get_chunk` interceptor.
+        When both interceptors are used, this `post_get_chunk_with_metadata` interceptor runs after the
+        `post_get_chunk` interceptor. The (possibly modified) response returned by
+        `post_get_chunk` will be passed to
+        `post_get_chunk_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_corpus(
         self,
@@ -438,11 +582,34 @@ class RetrieverServiceRestInterceptor:
     def post_get_corpus(self, response: retriever.Corpus) -> retriever.Corpus:
         """Post-rpc interceptor for get_corpus
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_corpus_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the RetrieverService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_corpus` interceptor runs
+        before the `post_get_corpus_with_metadata` interceptor.
         """
         return response
+
+    def post_get_corpus_with_metadata(
+        self,
+        response: retriever.Corpus,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[retriever.Corpus, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_corpus
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the RetrieverService server but before it is returned to user code.
+
+        We recommend only using this `post_get_corpus_with_metadata`
+        interceptor in new development instead of the `post_get_corpus` interceptor.
+        When both interceptors are used, this `post_get_corpus_with_metadata` interceptor runs after the
+        `post_get_corpus` interceptor. The (possibly modified) response returned by
+        `post_get_corpus` will be passed to
+        `post_get_corpus_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_document(
         self,
@@ -461,11 +628,34 @@ class RetrieverServiceRestInterceptor:
     def post_get_document(self, response: retriever.Document) -> retriever.Document:
         """Post-rpc interceptor for get_document
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_document_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the RetrieverService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_document` interceptor runs
+        before the `post_get_document_with_metadata` interceptor.
         """
         return response
+
+    def post_get_document_with_metadata(
+        self,
+        response: retriever.Document,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[retriever.Document, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_document
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the RetrieverService server but before it is returned to user code.
+
+        We recommend only using this `post_get_document_with_metadata`
+        interceptor in new development instead of the `post_get_document` interceptor.
+        When both interceptors are used, this `post_get_document_with_metadata` interceptor runs after the
+        `post_get_document` interceptor. The (possibly modified) response returned by
+        `post_get_document` will be passed to
+        `post_get_document_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_chunks(
         self,
@@ -486,11 +676,36 @@ class RetrieverServiceRestInterceptor:
     ) -> retriever_service.ListChunksResponse:
         """Post-rpc interceptor for list_chunks
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_chunks_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the RetrieverService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_chunks` interceptor runs
+        before the `post_list_chunks_with_metadata` interceptor.
         """
         return response
+
+    def post_list_chunks_with_metadata(
+        self,
+        response: retriever_service.ListChunksResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        retriever_service.ListChunksResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_chunks
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the RetrieverService server but before it is returned to user code.
+
+        We recommend only using this `post_list_chunks_with_metadata`
+        interceptor in new development instead of the `post_list_chunks` interceptor.
+        When both interceptors are used, this `post_list_chunks_with_metadata` interceptor runs after the
+        `post_list_chunks` interceptor. The (possibly modified) response returned by
+        `post_list_chunks` will be passed to
+        `post_list_chunks_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_corpora(
         self,
@@ -511,11 +726,36 @@ class RetrieverServiceRestInterceptor:
     ) -> retriever_service.ListCorporaResponse:
         """Post-rpc interceptor for list_corpora
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_corpora_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the RetrieverService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_corpora` interceptor runs
+        before the `post_list_corpora_with_metadata` interceptor.
         """
         return response
+
+    def post_list_corpora_with_metadata(
+        self,
+        response: retriever_service.ListCorporaResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        retriever_service.ListCorporaResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_corpora
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the RetrieverService server but before it is returned to user code.
+
+        We recommend only using this `post_list_corpora_with_metadata`
+        interceptor in new development instead of the `post_list_corpora` interceptor.
+        When both interceptors are used, this `post_list_corpora_with_metadata` interceptor runs after the
+        `post_list_corpora` interceptor. The (possibly modified) response returned by
+        `post_list_corpora` will be passed to
+        `post_list_corpora_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_documents(
         self,
@@ -536,11 +776,36 @@ class RetrieverServiceRestInterceptor:
     ) -> retriever_service.ListDocumentsResponse:
         """Post-rpc interceptor for list_documents
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_documents_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the RetrieverService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_documents` interceptor runs
+        before the `post_list_documents_with_metadata` interceptor.
         """
         return response
+
+    def post_list_documents_with_metadata(
+        self,
+        response: retriever_service.ListDocumentsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        retriever_service.ListDocumentsResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_documents
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the RetrieverService server but before it is returned to user code.
+
+        We recommend only using this `post_list_documents_with_metadata`
+        interceptor in new development instead of the `post_list_documents` interceptor.
+        When both interceptors are used, this `post_list_documents_with_metadata` interceptor runs after the
+        `post_list_documents` interceptor. The (possibly modified) response returned by
+        `post_list_documents` will be passed to
+        `post_list_documents_with_metadata`.
+        """
+        return response, metadata
 
     def pre_query_corpus(
         self,
@@ -561,11 +826,36 @@ class RetrieverServiceRestInterceptor:
     ) -> retriever_service.QueryCorpusResponse:
         """Post-rpc interceptor for query_corpus
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_query_corpus_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the RetrieverService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_query_corpus` interceptor runs
+        before the `post_query_corpus_with_metadata` interceptor.
         """
         return response
+
+    def post_query_corpus_with_metadata(
+        self,
+        response: retriever_service.QueryCorpusResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        retriever_service.QueryCorpusResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for query_corpus
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the RetrieverService server but before it is returned to user code.
+
+        We recommend only using this `post_query_corpus_with_metadata`
+        interceptor in new development instead of the `post_query_corpus` interceptor.
+        When both interceptors are used, this `post_query_corpus_with_metadata` interceptor runs after the
+        `post_query_corpus` interceptor. The (possibly modified) response returned by
+        `post_query_corpus` will be passed to
+        `post_query_corpus_with_metadata`.
+        """
+        return response, metadata
 
     def pre_query_document(
         self,
@@ -586,11 +876,36 @@ class RetrieverServiceRestInterceptor:
     ) -> retriever_service.QueryDocumentResponse:
         """Post-rpc interceptor for query_document
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_query_document_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the RetrieverService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_query_document` interceptor runs
+        before the `post_query_document_with_metadata` interceptor.
         """
         return response
+
+    def post_query_document_with_metadata(
+        self,
+        response: retriever_service.QueryDocumentResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        retriever_service.QueryDocumentResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for query_document
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the RetrieverService server but before it is returned to user code.
+
+        We recommend only using this `post_query_document_with_metadata`
+        interceptor in new development instead of the `post_query_document` interceptor.
+        When both interceptors are used, this `post_query_document_with_metadata` interceptor runs after the
+        `post_query_document` interceptor. The (possibly modified) response returned by
+        `post_query_document` will be passed to
+        `post_query_document_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_chunk(
         self,
@@ -609,11 +924,34 @@ class RetrieverServiceRestInterceptor:
     def post_update_chunk(self, response: retriever.Chunk) -> retriever.Chunk:
         """Post-rpc interceptor for update_chunk
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_chunk_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the RetrieverService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_chunk` interceptor runs
+        before the `post_update_chunk_with_metadata` interceptor.
         """
         return response
+
+    def post_update_chunk_with_metadata(
+        self,
+        response: retriever.Chunk,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[retriever.Chunk, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_chunk
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the RetrieverService server but before it is returned to user code.
+
+        We recommend only using this `post_update_chunk_with_metadata`
+        interceptor in new development instead of the `post_update_chunk` interceptor.
+        When both interceptors are used, this `post_update_chunk_with_metadata` interceptor runs after the
+        `post_update_chunk` interceptor. The (possibly modified) response returned by
+        `post_update_chunk` will be passed to
+        `post_update_chunk_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_corpus(
         self,
@@ -632,11 +970,34 @@ class RetrieverServiceRestInterceptor:
     def post_update_corpus(self, response: retriever.Corpus) -> retriever.Corpus:
         """Post-rpc interceptor for update_corpus
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_corpus_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the RetrieverService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_corpus` interceptor runs
+        before the `post_update_corpus_with_metadata` interceptor.
         """
         return response
+
+    def post_update_corpus_with_metadata(
+        self,
+        response: retriever.Corpus,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[retriever.Corpus, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_corpus
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the RetrieverService server but before it is returned to user code.
+
+        We recommend only using this `post_update_corpus_with_metadata`
+        interceptor in new development instead of the `post_update_corpus` interceptor.
+        When both interceptors are used, this `post_update_corpus_with_metadata` interceptor runs after the
+        `post_update_corpus` interceptor. The (possibly modified) response returned by
+        `post_update_corpus` will be passed to
+        `post_update_corpus_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_document(
         self,
@@ -655,11 +1016,34 @@ class RetrieverServiceRestInterceptor:
     def post_update_document(self, response: retriever.Document) -> retriever.Document:
         """Post-rpc interceptor for update_document
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_document_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the RetrieverService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_document` interceptor runs
+        before the `post_update_document_with_metadata` interceptor.
         """
         return response
+
+    def post_update_document_with_metadata(
+        self,
+        response: retriever.Document,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[retriever.Document, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_document
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the RetrieverService server but before it is returned to user code.
+
+        We recommend only using this `post_update_document_with_metadata`
+        interceptor in new development instead of the `post_update_document` interceptor.
+        When both interceptors are used, this `post_update_document_with_metadata` interceptor runs after the
+        `post_update_document` interceptor. The (possibly modified) response returned by
+        `post_update_document` will be passed to
+        `post_update_document_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_operation(
         self,
@@ -927,6 +1311,10 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_batch_create_chunks(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_batch_create_chunks_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1195,6 +1583,10 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_batch_update_chunks(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_batch_update_chunks_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1347,6 +1739,10 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_chunk(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_chunk_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1495,6 +1891,10 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_corpus(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_corpus_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1643,6 +2043,10 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_document(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_document_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2108,6 +2512,10 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_chunk(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_chunk_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2251,6 +2659,10 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_corpus(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_corpus_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2394,6 +2806,10 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_document(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_document_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2537,6 +2953,10 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_chunks(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_chunks_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2682,6 +3102,10 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_corpora(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_corpora_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2827,6 +3251,10 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_documents(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_documents_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2977,6 +3405,10 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_query_corpus(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_query_corpus_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3127,6 +3559,10 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_query_document(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_query_document_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3279,6 +3715,10 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_chunk(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_chunk_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3427,6 +3867,10 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_corpus(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_corpus_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3575,6 +4019,10 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_document(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_document_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

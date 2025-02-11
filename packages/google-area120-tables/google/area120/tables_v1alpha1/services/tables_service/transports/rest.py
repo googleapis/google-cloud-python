@@ -180,11 +180,34 @@ class TablesServiceRestInterceptor:
     ) -> tables.BatchCreateRowsResponse:
         """Post-rpc interceptor for batch_create_rows
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_batch_create_rows_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the TablesService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_batch_create_rows` interceptor runs
+        before the `post_batch_create_rows_with_metadata` interceptor.
         """
         return response
+
+    def post_batch_create_rows_with_metadata(
+        self,
+        response: tables.BatchCreateRowsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[tables.BatchCreateRowsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for batch_create_rows
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the TablesService server but before it is returned to user code.
+
+        We recommend only using this `post_batch_create_rows_with_metadata`
+        interceptor in new development instead of the `post_batch_create_rows` interceptor.
+        When both interceptors are used, this `post_batch_create_rows_with_metadata` interceptor runs after the
+        `post_batch_create_rows` interceptor. The (possibly modified) response returned by
+        `post_batch_create_rows` will be passed to
+        `post_batch_create_rows_with_metadata`.
+        """
+        return response, metadata
 
     def pre_batch_delete_rows(
         self,
@@ -215,11 +238,34 @@ class TablesServiceRestInterceptor:
     ) -> tables.BatchUpdateRowsResponse:
         """Post-rpc interceptor for batch_update_rows
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_batch_update_rows_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the TablesService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_batch_update_rows` interceptor runs
+        before the `post_batch_update_rows_with_metadata` interceptor.
         """
         return response
+
+    def post_batch_update_rows_with_metadata(
+        self,
+        response: tables.BatchUpdateRowsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[tables.BatchUpdateRowsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for batch_update_rows
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the TablesService server but before it is returned to user code.
+
+        We recommend only using this `post_batch_update_rows_with_metadata`
+        interceptor in new development instead of the `post_batch_update_rows` interceptor.
+        When both interceptors are used, this `post_batch_update_rows_with_metadata` interceptor runs after the
+        `post_batch_update_rows` interceptor. The (possibly modified) response returned by
+        `post_batch_update_rows` will be passed to
+        `post_batch_update_rows_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_row(
         self,
@@ -236,11 +282,32 @@ class TablesServiceRestInterceptor:
     def post_create_row(self, response: tables.Row) -> tables.Row:
         """Post-rpc interceptor for create_row
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_row_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the TablesService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_row` interceptor runs
+        before the `post_create_row_with_metadata` interceptor.
         """
         return response
+
+    def post_create_row_with_metadata(
+        self, response: tables.Row, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[tables.Row, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_row
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the TablesService server but before it is returned to user code.
+
+        We recommend only using this `post_create_row_with_metadata`
+        interceptor in new development instead of the `post_create_row` interceptor.
+        When both interceptors are used, this `post_create_row_with_metadata` interceptor runs after the
+        `post_create_row` interceptor. The (possibly modified) response returned by
+        `post_create_row` will be passed to
+        `post_create_row_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_row(
         self,
@@ -269,11 +336,32 @@ class TablesServiceRestInterceptor:
     def post_get_row(self, response: tables.Row) -> tables.Row:
         """Post-rpc interceptor for get_row
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_row_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the TablesService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_row` interceptor runs
+        before the `post_get_row_with_metadata` interceptor.
         """
         return response
+
+    def post_get_row_with_metadata(
+        self, response: tables.Row, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[tables.Row, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_row
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the TablesService server but before it is returned to user code.
+
+        We recommend only using this `post_get_row_with_metadata`
+        interceptor in new development instead of the `post_get_row` interceptor.
+        When both interceptors are used, this `post_get_row_with_metadata` interceptor runs after the
+        `post_get_row` interceptor. The (possibly modified) response returned by
+        `post_get_row` will be passed to
+        `post_get_row_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_table(
         self,
@@ -290,11 +378,32 @@ class TablesServiceRestInterceptor:
     def post_get_table(self, response: tables.Table) -> tables.Table:
         """Post-rpc interceptor for get_table
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_table_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the TablesService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_table` interceptor runs
+        before the `post_get_table_with_metadata` interceptor.
         """
         return response
+
+    def post_get_table_with_metadata(
+        self, response: tables.Table, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[tables.Table, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_table
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the TablesService server but before it is returned to user code.
+
+        We recommend only using this `post_get_table_with_metadata`
+        interceptor in new development instead of the `post_get_table` interceptor.
+        When both interceptors are used, this `post_get_table_with_metadata` interceptor runs after the
+        `post_get_table` interceptor. The (possibly modified) response returned by
+        `post_get_table` will be passed to
+        `post_get_table_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_workspace(
         self,
@@ -311,11 +420,34 @@ class TablesServiceRestInterceptor:
     def post_get_workspace(self, response: tables.Workspace) -> tables.Workspace:
         """Post-rpc interceptor for get_workspace
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_workspace_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the TablesService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_workspace` interceptor runs
+        before the `post_get_workspace_with_metadata` interceptor.
         """
         return response
+
+    def post_get_workspace_with_metadata(
+        self,
+        response: tables.Workspace,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[tables.Workspace, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_workspace
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the TablesService server but before it is returned to user code.
+
+        We recommend only using this `post_get_workspace_with_metadata`
+        interceptor in new development instead of the `post_get_workspace` interceptor.
+        When both interceptors are used, this `post_get_workspace_with_metadata` interceptor runs after the
+        `post_get_workspace` interceptor. The (possibly modified) response returned by
+        `post_get_workspace` will be passed to
+        `post_get_workspace_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_rows(
         self,
@@ -334,11 +466,34 @@ class TablesServiceRestInterceptor:
     ) -> tables.ListRowsResponse:
         """Post-rpc interceptor for list_rows
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_rows_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the TablesService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_rows` interceptor runs
+        before the `post_list_rows_with_metadata` interceptor.
         """
         return response
+
+    def post_list_rows_with_metadata(
+        self,
+        response: tables.ListRowsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[tables.ListRowsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for list_rows
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the TablesService server but before it is returned to user code.
+
+        We recommend only using this `post_list_rows_with_metadata`
+        interceptor in new development instead of the `post_list_rows` interceptor.
+        When both interceptors are used, this `post_list_rows_with_metadata` interceptor runs after the
+        `post_list_rows` interceptor. The (possibly modified) response returned by
+        `post_list_rows` will be passed to
+        `post_list_rows_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_tables(
         self,
@@ -357,11 +512,34 @@ class TablesServiceRestInterceptor:
     ) -> tables.ListTablesResponse:
         """Post-rpc interceptor for list_tables
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_tables_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the TablesService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_tables` interceptor runs
+        before the `post_list_tables_with_metadata` interceptor.
         """
         return response
+
+    def post_list_tables_with_metadata(
+        self,
+        response: tables.ListTablesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[tables.ListTablesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for list_tables
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the TablesService server but before it is returned to user code.
+
+        We recommend only using this `post_list_tables_with_metadata`
+        interceptor in new development instead of the `post_list_tables` interceptor.
+        When both interceptors are used, this `post_list_tables_with_metadata` interceptor runs after the
+        `post_list_tables` interceptor. The (possibly modified) response returned by
+        `post_list_tables` will be passed to
+        `post_list_tables_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_workspaces(
         self,
@@ -380,11 +558,34 @@ class TablesServiceRestInterceptor:
     ) -> tables.ListWorkspacesResponse:
         """Post-rpc interceptor for list_workspaces
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_workspaces_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the TablesService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_workspaces` interceptor runs
+        before the `post_list_workspaces_with_metadata` interceptor.
         """
         return response
+
+    def post_list_workspaces_with_metadata(
+        self,
+        response: tables.ListWorkspacesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[tables.ListWorkspacesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for list_workspaces
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the TablesService server but before it is returned to user code.
+
+        We recommend only using this `post_list_workspaces_with_metadata`
+        interceptor in new development instead of the `post_list_workspaces` interceptor.
+        When both interceptors are used, this `post_list_workspaces_with_metadata` interceptor runs after the
+        `post_list_workspaces` interceptor. The (possibly modified) response returned by
+        `post_list_workspaces` will be passed to
+        `post_list_workspaces_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_row(
         self,
@@ -401,11 +602,32 @@ class TablesServiceRestInterceptor:
     def post_update_row(self, response: tables.Row) -> tables.Row:
         """Post-rpc interceptor for update_row
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_row_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the TablesService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_row` interceptor runs
+        before the `post_update_row_with_metadata` interceptor.
         """
         return response
+
+    def post_update_row_with_metadata(
+        self, response: tables.Row, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[tables.Row, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_row
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the TablesService server but before it is returned to user code.
+
+        We recommend only using this `post_update_row_with_metadata`
+        interceptor in new development instead of the `post_update_row` interceptor.
+        When both interceptors are used, this `post_update_row_with_metadata` interceptor runs after the
+        `post_update_row` interceptor. The (possibly modified) response returned by
+        `post_update_row` will be passed to
+        `post_update_row_with_metadata`.
+        """
+        return response, metadata
 
 
 @dataclasses.dataclass
@@ -635,6 +857,10 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_batch_create_rows(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_batch_create_rows_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -901,6 +1127,10 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_batch_update_rows(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_batch_update_rows_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1054,6 +1284,10 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_row(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_row_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1308,6 +1542,10 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_row(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_row_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1453,6 +1691,10 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_table(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_table_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1594,6 +1836,10 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_workspace(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_workspace_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1741,6 +1987,10 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_rows(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_rows_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1888,6 +2138,10 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_tables(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_tables_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2031,6 +2285,10 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_workspaces(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_workspaces_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2184,6 +2442,10 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_row(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_row_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

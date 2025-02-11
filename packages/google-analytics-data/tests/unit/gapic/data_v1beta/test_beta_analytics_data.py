@@ -71,6 +71,13 @@ from google.analytics.data_v1beta.services.beta_analytics_data import (
 )
 from google.analytics.data_v1beta.types import analytics_data_api, data
 
+CRED_INFO_JSON = {
+    "credential_source": "/path/to/file",
+    "credential_type": "service account credentials",
+    "principal": "service-account@example.com",
+}
+CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
 
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
@@ -336,6 +343,49 @@ def test__get_universe_domain():
     with pytest.raises(ValueError) as excinfo:
         BetaAnalyticsDataClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+
+@pytest.mark.parametrize(
+    "error_code,cred_info_json,show_cred_info",
+    [
+        (401, CRED_INFO_JSON, True),
+        (403, CRED_INFO_JSON, True),
+        (404, CRED_INFO_JSON, True),
+        (500, CRED_INFO_JSON, False),
+        (401, None, False),
+        (403, None, False),
+        (404, None, False),
+        (500, None, False),
+    ],
+)
+def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
+    cred = mock.Mock(["get_cred_info"])
+    cred.get_cred_info = mock.Mock(return_value=cred_info_json)
+    client = BetaAnalyticsDataClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=["foo"])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    if show_cred_info:
+        assert error.details == ["foo", CRED_INFO_STRING]
+    else:
+        assert error.details == ["foo"]
+
+
+@pytest.mark.parametrize("error_code", [401, 403, 404, 500])
+def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
+    cred = mock.Mock([])
+    assert not hasattr(cred, "get_cred_info")
+    client = BetaAnalyticsDataClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=[])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    assert error.details == []
 
 
 @pytest.mark.parametrize(
@@ -6568,10 +6618,13 @@ def test_run_report_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.BetaAnalyticsDataRestInterceptor, "post_run_report"
     ) as post, mock.patch.object(
+        transports.BetaAnalyticsDataRestInterceptor, "post_run_report_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.BetaAnalyticsDataRestInterceptor, "pre_run_report"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = analytics_data_api.RunReportRequest.pb(
             analytics_data_api.RunReportRequest()
         )
@@ -6597,6 +6650,10 @@ def test_run_report_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = analytics_data_api.RunReportResponse()
+        post_with_metadata.return_value = (
+            analytics_data_api.RunReportResponse(),
+            metadata,
+        )
 
         client.run_report(
             request,
@@ -6608,6 +6665,7 @@ def test_run_report_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_run_pivot_report_rest_bad_request(
@@ -6692,10 +6750,14 @@ def test_run_pivot_report_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.BetaAnalyticsDataRestInterceptor, "post_run_pivot_report"
     ) as post, mock.patch.object(
+        transports.BetaAnalyticsDataRestInterceptor,
+        "post_run_pivot_report_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.BetaAnalyticsDataRestInterceptor, "pre_run_pivot_report"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = analytics_data_api.RunPivotReportRequest.pb(
             analytics_data_api.RunPivotReportRequest()
         )
@@ -6721,6 +6783,10 @@ def test_run_pivot_report_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = analytics_data_api.RunPivotReportResponse()
+        post_with_metadata.return_value = (
+            analytics_data_api.RunPivotReportResponse(),
+            metadata,
+        )
 
         client.run_pivot_report(
             request,
@@ -6732,6 +6798,7 @@ def test_run_pivot_report_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_batch_run_reports_rest_bad_request(
@@ -6816,10 +6883,14 @@ def test_batch_run_reports_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.BetaAnalyticsDataRestInterceptor, "post_batch_run_reports"
     ) as post, mock.patch.object(
+        transports.BetaAnalyticsDataRestInterceptor,
+        "post_batch_run_reports_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.BetaAnalyticsDataRestInterceptor, "pre_batch_run_reports"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = analytics_data_api.BatchRunReportsRequest.pb(
             analytics_data_api.BatchRunReportsRequest()
         )
@@ -6845,6 +6916,10 @@ def test_batch_run_reports_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = analytics_data_api.BatchRunReportsResponse()
+        post_with_metadata.return_value = (
+            analytics_data_api.BatchRunReportsResponse(),
+            metadata,
+        )
 
         client.batch_run_reports(
             request,
@@ -6856,6 +6931,7 @@ def test_batch_run_reports_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_batch_run_pivot_reports_rest_bad_request(
@@ -6940,10 +7016,14 @@ def test_batch_run_pivot_reports_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.BetaAnalyticsDataRestInterceptor, "post_batch_run_pivot_reports"
     ) as post, mock.patch.object(
+        transports.BetaAnalyticsDataRestInterceptor,
+        "post_batch_run_pivot_reports_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.BetaAnalyticsDataRestInterceptor, "pre_batch_run_pivot_reports"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = analytics_data_api.BatchRunPivotReportsRequest.pb(
             analytics_data_api.BatchRunPivotReportsRequest()
         )
@@ -6969,6 +7049,10 @@ def test_batch_run_pivot_reports_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = analytics_data_api.BatchRunPivotReportsResponse()
+        post_with_metadata.return_value = (
+            analytics_data_api.BatchRunPivotReportsResponse(),
+            metadata,
+        )
 
         client.batch_run_pivot_reports(
             request,
@@ -6980,6 +7064,7 @@ def test_batch_run_pivot_reports_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_metadata_rest_bad_request(
@@ -7064,10 +7149,13 @@ def test_get_metadata_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.BetaAnalyticsDataRestInterceptor, "post_get_metadata"
     ) as post, mock.patch.object(
+        transports.BetaAnalyticsDataRestInterceptor, "post_get_metadata_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.BetaAnalyticsDataRestInterceptor, "pre_get_metadata"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = analytics_data_api.GetMetadataRequest.pb(
             analytics_data_api.GetMetadataRequest()
         )
@@ -7093,6 +7181,7 @@ def test_get_metadata_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = analytics_data_api.Metadata()
+        post_with_metadata.return_value = analytics_data_api.Metadata(), metadata
 
         client.get_metadata(
             request,
@@ -7104,6 +7193,7 @@ def test_get_metadata_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_run_realtime_report_rest_bad_request(
@@ -7190,10 +7280,14 @@ def test_run_realtime_report_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.BetaAnalyticsDataRestInterceptor, "post_run_realtime_report"
     ) as post, mock.patch.object(
+        transports.BetaAnalyticsDataRestInterceptor,
+        "post_run_realtime_report_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.BetaAnalyticsDataRestInterceptor, "pre_run_realtime_report"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = analytics_data_api.RunRealtimeReportRequest.pb(
             analytics_data_api.RunRealtimeReportRequest()
         )
@@ -7219,6 +7313,10 @@ def test_run_realtime_report_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = analytics_data_api.RunRealtimeReportResponse()
+        post_with_metadata.return_value = (
+            analytics_data_api.RunRealtimeReportResponse(),
+            metadata,
+        )
 
         client.run_realtime_report(
             request,
@@ -7230,6 +7328,7 @@ def test_run_realtime_report_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_check_compatibility_rest_bad_request(
@@ -7311,10 +7410,14 @@ def test_check_compatibility_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.BetaAnalyticsDataRestInterceptor, "post_check_compatibility"
     ) as post, mock.patch.object(
+        transports.BetaAnalyticsDataRestInterceptor,
+        "post_check_compatibility_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.BetaAnalyticsDataRestInterceptor, "pre_check_compatibility"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = analytics_data_api.CheckCompatibilityRequest.pb(
             analytics_data_api.CheckCompatibilityRequest()
         )
@@ -7340,6 +7443,10 @@ def test_check_compatibility_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = analytics_data_api.CheckCompatibilityResponse()
+        post_with_metadata.return_value = (
+            analytics_data_api.CheckCompatibilityResponse(),
+            metadata,
+        )
 
         client.check_compatibility(
             request,
@@ -7351,6 +7458,7 @@ def test_check_compatibility_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_audience_export_rest_bad_request(
@@ -7512,10 +7620,14 @@ def test_create_audience_export_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.BetaAnalyticsDataRestInterceptor, "post_create_audience_export"
     ) as post, mock.patch.object(
+        transports.BetaAnalyticsDataRestInterceptor,
+        "post_create_audience_export_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.BetaAnalyticsDataRestInterceptor, "pre_create_audience_export"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = analytics_data_api.CreateAudienceExportRequest.pb(
             analytics_data_api.CreateAudienceExportRequest()
         )
@@ -7539,6 +7651,7 @@ def test_create_audience_export_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_audience_export(
             request,
@@ -7550,6 +7663,7 @@ def test_create_audience_export_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_query_audience_export_rest_bad_request(
@@ -7634,10 +7748,14 @@ def test_query_audience_export_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.BetaAnalyticsDataRestInterceptor, "post_query_audience_export"
     ) as post, mock.patch.object(
+        transports.BetaAnalyticsDataRestInterceptor,
+        "post_query_audience_export_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.BetaAnalyticsDataRestInterceptor, "pre_query_audience_export"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = analytics_data_api.QueryAudienceExportRequest.pb(
             analytics_data_api.QueryAudienceExportRequest()
         )
@@ -7663,6 +7781,10 @@ def test_query_audience_export_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = analytics_data_api.QueryAudienceExportResponse()
+        post_with_metadata.return_value = (
+            analytics_data_api.QueryAudienceExportResponse(),
+            metadata,
+        )
 
         client.query_audience_export(
             request,
@@ -7674,6 +7796,7 @@ def test_query_audience_export_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_audience_export_rest_bad_request(
@@ -7772,10 +7895,14 @@ def test_get_audience_export_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.BetaAnalyticsDataRestInterceptor, "post_get_audience_export"
     ) as post, mock.patch.object(
+        transports.BetaAnalyticsDataRestInterceptor,
+        "post_get_audience_export_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.BetaAnalyticsDataRestInterceptor, "pre_get_audience_export"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = analytics_data_api.GetAudienceExportRequest.pb(
             analytics_data_api.GetAudienceExportRequest()
         )
@@ -7801,6 +7928,7 @@ def test_get_audience_export_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = analytics_data_api.AudienceExport()
+        post_with_metadata.return_value = analytics_data_api.AudienceExport(), metadata
 
         client.get_audience_export(
             request,
@@ -7812,6 +7940,7 @@ def test_get_audience_export_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_audience_exports_rest_bad_request(
@@ -7896,10 +8025,14 @@ def test_list_audience_exports_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.BetaAnalyticsDataRestInterceptor, "post_list_audience_exports"
     ) as post, mock.patch.object(
+        transports.BetaAnalyticsDataRestInterceptor,
+        "post_list_audience_exports_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.BetaAnalyticsDataRestInterceptor, "pre_list_audience_exports"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = analytics_data_api.ListAudienceExportsRequest.pb(
             analytics_data_api.ListAudienceExportsRequest()
         )
@@ -7925,6 +8058,10 @@ def test_list_audience_exports_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = analytics_data_api.ListAudienceExportsResponse()
+        post_with_metadata.return_value = (
+            analytics_data_api.ListAudienceExportsResponse(),
+            metadata,
+        )
 
         client.list_audience_exports(
             request,
@@ -7936,6 +8073,7 @@ def test_list_audience_exports_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_initialize_client_w_rest():
