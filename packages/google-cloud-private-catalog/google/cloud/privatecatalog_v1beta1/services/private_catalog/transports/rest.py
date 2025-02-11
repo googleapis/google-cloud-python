@@ -117,11 +117,36 @@ class PrivateCatalogRestInterceptor:
     ) -> private_catalog.SearchCatalogsResponse:
         """Post-rpc interceptor for search_catalogs
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_search_catalogs_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the PrivateCatalog server but before
-        it is returned to user code.
+        it is returned to user code. This `post_search_catalogs` interceptor runs
+        before the `post_search_catalogs_with_metadata` interceptor.
         """
         return response
+
+    def post_search_catalogs_with_metadata(
+        self,
+        response: private_catalog.SearchCatalogsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        private_catalog.SearchCatalogsResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for search_catalogs
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the PrivateCatalog server but before it is returned to user code.
+
+        We recommend only using this `post_search_catalogs_with_metadata`
+        interceptor in new development instead of the `post_search_catalogs` interceptor.
+        When both interceptors are used, this `post_search_catalogs_with_metadata` interceptor runs after the
+        `post_search_catalogs` interceptor. The (possibly modified) response returned by
+        `post_search_catalogs` will be passed to
+        `post_search_catalogs_with_metadata`.
+        """
+        return response, metadata
 
     def pre_search_products(
         self,
@@ -142,11 +167,36 @@ class PrivateCatalogRestInterceptor:
     ) -> private_catalog.SearchProductsResponse:
         """Post-rpc interceptor for search_products
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_search_products_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the PrivateCatalog server but before
-        it is returned to user code.
+        it is returned to user code. This `post_search_products` interceptor runs
+        before the `post_search_products_with_metadata` interceptor.
         """
         return response
+
+    def post_search_products_with_metadata(
+        self,
+        response: private_catalog.SearchProductsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        private_catalog.SearchProductsResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for search_products
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the PrivateCatalog server but before it is returned to user code.
+
+        We recommend only using this `post_search_products_with_metadata`
+        interceptor in new development instead of the `post_search_products` interceptor.
+        When both interceptors are used, this `post_search_products_with_metadata` interceptor runs after the
+        `post_search_products` interceptor. The (possibly modified) response returned by
+        `post_search_products` will be passed to
+        `post_search_products_with_metadata`.
+        """
+        return response, metadata
 
     def pre_search_versions(
         self,
@@ -167,11 +217,36 @@ class PrivateCatalogRestInterceptor:
     ) -> private_catalog.SearchVersionsResponse:
         """Post-rpc interceptor for search_versions
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_search_versions_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the PrivateCatalog server but before
-        it is returned to user code.
+        it is returned to user code. This `post_search_versions` interceptor runs
+        before the `post_search_versions_with_metadata` interceptor.
         """
         return response
+
+    def post_search_versions_with_metadata(
+        self,
+        response: private_catalog.SearchVersionsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        private_catalog.SearchVersionsResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for search_versions
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the PrivateCatalog server but before it is returned to user code.
+
+        We recommend only using this `post_search_versions_with_metadata`
+        interceptor in new development instead of the `post_search_versions` interceptor.
+        When both interceptors are used, this `post_search_versions_with_metadata` interceptor runs after the
+        `post_search_versions` interceptor. The (possibly modified) response returned by
+        `post_search_versions` will be passed to
+        `post_search_versions_with_metadata`.
+        """
+        return response, metadata
 
 
 @dataclasses.dataclass
@@ -401,6 +476,10 @@ class PrivateCatalogRestTransport(_BasePrivateCatalogRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_search_catalogs(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_search_catalogs_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -546,6 +625,10 @@ class PrivateCatalogRestTransport(_BasePrivateCatalogRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_search_products(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_search_products_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -691,6 +774,10 @@ class PrivateCatalogRestTransport(_BasePrivateCatalogRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_search_versions(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_search_versions_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

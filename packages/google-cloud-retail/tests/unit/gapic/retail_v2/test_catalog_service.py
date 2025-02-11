@@ -67,6 +67,13 @@ from google.cloud.retail_v2.types import catalog
 from google.cloud.retail_v2.types import catalog as gcr_catalog
 from google.cloud.retail_v2.types import catalog_service, common, import_config
 
+CRED_INFO_JSON = {
+    "credential_source": "/path/to/file",
+    "credential_type": "service account credentials",
+    "principal": "service-account@example.com",
+}
+CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
 
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
@@ -323,6 +330,49 @@ def test__get_universe_domain():
     with pytest.raises(ValueError) as excinfo:
         CatalogServiceClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+
+@pytest.mark.parametrize(
+    "error_code,cred_info_json,show_cred_info",
+    [
+        (401, CRED_INFO_JSON, True),
+        (403, CRED_INFO_JSON, True),
+        (404, CRED_INFO_JSON, True),
+        (500, CRED_INFO_JSON, False),
+        (401, None, False),
+        (403, None, False),
+        (404, None, False),
+        (500, None, False),
+    ],
+)
+def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
+    cred = mock.Mock(["get_cred_info"])
+    cred.get_cred_info = mock.Mock(return_value=cred_info_json)
+    client = CatalogServiceClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=["foo"])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    if show_cred_info:
+        assert error.details == ["foo", CRED_INFO_STRING]
+    else:
+        assert error.details == ["foo"]
+
+
+@pytest.mark.parametrize("error_code", [401, 403, 404, 500])
+def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
+    cred = mock.Mock([])
+    assert not hasattr(cred, "get_cred_info")
+    client = CatalogServiceClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=[])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    assert error.details == []
 
 
 @pytest.mark.parametrize(
@@ -7467,10 +7517,13 @@ def test_list_catalogs_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.CatalogServiceRestInterceptor, "post_list_catalogs"
     ) as post, mock.patch.object(
+        transports.CatalogServiceRestInterceptor, "post_list_catalogs_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.CatalogServiceRestInterceptor, "pre_list_catalogs"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = catalog_service.ListCatalogsRequest.pb(
             catalog_service.ListCatalogsRequest()
         )
@@ -7496,6 +7549,10 @@ def test_list_catalogs_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = catalog_service.ListCatalogsResponse()
+        post_with_metadata.return_value = (
+            catalog_service.ListCatalogsResponse(),
+            metadata,
+        )
 
         client.list_catalogs(
             request,
@@ -7507,6 +7564,7 @@ def test_list_catalogs_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_catalog_rest_bad_request(
@@ -7672,10 +7730,13 @@ def test_update_catalog_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.CatalogServiceRestInterceptor, "post_update_catalog"
     ) as post, mock.patch.object(
+        transports.CatalogServiceRestInterceptor, "post_update_catalog_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.CatalogServiceRestInterceptor, "pre_update_catalog"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = catalog_service.UpdateCatalogRequest.pb(
             catalog_service.UpdateCatalogRequest()
         )
@@ -7699,6 +7760,7 @@ def test_update_catalog_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = gcr_catalog.Catalog()
+        post_with_metadata.return_value = gcr_catalog.Catalog(), metadata
 
         client.update_catalog(
             request,
@@ -7710,6 +7772,7 @@ def test_update_catalog_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_set_default_branch_rest_bad_request(
@@ -7905,10 +7968,14 @@ def test_get_default_branch_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.CatalogServiceRestInterceptor, "post_get_default_branch"
     ) as post, mock.patch.object(
+        transports.CatalogServiceRestInterceptor,
+        "post_get_default_branch_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.CatalogServiceRestInterceptor, "pre_get_default_branch"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = catalog_service.GetDefaultBranchRequest.pb(
             catalog_service.GetDefaultBranchRequest()
         )
@@ -7934,6 +8001,10 @@ def test_get_default_branch_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = catalog_service.GetDefaultBranchResponse()
+        post_with_metadata.return_value = (
+            catalog_service.GetDefaultBranchResponse(),
+            metadata,
+        )
 
         client.get_default_branch(
             request,
@@ -7945,6 +8016,7 @@ def test_get_default_branch_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_completion_config_rest_bad_request(
@@ -8056,10 +8128,14 @@ def test_get_completion_config_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.CatalogServiceRestInterceptor, "post_get_completion_config"
     ) as post, mock.patch.object(
+        transports.CatalogServiceRestInterceptor,
+        "post_get_completion_config_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.CatalogServiceRestInterceptor, "pre_get_completion_config"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = catalog_service.GetCompletionConfigRequest.pb(
             catalog_service.GetCompletionConfigRequest()
         )
@@ -8083,6 +8159,7 @@ def test_get_completion_config_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = catalog.CompletionConfig()
+        post_with_metadata.return_value = catalog.CompletionConfig(), metadata
 
         client.get_completion_config(
             request,
@@ -8094,6 +8171,7 @@ def test_get_completion_config_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_completion_config_rest_bad_request(
@@ -8300,10 +8378,14 @@ def test_update_completion_config_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.CatalogServiceRestInterceptor, "post_update_completion_config"
     ) as post, mock.patch.object(
+        transports.CatalogServiceRestInterceptor,
+        "post_update_completion_config_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.CatalogServiceRestInterceptor, "pre_update_completion_config"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = catalog_service.UpdateCompletionConfigRequest.pb(
             catalog_service.UpdateCompletionConfigRequest()
         )
@@ -8327,6 +8409,7 @@ def test_update_completion_config_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = catalog.CompletionConfig()
+        post_with_metadata.return_value = catalog.CompletionConfig(), metadata
 
         client.update_completion_config(
             request,
@@ -8338,6 +8421,7 @@ def test_update_completion_config_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_attributes_config_rest_bad_request(
@@ -8431,10 +8515,14 @@ def test_get_attributes_config_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.CatalogServiceRestInterceptor, "post_get_attributes_config"
     ) as post, mock.patch.object(
+        transports.CatalogServiceRestInterceptor,
+        "post_get_attributes_config_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.CatalogServiceRestInterceptor, "pre_get_attributes_config"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = catalog_service.GetAttributesConfigRequest.pb(
             catalog_service.GetAttributesConfigRequest()
         )
@@ -8458,6 +8546,7 @@ def test_get_attributes_config_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = catalog.AttributesConfig()
+        post_with_metadata.return_value = catalog.AttributesConfig(), metadata
 
         client.get_attributes_config(
             request,
@@ -8469,6 +8558,7 @@ def test_get_attributes_config_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_attributes_config_rest_bad_request(
@@ -8640,10 +8730,14 @@ def test_update_attributes_config_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.CatalogServiceRestInterceptor, "post_update_attributes_config"
     ) as post, mock.patch.object(
+        transports.CatalogServiceRestInterceptor,
+        "post_update_attributes_config_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.CatalogServiceRestInterceptor, "pre_update_attributes_config"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = catalog_service.UpdateAttributesConfigRequest.pb(
             catalog_service.UpdateAttributesConfigRequest()
         )
@@ -8667,6 +8761,7 @@ def test_update_attributes_config_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = catalog.AttributesConfig()
+        post_with_metadata.return_value = catalog.AttributesConfig(), metadata
 
         client.update_attributes_config(
             request,
@@ -8678,6 +8773,7 @@ def test_update_attributes_config_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_add_catalog_attribute_rest_bad_request(
@@ -8771,10 +8867,14 @@ def test_add_catalog_attribute_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.CatalogServiceRestInterceptor, "post_add_catalog_attribute"
     ) as post, mock.patch.object(
+        transports.CatalogServiceRestInterceptor,
+        "post_add_catalog_attribute_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.CatalogServiceRestInterceptor, "pre_add_catalog_attribute"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = catalog_service.AddCatalogAttributeRequest.pb(
             catalog_service.AddCatalogAttributeRequest()
         )
@@ -8798,6 +8898,7 @@ def test_add_catalog_attribute_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = catalog.AttributesConfig()
+        post_with_metadata.return_value = catalog.AttributesConfig(), metadata
 
         client.add_catalog_attribute(
             request,
@@ -8809,6 +8910,7 @@ def test_add_catalog_attribute_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_remove_catalog_attribute_rest_bad_request(
@@ -8902,10 +9004,14 @@ def test_remove_catalog_attribute_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.CatalogServiceRestInterceptor, "post_remove_catalog_attribute"
     ) as post, mock.patch.object(
+        transports.CatalogServiceRestInterceptor,
+        "post_remove_catalog_attribute_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.CatalogServiceRestInterceptor, "pre_remove_catalog_attribute"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = catalog_service.RemoveCatalogAttributeRequest.pb(
             catalog_service.RemoveCatalogAttributeRequest()
         )
@@ -8929,6 +9035,7 @@ def test_remove_catalog_attribute_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = catalog.AttributesConfig()
+        post_with_metadata.return_value = catalog.AttributesConfig(), metadata
 
         client.remove_catalog_attribute(
             request,
@@ -8940,6 +9047,7 @@ def test_remove_catalog_attribute_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_replace_catalog_attribute_rest_bad_request(
@@ -9033,10 +9141,14 @@ def test_replace_catalog_attribute_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.CatalogServiceRestInterceptor, "post_replace_catalog_attribute"
     ) as post, mock.patch.object(
+        transports.CatalogServiceRestInterceptor,
+        "post_replace_catalog_attribute_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.CatalogServiceRestInterceptor, "pre_replace_catalog_attribute"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = catalog_service.ReplaceCatalogAttributeRequest.pb(
             catalog_service.ReplaceCatalogAttributeRequest()
         )
@@ -9060,6 +9172,7 @@ def test_replace_catalog_attribute_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = catalog.AttributesConfig()
+        post_with_metadata.return_value = catalog.AttributesConfig(), metadata
 
         client.replace_catalog_attribute(
             request,
@@ -9071,6 +9184,7 @@ def test_replace_catalog_attribute_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_operation_rest_bad_request(

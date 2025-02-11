@@ -182,11 +182,34 @@ class ProjectsRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_project
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_project_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Projects server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_project` interceptor runs
+        before the `post_create_project_with_metadata` interceptor.
         """
         return response
+
+    def post_create_project_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_project
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Projects server but before it is returned to user code.
+
+        We recommend only using this `post_create_project_with_metadata`
+        interceptor in new development instead of the `post_create_project` interceptor.
+        When both interceptors are used, this `post_create_project_with_metadata` interceptor runs after the
+        `post_create_project` interceptor. The (possibly modified) response returned by
+        `post_create_project` will be passed to
+        `post_create_project_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_project(
         self,
@@ -205,11 +228,34 @@ class ProjectsRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_project
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_project_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Projects server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_project` interceptor runs
+        before the `post_delete_project_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_project_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_project
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Projects server but before it is returned to user code.
+
+        We recommend only using this `post_delete_project_with_metadata`
+        interceptor in new development instead of the `post_delete_project` interceptor.
+        When both interceptors are used, this `post_delete_project_with_metadata` interceptor runs after the
+        `post_delete_project` interceptor. The (possibly modified) response returned by
+        `post_delete_project` will be passed to
+        `post_delete_project_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_iam_policy(
         self,
@@ -228,11 +274,34 @@ class ProjectsRestInterceptor:
     def post_get_iam_policy(self, response: policy_pb2.Policy) -> policy_pb2.Policy:
         """Post-rpc interceptor for get_iam_policy
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_iam_policy_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Projects server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_iam_policy` interceptor runs
+        before the `post_get_iam_policy_with_metadata` interceptor.
         """
         return response
+
+    def post_get_iam_policy_with_metadata(
+        self,
+        response: policy_pb2.Policy,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[policy_pb2.Policy, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_iam_policy
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Projects server but before it is returned to user code.
+
+        We recommend only using this `post_get_iam_policy_with_metadata`
+        interceptor in new development instead of the `post_get_iam_policy` interceptor.
+        When both interceptors are used, this `post_get_iam_policy_with_metadata` interceptor runs after the
+        `post_get_iam_policy` interceptor. The (possibly modified) response returned by
+        `post_get_iam_policy` will be passed to
+        `post_get_iam_policy_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_project(
         self,
@@ -249,11 +318,34 @@ class ProjectsRestInterceptor:
     def post_get_project(self, response: projects.Project) -> projects.Project:
         """Post-rpc interceptor for get_project
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_project_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Projects server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_project` interceptor runs
+        before the `post_get_project_with_metadata` interceptor.
         """
         return response
+
+    def post_get_project_with_metadata(
+        self,
+        response: projects.Project,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[projects.Project, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_project
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Projects server but before it is returned to user code.
+
+        We recommend only using this `post_get_project_with_metadata`
+        interceptor in new development instead of the `post_get_project` interceptor.
+        When both interceptors are used, this `post_get_project_with_metadata` interceptor runs after the
+        `post_get_project` interceptor. The (possibly modified) response returned by
+        `post_get_project` will be passed to
+        `post_get_project_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_projects(
         self,
@@ -272,11 +364,34 @@ class ProjectsRestInterceptor:
     ) -> projects.ListProjectsResponse:
         """Post-rpc interceptor for list_projects
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_projects_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Projects server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_projects` interceptor runs
+        before the `post_list_projects_with_metadata` interceptor.
         """
         return response
+
+    def post_list_projects_with_metadata(
+        self,
+        response: projects.ListProjectsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[projects.ListProjectsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for list_projects
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Projects server but before it is returned to user code.
+
+        We recommend only using this `post_list_projects_with_metadata`
+        interceptor in new development instead of the `post_list_projects` interceptor.
+        When both interceptors are used, this `post_list_projects_with_metadata` interceptor runs after the
+        `post_list_projects` interceptor. The (possibly modified) response returned by
+        `post_list_projects` will be passed to
+        `post_list_projects_with_metadata`.
+        """
+        return response, metadata
 
     def pre_move_project(
         self,
@@ -295,11 +410,34 @@ class ProjectsRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for move_project
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_move_project_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Projects server but before
-        it is returned to user code.
+        it is returned to user code. This `post_move_project` interceptor runs
+        before the `post_move_project_with_metadata` interceptor.
         """
         return response
+
+    def post_move_project_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for move_project
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Projects server but before it is returned to user code.
+
+        We recommend only using this `post_move_project_with_metadata`
+        interceptor in new development instead of the `post_move_project` interceptor.
+        When both interceptors are used, this `post_move_project_with_metadata` interceptor runs after the
+        `post_move_project` interceptor. The (possibly modified) response returned by
+        `post_move_project` will be passed to
+        `post_move_project_with_metadata`.
+        """
+        return response, metadata
 
     def pre_search_projects(
         self,
@@ -318,11 +456,36 @@ class ProjectsRestInterceptor:
     ) -> projects.SearchProjectsResponse:
         """Post-rpc interceptor for search_projects
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_search_projects_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Projects server but before
-        it is returned to user code.
+        it is returned to user code. This `post_search_projects` interceptor runs
+        before the `post_search_projects_with_metadata` interceptor.
         """
         return response
+
+    def post_search_projects_with_metadata(
+        self,
+        response: projects.SearchProjectsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        projects.SearchProjectsResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for search_projects
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Projects server but before it is returned to user code.
+
+        We recommend only using this `post_search_projects_with_metadata`
+        interceptor in new development instead of the `post_search_projects` interceptor.
+        When both interceptors are used, this `post_search_projects_with_metadata` interceptor runs after the
+        `post_search_projects` interceptor. The (possibly modified) response returned by
+        `post_search_projects` will be passed to
+        `post_search_projects_with_metadata`.
+        """
+        return response, metadata
 
     def pre_set_iam_policy(
         self,
@@ -341,11 +504,34 @@ class ProjectsRestInterceptor:
     def post_set_iam_policy(self, response: policy_pb2.Policy) -> policy_pb2.Policy:
         """Post-rpc interceptor for set_iam_policy
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_set_iam_policy_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Projects server but before
-        it is returned to user code.
+        it is returned to user code. This `post_set_iam_policy` interceptor runs
+        before the `post_set_iam_policy_with_metadata` interceptor.
         """
         return response
+
+    def post_set_iam_policy_with_metadata(
+        self,
+        response: policy_pb2.Policy,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[policy_pb2.Policy, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for set_iam_policy
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Projects server but before it is returned to user code.
+
+        We recommend only using this `post_set_iam_policy_with_metadata`
+        interceptor in new development instead of the `post_set_iam_policy` interceptor.
+        When both interceptors are used, this `post_set_iam_policy_with_metadata` interceptor runs after the
+        `post_set_iam_policy` interceptor. The (possibly modified) response returned by
+        `post_set_iam_policy` will be passed to
+        `post_set_iam_policy_with_metadata`.
+        """
+        return response, metadata
 
     def pre_test_iam_permissions(
         self,
@@ -367,11 +553,37 @@ class ProjectsRestInterceptor:
     ) -> iam_policy_pb2.TestIamPermissionsResponse:
         """Post-rpc interceptor for test_iam_permissions
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_test_iam_permissions_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Projects server but before
-        it is returned to user code.
+        it is returned to user code. This `post_test_iam_permissions` interceptor runs
+        before the `post_test_iam_permissions_with_metadata` interceptor.
         """
         return response
+
+    def post_test_iam_permissions_with_metadata(
+        self,
+        response: iam_policy_pb2.TestIamPermissionsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        iam_policy_pb2.TestIamPermissionsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for test_iam_permissions
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Projects server but before it is returned to user code.
+
+        We recommend only using this `post_test_iam_permissions_with_metadata`
+        interceptor in new development instead of the `post_test_iam_permissions` interceptor.
+        When both interceptors are used, this `post_test_iam_permissions_with_metadata` interceptor runs after the
+        `post_test_iam_permissions` interceptor. The (possibly modified) response returned by
+        `post_test_iam_permissions` will be passed to
+        `post_test_iam_permissions_with_metadata`.
+        """
+        return response, metadata
 
     def pre_undelete_project(
         self,
@@ -392,11 +604,34 @@ class ProjectsRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for undelete_project
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_undelete_project_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Projects server but before
-        it is returned to user code.
+        it is returned to user code. This `post_undelete_project` interceptor runs
+        before the `post_undelete_project_with_metadata` interceptor.
         """
         return response
+
+    def post_undelete_project_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for undelete_project
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Projects server but before it is returned to user code.
+
+        We recommend only using this `post_undelete_project_with_metadata`
+        interceptor in new development instead of the `post_undelete_project` interceptor.
+        When both interceptors are used, this `post_undelete_project_with_metadata` interceptor runs after the
+        `post_undelete_project` interceptor. The (possibly modified) response returned by
+        `post_undelete_project` will be passed to
+        `post_undelete_project_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_project(
         self,
@@ -415,11 +650,34 @@ class ProjectsRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_project
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_project_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Projects server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_project` interceptor runs
+        before the `post_update_project_with_metadata` interceptor.
         """
         return response
+
+    def post_update_project_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_project
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Projects server but before it is returned to user code.
+
+        We recommend only using this `post_update_project_with_metadata`
+        interceptor in new development instead of the `post_update_project` interceptor.
+        When both interceptors are used, this `post_update_project_with_metadata` interceptor runs after the
+        `post_update_project` interceptor. The (possibly modified) response returned by
+        `post_update_project` will be passed to
+        `post_update_project_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_operation(
         self,
@@ -698,6 +956,10 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_project(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_project_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -844,6 +1106,10 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_project(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_project_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1067,6 +1333,10 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_iam_policy(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_iam_policy_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1215,6 +1485,10 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_project(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_project_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1370,6 +1644,10 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_projects(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_projects_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1521,6 +1799,10 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_move_project(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_move_project_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1674,6 +1956,10 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_search_projects(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_search_projects_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1897,6 +2183,10 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_set_iam_policy(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_set_iam_policy_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2045,6 +2335,10 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_test_iam_permissions(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_test_iam_permissions_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2202,6 +2496,10 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_undelete_project(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_undelete_project_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2360,6 +2658,10 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_project(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_project_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

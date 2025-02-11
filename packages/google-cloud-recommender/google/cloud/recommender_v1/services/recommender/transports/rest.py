@@ -205,11 +205,34 @@ class RecommenderRestInterceptor:
     def post_get_insight(self, response: insight.Insight) -> insight.Insight:
         """Post-rpc interceptor for get_insight
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_insight_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Recommender server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_insight` interceptor runs
+        before the `post_get_insight_with_metadata` interceptor.
         """
         return response
+
+    def post_get_insight_with_metadata(
+        self,
+        response: insight.Insight,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[insight.Insight, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_insight
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Recommender server but before it is returned to user code.
+
+        We recommend only using this `post_get_insight_with_metadata`
+        interceptor in new development instead of the `post_get_insight` interceptor.
+        When both interceptors are used, this `post_get_insight_with_metadata` interceptor runs after the
+        `post_get_insight` interceptor. The (possibly modified) response returned by
+        `post_get_insight` will be passed to
+        `post_get_insight_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_insight_type_config(
         self,
@@ -231,11 +254,36 @@ class RecommenderRestInterceptor:
     ) -> insight_type_config.InsightTypeConfig:
         """Post-rpc interceptor for get_insight_type_config
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_insight_type_config_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Recommender server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_insight_type_config` interceptor runs
+        before the `post_get_insight_type_config_with_metadata` interceptor.
         """
         return response
+
+    def post_get_insight_type_config_with_metadata(
+        self,
+        response: insight_type_config.InsightTypeConfig,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        insight_type_config.InsightTypeConfig, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for get_insight_type_config
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Recommender server but before it is returned to user code.
+
+        We recommend only using this `post_get_insight_type_config_with_metadata`
+        interceptor in new development instead of the `post_get_insight_type_config` interceptor.
+        When both interceptors are used, this `post_get_insight_type_config_with_metadata` interceptor runs after the
+        `post_get_insight_type_config` interceptor. The (possibly modified) response returned by
+        `post_get_insight_type_config` will be passed to
+        `post_get_insight_type_config_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_recommendation(
         self,
@@ -257,11 +305,34 @@ class RecommenderRestInterceptor:
     ) -> recommendation.Recommendation:
         """Post-rpc interceptor for get_recommendation
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_recommendation_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Recommender server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_recommendation` interceptor runs
+        before the `post_get_recommendation_with_metadata` interceptor.
         """
         return response
+
+    def post_get_recommendation_with_metadata(
+        self,
+        response: recommendation.Recommendation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[recommendation.Recommendation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_recommendation
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Recommender server but before it is returned to user code.
+
+        We recommend only using this `post_get_recommendation_with_metadata`
+        interceptor in new development instead of the `post_get_recommendation` interceptor.
+        When both interceptors are used, this `post_get_recommendation_with_metadata` interceptor runs after the
+        `post_get_recommendation` interceptor. The (possibly modified) response returned by
+        `post_get_recommendation` will be passed to
+        `post_get_recommendation_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_recommender_config(
         self,
@@ -283,11 +354,36 @@ class RecommenderRestInterceptor:
     ) -> recommender_config.RecommenderConfig:
         """Post-rpc interceptor for get_recommender_config
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_recommender_config_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Recommender server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_recommender_config` interceptor runs
+        before the `post_get_recommender_config_with_metadata` interceptor.
         """
         return response
+
+    def post_get_recommender_config_with_metadata(
+        self,
+        response: recommender_config.RecommenderConfig,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        recommender_config.RecommenderConfig, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for get_recommender_config
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Recommender server but before it is returned to user code.
+
+        We recommend only using this `post_get_recommender_config_with_metadata`
+        interceptor in new development instead of the `post_get_recommender_config` interceptor.
+        When both interceptors are used, this `post_get_recommender_config_with_metadata` interceptor runs after the
+        `post_get_recommender_config` interceptor. The (possibly modified) response returned by
+        `post_get_recommender_config` will be passed to
+        `post_get_recommender_config_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_insights(
         self,
@@ -308,11 +404,37 @@ class RecommenderRestInterceptor:
     ) -> recommender_service.ListInsightsResponse:
         """Post-rpc interceptor for list_insights
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_insights_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Recommender server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_insights` interceptor runs
+        before the `post_list_insights_with_metadata` interceptor.
         """
         return response
+
+    def post_list_insights_with_metadata(
+        self,
+        response: recommender_service.ListInsightsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        recommender_service.ListInsightsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_insights
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Recommender server but before it is returned to user code.
+
+        We recommend only using this `post_list_insights_with_metadata`
+        interceptor in new development instead of the `post_list_insights` interceptor.
+        When both interceptors are used, this `post_list_insights_with_metadata` interceptor runs after the
+        `post_list_insights` interceptor. The (possibly modified) response returned by
+        `post_list_insights` will be passed to
+        `post_list_insights_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_recommendations(
         self,
@@ -334,11 +456,37 @@ class RecommenderRestInterceptor:
     ) -> recommender_service.ListRecommendationsResponse:
         """Post-rpc interceptor for list_recommendations
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_recommendations_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Recommender server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_recommendations` interceptor runs
+        before the `post_list_recommendations_with_metadata` interceptor.
         """
         return response
+
+    def post_list_recommendations_with_metadata(
+        self,
+        response: recommender_service.ListRecommendationsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        recommender_service.ListRecommendationsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_recommendations
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Recommender server but before it is returned to user code.
+
+        We recommend only using this `post_list_recommendations_with_metadata`
+        interceptor in new development instead of the `post_list_recommendations` interceptor.
+        When both interceptors are used, this `post_list_recommendations_with_metadata` interceptor runs after the
+        `post_list_recommendations` interceptor. The (possibly modified) response returned by
+        `post_list_recommendations` will be passed to
+        `post_list_recommendations_with_metadata`.
+        """
+        return response, metadata
 
     def pre_mark_insight_accepted(
         self,
@@ -358,11 +506,34 @@ class RecommenderRestInterceptor:
     def post_mark_insight_accepted(self, response: insight.Insight) -> insight.Insight:
         """Post-rpc interceptor for mark_insight_accepted
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_mark_insight_accepted_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Recommender server but before
-        it is returned to user code.
+        it is returned to user code. This `post_mark_insight_accepted` interceptor runs
+        before the `post_mark_insight_accepted_with_metadata` interceptor.
         """
         return response
+
+    def post_mark_insight_accepted_with_metadata(
+        self,
+        response: insight.Insight,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[insight.Insight, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for mark_insight_accepted
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Recommender server but before it is returned to user code.
+
+        We recommend only using this `post_mark_insight_accepted_with_metadata`
+        interceptor in new development instead of the `post_mark_insight_accepted` interceptor.
+        When both interceptors are used, this `post_mark_insight_accepted_with_metadata` interceptor runs after the
+        `post_mark_insight_accepted` interceptor. The (possibly modified) response returned by
+        `post_mark_insight_accepted` will be passed to
+        `post_mark_insight_accepted_with_metadata`.
+        """
+        return response, metadata
 
     def pre_mark_recommendation_claimed(
         self,
@@ -384,11 +555,34 @@ class RecommenderRestInterceptor:
     ) -> recommendation.Recommendation:
         """Post-rpc interceptor for mark_recommendation_claimed
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_mark_recommendation_claimed_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Recommender server but before
-        it is returned to user code.
+        it is returned to user code. This `post_mark_recommendation_claimed` interceptor runs
+        before the `post_mark_recommendation_claimed_with_metadata` interceptor.
         """
         return response
+
+    def post_mark_recommendation_claimed_with_metadata(
+        self,
+        response: recommendation.Recommendation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[recommendation.Recommendation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for mark_recommendation_claimed
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Recommender server but before it is returned to user code.
+
+        We recommend only using this `post_mark_recommendation_claimed_with_metadata`
+        interceptor in new development instead of the `post_mark_recommendation_claimed` interceptor.
+        When both interceptors are used, this `post_mark_recommendation_claimed_with_metadata` interceptor runs after the
+        `post_mark_recommendation_claimed` interceptor. The (possibly modified) response returned by
+        `post_mark_recommendation_claimed` will be passed to
+        `post_mark_recommendation_claimed_with_metadata`.
+        """
+        return response, metadata
 
     def pre_mark_recommendation_dismissed(
         self,
@@ -410,11 +604,34 @@ class RecommenderRestInterceptor:
     ) -> recommendation.Recommendation:
         """Post-rpc interceptor for mark_recommendation_dismissed
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_mark_recommendation_dismissed_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Recommender server but before
-        it is returned to user code.
+        it is returned to user code. This `post_mark_recommendation_dismissed` interceptor runs
+        before the `post_mark_recommendation_dismissed_with_metadata` interceptor.
         """
         return response
+
+    def post_mark_recommendation_dismissed_with_metadata(
+        self,
+        response: recommendation.Recommendation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[recommendation.Recommendation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for mark_recommendation_dismissed
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Recommender server but before it is returned to user code.
+
+        We recommend only using this `post_mark_recommendation_dismissed_with_metadata`
+        interceptor in new development instead of the `post_mark_recommendation_dismissed` interceptor.
+        When both interceptors are used, this `post_mark_recommendation_dismissed_with_metadata` interceptor runs after the
+        `post_mark_recommendation_dismissed` interceptor. The (possibly modified) response returned by
+        `post_mark_recommendation_dismissed` will be passed to
+        `post_mark_recommendation_dismissed_with_metadata`.
+        """
+        return response, metadata
 
     def pre_mark_recommendation_failed(
         self,
@@ -436,11 +653,34 @@ class RecommenderRestInterceptor:
     ) -> recommendation.Recommendation:
         """Post-rpc interceptor for mark_recommendation_failed
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_mark_recommendation_failed_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Recommender server but before
-        it is returned to user code.
+        it is returned to user code. This `post_mark_recommendation_failed` interceptor runs
+        before the `post_mark_recommendation_failed_with_metadata` interceptor.
         """
         return response
+
+    def post_mark_recommendation_failed_with_metadata(
+        self,
+        response: recommendation.Recommendation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[recommendation.Recommendation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for mark_recommendation_failed
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Recommender server but before it is returned to user code.
+
+        We recommend only using this `post_mark_recommendation_failed_with_metadata`
+        interceptor in new development instead of the `post_mark_recommendation_failed` interceptor.
+        When both interceptors are used, this `post_mark_recommendation_failed_with_metadata` interceptor runs after the
+        `post_mark_recommendation_failed` interceptor. The (possibly modified) response returned by
+        `post_mark_recommendation_failed` will be passed to
+        `post_mark_recommendation_failed_with_metadata`.
+        """
+        return response, metadata
 
     def pre_mark_recommendation_succeeded(
         self,
@@ -462,11 +702,34 @@ class RecommenderRestInterceptor:
     ) -> recommendation.Recommendation:
         """Post-rpc interceptor for mark_recommendation_succeeded
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_mark_recommendation_succeeded_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Recommender server but before
-        it is returned to user code.
+        it is returned to user code. This `post_mark_recommendation_succeeded` interceptor runs
+        before the `post_mark_recommendation_succeeded_with_metadata` interceptor.
         """
         return response
+
+    def post_mark_recommendation_succeeded_with_metadata(
+        self,
+        response: recommendation.Recommendation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[recommendation.Recommendation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for mark_recommendation_succeeded
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Recommender server but before it is returned to user code.
+
+        We recommend only using this `post_mark_recommendation_succeeded_with_metadata`
+        interceptor in new development instead of the `post_mark_recommendation_succeeded` interceptor.
+        When both interceptors are used, this `post_mark_recommendation_succeeded_with_metadata` interceptor runs after the
+        `post_mark_recommendation_succeeded` interceptor. The (possibly modified) response returned by
+        `post_mark_recommendation_succeeded` will be passed to
+        `post_mark_recommendation_succeeded_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_insight_type_config(
         self,
@@ -488,11 +751,37 @@ class RecommenderRestInterceptor:
     ) -> gcr_insight_type_config.InsightTypeConfig:
         """Post-rpc interceptor for update_insight_type_config
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_insight_type_config_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Recommender server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_insight_type_config` interceptor runs
+        before the `post_update_insight_type_config_with_metadata` interceptor.
         """
         return response
+
+    def post_update_insight_type_config_with_metadata(
+        self,
+        response: gcr_insight_type_config.InsightTypeConfig,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        gcr_insight_type_config.InsightTypeConfig,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for update_insight_type_config
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Recommender server but before it is returned to user code.
+
+        We recommend only using this `post_update_insight_type_config_with_metadata`
+        interceptor in new development instead of the `post_update_insight_type_config` interceptor.
+        When both interceptors are used, this `post_update_insight_type_config_with_metadata` interceptor runs after the
+        `post_update_insight_type_config` interceptor. The (possibly modified) response returned by
+        `post_update_insight_type_config` will be passed to
+        `post_update_insight_type_config_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_recommender_config(
         self,
@@ -514,11 +803,37 @@ class RecommenderRestInterceptor:
     ) -> gcr_recommender_config.RecommenderConfig:
         """Post-rpc interceptor for update_recommender_config
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_recommender_config_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Recommender server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_recommender_config` interceptor runs
+        before the `post_update_recommender_config_with_metadata` interceptor.
         """
         return response
+
+    def post_update_recommender_config_with_metadata(
+        self,
+        response: gcr_recommender_config.RecommenderConfig,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        gcr_recommender_config.RecommenderConfig,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for update_recommender_config
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Recommender server but before it is returned to user code.
+
+        We recommend only using this `post_update_recommender_config_with_metadata`
+        interceptor in new development instead of the `post_update_recommender_config` interceptor.
+        When both interceptors are used, this `post_update_recommender_config_with_metadata` interceptor runs after the
+        `post_update_recommender_config` interceptor. The (possibly modified) response returned by
+        `post_update_recommender_config` will be passed to
+        `post_update_recommender_config_with_metadata`.
+        """
+        return response, metadata
 
 
 @dataclasses.dataclass
@@ -736,6 +1051,10 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_insight(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_insight_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -878,6 +1197,10 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_insight_type_config(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_insight_type_config_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1026,6 +1349,10 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_recommendation(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_recommendation_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1168,6 +1495,10 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_recommender_config(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_recommender_config_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1314,6 +1645,10 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_insights(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_insights_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1458,6 +1793,10 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_recommendations(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_recommendations_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1614,6 +1953,10 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_mark_insight_accepted(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_mark_insight_accepted_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1770,6 +2113,10 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_mark_recommendation_claimed(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_mark_recommendation_claimed_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1926,6 +2273,13 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_mark_recommendation_dismissed(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_mark_recommendation_dismissed_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2079,6 +2433,10 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_mark_recommendation_failed(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_mark_recommendation_failed_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2235,6 +2593,13 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_mark_recommendation_succeeded(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_mark_recommendation_succeeded_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2384,6 +2749,10 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_insight_type_config(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_insight_type_config_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2534,6 +2903,10 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_recommender_config(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_recommender_config_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

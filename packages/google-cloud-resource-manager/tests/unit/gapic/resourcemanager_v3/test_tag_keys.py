@@ -76,6 +76,13 @@ from google.cloud.resourcemanager_v3.services.tag_keys import (
 )
 from google.cloud.resourcemanager_v3.types import tag_keys
 
+CRED_INFO_JSON = {
+    "credential_source": "/path/to/file",
+    "credential_type": "service account credentials",
+    "principal": "service-account@example.com",
+}
+CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
 
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
@@ -297,6 +304,49 @@ def test__get_universe_domain():
     with pytest.raises(ValueError) as excinfo:
         TagKeysClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+
+@pytest.mark.parametrize(
+    "error_code,cred_info_json,show_cred_info",
+    [
+        (401, CRED_INFO_JSON, True),
+        (403, CRED_INFO_JSON, True),
+        (404, CRED_INFO_JSON, True),
+        (500, CRED_INFO_JSON, False),
+        (401, None, False),
+        (403, None, False),
+        (404, None, False),
+        (500, None, False),
+    ],
+)
+def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
+    cred = mock.Mock(["get_cred_info"])
+    cred.get_cred_info = mock.Mock(return_value=cred_info_json)
+    client = TagKeysClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=["foo"])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    if show_cred_info:
+        assert error.details == ["foo", CRED_INFO_STRING]
+    else:
+        assert error.details == ["foo"]
+
+
+@pytest.mark.parametrize("error_code", [401, 403, 404, 500])
+def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
+    cred = mock.Mock([])
+    assert not hasattr(cred, "get_cred_info")
+    client = TagKeysClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=[])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    assert error.details == []
 
 
 @pytest.mark.parametrize(
@@ -6454,10 +6504,13 @@ def test_list_tag_keys_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.TagKeysRestInterceptor, "post_list_tag_keys"
     ) as post, mock.patch.object(
+        transports.TagKeysRestInterceptor, "post_list_tag_keys_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.TagKeysRestInterceptor, "pre_list_tag_keys"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = tag_keys.ListTagKeysRequest.pb(tag_keys.ListTagKeysRequest())
         transcode.return_value = {
             "method": "post",
@@ -6481,6 +6534,7 @@ def test_list_tag_keys_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = tag_keys.ListTagKeysResponse()
+        post_with_metadata.return_value = tag_keys.ListTagKeysResponse(), metadata
 
         client.list_tag_keys(
             request,
@@ -6492,6 +6546,7 @@ def test_list_tag_keys_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_tag_key_rest_bad_request(request_type=tag_keys.GetTagKeyRequest):
@@ -6584,10 +6639,13 @@ def test_get_tag_key_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.TagKeysRestInterceptor, "post_get_tag_key"
     ) as post, mock.patch.object(
+        transports.TagKeysRestInterceptor, "post_get_tag_key_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.TagKeysRestInterceptor, "pre_get_tag_key"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = tag_keys.GetTagKeyRequest.pb(tag_keys.GetTagKeyRequest())
         transcode.return_value = {
             "method": "post",
@@ -6609,6 +6667,7 @@ def test_get_tag_key_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = tag_keys.TagKey()
+        post_with_metadata.return_value = tag_keys.TagKey(), metadata
 
         client.get_tag_key(
             request,
@@ -6620,6 +6679,7 @@ def test_get_tag_key_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_namespaced_tag_key_rest_bad_request(
@@ -6714,10 +6774,13 @@ def test_get_namespaced_tag_key_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.TagKeysRestInterceptor, "post_get_namespaced_tag_key"
     ) as post, mock.patch.object(
+        transports.TagKeysRestInterceptor, "post_get_namespaced_tag_key_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.TagKeysRestInterceptor, "pre_get_namespaced_tag_key"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = tag_keys.GetNamespacedTagKeyRequest.pb(
             tag_keys.GetNamespacedTagKeyRequest()
         )
@@ -6741,6 +6804,7 @@ def test_get_namespaced_tag_key_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = tag_keys.TagKey()
+        post_with_metadata.return_value = tag_keys.TagKey(), metadata
 
         client.get_namespaced_tag_key(
             request,
@@ -6752,6 +6816,7 @@ def test_get_namespaced_tag_key_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_tag_key_rest_bad_request(request_type=tag_keys.CreateTagKeyRequest):
@@ -6907,10 +6972,13 @@ def test_create_tag_key_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.TagKeysRestInterceptor, "post_create_tag_key"
     ) as post, mock.patch.object(
+        transports.TagKeysRestInterceptor, "post_create_tag_key_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.TagKeysRestInterceptor, "pre_create_tag_key"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = tag_keys.CreateTagKeyRequest.pb(tag_keys.CreateTagKeyRequest())
         transcode.return_value = {
             "method": "post",
@@ -6932,6 +7000,7 @@ def test_create_tag_key_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_tag_key(
             request,
@@ -6943,6 +7012,7 @@ def test_create_tag_key_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_tag_key_rest_bad_request(request_type=tag_keys.UpdateTagKeyRequest):
@@ -7098,10 +7168,13 @@ def test_update_tag_key_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.TagKeysRestInterceptor, "post_update_tag_key"
     ) as post, mock.patch.object(
+        transports.TagKeysRestInterceptor, "post_update_tag_key_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.TagKeysRestInterceptor, "pre_update_tag_key"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = tag_keys.UpdateTagKeyRequest.pb(tag_keys.UpdateTagKeyRequest())
         transcode.return_value = {
             "method": "post",
@@ -7123,6 +7196,7 @@ def test_update_tag_key_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.update_tag_key(
             request,
@@ -7134,6 +7208,7 @@ def test_update_tag_key_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_tag_key_rest_bad_request(request_type=tag_keys.DeleteTagKeyRequest):
@@ -7210,10 +7285,13 @@ def test_delete_tag_key_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.TagKeysRestInterceptor, "post_delete_tag_key"
     ) as post, mock.patch.object(
+        transports.TagKeysRestInterceptor, "post_delete_tag_key_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.TagKeysRestInterceptor, "pre_delete_tag_key"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = tag_keys.DeleteTagKeyRequest.pb(tag_keys.DeleteTagKeyRequest())
         transcode.return_value = {
             "method": "post",
@@ -7235,6 +7313,7 @@ def test_delete_tag_key_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_tag_key(
             request,
@@ -7246,6 +7325,7 @@ def test_delete_tag_key_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_iam_policy_rest_bad_request(
@@ -7327,10 +7407,13 @@ def test_get_iam_policy_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.TagKeysRestInterceptor, "post_get_iam_policy"
     ) as post, mock.patch.object(
+        transports.TagKeysRestInterceptor, "post_get_iam_policy_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.TagKeysRestInterceptor, "pre_get_iam_policy"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = iam_policy_pb2.GetIamPolicyRequest()
         transcode.return_value = {
             "method": "post",
@@ -7352,6 +7435,7 @@ def test_get_iam_policy_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = policy_pb2.Policy()
+        post_with_metadata.return_value = policy_pb2.Policy(), metadata
 
         client.get_iam_policy(
             request,
@@ -7363,6 +7447,7 @@ def test_get_iam_policy_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_set_iam_policy_rest_bad_request(
@@ -7444,10 +7529,13 @@ def test_set_iam_policy_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.TagKeysRestInterceptor, "post_set_iam_policy"
     ) as post, mock.patch.object(
+        transports.TagKeysRestInterceptor, "post_set_iam_policy_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.TagKeysRestInterceptor, "pre_set_iam_policy"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = iam_policy_pb2.SetIamPolicyRequest()
         transcode.return_value = {
             "method": "post",
@@ -7469,6 +7557,7 @@ def test_set_iam_policy_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = policy_pb2.Policy()
+        post_with_metadata.return_value = policy_pb2.Policy(), metadata
 
         client.set_iam_policy(
             request,
@@ -7480,6 +7569,7 @@ def test_set_iam_policy_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_test_iam_permissions_rest_bad_request(
@@ -7559,10 +7649,13 @@ def test_test_iam_permissions_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.TagKeysRestInterceptor, "post_test_iam_permissions"
     ) as post, mock.patch.object(
+        transports.TagKeysRestInterceptor, "post_test_iam_permissions_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.TagKeysRestInterceptor, "pre_test_iam_permissions"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = iam_policy_pb2.TestIamPermissionsRequest()
         transcode.return_value = {
             "method": "post",
@@ -7586,6 +7679,10 @@ def test_test_iam_permissions_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = iam_policy_pb2.TestIamPermissionsResponse()
+        post_with_metadata.return_value = (
+            iam_policy_pb2.TestIamPermissionsResponse(),
+            metadata,
+        )
 
         client.test_iam_permissions(
             request,
@@ -7597,6 +7694,7 @@ def test_test_iam_permissions_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_operation_rest_bad_request(

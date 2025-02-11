@@ -78,6 +78,13 @@ from google.cloud.redis_cluster_v1.services.cloud_redis_cluster import (
 )
 from google.cloud.redis_cluster_v1.types import cloud_redis_cluster
 
+CRED_INFO_JSON = {
+    "credential_source": "/path/to/file",
+    "credential_type": "service account credentials",
+    "principal": "service-account@example.com",
+}
+CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
 
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
@@ -343,6 +350,49 @@ def test__get_universe_domain():
     with pytest.raises(ValueError) as excinfo:
         CloudRedisClusterClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+
+@pytest.mark.parametrize(
+    "error_code,cred_info_json,show_cred_info",
+    [
+        (401, CRED_INFO_JSON, True),
+        (403, CRED_INFO_JSON, True),
+        (404, CRED_INFO_JSON, True),
+        (500, CRED_INFO_JSON, False),
+        (401, None, False),
+        (403, None, False),
+        (404, None, False),
+        (500, None, False),
+    ],
+)
+def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
+    cred = mock.Mock(["get_cred_info"])
+    cred.get_cred_info = mock.Mock(return_value=cred_info_json)
+    client = CloudRedisClusterClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=["foo"])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    if show_cred_info:
+        assert error.details == ["foo", CRED_INFO_STRING]
+    else:
+        assert error.details == ["foo"]
+
+
+@pytest.mark.parametrize("error_code", [401, 403, 404, 500])
+def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
+    cred = mock.Mock([])
+    assert not hasattr(cred, "get_cred_info")
+    client = CloudRedisClusterClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=[])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    assert error.details == []
 
 
 @pytest.mark.parametrize(
@@ -10209,10 +10259,13 @@ def test_list_clusters_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.CloudRedisClusterRestInterceptor, "post_list_clusters"
     ) as post, mock.patch.object(
+        transports.CloudRedisClusterRestInterceptor, "post_list_clusters_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.CloudRedisClusterRestInterceptor, "pre_list_clusters"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cloud_redis_cluster.ListClustersRequest.pb(
             cloud_redis_cluster.ListClustersRequest()
         )
@@ -10238,6 +10291,10 @@ def test_list_clusters_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = cloud_redis_cluster.ListClustersResponse()
+        post_with_metadata.return_value = (
+            cloud_redis_cluster.ListClustersResponse(),
+            metadata,
+        )
 
         client.list_clusters(
             request,
@@ -10249,6 +10306,7 @@ def test_list_clusters_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_cluster_rest_bad_request(
@@ -10363,10 +10421,13 @@ def test_get_cluster_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.CloudRedisClusterRestInterceptor, "post_get_cluster"
     ) as post, mock.patch.object(
+        transports.CloudRedisClusterRestInterceptor, "post_get_cluster_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.CloudRedisClusterRestInterceptor, "pre_get_cluster"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cloud_redis_cluster.GetClusterRequest.pb(
             cloud_redis_cluster.GetClusterRequest()
         )
@@ -10392,6 +10453,7 @@ def test_get_cluster_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = cloud_redis_cluster.Cluster()
+        post_with_metadata.return_value = cloud_redis_cluster.Cluster(), metadata
 
         client.get_cluster(
             request,
@@ -10403,6 +10465,7 @@ def test_get_cluster_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_cluster_rest_bad_request(
@@ -10654,10 +10717,13 @@ def test_update_cluster_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.CloudRedisClusterRestInterceptor, "post_update_cluster"
     ) as post, mock.patch.object(
+        transports.CloudRedisClusterRestInterceptor, "post_update_cluster_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.CloudRedisClusterRestInterceptor, "pre_update_cluster"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cloud_redis_cluster.UpdateClusterRequest.pb(
             cloud_redis_cluster.UpdateClusterRequest()
         )
@@ -10681,6 +10747,7 @@ def test_update_cluster_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.update_cluster(
             request,
@@ -10692,6 +10759,7 @@ def test_update_cluster_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_cluster_rest_bad_request(
@@ -10772,10 +10840,13 @@ def test_delete_cluster_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.CloudRedisClusterRestInterceptor, "post_delete_cluster"
     ) as post, mock.patch.object(
+        transports.CloudRedisClusterRestInterceptor, "post_delete_cluster_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.CloudRedisClusterRestInterceptor, "pre_delete_cluster"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cloud_redis_cluster.DeleteClusterRequest.pb(
             cloud_redis_cluster.DeleteClusterRequest()
         )
@@ -10799,6 +10870,7 @@ def test_delete_cluster_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_cluster(
             request,
@@ -10810,6 +10882,7 @@ def test_delete_cluster_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_cluster_rest_bad_request(
@@ -11057,10 +11130,13 @@ def test_create_cluster_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.CloudRedisClusterRestInterceptor, "post_create_cluster"
     ) as post, mock.patch.object(
+        transports.CloudRedisClusterRestInterceptor, "post_create_cluster_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.CloudRedisClusterRestInterceptor, "pre_create_cluster"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cloud_redis_cluster.CreateClusterRequest.pb(
             cloud_redis_cluster.CreateClusterRequest()
         )
@@ -11084,6 +11160,7 @@ def test_create_cluster_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_cluster(
             request,
@@ -11095,6 +11172,7 @@ def test_create_cluster_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_cluster_certificate_authority_rest_bad_request(
@@ -11185,10 +11263,14 @@ def test_get_cluster_certificate_authority_rest_interceptors(null_interceptor):
         "post_get_cluster_certificate_authority",
     ) as post, mock.patch.object(
         transports.CloudRedisClusterRestInterceptor,
+        "post_get_cluster_certificate_authority_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
+        transports.CloudRedisClusterRestInterceptor,
         "pre_get_cluster_certificate_authority",
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cloud_redis_cluster.GetClusterCertificateAuthorityRequest.pb(
             cloud_redis_cluster.GetClusterCertificateAuthorityRequest()
         )
@@ -11214,6 +11296,10 @@ def test_get_cluster_certificate_authority_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = cloud_redis_cluster.CertificateAuthority()
+        post_with_metadata.return_value = (
+            cloud_redis_cluster.CertificateAuthority(),
+            metadata,
+        )
 
         client.get_cluster_certificate_authority(
             request,
@@ -11225,6 +11311,7 @@ def test_get_cluster_certificate_authority_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_reschedule_cluster_maintenance_rest_bad_request(
@@ -11307,10 +11394,14 @@ def test_reschedule_cluster_maintenance_rest_interceptors(null_interceptor):
         "post_reschedule_cluster_maintenance",
     ) as post, mock.patch.object(
         transports.CloudRedisClusterRestInterceptor,
+        "post_reschedule_cluster_maintenance_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
+        transports.CloudRedisClusterRestInterceptor,
         "pre_reschedule_cluster_maintenance",
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cloud_redis_cluster.RescheduleClusterMaintenanceRequest.pb(
             cloud_redis_cluster.RescheduleClusterMaintenanceRequest()
         )
@@ -11334,6 +11425,7 @@ def test_reschedule_cluster_maintenance_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.reschedule_cluster_maintenance(
             request,
@@ -11345,6 +11437,7 @@ def test_reschedule_cluster_maintenance_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_backup_collections_rest_bad_request(
@@ -11433,10 +11526,14 @@ def test_list_backup_collections_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.CloudRedisClusterRestInterceptor, "post_list_backup_collections"
     ) as post, mock.patch.object(
+        transports.CloudRedisClusterRestInterceptor,
+        "post_list_backup_collections_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.CloudRedisClusterRestInterceptor, "pre_list_backup_collections"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cloud_redis_cluster.ListBackupCollectionsRequest.pb(
             cloud_redis_cluster.ListBackupCollectionsRequest()
         )
@@ -11462,6 +11559,10 @@ def test_list_backup_collections_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = cloud_redis_cluster.ListBackupCollectionsResponse()
+        post_with_metadata.return_value = (
+            cloud_redis_cluster.ListBackupCollectionsResponse(),
+            metadata,
+        )
 
         client.list_backup_collections(
             request,
@@ -11473,6 +11574,7 @@ def test_list_backup_collections_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_backup_collection_rest_bad_request(
@@ -11569,10 +11671,14 @@ def test_get_backup_collection_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.CloudRedisClusterRestInterceptor, "post_get_backup_collection"
     ) as post, mock.patch.object(
+        transports.CloudRedisClusterRestInterceptor,
+        "post_get_backup_collection_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.CloudRedisClusterRestInterceptor, "pre_get_backup_collection"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cloud_redis_cluster.GetBackupCollectionRequest.pb(
             cloud_redis_cluster.GetBackupCollectionRequest()
         )
@@ -11598,6 +11704,10 @@ def test_get_backup_collection_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = cloud_redis_cluster.BackupCollection()
+        post_with_metadata.return_value = (
+            cloud_redis_cluster.BackupCollection(),
+            metadata,
+        )
 
         client.get_backup_collection(
             request,
@@ -11609,6 +11719,7 @@ def test_get_backup_collection_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_backups_rest_bad_request(
@@ -11699,10 +11810,13 @@ def test_list_backups_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.CloudRedisClusterRestInterceptor, "post_list_backups"
     ) as post, mock.patch.object(
+        transports.CloudRedisClusterRestInterceptor, "post_list_backups_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.CloudRedisClusterRestInterceptor, "pre_list_backups"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cloud_redis_cluster.ListBackupsRequest.pb(
             cloud_redis_cluster.ListBackupsRequest()
         )
@@ -11728,6 +11842,10 @@ def test_list_backups_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = cloud_redis_cluster.ListBackupsResponse()
+        post_with_metadata.return_value = (
+            cloud_redis_cluster.ListBackupsResponse(),
+            metadata,
+        )
 
         client.list_backups(
             request,
@@ -11739,6 +11857,7 @@ def test_list_backups_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_backup_rest_bad_request(request_type=cloud_redis_cluster.GetBackupRequest):
@@ -11845,10 +11964,13 @@ def test_get_backup_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.CloudRedisClusterRestInterceptor, "post_get_backup"
     ) as post, mock.patch.object(
+        transports.CloudRedisClusterRestInterceptor, "post_get_backup_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.CloudRedisClusterRestInterceptor, "pre_get_backup"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cloud_redis_cluster.GetBackupRequest.pb(
             cloud_redis_cluster.GetBackupRequest()
         )
@@ -11872,6 +11994,7 @@ def test_get_backup_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = cloud_redis_cluster.Backup()
+        post_with_metadata.return_value = cloud_redis_cluster.Backup(), metadata
 
         client.get_backup(
             request,
@@ -11883,6 +12006,7 @@ def test_get_backup_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_backup_rest_bad_request(
@@ -11967,10 +12091,13 @@ def test_delete_backup_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.CloudRedisClusterRestInterceptor, "post_delete_backup"
     ) as post, mock.patch.object(
+        transports.CloudRedisClusterRestInterceptor, "post_delete_backup_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.CloudRedisClusterRestInterceptor, "pre_delete_backup"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cloud_redis_cluster.DeleteBackupRequest.pb(
             cloud_redis_cluster.DeleteBackupRequest()
         )
@@ -11994,6 +12121,7 @@ def test_delete_backup_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_backup(
             request,
@@ -12005,6 +12133,7 @@ def test_delete_backup_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_export_backup_rest_bad_request(
@@ -12089,10 +12218,13 @@ def test_export_backup_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.CloudRedisClusterRestInterceptor, "post_export_backup"
     ) as post, mock.patch.object(
+        transports.CloudRedisClusterRestInterceptor, "post_export_backup_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.CloudRedisClusterRestInterceptor, "pre_export_backup"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cloud_redis_cluster.ExportBackupRequest.pb(
             cloud_redis_cluster.ExportBackupRequest()
         )
@@ -12116,6 +12248,7 @@ def test_export_backup_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.export_backup(
             request,
@@ -12127,6 +12260,7 @@ def test_export_backup_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_backup_cluster_rest_bad_request(
@@ -12207,10 +12341,13 @@ def test_backup_cluster_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.CloudRedisClusterRestInterceptor, "post_backup_cluster"
     ) as post, mock.patch.object(
+        transports.CloudRedisClusterRestInterceptor, "post_backup_cluster_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.CloudRedisClusterRestInterceptor, "pre_backup_cluster"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cloud_redis_cluster.BackupClusterRequest.pb(
             cloud_redis_cluster.BackupClusterRequest()
         )
@@ -12234,6 +12371,7 @@ def test_backup_cluster_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.backup_cluster(
             request,
@@ -12245,6 +12383,7 @@ def test_backup_cluster_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_location_rest_bad_request(request_type=locations_pb2.GetLocationRequest):
