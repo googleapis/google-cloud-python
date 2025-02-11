@@ -350,11 +350,34 @@ class ApiHubRestInterceptor:
     def post_create_api(self, response: common_fields.Api) -> common_fields.Api:
         """Post-rpc interceptor for create_api
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_api_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ApiHub server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_api` interceptor runs
+        before the `post_create_api_with_metadata` interceptor.
         """
         return response
+
+    def post_create_api_with_metadata(
+        self,
+        response: common_fields.Api,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[common_fields.Api, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_api
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ApiHub server but before it is returned to user code.
+
+        We recommend only using this `post_create_api_with_metadata`
+        interceptor in new development instead of the `post_create_api` interceptor.
+        When both interceptors are used, this `post_create_api_with_metadata` interceptor runs after the
+        `post_create_api` interceptor. The (possibly modified) response returned by
+        `post_create_api` will be passed to
+        `post_create_api_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_attribute(
         self,
@@ -375,11 +398,34 @@ class ApiHubRestInterceptor:
     ) -> common_fields.Attribute:
         """Post-rpc interceptor for create_attribute
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_attribute_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ApiHub server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_attribute` interceptor runs
+        before the `post_create_attribute_with_metadata` interceptor.
         """
         return response
+
+    def post_create_attribute_with_metadata(
+        self,
+        response: common_fields.Attribute,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[common_fields.Attribute, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_attribute
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ApiHub server but before it is returned to user code.
+
+        We recommend only using this `post_create_attribute_with_metadata`
+        interceptor in new development instead of the `post_create_attribute` interceptor.
+        When both interceptors are used, this `post_create_attribute_with_metadata` interceptor runs after the
+        `post_create_attribute` interceptor. The (possibly modified) response returned by
+        `post_create_attribute` will be passed to
+        `post_create_attribute_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_deployment(
         self,
@@ -400,11 +446,34 @@ class ApiHubRestInterceptor:
     ) -> common_fields.Deployment:
         """Post-rpc interceptor for create_deployment
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_deployment_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ApiHub server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_deployment` interceptor runs
+        before the `post_create_deployment_with_metadata` interceptor.
         """
         return response
+
+    def post_create_deployment_with_metadata(
+        self,
+        response: common_fields.Deployment,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[common_fields.Deployment, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_deployment
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ApiHub server but before it is returned to user code.
+
+        We recommend only using this `post_create_deployment_with_metadata`
+        interceptor in new development instead of the `post_create_deployment` interceptor.
+        When both interceptors are used, this `post_create_deployment_with_metadata` interceptor runs after the
+        `post_create_deployment` interceptor. The (possibly modified) response returned by
+        `post_create_deployment` will be passed to
+        `post_create_deployment_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_external_api(
         self,
@@ -425,11 +494,34 @@ class ApiHubRestInterceptor:
     ) -> common_fields.ExternalApi:
         """Post-rpc interceptor for create_external_api
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_external_api_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ApiHub server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_external_api` interceptor runs
+        before the `post_create_external_api_with_metadata` interceptor.
         """
         return response
+
+    def post_create_external_api_with_metadata(
+        self,
+        response: common_fields.ExternalApi,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[common_fields.ExternalApi, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_external_api
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ApiHub server but before it is returned to user code.
+
+        We recommend only using this `post_create_external_api_with_metadata`
+        interceptor in new development instead of the `post_create_external_api` interceptor.
+        When both interceptors are used, this `post_create_external_api_with_metadata` interceptor runs after the
+        `post_create_external_api` interceptor. The (possibly modified) response returned by
+        `post_create_external_api` will be passed to
+        `post_create_external_api_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_spec(
         self,
@@ -448,11 +540,34 @@ class ApiHubRestInterceptor:
     def post_create_spec(self, response: common_fields.Spec) -> common_fields.Spec:
         """Post-rpc interceptor for create_spec
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_spec_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ApiHub server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_spec` interceptor runs
+        before the `post_create_spec_with_metadata` interceptor.
         """
         return response
+
+    def post_create_spec_with_metadata(
+        self,
+        response: common_fields.Spec,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[common_fields.Spec, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_spec
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ApiHub server but before it is returned to user code.
+
+        We recommend only using this `post_create_spec_with_metadata`
+        interceptor in new development instead of the `post_create_spec` interceptor.
+        When both interceptors are used, this `post_create_spec_with_metadata` interceptor runs after the
+        `post_create_spec` interceptor. The (possibly modified) response returned by
+        `post_create_spec` will be passed to
+        `post_create_spec_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_version(
         self,
@@ -473,11 +588,34 @@ class ApiHubRestInterceptor:
     ) -> common_fields.Version:
         """Post-rpc interceptor for create_version
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_version_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ApiHub server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_version` interceptor runs
+        before the `post_create_version_with_metadata` interceptor.
         """
         return response
+
+    def post_create_version_with_metadata(
+        self,
+        response: common_fields.Version,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[common_fields.Version, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_version
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ApiHub server but before it is returned to user code.
+
+        We recommend only using this `post_create_version_with_metadata`
+        interceptor in new development instead of the `post_create_version` interceptor.
+        When both interceptors are used, this `post_create_version_with_metadata` interceptor runs after the
+        `post_create_version` interceptor. The (possibly modified) response returned by
+        `post_create_version` will be passed to
+        `post_create_version_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_api(
         self,
@@ -578,11 +716,34 @@ class ApiHubRestInterceptor:
     def post_get_api(self, response: common_fields.Api) -> common_fields.Api:
         """Post-rpc interceptor for get_api
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_api_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ApiHub server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_api` interceptor runs
+        before the `post_get_api_with_metadata` interceptor.
         """
         return response
+
+    def post_get_api_with_metadata(
+        self,
+        response: common_fields.Api,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[common_fields.Api, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_api
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ApiHub server but before it is returned to user code.
+
+        We recommend only using this `post_get_api_with_metadata`
+        interceptor in new development instead of the `post_get_api` interceptor.
+        When both interceptors are used, this `post_get_api_with_metadata` interceptor runs after the
+        `post_get_api` interceptor. The (possibly modified) response returned by
+        `post_get_api` will be passed to
+        `post_get_api_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_api_operation(
         self,
@@ -603,11 +764,34 @@ class ApiHubRestInterceptor:
     ) -> common_fields.ApiOperation:
         """Post-rpc interceptor for get_api_operation
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_api_operation_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ApiHub server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_api_operation` interceptor runs
+        before the `post_get_api_operation_with_metadata` interceptor.
         """
         return response
+
+    def post_get_api_operation_with_metadata(
+        self,
+        response: common_fields.ApiOperation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[common_fields.ApiOperation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_api_operation
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ApiHub server but before it is returned to user code.
+
+        We recommend only using this `post_get_api_operation_with_metadata`
+        interceptor in new development instead of the `post_get_api_operation` interceptor.
+        When both interceptors are used, this `post_get_api_operation_with_metadata` interceptor runs after the
+        `post_get_api_operation` interceptor. The (possibly modified) response returned by
+        `post_get_api_operation` will be passed to
+        `post_get_api_operation_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_attribute(
         self,
@@ -628,11 +812,34 @@ class ApiHubRestInterceptor:
     ) -> common_fields.Attribute:
         """Post-rpc interceptor for get_attribute
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_attribute_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ApiHub server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_attribute` interceptor runs
+        before the `post_get_attribute_with_metadata` interceptor.
         """
         return response
+
+    def post_get_attribute_with_metadata(
+        self,
+        response: common_fields.Attribute,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[common_fields.Attribute, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_attribute
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ApiHub server but before it is returned to user code.
+
+        We recommend only using this `post_get_attribute_with_metadata`
+        interceptor in new development instead of the `post_get_attribute` interceptor.
+        When both interceptors are used, this `post_get_attribute_with_metadata` interceptor runs after the
+        `post_get_attribute` interceptor. The (possibly modified) response returned by
+        `post_get_attribute` will be passed to
+        `post_get_attribute_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_definition(
         self,
@@ -653,11 +860,34 @@ class ApiHubRestInterceptor:
     ) -> common_fields.Definition:
         """Post-rpc interceptor for get_definition
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_definition_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ApiHub server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_definition` interceptor runs
+        before the `post_get_definition_with_metadata` interceptor.
         """
         return response
+
+    def post_get_definition_with_metadata(
+        self,
+        response: common_fields.Definition,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[common_fields.Definition, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_definition
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ApiHub server but before it is returned to user code.
+
+        We recommend only using this `post_get_definition_with_metadata`
+        interceptor in new development instead of the `post_get_definition` interceptor.
+        When both interceptors are used, this `post_get_definition_with_metadata` interceptor runs after the
+        `post_get_definition` interceptor. The (possibly modified) response returned by
+        `post_get_definition` will be passed to
+        `post_get_definition_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_deployment(
         self,
@@ -678,11 +908,34 @@ class ApiHubRestInterceptor:
     ) -> common_fields.Deployment:
         """Post-rpc interceptor for get_deployment
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_deployment_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ApiHub server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_deployment` interceptor runs
+        before the `post_get_deployment_with_metadata` interceptor.
         """
         return response
+
+    def post_get_deployment_with_metadata(
+        self,
+        response: common_fields.Deployment,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[common_fields.Deployment, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_deployment
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ApiHub server but before it is returned to user code.
+
+        We recommend only using this `post_get_deployment_with_metadata`
+        interceptor in new development instead of the `post_get_deployment` interceptor.
+        When both interceptors are used, this `post_get_deployment_with_metadata` interceptor runs after the
+        `post_get_deployment` interceptor. The (possibly modified) response returned by
+        `post_get_deployment` will be passed to
+        `post_get_deployment_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_external_api(
         self,
@@ -703,11 +956,34 @@ class ApiHubRestInterceptor:
     ) -> common_fields.ExternalApi:
         """Post-rpc interceptor for get_external_api
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_external_api_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ApiHub server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_external_api` interceptor runs
+        before the `post_get_external_api_with_metadata` interceptor.
         """
         return response
+
+    def post_get_external_api_with_metadata(
+        self,
+        response: common_fields.ExternalApi,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[common_fields.ExternalApi, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_external_api
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ApiHub server but before it is returned to user code.
+
+        We recommend only using this `post_get_external_api_with_metadata`
+        interceptor in new development instead of the `post_get_external_api` interceptor.
+        When both interceptors are used, this `post_get_external_api_with_metadata` interceptor runs after the
+        `post_get_external_api` interceptor. The (possibly modified) response returned by
+        `post_get_external_api` will be passed to
+        `post_get_external_api_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_spec(
         self,
@@ -724,11 +1000,34 @@ class ApiHubRestInterceptor:
     def post_get_spec(self, response: common_fields.Spec) -> common_fields.Spec:
         """Post-rpc interceptor for get_spec
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_spec_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ApiHub server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_spec` interceptor runs
+        before the `post_get_spec_with_metadata` interceptor.
         """
         return response
+
+    def post_get_spec_with_metadata(
+        self,
+        response: common_fields.Spec,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[common_fields.Spec, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_spec
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ApiHub server but before it is returned to user code.
+
+        We recommend only using this `post_get_spec_with_metadata`
+        interceptor in new development instead of the `post_get_spec` interceptor.
+        When both interceptors are used, this `post_get_spec_with_metadata` interceptor runs after the
+        `post_get_spec` interceptor. The (possibly modified) response returned by
+        `post_get_spec` will be passed to
+        `post_get_spec_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_spec_contents(
         self,
@@ -749,11 +1048,34 @@ class ApiHubRestInterceptor:
     ) -> common_fields.SpecContents:
         """Post-rpc interceptor for get_spec_contents
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_spec_contents_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ApiHub server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_spec_contents` interceptor runs
+        before the `post_get_spec_contents_with_metadata` interceptor.
         """
         return response
+
+    def post_get_spec_contents_with_metadata(
+        self,
+        response: common_fields.SpecContents,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[common_fields.SpecContents, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_spec_contents
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ApiHub server but before it is returned to user code.
+
+        We recommend only using this `post_get_spec_contents_with_metadata`
+        interceptor in new development instead of the `post_get_spec_contents` interceptor.
+        When both interceptors are used, this `post_get_spec_contents_with_metadata` interceptor runs after the
+        `post_get_spec_contents` interceptor. The (possibly modified) response returned by
+        `post_get_spec_contents` will be passed to
+        `post_get_spec_contents_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_version(
         self,
@@ -774,11 +1096,34 @@ class ApiHubRestInterceptor:
     ) -> common_fields.Version:
         """Post-rpc interceptor for get_version
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_version_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ApiHub server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_version` interceptor runs
+        before the `post_get_version_with_metadata` interceptor.
         """
         return response
+
+    def post_get_version_with_metadata(
+        self,
+        response: common_fields.Version,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[common_fields.Version, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_version
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ApiHub server but before it is returned to user code.
+
+        We recommend only using this `post_get_version_with_metadata`
+        interceptor in new development instead of the `post_get_version` interceptor.
+        When both interceptors are used, this `post_get_version_with_metadata` interceptor runs after the
+        `post_get_version` interceptor. The (possibly modified) response returned by
+        `post_get_version` will be passed to
+        `post_get_version_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_api_operations(
         self,
@@ -799,11 +1144,37 @@ class ApiHubRestInterceptor:
     ) -> apihub_service.ListApiOperationsResponse:
         """Post-rpc interceptor for list_api_operations
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_api_operations_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ApiHub server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_api_operations` interceptor runs
+        before the `post_list_api_operations_with_metadata` interceptor.
         """
         return response
+
+    def post_list_api_operations_with_metadata(
+        self,
+        response: apihub_service.ListApiOperationsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        apihub_service.ListApiOperationsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_api_operations
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ApiHub server but before it is returned to user code.
+
+        We recommend only using this `post_list_api_operations_with_metadata`
+        interceptor in new development instead of the `post_list_api_operations` interceptor.
+        When both interceptors are used, this `post_list_api_operations_with_metadata` interceptor runs after the
+        `post_list_api_operations` interceptor. The (possibly modified) response returned by
+        `post_list_api_operations` will be passed to
+        `post_list_api_operations_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_apis(
         self,
@@ -822,11 +1193,36 @@ class ApiHubRestInterceptor:
     ) -> apihub_service.ListApisResponse:
         """Post-rpc interceptor for list_apis
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_apis_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ApiHub server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_apis` interceptor runs
+        before the `post_list_apis_with_metadata` interceptor.
         """
         return response
+
+    def post_list_apis_with_metadata(
+        self,
+        response: apihub_service.ListApisResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        apihub_service.ListApisResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_apis
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ApiHub server but before it is returned to user code.
+
+        We recommend only using this `post_list_apis_with_metadata`
+        interceptor in new development instead of the `post_list_apis` interceptor.
+        When both interceptors are used, this `post_list_apis_with_metadata` interceptor runs after the
+        `post_list_apis` interceptor. The (possibly modified) response returned by
+        `post_list_apis` will be passed to
+        `post_list_apis_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_attributes(
         self,
@@ -847,11 +1243,36 @@ class ApiHubRestInterceptor:
     ) -> apihub_service.ListAttributesResponse:
         """Post-rpc interceptor for list_attributes
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_attributes_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ApiHub server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_attributes` interceptor runs
+        before the `post_list_attributes_with_metadata` interceptor.
         """
         return response
+
+    def post_list_attributes_with_metadata(
+        self,
+        response: apihub_service.ListAttributesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        apihub_service.ListAttributesResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_attributes
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ApiHub server but before it is returned to user code.
+
+        We recommend only using this `post_list_attributes_with_metadata`
+        interceptor in new development instead of the `post_list_attributes` interceptor.
+        When both interceptors are used, this `post_list_attributes_with_metadata` interceptor runs after the
+        `post_list_attributes` interceptor. The (possibly modified) response returned by
+        `post_list_attributes` will be passed to
+        `post_list_attributes_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_deployments(
         self,
@@ -872,11 +1293,36 @@ class ApiHubRestInterceptor:
     ) -> apihub_service.ListDeploymentsResponse:
         """Post-rpc interceptor for list_deployments
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_deployments_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ApiHub server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_deployments` interceptor runs
+        before the `post_list_deployments_with_metadata` interceptor.
         """
         return response
+
+    def post_list_deployments_with_metadata(
+        self,
+        response: apihub_service.ListDeploymentsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        apihub_service.ListDeploymentsResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_deployments
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ApiHub server but before it is returned to user code.
+
+        We recommend only using this `post_list_deployments_with_metadata`
+        interceptor in new development instead of the `post_list_deployments` interceptor.
+        When both interceptors are used, this `post_list_deployments_with_metadata` interceptor runs after the
+        `post_list_deployments` interceptor. The (possibly modified) response returned by
+        `post_list_deployments` will be passed to
+        `post_list_deployments_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_external_apis(
         self,
@@ -897,11 +1343,36 @@ class ApiHubRestInterceptor:
     ) -> apihub_service.ListExternalApisResponse:
         """Post-rpc interceptor for list_external_apis
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_external_apis_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ApiHub server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_external_apis` interceptor runs
+        before the `post_list_external_apis_with_metadata` interceptor.
         """
         return response
+
+    def post_list_external_apis_with_metadata(
+        self,
+        response: apihub_service.ListExternalApisResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        apihub_service.ListExternalApisResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_external_apis
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ApiHub server but before it is returned to user code.
+
+        We recommend only using this `post_list_external_apis_with_metadata`
+        interceptor in new development instead of the `post_list_external_apis` interceptor.
+        When both interceptors are used, this `post_list_external_apis_with_metadata` interceptor runs after the
+        `post_list_external_apis` interceptor. The (possibly modified) response returned by
+        `post_list_external_apis` will be passed to
+        `post_list_external_apis_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_specs(
         self,
@@ -922,11 +1393,36 @@ class ApiHubRestInterceptor:
     ) -> apihub_service.ListSpecsResponse:
         """Post-rpc interceptor for list_specs
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_specs_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ApiHub server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_specs` interceptor runs
+        before the `post_list_specs_with_metadata` interceptor.
         """
         return response
+
+    def post_list_specs_with_metadata(
+        self,
+        response: apihub_service.ListSpecsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        apihub_service.ListSpecsResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_specs
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ApiHub server but before it is returned to user code.
+
+        We recommend only using this `post_list_specs_with_metadata`
+        interceptor in new development instead of the `post_list_specs` interceptor.
+        When both interceptors are used, this `post_list_specs_with_metadata` interceptor runs after the
+        `post_list_specs` interceptor. The (possibly modified) response returned by
+        `post_list_specs` will be passed to
+        `post_list_specs_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_versions(
         self,
@@ -947,11 +1443,36 @@ class ApiHubRestInterceptor:
     ) -> apihub_service.ListVersionsResponse:
         """Post-rpc interceptor for list_versions
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_versions_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ApiHub server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_versions` interceptor runs
+        before the `post_list_versions_with_metadata` interceptor.
         """
         return response
+
+    def post_list_versions_with_metadata(
+        self,
+        response: apihub_service.ListVersionsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        apihub_service.ListVersionsResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_versions
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ApiHub server but before it is returned to user code.
+
+        We recommend only using this `post_list_versions_with_metadata`
+        interceptor in new development instead of the `post_list_versions` interceptor.
+        When both interceptors are used, this `post_list_versions_with_metadata` interceptor runs after the
+        `post_list_versions` interceptor. The (possibly modified) response returned by
+        `post_list_versions` will be passed to
+        `post_list_versions_with_metadata`.
+        """
+        return response, metadata
 
     def pre_search_resources(
         self,
@@ -972,11 +1493,36 @@ class ApiHubRestInterceptor:
     ) -> apihub_service.SearchResourcesResponse:
         """Post-rpc interceptor for search_resources
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_search_resources_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ApiHub server but before
-        it is returned to user code.
+        it is returned to user code. This `post_search_resources` interceptor runs
+        before the `post_search_resources_with_metadata` interceptor.
         """
         return response
+
+    def post_search_resources_with_metadata(
+        self,
+        response: apihub_service.SearchResourcesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        apihub_service.SearchResourcesResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for search_resources
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ApiHub server but before it is returned to user code.
+
+        We recommend only using this `post_search_resources_with_metadata`
+        interceptor in new development instead of the `post_search_resources` interceptor.
+        When both interceptors are used, this `post_search_resources_with_metadata` interceptor runs after the
+        `post_search_resources` interceptor. The (possibly modified) response returned by
+        `post_search_resources` will be passed to
+        `post_search_resources_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_api(
         self,
@@ -995,11 +1541,34 @@ class ApiHubRestInterceptor:
     def post_update_api(self, response: common_fields.Api) -> common_fields.Api:
         """Post-rpc interceptor for update_api
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_api_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ApiHub server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_api` interceptor runs
+        before the `post_update_api_with_metadata` interceptor.
         """
         return response
+
+    def post_update_api_with_metadata(
+        self,
+        response: common_fields.Api,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[common_fields.Api, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_api
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ApiHub server but before it is returned to user code.
+
+        We recommend only using this `post_update_api_with_metadata`
+        interceptor in new development instead of the `post_update_api` interceptor.
+        When both interceptors are used, this `post_update_api_with_metadata` interceptor runs after the
+        `post_update_api` interceptor. The (possibly modified) response returned by
+        `post_update_api` will be passed to
+        `post_update_api_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_attribute(
         self,
@@ -1020,11 +1589,34 @@ class ApiHubRestInterceptor:
     ) -> common_fields.Attribute:
         """Post-rpc interceptor for update_attribute
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_attribute_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ApiHub server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_attribute` interceptor runs
+        before the `post_update_attribute_with_metadata` interceptor.
         """
         return response
+
+    def post_update_attribute_with_metadata(
+        self,
+        response: common_fields.Attribute,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[common_fields.Attribute, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_attribute
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ApiHub server but before it is returned to user code.
+
+        We recommend only using this `post_update_attribute_with_metadata`
+        interceptor in new development instead of the `post_update_attribute` interceptor.
+        When both interceptors are used, this `post_update_attribute_with_metadata` interceptor runs after the
+        `post_update_attribute` interceptor. The (possibly modified) response returned by
+        `post_update_attribute` will be passed to
+        `post_update_attribute_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_deployment(
         self,
@@ -1045,11 +1637,34 @@ class ApiHubRestInterceptor:
     ) -> common_fields.Deployment:
         """Post-rpc interceptor for update_deployment
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_deployment_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ApiHub server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_deployment` interceptor runs
+        before the `post_update_deployment_with_metadata` interceptor.
         """
         return response
+
+    def post_update_deployment_with_metadata(
+        self,
+        response: common_fields.Deployment,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[common_fields.Deployment, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_deployment
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ApiHub server but before it is returned to user code.
+
+        We recommend only using this `post_update_deployment_with_metadata`
+        interceptor in new development instead of the `post_update_deployment` interceptor.
+        When both interceptors are used, this `post_update_deployment_with_metadata` interceptor runs after the
+        `post_update_deployment` interceptor. The (possibly modified) response returned by
+        `post_update_deployment` will be passed to
+        `post_update_deployment_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_external_api(
         self,
@@ -1070,11 +1685,34 @@ class ApiHubRestInterceptor:
     ) -> common_fields.ExternalApi:
         """Post-rpc interceptor for update_external_api
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_external_api_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ApiHub server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_external_api` interceptor runs
+        before the `post_update_external_api_with_metadata` interceptor.
         """
         return response
+
+    def post_update_external_api_with_metadata(
+        self,
+        response: common_fields.ExternalApi,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[common_fields.ExternalApi, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_external_api
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ApiHub server but before it is returned to user code.
+
+        We recommend only using this `post_update_external_api_with_metadata`
+        interceptor in new development instead of the `post_update_external_api` interceptor.
+        When both interceptors are used, this `post_update_external_api_with_metadata` interceptor runs after the
+        `post_update_external_api` interceptor. The (possibly modified) response returned by
+        `post_update_external_api` will be passed to
+        `post_update_external_api_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_spec(
         self,
@@ -1093,11 +1731,34 @@ class ApiHubRestInterceptor:
     def post_update_spec(self, response: common_fields.Spec) -> common_fields.Spec:
         """Post-rpc interceptor for update_spec
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_spec_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ApiHub server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_spec` interceptor runs
+        before the `post_update_spec_with_metadata` interceptor.
         """
         return response
+
+    def post_update_spec_with_metadata(
+        self,
+        response: common_fields.Spec,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[common_fields.Spec, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_spec
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ApiHub server but before it is returned to user code.
+
+        We recommend only using this `post_update_spec_with_metadata`
+        interceptor in new development instead of the `post_update_spec` interceptor.
+        When both interceptors are used, this `post_update_spec_with_metadata` interceptor runs after the
+        `post_update_spec` interceptor. The (possibly modified) response returned by
+        `post_update_spec` will be passed to
+        `post_update_spec_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_version(
         self,
@@ -1118,11 +1779,34 @@ class ApiHubRestInterceptor:
     ) -> common_fields.Version:
         """Post-rpc interceptor for update_version
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_version_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ApiHub server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_version` interceptor runs
+        before the `post_update_version_with_metadata` interceptor.
         """
         return response
+
+    def post_update_version_with_metadata(
+        self,
+        response: common_fields.Version,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[common_fields.Version, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_version
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ApiHub server but before it is returned to user code.
+
+        We recommend only using this `post_update_version_with_metadata`
+        interceptor in new development instead of the `post_update_version` interceptor.
+        When both interceptors are used, this `post_update_version_with_metadata` interceptor runs after the
+        `post_update_version` interceptor. The (possibly modified) response returned by
+        `post_update_version` will be passed to
+        `post_update_version_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_location(
         self,
@@ -1481,6 +2165,10 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_api(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_api_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1642,6 +2330,10 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_attribute(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_attribute_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1805,6 +2497,10 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_deployment(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_deployment_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1965,6 +2661,10 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_external_api(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_external_api_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2118,6 +2818,10 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_spec(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_spec_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2271,6 +2975,10 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_version(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_version_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3077,6 +3785,10 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_api(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_api_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3234,6 +3946,10 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_api_operation(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_api_operation_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3385,6 +4101,10 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_attribute(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_attribute_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3537,6 +4257,10 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_definition(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_definition_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3688,6 +4412,10 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_deployment(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_deployment_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3838,6 +4566,10 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_external_api(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_external_api_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3982,6 +4714,10 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_spec(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_spec_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4130,6 +4866,10 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_spec_contents(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_spec_contents_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4275,6 +5015,10 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_version(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_version_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4426,6 +5170,10 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_api_operations(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_api_operations_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4571,6 +5319,10 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_apis(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_apis_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4718,6 +5470,10 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_attributes(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_attributes_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4871,6 +5627,10 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_deployments(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_deployments_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -5024,6 +5784,10 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_external_apis(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_external_apis_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -5168,6 +5932,10 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_specs(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_specs_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -5317,6 +6085,10 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_versions(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_versions_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -5476,6 +6248,10 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_search_resources(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_search_resources_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -5625,6 +6401,10 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_api(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_api_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -5786,6 +6566,10 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_attribute(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_attribute_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -5949,6 +6733,10 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_deployment(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_deployment_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -6109,6 +6897,10 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_external_api(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_external_api_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -6262,6 +7054,10 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_spec(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_spec_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -6415,6 +7211,10 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_version(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_version_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

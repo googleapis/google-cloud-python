@@ -357,11 +357,34 @@ class RegistryRestInterceptor:
     def post_create_api(self, response: registry_models.Api) -> registry_models.Api:
         """Post-rpc interceptor for create_api
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_api_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Registry server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_api` interceptor runs
+        before the `post_create_api_with_metadata` interceptor.
         """
         return response
+
+    def post_create_api_with_metadata(
+        self,
+        response: registry_models.Api,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[registry_models.Api, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_api
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Registry server but before it is returned to user code.
+
+        We recommend only using this `post_create_api_with_metadata`
+        interceptor in new development instead of the `post_create_api` interceptor.
+        When both interceptors are used, this `post_create_api_with_metadata` interceptor runs after the
+        `post_create_api` interceptor. The (possibly modified) response returned by
+        `post_create_api` will be passed to
+        `post_create_api_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_api_deployment(
         self,
@@ -383,11 +406,34 @@ class RegistryRestInterceptor:
     ) -> registry_models.ApiDeployment:
         """Post-rpc interceptor for create_api_deployment
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_api_deployment_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Registry server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_api_deployment` interceptor runs
+        before the `post_create_api_deployment_with_metadata` interceptor.
         """
         return response
+
+    def post_create_api_deployment_with_metadata(
+        self,
+        response: registry_models.ApiDeployment,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[registry_models.ApiDeployment, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_api_deployment
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Registry server but before it is returned to user code.
+
+        We recommend only using this `post_create_api_deployment_with_metadata`
+        interceptor in new development instead of the `post_create_api_deployment` interceptor.
+        When both interceptors are used, this `post_create_api_deployment_with_metadata` interceptor runs after the
+        `post_create_api_deployment` interceptor. The (possibly modified) response returned by
+        `post_create_api_deployment` will be passed to
+        `post_create_api_deployment_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_api_spec(
         self,
@@ -408,11 +454,34 @@ class RegistryRestInterceptor:
     ) -> registry_models.ApiSpec:
         """Post-rpc interceptor for create_api_spec
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_api_spec_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Registry server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_api_spec` interceptor runs
+        before the `post_create_api_spec_with_metadata` interceptor.
         """
         return response
+
+    def post_create_api_spec_with_metadata(
+        self,
+        response: registry_models.ApiSpec,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[registry_models.ApiSpec, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_api_spec
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Registry server but before it is returned to user code.
+
+        We recommend only using this `post_create_api_spec_with_metadata`
+        interceptor in new development instead of the `post_create_api_spec` interceptor.
+        When both interceptors are used, this `post_create_api_spec_with_metadata` interceptor runs after the
+        `post_create_api_spec` interceptor. The (possibly modified) response returned by
+        `post_create_api_spec` will be passed to
+        `post_create_api_spec_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_api_version(
         self,
@@ -434,11 +503,34 @@ class RegistryRestInterceptor:
     ) -> registry_models.ApiVersion:
         """Post-rpc interceptor for create_api_version
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_api_version_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Registry server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_api_version` interceptor runs
+        before the `post_create_api_version_with_metadata` interceptor.
         """
         return response
+
+    def post_create_api_version_with_metadata(
+        self,
+        response: registry_models.ApiVersion,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[registry_models.ApiVersion, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_api_version
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Registry server but before it is returned to user code.
+
+        We recommend only using this `post_create_api_version_with_metadata`
+        interceptor in new development instead of the `post_create_api_version` interceptor.
+        When both interceptors are used, this `post_create_api_version_with_metadata` interceptor runs after the
+        `post_create_api_version` interceptor. The (possibly modified) response returned by
+        `post_create_api_version` will be passed to
+        `post_create_api_version_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_artifact(
         self,
@@ -459,11 +551,34 @@ class RegistryRestInterceptor:
     ) -> registry_models.Artifact:
         """Post-rpc interceptor for create_artifact
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_artifact_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Registry server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_artifact` interceptor runs
+        before the `post_create_artifact_with_metadata` interceptor.
         """
         return response
+
+    def post_create_artifact_with_metadata(
+        self,
+        response: registry_models.Artifact,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[registry_models.Artifact, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_artifact
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Registry server but before it is returned to user code.
+
+        We recommend only using this `post_create_artifact_with_metadata`
+        interceptor in new development instead of the `post_create_artifact` interceptor.
+        When both interceptors are used, this `post_create_artifact_with_metadata` interceptor runs after the
+        `post_create_artifact` interceptor. The (possibly modified) response returned by
+        `post_create_artifact` will be passed to
+        `post_create_artifact_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_api(
         self,
@@ -514,11 +629,34 @@ class RegistryRestInterceptor:
     ) -> registry_models.ApiDeployment:
         """Post-rpc interceptor for delete_api_deployment_revision
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_api_deployment_revision_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Registry server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_api_deployment_revision` interceptor runs
+        before the `post_delete_api_deployment_revision_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_api_deployment_revision_with_metadata(
+        self,
+        response: registry_models.ApiDeployment,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[registry_models.ApiDeployment, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_api_deployment_revision
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Registry server but before it is returned to user code.
+
+        We recommend only using this `post_delete_api_deployment_revision_with_metadata`
+        interceptor in new development instead of the `post_delete_api_deployment_revision` interceptor.
+        When both interceptors are used, this `post_delete_api_deployment_revision_with_metadata` interceptor runs after the
+        `post_delete_api_deployment_revision` interceptor. The (possibly modified) response returned by
+        `post_delete_api_deployment_revision` will be passed to
+        `post_delete_api_deployment_revision_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_api_spec(
         self,
@@ -554,11 +692,34 @@ class RegistryRestInterceptor:
     ) -> registry_models.ApiSpec:
         """Post-rpc interceptor for delete_api_spec_revision
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_api_spec_revision_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Registry server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_api_spec_revision` interceptor runs
+        before the `post_delete_api_spec_revision_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_api_spec_revision_with_metadata(
+        self,
+        response: registry_models.ApiSpec,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[registry_models.ApiSpec, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_api_spec_revision
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Registry server but before it is returned to user code.
+
+        We recommend only using this `post_delete_api_spec_revision_with_metadata`
+        interceptor in new development instead of the `post_delete_api_spec_revision` interceptor.
+        When both interceptors are used, this `post_delete_api_spec_revision_with_metadata` interceptor runs after the
+        `post_delete_api_spec_revision` interceptor. The (possibly modified) response returned by
+        `post_delete_api_spec_revision` will be passed to
+        `post_delete_api_spec_revision_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_api_version(
         self,
@@ -604,11 +765,34 @@ class RegistryRestInterceptor:
     def post_get_api(self, response: registry_models.Api) -> registry_models.Api:
         """Post-rpc interceptor for get_api
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_api_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Registry server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_api` interceptor runs
+        before the `post_get_api_with_metadata` interceptor.
         """
         return response
+
+    def post_get_api_with_metadata(
+        self,
+        response: registry_models.Api,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[registry_models.Api, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_api
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Registry server but before it is returned to user code.
+
+        We recommend only using this `post_get_api_with_metadata`
+        interceptor in new development instead of the `post_get_api` interceptor.
+        When both interceptors are used, this `post_get_api_with_metadata` interceptor runs after the
+        `post_get_api` interceptor. The (possibly modified) response returned by
+        `post_get_api` will be passed to
+        `post_get_api_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_api_deployment(
         self,
@@ -630,11 +814,34 @@ class RegistryRestInterceptor:
     ) -> registry_models.ApiDeployment:
         """Post-rpc interceptor for get_api_deployment
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_api_deployment_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Registry server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_api_deployment` interceptor runs
+        before the `post_get_api_deployment_with_metadata` interceptor.
         """
         return response
+
+    def post_get_api_deployment_with_metadata(
+        self,
+        response: registry_models.ApiDeployment,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[registry_models.ApiDeployment, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_api_deployment
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Registry server but before it is returned to user code.
+
+        We recommend only using this `post_get_api_deployment_with_metadata`
+        interceptor in new development instead of the `post_get_api_deployment` interceptor.
+        When both interceptors are used, this `post_get_api_deployment_with_metadata` interceptor runs after the
+        `post_get_api_deployment` interceptor. The (possibly modified) response returned by
+        `post_get_api_deployment` will be passed to
+        `post_get_api_deployment_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_api_spec(
         self,
@@ -655,11 +862,34 @@ class RegistryRestInterceptor:
     ) -> registry_models.ApiSpec:
         """Post-rpc interceptor for get_api_spec
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_api_spec_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Registry server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_api_spec` interceptor runs
+        before the `post_get_api_spec_with_metadata` interceptor.
         """
         return response
+
+    def post_get_api_spec_with_metadata(
+        self,
+        response: registry_models.ApiSpec,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[registry_models.ApiSpec, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_api_spec
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Registry server but before it is returned to user code.
+
+        We recommend only using this `post_get_api_spec_with_metadata`
+        interceptor in new development instead of the `post_get_api_spec` interceptor.
+        When both interceptors are used, this `post_get_api_spec_with_metadata` interceptor runs after the
+        `post_get_api_spec` interceptor. The (possibly modified) response returned by
+        `post_get_api_spec` will be passed to
+        `post_get_api_spec_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_api_spec_contents(
         self,
@@ -681,11 +911,34 @@ class RegistryRestInterceptor:
     ) -> httpbody_pb2.HttpBody:
         """Post-rpc interceptor for get_api_spec_contents
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_api_spec_contents_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Registry server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_api_spec_contents` interceptor runs
+        before the `post_get_api_spec_contents_with_metadata` interceptor.
         """
         return response
+
+    def post_get_api_spec_contents_with_metadata(
+        self,
+        response: httpbody_pb2.HttpBody,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[httpbody_pb2.HttpBody, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_api_spec_contents
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Registry server but before it is returned to user code.
+
+        We recommend only using this `post_get_api_spec_contents_with_metadata`
+        interceptor in new development instead of the `post_get_api_spec_contents` interceptor.
+        When both interceptors are used, this `post_get_api_spec_contents_with_metadata` interceptor runs after the
+        `post_get_api_spec_contents` interceptor. The (possibly modified) response returned by
+        `post_get_api_spec_contents` will be passed to
+        `post_get_api_spec_contents_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_api_version(
         self,
@@ -706,11 +959,34 @@ class RegistryRestInterceptor:
     ) -> registry_models.ApiVersion:
         """Post-rpc interceptor for get_api_version
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_api_version_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Registry server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_api_version` interceptor runs
+        before the `post_get_api_version_with_metadata` interceptor.
         """
         return response
+
+    def post_get_api_version_with_metadata(
+        self,
+        response: registry_models.ApiVersion,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[registry_models.ApiVersion, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_api_version
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Registry server but before it is returned to user code.
+
+        We recommend only using this `post_get_api_version_with_metadata`
+        interceptor in new development instead of the `post_get_api_version` interceptor.
+        When both interceptors are used, this `post_get_api_version_with_metadata` interceptor runs after the
+        `post_get_api_version` interceptor. The (possibly modified) response returned by
+        `post_get_api_version` will be passed to
+        `post_get_api_version_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_artifact(
         self,
@@ -731,11 +1007,34 @@ class RegistryRestInterceptor:
     ) -> registry_models.Artifact:
         """Post-rpc interceptor for get_artifact
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_artifact_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Registry server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_artifact` interceptor runs
+        before the `post_get_artifact_with_metadata` interceptor.
         """
         return response
+
+    def post_get_artifact_with_metadata(
+        self,
+        response: registry_models.Artifact,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[registry_models.Artifact, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_artifact
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Registry server but before it is returned to user code.
+
+        We recommend only using this `post_get_artifact_with_metadata`
+        interceptor in new development instead of the `post_get_artifact` interceptor.
+        When both interceptors are used, this `post_get_artifact_with_metadata` interceptor runs after the
+        `post_get_artifact` interceptor. The (possibly modified) response returned by
+        `post_get_artifact` will be passed to
+        `post_get_artifact_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_artifact_contents(
         self,
@@ -757,11 +1056,34 @@ class RegistryRestInterceptor:
     ) -> httpbody_pb2.HttpBody:
         """Post-rpc interceptor for get_artifact_contents
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_artifact_contents_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Registry server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_artifact_contents` interceptor runs
+        before the `post_get_artifact_contents_with_metadata` interceptor.
         """
         return response
+
+    def post_get_artifact_contents_with_metadata(
+        self,
+        response: httpbody_pb2.HttpBody,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[httpbody_pb2.HttpBody, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_artifact_contents
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Registry server but before it is returned to user code.
+
+        We recommend only using this `post_get_artifact_contents_with_metadata`
+        interceptor in new development instead of the `post_get_artifact_contents` interceptor.
+        When both interceptors are used, this `post_get_artifact_contents_with_metadata` interceptor runs after the
+        `post_get_artifact_contents` interceptor. The (possibly modified) response returned by
+        `post_get_artifact_contents` will be passed to
+        `post_get_artifact_contents_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_api_deployment_revisions(
         self,
@@ -783,11 +1105,37 @@ class RegistryRestInterceptor:
     ) -> registry_service.ListApiDeploymentRevisionsResponse:
         """Post-rpc interceptor for list_api_deployment_revisions
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_api_deployment_revisions_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Registry server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_api_deployment_revisions` interceptor runs
+        before the `post_list_api_deployment_revisions_with_metadata` interceptor.
         """
         return response
+
+    def post_list_api_deployment_revisions_with_metadata(
+        self,
+        response: registry_service.ListApiDeploymentRevisionsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        registry_service.ListApiDeploymentRevisionsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_api_deployment_revisions
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Registry server but before it is returned to user code.
+
+        We recommend only using this `post_list_api_deployment_revisions_with_metadata`
+        interceptor in new development instead of the `post_list_api_deployment_revisions` interceptor.
+        When both interceptors are used, this `post_list_api_deployment_revisions_with_metadata` interceptor runs after the
+        `post_list_api_deployment_revisions` interceptor. The (possibly modified) response returned by
+        `post_list_api_deployment_revisions` will be passed to
+        `post_list_api_deployment_revisions_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_api_deployments(
         self,
@@ -809,11 +1157,37 @@ class RegistryRestInterceptor:
     ) -> registry_service.ListApiDeploymentsResponse:
         """Post-rpc interceptor for list_api_deployments
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_api_deployments_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Registry server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_api_deployments` interceptor runs
+        before the `post_list_api_deployments_with_metadata` interceptor.
         """
         return response
+
+    def post_list_api_deployments_with_metadata(
+        self,
+        response: registry_service.ListApiDeploymentsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        registry_service.ListApiDeploymentsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_api_deployments
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Registry server but before it is returned to user code.
+
+        We recommend only using this `post_list_api_deployments_with_metadata`
+        interceptor in new development instead of the `post_list_api_deployments` interceptor.
+        When both interceptors are used, this `post_list_api_deployments_with_metadata` interceptor runs after the
+        `post_list_api_deployments` interceptor. The (possibly modified) response returned by
+        `post_list_api_deployments` will be passed to
+        `post_list_api_deployments_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_apis(
         self,
@@ -834,11 +1208,36 @@ class RegistryRestInterceptor:
     ) -> registry_service.ListApisResponse:
         """Post-rpc interceptor for list_apis
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_apis_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Registry server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_apis` interceptor runs
+        before the `post_list_apis_with_metadata` interceptor.
         """
         return response
+
+    def post_list_apis_with_metadata(
+        self,
+        response: registry_service.ListApisResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        registry_service.ListApisResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_apis
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Registry server but before it is returned to user code.
+
+        We recommend only using this `post_list_apis_with_metadata`
+        interceptor in new development instead of the `post_list_apis` interceptor.
+        When both interceptors are used, this `post_list_apis_with_metadata` interceptor runs after the
+        `post_list_apis` interceptor. The (possibly modified) response returned by
+        `post_list_apis` will be passed to
+        `post_list_apis_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_api_spec_revisions(
         self,
@@ -860,11 +1259,37 @@ class RegistryRestInterceptor:
     ) -> registry_service.ListApiSpecRevisionsResponse:
         """Post-rpc interceptor for list_api_spec_revisions
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_api_spec_revisions_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Registry server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_api_spec_revisions` interceptor runs
+        before the `post_list_api_spec_revisions_with_metadata` interceptor.
         """
         return response
+
+    def post_list_api_spec_revisions_with_metadata(
+        self,
+        response: registry_service.ListApiSpecRevisionsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        registry_service.ListApiSpecRevisionsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_api_spec_revisions
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Registry server but before it is returned to user code.
+
+        We recommend only using this `post_list_api_spec_revisions_with_metadata`
+        interceptor in new development instead of the `post_list_api_spec_revisions` interceptor.
+        When both interceptors are used, this `post_list_api_spec_revisions_with_metadata` interceptor runs after the
+        `post_list_api_spec_revisions` interceptor. The (possibly modified) response returned by
+        `post_list_api_spec_revisions` will be passed to
+        `post_list_api_spec_revisions_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_api_specs(
         self,
@@ -885,11 +1310,36 @@ class RegistryRestInterceptor:
     ) -> registry_service.ListApiSpecsResponse:
         """Post-rpc interceptor for list_api_specs
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_api_specs_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Registry server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_api_specs` interceptor runs
+        before the `post_list_api_specs_with_metadata` interceptor.
         """
         return response
+
+    def post_list_api_specs_with_metadata(
+        self,
+        response: registry_service.ListApiSpecsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        registry_service.ListApiSpecsResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_api_specs
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Registry server but before it is returned to user code.
+
+        We recommend only using this `post_list_api_specs_with_metadata`
+        interceptor in new development instead of the `post_list_api_specs` interceptor.
+        When both interceptors are used, this `post_list_api_specs_with_metadata` interceptor runs after the
+        `post_list_api_specs` interceptor. The (possibly modified) response returned by
+        `post_list_api_specs` will be passed to
+        `post_list_api_specs_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_api_versions(
         self,
@@ -910,11 +1360,37 @@ class RegistryRestInterceptor:
     ) -> registry_service.ListApiVersionsResponse:
         """Post-rpc interceptor for list_api_versions
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_api_versions_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Registry server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_api_versions` interceptor runs
+        before the `post_list_api_versions_with_metadata` interceptor.
         """
         return response
+
+    def post_list_api_versions_with_metadata(
+        self,
+        response: registry_service.ListApiVersionsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        registry_service.ListApiVersionsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_api_versions
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Registry server but before it is returned to user code.
+
+        We recommend only using this `post_list_api_versions_with_metadata`
+        interceptor in new development instead of the `post_list_api_versions` interceptor.
+        When both interceptors are used, this `post_list_api_versions_with_metadata` interceptor runs after the
+        `post_list_api_versions` interceptor. The (possibly modified) response returned by
+        `post_list_api_versions` will be passed to
+        `post_list_api_versions_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_artifacts(
         self,
@@ -935,11 +1411,36 @@ class RegistryRestInterceptor:
     ) -> registry_service.ListArtifactsResponse:
         """Post-rpc interceptor for list_artifacts
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_artifacts_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Registry server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_artifacts` interceptor runs
+        before the `post_list_artifacts_with_metadata` interceptor.
         """
         return response
+
+    def post_list_artifacts_with_metadata(
+        self,
+        response: registry_service.ListArtifactsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        registry_service.ListArtifactsResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_artifacts
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Registry server but before it is returned to user code.
+
+        We recommend only using this `post_list_artifacts_with_metadata`
+        interceptor in new development instead of the `post_list_artifacts` interceptor.
+        When both interceptors are used, this `post_list_artifacts_with_metadata` interceptor runs after the
+        `post_list_artifacts` interceptor. The (possibly modified) response returned by
+        `post_list_artifacts` will be passed to
+        `post_list_artifacts_with_metadata`.
+        """
+        return response, metadata
 
     def pre_replace_artifact(
         self,
@@ -960,11 +1461,34 @@ class RegistryRestInterceptor:
     ) -> registry_models.Artifact:
         """Post-rpc interceptor for replace_artifact
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_replace_artifact_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Registry server but before
-        it is returned to user code.
+        it is returned to user code. This `post_replace_artifact` interceptor runs
+        before the `post_replace_artifact_with_metadata` interceptor.
         """
         return response
+
+    def post_replace_artifact_with_metadata(
+        self,
+        response: registry_models.Artifact,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[registry_models.Artifact, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for replace_artifact
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Registry server but before it is returned to user code.
+
+        We recommend only using this `post_replace_artifact_with_metadata`
+        interceptor in new development instead of the `post_replace_artifact` interceptor.
+        When both interceptors are used, this `post_replace_artifact_with_metadata` interceptor runs after the
+        `post_replace_artifact` interceptor. The (possibly modified) response returned by
+        `post_replace_artifact` will be passed to
+        `post_replace_artifact_with_metadata`.
+        """
+        return response, metadata
 
     def pre_rollback_api_deployment(
         self,
@@ -986,11 +1510,34 @@ class RegistryRestInterceptor:
     ) -> registry_models.ApiDeployment:
         """Post-rpc interceptor for rollback_api_deployment
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_rollback_api_deployment_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Registry server but before
-        it is returned to user code.
+        it is returned to user code. This `post_rollback_api_deployment` interceptor runs
+        before the `post_rollback_api_deployment_with_metadata` interceptor.
         """
         return response
+
+    def post_rollback_api_deployment_with_metadata(
+        self,
+        response: registry_models.ApiDeployment,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[registry_models.ApiDeployment, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for rollback_api_deployment
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Registry server but before it is returned to user code.
+
+        We recommend only using this `post_rollback_api_deployment_with_metadata`
+        interceptor in new development instead of the `post_rollback_api_deployment` interceptor.
+        When both interceptors are used, this `post_rollback_api_deployment_with_metadata` interceptor runs after the
+        `post_rollback_api_deployment` interceptor. The (possibly modified) response returned by
+        `post_rollback_api_deployment` will be passed to
+        `post_rollback_api_deployment_with_metadata`.
+        """
+        return response, metadata
 
     def pre_rollback_api_spec(
         self,
@@ -1011,11 +1558,34 @@ class RegistryRestInterceptor:
     ) -> registry_models.ApiSpec:
         """Post-rpc interceptor for rollback_api_spec
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_rollback_api_spec_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Registry server but before
-        it is returned to user code.
+        it is returned to user code. This `post_rollback_api_spec` interceptor runs
+        before the `post_rollback_api_spec_with_metadata` interceptor.
         """
         return response
+
+    def post_rollback_api_spec_with_metadata(
+        self,
+        response: registry_models.ApiSpec,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[registry_models.ApiSpec, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for rollback_api_spec
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Registry server but before it is returned to user code.
+
+        We recommend only using this `post_rollback_api_spec_with_metadata`
+        interceptor in new development instead of the `post_rollback_api_spec` interceptor.
+        When both interceptors are used, this `post_rollback_api_spec_with_metadata` interceptor runs after the
+        `post_rollback_api_spec` interceptor. The (possibly modified) response returned by
+        `post_rollback_api_spec` will be passed to
+        `post_rollback_api_spec_with_metadata`.
+        """
+        return response, metadata
 
     def pre_tag_api_deployment_revision(
         self,
@@ -1037,11 +1607,34 @@ class RegistryRestInterceptor:
     ) -> registry_models.ApiDeployment:
         """Post-rpc interceptor for tag_api_deployment_revision
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_tag_api_deployment_revision_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Registry server but before
-        it is returned to user code.
+        it is returned to user code. This `post_tag_api_deployment_revision` interceptor runs
+        before the `post_tag_api_deployment_revision_with_metadata` interceptor.
         """
         return response
+
+    def post_tag_api_deployment_revision_with_metadata(
+        self,
+        response: registry_models.ApiDeployment,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[registry_models.ApiDeployment, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for tag_api_deployment_revision
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Registry server but before it is returned to user code.
+
+        We recommend only using this `post_tag_api_deployment_revision_with_metadata`
+        interceptor in new development instead of the `post_tag_api_deployment_revision` interceptor.
+        When both interceptors are used, this `post_tag_api_deployment_revision_with_metadata` interceptor runs after the
+        `post_tag_api_deployment_revision` interceptor. The (possibly modified) response returned by
+        `post_tag_api_deployment_revision` will be passed to
+        `post_tag_api_deployment_revision_with_metadata`.
+        """
+        return response, metadata
 
     def pre_tag_api_spec_revision(
         self,
@@ -1063,11 +1656,34 @@ class RegistryRestInterceptor:
     ) -> registry_models.ApiSpec:
         """Post-rpc interceptor for tag_api_spec_revision
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_tag_api_spec_revision_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Registry server but before
-        it is returned to user code.
+        it is returned to user code. This `post_tag_api_spec_revision` interceptor runs
+        before the `post_tag_api_spec_revision_with_metadata` interceptor.
         """
         return response
+
+    def post_tag_api_spec_revision_with_metadata(
+        self,
+        response: registry_models.ApiSpec,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[registry_models.ApiSpec, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for tag_api_spec_revision
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Registry server but before it is returned to user code.
+
+        We recommend only using this `post_tag_api_spec_revision_with_metadata`
+        interceptor in new development instead of the `post_tag_api_spec_revision` interceptor.
+        When both interceptors are used, this `post_tag_api_spec_revision_with_metadata` interceptor runs after the
+        `post_tag_api_spec_revision` interceptor. The (possibly modified) response returned by
+        `post_tag_api_spec_revision` will be passed to
+        `post_tag_api_spec_revision_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_api(
         self,
@@ -1086,11 +1702,34 @@ class RegistryRestInterceptor:
     def post_update_api(self, response: registry_models.Api) -> registry_models.Api:
         """Post-rpc interceptor for update_api
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_api_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Registry server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_api` interceptor runs
+        before the `post_update_api_with_metadata` interceptor.
         """
         return response
+
+    def post_update_api_with_metadata(
+        self,
+        response: registry_models.Api,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[registry_models.Api, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_api
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Registry server but before it is returned to user code.
+
+        We recommend only using this `post_update_api_with_metadata`
+        interceptor in new development instead of the `post_update_api` interceptor.
+        When both interceptors are used, this `post_update_api_with_metadata` interceptor runs after the
+        `post_update_api` interceptor. The (possibly modified) response returned by
+        `post_update_api` will be passed to
+        `post_update_api_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_api_deployment(
         self,
@@ -1112,11 +1751,34 @@ class RegistryRestInterceptor:
     ) -> registry_models.ApiDeployment:
         """Post-rpc interceptor for update_api_deployment
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_api_deployment_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Registry server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_api_deployment` interceptor runs
+        before the `post_update_api_deployment_with_metadata` interceptor.
         """
         return response
+
+    def post_update_api_deployment_with_metadata(
+        self,
+        response: registry_models.ApiDeployment,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[registry_models.ApiDeployment, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_api_deployment
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Registry server but before it is returned to user code.
+
+        We recommend only using this `post_update_api_deployment_with_metadata`
+        interceptor in new development instead of the `post_update_api_deployment` interceptor.
+        When both interceptors are used, this `post_update_api_deployment_with_metadata` interceptor runs after the
+        `post_update_api_deployment` interceptor. The (possibly modified) response returned by
+        `post_update_api_deployment` will be passed to
+        `post_update_api_deployment_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_api_spec(
         self,
@@ -1137,11 +1799,34 @@ class RegistryRestInterceptor:
     ) -> registry_models.ApiSpec:
         """Post-rpc interceptor for update_api_spec
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_api_spec_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Registry server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_api_spec` interceptor runs
+        before the `post_update_api_spec_with_metadata` interceptor.
         """
         return response
+
+    def post_update_api_spec_with_metadata(
+        self,
+        response: registry_models.ApiSpec,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[registry_models.ApiSpec, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_api_spec
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Registry server but before it is returned to user code.
+
+        We recommend only using this `post_update_api_spec_with_metadata`
+        interceptor in new development instead of the `post_update_api_spec` interceptor.
+        When both interceptors are used, this `post_update_api_spec_with_metadata` interceptor runs after the
+        `post_update_api_spec` interceptor. The (possibly modified) response returned by
+        `post_update_api_spec` will be passed to
+        `post_update_api_spec_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_api_version(
         self,
@@ -1163,11 +1848,34 @@ class RegistryRestInterceptor:
     ) -> registry_models.ApiVersion:
         """Post-rpc interceptor for update_api_version
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_api_version_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Registry server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_api_version` interceptor runs
+        before the `post_update_api_version_with_metadata` interceptor.
         """
         return response
+
+    def post_update_api_version_with_metadata(
+        self,
+        response: registry_models.ApiVersion,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[registry_models.ApiVersion, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_api_version
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Registry server but before it is returned to user code.
+
+        We recommend only using this `post_update_api_version_with_metadata`
+        interceptor in new development instead of the `post_update_api_version` interceptor.
+        When both interceptors are used, this `post_update_api_version_with_metadata` interceptor runs after the
+        `post_update_api_version` interceptor. The (possibly modified) response returned by
+        `post_update_api_version` will be passed to
+        `post_update_api_version_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_location(
         self,
@@ -1601,6 +2309,10 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_api(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_api_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1759,6 +2471,10 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_api_deployment(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_api_deployment_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1923,6 +2639,10 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_api_spec(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_api_spec_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2078,6 +2798,10 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_api_version(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_api_version_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2241,6 +2965,10 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_artifact(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_artifact_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2609,6 +3337,13 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_api_deployment_revision(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_delete_api_deployment_revision_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2876,6 +3611,10 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_api_spec_revision(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_api_spec_revision_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3239,6 +3978,10 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_api(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_api_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3392,6 +4135,10 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_api_deployment(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_api_deployment_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3548,6 +4295,10 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_api_spec(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_api_spec_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3740,6 +4491,10 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_api_spec_contents(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_api_spec_contents_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3887,6 +4642,10 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_api_version(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_api_version_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4040,6 +4799,10 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_artifact(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_artifact_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4232,6 +4995,10 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_artifact_contents(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_artifact_contents_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4378,6 +5145,13 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_api_deployment_revisions(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_list_api_deployment_revisions_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4527,6 +5301,10 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_api_deployments(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_api_deployments_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4669,6 +5447,10 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_apis(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_apis_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4816,6 +5598,10 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_api_spec_revisions(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_api_spec_revisions_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4960,6 +5746,10 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_api_specs(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_api_specs_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -5108,6 +5898,10 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_api_versions(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_api_versions_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -5254,6 +6048,10 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_artifacts(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_artifacts_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -5421,6 +6219,10 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_replace_artifact(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_replace_artifact_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -5579,6 +6381,10 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_rollback_api_deployment(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_rollback_api_deployment_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -5747,6 +6553,10 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_rollback_api_spec(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_rollback_api_spec_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -5906,6 +6716,10 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_tag_api_deployment_revision(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_tag_api_deployment_revision_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -6069,6 +6883,10 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_tag_api_spec_revision(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_tag_api_spec_revision_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -6218,6 +7036,10 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_api(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_api_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -6376,6 +7198,10 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_api_deployment(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_api_deployment_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -6540,6 +7366,10 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_api_spec(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_api_spec_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -6695,6 +7525,10 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_api_version(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_api_version_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

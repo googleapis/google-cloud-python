@@ -72,6 +72,13 @@ from google.cloud.appengine_admin_v1.services.applications import (
 from google.cloud.appengine_admin_v1.types import appengine, application
 from google.cloud.appengine_admin_v1.types import operation as ga_operation
 
+CRED_INFO_JSON = {
+    "credential_source": "/path/to/file",
+    "credential_type": "service account credentials",
+    "principal": "service-account@example.com",
+}
+CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
 
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
@@ -313,6 +320,49 @@ def test__get_universe_domain():
     with pytest.raises(ValueError) as excinfo:
         ApplicationsClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+
+@pytest.mark.parametrize(
+    "error_code,cred_info_json,show_cred_info",
+    [
+        (401, CRED_INFO_JSON, True),
+        (403, CRED_INFO_JSON, True),
+        (404, CRED_INFO_JSON, True),
+        (500, CRED_INFO_JSON, False),
+        (401, None, False),
+        (403, None, False),
+        (404, None, False),
+        (500, None, False),
+    ],
+)
+def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
+    cred = mock.Mock(["get_cred_info"])
+    cred.get_cred_info = mock.Mock(return_value=cred_info_json)
+    client = ApplicationsClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=["foo"])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    if show_cred_info:
+        assert error.details == ["foo", CRED_INFO_STRING]
+    else:
+        assert error.details == ["foo"]
+
+
+@pytest.mark.parametrize("error_code", [401, 403, 404, 500])
+def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
+    cred = mock.Mock([])
+    assert not hasattr(cred, "get_cred_info")
+    client = ApplicationsClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=[])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    assert error.details == []
 
 
 @pytest.mark.parametrize(
@@ -2789,10 +2839,13 @@ def test_get_application_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ApplicationsRestInterceptor, "post_get_application"
     ) as post, mock.patch.object(
+        transports.ApplicationsRestInterceptor, "post_get_application_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ApplicationsRestInterceptor, "pre_get_application"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = appengine.GetApplicationRequest.pb(
             appengine.GetApplicationRequest()
         )
@@ -2816,6 +2869,7 @@ def test_get_application_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = application.Application()
+        post_with_metadata.return_value = application.Application(), metadata
 
         client.get_application(
             request,
@@ -2827,6 +2881,7 @@ def test_get_application_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_application_rest_bad_request(
@@ -3001,10 +3056,13 @@ def test_create_application_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.ApplicationsRestInterceptor, "post_create_application"
     ) as post, mock.patch.object(
+        transports.ApplicationsRestInterceptor, "post_create_application_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ApplicationsRestInterceptor, "pre_create_application"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = appengine.CreateApplicationRequest.pb(
             appengine.CreateApplicationRequest()
         )
@@ -3028,6 +3086,7 @@ def test_create_application_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_application(
             request,
@@ -3039,6 +3098,7 @@ def test_create_application_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_application_rest_bad_request(
@@ -3213,10 +3273,13 @@ def test_update_application_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.ApplicationsRestInterceptor, "post_update_application"
     ) as post, mock.patch.object(
+        transports.ApplicationsRestInterceptor, "post_update_application_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ApplicationsRestInterceptor, "pre_update_application"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = appengine.UpdateApplicationRequest.pb(
             appengine.UpdateApplicationRequest()
         )
@@ -3240,6 +3303,7 @@ def test_update_application_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.update_application(
             request,
@@ -3251,6 +3315,7 @@ def test_update_application_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_repair_application_rest_bad_request(
@@ -3331,10 +3396,13 @@ def test_repair_application_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.ApplicationsRestInterceptor, "post_repair_application"
     ) as post, mock.patch.object(
+        transports.ApplicationsRestInterceptor, "post_repair_application_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ApplicationsRestInterceptor, "pre_repair_application"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = appengine.RepairApplicationRequest.pb(
             appengine.RepairApplicationRequest()
         )
@@ -3358,6 +3426,7 @@ def test_repair_application_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.repair_application(
             request,
@@ -3369,6 +3438,7 @@ def test_repair_application_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_initialize_client_w_rest():

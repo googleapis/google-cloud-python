@@ -73,6 +73,13 @@ from google.cloud.apigateway_v1.services.api_gateway_service import (
 )
 from google.cloud.apigateway_v1.types import apigateway
 
+CRED_INFO_JSON = {
+    "credential_source": "/path/to/file",
+    "credential_type": "service account credentials",
+    "principal": "service-account@example.com",
+}
+CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
 
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
@@ -338,6 +345,49 @@ def test__get_universe_domain():
     with pytest.raises(ValueError) as excinfo:
         ApiGatewayServiceClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+
+@pytest.mark.parametrize(
+    "error_code,cred_info_json,show_cred_info",
+    [
+        (401, CRED_INFO_JSON, True),
+        (403, CRED_INFO_JSON, True),
+        (404, CRED_INFO_JSON, True),
+        (500, CRED_INFO_JSON, False),
+        (401, None, False),
+        (403, None, False),
+        (404, None, False),
+        (500, None, False),
+    ],
+)
+def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
+    cred = mock.Mock(["get_cred_info"])
+    cred.get_cred_info = mock.Mock(return_value=cred_info_json)
+    client = ApiGatewayServiceClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=["foo"])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    if show_cred_info:
+        assert error.details == ["foo", CRED_INFO_STRING]
+    else:
+        assert error.details == ["foo"]
+
+
+@pytest.mark.parametrize("error_code", [401, 403, 404, 500])
+def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
+    cred = mock.Mock([])
+    assert not hasattr(cred, "get_cred_info")
+    client = ApiGatewayServiceClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=[])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    assert error.details == []
 
 
 @pytest.mark.parametrize(
@@ -10690,10 +10740,13 @@ def test_list_gateways_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ApiGatewayServiceRestInterceptor, "post_list_gateways"
     ) as post, mock.patch.object(
+        transports.ApiGatewayServiceRestInterceptor, "post_list_gateways_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ApiGatewayServiceRestInterceptor, "pre_list_gateways"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = apigateway.ListGatewaysRequest.pb(apigateway.ListGatewaysRequest())
         transcode.return_value = {
             "method": "post",
@@ -10717,6 +10770,7 @@ def test_list_gateways_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = apigateway.ListGatewaysResponse()
+        post_with_metadata.return_value = apigateway.ListGatewaysResponse(), metadata
 
         client.list_gateways(
             request,
@@ -10728,6 +10782,7 @@ def test_list_gateways_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_gateway_rest_bad_request(request_type=apigateway.GetGatewayRequest):
@@ -10818,10 +10873,13 @@ def test_get_gateway_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ApiGatewayServiceRestInterceptor, "post_get_gateway"
     ) as post, mock.patch.object(
+        transports.ApiGatewayServiceRestInterceptor, "post_get_gateway_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ApiGatewayServiceRestInterceptor, "pre_get_gateway"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = apigateway.GetGatewayRequest.pb(apigateway.GetGatewayRequest())
         transcode.return_value = {
             "method": "post",
@@ -10843,6 +10901,7 @@ def test_get_gateway_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = apigateway.Gateway()
+        post_with_metadata.return_value = apigateway.Gateway(), metadata
 
         client.get_gateway(
             request,
@@ -10854,6 +10913,7 @@ def test_get_gateway_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_gateway_rest_bad_request(request_type=apigateway.CreateGatewayRequest):
@@ -11009,10 +11069,13 @@ def test_create_gateway_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.ApiGatewayServiceRestInterceptor, "post_create_gateway"
     ) as post, mock.patch.object(
+        transports.ApiGatewayServiceRestInterceptor, "post_create_gateway_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ApiGatewayServiceRestInterceptor, "pre_create_gateway"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = apigateway.CreateGatewayRequest.pb(
             apigateway.CreateGatewayRequest()
         )
@@ -11036,6 +11099,7 @@ def test_create_gateway_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_gateway(
             request,
@@ -11047,6 +11111,7 @@ def test_create_gateway_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_gateway_rest_bad_request(request_type=apigateway.UpdateGatewayRequest):
@@ -11206,10 +11271,13 @@ def test_update_gateway_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.ApiGatewayServiceRestInterceptor, "post_update_gateway"
     ) as post, mock.patch.object(
+        transports.ApiGatewayServiceRestInterceptor, "post_update_gateway_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ApiGatewayServiceRestInterceptor, "pre_update_gateway"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = apigateway.UpdateGatewayRequest.pb(
             apigateway.UpdateGatewayRequest()
         )
@@ -11233,6 +11301,7 @@ def test_update_gateway_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.update_gateway(
             request,
@@ -11244,6 +11313,7 @@ def test_update_gateway_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_gateway_rest_bad_request(request_type=apigateway.DeleteGatewayRequest):
@@ -11322,10 +11392,13 @@ def test_delete_gateway_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.ApiGatewayServiceRestInterceptor, "post_delete_gateway"
     ) as post, mock.patch.object(
+        transports.ApiGatewayServiceRestInterceptor, "post_delete_gateway_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ApiGatewayServiceRestInterceptor, "pre_delete_gateway"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = apigateway.DeleteGatewayRequest.pb(
             apigateway.DeleteGatewayRequest()
         )
@@ -11349,6 +11422,7 @@ def test_delete_gateway_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_gateway(
             request,
@@ -11360,6 +11434,7 @@ def test_delete_gateway_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_apis_rest_bad_request(request_type=apigateway.ListApisRequest):
@@ -11444,10 +11519,13 @@ def test_list_apis_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ApiGatewayServiceRestInterceptor, "post_list_apis"
     ) as post, mock.patch.object(
+        transports.ApiGatewayServiceRestInterceptor, "post_list_apis_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ApiGatewayServiceRestInterceptor, "pre_list_apis"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = apigateway.ListApisRequest.pb(apigateway.ListApisRequest())
         transcode.return_value = {
             "method": "post",
@@ -11471,6 +11549,7 @@ def test_list_apis_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = apigateway.ListApisResponse()
+        post_with_metadata.return_value = apigateway.ListApisResponse(), metadata
 
         client.list_apis(
             request,
@@ -11482,6 +11561,7 @@ def test_list_apis_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_api_rest_bad_request(request_type=apigateway.GetApiRequest):
@@ -11570,10 +11650,13 @@ def test_get_api_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ApiGatewayServiceRestInterceptor, "post_get_api"
     ) as post, mock.patch.object(
+        transports.ApiGatewayServiceRestInterceptor, "post_get_api_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ApiGatewayServiceRestInterceptor, "pre_get_api"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = apigateway.GetApiRequest.pb(apigateway.GetApiRequest())
         transcode.return_value = {
             "method": "post",
@@ -11595,6 +11678,7 @@ def test_get_api_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = apigateway.Api()
+        post_with_metadata.return_value = apigateway.Api(), metadata
 
         client.get_api(
             request,
@@ -11606,6 +11690,7 @@ def test_get_api_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_api_rest_bad_request(request_type=apigateway.CreateApiRequest):
@@ -11760,10 +11845,13 @@ def test_create_api_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.ApiGatewayServiceRestInterceptor, "post_create_api"
     ) as post, mock.patch.object(
+        transports.ApiGatewayServiceRestInterceptor, "post_create_api_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ApiGatewayServiceRestInterceptor, "pre_create_api"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = apigateway.CreateApiRequest.pb(apigateway.CreateApiRequest())
         transcode.return_value = {
             "method": "post",
@@ -11785,6 +11873,7 @@ def test_create_api_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_api(
             request,
@@ -11796,6 +11885,7 @@ def test_create_api_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_api_rest_bad_request(request_type=apigateway.UpdateApiRequest):
@@ -11950,10 +12040,13 @@ def test_update_api_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.ApiGatewayServiceRestInterceptor, "post_update_api"
     ) as post, mock.patch.object(
+        transports.ApiGatewayServiceRestInterceptor, "post_update_api_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ApiGatewayServiceRestInterceptor, "pre_update_api"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = apigateway.UpdateApiRequest.pb(apigateway.UpdateApiRequest())
         transcode.return_value = {
             "method": "post",
@@ -11975,6 +12068,7 @@ def test_update_api_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.update_api(
             request,
@@ -11986,6 +12080,7 @@ def test_update_api_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_api_rest_bad_request(request_type=apigateway.DeleteApiRequest):
@@ -12064,10 +12159,13 @@ def test_delete_api_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.ApiGatewayServiceRestInterceptor, "post_delete_api"
     ) as post, mock.patch.object(
+        transports.ApiGatewayServiceRestInterceptor, "post_delete_api_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ApiGatewayServiceRestInterceptor, "pre_delete_api"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = apigateway.DeleteApiRequest.pb(apigateway.DeleteApiRequest())
         transcode.return_value = {
             "method": "post",
@@ -12089,6 +12187,7 @@ def test_delete_api_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_api(
             request,
@@ -12100,6 +12199,7 @@ def test_delete_api_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_api_configs_rest_bad_request(
@@ -12186,10 +12286,14 @@ def test_list_api_configs_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ApiGatewayServiceRestInterceptor, "post_list_api_configs"
     ) as post, mock.patch.object(
+        transports.ApiGatewayServiceRestInterceptor,
+        "post_list_api_configs_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ApiGatewayServiceRestInterceptor, "pre_list_api_configs"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = apigateway.ListApiConfigsRequest.pb(
             apigateway.ListApiConfigsRequest()
         )
@@ -12215,6 +12319,7 @@ def test_list_api_configs_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = apigateway.ListApiConfigsResponse()
+        post_with_metadata.return_value = apigateway.ListApiConfigsResponse(), metadata
 
         client.list_api_configs(
             request,
@@ -12226,6 +12331,7 @@ def test_list_api_configs_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_api_config_rest_bad_request(request_type=apigateway.GetApiConfigRequest):
@@ -12320,10 +12426,13 @@ def test_get_api_config_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ApiGatewayServiceRestInterceptor, "post_get_api_config"
     ) as post, mock.patch.object(
+        transports.ApiGatewayServiceRestInterceptor, "post_get_api_config_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ApiGatewayServiceRestInterceptor, "pre_get_api_config"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = apigateway.GetApiConfigRequest.pb(apigateway.GetApiConfigRequest())
         transcode.return_value = {
             "method": "post",
@@ -12345,6 +12454,7 @@ def test_get_api_config_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = apigateway.ApiConfig()
+        post_with_metadata.return_value = apigateway.ApiConfig(), metadata
 
         client.get_api_config(
             request,
@@ -12356,6 +12466,7 @@ def test_get_api_config_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_api_config_rest_bad_request(
@@ -12518,10 +12629,14 @@ def test_create_api_config_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.ApiGatewayServiceRestInterceptor, "post_create_api_config"
     ) as post, mock.patch.object(
+        transports.ApiGatewayServiceRestInterceptor,
+        "post_create_api_config_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ApiGatewayServiceRestInterceptor, "pre_create_api_config"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = apigateway.CreateApiConfigRequest.pb(
             apigateway.CreateApiConfigRequest()
         )
@@ -12545,6 +12660,7 @@ def test_create_api_config_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_api_config(
             request,
@@ -12556,6 +12672,7 @@ def test_create_api_config_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_api_config_rest_bad_request(
@@ -12726,10 +12843,14 @@ def test_update_api_config_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.ApiGatewayServiceRestInterceptor, "post_update_api_config"
     ) as post, mock.patch.object(
+        transports.ApiGatewayServiceRestInterceptor,
+        "post_update_api_config_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ApiGatewayServiceRestInterceptor, "pre_update_api_config"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = apigateway.UpdateApiConfigRequest.pb(
             apigateway.UpdateApiConfigRequest()
         )
@@ -12753,6 +12874,7 @@ def test_update_api_config_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.update_api_config(
             request,
@@ -12764,6 +12886,7 @@ def test_update_api_config_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_api_config_rest_bad_request(
@@ -12848,10 +12971,14 @@ def test_delete_api_config_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.ApiGatewayServiceRestInterceptor, "post_delete_api_config"
     ) as post, mock.patch.object(
+        transports.ApiGatewayServiceRestInterceptor,
+        "post_delete_api_config_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ApiGatewayServiceRestInterceptor, "pre_delete_api_config"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = apigateway.DeleteApiConfigRequest.pb(
             apigateway.DeleteApiConfigRequest()
         )
@@ -12875,6 +13002,7 @@ def test_delete_api_config_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_api_config(
             request,
@@ -12886,6 +13014,7 @@ def test_delete_api_config_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_initialize_client_w_rest():
