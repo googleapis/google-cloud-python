@@ -15,12 +15,13 @@ import dataclasses
 import functools
 from typing import Mapping, Tuple
 
+from bigframes.core import identifiers
 import bigframes.core.expression
-import bigframes.core.identifiers
 import bigframes.core.nodes
 import bigframes.core.ordering
 import bigframes.core.window_spec
 import bigframes.operations
+from bigframes.operations import aggregations as agg_ops
 
 
 # Makes ordering explicit in window definitions
@@ -54,12 +55,12 @@ def pull_up_order(
                 new_node, child_order = pull_up_order_inner(node.child)
 
             new_by = []
-            ids: list[bigframes.core.ids.ColumnId] = []
+            ids: list[identifiers.ColumnId] = []
             for part in node.by:
                 if not isinstance(
                     part.scalar_expression, bigframes.core.expression.DerefOp
                 ):
-                    id = bigframes.core.ids.ColumnId.unique()
+                    id = identifiers.ColumnId.unique()
                     new_node = bigframes.core.nodes.ProjectionNode(
                         new_node, ((part.scalar_expression, id),)
                     )
@@ -114,7 +115,7 @@ def pull_up_order(
             )
         elif isinstance(node, bigframes.core.nodes.ReadLocalNode):
             if node.offsets_col is None:
-                offsets_id = bigframes.core.ids.ColumnId.unique()
+                offsets_id = identifiers.ColumnId.unique()
                 new_root = dataclasses.replace(node, offsets_col=offsets_id)
                 return new_root, bigframes.core.ordering.TotalOrdering.from_offset_col(
                     offsets_id
@@ -145,7 +146,7 @@ def pull_up_order(
             else:
                 # Otherwise we need to generate offsets
                 agg = bigframes.core.expression.NullaryAggregation(
-                    bigframes.core.agg_ops.RowNumberOp()
+                    agg_ops.RowNumberOp()
                 )
                 window_spec = bigframes.core.window_spec.unbound(
                     ordering=tuple(child_order.all_ordering_columns)
@@ -177,8 +178,7 @@ def pull_up_order(
             )
             # Create unique ids just to be safe
             new_selections = {
-                col: bigframes.core.ids.ColumnId.unique()
-                for col in unselected_order_cols
+                col: identifiers.ColumnId.unique() for col in unselected_order_cols
             }
             all_selections = node.input_output_pairs + tuple(
                 bigframes.core.nodes.AliasedRef(bigframes.core.expression.DerefOp(k), v)
@@ -240,14 +240,14 @@ def pull_up_order(
         elif isinstance(node, bigframes.core.nodes.ExplodeNode):
             child_result, child_order = pull_up_order_inner(node.child)
             if node.offsets_col is None:
-                offsets_id = bigframes.core.ids.ColumnId.unique()
+                offsets_id = identifiers.ColumnId.unique()
                 new_explode: bigframes.core.nodes.BigFrameNode = dataclasses.replace(
                     node, child=child_result, offsets_col=offsets_id
                 )
             else:
                 offsets_id = node.offsets_col
                 new_explode = node.replace_child(child_result)
-            inner_order = bigframes.core.orderings.TotalOrdering.from_offset_col(
+            inner_order = bigframes.core.ordering.TotalOrdering.from_offset_col(
                 offsets_id
             )
             return new_explode, child_order.join(inner_order)
@@ -261,8 +261,8 @@ def pull_up_order(
         new_sources = []
         for i, source in enumerate(node.child_nodes):
             new_source, order = pull_up_order_inner(source)
-            offsets_id = bigframes.core.ids.ColumnId.unique()
-            table_id = bigframes.core.ids.ColumnId.unique()
+            offsets_id = identifiers.ColumnId.unique()
+            table_id = identifiers.ColumnId.unique()
             if order.is_total_ordering and order.integer_encoding.is_encoded:
                 order_expression = order.total_order_col
                 assert order_expression is not None
@@ -271,7 +271,7 @@ def pull_up_order(
                 )
             else:
                 agg = bigframes.core.expression.NullaryAggregation(
-                    bigframes.core.agg_ops.RowNumberOp()
+                    agg_ops.RowNumberOp()
                 )
                 window_spec = bigframes.core.window_spec.unbound(
                     ordering=tuple(order.all_ordering_columns)
@@ -291,8 +291,8 @@ def pull_up_order(
             new_source = bigframes.core.nodes.SelectionNode(new_source, selection)
             new_sources.append(new_source)
 
-        union_offsets_id = bigframes.core.ids.ColumnId.unique()
-        union_table_id = bigframes.core.ids.ColumnId.unique()
+        union_offsets_id = identifiers.ColumnId.unique()
+        union_table_id = identifiers.ColumnId.unique()
         new_ids = (*node.output_ids, union_table_id, union_offsets_id)
         new_node = dataclasses.replace(
             node, children=tuple(new_sources), output_ids=new_ids
@@ -317,7 +317,7 @@ def pull_up_order(
 
         if node.type in ("right", "outer"):
             # right side is nullable
-            left_indicator = bigframes.core.ids.ColumnId.unique()
+            left_indicator = identifiers.ColumnId.unique()
             left_child = bigframes.core.nodes.ProjectionNode(
                 left_child, ((bigframes.core.expression.const(True), left_indicator),)
             )
@@ -326,7 +326,7 @@ def pull_up_order(
             )
         if node.type in ("left", "outer"):
             # right side is nullable
-            right_indicator = bigframes.core.ids.ColumnId.unique()
+            right_indicator = identifiers.ColumnId.unique()
             right_child = bigframes.core.nodes.ProjectionNode(
                 right_child, ((bigframes.core.expression.const(True), right_indicator),)
             )
@@ -406,20 +406,18 @@ def pull_up_order(
 def rewrite_promote_offsets(
     node: bigframes.core.nodes.PromoteOffsetsNode,
 ) -> bigframes.core.nodes.WindowOpNode:
-    agg = bigframes.core.expression.NullaryAggregation(
-        bigframes.core.agg_ops.RowNumberOp()
-    )
+    agg = bigframes.core.expression.NullaryAggregation(agg_ops.RowNumberOp())
     window_spec = bigframes.core.window_spec.unbound()
     return bigframes.core.nodes.WindowOpNode(node.child, agg, window_spec, node.col_id)
 
 
 def rename_cols(
-    node: bigframes.core.nodes.BigFrameNode, cols: set[bigframes.core.ids.ColumnId]
+    node: bigframes.core.nodes.BigFrameNode, cols: set[identifiers.ColumnId]
 ) -> Tuple[
     bigframes.core.nodes.BigFrameNode,
-    Mapping[bigframes.core.ids.ColumnId, bigframes.core.ids.ColumnId],
+    Mapping[identifiers.ColumnId, identifiers.ColumnId],
 ]:
-    mappings = dict((id, bigframes.core.ids.ColumnId.unique()) for id in cols)
+    mappings = dict((id, identifiers.ColumnId.unique()) for id in cols)
 
     result_node = bigframes.core.nodes.SelectionNode(
         node,

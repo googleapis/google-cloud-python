@@ -18,8 +18,7 @@ import typing
 
 import bigframes_vendored.pandas.core.window.rolling as vendored_pandas_rolling
 
-from bigframes.core import log_adapter
-import bigframes.core as core
+from bigframes.core import log_adapter, window_spec
 import bigframes.core.blocks as blocks
 import bigframes.operations.aggregations as agg_ops
 
@@ -31,7 +30,7 @@ class Window(vendored_pandas_rolling.Window):
     def __init__(
         self,
         block: blocks.Block,
-        window_spec: core.WindowSpec,
+        window_spec: window_spec.WindowSpec,
         value_column_ids: typing.Sequence[str],
         drop_null_groups: bool = True,
         is_series: bool = False,

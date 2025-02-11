@@ -22,8 +22,8 @@ import bigframes_vendored.pandas.core.groupby as vendored_pandas_groupby
 import jellyfish
 import pandas as pd
 
+from bigframes import session
 from bigframes.core import log_adapter
-import bigframes.core as core
 import bigframes.core.block_transforms as block_ops
 import bigframes.core.blocks as blocks
 import bigframes.core.expression
@@ -76,7 +76,7 @@ class DataFrameGroupBy(vendored_pandas_groupby.DataFrameGroupBy):
             ]
 
     @property
-    def _session(self) -> core.Session:
+    def _session(self) -> session.Session:
         return self._block.session
 
     def __getitem__(
@@ -492,7 +492,7 @@ class DataFrameGroupBy(vendored_pandas_groupby.DataFrameGroupBy):
     def _apply_window_op(
         self,
         op: agg_ops.WindowOp,
-        window: typing.Optional[core.WindowSpec] = None,
+        window: typing.Optional[window_specs.WindowSpec] = None,
         numeric_only: bool = False,
     ):
         """Apply window op to groupby. Defaults to grouped cumulative window."""
@@ -536,7 +536,7 @@ class SeriesGroupBy(vendored_pandas_groupby.SeriesGroupBy):
         self._dropna = dropna  # Applies to aggregations but not windowing
 
     @property
-    def _session(self) -> core.Session:
+    def _session(self) -> session.Session:
         return self._block.session
 
     @validations.requires_ordering()
@@ -759,7 +759,7 @@ class SeriesGroupBy(vendored_pandas_groupby.SeriesGroupBy):
         self,
         op: agg_ops.WindowOp,
         discard_name=False,
-        window: typing.Optional[core.WindowSpec] = None,
+        window: typing.Optional[window_specs.WindowSpec] = None,
         never_skip_nulls: bool = False,
     ):
         """Apply window op to groupby. Defaults to grouped cumulative window."""
