@@ -249,11 +249,34 @@ class NotebookServiceRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_environment
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_environment_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the NotebookService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_environment` interceptor runs
+        before the `post_create_environment_with_metadata` interceptor.
         """
         return response
+
+    def post_create_environment_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_environment
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the NotebookService server but before it is returned to user code.
+
+        We recommend only using this `post_create_environment_with_metadata`
+        interceptor in new development instead of the `post_create_environment` interceptor.
+        When both interceptors are used, this `post_create_environment_with_metadata` interceptor runs after the
+        `post_create_environment` interceptor. The (possibly modified) response returned by
+        `post_create_environment` will be passed to
+        `post_create_environment_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_instance(
         self,
@@ -272,11 +295,34 @@ class NotebookServiceRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_instance
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_instance_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the NotebookService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_instance` interceptor runs
+        before the `post_create_instance_with_metadata` interceptor.
         """
         return response
+
+    def post_create_instance_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_instance
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the NotebookService server but before it is returned to user code.
+
+        We recommend only using this `post_create_instance_with_metadata`
+        interceptor in new development instead of the `post_create_instance` interceptor.
+        When both interceptors are used, this `post_create_instance_with_metadata` interceptor runs after the
+        `post_create_instance` interceptor. The (possibly modified) response returned by
+        `post_create_instance` will be passed to
+        `post_create_instance_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_environment(
         self,
@@ -297,11 +343,34 @@ class NotebookServiceRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_environment
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_environment_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the NotebookService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_environment` interceptor runs
+        before the `post_delete_environment_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_environment_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_environment
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the NotebookService server but before it is returned to user code.
+
+        We recommend only using this `post_delete_environment_with_metadata`
+        interceptor in new development instead of the `post_delete_environment` interceptor.
+        When both interceptors are used, this `post_delete_environment_with_metadata` interceptor runs after the
+        `post_delete_environment` interceptor. The (possibly modified) response returned by
+        `post_delete_environment` will be passed to
+        `post_delete_environment_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_instance(
         self,
@@ -320,11 +389,34 @@ class NotebookServiceRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_instance
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_instance_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the NotebookService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_instance` interceptor runs
+        before the `post_delete_instance_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_instance_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_instance
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the NotebookService server but before it is returned to user code.
+
+        We recommend only using this `post_delete_instance_with_metadata`
+        interceptor in new development instead of the `post_delete_instance` interceptor.
+        When both interceptors are used, this `post_delete_instance_with_metadata` interceptor runs after the
+        `post_delete_instance` interceptor. The (possibly modified) response returned by
+        `post_delete_instance` will be passed to
+        `post_delete_instance_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_environment(
         self,
@@ -343,11 +435,34 @@ class NotebookServiceRestInterceptor:
     ) -> environment.Environment:
         """Post-rpc interceptor for get_environment
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_environment_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the NotebookService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_environment` interceptor runs
+        before the `post_get_environment_with_metadata` interceptor.
         """
         return response
+
+    def post_get_environment_with_metadata(
+        self,
+        response: environment.Environment,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[environment.Environment, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_environment
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the NotebookService server but before it is returned to user code.
+
+        We recommend only using this `post_get_environment_with_metadata`
+        interceptor in new development instead of the `post_get_environment` interceptor.
+        When both interceptors are used, this `post_get_environment_with_metadata` interceptor runs after the
+        `post_get_environment` interceptor. The (possibly modified) response returned by
+        `post_get_environment` will be passed to
+        `post_get_environment_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_instance(
         self,
@@ -364,11 +479,34 @@ class NotebookServiceRestInterceptor:
     def post_get_instance(self, response: instance.Instance) -> instance.Instance:
         """Post-rpc interceptor for get_instance
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_instance_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the NotebookService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_instance` interceptor runs
+        before the `post_get_instance_with_metadata` interceptor.
         """
         return response
+
+    def post_get_instance_with_metadata(
+        self,
+        response: instance.Instance,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[instance.Instance, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_instance
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the NotebookService server but before it is returned to user code.
+
+        We recommend only using this `post_get_instance_with_metadata`
+        interceptor in new development instead of the `post_get_instance` interceptor.
+        When both interceptors are used, this `post_get_instance_with_metadata` interceptor runs after the
+        `post_get_instance` interceptor. The (possibly modified) response returned by
+        `post_get_instance` will be passed to
+        `post_get_instance_with_metadata`.
+        """
+        return response, metadata
 
     def pre_is_instance_upgradeable(
         self,
@@ -389,11 +527,36 @@ class NotebookServiceRestInterceptor:
     ) -> service.IsInstanceUpgradeableResponse:
         """Post-rpc interceptor for is_instance_upgradeable
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_is_instance_upgradeable_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the NotebookService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_is_instance_upgradeable` interceptor runs
+        before the `post_is_instance_upgradeable_with_metadata` interceptor.
         """
         return response
+
+    def post_is_instance_upgradeable_with_metadata(
+        self,
+        response: service.IsInstanceUpgradeableResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        service.IsInstanceUpgradeableResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for is_instance_upgradeable
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the NotebookService server but before it is returned to user code.
+
+        We recommend only using this `post_is_instance_upgradeable_with_metadata`
+        interceptor in new development instead of the `post_is_instance_upgradeable` interceptor.
+        When both interceptors are used, this `post_is_instance_upgradeable_with_metadata` interceptor runs after the
+        `post_is_instance_upgradeable` interceptor. The (possibly modified) response returned by
+        `post_is_instance_upgradeable` will be passed to
+        `post_is_instance_upgradeable_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_environments(
         self,
@@ -414,11 +577,36 @@ class NotebookServiceRestInterceptor:
     ) -> service.ListEnvironmentsResponse:
         """Post-rpc interceptor for list_environments
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_environments_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the NotebookService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_environments` interceptor runs
+        before the `post_list_environments_with_metadata` interceptor.
         """
         return response
+
+    def post_list_environments_with_metadata(
+        self,
+        response: service.ListEnvironmentsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        service.ListEnvironmentsResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_environments
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the NotebookService server but before it is returned to user code.
+
+        We recommend only using this `post_list_environments_with_metadata`
+        interceptor in new development instead of the `post_list_environments` interceptor.
+        When both interceptors are used, this `post_list_environments_with_metadata` interceptor runs after the
+        `post_list_environments` interceptor. The (possibly modified) response returned by
+        `post_list_environments` will be passed to
+        `post_list_environments_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_instances(
         self,
@@ -437,11 +625,34 @@ class NotebookServiceRestInterceptor:
     ) -> service.ListInstancesResponse:
         """Post-rpc interceptor for list_instances
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_instances_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the NotebookService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_instances` interceptor runs
+        before the `post_list_instances_with_metadata` interceptor.
         """
         return response
+
+    def post_list_instances_with_metadata(
+        self,
+        response: service.ListInstancesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.ListInstancesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for list_instances
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the NotebookService server but before it is returned to user code.
+
+        We recommend only using this `post_list_instances_with_metadata`
+        interceptor in new development instead of the `post_list_instances` interceptor.
+        When both interceptors are used, this `post_list_instances_with_metadata` interceptor runs after the
+        `post_list_instances` interceptor. The (possibly modified) response returned by
+        `post_list_instances` will be passed to
+        `post_list_instances_with_metadata`.
+        """
+        return response, metadata
 
     def pre_register_instance(
         self,
@@ -462,11 +673,34 @@ class NotebookServiceRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for register_instance
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_register_instance_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the NotebookService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_register_instance` interceptor runs
+        before the `post_register_instance_with_metadata` interceptor.
         """
         return response
+
+    def post_register_instance_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for register_instance
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the NotebookService server but before it is returned to user code.
+
+        We recommend only using this `post_register_instance_with_metadata`
+        interceptor in new development instead of the `post_register_instance` interceptor.
+        When both interceptors are used, this `post_register_instance_with_metadata` interceptor runs after the
+        `post_register_instance` interceptor. The (possibly modified) response returned by
+        `post_register_instance` will be passed to
+        `post_register_instance_with_metadata`.
+        """
+        return response, metadata
 
     def pre_report_instance_info(
         self,
@@ -487,11 +721,34 @@ class NotebookServiceRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for report_instance_info
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_report_instance_info_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the NotebookService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_report_instance_info` interceptor runs
+        before the `post_report_instance_info_with_metadata` interceptor.
         """
         return response
+
+    def post_report_instance_info_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for report_instance_info
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the NotebookService server but before it is returned to user code.
+
+        We recommend only using this `post_report_instance_info_with_metadata`
+        interceptor in new development instead of the `post_report_instance_info` interceptor.
+        When both interceptors are used, this `post_report_instance_info_with_metadata` interceptor runs after the
+        `post_report_instance_info` interceptor. The (possibly modified) response returned by
+        `post_report_instance_info` will be passed to
+        `post_report_instance_info_with_metadata`.
+        """
+        return response, metadata
 
     def pre_reset_instance(
         self,
@@ -510,11 +767,34 @@ class NotebookServiceRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for reset_instance
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_reset_instance_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the NotebookService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_reset_instance` interceptor runs
+        before the `post_reset_instance_with_metadata` interceptor.
         """
         return response
+
+    def post_reset_instance_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for reset_instance
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the NotebookService server but before it is returned to user code.
+
+        We recommend only using this `post_reset_instance_with_metadata`
+        interceptor in new development instead of the `post_reset_instance` interceptor.
+        When both interceptors are used, this `post_reset_instance_with_metadata` interceptor runs after the
+        `post_reset_instance` interceptor. The (possibly modified) response returned by
+        `post_reset_instance` will be passed to
+        `post_reset_instance_with_metadata`.
+        """
+        return response, metadata
 
     def pre_set_instance_accelerator(
         self,
@@ -535,11 +815,34 @@ class NotebookServiceRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for set_instance_accelerator
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_set_instance_accelerator_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the NotebookService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_set_instance_accelerator` interceptor runs
+        before the `post_set_instance_accelerator_with_metadata` interceptor.
         """
         return response
+
+    def post_set_instance_accelerator_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for set_instance_accelerator
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the NotebookService server but before it is returned to user code.
+
+        We recommend only using this `post_set_instance_accelerator_with_metadata`
+        interceptor in new development instead of the `post_set_instance_accelerator` interceptor.
+        When both interceptors are used, this `post_set_instance_accelerator_with_metadata` interceptor runs after the
+        `post_set_instance_accelerator` interceptor. The (possibly modified) response returned by
+        `post_set_instance_accelerator` will be passed to
+        `post_set_instance_accelerator_with_metadata`.
+        """
+        return response, metadata
 
     def pre_set_instance_labels(
         self,
@@ -560,11 +863,34 @@ class NotebookServiceRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for set_instance_labels
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_set_instance_labels_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the NotebookService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_set_instance_labels` interceptor runs
+        before the `post_set_instance_labels_with_metadata` interceptor.
         """
         return response
+
+    def post_set_instance_labels_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for set_instance_labels
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the NotebookService server but before it is returned to user code.
+
+        We recommend only using this `post_set_instance_labels_with_metadata`
+        interceptor in new development instead of the `post_set_instance_labels` interceptor.
+        When both interceptors are used, this `post_set_instance_labels_with_metadata` interceptor runs after the
+        `post_set_instance_labels` interceptor. The (possibly modified) response returned by
+        `post_set_instance_labels` will be passed to
+        `post_set_instance_labels_with_metadata`.
+        """
+        return response, metadata
 
     def pre_set_instance_machine_type(
         self,
@@ -585,11 +911,34 @@ class NotebookServiceRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for set_instance_machine_type
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_set_instance_machine_type_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the NotebookService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_set_instance_machine_type` interceptor runs
+        before the `post_set_instance_machine_type_with_metadata` interceptor.
         """
         return response
+
+    def post_set_instance_machine_type_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for set_instance_machine_type
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the NotebookService server but before it is returned to user code.
+
+        We recommend only using this `post_set_instance_machine_type_with_metadata`
+        interceptor in new development instead of the `post_set_instance_machine_type` interceptor.
+        When both interceptors are used, this `post_set_instance_machine_type_with_metadata` interceptor runs after the
+        `post_set_instance_machine_type` interceptor. The (possibly modified) response returned by
+        `post_set_instance_machine_type` will be passed to
+        `post_set_instance_machine_type_with_metadata`.
+        """
+        return response, metadata
 
     def pre_start_instance(
         self,
@@ -608,11 +957,34 @@ class NotebookServiceRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for start_instance
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_start_instance_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the NotebookService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_start_instance` interceptor runs
+        before the `post_start_instance_with_metadata` interceptor.
         """
         return response
+
+    def post_start_instance_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for start_instance
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the NotebookService server but before it is returned to user code.
+
+        We recommend only using this `post_start_instance_with_metadata`
+        interceptor in new development instead of the `post_start_instance` interceptor.
+        When both interceptors are used, this `post_start_instance_with_metadata` interceptor runs after the
+        `post_start_instance` interceptor. The (possibly modified) response returned by
+        `post_start_instance` will be passed to
+        `post_start_instance_with_metadata`.
+        """
+        return response, metadata
 
     def pre_stop_instance(
         self,
@@ -631,11 +1003,34 @@ class NotebookServiceRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for stop_instance
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_stop_instance_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the NotebookService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_stop_instance` interceptor runs
+        before the `post_stop_instance_with_metadata` interceptor.
         """
         return response
+
+    def post_stop_instance_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for stop_instance
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the NotebookService server but before it is returned to user code.
+
+        We recommend only using this `post_stop_instance_with_metadata`
+        interceptor in new development instead of the `post_stop_instance` interceptor.
+        When both interceptors are used, this `post_stop_instance_with_metadata` interceptor runs after the
+        `post_stop_instance` interceptor. The (possibly modified) response returned by
+        `post_stop_instance` will be passed to
+        `post_stop_instance_with_metadata`.
+        """
+        return response, metadata
 
     def pre_upgrade_instance(
         self,
@@ -654,11 +1049,34 @@ class NotebookServiceRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for upgrade_instance
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_upgrade_instance_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the NotebookService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_upgrade_instance` interceptor runs
+        before the `post_upgrade_instance_with_metadata` interceptor.
         """
         return response
+
+    def post_upgrade_instance_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for upgrade_instance
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the NotebookService server but before it is returned to user code.
+
+        We recommend only using this `post_upgrade_instance_with_metadata`
+        interceptor in new development instead of the `post_upgrade_instance` interceptor.
+        When both interceptors are used, this `post_upgrade_instance_with_metadata` interceptor runs after the
+        `post_upgrade_instance` interceptor. The (possibly modified) response returned by
+        `post_upgrade_instance` will be passed to
+        `post_upgrade_instance_with_metadata`.
+        """
+        return response, metadata
 
     def pre_upgrade_instance_internal(
         self,
@@ -679,11 +1097,34 @@ class NotebookServiceRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for upgrade_instance_internal
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_upgrade_instance_internal_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the NotebookService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_upgrade_instance_internal` interceptor runs
+        before the `post_upgrade_instance_internal_with_metadata` interceptor.
         """
         return response
+
+    def post_upgrade_instance_internal_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for upgrade_instance_internal
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the NotebookService server but before it is returned to user code.
+
+        We recommend only using this `post_upgrade_instance_internal_with_metadata`
+        interceptor in new development instead of the `post_upgrade_instance_internal` interceptor.
+        When both interceptors are used, this `post_upgrade_instance_internal_with_metadata` interceptor runs after the
+        `post_upgrade_instance_internal` interceptor. The (possibly modified) response returned by
+        `post_upgrade_instance_internal` will be passed to
+        `post_upgrade_instance_internal_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_location(
         self,
@@ -1172,6 +1613,10 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_environment(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_environment_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1320,6 +1765,10 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_instance(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_instance_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1465,6 +1914,10 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_environment(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_environment_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1607,6 +2060,10 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_instance(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_instance_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1751,6 +2208,10 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_environment(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_environment_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1894,6 +2355,10 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_instance(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_instance_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2042,6 +2507,10 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_is_instance_upgradeable(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_is_instance_upgradeable_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2186,6 +2655,10 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_environments(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_environments_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2331,6 +2804,10 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_instances(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_instances_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2481,6 +2958,10 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_register_instance(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_register_instance_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2632,6 +3113,10 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_report_instance_info(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_report_instance_info_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2780,6 +3265,10 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_reset_instance(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_reset_instance_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2933,6 +3422,10 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_set_instance_accelerator(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_set_instance_accelerator_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3083,6 +3576,10 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_set_instance_labels(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_set_instance_labels_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3236,6 +3733,10 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_set_instance_machine_type(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_set_instance_machine_type_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3384,6 +3885,10 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_start_instance(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_start_instance_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3532,6 +4037,10 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_stop_instance(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_stop_instance_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3682,6 +4191,10 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_upgrade_instance(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_upgrade_instance_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3835,6 +4348,10 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_upgrade_instance_internal(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_upgrade_instance_internal_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

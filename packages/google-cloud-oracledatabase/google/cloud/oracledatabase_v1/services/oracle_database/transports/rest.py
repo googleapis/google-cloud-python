@@ -277,11 +277,34 @@ class OracleDatabaseRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_autonomous_database
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_autonomous_database_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the OracleDatabase server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_autonomous_database` interceptor runs
+        before the `post_create_autonomous_database_with_metadata` interceptor.
         """
         return response
+
+    def post_create_autonomous_database_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_autonomous_database
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the OracleDatabase server but before it is returned to user code.
+
+        We recommend only using this `post_create_autonomous_database_with_metadata`
+        interceptor in new development instead of the `post_create_autonomous_database` interceptor.
+        When both interceptors are used, this `post_create_autonomous_database_with_metadata` interceptor runs after the
+        `post_create_autonomous_database` interceptor. The (possibly modified) response returned by
+        `post_create_autonomous_database` will be passed to
+        `post_create_autonomous_database_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_cloud_exadata_infrastructure(
         self,
@@ -303,11 +326,34 @@ class OracleDatabaseRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_cloud_exadata_infrastructure
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_cloud_exadata_infrastructure_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the OracleDatabase server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_cloud_exadata_infrastructure` interceptor runs
+        before the `post_create_cloud_exadata_infrastructure_with_metadata` interceptor.
         """
         return response
+
+    def post_create_cloud_exadata_infrastructure_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_cloud_exadata_infrastructure
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the OracleDatabase server but before it is returned to user code.
+
+        We recommend only using this `post_create_cloud_exadata_infrastructure_with_metadata`
+        interceptor in new development instead of the `post_create_cloud_exadata_infrastructure` interceptor.
+        When both interceptors are used, this `post_create_cloud_exadata_infrastructure_with_metadata` interceptor runs after the
+        `post_create_cloud_exadata_infrastructure` interceptor. The (possibly modified) response returned by
+        `post_create_cloud_exadata_infrastructure` will be passed to
+        `post_create_cloud_exadata_infrastructure_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_cloud_vm_cluster(
         self,
@@ -329,11 +375,34 @@ class OracleDatabaseRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_cloud_vm_cluster
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_cloud_vm_cluster_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the OracleDatabase server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_cloud_vm_cluster` interceptor runs
+        before the `post_create_cloud_vm_cluster_with_metadata` interceptor.
         """
         return response
+
+    def post_create_cloud_vm_cluster_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_cloud_vm_cluster
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the OracleDatabase server but before it is returned to user code.
+
+        We recommend only using this `post_create_cloud_vm_cluster_with_metadata`
+        interceptor in new development instead of the `post_create_cloud_vm_cluster` interceptor.
+        When both interceptors are used, this `post_create_cloud_vm_cluster_with_metadata` interceptor runs after the
+        `post_create_cloud_vm_cluster` interceptor. The (possibly modified) response returned by
+        `post_create_cloud_vm_cluster` will be passed to
+        `post_create_cloud_vm_cluster_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_autonomous_database(
         self,
@@ -355,11 +424,34 @@ class OracleDatabaseRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_autonomous_database
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_autonomous_database_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the OracleDatabase server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_autonomous_database` interceptor runs
+        before the `post_delete_autonomous_database_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_autonomous_database_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_autonomous_database
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the OracleDatabase server but before it is returned to user code.
+
+        We recommend only using this `post_delete_autonomous_database_with_metadata`
+        interceptor in new development instead of the `post_delete_autonomous_database` interceptor.
+        When both interceptors are used, this `post_delete_autonomous_database_with_metadata` interceptor runs after the
+        `post_delete_autonomous_database` interceptor. The (possibly modified) response returned by
+        `post_delete_autonomous_database` will be passed to
+        `post_delete_autonomous_database_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_cloud_exadata_infrastructure(
         self,
@@ -381,11 +473,34 @@ class OracleDatabaseRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_cloud_exadata_infrastructure
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_cloud_exadata_infrastructure_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the OracleDatabase server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_cloud_exadata_infrastructure` interceptor runs
+        before the `post_delete_cloud_exadata_infrastructure_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_cloud_exadata_infrastructure_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_cloud_exadata_infrastructure
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the OracleDatabase server but before it is returned to user code.
+
+        We recommend only using this `post_delete_cloud_exadata_infrastructure_with_metadata`
+        interceptor in new development instead of the `post_delete_cloud_exadata_infrastructure` interceptor.
+        When both interceptors are used, this `post_delete_cloud_exadata_infrastructure_with_metadata` interceptor runs after the
+        `post_delete_cloud_exadata_infrastructure` interceptor. The (possibly modified) response returned by
+        `post_delete_cloud_exadata_infrastructure` will be passed to
+        `post_delete_cloud_exadata_infrastructure_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_cloud_vm_cluster(
         self,
@@ -407,11 +522,34 @@ class OracleDatabaseRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_cloud_vm_cluster
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_cloud_vm_cluster_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the OracleDatabase server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_cloud_vm_cluster` interceptor runs
+        before the `post_delete_cloud_vm_cluster_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_cloud_vm_cluster_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_cloud_vm_cluster
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the OracleDatabase server but before it is returned to user code.
+
+        We recommend only using this `post_delete_cloud_vm_cluster_with_metadata`
+        interceptor in new development instead of the `post_delete_cloud_vm_cluster` interceptor.
+        When both interceptors are used, this `post_delete_cloud_vm_cluster_with_metadata` interceptor runs after the
+        `post_delete_cloud_vm_cluster` interceptor. The (possibly modified) response returned by
+        `post_delete_cloud_vm_cluster` will be passed to
+        `post_delete_cloud_vm_cluster_with_metadata`.
+        """
+        return response, metadata
 
     def pre_generate_autonomous_database_wallet(
         self,
@@ -433,11 +571,37 @@ class OracleDatabaseRestInterceptor:
     ) -> oracledatabase.GenerateAutonomousDatabaseWalletResponse:
         """Post-rpc interceptor for generate_autonomous_database_wallet
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_generate_autonomous_database_wallet_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the OracleDatabase server but before
-        it is returned to user code.
+        it is returned to user code. This `post_generate_autonomous_database_wallet` interceptor runs
+        before the `post_generate_autonomous_database_wallet_with_metadata` interceptor.
         """
         return response
+
+    def post_generate_autonomous_database_wallet_with_metadata(
+        self,
+        response: oracledatabase.GenerateAutonomousDatabaseWalletResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        oracledatabase.GenerateAutonomousDatabaseWalletResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for generate_autonomous_database_wallet
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the OracleDatabase server but before it is returned to user code.
+
+        We recommend only using this `post_generate_autonomous_database_wallet_with_metadata`
+        interceptor in new development instead of the `post_generate_autonomous_database_wallet` interceptor.
+        When both interceptors are used, this `post_generate_autonomous_database_wallet_with_metadata` interceptor runs after the
+        `post_generate_autonomous_database_wallet` interceptor. The (possibly modified) response returned by
+        `post_generate_autonomous_database_wallet` will be passed to
+        `post_generate_autonomous_database_wallet_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_autonomous_database(
         self,
@@ -459,11 +623,36 @@ class OracleDatabaseRestInterceptor:
     ) -> autonomous_database.AutonomousDatabase:
         """Post-rpc interceptor for get_autonomous_database
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_autonomous_database_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the OracleDatabase server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_autonomous_database` interceptor runs
+        before the `post_get_autonomous_database_with_metadata` interceptor.
         """
         return response
+
+    def post_get_autonomous_database_with_metadata(
+        self,
+        response: autonomous_database.AutonomousDatabase,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        autonomous_database.AutonomousDatabase, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for get_autonomous_database
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the OracleDatabase server but before it is returned to user code.
+
+        We recommend only using this `post_get_autonomous_database_with_metadata`
+        interceptor in new development instead of the `post_get_autonomous_database` interceptor.
+        When both interceptors are used, this `post_get_autonomous_database_with_metadata` interceptor runs after the
+        `post_get_autonomous_database` interceptor. The (possibly modified) response returned by
+        `post_get_autonomous_database` will be passed to
+        `post_get_autonomous_database_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_cloud_exadata_infrastructure(
         self,
@@ -485,11 +674,37 @@ class OracleDatabaseRestInterceptor:
     ) -> exadata_infra.CloudExadataInfrastructure:
         """Post-rpc interceptor for get_cloud_exadata_infrastructure
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_cloud_exadata_infrastructure_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the OracleDatabase server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_cloud_exadata_infrastructure` interceptor runs
+        before the `post_get_cloud_exadata_infrastructure_with_metadata` interceptor.
         """
         return response
+
+    def post_get_cloud_exadata_infrastructure_with_metadata(
+        self,
+        response: exadata_infra.CloudExadataInfrastructure,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        exadata_infra.CloudExadataInfrastructure,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for get_cloud_exadata_infrastructure
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the OracleDatabase server but before it is returned to user code.
+
+        We recommend only using this `post_get_cloud_exadata_infrastructure_with_metadata`
+        interceptor in new development instead of the `post_get_cloud_exadata_infrastructure` interceptor.
+        When both interceptors are used, this `post_get_cloud_exadata_infrastructure_with_metadata` interceptor runs after the
+        `post_get_cloud_exadata_infrastructure` interceptor. The (possibly modified) response returned by
+        `post_get_cloud_exadata_infrastructure` will be passed to
+        `post_get_cloud_exadata_infrastructure_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_cloud_vm_cluster(
         self,
@@ -510,11 +725,34 @@ class OracleDatabaseRestInterceptor:
     ) -> vm_cluster.CloudVmCluster:
         """Post-rpc interceptor for get_cloud_vm_cluster
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_cloud_vm_cluster_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the OracleDatabase server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_cloud_vm_cluster` interceptor runs
+        before the `post_get_cloud_vm_cluster_with_metadata` interceptor.
         """
         return response
+
+    def post_get_cloud_vm_cluster_with_metadata(
+        self,
+        response: vm_cluster.CloudVmCluster,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[vm_cluster.CloudVmCluster, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_cloud_vm_cluster
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the OracleDatabase server but before it is returned to user code.
+
+        We recommend only using this `post_get_cloud_vm_cluster_with_metadata`
+        interceptor in new development instead of the `post_get_cloud_vm_cluster` interceptor.
+        When both interceptors are used, this `post_get_cloud_vm_cluster_with_metadata` interceptor runs after the
+        `post_get_cloud_vm_cluster` interceptor. The (possibly modified) response returned by
+        `post_get_cloud_vm_cluster` will be passed to
+        `post_get_cloud_vm_cluster_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_autonomous_database_backups(
         self,
@@ -536,11 +774,37 @@ class OracleDatabaseRestInterceptor:
     ) -> oracledatabase.ListAutonomousDatabaseBackupsResponse:
         """Post-rpc interceptor for list_autonomous_database_backups
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_autonomous_database_backups_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the OracleDatabase server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_autonomous_database_backups` interceptor runs
+        before the `post_list_autonomous_database_backups_with_metadata` interceptor.
         """
         return response
+
+    def post_list_autonomous_database_backups_with_metadata(
+        self,
+        response: oracledatabase.ListAutonomousDatabaseBackupsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        oracledatabase.ListAutonomousDatabaseBackupsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_autonomous_database_backups
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the OracleDatabase server but before it is returned to user code.
+
+        We recommend only using this `post_list_autonomous_database_backups_with_metadata`
+        interceptor in new development instead of the `post_list_autonomous_database_backups` interceptor.
+        When both interceptors are used, this `post_list_autonomous_database_backups_with_metadata` interceptor runs after the
+        `post_list_autonomous_database_backups` interceptor. The (possibly modified) response returned by
+        `post_list_autonomous_database_backups` will be passed to
+        `post_list_autonomous_database_backups_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_autonomous_database_character_sets(
         self,
@@ -562,11 +826,37 @@ class OracleDatabaseRestInterceptor:
     ) -> oracledatabase.ListAutonomousDatabaseCharacterSetsResponse:
         """Post-rpc interceptor for list_autonomous_database_character_sets
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_autonomous_database_character_sets_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the OracleDatabase server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_autonomous_database_character_sets` interceptor runs
+        before the `post_list_autonomous_database_character_sets_with_metadata` interceptor.
         """
         return response
+
+    def post_list_autonomous_database_character_sets_with_metadata(
+        self,
+        response: oracledatabase.ListAutonomousDatabaseCharacterSetsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        oracledatabase.ListAutonomousDatabaseCharacterSetsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_autonomous_database_character_sets
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the OracleDatabase server but before it is returned to user code.
+
+        We recommend only using this `post_list_autonomous_database_character_sets_with_metadata`
+        interceptor in new development instead of the `post_list_autonomous_database_character_sets` interceptor.
+        When both interceptors are used, this `post_list_autonomous_database_character_sets_with_metadata` interceptor runs after the
+        `post_list_autonomous_database_character_sets` interceptor. The (possibly modified) response returned by
+        `post_list_autonomous_database_character_sets` will be passed to
+        `post_list_autonomous_database_character_sets_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_autonomous_databases(
         self,
@@ -588,11 +878,37 @@ class OracleDatabaseRestInterceptor:
     ) -> oracledatabase.ListAutonomousDatabasesResponse:
         """Post-rpc interceptor for list_autonomous_databases
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_autonomous_databases_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the OracleDatabase server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_autonomous_databases` interceptor runs
+        before the `post_list_autonomous_databases_with_metadata` interceptor.
         """
         return response
+
+    def post_list_autonomous_databases_with_metadata(
+        self,
+        response: oracledatabase.ListAutonomousDatabasesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        oracledatabase.ListAutonomousDatabasesResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_autonomous_databases
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the OracleDatabase server but before it is returned to user code.
+
+        We recommend only using this `post_list_autonomous_databases_with_metadata`
+        interceptor in new development instead of the `post_list_autonomous_databases` interceptor.
+        When both interceptors are used, this `post_list_autonomous_databases_with_metadata` interceptor runs after the
+        `post_list_autonomous_databases` interceptor. The (possibly modified) response returned by
+        `post_list_autonomous_databases` will be passed to
+        `post_list_autonomous_databases_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_autonomous_db_versions(
         self,
@@ -614,11 +930,37 @@ class OracleDatabaseRestInterceptor:
     ) -> oracledatabase.ListAutonomousDbVersionsResponse:
         """Post-rpc interceptor for list_autonomous_db_versions
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_autonomous_db_versions_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the OracleDatabase server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_autonomous_db_versions` interceptor runs
+        before the `post_list_autonomous_db_versions_with_metadata` interceptor.
         """
         return response
+
+    def post_list_autonomous_db_versions_with_metadata(
+        self,
+        response: oracledatabase.ListAutonomousDbVersionsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        oracledatabase.ListAutonomousDbVersionsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_autonomous_db_versions
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the OracleDatabase server but before it is returned to user code.
+
+        We recommend only using this `post_list_autonomous_db_versions_with_metadata`
+        interceptor in new development instead of the `post_list_autonomous_db_versions` interceptor.
+        When both interceptors are used, this `post_list_autonomous_db_versions_with_metadata` interceptor runs after the
+        `post_list_autonomous_db_versions` interceptor. The (possibly modified) response returned by
+        `post_list_autonomous_db_versions` will be passed to
+        `post_list_autonomous_db_versions_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_cloud_exadata_infrastructures(
         self,
@@ -640,11 +982,37 @@ class OracleDatabaseRestInterceptor:
     ) -> oracledatabase.ListCloudExadataInfrastructuresResponse:
         """Post-rpc interceptor for list_cloud_exadata_infrastructures
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_cloud_exadata_infrastructures_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the OracleDatabase server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_cloud_exadata_infrastructures` interceptor runs
+        before the `post_list_cloud_exadata_infrastructures_with_metadata` interceptor.
         """
         return response
+
+    def post_list_cloud_exadata_infrastructures_with_metadata(
+        self,
+        response: oracledatabase.ListCloudExadataInfrastructuresResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        oracledatabase.ListCloudExadataInfrastructuresResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_cloud_exadata_infrastructures
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the OracleDatabase server but before it is returned to user code.
+
+        We recommend only using this `post_list_cloud_exadata_infrastructures_with_metadata`
+        interceptor in new development instead of the `post_list_cloud_exadata_infrastructures` interceptor.
+        When both interceptors are used, this `post_list_cloud_exadata_infrastructures_with_metadata` interceptor runs after the
+        `post_list_cloud_exadata_infrastructures` interceptor. The (possibly modified) response returned by
+        `post_list_cloud_exadata_infrastructures` will be passed to
+        `post_list_cloud_exadata_infrastructures_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_cloud_vm_clusters(
         self,
@@ -666,11 +1034,37 @@ class OracleDatabaseRestInterceptor:
     ) -> oracledatabase.ListCloudVmClustersResponse:
         """Post-rpc interceptor for list_cloud_vm_clusters
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_cloud_vm_clusters_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the OracleDatabase server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_cloud_vm_clusters` interceptor runs
+        before the `post_list_cloud_vm_clusters_with_metadata` interceptor.
         """
         return response
+
+    def post_list_cloud_vm_clusters_with_metadata(
+        self,
+        response: oracledatabase.ListCloudVmClustersResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        oracledatabase.ListCloudVmClustersResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_cloud_vm_clusters
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the OracleDatabase server but before it is returned to user code.
+
+        We recommend only using this `post_list_cloud_vm_clusters_with_metadata`
+        interceptor in new development instead of the `post_list_cloud_vm_clusters` interceptor.
+        When both interceptors are used, this `post_list_cloud_vm_clusters_with_metadata` interceptor runs after the
+        `post_list_cloud_vm_clusters` interceptor. The (possibly modified) response returned by
+        `post_list_cloud_vm_clusters` will be passed to
+        `post_list_cloud_vm_clusters_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_db_nodes(
         self,
@@ -691,11 +1085,36 @@ class OracleDatabaseRestInterceptor:
     ) -> oracledatabase.ListDbNodesResponse:
         """Post-rpc interceptor for list_db_nodes
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_db_nodes_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the OracleDatabase server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_db_nodes` interceptor runs
+        before the `post_list_db_nodes_with_metadata` interceptor.
         """
         return response
+
+    def post_list_db_nodes_with_metadata(
+        self,
+        response: oracledatabase.ListDbNodesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        oracledatabase.ListDbNodesResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_db_nodes
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the OracleDatabase server but before it is returned to user code.
+
+        We recommend only using this `post_list_db_nodes_with_metadata`
+        interceptor in new development instead of the `post_list_db_nodes` interceptor.
+        When both interceptors are used, this `post_list_db_nodes_with_metadata` interceptor runs after the
+        `post_list_db_nodes` interceptor. The (possibly modified) response returned by
+        `post_list_db_nodes` will be passed to
+        `post_list_db_nodes_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_db_servers(
         self,
@@ -716,11 +1135,36 @@ class OracleDatabaseRestInterceptor:
     ) -> oracledatabase.ListDbServersResponse:
         """Post-rpc interceptor for list_db_servers
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_db_servers_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the OracleDatabase server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_db_servers` interceptor runs
+        before the `post_list_db_servers_with_metadata` interceptor.
         """
         return response
+
+    def post_list_db_servers_with_metadata(
+        self,
+        response: oracledatabase.ListDbServersResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        oracledatabase.ListDbServersResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_db_servers
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the OracleDatabase server but before it is returned to user code.
+
+        We recommend only using this `post_list_db_servers_with_metadata`
+        interceptor in new development instead of the `post_list_db_servers` interceptor.
+        When both interceptors are used, this `post_list_db_servers_with_metadata` interceptor runs after the
+        `post_list_db_servers` interceptor. The (possibly modified) response returned by
+        `post_list_db_servers` will be passed to
+        `post_list_db_servers_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_db_system_shapes(
         self,
@@ -742,11 +1186,37 @@ class OracleDatabaseRestInterceptor:
     ) -> oracledatabase.ListDbSystemShapesResponse:
         """Post-rpc interceptor for list_db_system_shapes
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_db_system_shapes_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the OracleDatabase server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_db_system_shapes` interceptor runs
+        before the `post_list_db_system_shapes_with_metadata` interceptor.
         """
         return response
+
+    def post_list_db_system_shapes_with_metadata(
+        self,
+        response: oracledatabase.ListDbSystemShapesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        oracledatabase.ListDbSystemShapesResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_db_system_shapes
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the OracleDatabase server but before it is returned to user code.
+
+        We recommend only using this `post_list_db_system_shapes_with_metadata`
+        interceptor in new development instead of the `post_list_db_system_shapes` interceptor.
+        When both interceptors are used, this `post_list_db_system_shapes_with_metadata` interceptor runs after the
+        `post_list_db_system_shapes` interceptor. The (possibly modified) response returned by
+        `post_list_db_system_shapes` will be passed to
+        `post_list_db_system_shapes_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_entitlements(
         self,
@@ -767,11 +1237,36 @@ class OracleDatabaseRestInterceptor:
     ) -> oracledatabase.ListEntitlementsResponse:
         """Post-rpc interceptor for list_entitlements
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_entitlements_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the OracleDatabase server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_entitlements` interceptor runs
+        before the `post_list_entitlements_with_metadata` interceptor.
         """
         return response
+
+    def post_list_entitlements_with_metadata(
+        self,
+        response: oracledatabase.ListEntitlementsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        oracledatabase.ListEntitlementsResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_entitlements
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the OracleDatabase server but before it is returned to user code.
+
+        We recommend only using this `post_list_entitlements_with_metadata`
+        interceptor in new development instead of the `post_list_entitlements` interceptor.
+        When both interceptors are used, this `post_list_entitlements_with_metadata` interceptor runs after the
+        `post_list_entitlements` interceptor. The (possibly modified) response returned by
+        `post_list_entitlements` will be passed to
+        `post_list_entitlements_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_gi_versions(
         self,
@@ -792,11 +1287,36 @@ class OracleDatabaseRestInterceptor:
     ) -> oracledatabase.ListGiVersionsResponse:
         """Post-rpc interceptor for list_gi_versions
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_gi_versions_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the OracleDatabase server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_gi_versions` interceptor runs
+        before the `post_list_gi_versions_with_metadata` interceptor.
         """
         return response
+
+    def post_list_gi_versions_with_metadata(
+        self,
+        response: oracledatabase.ListGiVersionsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        oracledatabase.ListGiVersionsResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_gi_versions
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the OracleDatabase server but before it is returned to user code.
+
+        We recommend only using this `post_list_gi_versions_with_metadata`
+        interceptor in new development instead of the `post_list_gi_versions` interceptor.
+        When both interceptors are used, this `post_list_gi_versions_with_metadata` interceptor runs after the
+        `post_list_gi_versions` interceptor. The (possibly modified) response returned by
+        `post_list_gi_versions` will be passed to
+        `post_list_gi_versions_with_metadata`.
+        """
+        return response, metadata
 
     def pre_restore_autonomous_database(
         self,
@@ -818,11 +1338,34 @@ class OracleDatabaseRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for restore_autonomous_database
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_restore_autonomous_database_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the OracleDatabase server but before
-        it is returned to user code.
+        it is returned to user code. This `post_restore_autonomous_database` interceptor runs
+        before the `post_restore_autonomous_database_with_metadata` interceptor.
         """
         return response
+
+    def post_restore_autonomous_database_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for restore_autonomous_database
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the OracleDatabase server but before it is returned to user code.
+
+        We recommend only using this `post_restore_autonomous_database_with_metadata`
+        interceptor in new development instead of the `post_restore_autonomous_database` interceptor.
+        When both interceptors are used, this `post_restore_autonomous_database_with_metadata` interceptor runs after the
+        `post_restore_autonomous_database` interceptor. The (possibly modified) response returned by
+        `post_restore_autonomous_database` will be passed to
+        `post_restore_autonomous_database_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_location(
         self,
@@ -1241,6 +1784,10 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_autonomous_database(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_autonomous_database_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1395,6 +1942,13 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_cloud_exadata_infrastructure(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_create_cloud_exadata_infrastructure_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1545,6 +2099,10 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_cloud_vm_cluster(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_cloud_vm_cluster_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1692,6 +2250,10 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_autonomous_database(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_autonomous_database_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1840,6 +2402,13 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_cloud_exadata_infrastructure(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_delete_cloud_exadata_infrastructure_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1984,6 +2553,10 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_cloud_vm_cluster(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_cloud_vm_cluster_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2137,6 +2710,13 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_generate_autonomous_database_wallet(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_generate_autonomous_database_wallet_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2287,6 +2867,10 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_autonomous_database(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_autonomous_database_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2436,6 +3020,13 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_cloud_exadata_infrastructure(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_get_cloud_exadata_infrastructure_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2583,6 +3174,10 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_cloud_vm_cluster(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_cloud_vm_cluster_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2727,6 +3322,13 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_autonomous_database_backups(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_list_autonomous_database_backups_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2884,6 +3486,13 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_autonomous_database_character_sets(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_list_autonomous_database_character_sets_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3031,6 +3640,10 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_autonomous_databases(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_autonomous_databases_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3179,6 +3792,10 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_autonomous_db_versions(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_autonomous_db_versions_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3330,6 +3947,13 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_cloud_exadata_infrastructures(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_list_cloud_exadata_infrastructures_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3477,6 +4101,10 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_cloud_vm_clusters(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_cloud_vm_clusters_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3619,6 +4247,10 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_db_nodes(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_db_nodes_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3761,6 +4393,10 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_db_servers(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_db_servers_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3905,6 +4541,10 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_db_system_shapes(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_db_system_shapes_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4049,6 +4689,10 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_entitlements(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_entitlements_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4193,6 +4837,10 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_gi_versions(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_gi_versions_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4348,6 +4996,10 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_restore_autonomous_database(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_restore_autonomous_database_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

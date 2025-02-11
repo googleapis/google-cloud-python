@@ -200,11 +200,34 @@ class ManagedKafkaRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_cluster
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_cluster_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ManagedKafka server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_cluster` interceptor runs
+        before the `post_create_cluster_with_metadata` interceptor.
         """
         return response
+
+    def post_create_cluster_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_cluster
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ManagedKafka server but before it is returned to user code.
+
+        We recommend only using this `post_create_cluster_with_metadata`
+        interceptor in new development instead of the `post_create_cluster` interceptor.
+        When both interceptors are used, this `post_create_cluster_with_metadata` interceptor runs after the
+        `post_create_cluster` interceptor. The (possibly modified) response returned by
+        `post_create_cluster` will be passed to
+        `post_create_cluster_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_topic(
         self,
@@ -223,11 +246,34 @@ class ManagedKafkaRestInterceptor:
     def post_create_topic(self, response: resources.Topic) -> resources.Topic:
         """Post-rpc interceptor for create_topic
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_topic_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ManagedKafka server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_topic` interceptor runs
+        before the `post_create_topic_with_metadata` interceptor.
         """
         return response
+
+    def post_create_topic_with_metadata(
+        self,
+        response: resources.Topic,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[resources.Topic, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_topic
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ManagedKafka server but before it is returned to user code.
+
+        We recommend only using this `post_create_topic_with_metadata`
+        interceptor in new development instead of the `post_create_topic` interceptor.
+        When both interceptors are used, this `post_create_topic_with_metadata` interceptor runs after the
+        `post_create_topic` interceptor. The (possibly modified) response returned by
+        `post_create_topic` will be passed to
+        `post_create_topic_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_cluster(
         self,
@@ -248,11 +294,34 @@ class ManagedKafkaRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_cluster
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_cluster_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ManagedKafka server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_cluster` interceptor runs
+        before the `post_delete_cluster_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_cluster_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_cluster
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ManagedKafka server but before it is returned to user code.
+
+        We recommend only using this `post_delete_cluster_with_metadata`
+        interceptor in new development instead of the `post_delete_cluster` interceptor.
+        When both interceptors are used, this `post_delete_cluster_with_metadata` interceptor runs after the
+        `post_delete_cluster` interceptor. The (possibly modified) response returned by
+        `post_delete_cluster` will be passed to
+        `post_delete_cluster_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_consumer_group(
         self,
@@ -300,11 +369,34 @@ class ManagedKafkaRestInterceptor:
     def post_get_cluster(self, response: resources.Cluster) -> resources.Cluster:
         """Post-rpc interceptor for get_cluster
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_cluster_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ManagedKafka server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_cluster` interceptor runs
+        before the `post_get_cluster_with_metadata` interceptor.
         """
         return response
+
+    def post_get_cluster_with_metadata(
+        self,
+        response: resources.Cluster,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[resources.Cluster, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_cluster
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ManagedKafka server but before it is returned to user code.
+
+        We recommend only using this `post_get_cluster_with_metadata`
+        interceptor in new development instead of the `post_get_cluster` interceptor.
+        When both interceptors are used, this `post_get_cluster_with_metadata` interceptor runs after the
+        `post_get_cluster` interceptor. The (possibly modified) response returned by
+        `post_get_cluster` will be passed to
+        `post_get_cluster_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_consumer_group(
         self,
@@ -325,11 +417,34 @@ class ManagedKafkaRestInterceptor:
     ) -> resources.ConsumerGroup:
         """Post-rpc interceptor for get_consumer_group
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_consumer_group_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ManagedKafka server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_consumer_group` interceptor runs
+        before the `post_get_consumer_group_with_metadata` interceptor.
         """
         return response
+
+    def post_get_consumer_group_with_metadata(
+        self,
+        response: resources.ConsumerGroup,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[resources.ConsumerGroup, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_consumer_group
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ManagedKafka server but before it is returned to user code.
+
+        We recommend only using this `post_get_consumer_group_with_metadata`
+        interceptor in new development instead of the `post_get_consumer_group` interceptor.
+        When both interceptors are used, this `post_get_consumer_group_with_metadata` interceptor runs after the
+        `post_get_consumer_group` interceptor. The (possibly modified) response returned by
+        `post_get_consumer_group` will be passed to
+        `post_get_consumer_group_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_topic(
         self,
@@ -346,11 +461,34 @@ class ManagedKafkaRestInterceptor:
     def post_get_topic(self, response: resources.Topic) -> resources.Topic:
         """Post-rpc interceptor for get_topic
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_topic_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ManagedKafka server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_topic` interceptor runs
+        before the `post_get_topic_with_metadata` interceptor.
         """
         return response
+
+    def post_get_topic_with_metadata(
+        self,
+        response: resources.Topic,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[resources.Topic, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_topic
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ManagedKafka server but before it is returned to user code.
+
+        We recommend only using this `post_get_topic_with_metadata`
+        interceptor in new development instead of the `post_get_topic` interceptor.
+        When both interceptors are used, this `post_get_topic_with_metadata` interceptor runs after the
+        `post_get_topic` interceptor. The (possibly modified) response returned by
+        `post_get_topic` will be passed to
+        `post_get_topic_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_clusters(
         self,
@@ -371,11 +509,36 @@ class ManagedKafkaRestInterceptor:
     ) -> managed_kafka.ListClustersResponse:
         """Post-rpc interceptor for list_clusters
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_clusters_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ManagedKafka server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_clusters` interceptor runs
+        before the `post_list_clusters_with_metadata` interceptor.
         """
         return response
+
+    def post_list_clusters_with_metadata(
+        self,
+        response: managed_kafka.ListClustersResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        managed_kafka.ListClustersResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_clusters
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ManagedKafka server but before it is returned to user code.
+
+        We recommend only using this `post_list_clusters_with_metadata`
+        interceptor in new development instead of the `post_list_clusters` interceptor.
+        When both interceptors are used, this `post_list_clusters_with_metadata` interceptor runs after the
+        `post_list_clusters` interceptor. The (possibly modified) response returned by
+        `post_list_clusters` will be passed to
+        `post_list_clusters_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_consumer_groups(
         self,
@@ -396,11 +559,37 @@ class ManagedKafkaRestInterceptor:
     ) -> managed_kafka.ListConsumerGroupsResponse:
         """Post-rpc interceptor for list_consumer_groups
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_consumer_groups_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ManagedKafka server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_consumer_groups` interceptor runs
+        before the `post_list_consumer_groups_with_metadata` interceptor.
         """
         return response
+
+    def post_list_consumer_groups_with_metadata(
+        self,
+        response: managed_kafka.ListConsumerGroupsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        managed_kafka.ListConsumerGroupsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_consumer_groups
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ManagedKafka server but before it is returned to user code.
+
+        We recommend only using this `post_list_consumer_groups_with_metadata`
+        interceptor in new development instead of the `post_list_consumer_groups` interceptor.
+        When both interceptors are used, this `post_list_consumer_groups_with_metadata` interceptor runs after the
+        `post_list_consumer_groups` interceptor. The (possibly modified) response returned by
+        `post_list_consumer_groups` will be passed to
+        `post_list_consumer_groups_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_topics(
         self,
@@ -421,11 +610,36 @@ class ManagedKafkaRestInterceptor:
     ) -> managed_kafka.ListTopicsResponse:
         """Post-rpc interceptor for list_topics
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_topics_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ManagedKafka server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_topics` interceptor runs
+        before the `post_list_topics_with_metadata` interceptor.
         """
         return response
+
+    def post_list_topics_with_metadata(
+        self,
+        response: managed_kafka.ListTopicsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        managed_kafka.ListTopicsResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_topics
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ManagedKafka server but before it is returned to user code.
+
+        We recommend only using this `post_list_topics_with_metadata`
+        interceptor in new development instead of the `post_list_topics` interceptor.
+        When both interceptors are used, this `post_list_topics_with_metadata` interceptor runs after the
+        `post_list_topics` interceptor. The (possibly modified) response returned by
+        `post_list_topics` will be passed to
+        `post_list_topics_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_cluster(
         self,
@@ -446,11 +660,34 @@ class ManagedKafkaRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_cluster
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_cluster_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ManagedKafka server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_cluster` interceptor runs
+        before the `post_update_cluster_with_metadata` interceptor.
         """
         return response
+
+    def post_update_cluster_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_cluster
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ManagedKafka server but before it is returned to user code.
+
+        We recommend only using this `post_update_cluster_with_metadata`
+        interceptor in new development instead of the `post_update_cluster` interceptor.
+        When both interceptors are used, this `post_update_cluster_with_metadata` interceptor runs after the
+        `post_update_cluster` interceptor. The (possibly modified) response returned by
+        `post_update_cluster` will be passed to
+        `post_update_cluster_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_consumer_group(
         self,
@@ -472,11 +709,34 @@ class ManagedKafkaRestInterceptor:
     ) -> resources.ConsumerGroup:
         """Post-rpc interceptor for update_consumer_group
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_consumer_group_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ManagedKafka server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_consumer_group` interceptor runs
+        before the `post_update_consumer_group_with_metadata` interceptor.
         """
         return response
+
+    def post_update_consumer_group_with_metadata(
+        self,
+        response: resources.ConsumerGroup,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[resources.ConsumerGroup, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_consumer_group
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ManagedKafka server but before it is returned to user code.
+
+        We recommend only using this `post_update_consumer_group_with_metadata`
+        interceptor in new development instead of the `post_update_consumer_group` interceptor.
+        When both interceptors are used, this `post_update_consumer_group_with_metadata` interceptor runs after the
+        `post_update_consumer_group` interceptor. The (possibly modified) response returned by
+        `post_update_consumer_group` will be passed to
+        `post_update_consumer_group_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_topic(
         self,
@@ -495,11 +755,34 @@ class ManagedKafkaRestInterceptor:
     def post_update_topic(self, response: resources.Topic) -> resources.Topic:
         """Post-rpc interceptor for update_topic
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_topic_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ManagedKafka server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_topic` interceptor runs
+        before the `post_update_topic_with_metadata` interceptor.
         """
         return response
+
+    def post_update_topic_with_metadata(
+        self,
+        response: resources.Topic,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[resources.Topic, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_topic
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ManagedKafka server but before it is returned to user code.
+
+        We recommend only using this `post_update_topic_with_metadata`
+        interceptor in new development instead of the `post_update_topic` interceptor.
+        When both interceptors are used, this `post_update_topic_with_metadata` interceptor runs after the
+        `post_update_topic` interceptor. The (possibly modified) response returned by
+        `post_update_topic` will be passed to
+        `post_update_topic_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_location(
         self,
@@ -913,6 +1196,10 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_cluster(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_cluster_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1065,6 +1352,10 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_topic(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_topic_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1206,6 +1497,10 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_cluster(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_cluster_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1570,6 +1865,10 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_cluster(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_cluster_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1714,6 +2013,10 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_consumer_group(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_consumer_group_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1856,6 +2159,10 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_topic(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_topic_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1998,6 +2305,10 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_clusters(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_clusters_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2142,6 +2453,10 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_consumer_groups(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_consumer_groups_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2288,6 +2603,10 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_topics(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_topics_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2437,6 +2756,10 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_cluster(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_cluster_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2587,6 +2910,10 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_consumer_group(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_consumer_group_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2739,6 +3066,10 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_topic(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_topic_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

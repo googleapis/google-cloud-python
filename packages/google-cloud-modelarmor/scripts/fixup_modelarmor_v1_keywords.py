@@ -44,8 +44,8 @@ class modelarmorCallTransformer(cst.CSTTransformer):
         'get_floor_setting': ('name', ),
         'get_template': ('name', ),
         'list_templates': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
-        'sanitize_model_response': ('name', 'model_response_data', 'filter_config', 'user_prompt', ),
-        'sanitize_user_prompt': ('name', 'user_prompt_data', 'filter_config', ),
+        'sanitize_model_response': ('name', 'model_response_data', 'user_prompt', ),
+        'sanitize_user_prompt': ('name', 'user_prompt_data', ),
         'update_floor_setting': ('floor_setting', 'update_mask', ),
         'update_template': ('update_mask', 'template', 'request_id', ),
     }

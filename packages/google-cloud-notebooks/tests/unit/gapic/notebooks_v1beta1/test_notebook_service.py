@@ -76,6 +76,13 @@ from google.cloud.notebooks_v1beta1.services.notebook_service import (
 )
 from google.cloud.notebooks_v1beta1.types import environment, instance, service
 
+CRED_INFO_JSON = {
+    "credential_source": "/path/to/file",
+    "credential_type": "service account credentials",
+    "principal": "service-account@example.com",
+}
+CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
 
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
@@ -332,6 +339,49 @@ def test__get_universe_domain():
     with pytest.raises(ValueError) as excinfo:
         NotebookServiceClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+
+@pytest.mark.parametrize(
+    "error_code,cred_info_json,show_cred_info",
+    [
+        (401, CRED_INFO_JSON, True),
+        (403, CRED_INFO_JSON, True),
+        (404, CRED_INFO_JSON, True),
+        (500, CRED_INFO_JSON, False),
+        (401, None, False),
+        (403, None, False),
+        (404, None, False),
+        (500, None, False),
+    ],
+)
+def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
+    cred = mock.Mock(["get_cred_info"])
+    cred.get_cred_info = mock.Mock(return_value=cred_info_json)
+    client = NotebookServiceClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=["foo"])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    if show_cred_info:
+        assert error.details == ["foo", CRED_INFO_STRING]
+    else:
+        assert error.details == ["foo"]
+
+
+@pytest.mark.parametrize("error_code", [401, 403, 404, 500])
+def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
+    cred = mock.Mock([])
+    assert not hasattr(cred, "get_cred_info")
+    client = NotebookServiceClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=[])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    assert error.details == []
 
 
 @pytest.mark.parametrize(
@@ -10164,10 +10214,13 @@ def test_list_instances_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.NotebookServiceRestInterceptor, "post_list_instances"
     ) as post, mock.patch.object(
+        transports.NotebookServiceRestInterceptor, "post_list_instances_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.NotebookServiceRestInterceptor, "pre_list_instances"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.ListInstancesRequest.pb(service.ListInstancesRequest())
         transcode.return_value = {
             "method": "post",
@@ -10191,6 +10244,7 @@ def test_list_instances_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = service.ListInstancesResponse()
+        post_with_metadata.return_value = service.ListInstancesResponse(), metadata
 
         client.list_instances(
             request,
@@ -10202,6 +10256,7 @@ def test_list_instances_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_instance_rest_bad_request(request_type=service.GetInstanceRequest):
@@ -10326,10 +10381,13 @@ def test_get_instance_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.NotebookServiceRestInterceptor, "post_get_instance"
     ) as post, mock.patch.object(
+        transports.NotebookServiceRestInterceptor, "post_get_instance_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.NotebookServiceRestInterceptor, "pre_get_instance"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.GetInstanceRequest.pb(service.GetInstanceRequest())
         transcode.return_value = {
             "method": "post",
@@ -10351,6 +10409,7 @@ def test_get_instance_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = instance.Instance()
+        post_with_metadata.return_value = instance.Instance(), metadata
 
         client.get_instance(
             request,
@@ -10362,6 +10421,7 @@ def test_get_instance_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_instance_rest_bad_request(request_type=service.CreateInstanceRequest):
@@ -10547,10 +10607,13 @@ def test_create_instance_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.NotebookServiceRestInterceptor, "post_create_instance"
     ) as post, mock.patch.object(
+        transports.NotebookServiceRestInterceptor, "post_create_instance_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.NotebookServiceRestInterceptor, "pre_create_instance"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.CreateInstanceRequest.pb(service.CreateInstanceRequest())
         transcode.return_value = {
             "method": "post",
@@ -10572,6 +10635,7 @@ def test_create_instance_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_instance(
             request,
@@ -10583,6 +10647,7 @@ def test_create_instance_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_register_instance_rest_bad_request(
@@ -10663,10 +10728,14 @@ def test_register_instance_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.NotebookServiceRestInterceptor, "post_register_instance"
     ) as post, mock.patch.object(
+        transports.NotebookServiceRestInterceptor,
+        "post_register_instance_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.NotebookServiceRestInterceptor, "pre_register_instance"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.RegisterInstanceRequest.pb(
             service.RegisterInstanceRequest()
         )
@@ -10690,6 +10759,7 @@ def test_register_instance_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.register_instance(
             request,
@@ -10701,6 +10771,7 @@ def test_register_instance_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_set_instance_accelerator_rest_bad_request(
@@ -10781,10 +10852,14 @@ def test_set_instance_accelerator_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.NotebookServiceRestInterceptor, "post_set_instance_accelerator"
     ) as post, mock.patch.object(
+        transports.NotebookServiceRestInterceptor,
+        "post_set_instance_accelerator_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.NotebookServiceRestInterceptor, "pre_set_instance_accelerator"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.SetInstanceAcceleratorRequest.pb(
             service.SetInstanceAcceleratorRequest()
         )
@@ -10808,6 +10883,7 @@ def test_set_instance_accelerator_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.set_instance_accelerator(
             request,
@@ -10819,6 +10895,7 @@ def test_set_instance_accelerator_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_set_instance_machine_type_rest_bad_request(
@@ -10899,10 +10976,14 @@ def test_set_instance_machine_type_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.NotebookServiceRestInterceptor, "post_set_instance_machine_type"
     ) as post, mock.patch.object(
+        transports.NotebookServiceRestInterceptor,
+        "post_set_instance_machine_type_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.NotebookServiceRestInterceptor, "pre_set_instance_machine_type"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.SetInstanceMachineTypeRequest.pb(
             service.SetInstanceMachineTypeRequest()
         )
@@ -10926,6 +11007,7 @@ def test_set_instance_machine_type_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.set_instance_machine_type(
             request,
@@ -10937,6 +11019,7 @@ def test_set_instance_machine_type_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_set_instance_labels_rest_bad_request(
@@ -11017,10 +11100,14 @@ def test_set_instance_labels_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.NotebookServiceRestInterceptor, "post_set_instance_labels"
     ) as post, mock.patch.object(
+        transports.NotebookServiceRestInterceptor,
+        "post_set_instance_labels_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.NotebookServiceRestInterceptor, "pre_set_instance_labels"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.SetInstanceLabelsRequest.pb(
             service.SetInstanceLabelsRequest()
         )
@@ -11044,6 +11131,7 @@ def test_set_instance_labels_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.set_instance_labels(
             request,
@@ -11055,6 +11143,7 @@ def test_set_instance_labels_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_instance_rest_bad_request(request_type=service.DeleteInstanceRequest):
@@ -11133,10 +11222,13 @@ def test_delete_instance_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.NotebookServiceRestInterceptor, "post_delete_instance"
     ) as post, mock.patch.object(
+        transports.NotebookServiceRestInterceptor, "post_delete_instance_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.NotebookServiceRestInterceptor, "pre_delete_instance"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.DeleteInstanceRequest.pb(service.DeleteInstanceRequest())
         transcode.return_value = {
             "method": "post",
@@ -11158,6 +11250,7 @@ def test_delete_instance_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_instance(
             request,
@@ -11169,6 +11262,7 @@ def test_delete_instance_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_start_instance_rest_bad_request(request_type=service.StartInstanceRequest):
@@ -11247,10 +11341,13 @@ def test_start_instance_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.NotebookServiceRestInterceptor, "post_start_instance"
     ) as post, mock.patch.object(
+        transports.NotebookServiceRestInterceptor, "post_start_instance_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.NotebookServiceRestInterceptor, "pre_start_instance"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.StartInstanceRequest.pb(service.StartInstanceRequest())
         transcode.return_value = {
             "method": "post",
@@ -11272,6 +11369,7 @@ def test_start_instance_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.start_instance(
             request,
@@ -11283,6 +11381,7 @@ def test_start_instance_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_stop_instance_rest_bad_request(request_type=service.StopInstanceRequest):
@@ -11361,10 +11460,13 @@ def test_stop_instance_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.NotebookServiceRestInterceptor, "post_stop_instance"
     ) as post, mock.patch.object(
+        transports.NotebookServiceRestInterceptor, "post_stop_instance_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.NotebookServiceRestInterceptor, "pre_stop_instance"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.StopInstanceRequest.pb(service.StopInstanceRequest())
         transcode.return_value = {
             "method": "post",
@@ -11386,6 +11488,7 @@ def test_stop_instance_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.stop_instance(
             request,
@@ -11397,6 +11500,7 @@ def test_stop_instance_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_reset_instance_rest_bad_request(request_type=service.ResetInstanceRequest):
@@ -11475,10 +11579,13 @@ def test_reset_instance_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.NotebookServiceRestInterceptor, "post_reset_instance"
     ) as post, mock.patch.object(
+        transports.NotebookServiceRestInterceptor, "post_reset_instance_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.NotebookServiceRestInterceptor, "pre_reset_instance"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.ResetInstanceRequest.pb(service.ResetInstanceRequest())
         transcode.return_value = {
             "method": "post",
@@ -11500,6 +11607,7 @@ def test_reset_instance_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.reset_instance(
             request,
@@ -11511,6 +11619,7 @@ def test_reset_instance_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_report_instance_info_rest_bad_request(
@@ -11591,10 +11700,14 @@ def test_report_instance_info_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.NotebookServiceRestInterceptor, "post_report_instance_info"
     ) as post, mock.patch.object(
+        transports.NotebookServiceRestInterceptor,
+        "post_report_instance_info_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.NotebookServiceRestInterceptor, "pre_report_instance_info"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.ReportInstanceInfoRequest.pb(
             service.ReportInstanceInfoRequest()
         )
@@ -11618,6 +11731,7 @@ def test_report_instance_info_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.report_instance_info(
             request,
@@ -11629,6 +11743,7 @@ def test_report_instance_info_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_is_instance_upgradeable_rest_bad_request(
@@ -11723,10 +11838,14 @@ def test_is_instance_upgradeable_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.NotebookServiceRestInterceptor, "post_is_instance_upgradeable"
     ) as post, mock.patch.object(
+        transports.NotebookServiceRestInterceptor,
+        "post_is_instance_upgradeable_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.NotebookServiceRestInterceptor, "pre_is_instance_upgradeable"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.IsInstanceUpgradeableRequest.pb(
             service.IsInstanceUpgradeableRequest()
         )
@@ -11752,6 +11871,10 @@ def test_is_instance_upgradeable_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = service.IsInstanceUpgradeableResponse()
+        post_with_metadata.return_value = (
+            service.IsInstanceUpgradeableResponse(),
+            metadata,
+        )
 
         client.is_instance_upgradeable(
             request,
@@ -11763,6 +11886,7 @@ def test_is_instance_upgradeable_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_upgrade_instance_rest_bad_request(request_type=service.UpgradeInstanceRequest):
@@ -11841,10 +11965,13 @@ def test_upgrade_instance_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.NotebookServiceRestInterceptor, "post_upgrade_instance"
     ) as post, mock.patch.object(
+        transports.NotebookServiceRestInterceptor, "post_upgrade_instance_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.NotebookServiceRestInterceptor, "pre_upgrade_instance"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.UpgradeInstanceRequest.pb(service.UpgradeInstanceRequest())
         transcode.return_value = {
             "method": "post",
@@ -11866,6 +11993,7 @@ def test_upgrade_instance_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.upgrade_instance(
             request,
@@ -11877,6 +12005,7 @@ def test_upgrade_instance_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_upgrade_instance_internal_rest_bad_request(
@@ -11957,10 +12086,14 @@ def test_upgrade_instance_internal_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.NotebookServiceRestInterceptor, "post_upgrade_instance_internal"
     ) as post, mock.patch.object(
+        transports.NotebookServiceRestInterceptor,
+        "post_upgrade_instance_internal_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.NotebookServiceRestInterceptor, "pre_upgrade_instance_internal"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.UpgradeInstanceInternalRequest.pb(
             service.UpgradeInstanceInternalRequest()
         )
@@ -11984,6 +12117,7 @@ def test_upgrade_instance_internal_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.upgrade_instance_internal(
             request,
@@ -11995,6 +12129,7 @@ def test_upgrade_instance_internal_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_environments_rest_bad_request(
@@ -12081,10 +12216,14 @@ def test_list_environments_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.NotebookServiceRestInterceptor, "post_list_environments"
     ) as post, mock.patch.object(
+        transports.NotebookServiceRestInterceptor,
+        "post_list_environments_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.NotebookServiceRestInterceptor, "pre_list_environments"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.ListEnvironmentsRequest.pb(
             service.ListEnvironmentsRequest()
         )
@@ -12110,6 +12249,7 @@ def test_list_environments_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = service.ListEnvironmentsResponse()
+        post_with_metadata.return_value = service.ListEnvironmentsResponse(), metadata
 
         client.list_environments(
             request,
@@ -12121,6 +12261,7 @@ def test_list_environments_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_environment_rest_bad_request(request_type=service.GetEnvironmentRequest):
@@ -12209,10 +12350,13 @@ def test_get_environment_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.NotebookServiceRestInterceptor, "post_get_environment"
     ) as post, mock.patch.object(
+        transports.NotebookServiceRestInterceptor, "post_get_environment_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.NotebookServiceRestInterceptor, "pre_get_environment"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.GetEnvironmentRequest.pb(service.GetEnvironmentRequest())
         transcode.return_value = {
             "method": "post",
@@ -12234,6 +12378,7 @@ def test_get_environment_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = environment.Environment()
+        post_with_metadata.return_value = environment.Environment(), metadata
 
         client.get_environment(
             request,
@@ -12245,6 +12390,7 @@ def test_get_environment_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_environment_rest_bad_request(
@@ -12405,10 +12551,14 @@ def test_create_environment_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.NotebookServiceRestInterceptor, "post_create_environment"
     ) as post, mock.patch.object(
+        transports.NotebookServiceRestInterceptor,
+        "post_create_environment_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.NotebookServiceRestInterceptor, "pre_create_environment"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.CreateEnvironmentRequest.pb(
             service.CreateEnvironmentRequest()
         )
@@ -12432,6 +12582,7 @@ def test_create_environment_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_environment(
             request,
@@ -12443,6 +12594,7 @@ def test_create_environment_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_environment_rest_bad_request(
@@ -12523,10 +12675,14 @@ def test_delete_environment_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.NotebookServiceRestInterceptor, "post_delete_environment"
     ) as post, mock.patch.object(
+        transports.NotebookServiceRestInterceptor,
+        "post_delete_environment_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.NotebookServiceRestInterceptor, "pre_delete_environment"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.DeleteEnvironmentRequest.pb(
             service.DeleteEnvironmentRequest()
         )
@@ -12550,6 +12706,7 @@ def test_delete_environment_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_environment(
             request,
@@ -12561,6 +12718,7 @@ def test_delete_environment_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_location_rest_bad_request(request_type=locations_pb2.GetLocationRequest):

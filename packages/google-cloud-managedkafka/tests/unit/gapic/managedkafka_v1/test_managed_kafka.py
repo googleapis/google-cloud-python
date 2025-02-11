@@ -74,6 +74,13 @@ from google.cloud.managedkafka_v1.services.managed_kafka import (
 )
 from google.cloud.managedkafka_v1.types import managed_kafka, resources
 
+CRED_INFO_JSON = {
+    "credential_source": "/path/to/file",
+    "credential_type": "service account credentials",
+    "principal": "service-account@example.com",
+}
+CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
 
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
@@ -315,6 +322,49 @@ def test__get_universe_domain():
     with pytest.raises(ValueError) as excinfo:
         ManagedKafkaClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+
+@pytest.mark.parametrize(
+    "error_code,cred_info_json,show_cred_info",
+    [
+        (401, CRED_INFO_JSON, True),
+        (403, CRED_INFO_JSON, True),
+        (404, CRED_INFO_JSON, True),
+        (500, CRED_INFO_JSON, False),
+        (401, None, False),
+        (403, None, False),
+        (404, None, False),
+        (500, None, False),
+    ],
+)
+def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
+    cred = mock.Mock(["get_cred_info"])
+    cred.get_cred_info = mock.Mock(return_value=cred_info_json)
+    client = ManagedKafkaClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=["foo"])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    if show_cred_info:
+        assert error.details == ["foo", CRED_INFO_STRING]
+    else:
+        assert error.details == ["foo"]
+
+
+@pytest.mark.parametrize("error_code", [401, 403, 404, 500])
+def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
+    cred = mock.Mock([])
+    assert not hasattr(cred, "get_cred_info")
+    client = ManagedKafkaClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=[])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    assert error.details == []
 
 
 @pytest.mark.parametrize(
@@ -10166,10 +10216,13 @@ def test_list_clusters_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ManagedKafkaRestInterceptor, "post_list_clusters"
     ) as post, mock.patch.object(
+        transports.ManagedKafkaRestInterceptor, "post_list_clusters_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ManagedKafkaRestInterceptor, "pre_list_clusters"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = managed_kafka.ListClustersRequest.pb(
             managed_kafka.ListClustersRequest()
         )
@@ -10195,6 +10248,7 @@ def test_list_clusters_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = managed_kafka.ListClustersResponse()
+        post_with_metadata.return_value = managed_kafka.ListClustersResponse(), metadata
 
         client.list_clusters(
             request,
@@ -10206,6 +10260,7 @@ def test_list_clusters_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_cluster_rest_bad_request(request_type=managed_kafka.GetClusterRequest):
@@ -10294,10 +10349,13 @@ def test_get_cluster_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ManagedKafkaRestInterceptor, "post_get_cluster"
     ) as post, mock.patch.object(
+        transports.ManagedKafkaRestInterceptor, "post_get_cluster_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ManagedKafkaRestInterceptor, "pre_get_cluster"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = managed_kafka.GetClusterRequest.pb(
             managed_kafka.GetClusterRequest()
         )
@@ -10321,6 +10379,7 @@ def test_get_cluster_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = resources.Cluster()
+        post_with_metadata.return_value = resources.Cluster(), metadata
 
         client.get_cluster(
             request,
@@ -10332,6 +10391,7 @@ def test_get_cluster_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_cluster_rest_bad_request(
@@ -10494,10 +10554,13 @@ def test_create_cluster_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.ManagedKafkaRestInterceptor, "post_create_cluster"
     ) as post, mock.patch.object(
+        transports.ManagedKafkaRestInterceptor, "post_create_cluster_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ManagedKafkaRestInterceptor, "pre_create_cluster"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = managed_kafka.CreateClusterRequest.pb(
             managed_kafka.CreateClusterRequest()
         )
@@ -10521,6 +10584,7 @@ def test_create_cluster_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_cluster(
             request,
@@ -10532,6 +10596,7 @@ def test_create_cluster_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_cluster_rest_bad_request(
@@ -10698,10 +10763,13 @@ def test_update_cluster_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.ManagedKafkaRestInterceptor, "post_update_cluster"
     ) as post, mock.patch.object(
+        transports.ManagedKafkaRestInterceptor, "post_update_cluster_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ManagedKafkaRestInterceptor, "pre_update_cluster"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = managed_kafka.UpdateClusterRequest.pb(
             managed_kafka.UpdateClusterRequest()
         )
@@ -10725,6 +10793,7 @@ def test_update_cluster_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.update_cluster(
             request,
@@ -10736,6 +10805,7 @@ def test_update_cluster_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_cluster_rest_bad_request(
@@ -10816,10 +10886,13 @@ def test_delete_cluster_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.ManagedKafkaRestInterceptor, "post_delete_cluster"
     ) as post, mock.patch.object(
+        transports.ManagedKafkaRestInterceptor, "post_delete_cluster_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ManagedKafkaRestInterceptor, "pre_delete_cluster"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = managed_kafka.DeleteClusterRequest.pb(
             managed_kafka.DeleteClusterRequest()
         )
@@ -10843,6 +10916,7 @@ def test_delete_cluster_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_cluster(
             request,
@@ -10854,6 +10928,7 @@ def test_delete_cluster_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_topics_rest_bad_request(request_type=managed_kafka.ListTopicsRequest):
@@ -10936,10 +11011,13 @@ def test_list_topics_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ManagedKafkaRestInterceptor, "post_list_topics"
     ) as post, mock.patch.object(
+        transports.ManagedKafkaRestInterceptor, "post_list_topics_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ManagedKafkaRestInterceptor, "pre_list_topics"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = managed_kafka.ListTopicsRequest.pb(
             managed_kafka.ListTopicsRequest()
         )
@@ -10965,6 +11043,7 @@ def test_list_topics_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = managed_kafka.ListTopicsResponse()
+        post_with_metadata.return_value = managed_kafka.ListTopicsResponse(), metadata
 
         client.list_topics(
             request,
@@ -10976,6 +11055,7 @@ def test_list_topics_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_topic_rest_bad_request(request_type=managed_kafka.GetTopicRequest):
@@ -11066,10 +11146,13 @@ def test_get_topic_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ManagedKafkaRestInterceptor, "post_get_topic"
     ) as post, mock.patch.object(
+        transports.ManagedKafkaRestInterceptor, "post_get_topic_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ManagedKafkaRestInterceptor, "pre_get_topic"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = managed_kafka.GetTopicRequest.pb(managed_kafka.GetTopicRequest())
         transcode.return_value = {
             "method": "post",
@@ -11091,6 +11174,7 @@ def test_get_topic_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = resources.Topic()
+        post_with_metadata.return_value = resources.Topic(), metadata
 
         client.get_topic(
             request,
@@ -11102,6 +11186,7 @@ def test_get_topic_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_topic_rest_bad_request(request_type=managed_kafka.CreateTopicRequest):
@@ -11261,10 +11346,13 @@ def test_create_topic_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ManagedKafkaRestInterceptor, "post_create_topic"
     ) as post, mock.patch.object(
+        transports.ManagedKafkaRestInterceptor, "post_create_topic_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ManagedKafkaRestInterceptor, "pre_create_topic"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = managed_kafka.CreateTopicRequest.pb(
             managed_kafka.CreateTopicRequest()
         )
@@ -11288,6 +11376,7 @@ def test_create_topic_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = resources.Topic()
+        post_with_metadata.return_value = resources.Topic(), metadata
 
         client.create_topic(
             request,
@@ -11299,6 +11388,7 @@ def test_create_topic_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_topic_rest_bad_request(request_type=managed_kafka.UpdateTopicRequest):
@@ -11466,10 +11556,13 @@ def test_update_topic_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ManagedKafkaRestInterceptor, "post_update_topic"
     ) as post, mock.patch.object(
+        transports.ManagedKafkaRestInterceptor, "post_update_topic_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ManagedKafkaRestInterceptor, "pre_update_topic"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = managed_kafka.UpdateTopicRequest.pb(
             managed_kafka.UpdateTopicRequest()
         )
@@ -11493,6 +11586,7 @@ def test_update_topic_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = resources.Topic()
+        post_with_metadata.return_value = resources.Topic(), metadata
 
         client.update_topic(
             request,
@@ -11504,6 +11598,7 @@ def test_update_topic_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_topic_rest_bad_request(request_type=managed_kafka.DeleteTopicRequest):
@@ -11699,10 +11794,14 @@ def test_list_consumer_groups_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ManagedKafkaRestInterceptor, "post_list_consumer_groups"
     ) as post, mock.patch.object(
+        transports.ManagedKafkaRestInterceptor,
+        "post_list_consumer_groups_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ManagedKafkaRestInterceptor, "pre_list_consumer_groups"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = managed_kafka.ListConsumerGroupsRequest.pb(
             managed_kafka.ListConsumerGroupsRequest()
         )
@@ -11728,6 +11827,10 @@ def test_list_consumer_groups_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = managed_kafka.ListConsumerGroupsResponse()
+        post_with_metadata.return_value = (
+            managed_kafka.ListConsumerGroupsResponse(),
+            metadata,
+        )
 
         client.list_consumer_groups(
             request,
@@ -11739,6 +11842,7 @@ def test_list_consumer_groups_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_consumer_group_rest_bad_request(
@@ -11827,10 +11931,13 @@ def test_get_consumer_group_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ManagedKafkaRestInterceptor, "post_get_consumer_group"
     ) as post, mock.patch.object(
+        transports.ManagedKafkaRestInterceptor, "post_get_consumer_group_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ManagedKafkaRestInterceptor, "pre_get_consumer_group"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = managed_kafka.GetConsumerGroupRequest.pb(
             managed_kafka.GetConsumerGroupRequest()
         )
@@ -11854,6 +11961,7 @@ def test_get_consumer_group_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = resources.ConsumerGroup()
+        post_with_metadata.return_value = resources.ConsumerGroup(), metadata
 
         client.get_consumer_group(
             request,
@@ -11865,6 +11973,7 @@ def test_get_consumer_group_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_consumer_group_rest_bad_request(
@@ -12028,10 +12137,14 @@ def test_update_consumer_group_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ManagedKafkaRestInterceptor, "post_update_consumer_group"
     ) as post, mock.patch.object(
+        transports.ManagedKafkaRestInterceptor,
+        "post_update_consumer_group_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ManagedKafkaRestInterceptor, "pre_update_consumer_group"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = managed_kafka.UpdateConsumerGroupRequest.pb(
             managed_kafka.UpdateConsumerGroupRequest()
         )
@@ -12055,6 +12168,7 @@ def test_update_consumer_group_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = resources.ConsumerGroup()
+        post_with_metadata.return_value = resources.ConsumerGroup(), metadata
 
         client.update_consumer_group(
             request,
@@ -12066,6 +12180,7 @@ def test_update_consumer_group_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_consumer_group_rest_bad_request(
