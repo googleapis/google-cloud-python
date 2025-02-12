@@ -43,6 +43,7 @@ __protobuf__ = proto.module(
         "Results",
         "ArtifactResult",
         "Build",
+        "Dependency",
         "Artifacts",
         "TimeSpan",
         "BuildOperationMetadata",
@@ -1090,6 +1091,9 @@ class Build(proto.Message):
         failure_info (google.cloud.devtools.cloudbuild_v1.types.Build.FailureInfo):
             Output only. Contains information about the
             build when status=FAILURE.
+        dependencies (MutableSequence[google.cloud.devtools.cloudbuild_v1.types.Dependency]):
+            Optional. Dependencies that the Cloud Build
+            worker will fetch before executing user steps.
     """
 
     class Status(proto.Enum):
@@ -1360,6 +1364,126 @@ class Build(proto.Message):
         proto.MESSAGE,
         number=51,
         message=FailureInfo,
+    )
+    dependencies: MutableSequence["Dependency"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=56,
+        message="Dependency",
+    )
+
+
+class Dependency(proto.Message):
+    r"""A dependency that the Cloud Build worker will fetch before
+    executing user steps.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        empty (bool):
+            If set to true disable all dependency
+            fetching (ignoring the default source as well).
+
+            This field is a member of `oneof`_ ``dep``.
+        git_source (google.cloud.devtools.cloudbuild_v1.types.Dependency.GitSourceDependency):
+            Represents a git repository as a build
+            dependency.
+
+            This field is a member of `oneof`_ ``dep``.
+    """
+
+    class GitSourceDependency(proto.Message):
+        r"""Represents a git repository as a build dependency.
+
+        Attributes:
+            repository (google.cloud.devtools.cloudbuild_v1.types.Dependency.GitSourceRepository):
+                Required. The kind of repo (url or dev
+                connect).
+            revision (str):
+                Required. The revision that we will fetch the
+                repo at.
+            recurse_submodules (bool):
+                Optional. True if submodules should be
+                fetched too (default false).
+            depth (int):
+                Optional. How much history should be fetched
+                for the build (default 1, -1 for all history).
+            dest_path (str):
+                Required. Where should the files be placed on
+                the worker.
+        """
+
+        repository: "Dependency.GitSourceRepository" = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            message="Dependency.GitSourceRepository",
+        )
+        revision: str = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+        recurse_submodules: bool = proto.Field(
+            proto.BOOL,
+            number=3,
+        )
+        depth: int = proto.Field(
+            proto.INT64,
+            number=4,
+        )
+        dest_path: str = proto.Field(
+            proto.STRING,
+            number=5,
+        )
+
+    class GitSourceRepository(proto.Message):
+        r"""A repository for a git source.
+
+        This message has `oneof`_ fields (mutually exclusive fields).
+        For each oneof, at most one member field can be set at the same time.
+        Setting any member of the oneof automatically clears all other
+        members.
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+        Attributes:
+            url (str):
+                Location of the Git repository.
+
+                This field is a member of `oneof`_ ``repotype``.
+            developer_connect (str):
+                The Developer Connect Git repository link or the url that
+                matches a repository link in the current project, formatted
+                as
+                ``projects/*/locations/*/connections/*/gitRepositoryLink/*``
+
+                This field is a member of `oneof`_ ``repotype``.
+        """
+
+        url: str = proto.Field(
+            proto.STRING,
+            number=1,
+            oneof="repotype",
+        )
+        developer_connect: str = proto.Field(
+            proto.STRING,
+            number=2,
+            oneof="repotype",
+        )
+
+    empty: bool = proto.Field(
+        proto.BOOL,
+        number=1,
+        oneof="dep",
+    )
+    git_source: GitSourceDependency = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        oneof="dep",
+        message=GitSourceDependency,
     )
 
 
