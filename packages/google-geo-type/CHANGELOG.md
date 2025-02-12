@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.3.11](https://github.com/googleapis/google-cloud-python/compare/google-geo-type-v0.3.10...google-geo-type-v0.3.11) (2025-02-12)
+
+
+### Features
+
+* Add REST Interceptors which support reading metadata ([5cdcc9d](https://github.com/googleapis/google-cloud-python/commit/5cdcc9d9d3e259c9a743895940552eb75b4554d3))
+* Add support for reading selective GAPIC generation methods from service YAML ([5cdcc9d](https://github.com/googleapis/google-cloud-python/commit/5cdcc9d9d3e259c9a743895940552eb75b4554d3))
+
 ## [0.3.10](https://github.com/googleapis/google-cloud-python/compare/google-geo-type-v0.3.9...google-geo-type-v0.3.10) (2024-10-24)
 
 
