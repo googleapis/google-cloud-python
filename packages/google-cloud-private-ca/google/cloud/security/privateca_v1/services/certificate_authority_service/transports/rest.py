@@ -330,11 +330,34 @@ class CertificateAuthorityServiceRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for activate_certificate_authority
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_activate_certificate_authority_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CertificateAuthorityService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_activate_certificate_authority` interceptor runs
+        before the `post_activate_certificate_authority_with_metadata` interceptor.
         """
         return response
+
+    def post_activate_certificate_authority_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for activate_certificate_authority
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CertificateAuthorityService server but before it is returned to user code.
+
+        We recommend only using this `post_activate_certificate_authority_with_metadata`
+        interceptor in new development instead of the `post_activate_certificate_authority` interceptor.
+        When both interceptors are used, this `post_activate_certificate_authority_with_metadata` interceptor runs after the
+        `post_activate_certificate_authority` interceptor. The (possibly modified) response returned by
+        `post_activate_certificate_authority` will be passed to
+        `post_activate_certificate_authority_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_ca_pool(
         self,
@@ -353,11 +376,34 @@ class CertificateAuthorityServiceRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_ca_pool
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_ca_pool_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CertificateAuthorityService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_ca_pool` interceptor runs
+        before the `post_create_ca_pool_with_metadata` interceptor.
         """
         return response
+
+    def post_create_ca_pool_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_ca_pool
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CertificateAuthorityService server but before it is returned to user code.
+
+        We recommend only using this `post_create_ca_pool_with_metadata`
+        interceptor in new development instead of the `post_create_ca_pool` interceptor.
+        When both interceptors are used, this `post_create_ca_pool_with_metadata` interceptor runs after the
+        `post_create_ca_pool` interceptor. The (possibly modified) response returned by
+        `post_create_ca_pool` will be passed to
+        `post_create_ca_pool_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_certificate(
         self,
@@ -378,11 +424,34 @@ class CertificateAuthorityServiceRestInterceptor:
     ) -> resources.Certificate:
         """Post-rpc interceptor for create_certificate
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_certificate_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CertificateAuthorityService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_certificate` interceptor runs
+        before the `post_create_certificate_with_metadata` interceptor.
         """
         return response
+
+    def post_create_certificate_with_metadata(
+        self,
+        response: resources.Certificate,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[resources.Certificate, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_certificate
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CertificateAuthorityService server but before it is returned to user code.
+
+        We recommend only using this `post_create_certificate_with_metadata`
+        interceptor in new development instead of the `post_create_certificate` interceptor.
+        When both interceptors are used, this `post_create_certificate_with_metadata` interceptor runs after the
+        `post_create_certificate` interceptor. The (possibly modified) response returned by
+        `post_create_certificate` will be passed to
+        `post_create_certificate_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_certificate_authority(
         self,
@@ -404,11 +473,34 @@ class CertificateAuthorityServiceRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_certificate_authority
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_certificate_authority_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CertificateAuthorityService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_certificate_authority` interceptor runs
+        before the `post_create_certificate_authority_with_metadata` interceptor.
         """
         return response
+
+    def post_create_certificate_authority_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_certificate_authority
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CertificateAuthorityService server but before it is returned to user code.
+
+        We recommend only using this `post_create_certificate_authority_with_metadata`
+        interceptor in new development instead of the `post_create_certificate_authority` interceptor.
+        When both interceptors are used, this `post_create_certificate_authority_with_metadata` interceptor runs after the
+        `post_create_certificate_authority` interceptor. The (possibly modified) response returned by
+        `post_create_certificate_authority` will be passed to
+        `post_create_certificate_authority_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_certificate_template(
         self,
@@ -430,11 +522,34 @@ class CertificateAuthorityServiceRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_certificate_template
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_certificate_template_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CertificateAuthorityService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_certificate_template` interceptor runs
+        before the `post_create_certificate_template_with_metadata` interceptor.
         """
         return response
+
+    def post_create_certificate_template_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_certificate_template
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CertificateAuthorityService server but before it is returned to user code.
+
+        We recommend only using this `post_create_certificate_template_with_metadata`
+        interceptor in new development instead of the `post_create_certificate_template` interceptor.
+        When both interceptors are used, this `post_create_certificate_template_with_metadata` interceptor runs after the
+        `post_create_certificate_template` interceptor. The (possibly modified) response returned by
+        `post_create_certificate_template` will be passed to
+        `post_create_certificate_template_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_ca_pool(
         self,
@@ -453,11 +568,34 @@ class CertificateAuthorityServiceRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_ca_pool
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_ca_pool_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CertificateAuthorityService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_ca_pool` interceptor runs
+        before the `post_delete_ca_pool_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_ca_pool_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_ca_pool
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CertificateAuthorityService server but before it is returned to user code.
+
+        We recommend only using this `post_delete_ca_pool_with_metadata`
+        interceptor in new development instead of the `post_delete_ca_pool` interceptor.
+        When both interceptors are used, this `post_delete_ca_pool_with_metadata` interceptor runs after the
+        `post_delete_ca_pool` interceptor. The (possibly modified) response returned by
+        `post_delete_ca_pool` will be passed to
+        `post_delete_ca_pool_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_certificate_authority(
         self,
@@ -479,11 +617,34 @@ class CertificateAuthorityServiceRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_certificate_authority
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_certificate_authority_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CertificateAuthorityService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_certificate_authority` interceptor runs
+        before the `post_delete_certificate_authority_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_certificate_authority_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_certificate_authority
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CertificateAuthorityService server but before it is returned to user code.
+
+        We recommend only using this `post_delete_certificate_authority_with_metadata`
+        interceptor in new development instead of the `post_delete_certificate_authority` interceptor.
+        When both interceptors are used, this `post_delete_certificate_authority_with_metadata` interceptor runs after the
+        `post_delete_certificate_authority` interceptor. The (possibly modified) response returned by
+        `post_delete_certificate_authority` will be passed to
+        `post_delete_certificate_authority_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_certificate_template(
         self,
@@ -505,11 +666,34 @@ class CertificateAuthorityServiceRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_certificate_template
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_certificate_template_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CertificateAuthorityService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_certificate_template` interceptor runs
+        before the `post_delete_certificate_template_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_certificate_template_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_certificate_template
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CertificateAuthorityService server but before it is returned to user code.
+
+        We recommend only using this `post_delete_certificate_template_with_metadata`
+        interceptor in new development instead of the `post_delete_certificate_template` interceptor.
+        When both interceptors are used, this `post_delete_certificate_template_with_metadata` interceptor runs after the
+        `post_delete_certificate_template` interceptor. The (possibly modified) response returned by
+        `post_delete_certificate_template` will be passed to
+        `post_delete_certificate_template_with_metadata`.
+        """
+        return response, metadata
 
     def pre_disable_certificate_authority(
         self,
@@ -531,11 +715,34 @@ class CertificateAuthorityServiceRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for disable_certificate_authority
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_disable_certificate_authority_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CertificateAuthorityService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_disable_certificate_authority` interceptor runs
+        before the `post_disable_certificate_authority_with_metadata` interceptor.
         """
         return response
+
+    def post_disable_certificate_authority_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for disable_certificate_authority
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CertificateAuthorityService server but before it is returned to user code.
+
+        We recommend only using this `post_disable_certificate_authority_with_metadata`
+        interceptor in new development instead of the `post_disable_certificate_authority` interceptor.
+        When both interceptors are used, this `post_disable_certificate_authority_with_metadata` interceptor runs after the
+        `post_disable_certificate_authority` interceptor. The (possibly modified) response returned by
+        `post_disable_certificate_authority` will be passed to
+        `post_disable_certificate_authority_with_metadata`.
+        """
+        return response, metadata
 
     def pre_enable_certificate_authority(
         self,
@@ -557,11 +764,34 @@ class CertificateAuthorityServiceRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for enable_certificate_authority
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_enable_certificate_authority_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CertificateAuthorityService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_enable_certificate_authority` interceptor runs
+        before the `post_enable_certificate_authority_with_metadata` interceptor.
         """
         return response
+
+    def post_enable_certificate_authority_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for enable_certificate_authority
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CertificateAuthorityService server but before it is returned to user code.
+
+        We recommend only using this `post_enable_certificate_authority_with_metadata`
+        interceptor in new development instead of the `post_enable_certificate_authority` interceptor.
+        When both interceptors are used, this `post_enable_certificate_authority_with_metadata` interceptor runs after the
+        `post_enable_certificate_authority` interceptor. The (possibly modified) response returned by
+        `post_enable_certificate_authority` will be passed to
+        `post_enable_certificate_authority_with_metadata`.
+        """
+        return response, metadata
 
     def pre_fetch_ca_certs(
         self,
@@ -580,11 +810,34 @@ class CertificateAuthorityServiceRestInterceptor:
     ) -> service.FetchCaCertsResponse:
         """Post-rpc interceptor for fetch_ca_certs
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_fetch_ca_certs_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CertificateAuthorityService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_fetch_ca_certs` interceptor runs
+        before the `post_fetch_ca_certs_with_metadata` interceptor.
         """
         return response
+
+    def post_fetch_ca_certs_with_metadata(
+        self,
+        response: service.FetchCaCertsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.FetchCaCertsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for fetch_ca_certs
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CertificateAuthorityService server but before it is returned to user code.
+
+        We recommend only using this `post_fetch_ca_certs_with_metadata`
+        interceptor in new development instead of the `post_fetch_ca_certs` interceptor.
+        When both interceptors are used, this `post_fetch_ca_certs_with_metadata` interceptor runs after the
+        `post_fetch_ca_certs` interceptor. The (possibly modified) response returned by
+        `post_fetch_ca_certs` will be passed to
+        `post_fetch_ca_certs_with_metadata`.
+        """
+        return response, metadata
 
     def pre_fetch_certificate_authority_csr(
         self,
@@ -606,11 +859,37 @@ class CertificateAuthorityServiceRestInterceptor:
     ) -> service.FetchCertificateAuthorityCsrResponse:
         """Post-rpc interceptor for fetch_certificate_authority_csr
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_fetch_certificate_authority_csr_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CertificateAuthorityService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_fetch_certificate_authority_csr` interceptor runs
+        before the `post_fetch_certificate_authority_csr_with_metadata` interceptor.
         """
         return response
+
+    def post_fetch_certificate_authority_csr_with_metadata(
+        self,
+        response: service.FetchCertificateAuthorityCsrResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        service.FetchCertificateAuthorityCsrResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for fetch_certificate_authority_csr
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CertificateAuthorityService server but before it is returned to user code.
+
+        We recommend only using this `post_fetch_certificate_authority_csr_with_metadata`
+        interceptor in new development instead of the `post_fetch_certificate_authority_csr` interceptor.
+        When both interceptors are used, this `post_fetch_certificate_authority_csr_with_metadata` interceptor runs after the
+        `post_fetch_certificate_authority_csr` interceptor. The (possibly modified) response returned by
+        `post_fetch_certificate_authority_csr` will be passed to
+        `post_fetch_certificate_authority_csr_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_ca_pool(
         self,
@@ -627,11 +906,34 @@ class CertificateAuthorityServiceRestInterceptor:
     def post_get_ca_pool(self, response: resources.CaPool) -> resources.CaPool:
         """Post-rpc interceptor for get_ca_pool
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_ca_pool_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CertificateAuthorityService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_ca_pool` interceptor runs
+        before the `post_get_ca_pool_with_metadata` interceptor.
         """
         return response
+
+    def post_get_ca_pool_with_metadata(
+        self,
+        response: resources.CaPool,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[resources.CaPool, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_ca_pool
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CertificateAuthorityService server but before it is returned to user code.
+
+        We recommend only using this `post_get_ca_pool_with_metadata`
+        interceptor in new development instead of the `post_get_ca_pool` interceptor.
+        When both interceptors are used, this `post_get_ca_pool_with_metadata` interceptor runs after the
+        `post_get_ca_pool` interceptor. The (possibly modified) response returned by
+        `post_get_ca_pool` will be passed to
+        `post_get_ca_pool_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_certificate(
         self,
@@ -650,11 +952,34 @@ class CertificateAuthorityServiceRestInterceptor:
     ) -> resources.Certificate:
         """Post-rpc interceptor for get_certificate
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_certificate_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CertificateAuthorityService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_certificate` interceptor runs
+        before the `post_get_certificate_with_metadata` interceptor.
         """
         return response
+
+    def post_get_certificate_with_metadata(
+        self,
+        response: resources.Certificate,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[resources.Certificate, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_certificate
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CertificateAuthorityService server but before it is returned to user code.
+
+        We recommend only using this `post_get_certificate_with_metadata`
+        interceptor in new development instead of the `post_get_certificate` interceptor.
+        When both interceptors are used, this `post_get_certificate_with_metadata` interceptor runs after the
+        `post_get_certificate` interceptor. The (possibly modified) response returned by
+        `post_get_certificate` will be passed to
+        `post_get_certificate_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_certificate_authority(
         self,
@@ -675,11 +1000,34 @@ class CertificateAuthorityServiceRestInterceptor:
     ) -> resources.CertificateAuthority:
         """Post-rpc interceptor for get_certificate_authority
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_certificate_authority_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CertificateAuthorityService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_certificate_authority` interceptor runs
+        before the `post_get_certificate_authority_with_metadata` interceptor.
         """
         return response
+
+    def post_get_certificate_authority_with_metadata(
+        self,
+        response: resources.CertificateAuthority,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[resources.CertificateAuthority, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_certificate_authority
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CertificateAuthorityService server but before it is returned to user code.
+
+        We recommend only using this `post_get_certificate_authority_with_metadata`
+        interceptor in new development instead of the `post_get_certificate_authority` interceptor.
+        When both interceptors are used, this `post_get_certificate_authority_with_metadata` interceptor runs after the
+        `post_get_certificate_authority` interceptor. The (possibly modified) response returned by
+        `post_get_certificate_authority` will be passed to
+        `post_get_certificate_authority_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_certificate_revocation_list(
         self,
@@ -701,11 +1049,36 @@ class CertificateAuthorityServiceRestInterceptor:
     ) -> resources.CertificateRevocationList:
         """Post-rpc interceptor for get_certificate_revocation_list
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_certificate_revocation_list_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CertificateAuthorityService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_certificate_revocation_list` interceptor runs
+        before the `post_get_certificate_revocation_list_with_metadata` interceptor.
         """
         return response
+
+    def post_get_certificate_revocation_list_with_metadata(
+        self,
+        response: resources.CertificateRevocationList,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        resources.CertificateRevocationList, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for get_certificate_revocation_list
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CertificateAuthorityService server but before it is returned to user code.
+
+        We recommend only using this `post_get_certificate_revocation_list_with_metadata`
+        interceptor in new development instead of the `post_get_certificate_revocation_list` interceptor.
+        When both interceptors are used, this `post_get_certificate_revocation_list_with_metadata` interceptor runs after the
+        `post_get_certificate_revocation_list` interceptor. The (possibly modified) response returned by
+        `post_get_certificate_revocation_list` will be passed to
+        `post_get_certificate_revocation_list_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_certificate_template(
         self,
@@ -726,11 +1099,34 @@ class CertificateAuthorityServiceRestInterceptor:
     ) -> resources.CertificateTemplate:
         """Post-rpc interceptor for get_certificate_template
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_certificate_template_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CertificateAuthorityService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_certificate_template` interceptor runs
+        before the `post_get_certificate_template_with_metadata` interceptor.
         """
         return response
+
+    def post_get_certificate_template_with_metadata(
+        self,
+        response: resources.CertificateTemplate,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[resources.CertificateTemplate, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_certificate_template
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CertificateAuthorityService server but before it is returned to user code.
+
+        We recommend only using this `post_get_certificate_template_with_metadata`
+        interceptor in new development instead of the `post_get_certificate_template` interceptor.
+        When both interceptors are used, this `post_get_certificate_template_with_metadata` interceptor runs after the
+        `post_get_certificate_template` interceptor. The (possibly modified) response returned by
+        `post_get_certificate_template` will be passed to
+        `post_get_certificate_template_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_ca_pools(
         self,
@@ -749,11 +1145,34 @@ class CertificateAuthorityServiceRestInterceptor:
     ) -> service.ListCaPoolsResponse:
         """Post-rpc interceptor for list_ca_pools
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_ca_pools_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CertificateAuthorityService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_ca_pools` interceptor runs
+        before the `post_list_ca_pools_with_metadata` interceptor.
         """
         return response
+
+    def post_list_ca_pools_with_metadata(
+        self,
+        response: service.ListCaPoolsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.ListCaPoolsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for list_ca_pools
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CertificateAuthorityService server but before it is returned to user code.
+
+        We recommend only using this `post_list_ca_pools_with_metadata`
+        interceptor in new development instead of the `post_list_ca_pools` interceptor.
+        When both interceptors are used, this `post_list_ca_pools_with_metadata` interceptor runs after the
+        `post_list_ca_pools` interceptor. The (possibly modified) response returned by
+        `post_list_ca_pools` will be passed to
+        `post_list_ca_pools_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_certificate_authorities(
         self,
@@ -775,11 +1194,37 @@ class CertificateAuthorityServiceRestInterceptor:
     ) -> service.ListCertificateAuthoritiesResponse:
         """Post-rpc interceptor for list_certificate_authorities
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_certificate_authorities_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CertificateAuthorityService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_certificate_authorities` interceptor runs
+        before the `post_list_certificate_authorities_with_metadata` interceptor.
         """
         return response
+
+    def post_list_certificate_authorities_with_metadata(
+        self,
+        response: service.ListCertificateAuthoritiesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        service.ListCertificateAuthoritiesResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_certificate_authorities
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CertificateAuthorityService server but before it is returned to user code.
+
+        We recommend only using this `post_list_certificate_authorities_with_metadata`
+        interceptor in new development instead of the `post_list_certificate_authorities` interceptor.
+        When both interceptors are used, this `post_list_certificate_authorities_with_metadata` interceptor runs after the
+        `post_list_certificate_authorities` interceptor. The (possibly modified) response returned by
+        `post_list_certificate_authorities` will be passed to
+        `post_list_certificate_authorities_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_certificate_revocation_lists(
         self,
@@ -801,11 +1246,37 @@ class CertificateAuthorityServiceRestInterceptor:
     ) -> service.ListCertificateRevocationListsResponse:
         """Post-rpc interceptor for list_certificate_revocation_lists
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_certificate_revocation_lists_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CertificateAuthorityService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_certificate_revocation_lists` interceptor runs
+        before the `post_list_certificate_revocation_lists_with_metadata` interceptor.
         """
         return response
+
+    def post_list_certificate_revocation_lists_with_metadata(
+        self,
+        response: service.ListCertificateRevocationListsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        service.ListCertificateRevocationListsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_certificate_revocation_lists
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CertificateAuthorityService server but before it is returned to user code.
+
+        We recommend only using this `post_list_certificate_revocation_lists_with_metadata`
+        interceptor in new development instead of the `post_list_certificate_revocation_lists` interceptor.
+        When both interceptors are used, this `post_list_certificate_revocation_lists_with_metadata` interceptor runs after the
+        `post_list_certificate_revocation_lists` interceptor. The (possibly modified) response returned by
+        `post_list_certificate_revocation_lists` will be passed to
+        `post_list_certificate_revocation_lists_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_certificates(
         self,
@@ -826,11 +1297,36 @@ class CertificateAuthorityServiceRestInterceptor:
     ) -> service.ListCertificatesResponse:
         """Post-rpc interceptor for list_certificates
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_certificates_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CertificateAuthorityService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_certificates` interceptor runs
+        before the `post_list_certificates_with_metadata` interceptor.
         """
         return response
+
+    def post_list_certificates_with_metadata(
+        self,
+        response: service.ListCertificatesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        service.ListCertificatesResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_certificates
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CertificateAuthorityService server but before it is returned to user code.
+
+        We recommend only using this `post_list_certificates_with_metadata`
+        interceptor in new development instead of the `post_list_certificates` interceptor.
+        When both interceptors are used, this `post_list_certificates_with_metadata` interceptor runs after the
+        `post_list_certificates` interceptor. The (possibly modified) response returned by
+        `post_list_certificates` will be passed to
+        `post_list_certificates_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_certificate_templates(
         self,
@@ -851,11 +1347,37 @@ class CertificateAuthorityServiceRestInterceptor:
     ) -> service.ListCertificateTemplatesResponse:
         """Post-rpc interceptor for list_certificate_templates
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_certificate_templates_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CertificateAuthorityService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_certificate_templates` interceptor runs
+        before the `post_list_certificate_templates_with_metadata` interceptor.
         """
         return response
+
+    def post_list_certificate_templates_with_metadata(
+        self,
+        response: service.ListCertificateTemplatesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        service.ListCertificateTemplatesResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_certificate_templates
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CertificateAuthorityService server but before it is returned to user code.
+
+        We recommend only using this `post_list_certificate_templates_with_metadata`
+        interceptor in new development instead of the `post_list_certificate_templates` interceptor.
+        When both interceptors are used, this `post_list_certificate_templates_with_metadata` interceptor runs after the
+        `post_list_certificate_templates` interceptor. The (possibly modified) response returned by
+        `post_list_certificate_templates` will be passed to
+        `post_list_certificate_templates_with_metadata`.
+        """
+        return response, metadata
 
     def pre_revoke_certificate(
         self,
@@ -876,11 +1398,34 @@ class CertificateAuthorityServiceRestInterceptor:
     ) -> resources.Certificate:
         """Post-rpc interceptor for revoke_certificate
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_revoke_certificate_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CertificateAuthorityService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_revoke_certificate` interceptor runs
+        before the `post_revoke_certificate_with_metadata` interceptor.
         """
         return response
+
+    def post_revoke_certificate_with_metadata(
+        self,
+        response: resources.Certificate,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[resources.Certificate, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for revoke_certificate
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CertificateAuthorityService server but before it is returned to user code.
+
+        We recommend only using this `post_revoke_certificate_with_metadata`
+        interceptor in new development instead of the `post_revoke_certificate` interceptor.
+        When both interceptors are used, this `post_revoke_certificate_with_metadata` interceptor runs after the
+        `post_revoke_certificate` interceptor. The (possibly modified) response returned by
+        `post_revoke_certificate` will be passed to
+        `post_revoke_certificate_with_metadata`.
+        """
+        return response, metadata
 
     def pre_undelete_certificate_authority(
         self,
@@ -902,11 +1447,34 @@ class CertificateAuthorityServiceRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for undelete_certificate_authority
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_undelete_certificate_authority_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CertificateAuthorityService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_undelete_certificate_authority` interceptor runs
+        before the `post_undelete_certificate_authority_with_metadata` interceptor.
         """
         return response
+
+    def post_undelete_certificate_authority_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for undelete_certificate_authority
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CertificateAuthorityService server but before it is returned to user code.
+
+        We recommend only using this `post_undelete_certificate_authority_with_metadata`
+        interceptor in new development instead of the `post_undelete_certificate_authority` interceptor.
+        When both interceptors are used, this `post_undelete_certificate_authority_with_metadata` interceptor runs after the
+        `post_undelete_certificate_authority` interceptor. The (possibly modified) response returned by
+        `post_undelete_certificate_authority` will be passed to
+        `post_undelete_certificate_authority_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_ca_pool(
         self,
@@ -925,11 +1493,34 @@ class CertificateAuthorityServiceRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_ca_pool
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_ca_pool_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CertificateAuthorityService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_ca_pool` interceptor runs
+        before the `post_update_ca_pool_with_metadata` interceptor.
         """
         return response
+
+    def post_update_ca_pool_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_ca_pool
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CertificateAuthorityService server but before it is returned to user code.
+
+        We recommend only using this `post_update_ca_pool_with_metadata`
+        interceptor in new development instead of the `post_update_ca_pool` interceptor.
+        When both interceptors are used, this `post_update_ca_pool_with_metadata` interceptor runs after the
+        `post_update_ca_pool` interceptor. The (possibly modified) response returned by
+        `post_update_ca_pool` will be passed to
+        `post_update_ca_pool_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_certificate(
         self,
@@ -950,11 +1541,34 @@ class CertificateAuthorityServiceRestInterceptor:
     ) -> resources.Certificate:
         """Post-rpc interceptor for update_certificate
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_certificate_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CertificateAuthorityService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_certificate` interceptor runs
+        before the `post_update_certificate_with_metadata` interceptor.
         """
         return response
+
+    def post_update_certificate_with_metadata(
+        self,
+        response: resources.Certificate,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[resources.Certificate, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_certificate
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CertificateAuthorityService server but before it is returned to user code.
+
+        We recommend only using this `post_update_certificate_with_metadata`
+        interceptor in new development instead of the `post_update_certificate` interceptor.
+        When both interceptors are used, this `post_update_certificate_with_metadata` interceptor runs after the
+        `post_update_certificate` interceptor. The (possibly modified) response returned by
+        `post_update_certificate` will be passed to
+        `post_update_certificate_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_certificate_authority(
         self,
@@ -976,11 +1590,34 @@ class CertificateAuthorityServiceRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_certificate_authority
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_certificate_authority_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CertificateAuthorityService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_certificate_authority` interceptor runs
+        before the `post_update_certificate_authority_with_metadata` interceptor.
         """
         return response
+
+    def post_update_certificate_authority_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_certificate_authority
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CertificateAuthorityService server but before it is returned to user code.
+
+        We recommend only using this `post_update_certificate_authority_with_metadata`
+        interceptor in new development instead of the `post_update_certificate_authority` interceptor.
+        When both interceptors are used, this `post_update_certificate_authority_with_metadata` interceptor runs after the
+        `post_update_certificate_authority` interceptor. The (possibly modified) response returned by
+        `post_update_certificate_authority` will be passed to
+        `post_update_certificate_authority_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_certificate_revocation_list(
         self,
@@ -1002,11 +1639,34 @@ class CertificateAuthorityServiceRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_certificate_revocation_list
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_certificate_revocation_list_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CertificateAuthorityService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_certificate_revocation_list` interceptor runs
+        before the `post_update_certificate_revocation_list_with_metadata` interceptor.
         """
         return response
+
+    def post_update_certificate_revocation_list_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_certificate_revocation_list
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CertificateAuthorityService server but before it is returned to user code.
+
+        We recommend only using this `post_update_certificate_revocation_list_with_metadata`
+        interceptor in new development instead of the `post_update_certificate_revocation_list` interceptor.
+        When both interceptors are used, this `post_update_certificate_revocation_list_with_metadata` interceptor runs after the
+        `post_update_certificate_revocation_list` interceptor. The (possibly modified) response returned by
+        `post_update_certificate_revocation_list` will be passed to
+        `post_update_certificate_revocation_list_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_certificate_template(
         self,
@@ -1028,11 +1688,34 @@ class CertificateAuthorityServiceRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_certificate_template
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_certificate_template_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CertificateAuthorityService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_certificate_template` interceptor runs
+        before the `post_update_certificate_template_with_metadata` interceptor.
         """
         return response
+
+    def post_update_certificate_template_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_certificate_template
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CertificateAuthorityService server but before it is returned to user code.
+
+        We recommend only using this `post_update_certificate_template_with_metadata`
+        interceptor in new development instead of the `post_update_certificate_template` interceptor.
+        When both interceptors are used, this `post_update_certificate_template_with_metadata` interceptor runs after the
+        `post_update_certificate_template` interceptor. The (possibly modified) response returned by
+        `post_update_certificate_template` will be passed to
+        `post_update_certificate_template_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_location(
         self,
@@ -1528,6 +2211,13 @@ class CertificateAuthorityServiceRestTransport(
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_activate_certificate_authority(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_activate_certificate_authority_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1679,6 +2369,10 @@ class CertificateAuthorityServiceRestTransport(
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_ca_pool(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_ca_pool_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1833,6 +2527,10 @@ class CertificateAuthorityServiceRestTransport(
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_certificate(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_certificate_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1987,6 +2685,10 @@ class CertificateAuthorityServiceRestTransport(
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_certificate_authority(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_certificate_authority_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2141,6 +2843,10 @@ class CertificateAuthorityServiceRestTransport(
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_certificate_template(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_certificate_template_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2286,6 +2992,10 @@ class CertificateAuthorityServiceRestTransport(
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_ca_pool(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_ca_pool_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2434,6 +3144,10 @@ class CertificateAuthorityServiceRestTransport(
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_certificate_authority(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_certificate_authority_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2582,6 +3296,10 @@ class CertificateAuthorityServiceRestTransport(
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_certificate_template(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_certificate_template_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2736,6 +3454,13 @@ class CertificateAuthorityServiceRestTransport(
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_disable_certificate_authority(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_disable_certificate_authority_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2890,6 +3615,10 @@ class CertificateAuthorityServiceRestTransport(
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_enable_certificate_authority(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_enable_certificate_authority_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3042,6 +3771,10 @@ class CertificateAuthorityServiceRestTransport(
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_fetch_ca_certs(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_fetch_ca_certs_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3191,6 +3924,13 @@ class CertificateAuthorityServiceRestTransport(
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_fetch_certificate_authority_csr(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_fetch_certificate_authority_csr_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3346,6 +4086,10 @@ class CertificateAuthorityServiceRestTransport(
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_ca_pool(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_ca_pool_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3494,6 +4238,10 @@ class CertificateAuthorityServiceRestTransport(
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_certificate(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_certificate_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3646,6 +4394,10 @@ class CertificateAuthorityServiceRestTransport(
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_certificate_authority(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_certificate_authority_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3798,6 +4550,13 @@ class CertificateAuthorityServiceRestTransport(
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_certificate_revocation_list(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_get_certificate_revocation_list_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3949,6 +4708,10 @@ class CertificateAuthorityServiceRestTransport(
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_certificate_template(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_certificate_template_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4095,6 +4858,10 @@ class CertificateAuthorityServiceRestTransport(
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_ca_pools(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_ca_pools_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4244,6 +5011,10 @@ class CertificateAuthorityServiceRestTransport(
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_certificate_authorities(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_certificate_authorities_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4395,6 +5166,13 @@ class CertificateAuthorityServiceRestTransport(
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_certificate_revocation_lists(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_list_certificate_revocation_lists_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4543,6 +5321,10 @@ class CertificateAuthorityServiceRestTransport(
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_certificates(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_certificates_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4694,6 +5476,10 @@ class CertificateAuthorityServiceRestTransport(
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_certificate_templates(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_certificate_templates_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4850,6 +5636,10 @@ class CertificateAuthorityServiceRestTransport(
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_revoke_certificate(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_revoke_certificate_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -5004,6 +5794,13 @@ class CertificateAuthorityServiceRestTransport(
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_undelete_certificate_authority(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_undelete_certificate_authority_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -5155,6 +5952,10 @@ class CertificateAuthorityServiceRestTransport(
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_ca_pool(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_ca_pool_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -5309,6 +6110,10 @@ class CertificateAuthorityServiceRestTransport(
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_certificate(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_certificate_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -5463,6 +6268,10 @@ class CertificateAuthorityServiceRestTransport(
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_certificate_authority(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_certificate_authority_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -5620,6 +6429,13 @@ class CertificateAuthorityServiceRestTransport(
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_certificate_revocation_list(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_update_certificate_revocation_list_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -5774,6 +6590,10 @@ class CertificateAuthorityServiceRestTransport(
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_certificate_template(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_certificate_template_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

@@ -1,2 +1,0 @@
-recursive-include google/cloud/tasks *.py
-recursive-include google/cloud/tasks_v2beta2 *.py

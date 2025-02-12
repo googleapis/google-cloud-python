@@ -116,11 +116,34 @@ class SimulatorRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_replay
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_replay_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Simulator server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_replay` interceptor runs
+        before the `post_create_replay_with_metadata` interceptor.
         """
         return response
+
+    def post_create_replay_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_replay
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Simulator server but before it is returned to user code.
+
+        We recommend only using this `post_create_replay_with_metadata`
+        interceptor in new development instead of the `post_create_replay` interceptor.
+        When both interceptors are used, this `post_create_replay_with_metadata` interceptor runs after the
+        `post_create_replay` interceptor. The (possibly modified) response returned by
+        `post_create_replay` will be passed to
+        `post_create_replay_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_replay(
         self,
@@ -137,11 +160,34 @@ class SimulatorRestInterceptor:
     def post_get_replay(self, response: simulator.Replay) -> simulator.Replay:
         """Post-rpc interceptor for get_replay
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_replay_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Simulator server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_replay` interceptor runs
+        before the `post_get_replay_with_metadata` interceptor.
         """
         return response
+
+    def post_get_replay_with_metadata(
+        self,
+        response: simulator.Replay,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[simulator.Replay, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_replay
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Simulator server but before it is returned to user code.
+
+        We recommend only using this `post_get_replay_with_metadata`
+        interceptor in new development instead of the `post_get_replay` interceptor.
+        When both interceptors are used, this `post_get_replay_with_metadata` interceptor runs after the
+        `post_get_replay` interceptor. The (possibly modified) response returned by
+        `post_get_replay` will be passed to
+        `post_get_replay_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_replay_results(
         self,
@@ -162,11 +208,36 @@ class SimulatorRestInterceptor:
     ) -> simulator.ListReplayResultsResponse:
         """Post-rpc interceptor for list_replay_results
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_replay_results_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Simulator server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_replay_results` interceptor runs
+        before the `post_list_replay_results_with_metadata` interceptor.
         """
         return response
+
+    def post_list_replay_results_with_metadata(
+        self,
+        response: simulator.ListReplayResultsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        simulator.ListReplayResultsResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_replay_results
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Simulator server but before it is returned to user code.
+
+        We recommend only using this `post_list_replay_results_with_metadata`
+        interceptor in new development instead of the `post_list_replay_results` interceptor.
+        When both interceptors are used, this `post_list_replay_results_with_metadata` interceptor runs after the
+        `post_list_replay_results` interceptor. The (possibly modified) response returned by
+        `post_list_replay_results` will be passed to
+        `post_list_replay_results_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_operation(
         self,
@@ -511,6 +582,10 @@ class SimulatorRestTransport(_BaseSimulatorRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_replay(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_replay_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -654,6 +729,10 @@ class SimulatorRestTransport(_BaseSimulatorRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_replay(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_replay_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -799,6 +878,10 @@ class SimulatorRestTransport(_BaseSimulatorRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_replay_results(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_replay_results_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

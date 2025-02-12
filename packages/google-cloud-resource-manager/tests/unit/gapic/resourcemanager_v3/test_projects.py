@@ -76,6 +76,13 @@ from google.cloud.resourcemanager_v3.services.projects import (
 )
 from google.cloud.resourcemanager_v3.types import projects
 
+CRED_INFO_JSON = {
+    "credential_source": "/path/to/file",
+    "credential_type": "service account credentials",
+    "principal": "service-account@example.com",
+}
+CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
 
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
@@ -304,6 +311,49 @@ def test__get_universe_domain():
     with pytest.raises(ValueError) as excinfo:
         ProjectsClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+
+@pytest.mark.parametrize(
+    "error_code,cred_info_json,show_cred_info",
+    [
+        (401, CRED_INFO_JSON, True),
+        (403, CRED_INFO_JSON, True),
+        (404, CRED_INFO_JSON, True),
+        (500, CRED_INFO_JSON, False),
+        (401, None, False),
+        (403, None, False),
+        (404, None, False),
+        (500, None, False),
+    ],
+)
+def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
+    cred = mock.Mock(["get_cred_info"])
+    cred.get_cred_info = mock.Mock(return_value=cred_info_json)
+    client = ProjectsClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=["foo"])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    if show_cred_info:
+        assert error.details == ["foo", CRED_INFO_STRING]
+    else:
+        assert error.details == ["foo"]
+
+
+@pytest.mark.parametrize("error_code", [401, 403, 404, 500])
+def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
+    cred = mock.Mock([])
+    assert not hasattr(cred, "get_cred_info")
+    client = ProjectsClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=[])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    assert error.details == []
 
 
 @pytest.mark.parametrize(
@@ -7681,10 +7731,13 @@ def test_get_project_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ProjectsRestInterceptor, "post_get_project"
     ) as post, mock.patch.object(
+        transports.ProjectsRestInterceptor, "post_get_project_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ProjectsRestInterceptor, "pre_get_project"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = projects.GetProjectRequest.pb(projects.GetProjectRequest())
         transcode.return_value = {
             "method": "post",
@@ -7706,6 +7759,7 @@ def test_get_project_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = projects.Project()
+        post_with_metadata.return_value = projects.Project(), metadata
 
         client.get_project(
             request,
@@ -7717,6 +7771,7 @@ def test_get_project_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_projects_rest_bad_request(request_type=projects.ListProjectsRequest):
@@ -7797,10 +7852,13 @@ def test_list_projects_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ProjectsRestInterceptor, "post_list_projects"
     ) as post, mock.patch.object(
+        transports.ProjectsRestInterceptor, "post_list_projects_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ProjectsRestInterceptor, "pre_list_projects"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = projects.ListProjectsRequest.pb(projects.ListProjectsRequest())
         transcode.return_value = {
             "method": "post",
@@ -7824,6 +7882,7 @@ def test_list_projects_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = projects.ListProjectsResponse()
+        post_with_metadata.return_value = projects.ListProjectsResponse(), metadata
 
         client.list_projects(
             request,
@@ -7835,6 +7894,7 @@ def test_list_projects_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_search_projects_rest_bad_request(request_type=projects.SearchProjectsRequest):
@@ -7915,10 +7975,13 @@ def test_search_projects_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ProjectsRestInterceptor, "post_search_projects"
     ) as post, mock.patch.object(
+        transports.ProjectsRestInterceptor, "post_search_projects_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ProjectsRestInterceptor, "pre_search_projects"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = projects.SearchProjectsRequest.pb(projects.SearchProjectsRequest())
         transcode.return_value = {
             "method": "post",
@@ -7942,6 +8005,7 @@ def test_search_projects_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = projects.SearchProjectsResponse()
+        post_with_metadata.return_value = projects.SearchProjectsResponse(), metadata
 
         client.search_projects(
             request,
@@ -7953,6 +8017,7 @@ def test_search_projects_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_project_rest_bad_request(request_type=projects.CreateProjectRequest):
@@ -8108,10 +8173,13 @@ def test_create_project_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.ProjectsRestInterceptor, "post_create_project"
     ) as post, mock.patch.object(
+        transports.ProjectsRestInterceptor, "post_create_project_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ProjectsRestInterceptor, "pre_create_project"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = projects.CreateProjectRequest.pb(projects.CreateProjectRequest())
         transcode.return_value = {
             "method": "post",
@@ -8133,6 +8201,7 @@ def test_create_project_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_project(
             request,
@@ -8144,6 +8213,7 @@ def test_create_project_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_project_rest_bad_request(request_type=projects.UpdateProjectRequest):
@@ -8299,10 +8369,13 @@ def test_update_project_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.ProjectsRestInterceptor, "post_update_project"
     ) as post, mock.patch.object(
+        transports.ProjectsRestInterceptor, "post_update_project_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ProjectsRestInterceptor, "pre_update_project"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = projects.UpdateProjectRequest.pb(projects.UpdateProjectRequest())
         transcode.return_value = {
             "method": "post",
@@ -8324,6 +8397,7 @@ def test_update_project_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.update_project(
             request,
@@ -8335,6 +8409,7 @@ def test_update_project_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_move_project_rest_bad_request(request_type=projects.MoveProjectRequest):
@@ -8411,10 +8486,13 @@ def test_move_project_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.ProjectsRestInterceptor, "post_move_project"
     ) as post, mock.patch.object(
+        transports.ProjectsRestInterceptor, "post_move_project_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ProjectsRestInterceptor, "pre_move_project"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = projects.MoveProjectRequest.pb(projects.MoveProjectRequest())
         transcode.return_value = {
             "method": "post",
@@ -8436,6 +8514,7 @@ def test_move_project_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.move_project(
             request,
@@ -8447,6 +8526,7 @@ def test_move_project_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_project_rest_bad_request(request_type=projects.DeleteProjectRequest):
@@ -8523,10 +8603,13 @@ def test_delete_project_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.ProjectsRestInterceptor, "post_delete_project"
     ) as post, mock.patch.object(
+        transports.ProjectsRestInterceptor, "post_delete_project_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ProjectsRestInterceptor, "pre_delete_project"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = projects.DeleteProjectRequest.pb(projects.DeleteProjectRequest())
         transcode.return_value = {
             "method": "post",
@@ -8548,6 +8631,7 @@ def test_delete_project_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_project(
             request,
@@ -8559,6 +8643,7 @@ def test_delete_project_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_undelete_project_rest_bad_request(
@@ -8637,10 +8722,13 @@ def test_undelete_project_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.ProjectsRestInterceptor, "post_undelete_project"
     ) as post, mock.patch.object(
+        transports.ProjectsRestInterceptor, "post_undelete_project_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ProjectsRestInterceptor, "pre_undelete_project"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = projects.UndeleteProjectRequest.pb(
             projects.UndeleteProjectRequest()
         )
@@ -8664,6 +8752,7 @@ def test_undelete_project_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.undelete_project(
             request,
@@ -8675,6 +8764,7 @@ def test_undelete_project_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_iam_policy_rest_bad_request(
@@ -8756,10 +8846,13 @@ def test_get_iam_policy_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ProjectsRestInterceptor, "post_get_iam_policy"
     ) as post, mock.patch.object(
+        transports.ProjectsRestInterceptor, "post_get_iam_policy_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ProjectsRestInterceptor, "pre_get_iam_policy"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = iam_policy_pb2.GetIamPolicyRequest()
         transcode.return_value = {
             "method": "post",
@@ -8781,6 +8874,7 @@ def test_get_iam_policy_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = policy_pb2.Policy()
+        post_with_metadata.return_value = policy_pb2.Policy(), metadata
 
         client.get_iam_policy(
             request,
@@ -8792,6 +8886,7 @@ def test_get_iam_policy_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_set_iam_policy_rest_bad_request(
@@ -8873,10 +8968,13 @@ def test_set_iam_policy_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ProjectsRestInterceptor, "post_set_iam_policy"
     ) as post, mock.patch.object(
+        transports.ProjectsRestInterceptor, "post_set_iam_policy_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ProjectsRestInterceptor, "pre_set_iam_policy"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = iam_policy_pb2.SetIamPolicyRequest()
         transcode.return_value = {
             "method": "post",
@@ -8898,6 +8996,7 @@ def test_set_iam_policy_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = policy_pb2.Policy()
+        post_with_metadata.return_value = policy_pb2.Policy(), metadata
 
         client.set_iam_policy(
             request,
@@ -8909,6 +9008,7 @@ def test_set_iam_policy_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_test_iam_permissions_rest_bad_request(
@@ -8988,10 +9088,13 @@ def test_test_iam_permissions_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ProjectsRestInterceptor, "post_test_iam_permissions"
     ) as post, mock.patch.object(
+        transports.ProjectsRestInterceptor, "post_test_iam_permissions_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ProjectsRestInterceptor, "pre_test_iam_permissions"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = iam_policy_pb2.TestIamPermissionsRequest()
         transcode.return_value = {
             "method": "post",
@@ -9015,6 +9118,10 @@ def test_test_iam_permissions_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = iam_policy_pb2.TestIamPermissionsResponse()
+        post_with_metadata.return_value = (
+            iam_policy_pb2.TestIamPermissionsResponse(),
+            metadata,
+        )
 
         client.test_iam_permissions(
             request,
@@ -9026,6 +9133,7 @@ def test_test_iam_permissions_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_operation_rest_bad_request(

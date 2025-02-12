@@ -76,6 +76,13 @@ from google.cloud.resourcemanager_v3.services.folders import (
 )
 from google.cloud.resourcemanager_v3.types import folders
 
+CRED_INFO_JSON = {
+    "credential_source": "/path/to/file",
+    "credential_type": "service account credentials",
+    "principal": "service-account@example.com",
+}
+CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
 
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
@@ -297,6 +304,49 @@ def test__get_universe_domain():
     with pytest.raises(ValueError) as excinfo:
         FoldersClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+
+@pytest.mark.parametrize(
+    "error_code,cred_info_json,show_cred_info",
+    [
+        (401, CRED_INFO_JSON, True),
+        (403, CRED_INFO_JSON, True),
+        (404, CRED_INFO_JSON, True),
+        (500, CRED_INFO_JSON, False),
+        (401, None, False),
+        (403, None, False),
+        (404, None, False),
+        (500, None, False),
+    ],
+)
+def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
+    cred = mock.Mock(["get_cred_info"])
+    cred.get_cred_info = mock.Mock(return_value=cred_info_json)
+    client = FoldersClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=["foo"])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    if show_cred_info:
+        assert error.details == ["foo", CRED_INFO_STRING]
+    else:
+        assert error.details == ["foo"]
+
+
+@pytest.mark.parametrize("error_code", [401, 403, 404, 500])
+def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
+    cred = mock.Mock([])
+    assert not hasattr(cred, "get_cred_info")
+    client = FoldersClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=[])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    assert error.details == []
 
 
 @pytest.mark.parametrize(
@@ -7655,10 +7705,13 @@ def test_get_folder_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.FoldersRestInterceptor, "post_get_folder"
     ) as post, mock.patch.object(
+        transports.FoldersRestInterceptor, "post_get_folder_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.FoldersRestInterceptor, "pre_get_folder"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = folders.GetFolderRequest.pb(folders.GetFolderRequest())
         transcode.return_value = {
             "method": "post",
@@ -7680,6 +7733,7 @@ def test_get_folder_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = folders.Folder()
+        post_with_metadata.return_value = folders.Folder(), metadata
 
         client.get_folder(
             request,
@@ -7691,6 +7745,7 @@ def test_get_folder_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_folders_rest_bad_request(request_type=folders.ListFoldersRequest):
@@ -7771,10 +7826,13 @@ def test_list_folders_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.FoldersRestInterceptor, "post_list_folders"
     ) as post, mock.patch.object(
+        transports.FoldersRestInterceptor, "post_list_folders_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.FoldersRestInterceptor, "pre_list_folders"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = folders.ListFoldersRequest.pb(folders.ListFoldersRequest())
         transcode.return_value = {
             "method": "post",
@@ -7798,6 +7856,7 @@ def test_list_folders_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = folders.ListFoldersResponse()
+        post_with_metadata.return_value = folders.ListFoldersResponse(), metadata
 
         client.list_folders(
             request,
@@ -7809,6 +7868,7 @@ def test_list_folders_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_search_folders_rest_bad_request(request_type=folders.SearchFoldersRequest):
@@ -7889,10 +7949,13 @@ def test_search_folders_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.FoldersRestInterceptor, "post_search_folders"
     ) as post, mock.patch.object(
+        transports.FoldersRestInterceptor, "post_search_folders_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.FoldersRestInterceptor, "pre_search_folders"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = folders.SearchFoldersRequest.pb(folders.SearchFoldersRequest())
         transcode.return_value = {
             "method": "post",
@@ -7916,6 +7979,7 @@ def test_search_folders_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = folders.SearchFoldersResponse()
+        post_with_metadata.return_value = folders.SearchFoldersResponse(), metadata
 
         client.search_folders(
             request,
@@ -7927,6 +7991,7 @@ def test_search_folders_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_folder_rest_bad_request(request_type=folders.CreateFolderRequest):
@@ -8080,10 +8145,13 @@ def test_create_folder_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.FoldersRestInterceptor, "post_create_folder"
     ) as post, mock.patch.object(
+        transports.FoldersRestInterceptor, "post_create_folder_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.FoldersRestInterceptor, "pre_create_folder"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = folders.CreateFolderRequest.pb(folders.CreateFolderRequest())
         transcode.return_value = {
             "method": "post",
@@ -8105,6 +8173,7 @@ def test_create_folder_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_folder(
             request,
@@ -8116,6 +8185,7 @@ def test_create_folder_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_folder_rest_bad_request(request_type=folders.UpdateFolderRequest):
@@ -8269,10 +8339,13 @@ def test_update_folder_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.FoldersRestInterceptor, "post_update_folder"
     ) as post, mock.patch.object(
+        transports.FoldersRestInterceptor, "post_update_folder_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.FoldersRestInterceptor, "pre_update_folder"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = folders.UpdateFolderRequest.pb(folders.UpdateFolderRequest())
         transcode.return_value = {
             "method": "post",
@@ -8294,6 +8367,7 @@ def test_update_folder_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.update_folder(
             request,
@@ -8305,6 +8379,7 @@ def test_update_folder_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_move_folder_rest_bad_request(request_type=folders.MoveFolderRequest):
@@ -8381,10 +8456,13 @@ def test_move_folder_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.FoldersRestInterceptor, "post_move_folder"
     ) as post, mock.patch.object(
+        transports.FoldersRestInterceptor, "post_move_folder_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.FoldersRestInterceptor, "pre_move_folder"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = folders.MoveFolderRequest.pb(folders.MoveFolderRequest())
         transcode.return_value = {
             "method": "post",
@@ -8406,6 +8484,7 @@ def test_move_folder_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.move_folder(
             request,
@@ -8417,6 +8496,7 @@ def test_move_folder_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_folder_rest_bad_request(request_type=folders.DeleteFolderRequest):
@@ -8493,10 +8573,13 @@ def test_delete_folder_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.FoldersRestInterceptor, "post_delete_folder"
     ) as post, mock.patch.object(
+        transports.FoldersRestInterceptor, "post_delete_folder_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.FoldersRestInterceptor, "pre_delete_folder"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = folders.DeleteFolderRequest.pb(folders.DeleteFolderRequest())
         transcode.return_value = {
             "method": "post",
@@ -8518,6 +8601,7 @@ def test_delete_folder_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_folder(
             request,
@@ -8529,6 +8613,7 @@ def test_delete_folder_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_undelete_folder_rest_bad_request(request_type=folders.UndeleteFolderRequest):
@@ -8605,10 +8690,13 @@ def test_undelete_folder_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.FoldersRestInterceptor, "post_undelete_folder"
     ) as post, mock.patch.object(
+        transports.FoldersRestInterceptor, "post_undelete_folder_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.FoldersRestInterceptor, "pre_undelete_folder"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = folders.UndeleteFolderRequest.pb(folders.UndeleteFolderRequest())
         transcode.return_value = {
             "method": "post",
@@ -8630,6 +8718,7 @@ def test_undelete_folder_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.undelete_folder(
             request,
@@ -8641,6 +8730,7 @@ def test_undelete_folder_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_iam_policy_rest_bad_request(
@@ -8722,10 +8812,13 @@ def test_get_iam_policy_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.FoldersRestInterceptor, "post_get_iam_policy"
     ) as post, mock.patch.object(
+        transports.FoldersRestInterceptor, "post_get_iam_policy_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.FoldersRestInterceptor, "pre_get_iam_policy"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = iam_policy_pb2.GetIamPolicyRequest()
         transcode.return_value = {
             "method": "post",
@@ -8747,6 +8840,7 @@ def test_get_iam_policy_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = policy_pb2.Policy()
+        post_with_metadata.return_value = policy_pb2.Policy(), metadata
 
         client.get_iam_policy(
             request,
@@ -8758,6 +8852,7 @@ def test_get_iam_policy_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_set_iam_policy_rest_bad_request(
@@ -8839,10 +8934,13 @@ def test_set_iam_policy_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.FoldersRestInterceptor, "post_set_iam_policy"
     ) as post, mock.patch.object(
+        transports.FoldersRestInterceptor, "post_set_iam_policy_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.FoldersRestInterceptor, "pre_set_iam_policy"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = iam_policy_pb2.SetIamPolicyRequest()
         transcode.return_value = {
             "method": "post",
@@ -8864,6 +8962,7 @@ def test_set_iam_policy_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = policy_pb2.Policy()
+        post_with_metadata.return_value = policy_pb2.Policy(), metadata
 
         client.set_iam_policy(
             request,
@@ -8875,6 +8974,7 @@ def test_set_iam_policy_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_test_iam_permissions_rest_bad_request(
@@ -8954,10 +9054,13 @@ def test_test_iam_permissions_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.FoldersRestInterceptor, "post_test_iam_permissions"
     ) as post, mock.patch.object(
+        transports.FoldersRestInterceptor, "post_test_iam_permissions_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.FoldersRestInterceptor, "pre_test_iam_permissions"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = iam_policy_pb2.TestIamPermissionsRequest()
         transcode.return_value = {
             "method": "post",
@@ -8981,6 +9084,10 @@ def test_test_iam_permissions_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = iam_policy_pb2.TestIamPermissionsResponse()
+        post_with_metadata.return_value = (
+            iam_policy_pb2.TestIamPermissionsResponse(),
+            metadata,
+        )
 
         client.test_iam_permissions(
             request,
@@ -8992,6 +9099,7 @@ def test_test_iam_permissions_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_operation_rest_bad_request(
