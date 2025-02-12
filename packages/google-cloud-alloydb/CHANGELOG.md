@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.4.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-alloydb-v0.4.1...google-cloud-alloydb-v0.4.2) (2025-02-12)
+
+
+### Features
+
+* Add REST Interceptors which support reading metadata ([a961bc0](https://github.com/googleapis/google-cloud-python/commit/a961bc029201b72fc4923490aeb3d82781853e6a))
+* Add support for reading selective GAPIC generation methods from service YAML ([a961bc0](https://github.com/googleapis/google-cloud-python/commit/a961bc029201b72fc4923490aeb3d82781853e6a))
+
 ## [0.4.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-alloydb-v0.4.0...google-cloud-alloydb-v0.4.1) (2024-12-12)
 
 

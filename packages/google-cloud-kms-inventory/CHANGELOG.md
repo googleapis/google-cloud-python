@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.2.13](https://github.com/googleapis/google-cloud-python/compare/google-cloud-kms-inventory-v0.2.12...google-cloud-kms-inventory-v0.2.13) (2025-02-12)
+
+
+### Features
+
+* Add REST Interceptors which support reading metadata ([908d742](https://github.com/googleapis/google-cloud-python/commit/908d7421a4adadd7407df7ec2a25e25688ff180f))
+* Add support for reading selective GAPIC generation methods from service YAML ([908d742](https://github.com/googleapis/google-cloud-python/commit/908d7421a4adadd7407df7ec2a25e25688ff180f))
+
 ## [0.2.12](https://github.com/googleapis/google-cloud-python/compare/google-cloud-kms-inventory-v0.2.11...google-cloud-kms-inventory-v0.2.12) (2024-12-12)
 
 

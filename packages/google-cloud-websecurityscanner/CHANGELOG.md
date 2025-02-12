@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-websecurityscanner/#history
 
+## [1.17.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-websecurityscanner-v1.16.0...google-cloud-websecurityscanner-v1.17.0) (2025-02-12)
+
+
+### Features
+
+* Add REST Interceptors which support reading metadata ([5cdcc9d](https://github.com/googleapis/google-cloud-python/commit/5cdcc9d9d3e259c9a743895940552eb75b4554d3))
+* Add support for reading selective GAPIC generation methods from service YAML ([5cdcc9d](https://github.com/googleapis/google-cloud-python/commit/5cdcc9d9d3e259c9a743895940552eb75b4554d3))
+
 ## [1.16.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-websecurityscanner-v1.15.1...google-cloud-websecurityscanner-v1.16.0) (2024-12-12)
 
 

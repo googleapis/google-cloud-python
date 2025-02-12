@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.3.14](https://github.com/googleapis/google-cloud-python/compare/google-cloud-advisorynotifications-v0.3.13...google-cloud-advisorynotifications-v0.3.14) (2025-02-12)
+
+
+### Features
+
+* Add REST Interceptors which support reading metadata ([a961bc0](https://github.com/googleapis/google-cloud-python/commit/a961bc029201b72fc4923490aeb3d82781853e6a))
+* Add support for reading selective GAPIC generation methods from service YAML ([a961bc0](https://github.com/googleapis/google-cloud-python/commit/a961bc029201b72fc4923490aeb3d82781853e6a))
+
 ## [0.3.13](https://github.com/googleapis/google-cloud-python/compare/google-cloud-advisorynotifications-v0.3.12...google-cloud-advisorynotifications-v0.3.13) (2024-12-12)
 
 

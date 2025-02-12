@@ -1,6 +1,24 @@
 # Changelog
 
 
+## [0.10.15](https://github.com/googleapis/google-cloud-python/compare/google-cloud-run-v0.10.14...google-cloud-run-v0.10.15) (2025-02-12)
+
+
+### Features
+
+* add Base Image URI to Container ([8a3376a](https://github.com/googleapis/google-cloud-python/commit/8a3376a779ec82b552c30d76e6ba65f9ba15d6ca))
+* add BuildConfig to Services for configuring Run functions ([8a3376a](https://github.com/googleapis/google-cloud-python/commit/8a3376a779ec82b552c30d76e6ba65f9ba15d6ca))
+* add BuildInfo to Revision for displaying BuildConfig used for a specific revision deployment ([8a3376a](https://github.com/googleapis/google-cloud-python/commit/8a3376a779ec82b552c30d76e6ba65f9ba15d6ca))
+* add creator field to Execution ([8a3376a](https://github.com/googleapis/google-cloud-python/commit/8a3376a779ec82b552c30d76e6ba65f9ba15d6ca))
+* add project_descriptor to BuildspackBuild ([8a3376a](https://github.com/googleapis/google-cloud-python/commit/8a3376a779ec82b552c30d76e6ba65f9ba15d6ca))
+* Add REST Interceptors which support reading metadata ([8a3376a](https://github.com/googleapis/google-cloud-python/commit/8a3376a779ec82b552c30d76e6ba65f9ba15d6ca))
+* Add support for reading selective GAPIC generation methods from service YAML ([8a3376a](https://github.com/googleapis/google-cloud-python/commit/8a3376a779ec82b552c30d76e6ba65f9ba15d6ca))
+
+
+### Documentation
+
+* some typos were fixed and formatting changed ([8a3376a](https://github.com/googleapis/google-cloud-python/commit/8a3376a779ec82b552c30d76e6ba65f9ba15d6ca))
+
 ## [0.10.14](https://github.com/googleapis/google-cloud-python/compare/google-cloud-run-v0.10.13...google-cloud-run-v0.10.14) (2024-12-12)
 
 

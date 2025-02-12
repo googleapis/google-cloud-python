@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-tasks/#history
 
+## [2.19.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-tasks-v2.18.0...google-cloud-tasks-v2.19.0) (2025-02-12)
+
+
+### Features
+
+* Add REST Interceptors which support reading metadata ([87b5382](https://github.com/googleapis/google-cloud-python/commit/87b5382a05b7a0c9faeabaf3e2baa6f05c88bb8e))
+* Add support for reading selective GAPIC generation methods from service YAML ([87b5382](https://github.com/googleapis/google-cloud-python/commit/87b5382a05b7a0c9faeabaf3e2baa6f05c88bb8e))
+
 ## [2.18.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-tasks-v2.17.1...google-cloud-tasks-v2.18.0) (2024-12-12)
 
 

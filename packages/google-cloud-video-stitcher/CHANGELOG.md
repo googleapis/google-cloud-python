@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.7.16](https://github.com/googleapis/google-cloud-python/compare/google-cloud-video-stitcher-v0.7.15...google-cloud-video-stitcher-v0.7.16) (2025-02-12)
+
+
+### Features
+
+* Add REST Interceptors which support reading metadata ([5cdcc9d](https://github.com/googleapis/google-cloud-python/commit/5cdcc9d9d3e259c9a743895940552eb75b4554d3))
+* Add support for reading selective GAPIC generation methods from service YAML ([5cdcc9d](https://github.com/googleapis/google-cloud-python/commit/5cdcc9d9d3e259c9a743895940552eb75b4554d3))
+
 ## [0.7.15](https://github.com/googleapis/google-cloud-python/compare/google-cloud-video-stitcher-v0.7.14...google-cloud-video-stitcher-v0.7.15) (2024-12-12)
 
 

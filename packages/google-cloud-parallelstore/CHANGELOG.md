@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.2.10](https://github.com/googleapis/google-cloud-python/compare/google-cloud-parallelstore-v0.2.9...google-cloud-parallelstore-v0.2.10) (2025-02-12)
+
+
+### Features
+
+* Add REST Interceptors which support reading metadata ([a0910dd](https://github.com/googleapis/google-cloud-python/commit/a0910dd51541d238bc5fcf10159066ddfd928579))
+* Add support for reading selective GAPIC generation methods from service YAML ([a0910dd](https://github.com/googleapis/google-cloud-python/commit/a0910dd51541d238bc5fcf10159066ddfd928579))
+
 ## [0.2.9](https://github.com/googleapis/google-cloud-python/compare/google-cloud-parallelstore-v0.2.8...google-cloud-parallelstore-v0.2.9) (2025-01-13)
 
 

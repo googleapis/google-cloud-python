@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.3.12](https://github.com/googleapis/google-cloud-python/compare/google-cloud-datacatalog-lineage-v0.3.11...google-cloud-datacatalog-lineage-v0.3.12) (2025-02-12)
+
+
+### Features
+
+* Add REST Interceptors which support reading metadata ([e92d527](https://github.com/googleapis/google-cloud-python/commit/e92d52797ffbce45d033eb81af24e0cad32baa55))
+* Add support for reading selective GAPIC generation methods from service YAML ([e92d527](https://github.com/googleapis/google-cloud-python/commit/e92d52797ffbce45d033eb81af24e0cad32baa55))
+
 ## [0.3.11](https://github.com/googleapis/google-cloud-python/compare/google-cloud-datacatalog-lineage-v0.3.10...google-cloud-datacatalog-lineage-v0.3.11) (2024-12-12)
 
 

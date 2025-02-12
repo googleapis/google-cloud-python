@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.6.12](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-datapolicies-v0.6.11...google-cloud-bigquery-datapolicies-v0.6.12) (2025-02-12)
+
+
+### Features
+
+* Add REST Interceptors which support reading metadata ([b1c3ce8](https://github.com/googleapis/google-cloud-python/commit/b1c3ce8b271e9d22afabcde054e81dcedae6b0ef))
+* Add support for reading selective GAPIC generation methods from service YAML ([b1c3ce8](https://github.com/googleapis/google-cloud-python/commit/b1c3ce8b271e9d22afabcde054e81dcedae6b0ef))
+
 ## [0.6.11](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-datapolicies-v0.6.10...google-cloud-bigquery-datapolicies-v0.6.11) (2024-12-12)
 
 

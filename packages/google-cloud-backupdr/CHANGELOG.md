@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.2.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-backupdr-v0.2.0...google-cloud-backupdr-v0.2.1) (2025-02-12)
+
+
+### Features
+
+* Add REST Interceptors which support reading metadata ([b1c3ce8](https://github.com/googleapis/google-cloud-python/commit/b1c3ce8b271e9d22afabcde054e81dcedae6b0ef))
+* Add support for reading selective GAPIC generation methods from service YAML ([b1c3ce8](https://github.com/googleapis/google-cloud-python/commit/b1c3ce8b271e9d22afabcde054e81dcedae6b0ef))
+
 ## [0.2.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-backupdr-v0.1.7...google-cloud-backupdr-v0.2.0) (2025-01-13)
 
 

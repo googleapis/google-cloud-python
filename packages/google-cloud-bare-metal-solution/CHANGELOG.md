@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.10.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bare-metal-solution-v1.9.0...google-cloud-bare-metal-solution-v1.10.0) (2025-02-12)
+
+
+### Features
+
+* Add REST Interceptors which support reading metadata ([b1c3ce8](https://github.com/googleapis/google-cloud-python/commit/b1c3ce8b271e9d22afabcde054e81dcedae6b0ef))
+* Add support for reading selective GAPIC generation methods from service YAML ([b1c3ce8](https://github.com/googleapis/google-cloud-python/commit/b1c3ce8b271e9d22afabcde054e81dcedae6b0ef))
+
 ## [1.9.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bare-metal-solution-v1.8.1...google-cloud-bare-metal-solution-v1.9.0) (2024-12-12)
 
 

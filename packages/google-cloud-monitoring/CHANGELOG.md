@@ -4,6 +4,20 @@
 
 [1]: https://pypi.org/project/google-cloud-monitoring/#history
 
+## [2.27.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-monitoring-v2.26.0...google-cloud-monitoring-v2.27.0) (2025-02-12)
+
+
+### Features
+
+* add filter field to snooze proto ([0e9d669](https://github.com/googleapis/google-cloud-python/commit/0e9d669febc3fce1a084df4846131a6f000aff1f))
+* Add REST Interceptors which support reading metadata ([0e9d669](https://github.com/googleapis/google-cloud-python/commit/0e9d669febc3fce1a084df4846131a6f000aff1f))
+* Add support for reading selective GAPIC generation methods from service YAML ([0e9d669](https://github.com/googleapis/google-cloud-python/commit/0e9d669febc3fce1a084df4846131a6f000aff1f))
+
+
+### Documentation
+
+* remove extra fenced code block markers ([0e9d669](https://github.com/googleapis/google-cloud-python/commit/0e9d669febc3fce1a084df4846131a6f000aff1f))
+
 ## [2.26.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-monitoring-v2.25.0...google-cloud-monitoring-v2.26.0) (2025-01-13)
 
 

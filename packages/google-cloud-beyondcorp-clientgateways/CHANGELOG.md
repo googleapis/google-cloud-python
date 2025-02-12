@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.4.14](https://github.com/googleapis/google-cloud-python/compare/google-cloud-beyondcorp-clientgateways-v0.4.13...google-cloud-beyondcorp-clientgateways-v0.4.14) (2025-02-12)
+
+
+### Features
+
+* Add REST Interceptors which support reading metadata ([b1c3ce8](https://github.com/googleapis/google-cloud-python/commit/b1c3ce8b271e9d22afabcde054e81dcedae6b0ef))
+* Add support for reading selective GAPIC generation methods from service YAML ([b1c3ce8](https://github.com/googleapis/google-cloud-python/commit/b1c3ce8b271e9d22afabcde054e81dcedae6b0ef))
+
 ## [0.4.13](https://github.com/googleapis/google-cloud-python/compare/google-cloud-beyondcorp-clientgateways-v0.4.12...google-cloud-beyondcorp-clientgateways-v0.4.13) (2024-12-12)
 
 

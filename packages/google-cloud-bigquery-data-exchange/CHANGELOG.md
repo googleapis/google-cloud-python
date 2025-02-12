@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.5.17](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-data-exchange-v0.5.16...google-cloud-bigquery-data-exchange-v0.5.17) (2025-02-12)
+
+
+### Features
+
+* Add REST Interceptors which support reading metadata ([b1c3ce8](https://github.com/googleapis/google-cloud-python/commit/b1c3ce8b271e9d22afabcde054e81dcedae6b0ef))
+* Add support for reading selective GAPIC generation methods from service YAML ([b1c3ce8](https://github.com/googleapis/google-cloud-python/commit/b1c3ce8b271e9d22afabcde054e81dcedae6b0ef))
+
 ## [0.5.16](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-data-exchange-v0.5.15...google-cloud-bigquery-data-exchange-v0.5.16) (2024-12-12)
 
 

@@ -4,6 +4,16 @@
 
 [1]: https://pypi.org/project/google-cloud-dialogflow/#history
 
+## [2.39.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dialogflow-v2.38.0...google-cloud-dialogflow-v2.39.0) (2025-02-12)
+
+
+### Features
+
+* add PhoneNumbers API ([38d410a](https://github.com/googleapis/google-cloud-python/commit/38d410abe50390a467b2a6bdfd64816218759e87))
+* Add REST Interceptors which support reading metadata ([e92d527](https://github.com/googleapis/google-cloud-python/commit/e92d52797ffbce45d033eb81af24e0cad32baa55))
+* Add support for reading selective GAPIC generation methods from service YAML ([e92d527](https://github.com/googleapis/google-cloud-python/commit/e92d52797ffbce45d033eb81af24e0cad32baa55))
+* add TelephonyConnectInfo of phone call-related info about the conversation ([38d410a](https://github.com/googleapis/google-cloud-python/commit/38d410abe50390a467b2a6bdfd64816218759e87))
+
 ## [2.38.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dialogflow-v2.37.0...google-cloud-dialogflow-v2.38.0) (2024-12-18)
 
 

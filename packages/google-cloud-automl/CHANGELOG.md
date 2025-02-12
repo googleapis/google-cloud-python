@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-automl/#history
 
+## [2.16.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-automl-v2.15.0...google-cloud-automl-v2.16.0) (2025-02-12)
+
+
+### Features
+
+* Add REST Interceptors which support reading metadata ([b1c3ce8](https://github.com/googleapis/google-cloud-python/commit/b1c3ce8b271e9d22afabcde054e81dcedae6b0ef))
+* Add support for reading selective GAPIC generation methods from service YAML ([b1c3ce8](https://github.com/googleapis/google-cloud-python/commit/b1c3ce8b271e9d22afabcde054e81dcedae6b0ef))
+
 ## [2.15.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-automl-v2.14.1...google-cloud-automl-v2.15.0) (2024-12-12)
 
 

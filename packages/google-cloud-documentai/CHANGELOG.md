@@ -1,5 +1,18 @@
 # Changelog
 
+## [3.2.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-documentai-v3.1.0...google-cloud-documentai-v3.2.0) (2025-02-12)
+
+
+### Features
+
+* Add REST Interceptors which support reading metadata ([b0e1f43](https://github.com/googleapis/google-cloud-python/commit/b0e1f4303b6ceff89b022986f9d87eda736e7235))
+* Add support for reading selective GAPIC generation methods from service YAML ([b0e1f43](https://github.com/googleapis/google-cloud-python/commit/b0e1f4303b6ceff89b022986f9d87eda736e7235))
+
+
+### Documentation
+
+* mark fields as unused ([b0e1f43](https://github.com/googleapis/google-cloud-python/commit/b0e1f4303b6ceff89b022986f9d87eda736e7235))
+
 ## [3.1.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-documentai-v3.0.1...google-cloud-documentai-v3.1.0) (2024-12-12)
 
 

@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.1.6](https://github.com/googleapis/google-cloud-python/compare/google-apps-events-subscriptions-v0.1.5...google-apps-events-subscriptions-v0.1.6) (2025-02-12)
+
+
+### Features
+
+* Add REST Interceptors which support reading metadata ([a961bc0](https://github.com/googleapis/google-cloud-python/commit/a961bc029201b72fc4923490aeb3d82781853e6a))
+* Add support for reading selective GAPIC generation methods from service YAML ([a961bc0](https://github.com/googleapis/google-cloud-python/commit/a961bc029201b72fc4923490aeb3d82781853e6a))
+
 ## [0.1.5](https://github.com/googleapis/google-cloud-python/compare/google-apps-events-subscriptions-v0.1.4...google-apps-events-subscriptions-v0.1.5) (2024-12-12)
 
 

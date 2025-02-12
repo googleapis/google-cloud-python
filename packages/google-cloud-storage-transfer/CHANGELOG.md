@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.16.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-storage-transfer-v1.15.0...google-cloud-storage-transfer-v1.16.0) (2025-02-12)
+
+
+### Features
+
+* Add REST Interceptors which support reading metadata ([87b5382](https://github.com/googleapis/google-cloud-python/commit/87b5382a05b7a0c9faeabaf3e2baa6f05c88bb8e))
+* Add support for reading selective GAPIC generation methods from service YAML ([87b5382](https://github.com/googleapis/google-cloud-python/commit/87b5382a05b7a0c9faeabaf3e2baa6f05c88bb8e))
+
 ## [1.15.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-storage-transfer-v1.14.0...google-cloud-storage-transfer-v1.15.0) (2024-12-18)
 
 

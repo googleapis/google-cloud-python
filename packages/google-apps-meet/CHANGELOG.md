@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.1.13](https://github.com/googleapis/google-cloud-python/compare/google-apps-meet-v0.1.12...google-apps-meet-v0.1.13) (2025-02-12)
+
+
+### Features
+
+* Add REST Interceptors which support reading metadata ([a961bc0](https://github.com/googleapis/google-cloud-python/commit/a961bc029201b72fc4923490aeb3d82781853e6a))
+* Add support for reading selective GAPIC generation methods from service YAML ([a961bc0](https://github.com/googleapis/google-cloud-python/commit/a961bc029201b72fc4923490aeb3d82781853e6a))
+
 ## [0.1.12](https://github.com/googleapis/google-cloud-python/compare/google-apps-meet-v0.1.11...google-apps-meet-v0.1.12) (2025-01-29)
 
 

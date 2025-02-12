@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.16.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-access-approval-v1.15.0...google-cloud-access-approval-v1.16.0) (2025-02-12)
+
+
+### Features
+
+* Add REST Interceptors which support reading metadata ([a961bc0](https://github.com/googleapis/google-cloud-python/commit/a961bc029201b72fc4923490aeb3d82781853e6a))
+* Add support for reading selective GAPIC generation methods from service YAML ([a961bc0](https://github.com/googleapis/google-cloud-python/commit/a961bc029201b72fc4923490aeb3d82781853e6a))
+
 ## [1.15.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-access-approval-v1.14.1...google-cloud-access-approval-v1.15.0) (2024-12-12)
 
 

@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-vision/#history
 
+## [3.10.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-vision-v3.9.0...google-cloud-vision-v3.10.0) (2025-02-12)
+
+
+### Features
+
+* Add REST Interceptors which support reading metadata ([5cdcc9d](https://github.com/googleapis/google-cloud-python/commit/5cdcc9d9d3e259c9a743895940552eb75b4554d3))
+* Add support for reading selective GAPIC generation methods from service YAML ([5cdcc9d](https://github.com/googleapis/google-cloud-python/commit/5cdcc9d9d3e259c9a743895940552eb75b4554d3))
+
 ## [3.9.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-vision-v3.8.1...google-cloud-vision-v3.9.0) (2024-12-12)
 
 

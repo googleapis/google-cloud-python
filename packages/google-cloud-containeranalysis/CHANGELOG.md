@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.17.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-containeranalysis-v2.16.0...google-cloud-containeranalysis-v2.17.0) (2025-02-12)
+
+
+### Features
+
+* Add REST Interceptors which support reading metadata ([e22e2bd](https://github.com/googleapis/google-cloud-python/commit/e22e2bde55d11d2f85e9d2caf1d152a4027f88cf))
+* Add support for reading selective GAPIC generation methods from service YAML ([e22e2bd](https://github.com/googleapis/google-cloud-python/commit/e22e2bde55d11d2f85e9d2caf1d152a4027f88cf))
+
 ## [2.16.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-containeranalysis-v2.15.1...google-cloud-containeranalysis-v2.16.0) (2024-12-12)
 
 

@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.17.34](https://github.com/googleapis/google-cloud-python/compare/google-cloud-batch-v0.17.33...google-cloud-batch-v0.17.34) (2025-02-12)
+
+
+### Features
+
+* Add REST Interceptors which support reading metadata ([b1c3ce8](https://github.com/googleapis/google-cloud-python/commit/b1c3ce8b271e9d22afabcde054e81dcedae6b0ef))
+* Add support for reading selective GAPIC generation methods from service YAML ([b1c3ce8](https://github.com/googleapis/google-cloud-python/commit/b1c3ce8b271e9d22afabcde054e81dcedae6b0ef))
+* promote cancel job API to GA ([559dea7](https://github.com/googleapis/google-cloud-python/commit/559dea77a99dcd314df941be54ed204aa65c33c7))
+
 ## [0.17.33](https://github.com/googleapis/google-cloud-python/compare/google-cloud-batch-v0.17.32...google-cloud-batch-v0.17.33) (2025-01-02)
 
 

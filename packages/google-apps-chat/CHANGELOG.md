@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.2.2](https://github.com/googleapis/google-cloud-python/compare/google-apps-chat-v0.2.1...google-apps-chat-v0.2.2) (2025-02-12)
+
+
+### Features
+
+* Add REST Interceptors which support reading metadata ([a961bc0](https://github.com/googleapis/google-cloud-python/commit/a961bc029201b72fc4923490aeb3d82781853e6a))
+* Add support for reading selective GAPIC generation methods from service YAML ([a961bc0](https://github.com/googleapis/google-cloud-python/commit/a961bc029201b72fc4923490aeb3d82781853e6a))
+
+
+### Documentation
+
+* Update Google chat app command documentation ([50d43b1](https://github.com/googleapis/google-cloud-python/commit/50d43b1574812be8eb9bfffd241660ee1bddef15))
+
 ## [0.2.1](https://github.com/googleapis/google-cloud-python/compare/google-apps-chat-v0.2.0...google-apps-chat-v0.2.1) (2025-01-29)
 
 
