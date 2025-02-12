@@ -513,9 +513,7 @@ class BigQueryCachingExecutor(Executor):
                 raise
 
     def replace_cached_subtrees(self, node: nodes.BigFrameNode) -> nodes.BigFrameNode:
-        return nodes.top_down(
-            node, lambda x: self._cached_executions.get(x, x), memoize=True
-        )
+        return nodes.top_down(node, lambda x: self._cached_executions.get(x, x))
 
     def _is_trivially_executable(self, array_value: bigframes.core.ArrayValue):
         """

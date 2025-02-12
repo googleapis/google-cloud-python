@@ -88,7 +88,7 @@ def select_cache_target(
 
     @functools.cache
     def _with_caching(subtree: nodes.BigFrameNode) -> nodes.BigFrameNode:
-        return nodes.top_down(subtree, lambda x: cache.get(x, x), memoize=True)
+        return nodes.top_down(subtree, lambda x: cache.get(x, x))
 
     def _combine_counts(
         left: Dict[nodes.BigFrameNode, int], right: Dict[nodes.BigFrameNode, int]
