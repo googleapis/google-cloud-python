@@ -1,6 +1,13 @@
 # Changelog
 
 
+## [1.22.1](https://github.com/googleapis/gapic-generator-python/compare/v1.22.0...v1.22.1) (2025-02-12)
+
+
+### Bug Fixes
+
+* **deps:** Require grpc-google-iam-v1&gt;=0.14.0 ([#2327](https://github.com/googleapis/gapic-generator-python/issues/2327)) ([d4236c8](https://github.com/googleapis/gapic-generator-python/commit/d4236c8a823d78350015c97c0d10e505771da564))
+
 ## [1.22.0](https://github.com/googleapis/gapic-generator-python/compare/v1.21.0...v1.22.0) (2025-01-30)
 
 
