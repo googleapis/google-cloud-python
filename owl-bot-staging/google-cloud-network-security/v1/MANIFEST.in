@@ -1,0 +1,2 @@
+recursive-include google/cloud/network_security *.py
+recursive-include google/cloud/network_security_v1 *.py
