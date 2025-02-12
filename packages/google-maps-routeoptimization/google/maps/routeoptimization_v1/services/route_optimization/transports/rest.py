@@ -111,11 +111,34 @@ class RouteOptimizationRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for batch_optimize_tours
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_batch_optimize_tours_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the RouteOptimization server but before
-        it is returned to user code.
+        it is returned to user code. This `post_batch_optimize_tours` interceptor runs
+        before the `post_batch_optimize_tours_with_metadata` interceptor.
         """
         return response
+
+    def post_batch_optimize_tours_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for batch_optimize_tours
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the RouteOptimization server but before it is returned to user code.
+
+        We recommend only using this `post_batch_optimize_tours_with_metadata`
+        interceptor in new development instead of the `post_batch_optimize_tours` interceptor.
+        When both interceptors are used, this `post_batch_optimize_tours_with_metadata` interceptor runs after the
+        `post_batch_optimize_tours` interceptor. The (possibly modified) response returned by
+        `post_batch_optimize_tours` will be passed to
+        `post_batch_optimize_tours_with_metadata`.
+        """
+        return response, metadata
 
     def pre_optimize_tours(
         self,
@@ -137,11 +160,37 @@ class RouteOptimizationRestInterceptor:
     ) -> route_optimization_service.OptimizeToursResponse:
         """Post-rpc interceptor for optimize_tours
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_optimize_tours_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the RouteOptimization server but before
-        it is returned to user code.
+        it is returned to user code. This `post_optimize_tours` interceptor runs
+        before the `post_optimize_tours_with_metadata` interceptor.
         """
         return response
+
+    def post_optimize_tours_with_metadata(
+        self,
+        response: route_optimization_service.OptimizeToursResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        route_optimization_service.OptimizeToursResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for optimize_tours
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the RouteOptimization server but before it is returned to user code.
+
+        We recommend only using this `post_optimize_tours_with_metadata`
+        interceptor in new development instead of the `post_optimize_tours` interceptor.
+        When both interceptors are used, this `post_optimize_tours_with_metadata` interceptor runs after the
+        `post_optimize_tours` interceptor. The (possibly modified) response returned by
+        `post_optimize_tours` will be passed to
+        `post_optimize_tours_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_operation(
         self,
@@ -445,6 +494,10 @@ class RouteOptimizationRestTransport(_BaseRouteOptimizationRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_batch_optimize_tours(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_batch_optimize_tours_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -600,6 +653,10 @@ class RouteOptimizationRestTransport(_BaseRouteOptimizationRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_optimize_tours(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_optimize_tours_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

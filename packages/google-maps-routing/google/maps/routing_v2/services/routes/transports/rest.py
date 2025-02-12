@@ -110,11 +110,36 @@ class RoutesRestInterceptor:
     ) -> rest_streaming.ResponseIterator:
         """Post-rpc interceptor for compute_route_matrix
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_compute_route_matrix_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Routes server but before
-        it is returned to user code.
+        it is returned to user code. This `post_compute_route_matrix` interceptor runs
+        before the `post_compute_route_matrix_with_metadata` interceptor.
         """
         return response
+
+    def post_compute_route_matrix_with_metadata(
+        self,
+        response: rest_streaming.ResponseIterator,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        rest_streaming.ResponseIterator, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for compute_route_matrix
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Routes server but before it is returned to user code.
+
+        We recommend only using this `post_compute_route_matrix_with_metadata`
+        interceptor in new development instead of the `post_compute_route_matrix` interceptor.
+        When both interceptors are used, this `post_compute_route_matrix_with_metadata` interceptor runs after the
+        `post_compute_route_matrix` interceptor. The (possibly modified) response returned by
+        `post_compute_route_matrix` will be passed to
+        `post_compute_route_matrix_with_metadata`.
+        """
+        return response, metadata
 
     def pre_compute_routes(
         self,
@@ -135,11 +160,36 @@ class RoutesRestInterceptor:
     ) -> routes_service.ComputeRoutesResponse:
         """Post-rpc interceptor for compute_routes
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_compute_routes_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Routes server but before
-        it is returned to user code.
+        it is returned to user code. This `post_compute_routes` interceptor runs
+        before the `post_compute_routes_with_metadata` interceptor.
         """
         return response
+
+    def post_compute_routes_with_metadata(
+        self,
+        response: routes_service.ComputeRoutesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        routes_service.ComputeRoutesResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for compute_routes
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Routes server but before it is returned to user code.
+
+        We recommend only using this `post_compute_routes_with_metadata`
+        interceptor in new development instead of the `post_compute_routes` interceptor.
+        When both interceptors are used, this `post_compute_routes_with_metadata` interceptor runs after the
+        `post_compute_routes` interceptor. The (possibly modified) response returned by
+        `post_compute_routes` will be passed to
+        `post_compute_routes_with_metadata`.
+        """
+        return response, metadata
 
 
 @dataclasses.dataclass
@@ -361,6 +411,10 @@ class RoutesRestTransport(_BaseRoutesRestTransport):
             )
 
             resp = self._interceptor.post_compute_route_matrix(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_compute_route_matrix_with_metadata(
+                resp, response_metadata
+            )
             return resp
 
     class _ComputeRoutes(_BaseRoutesRestTransport._BaseComputeRoutes, RoutesRestStub):
@@ -488,6 +542,10 @@ class RoutesRestTransport(_BaseRoutesRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_compute_routes(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_compute_routes_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

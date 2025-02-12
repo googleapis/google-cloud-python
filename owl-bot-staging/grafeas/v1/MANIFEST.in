@@ -1,2 +1,0 @@
-recursive-include grafeas/grafeas *.py
-recursive-include grafeas/grafeas_v1 *.py

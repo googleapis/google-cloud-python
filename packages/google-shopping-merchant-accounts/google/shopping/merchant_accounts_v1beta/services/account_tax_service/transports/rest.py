@@ -120,11 +120,34 @@ class AccountTaxServiceRestInterceptor:
     ) -> account_tax.AccountTax:
         """Post-rpc interceptor for get_account_tax
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_account_tax_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AccountTaxService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_account_tax` interceptor runs
+        before the `post_get_account_tax_with_metadata` interceptor.
         """
         return response
+
+    def post_get_account_tax_with_metadata(
+        self,
+        response: account_tax.AccountTax,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[account_tax.AccountTax, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_account_tax
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AccountTaxService server but before it is returned to user code.
+
+        We recommend only using this `post_get_account_tax_with_metadata`
+        interceptor in new development instead of the `post_get_account_tax` interceptor.
+        When both interceptors are used, this `post_get_account_tax_with_metadata` interceptor runs after the
+        `post_get_account_tax` interceptor. The (possibly modified) response returned by
+        `post_get_account_tax` will be passed to
+        `post_get_account_tax_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_account_tax(
         self,
@@ -145,11 +168,36 @@ class AccountTaxServiceRestInterceptor:
     ) -> account_tax.ListAccountTaxResponse:
         """Post-rpc interceptor for list_account_tax
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_account_tax_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AccountTaxService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_account_tax` interceptor runs
+        before the `post_list_account_tax_with_metadata` interceptor.
         """
         return response
+
+    def post_list_account_tax_with_metadata(
+        self,
+        response: account_tax.ListAccountTaxResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        account_tax.ListAccountTaxResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_account_tax
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AccountTaxService server but before it is returned to user code.
+
+        We recommend only using this `post_list_account_tax_with_metadata`
+        interceptor in new development instead of the `post_list_account_tax` interceptor.
+        When both interceptors are used, this `post_list_account_tax_with_metadata` interceptor runs after the
+        `post_list_account_tax` interceptor. The (possibly modified) response returned by
+        `post_list_account_tax` will be passed to
+        `post_list_account_tax_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_account_tax(
         self,
@@ -171,11 +219,34 @@ class AccountTaxServiceRestInterceptor:
     ) -> gsma_account_tax.AccountTax:
         """Post-rpc interceptor for update_account_tax
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_account_tax_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AccountTaxService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_account_tax` interceptor runs
+        before the `post_update_account_tax_with_metadata` interceptor.
         """
         return response
+
+    def post_update_account_tax_with_metadata(
+        self,
+        response: gsma_account_tax.AccountTax,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[gsma_account_tax.AccountTax, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_account_tax
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AccountTaxService server but before it is returned to user code.
+
+        We recommend only using this `post_update_account_tax_with_metadata`
+        interceptor in new development instead of the `post_update_account_tax` interceptor.
+        When both interceptors are used, this `post_update_account_tax_with_metadata` interceptor runs after the
+        `post_update_account_tax` interceptor. The (possibly modified) response returned by
+        `post_update_account_tax` will be passed to
+        `post_update_account_tax_with_metadata`.
+        """
+        return response, metadata
 
 
 @dataclasses.dataclass
@@ -389,6 +460,10 @@ class AccountTaxServiceRestTransport(_BaseAccountTaxServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_account_tax(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_account_tax_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -540,6 +615,10 @@ class AccountTaxServiceRestTransport(_BaseAccountTaxServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_account_tax(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_account_tax_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -694,6 +773,10 @@ class AccountTaxServiceRestTransport(_BaseAccountTaxServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_account_tax(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_account_tax_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

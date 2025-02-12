@@ -130,11 +130,34 @@ class LocalInventoryServiceRestInterceptor:
     ) -> localinventory.LocalInventory:
         """Post-rpc interceptor for insert_local_inventory
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_insert_local_inventory_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the LocalInventoryService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_insert_local_inventory` interceptor runs
+        before the `post_insert_local_inventory_with_metadata` interceptor.
         """
         return response
+
+    def post_insert_local_inventory_with_metadata(
+        self,
+        response: localinventory.LocalInventory,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[localinventory.LocalInventory, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for insert_local_inventory
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the LocalInventoryService server but before it is returned to user code.
+
+        We recommend only using this `post_insert_local_inventory_with_metadata`
+        interceptor in new development instead of the `post_insert_local_inventory` interceptor.
+        When both interceptors are used, this `post_insert_local_inventory_with_metadata` interceptor runs after the
+        `post_insert_local_inventory` interceptor. The (possibly modified) response returned by
+        `post_insert_local_inventory` will be passed to
+        `post_insert_local_inventory_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_local_inventories(
         self,
@@ -156,11 +179,37 @@ class LocalInventoryServiceRestInterceptor:
     ) -> localinventory.ListLocalInventoriesResponse:
         """Post-rpc interceptor for list_local_inventories
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_local_inventories_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the LocalInventoryService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_local_inventories` interceptor runs
+        before the `post_list_local_inventories_with_metadata` interceptor.
         """
         return response
+
+    def post_list_local_inventories_with_metadata(
+        self,
+        response: localinventory.ListLocalInventoriesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        localinventory.ListLocalInventoriesResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_local_inventories
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the LocalInventoryService server but before it is returned to user code.
+
+        We recommend only using this `post_list_local_inventories_with_metadata`
+        interceptor in new development instead of the `post_list_local_inventories` interceptor.
+        When both interceptors are used, this `post_list_local_inventories_with_metadata` interceptor runs after the
+        `post_list_local_inventories` interceptor. The (possibly modified) response returned by
+        `post_list_local_inventories` will be passed to
+        `post_list_local_inventories_with_metadata`.
+        """
+        return response, metadata
 
 
 @dataclasses.dataclass
@@ -495,6 +544,10 @@ class LocalInventoryServiceRestTransport(_BaseLocalInventoryServiceRestTransport
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_insert_local_inventory(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_insert_local_inventory_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -642,6 +695,10 @@ class LocalInventoryServiceRestTransport(_BaseLocalInventoryServiceRestTransport
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_local_inventories(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_local_inventories_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

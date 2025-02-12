@@ -122,11 +122,34 @@ class HomepageServiceRestInterceptor:
     def post_claim_homepage(self, response: homepage.Homepage) -> homepage.Homepage:
         """Post-rpc interceptor for claim_homepage
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_claim_homepage_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the HomepageService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_claim_homepage` interceptor runs
+        before the `post_claim_homepage_with_metadata` interceptor.
         """
         return response
+
+    def post_claim_homepage_with_metadata(
+        self,
+        response: homepage.Homepage,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[homepage.Homepage, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for claim_homepage
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the HomepageService server but before it is returned to user code.
+
+        We recommend only using this `post_claim_homepage_with_metadata`
+        interceptor in new development instead of the `post_claim_homepage` interceptor.
+        When both interceptors are used, this `post_claim_homepage_with_metadata` interceptor runs after the
+        `post_claim_homepage` interceptor. The (possibly modified) response returned by
+        `post_claim_homepage` will be passed to
+        `post_claim_homepage_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_homepage(
         self,
@@ -143,11 +166,34 @@ class HomepageServiceRestInterceptor:
     def post_get_homepage(self, response: homepage.Homepage) -> homepage.Homepage:
         """Post-rpc interceptor for get_homepage
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_homepage_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the HomepageService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_homepage` interceptor runs
+        before the `post_get_homepage_with_metadata` interceptor.
         """
         return response
+
+    def post_get_homepage_with_metadata(
+        self,
+        response: homepage.Homepage,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[homepage.Homepage, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_homepage
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the HomepageService server but before it is returned to user code.
+
+        We recommend only using this `post_get_homepage_with_metadata`
+        interceptor in new development instead of the `post_get_homepage` interceptor.
+        When both interceptors are used, this `post_get_homepage_with_metadata` interceptor runs after the
+        `post_get_homepage` interceptor. The (possibly modified) response returned by
+        `post_get_homepage` will be passed to
+        `post_get_homepage_with_metadata`.
+        """
+        return response, metadata
 
     def pre_unclaim_homepage(
         self,
@@ -166,11 +212,34 @@ class HomepageServiceRestInterceptor:
     def post_unclaim_homepage(self, response: homepage.Homepage) -> homepage.Homepage:
         """Post-rpc interceptor for unclaim_homepage
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_unclaim_homepage_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the HomepageService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_unclaim_homepage` interceptor runs
+        before the `post_unclaim_homepage_with_metadata` interceptor.
         """
         return response
+
+    def post_unclaim_homepage_with_metadata(
+        self,
+        response: homepage.Homepage,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[homepage.Homepage, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for unclaim_homepage
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the HomepageService server but before it is returned to user code.
+
+        We recommend only using this `post_unclaim_homepage_with_metadata`
+        interceptor in new development instead of the `post_unclaim_homepage` interceptor.
+        When both interceptors are used, this `post_unclaim_homepage_with_metadata` interceptor runs after the
+        `post_unclaim_homepage` interceptor. The (possibly modified) response returned by
+        `post_unclaim_homepage` will be passed to
+        `post_unclaim_homepage_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_homepage(
         self,
@@ -191,11 +260,34 @@ class HomepageServiceRestInterceptor:
     ) -> gsma_homepage.Homepage:
         """Post-rpc interceptor for update_homepage
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_homepage_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the HomepageService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_homepage` interceptor runs
+        before the `post_update_homepage_with_metadata` interceptor.
         """
         return response
+
+    def post_update_homepage_with_metadata(
+        self,
+        response: gsma_homepage.Homepage,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[gsma_homepage.Homepage, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_homepage
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the HomepageService server but before it is returned to user code.
+
+        We recommend only using this `post_update_homepage_with_metadata`
+        interceptor in new development instead of the `post_update_homepage` interceptor.
+        When both interceptors are used, this `post_update_homepage_with_metadata` interceptor runs after the
+        `post_update_homepage` interceptor. The (possibly modified) response returned by
+        `post_update_homepage` will be passed to
+        `post_update_homepage_with_metadata`.
+        """
+        return response, metadata
 
 
 @dataclasses.dataclass
@@ -407,6 +499,10 @@ class HomepageServiceRestTransport(_BaseHomepageServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_claim_homepage(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_claim_homepage_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -547,6 +643,10 @@ class HomepageServiceRestTransport(_BaseHomepageServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_homepage(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_homepage_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -695,6 +795,10 @@ class HomepageServiceRestTransport(_BaseHomepageServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_unclaim_homepage(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_unclaim_homepage_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -841,6 +945,10 @@ class HomepageServiceRestTransport(_BaseHomepageServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_homepage(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_homepage_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

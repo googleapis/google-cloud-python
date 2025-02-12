@@ -130,11 +130,36 @@ class RegionalInventoryServiceRestInterceptor:
     ) -> regionalinventory.RegionalInventory:
         """Post-rpc interceptor for insert_regional_inventory
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_insert_regional_inventory_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the RegionalInventoryService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_insert_regional_inventory` interceptor runs
+        before the `post_insert_regional_inventory_with_metadata` interceptor.
         """
         return response
+
+    def post_insert_regional_inventory_with_metadata(
+        self,
+        response: regionalinventory.RegionalInventory,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        regionalinventory.RegionalInventory, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for insert_regional_inventory
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the RegionalInventoryService server but before it is returned to user code.
+
+        We recommend only using this `post_insert_regional_inventory_with_metadata`
+        interceptor in new development instead of the `post_insert_regional_inventory` interceptor.
+        When both interceptors are used, this `post_insert_regional_inventory_with_metadata` interceptor runs after the
+        `post_insert_regional_inventory` interceptor. The (possibly modified) response returned by
+        `post_insert_regional_inventory` will be passed to
+        `post_insert_regional_inventory_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_regional_inventories(
         self,
@@ -156,11 +181,37 @@ class RegionalInventoryServiceRestInterceptor:
     ) -> regionalinventory.ListRegionalInventoriesResponse:
         """Post-rpc interceptor for list_regional_inventories
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_regional_inventories_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the RegionalInventoryService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_regional_inventories` interceptor runs
+        before the `post_list_regional_inventories_with_metadata` interceptor.
         """
         return response
+
+    def post_list_regional_inventories_with_metadata(
+        self,
+        response: regionalinventory.ListRegionalInventoriesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        regionalinventory.ListRegionalInventoriesResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_regional_inventories
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the RegionalInventoryService server but before it is returned to user code.
+
+        We recommend only using this `post_list_regional_inventories_with_metadata`
+        interceptor in new development instead of the `post_list_regional_inventories` interceptor.
+        When both interceptors are used, this `post_list_regional_inventories_with_metadata` interceptor runs after the
+        `post_list_regional_inventories` interceptor. The (possibly modified) response returned by
+        `post_list_regional_inventories` will be passed to
+        `post_list_regional_inventories_with_metadata`.
+        """
+        return response, metadata
 
 
 @dataclasses.dataclass
@@ -494,6 +545,10 @@ class RegionalInventoryServiceRestTransport(_BaseRegionalInventoryServiceRestTra
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_insert_regional_inventory(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_insert_regional_inventory_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -642,6 +697,10 @@ class RegionalInventoryServiceRestTransport(_BaseRegionalInventoryServiceRestTra
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_regional_inventories(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_regional_inventories_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

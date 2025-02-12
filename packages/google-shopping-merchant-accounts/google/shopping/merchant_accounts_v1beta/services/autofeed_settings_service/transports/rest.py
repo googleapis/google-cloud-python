@@ -110,11 +110,36 @@ class AutofeedSettingsServiceRestInterceptor:
     ) -> autofeedsettings.AutofeedSettings:
         """Post-rpc interceptor for get_autofeed_settings
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_autofeed_settings_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AutofeedSettingsService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_autofeed_settings` interceptor runs
+        before the `post_get_autofeed_settings_with_metadata` interceptor.
         """
         return response
+
+    def post_get_autofeed_settings_with_metadata(
+        self,
+        response: autofeedsettings.AutofeedSettings,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        autofeedsettings.AutofeedSettings, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for get_autofeed_settings
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AutofeedSettingsService server but before it is returned to user code.
+
+        We recommend only using this `post_get_autofeed_settings_with_metadata`
+        interceptor in new development instead of the `post_get_autofeed_settings` interceptor.
+        When both interceptors are used, this `post_get_autofeed_settings_with_metadata` interceptor runs after the
+        `post_get_autofeed_settings` interceptor. The (possibly modified) response returned by
+        `post_get_autofeed_settings` will be passed to
+        `post_get_autofeed_settings_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_autofeed_settings(
         self,
@@ -136,11 +161,36 @@ class AutofeedSettingsServiceRestInterceptor:
     ) -> autofeedsettings.AutofeedSettings:
         """Post-rpc interceptor for update_autofeed_settings
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_autofeed_settings_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AutofeedSettingsService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_autofeed_settings` interceptor runs
+        before the `post_update_autofeed_settings_with_metadata` interceptor.
         """
         return response
+
+    def post_update_autofeed_settings_with_metadata(
+        self,
+        response: autofeedsettings.AutofeedSettings,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        autofeedsettings.AutofeedSettings, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for update_autofeed_settings
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AutofeedSettingsService server but before it is returned to user code.
+
+        We recommend only using this `post_update_autofeed_settings_with_metadata`
+        interceptor in new development instead of the `post_update_autofeed_settings` interceptor.
+        When both interceptors are used, this `post_update_autofeed_settings_with_metadata` interceptor runs after the
+        `post_update_autofeed_settings` interceptor. The (possibly modified) response returned by
+        `post_update_autofeed_settings` will be passed to
+        `post_update_autofeed_settings_with_metadata`.
+        """
+        return response, metadata
 
 
 @dataclasses.dataclass
@@ -356,6 +406,10 @@ class AutofeedSettingsServiceRestTransport(_BaseAutofeedSettingsServiceRestTrans
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_autofeed_settings(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_autofeed_settings_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -511,6 +565,10 @@ class AutofeedSettingsServiceRestTransport(_BaseAutofeedSettingsServiceRestTrans
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_autofeed_settings(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_autofeed_settings_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
