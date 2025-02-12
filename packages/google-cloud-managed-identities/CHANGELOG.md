@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.12.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-managed-identities-v1.11.0...google-cloud-managed-identities-v1.12.0) (2025-02-12)
+
+
+### Features
+
+* Add REST Interceptors which support reading metadata ([908d742](https://github.com/googleapis/google-cloud-python/commit/908d7421a4adadd7407df7ec2a25e25688ff180f))
+* Add support for reading selective GAPIC generation methods from service YAML ([908d742](https://github.com/googleapis/google-cloud-python/commit/908d7421a4adadd7407df7ec2a25e25688ff180f))
+
 ## [1.11.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-managed-identities-v1.10.1...google-cloud-managed-identities-v1.11.0) (2024-12-12)
 
 

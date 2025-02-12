@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.1.7](https://github.com/googleapis/google-cloud-python/compare/google-cloud-managedkafka-v0.1.6...google-cloud-managedkafka-v0.1.7) (2025-02-12)
+
+
+### Features
+
+* Add REST Interceptors which support reading metadata ([a0910dd](https://github.com/googleapis/google-cloud-python/commit/a0910dd51541d238bc5fcf10159066ddfd928579))
+* Add support for reading selective GAPIC generation methods from service YAML ([a0910dd](https://github.com/googleapis/google-cloud-python/commit/a0910dd51541d238bc5fcf10159066ddfd928579))
+
 ## [0.1.6](https://github.com/googleapis/google-cloud-python/compare/google-cloud-managedkafka-v0.1.5...google-cloud-managedkafka-v0.1.6) (2024-12-12)
 
 

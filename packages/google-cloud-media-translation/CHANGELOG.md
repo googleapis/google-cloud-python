@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.11.15](https://github.com/googleapis/google-cloud-python/compare/google-cloud-media-translation-v0.11.14...google-cloud-media-translation-v0.11.15) (2025-02-12)
+
+
+### Features
+
+* Add REST Interceptors which support reading metadata ([a0910dd](https://github.com/googleapis/google-cloud-python/commit/a0910dd51541d238bc5fcf10159066ddfd928579))
+* Add support for reading selective GAPIC generation methods from service YAML ([a0910dd](https://github.com/googleapis/google-cloud-python/commit/a0910dd51541d238bc5fcf10159066ddfd928579))
+
 ## [0.11.14](https://github.com/googleapis/google-cloud-python/compare/google-cloud-media-translation-v0.11.13...google-cloud-media-translation-v0.11.14) (2024-12-12)
 
 

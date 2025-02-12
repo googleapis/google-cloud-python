@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.6.19](https://github.com/googleapis/google-cloud-python/compare/google-cloud-gke-multicloud-v0.6.18...google-cloud-gke-multicloud-v0.6.19) (2025-02-12)
+
+
+### Features
+
+* Add REST Interceptors which support reading metadata ([908d742](https://github.com/googleapis/google-cloud-python/commit/908d7421a4adadd7407df7ec2a25e25688ff180f))
+* Add support for reading selective GAPIC generation methods from service YAML ([908d742](https://github.com/googleapis/google-cloud-python/commit/908d7421a4adadd7407df7ec2a25e25688ff180f))
+
 ## [0.6.18](https://github.com/googleapis/google-cloud-python/compare/google-cloud-gke-multicloud-v0.6.17...google-cloud-gke-multicloud-v0.6.18) (2025-01-13)
 
 
