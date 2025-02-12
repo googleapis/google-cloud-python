@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.18.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataproc-metastore-v1.17.0...google-cloud-dataproc-metastore-v1.18.0) (2025-02-12)
+
+
+### Features
+
+* Add REST Interceptors which support reading metadata ([e92d527](https://github.com/googleapis/google-cloud-python/commit/e92d52797ffbce45d033eb81af24e0cad32baa55))
+* Add support for reading selective GAPIC generation methods from service YAML ([e92d527](https://github.com/googleapis/google-cloud-python/commit/e92d52797ffbce45d033eb81af24e0cad32baa55))
+
 ## [1.17.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataproc-metastore-v1.16.1...google-cloud-dataproc-metastore-v1.17.0) (2024-12-12)
 
 

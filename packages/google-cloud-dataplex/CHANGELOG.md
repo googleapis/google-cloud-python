@@ -1,5 +1,17 @@
 # Changelog
 
+## [2.7.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataplex-v2.6.0...google-cloud-dataplex-v2.7.0) (2025-02-12)
+
+
+### Features
+
+* Added value `NONE` to  the `SyncMode` enum ([71b9301](https://github.com/googleapis/google-cloud-python/commit/71b93012113bbaabf2ce524553342bdc52ba96dc))
+
+
+### Documentation
+
+* Modified various comments ([71b9301](https://github.com/googleapis/google-cloud-python/commit/71b93012113bbaabf2ce524553342bdc52ba96dc))
+
 ## [2.6.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataplex-v2.5.0...google-cloud-dataplex-v2.6.0) (2025-01-02)
 
 
