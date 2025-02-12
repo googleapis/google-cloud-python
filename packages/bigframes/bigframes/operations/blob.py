@@ -322,6 +322,68 @@ class BlobAccessor(base.SeriesMethods):
 
         return dst
 
+    def image_resize(
+        self,
+        dsize: tuple[int, int] = (0, 0),
+        *,
+        fx: float = 0.0,
+        fy: float = 0.0,
+        dst: Union[str, bigframes.series.Series],
+        connection: Optional[str] = None,
+    ):
+        """Resize images.
+
+        .. note::
+            BigFrames Blob is still under experiments. It may not work and subject to change in the future.
+
+        Args:
+            dsize (tuple(int, int), default (0, 0)): Destination size. If set to 0, fx and fy parameters determine the size.
+            fx (float, default 0.0): scale factor along the horizontal axis. If set to 0.0, dsize parameter determines the output size.
+            fy (float, defalut 0.0): scale factor along the vertical axis. If set to 0.0, dsize parameter determines the output size.
+            dst (str or bigframes.series.Series): Destination GCS folder str or blob series.
+            connection (str or None, default None): BQ connection used for function internet transactions, and the output blob if "dst" is str. If None, uses default connection of the session.
+
+        Returns:
+            BigFrames Blob Series
+        """
+        dsize_set = dsize[0] > 0 and dsize[1] > 0
+        fsize_set = fx > 0.0 and fy > 0.0
+        if not dsize_set ^ fsize_set:
+            raise ValueError(
+                "Only one of dsize or (fx, fy) parameters must be set. And the set values must be positive. "
+            )
+
+        import bigframes.blob._functions as blob_func
+
+        connection = self._resolve_connection(connection)
+
+        if isinstance(dst, str):
+            dst = os.path.join(dst, "")
+            src_uri = bigframes.series.Series(self._block).struct.explode()["uri"]
+            # Replace src folder with dst folder, keep the file names.
+            dst_uri = src_uri.str.replace(r"^.*\/(.*)$", rf"{dst}\1", regex=True)
+            dst = cast(
+                bigframes.series.Series, dst_uri.str.to_blob(connection=connection)
+            )
+
+        image_resize_udf = blob_func.TransformFunction(
+            blob_func.image_resize_def,
+            session=self._block.session,
+            connection=connection,
+        ).udf()
+
+        src_rt = self._get_runtime_json_str(mode="R")
+        dst_rt = dst.blob._get_runtime_json_str(mode="RW")
+
+        df = src_rt.to_frame().join(dst_rt.to_frame(), how="outer")
+        df["dsize_x"], df["dsizye_y"] = dsize
+        df["fx"], df["fy"] = fx, fy
+
+        res = df.apply(image_resize_udf, axis=1)
+        res.cache()  # to execute the udf
+
+        return dst
+
     def pdf_extract(
         self, *, connection: Optional[str] = None
     ) -> bigframes.series.Series:
