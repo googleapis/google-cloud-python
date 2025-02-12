@@ -1,7 +1,6 @@
 click
 google-api-core
-# TODO(https://github.com/googleapis/gapic-generator-python/issues/2322): Remove the constraint once a formal version of 1.67.0 is published
-googleapis-common-protos>=1.67.0rc1
+googleapis-common-protos
 jinja2
 MarkupSafe
 protobuf

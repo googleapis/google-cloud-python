@@ -4,9 +4,9 @@
 #
 #    pip-compile --allow-unsafe --generate-hashes requirements.in
 #
-aiohappyeyeballs==2.4.4 \
-    --hash=sha256:5fdd7d87889c63183afc18ce9271f9b0a7d32c2303e394468dd45d514a757745 \
-    --hash=sha256:a980909d50efcd44795c4afeca523296716d50cd756ddca6af8c65b996e27de8
+aiohappyeyeballs==2.4.6 \
+    --hash=sha256:147ec992cf873d74f5062644332c539fcd42956dc69453fe5204195e560517e1 \
+    --hash=sha256:9b05052f9042985d32ecbe4b59a77ae19c006a78f1344d7fdad69d28ded3d0b0
     # via aiohttp
 aiohttp==3.11.12 \
     --hash=sha256:0450ada317a65383b7cce9576096150fdb97396dcfe559109b403c7242faffef \
@@ -317,9 +317,9 @@ google-auth==2.38.0 \
     --hash=sha256:8285113607d3b80a3f1543b75962447ba8a09fe85783432a784fdeef6ac094c4 \
     --hash=sha256:e7dae6694313f434a2727bf2906f27ad259bae090d7aa896590d86feec3d9d4a
     # via google-api-core
-googleapis-common-protos[grpc]==1.67.0rc1 \
-    --hash=sha256:3230f01d80b0e7dc857f981747df92ed69ca04d6de7c93f55ed5151ba65641b8 \
-    --hash=sha256:c17971fd2b38287b03ea5973d978ec7ae72917568f125ee2b88821f20063bb0b
+googleapis-common-protos[grpc]==1.67.0 \
+    --hash=sha256:21398025365f138be356d5923e9168737d94d46a72aefee4a6110a1f23463c86 \
+    --hash=sha256:579de760800d13616f51cf8be00c876f00a9f146d3e6510e19d1f4111758b741
     # via
     #   -r requirements.in
     #   google-api-core
