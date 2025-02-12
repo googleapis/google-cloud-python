@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.1.7](https://github.com/googleapis/google-cloud-python/compare/google-cloud-visionai-v0.1.6...google-cloud-visionai-v0.1.7) (2025-02-12)
+
+
+### Features
+
+* Add REST Interceptors which support reading metadata ([5cdcc9d](https://github.com/googleapis/google-cloud-python/commit/5cdcc9d9d3e259c9a743895940552eb75b4554d3))
+* Add support for reading selective GAPIC generation methods from service YAML ([5cdcc9d](https://github.com/googleapis/google-cloud-python/commit/5cdcc9d9d3e259c9a743895940552eb75b4554d3))
+
 ## [0.1.6](https://github.com/googleapis/google-cloud-python/compare/google-cloud-visionai-v0.1.5...google-cloud-visionai-v0.1.6) (2024-12-12)
 
 
