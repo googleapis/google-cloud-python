@@ -48,6 +48,11 @@ try:
 except ImportError:
     bpd = None
 
+try:
+    import geopandas as gpd
+except ImportError:
+    gpd = None
+
 
 def make_connection(*args):
     # TODO(tswast): Remove this in favor of a mock google.cloud.bigquery.Client
@@ -735,6 +740,51 @@ def test_bigquery_magic_w_max_results_valid_calls_queryjob_result():
         create_bqstorage_client=False,
         progress_bar_type=mock.ANY,
     )
+
+
+@pytest.mark.usefixtures("ipython_interactive")
+@pytest.mark.skipif(gpd is None, reason="Requires `geopandas`")
+def test_bigquery_magic_with_use_geodataframe():
+    ip = IPython.get_ipython()
+    ip.extension_manager.load_extension("bigquery_magics")
+    bigquery_magics.context._project = None
+
+    credentials_mock = mock.create_autospec(
+        google.auth.credentials.Credentials, instance=True
+    )
+    default_patch = mock.patch(
+        "google.auth.default", return_value=(credentials_mock, "general-project")
+    )
+    client_query_patch = mock.patch(
+        "google.cloud.bigquery.client.Client.query", autospec=True
+    )
+
+    sql = """
+    SELECT
+      17 AS num,
+      ST_GEOGFROMTEXT('POINT(-122.083855 37.386051)') AS my_geom
+    """
+    result = gpd.GeoDataFrame(
+        [[17, "POINT(-122.083855 37.386051)"]], columns=["num", "my_geom"]
+    )
+
+    query_job_mock = mock.create_autospec(
+        google.cloud.bigquery.job.QueryJob, instance=True
+    )
+    query_job_mock.to_geodataframe.return_value = result
+
+    with client_query_patch as client_query_mock, default_patch:
+        client_query_mock.return_value = query_job_mock
+        return_value = ip.run_cell_magic("bigquery", "--use_geodataframe my_geom", sql)
+
+    query_job_mock.to_dataframe.assert_not_called()
+    query_job_mock.to_geodataframe.assert_called_once_with(
+        geography_column="my_geom",
+        bqstorage_client=mock.ANY,
+        create_bqstorage_client=False,
+        progress_bar_type="tqdm_notebook",
+    )
+    assert isinstance(return_value, gpd.GeoDataFrame)
 
 
 @pytest.mark.usefixtures("ipython_interactive")
