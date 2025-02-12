@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.12.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dms-v1.11.0...google-cloud-dms-v1.12.0) (2025-02-12)
+
+
+### Features
+
+* Add REST Interceptors which support reading metadata ([e92d527](https://github.com/googleapis/google-cloud-python/commit/e92d52797ffbce45d033eb81af24e0cad32baa55))
+* Add support for reading selective GAPIC generation methods from service YAML ([e92d527](https://github.com/googleapis/google-cloud-python/commit/e92d52797ffbce45d033eb81af24e0cad32baa55))
+
 ## [1.11.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dms-v1.10.1...google-cloud-dms-v1.11.0) (2024-12-12)
 
 
