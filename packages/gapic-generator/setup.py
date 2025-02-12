@@ -38,7 +38,7 @@ dependencies = [
     "protobuf>=3.20.2,<6.0.0dev,!=4.21.0,!=4.21.1,!=4.21.2,!=4.21.3,!=4.21.4,!=4.21.5",
     "pypandoc >= 1.4",
     "PyYAML >= 5.1.1",
-    "grpc-google-iam-v1 >= 0.12.4, < 1.0.0dev",
+    "grpc-google-iam-v1 >= 0.14.0, < 1.0.0dev",
     "libcst >= 0.4.9, < 2.0.0dev",
     "inflection >= 0.5.1, < 1.0.0dev",
 ]

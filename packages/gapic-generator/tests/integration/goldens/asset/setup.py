@@ -48,7 +48,7 @@ dependencies = [
     "protobuf>=3.20.2,<6.0.0dev,!=4.21.0,!=4.21.1,!=4.21.2,!=4.21.3,!=4.21.4,!=4.21.5",
     "google-cloud-access-context-manager >= 0.1.2, <1.0.0dev",
     "google-cloud-os-config >= 1.0.0, <2.0.0dev",
-    "grpc-google-iam-v1 >= 0.12.4, <1.0.0dev",
+    "grpc-google-iam-v1 >= 0.14.0, <1.0.0dev",
 ]
 extras = {
 }
