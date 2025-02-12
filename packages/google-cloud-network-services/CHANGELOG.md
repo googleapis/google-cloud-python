@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.5.18](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-services-v0.5.17...google-cloud-network-services-v0.5.18) (2025-02-12)
+
+
+### Features
+
+* Add REST Interceptors which support reading metadata ([a0910dd](https://github.com/googleapis/google-cloud-python/commit/a0910dd51541d238bc5fcf10159066ddfd928579))
+* Add support for reading selective GAPIC generation methods from service YAML ([a0910dd](https://github.com/googleapis/google-cloud-python/commit/a0910dd51541d238bc5fcf10159066ddfd928579))
+
 ## [0.5.17](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-services-v0.5.16...google-cloud-network-services-v0.5.17) (2024-12-12)
 
 

@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.1.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-memorystore-v0.1.0...google-cloud-memorystore-v0.1.1) (2025-02-12)
+
+
+### Features
+
+* add Instance.Mode.CLUSTER_DISABLED value, and deprecate STANDALONE ([3f8ab82](https://github.com/googleapis/google-cloud-python/commit/3f8ab82aa97dd47b79bcf52343e6764ff159e961))
+* Add REST Interceptors which support reading metadata ([a0910dd](https://github.com/googleapis/google-cloud-python/commit/a0910dd51541d238bc5fcf10159066ddfd928579))
+* Add support for reading selective GAPIC generation methods from service YAML ([a0910dd](https://github.com/googleapis/google-cloud-python/commit/a0910dd51541d238bc5fcf10159066ddfd928579))
+
+
+### Documentation
+
+* A comment for enum value `STANDALONE` in enum `Mode` is changed ([3f8ab82](https://github.com/googleapis/google-cloud-python/commit/3f8ab82aa97dd47b79bcf52343e6764ff159e961))
+
 ## 0.1.0 (2024-12-12)
 
 

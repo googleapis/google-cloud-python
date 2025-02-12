@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.13.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-org-policy-v1.12.0...google-cloud-org-policy-v1.13.0) (2025-02-12)
+
+
+### Features
+
+* Add REST Interceptors which support reading metadata ([a0910dd](https://github.com/googleapis/google-cloud-python/commit/a0910dd51541d238bc5fcf10159066ddfd928579))
+* Add support for reading selective GAPIC generation methods from service YAML ([a0910dd](https://github.com/googleapis/google-cloud-python/commit/a0910dd51541d238bc5fcf10159066ddfd928579))
+
 ## [1.12.0](https://github.com/googleapis/python-org-policy/compare/v1.11.1...v1.12.0) (2024-12-27)
 
 
