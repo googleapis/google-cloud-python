@@ -1,5 +1,27 @@
 # Changelog
 
+## [0.23.4](https://github.com/googleapis/google-cloud-python/compare/google-analytics-admin-v0.23.3...google-analytics-admin-v0.23.4) (2025-02-12)
+
+
+### Features
+
+* add `user_data_retention` field to `DataRetentionSettings` and mark as `REQUIRED` ([96aefef](https://github.com/googleapis/google-cloud-python/commit/96aefef02f806d12a2f4c1847a228181ab5b4afa))
+* add `user_data_retention` field to `DataRetentionSettings` and mark as `REQUIRED` ([96aefef](https://github.com/googleapis/google-cloud-python/commit/96aefef02f806d12a2f4c1847a228181ab5b4afa))
+* Add REST Interceptors which support reading metadata ([96aefef](https://github.com/googleapis/google-cloud-python/commit/96aefef02f806d12a2f4c1847a228181ab5b4afa))
+* Add support for reading selective GAPIC generation methods from service YAML ([96aefef](https://github.com/googleapis/google-cloud-python/commit/96aefef02f806d12a2f4c1847a228181ab5b4afa))
+
+
+### Bug Fixes
+
+* mark `event_data_retention` field in `DataRetentionSettings` as `REQUIRED` ([96aefef](https://github.com/googleapis/google-cloud-python/commit/96aefef02f806d12a2f4c1847a228181ab5b4afa))
+* mark `event_data_retention` field in `DataRetentionSettings` as `REQUIRED` ([96aefef](https://github.com/googleapis/google-cloud-python/commit/96aefef02f806d12a2f4c1847a228181ab5b4afa))
+
+
+### Documentation
+
+* replace "GA4" with "Google Analytics" or "GA" in all comments ([96aefef](https://github.com/googleapis/google-cloud-python/commit/96aefef02f806d12a2f4c1847a228181ab5b4afa))
+* replace "GA4" with "Google Analytics" or "GA" in all comments ([96aefef](https://github.com/googleapis/google-cloud-python/commit/96aefef02f806d12a2f4c1847a228181ab5b4afa))
+
 ## [0.23.3](https://github.com/googleapis/google-cloud-python/compare/google-analytics-admin-v0.23.2...google-analytics-admin-v0.23.3) (2024-12-12)
 
 

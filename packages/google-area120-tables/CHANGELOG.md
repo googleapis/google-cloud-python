@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.11.15](https://github.com/googleapis/google-cloud-python/compare/google-area120-tables-v0.11.14...google-area120-tables-v0.11.15) (2025-02-12)
+
+
+### Features
+
+* Add REST Interceptors which support reading metadata ([a961bc0](https://github.com/googleapis/google-cloud-python/commit/a961bc029201b72fc4923490aeb3d82781853e6a))
+* Add support for reading selective GAPIC generation methods from service YAML ([a961bc0](https://github.com/googleapis/google-cloud-python/commit/a961bc029201b72fc4923490aeb3d82781853e6a))
+
 ## [0.11.14](https://github.com/googleapis/google-cloud-python/compare/google-area120-tables-v0.11.13...google-area120-tables-v0.11.14) (2024-12-12)
 
 
