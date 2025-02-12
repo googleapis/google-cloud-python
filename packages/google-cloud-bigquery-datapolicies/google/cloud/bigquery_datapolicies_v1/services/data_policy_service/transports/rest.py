@@ -164,11 +164,34 @@ class DataPolicyServiceRestInterceptor:
     ) -> datapolicy.DataPolicy:
         """Post-rpc interceptor for create_data_policy
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_data_policy_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the DataPolicyService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_data_policy` interceptor runs
+        before the `post_create_data_policy_with_metadata` interceptor.
         """
         return response
+
+    def post_create_data_policy_with_metadata(
+        self,
+        response: datapolicy.DataPolicy,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[datapolicy.DataPolicy, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_data_policy
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the DataPolicyService server but before it is returned to user code.
+
+        We recommend only using this `post_create_data_policy_with_metadata`
+        interceptor in new development instead of the `post_create_data_policy` interceptor.
+        When both interceptors are used, this `post_create_data_policy_with_metadata` interceptor runs after the
+        `post_create_data_policy` interceptor. The (possibly modified) response returned by
+        `post_create_data_policy` will be passed to
+        `post_create_data_policy_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_data_policy(
         self,
@@ -203,11 +226,34 @@ class DataPolicyServiceRestInterceptor:
     ) -> datapolicy.DataPolicy:
         """Post-rpc interceptor for get_data_policy
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_data_policy_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the DataPolicyService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_data_policy` interceptor runs
+        before the `post_get_data_policy_with_metadata` interceptor.
         """
         return response
+
+    def post_get_data_policy_with_metadata(
+        self,
+        response: datapolicy.DataPolicy,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[datapolicy.DataPolicy, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_data_policy
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the DataPolicyService server but before it is returned to user code.
+
+        We recommend only using this `post_get_data_policy_with_metadata`
+        interceptor in new development instead of the `post_get_data_policy` interceptor.
+        When both interceptors are used, this `post_get_data_policy_with_metadata` interceptor runs after the
+        `post_get_data_policy` interceptor. The (possibly modified) response returned by
+        `post_get_data_policy` will be passed to
+        `post_get_data_policy_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_iam_policy(
         self,
@@ -226,11 +272,34 @@ class DataPolicyServiceRestInterceptor:
     def post_get_iam_policy(self, response: policy_pb2.Policy) -> policy_pb2.Policy:
         """Post-rpc interceptor for get_iam_policy
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_iam_policy_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the DataPolicyService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_iam_policy` interceptor runs
+        before the `post_get_iam_policy_with_metadata` interceptor.
         """
         return response
+
+    def post_get_iam_policy_with_metadata(
+        self,
+        response: policy_pb2.Policy,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[policy_pb2.Policy, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_iam_policy
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the DataPolicyService server but before it is returned to user code.
+
+        We recommend only using this `post_get_iam_policy_with_metadata`
+        interceptor in new development instead of the `post_get_iam_policy` interceptor.
+        When both interceptors are used, this `post_get_iam_policy_with_metadata` interceptor runs after the
+        `post_get_iam_policy` interceptor. The (possibly modified) response returned by
+        `post_get_iam_policy` will be passed to
+        `post_get_iam_policy_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_data_policies(
         self,
@@ -251,11 +320,36 @@ class DataPolicyServiceRestInterceptor:
     ) -> datapolicy.ListDataPoliciesResponse:
         """Post-rpc interceptor for list_data_policies
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_data_policies_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the DataPolicyService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_data_policies` interceptor runs
+        before the `post_list_data_policies_with_metadata` interceptor.
         """
         return response
+
+    def post_list_data_policies_with_metadata(
+        self,
+        response: datapolicy.ListDataPoliciesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        datapolicy.ListDataPoliciesResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_data_policies
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the DataPolicyService server but before it is returned to user code.
+
+        We recommend only using this `post_list_data_policies_with_metadata`
+        interceptor in new development instead of the `post_list_data_policies` interceptor.
+        When both interceptors are used, this `post_list_data_policies_with_metadata` interceptor runs after the
+        `post_list_data_policies` interceptor. The (possibly modified) response returned by
+        `post_list_data_policies` will be passed to
+        `post_list_data_policies_with_metadata`.
+        """
+        return response, metadata
 
     def pre_rename_data_policy(
         self,
@@ -276,11 +370,34 @@ class DataPolicyServiceRestInterceptor:
     ) -> datapolicy.DataPolicy:
         """Post-rpc interceptor for rename_data_policy
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_rename_data_policy_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the DataPolicyService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_rename_data_policy` interceptor runs
+        before the `post_rename_data_policy_with_metadata` interceptor.
         """
         return response
+
+    def post_rename_data_policy_with_metadata(
+        self,
+        response: datapolicy.DataPolicy,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[datapolicy.DataPolicy, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for rename_data_policy
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the DataPolicyService server but before it is returned to user code.
+
+        We recommend only using this `post_rename_data_policy_with_metadata`
+        interceptor in new development instead of the `post_rename_data_policy` interceptor.
+        When both interceptors are used, this `post_rename_data_policy_with_metadata` interceptor runs after the
+        `post_rename_data_policy` interceptor. The (possibly modified) response returned by
+        `post_rename_data_policy` will be passed to
+        `post_rename_data_policy_with_metadata`.
+        """
+        return response, metadata
 
     def pre_set_iam_policy(
         self,
@@ -299,11 +416,34 @@ class DataPolicyServiceRestInterceptor:
     def post_set_iam_policy(self, response: policy_pb2.Policy) -> policy_pb2.Policy:
         """Post-rpc interceptor for set_iam_policy
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_set_iam_policy_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the DataPolicyService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_set_iam_policy` interceptor runs
+        before the `post_set_iam_policy_with_metadata` interceptor.
         """
         return response
+
+    def post_set_iam_policy_with_metadata(
+        self,
+        response: policy_pb2.Policy,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[policy_pb2.Policy, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for set_iam_policy
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the DataPolicyService server but before it is returned to user code.
+
+        We recommend only using this `post_set_iam_policy_with_metadata`
+        interceptor in new development instead of the `post_set_iam_policy` interceptor.
+        When both interceptors are used, this `post_set_iam_policy_with_metadata` interceptor runs after the
+        `post_set_iam_policy` interceptor. The (possibly modified) response returned by
+        `post_set_iam_policy` will be passed to
+        `post_set_iam_policy_with_metadata`.
+        """
+        return response, metadata
 
     def pre_test_iam_permissions(
         self,
@@ -325,11 +465,37 @@ class DataPolicyServiceRestInterceptor:
     ) -> iam_policy_pb2.TestIamPermissionsResponse:
         """Post-rpc interceptor for test_iam_permissions
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_test_iam_permissions_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the DataPolicyService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_test_iam_permissions` interceptor runs
+        before the `post_test_iam_permissions_with_metadata` interceptor.
         """
         return response
+
+    def post_test_iam_permissions_with_metadata(
+        self,
+        response: iam_policy_pb2.TestIamPermissionsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        iam_policy_pb2.TestIamPermissionsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for test_iam_permissions
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the DataPolicyService server but before it is returned to user code.
+
+        We recommend only using this `post_test_iam_permissions_with_metadata`
+        interceptor in new development instead of the `post_test_iam_permissions` interceptor.
+        When both interceptors are used, this `post_test_iam_permissions_with_metadata` interceptor runs after the
+        `post_test_iam_permissions` interceptor. The (possibly modified) response returned by
+        `post_test_iam_permissions` will be passed to
+        `post_test_iam_permissions_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_data_policy(
         self,
@@ -350,11 +516,34 @@ class DataPolicyServiceRestInterceptor:
     ) -> datapolicy.DataPolicy:
         """Post-rpc interceptor for update_data_policy
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_data_policy_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the DataPolicyService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_data_policy` interceptor runs
+        before the `post_update_data_policy_with_metadata` interceptor.
         """
         return response
+
+    def post_update_data_policy_with_metadata(
+        self,
+        response: datapolicy.DataPolicy,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[datapolicy.DataPolicy, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_data_policy
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the DataPolicyService server but before it is returned to user code.
+
+        We recommend only using this `post_update_data_policy_with_metadata`
+        interceptor in new development instead of the `post_update_data_policy` interceptor.
+        When both interceptors are used, this `post_update_data_policy_with_metadata` interceptor runs after the
+        `post_update_data_policy` interceptor. The (possibly modified) response returned by
+        `post_update_data_policy` will be passed to
+        `post_update_data_policy_with_metadata`.
+        """
+        return response, metadata
 
 
 @dataclasses.dataclass
@@ -571,6 +760,10 @@ class DataPolicyServiceRestTransport(_BaseDataPolicyServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_data_policy(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_data_policy_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -823,6 +1016,10 @@ class DataPolicyServiceRestTransport(_BaseDataPolicyServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_data_policy(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_data_policy_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1044,6 +1241,10 @@ class DataPolicyServiceRestTransport(_BaseDataPolicyServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_iam_policy(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_iam_policy_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1190,6 +1391,10 @@ class DataPolicyServiceRestTransport(_BaseDataPolicyServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_data_policies(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_data_policies_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1342,6 +1547,10 @@ class DataPolicyServiceRestTransport(_BaseDataPolicyServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_rename_data_policy(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_rename_data_policy_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1563,6 +1772,10 @@ class DataPolicyServiceRestTransport(_BaseDataPolicyServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_set_iam_policy(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_set_iam_policy_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1712,6 +1925,10 @@ class DataPolicyServiceRestTransport(_BaseDataPolicyServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_test_iam_permissions(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_test_iam_permissions_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1862,6 +2079,10 @@ class DataPolicyServiceRestTransport(_BaseDataPolicyServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_data_policy(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_data_policy_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

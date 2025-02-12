@@ -90,6 +90,13 @@ from google.cloud.backupdr_v1.types import (
     backupvault_gce,
 )
 
+CRED_INFO_JSON = {
+    "credential_source": "/path/to/file",
+    "credential_type": "service account credentials",
+    "principal": "service-account@example.com",
+}
+CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
 
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
@@ -318,6 +325,49 @@ def test__get_universe_domain():
     with pytest.raises(ValueError) as excinfo:
         BackupDRClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+
+@pytest.mark.parametrize(
+    "error_code,cred_info_json,show_cred_info",
+    [
+        (401, CRED_INFO_JSON, True),
+        (403, CRED_INFO_JSON, True),
+        (404, CRED_INFO_JSON, True),
+        (500, CRED_INFO_JSON, False),
+        (401, None, False),
+        (403, None, False),
+        (404, None, False),
+        (500, None, False),
+    ],
+)
+def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
+    cred = mock.Mock(["get_cred_info"])
+    cred.get_cred_info = mock.Mock(return_value=cred_info_json)
+    client = BackupDRClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=["foo"])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    if show_cred_info:
+        assert error.details == ["foo", CRED_INFO_STRING]
+    else:
+        assert error.details == ["foo"]
+
+
+@pytest.mark.parametrize("error_code", [401, 403, 404, 500])
+def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
+    cred = mock.Mock([])
+    assert not hasattr(cred, "get_cred_info")
+    client = BackupDRClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=[])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    assert error.details == []
 
 
 @pytest.mark.parametrize(
@@ -19734,10 +19784,13 @@ def test_list_management_servers_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.BackupDRRestInterceptor, "post_list_management_servers"
     ) as post, mock.patch.object(
+        transports.BackupDRRestInterceptor, "post_list_management_servers_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.BackupDRRestInterceptor, "pre_list_management_servers"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = backupdr.ListManagementServersRequest.pb(
             backupdr.ListManagementServersRequest()
         )
@@ -19763,6 +19816,10 @@ def test_list_management_servers_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = backupdr.ListManagementServersResponse()
+        post_with_metadata.return_value = (
+            backupdr.ListManagementServersResponse(),
+            metadata,
+        )
 
         client.list_management_servers(
             request,
@@ -19774,6 +19831,7 @@ def test_list_management_servers_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_management_server_rest_bad_request(
@@ -19874,10 +19932,13 @@ def test_get_management_server_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.BackupDRRestInterceptor, "post_get_management_server"
     ) as post, mock.patch.object(
+        transports.BackupDRRestInterceptor, "post_get_management_server_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.BackupDRRestInterceptor, "pre_get_management_server"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = backupdr.GetManagementServerRequest.pb(
             backupdr.GetManagementServerRequest()
         )
@@ -19901,6 +19962,7 @@ def test_get_management_server_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = backupdr.ManagementServer()
+        post_with_metadata.return_value = backupdr.ManagementServer(), metadata
 
         client.get_management_server(
             request,
@@ -19912,6 +19974,7 @@ def test_get_management_server_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_management_server_rest_bad_request(
@@ -20081,10 +20144,14 @@ def test_create_management_server_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.BackupDRRestInterceptor, "post_create_management_server"
     ) as post, mock.patch.object(
+        transports.BackupDRRestInterceptor,
+        "post_create_management_server_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.BackupDRRestInterceptor, "pre_create_management_server"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = backupdr.CreateManagementServerRequest.pb(
             backupdr.CreateManagementServerRequest()
         )
@@ -20108,6 +20175,7 @@ def test_create_management_server_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_management_server(
             request,
@@ -20119,6 +20187,7 @@ def test_create_management_server_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_management_server_rest_bad_request(
@@ -20201,10 +20270,14 @@ def test_delete_management_server_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.BackupDRRestInterceptor, "post_delete_management_server"
     ) as post, mock.patch.object(
+        transports.BackupDRRestInterceptor,
+        "post_delete_management_server_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.BackupDRRestInterceptor, "pre_delete_management_server"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = backupdr.DeleteManagementServerRequest.pb(
             backupdr.DeleteManagementServerRequest()
         )
@@ -20228,6 +20301,7 @@ def test_delete_management_server_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_management_server(
             request,
@@ -20239,6 +20313,7 @@ def test_delete_management_server_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_backup_vault_rest_bad_request(
@@ -20402,10 +20477,13 @@ def test_create_backup_vault_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.BackupDRRestInterceptor, "post_create_backup_vault"
     ) as post, mock.patch.object(
+        transports.BackupDRRestInterceptor, "post_create_backup_vault_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.BackupDRRestInterceptor, "pre_create_backup_vault"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = backupvault.CreateBackupVaultRequest.pb(
             backupvault.CreateBackupVaultRequest()
         )
@@ -20429,6 +20507,7 @@ def test_create_backup_vault_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_backup_vault(
             request,
@@ -20440,6 +20519,7 @@ def test_create_backup_vault_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_backup_vaults_rest_bad_request(
@@ -20524,10 +20604,13 @@ def test_list_backup_vaults_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.BackupDRRestInterceptor, "post_list_backup_vaults"
     ) as post, mock.patch.object(
+        transports.BackupDRRestInterceptor, "post_list_backup_vaults_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.BackupDRRestInterceptor, "pre_list_backup_vaults"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = backupvault.ListBackupVaultsRequest.pb(
             backupvault.ListBackupVaultsRequest()
         )
@@ -20553,6 +20636,10 @@ def test_list_backup_vaults_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = backupvault.ListBackupVaultsResponse()
+        post_with_metadata.return_value = (
+            backupvault.ListBackupVaultsResponse(),
+            metadata,
+        )
 
         client.list_backup_vaults(
             request,
@@ -20564,6 +20651,7 @@ def test_list_backup_vaults_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_fetch_usable_backup_vaults_rest_bad_request(
@@ -20648,10 +20736,14 @@ def test_fetch_usable_backup_vaults_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.BackupDRRestInterceptor, "post_fetch_usable_backup_vaults"
     ) as post, mock.patch.object(
+        transports.BackupDRRestInterceptor,
+        "post_fetch_usable_backup_vaults_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.BackupDRRestInterceptor, "pre_fetch_usable_backup_vaults"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = backupvault.FetchUsableBackupVaultsRequest.pb(
             backupvault.FetchUsableBackupVaultsRequest()
         )
@@ -20677,6 +20769,10 @@ def test_fetch_usable_backup_vaults_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = backupvault.FetchUsableBackupVaultsResponse()
+        post_with_metadata.return_value = (
+            backupvault.FetchUsableBackupVaultsResponse(),
+            metadata,
+        )
 
         client.fetch_usable_backup_vaults(
             request,
@@ -20688,6 +20784,7 @@ def test_fetch_usable_backup_vaults_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_backup_vault_rest_bad_request(
@@ -20791,10 +20888,13 @@ def test_get_backup_vault_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.BackupDRRestInterceptor, "post_get_backup_vault"
     ) as post, mock.patch.object(
+        transports.BackupDRRestInterceptor, "post_get_backup_vault_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.BackupDRRestInterceptor, "pre_get_backup_vault"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = backupvault.GetBackupVaultRequest.pb(
             backupvault.GetBackupVaultRequest()
         )
@@ -20818,6 +20918,7 @@ def test_get_backup_vault_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = backupvault.BackupVault()
+        post_with_metadata.return_value = backupvault.BackupVault(), metadata
 
         client.get_backup_vault(
             request,
@@ -20829,6 +20930,7 @@ def test_get_backup_vault_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_backup_vault_rest_bad_request(
@@ -21000,10 +21102,13 @@ def test_update_backup_vault_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.BackupDRRestInterceptor, "post_update_backup_vault"
     ) as post, mock.patch.object(
+        transports.BackupDRRestInterceptor, "post_update_backup_vault_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.BackupDRRestInterceptor, "pre_update_backup_vault"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = backupvault.UpdateBackupVaultRequest.pb(
             backupvault.UpdateBackupVaultRequest()
         )
@@ -21027,6 +21132,7 @@ def test_update_backup_vault_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.update_backup_vault(
             request,
@@ -21038,6 +21144,7 @@ def test_update_backup_vault_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_backup_vault_rest_bad_request(
@@ -21116,10 +21223,13 @@ def test_delete_backup_vault_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.BackupDRRestInterceptor, "post_delete_backup_vault"
     ) as post, mock.patch.object(
+        transports.BackupDRRestInterceptor, "post_delete_backup_vault_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.BackupDRRestInterceptor, "pre_delete_backup_vault"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = backupvault.DeleteBackupVaultRequest.pb(
             backupvault.DeleteBackupVaultRequest()
         )
@@ -21143,6 +21253,7 @@ def test_delete_backup_vault_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_backup_vault(
             request,
@@ -21154,6 +21265,7 @@ def test_delete_backup_vault_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_data_sources_rest_bad_request(
@@ -21238,10 +21350,13 @@ def test_list_data_sources_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.BackupDRRestInterceptor, "post_list_data_sources"
     ) as post, mock.patch.object(
+        transports.BackupDRRestInterceptor, "post_list_data_sources_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.BackupDRRestInterceptor, "pre_list_data_sources"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = backupvault.ListDataSourcesRequest.pb(
             backupvault.ListDataSourcesRequest()
         )
@@ -21267,6 +21382,10 @@ def test_list_data_sources_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = backupvault.ListDataSourcesResponse()
+        post_with_metadata.return_value = (
+            backupvault.ListDataSourcesResponse(),
+            metadata,
+        )
 
         client.list_data_sources(
             request,
@@ -21278,6 +21397,7 @@ def test_list_data_sources_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_data_source_rest_bad_request(
@@ -21374,10 +21494,13 @@ def test_get_data_source_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.BackupDRRestInterceptor, "post_get_data_source"
     ) as post, mock.patch.object(
+        transports.BackupDRRestInterceptor, "post_get_data_source_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.BackupDRRestInterceptor, "pre_get_data_source"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = backupvault.GetDataSourceRequest.pb(
             backupvault.GetDataSourceRequest()
         )
@@ -21401,6 +21524,7 @@ def test_get_data_source_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = backupvault.DataSource()
+        post_with_metadata.return_value = backupvault.DataSource(), metadata
 
         client.get_data_source(
             request,
@@ -21412,6 +21536,7 @@ def test_get_data_source_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_data_source_rest_bad_request(
@@ -21629,10 +21754,13 @@ def test_update_data_source_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.BackupDRRestInterceptor, "post_update_data_source"
     ) as post, mock.patch.object(
+        transports.BackupDRRestInterceptor, "post_update_data_source_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.BackupDRRestInterceptor, "pre_update_data_source"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = backupvault.UpdateDataSourceRequest.pb(
             backupvault.UpdateDataSourceRequest()
         )
@@ -21656,6 +21784,7 @@ def test_update_data_source_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.update_data_source(
             request,
@@ -21667,6 +21796,7 @@ def test_update_data_source_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_backups_rest_bad_request(request_type=backupvault.ListBackupsRequest):
@@ -21753,10 +21883,13 @@ def test_list_backups_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.BackupDRRestInterceptor, "post_list_backups"
     ) as post, mock.patch.object(
+        transports.BackupDRRestInterceptor, "post_list_backups_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.BackupDRRestInterceptor, "pre_list_backups"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = backupvault.ListBackupsRequest.pb(backupvault.ListBackupsRequest())
         transcode.return_value = {
             "method": "post",
@@ -21780,6 +21913,7 @@ def test_list_backups_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = backupvault.ListBackupsResponse()
+        post_with_metadata.return_value = backupvault.ListBackupsResponse(), metadata
 
         client.list_backups(
             request,
@@ -21791,6 +21925,7 @@ def test_list_backups_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_backup_rest_bad_request(request_type=backupvault.GetBackupRequest):
@@ -21885,10 +22020,13 @@ def test_get_backup_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.BackupDRRestInterceptor, "post_get_backup"
     ) as post, mock.patch.object(
+        transports.BackupDRRestInterceptor, "post_get_backup_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.BackupDRRestInterceptor, "pre_get_backup"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = backupvault.GetBackupRequest.pb(backupvault.GetBackupRequest())
         transcode.return_value = {
             "method": "post",
@@ -21910,6 +22048,7 @@ def test_get_backup_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = backupvault.Backup()
+        post_with_metadata.return_value = backupvault.Backup(), metadata
 
         client.get_backup(
             request,
@@ -21921,6 +22060,7 @@ def test_get_backup_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_backup_rest_bad_request(request_type=backupvault.UpdateBackupRequest):
@@ -22213,10 +22353,13 @@ def test_update_backup_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.BackupDRRestInterceptor, "post_update_backup"
     ) as post, mock.patch.object(
+        transports.BackupDRRestInterceptor, "post_update_backup_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.BackupDRRestInterceptor, "pre_update_backup"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = backupvault.UpdateBackupRequest.pb(
             backupvault.UpdateBackupRequest()
         )
@@ -22240,6 +22383,7 @@ def test_update_backup_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.update_backup(
             request,
@@ -22251,6 +22395,7 @@ def test_update_backup_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_backup_rest_bad_request(request_type=backupvault.DeleteBackupRequest):
@@ -22331,10 +22476,13 @@ def test_delete_backup_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.BackupDRRestInterceptor, "post_delete_backup"
     ) as post, mock.patch.object(
+        transports.BackupDRRestInterceptor, "post_delete_backup_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.BackupDRRestInterceptor, "pre_delete_backup"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = backupvault.DeleteBackupRequest.pb(
             backupvault.DeleteBackupRequest()
         )
@@ -22358,6 +22506,7 @@ def test_delete_backup_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_backup(
             request,
@@ -22369,6 +22518,7 @@ def test_delete_backup_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_restore_backup_rest_bad_request(request_type=backupvault.RestoreBackupRequest):
@@ -22449,10 +22599,13 @@ def test_restore_backup_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.BackupDRRestInterceptor, "post_restore_backup"
     ) as post, mock.patch.object(
+        transports.BackupDRRestInterceptor, "post_restore_backup_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.BackupDRRestInterceptor, "pre_restore_backup"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = backupvault.RestoreBackupRequest.pb(
             backupvault.RestoreBackupRequest()
         )
@@ -22476,6 +22629,7 @@ def test_restore_backup_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.restore_backup(
             request,
@@ -22487,6 +22641,7 @@ def test_restore_backup_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_backup_plan_rest_bad_request(
@@ -22663,10 +22818,13 @@ def test_create_backup_plan_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.BackupDRRestInterceptor, "post_create_backup_plan"
     ) as post, mock.patch.object(
+        transports.BackupDRRestInterceptor, "post_create_backup_plan_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.BackupDRRestInterceptor, "pre_create_backup_plan"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = backupplan.CreateBackupPlanRequest.pb(
             backupplan.CreateBackupPlanRequest()
         )
@@ -22690,6 +22848,7 @@ def test_create_backup_plan_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_backup_plan(
             request,
@@ -22701,6 +22860,7 @@ def test_create_backup_plan_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_backup_plan_rest_bad_request(request_type=backupplan.GetBackupPlanRequest):
@@ -22793,10 +22953,13 @@ def test_get_backup_plan_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.BackupDRRestInterceptor, "post_get_backup_plan"
     ) as post, mock.patch.object(
+        transports.BackupDRRestInterceptor, "post_get_backup_plan_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.BackupDRRestInterceptor, "pre_get_backup_plan"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = backupplan.GetBackupPlanRequest.pb(
             backupplan.GetBackupPlanRequest()
         )
@@ -22820,6 +22983,7 @@ def test_get_backup_plan_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = backupplan.BackupPlan()
+        post_with_metadata.return_value = backupplan.BackupPlan(), metadata
 
         client.get_backup_plan(
             request,
@@ -22831,6 +22995,7 @@ def test_get_backup_plan_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_backup_plans_rest_bad_request(
@@ -22915,10 +23080,13 @@ def test_list_backup_plans_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.BackupDRRestInterceptor, "post_list_backup_plans"
     ) as post, mock.patch.object(
+        transports.BackupDRRestInterceptor, "post_list_backup_plans_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.BackupDRRestInterceptor, "pre_list_backup_plans"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = backupplan.ListBackupPlansRequest.pb(
             backupplan.ListBackupPlansRequest()
         )
@@ -22944,6 +23112,7 @@ def test_list_backup_plans_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = backupplan.ListBackupPlansResponse()
+        post_with_metadata.return_value = backupplan.ListBackupPlansResponse(), metadata
 
         client.list_backup_plans(
             request,
@@ -22955,6 +23124,7 @@ def test_list_backup_plans_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_backup_plan_rest_bad_request(
@@ -23033,10 +23203,13 @@ def test_delete_backup_plan_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.BackupDRRestInterceptor, "post_delete_backup_plan"
     ) as post, mock.patch.object(
+        transports.BackupDRRestInterceptor, "post_delete_backup_plan_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.BackupDRRestInterceptor, "pre_delete_backup_plan"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = backupplan.DeleteBackupPlanRequest.pb(
             backupplan.DeleteBackupPlanRequest()
         )
@@ -23060,6 +23233,7 @@ def test_delete_backup_plan_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_backup_plan(
             request,
@@ -23071,6 +23245,7 @@ def test_delete_backup_plan_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_backup_plan_association_rest_bad_request(
@@ -23247,10 +23422,14 @@ def test_create_backup_plan_association_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.BackupDRRestInterceptor, "post_create_backup_plan_association"
     ) as post, mock.patch.object(
+        transports.BackupDRRestInterceptor,
+        "post_create_backup_plan_association_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.BackupDRRestInterceptor, "pre_create_backup_plan_association"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = backupplanassociation.CreateBackupPlanAssociationRequest.pb(
             backupplanassociation.CreateBackupPlanAssociationRequest()
         )
@@ -23274,6 +23453,7 @@ def test_create_backup_plan_association_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_backup_plan_association(
             request,
@@ -23285,6 +23465,7 @@ def test_create_backup_plan_association_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_backup_plan_association_rest_bad_request(
@@ -23381,10 +23562,14 @@ def test_get_backup_plan_association_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.BackupDRRestInterceptor, "post_get_backup_plan_association"
     ) as post, mock.patch.object(
+        transports.BackupDRRestInterceptor,
+        "post_get_backup_plan_association_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.BackupDRRestInterceptor, "pre_get_backup_plan_association"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = backupplanassociation.GetBackupPlanAssociationRequest.pb(
             backupplanassociation.GetBackupPlanAssociationRequest()
         )
@@ -23410,6 +23595,10 @@ def test_get_backup_plan_association_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = backupplanassociation.BackupPlanAssociation()
+        post_with_metadata.return_value = (
+            backupplanassociation.BackupPlanAssociation(),
+            metadata,
+        )
 
         client.get_backup_plan_association(
             request,
@@ -23421,6 +23610,7 @@ def test_get_backup_plan_association_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_backup_plan_associations_rest_bad_request(
@@ -23507,10 +23697,14 @@ def test_list_backup_plan_associations_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.BackupDRRestInterceptor, "post_list_backup_plan_associations"
     ) as post, mock.patch.object(
+        transports.BackupDRRestInterceptor,
+        "post_list_backup_plan_associations_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.BackupDRRestInterceptor, "pre_list_backup_plan_associations"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = backupplanassociation.ListBackupPlanAssociationsRequest.pb(
             backupplanassociation.ListBackupPlanAssociationsRequest()
         )
@@ -23536,6 +23730,10 @@ def test_list_backup_plan_associations_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = backupplanassociation.ListBackupPlanAssociationsResponse()
+        post_with_metadata.return_value = (
+            backupplanassociation.ListBackupPlanAssociationsResponse(),
+            metadata,
+        )
 
         client.list_backup_plan_associations(
             request,
@@ -23547,6 +23745,7 @@ def test_list_backup_plan_associations_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_backup_plan_association_rest_bad_request(
@@ -23629,10 +23828,14 @@ def test_delete_backup_plan_association_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.BackupDRRestInterceptor, "post_delete_backup_plan_association"
     ) as post, mock.patch.object(
+        transports.BackupDRRestInterceptor,
+        "post_delete_backup_plan_association_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.BackupDRRestInterceptor, "pre_delete_backup_plan_association"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = backupplanassociation.DeleteBackupPlanAssociationRequest.pb(
             backupplanassociation.DeleteBackupPlanAssociationRequest()
         )
@@ -23656,6 +23859,7 @@ def test_delete_backup_plan_association_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_backup_plan_association(
             request,
@@ -23667,6 +23871,7 @@ def test_delete_backup_plan_association_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_trigger_backup_rest_bad_request(
@@ -23749,10 +23954,13 @@ def test_trigger_backup_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.BackupDRRestInterceptor, "post_trigger_backup"
     ) as post, mock.patch.object(
+        transports.BackupDRRestInterceptor, "post_trigger_backup_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.BackupDRRestInterceptor, "pre_trigger_backup"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = backupplanassociation.TriggerBackupRequest.pb(
             backupplanassociation.TriggerBackupRequest()
         )
@@ -23776,6 +23984,7 @@ def test_trigger_backup_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.trigger_backup(
             request,
@@ -23787,6 +23996,7 @@ def test_trigger_backup_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_initialize_service_rest_bad_request(
@@ -23865,10 +24075,13 @@ def test_initialize_service_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.BackupDRRestInterceptor, "post_initialize_service"
     ) as post, mock.patch.object(
+        transports.BackupDRRestInterceptor, "post_initialize_service_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.BackupDRRestInterceptor, "pre_initialize_service"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = backupdr.InitializeServiceRequest.pb(
             backupdr.InitializeServiceRequest()
         )
@@ -23892,6 +24105,7 @@ def test_initialize_service_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.initialize_service(
             request,
@@ -23903,6 +24117,7 @@ def test_initialize_service_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_location_rest_bad_request(request_type=locations_pb2.GetLocationRequest):

@@ -93,6 +93,13 @@ from google.cloud.bare_metal_solution_v2.types import volume
 from google.cloud.bare_metal_solution_v2.types import volume as gcb_volume
 from google.cloud.bare_metal_solution_v2.types import volume_snapshot
 
+CRED_INFO_JSON = {
+    "credential_source": "/path/to/file",
+    "credential_type": "service account credentials",
+    "principal": "service-account@example.com",
+}
+CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
 
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
@@ -358,6 +365,49 @@ def test__get_universe_domain():
     with pytest.raises(ValueError) as excinfo:
         BareMetalSolutionClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+
+@pytest.mark.parametrize(
+    "error_code,cred_info_json,show_cred_info",
+    [
+        (401, CRED_INFO_JSON, True),
+        (403, CRED_INFO_JSON, True),
+        (404, CRED_INFO_JSON, True),
+        (500, CRED_INFO_JSON, False),
+        (401, None, False),
+        (403, None, False),
+        (404, None, False),
+        (500, None, False),
+    ],
+)
+def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
+    cred = mock.Mock(["get_cred_info"])
+    cred.get_cred_info = mock.Mock(return_value=cred_info_json)
+    client = BareMetalSolutionClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=["foo"])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    if show_cred_info:
+        assert error.details == ["foo", CRED_INFO_STRING]
+    else:
+        assert error.details == ["foo"]
+
+
+@pytest.mark.parametrize("error_code", [401, 403, 404, 500])
+def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
+    cred = mock.Mock([])
+    assert not hasattr(cred, "get_cred_info")
+    client = BareMetalSolutionClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=[])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    assert error.details == []
 
 
 @pytest.mark.parametrize(
@@ -29413,10 +29463,13 @@ def test_list_instances_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.BareMetalSolutionRestInterceptor, "post_list_instances"
     ) as post, mock.patch.object(
+        transports.BareMetalSolutionRestInterceptor, "post_list_instances_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.BareMetalSolutionRestInterceptor, "pre_list_instances"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = instance.ListInstancesRequest.pb(instance.ListInstancesRequest())
         transcode.return_value = {
             "method": "post",
@@ -29440,6 +29493,7 @@ def test_list_instances_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = instance.ListInstancesResponse()
+        post_with_metadata.return_value = instance.ListInstancesResponse(), metadata
 
         client.list_instances(
             request,
@@ -29451,6 +29505,7 @@ def test_list_instances_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_instance_rest_bad_request(request_type=instance.GetInstanceRequest):
@@ -29555,10 +29610,13 @@ def test_get_instance_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.BareMetalSolutionRestInterceptor, "post_get_instance"
     ) as post, mock.patch.object(
+        transports.BareMetalSolutionRestInterceptor, "post_get_instance_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.BareMetalSolutionRestInterceptor, "pre_get_instance"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = instance.GetInstanceRequest.pb(instance.GetInstanceRequest())
         transcode.return_value = {
             "method": "post",
@@ -29580,6 +29638,7 @@ def test_get_instance_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = instance.Instance()
+        post_with_metadata.return_value = instance.Instance(), metadata
 
         client.get_instance(
             request,
@@ -29591,6 +29650,7 @@ def test_get_instance_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_instance_rest_bad_request(
@@ -29871,10 +29931,14 @@ def test_update_instance_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.BareMetalSolutionRestInterceptor, "post_update_instance"
     ) as post, mock.patch.object(
+        transports.BareMetalSolutionRestInterceptor,
+        "post_update_instance_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.BareMetalSolutionRestInterceptor, "pre_update_instance"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = gcb_instance.UpdateInstanceRequest.pb(
             gcb_instance.UpdateInstanceRequest()
         )
@@ -29898,6 +29962,7 @@ def test_update_instance_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.update_instance(
             request,
@@ -29909,6 +29974,7 @@ def test_update_instance_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_rename_instance_rest_bad_request(request_type=instance.RenameInstanceRequest):
@@ -30013,10 +30079,14 @@ def test_rename_instance_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.BareMetalSolutionRestInterceptor, "post_rename_instance"
     ) as post, mock.patch.object(
+        transports.BareMetalSolutionRestInterceptor,
+        "post_rename_instance_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.BareMetalSolutionRestInterceptor, "pre_rename_instance"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = instance.RenameInstanceRequest.pb(instance.RenameInstanceRequest())
         transcode.return_value = {
             "method": "post",
@@ -30038,6 +30108,7 @@ def test_rename_instance_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = instance.Instance()
+        post_with_metadata.return_value = instance.Instance(), metadata
 
         client.rename_instance(
             request,
@@ -30049,6 +30120,7 @@ def test_rename_instance_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_reset_instance_rest_bad_request(request_type=instance.ResetInstanceRequest):
@@ -30127,10 +30199,13 @@ def test_reset_instance_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.BareMetalSolutionRestInterceptor, "post_reset_instance"
     ) as post, mock.patch.object(
+        transports.BareMetalSolutionRestInterceptor, "post_reset_instance_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.BareMetalSolutionRestInterceptor, "pre_reset_instance"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = instance.ResetInstanceRequest.pb(instance.ResetInstanceRequest())
         transcode.return_value = {
             "method": "post",
@@ -30152,6 +30227,7 @@ def test_reset_instance_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.reset_instance(
             request,
@@ -30163,6 +30239,7 @@ def test_reset_instance_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_start_instance_rest_bad_request(request_type=instance.StartInstanceRequest):
@@ -30241,10 +30318,13 @@ def test_start_instance_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.BareMetalSolutionRestInterceptor, "post_start_instance"
     ) as post, mock.patch.object(
+        transports.BareMetalSolutionRestInterceptor, "post_start_instance_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.BareMetalSolutionRestInterceptor, "pre_start_instance"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = instance.StartInstanceRequest.pb(instance.StartInstanceRequest())
         transcode.return_value = {
             "method": "post",
@@ -30266,6 +30346,7 @@ def test_start_instance_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.start_instance(
             request,
@@ -30277,6 +30358,7 @@ def test_start_instance_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_stop_instance_rest_bad_request(request_type=instance.StopInstanceRequest):
@@ -30355,10 +30437,13 @@ def test_stop_instance_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.BareMetalSolutionRestInterceptor, "post_stop_instance"
     ) as post, mock.patch.object(
+        transports.BareMetalSolutionRestInterceptor, "post_stop_instance_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.BareMetalSolutionRestInterceptor, "pre_stop_instance"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = instance.StopInstanceRequest.pb(instance.StopInstanceRequest())
         transcode.return_value = {
             "method": "post",
@@ -30380,6 +30465,7 @@ def test_stop_instance_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.stop_instance(
             request,
@@ -30391,6 +30477,7 @@ def test_stop_instance_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_enable_interactive_serial_console_rest_bad_request(
@@ -30473,10 +30560,14 @@ def test_enable_interactive_serial_console_rest_interceptors(null_interceptor):
         "post_enable_interactive_serial_console",
     ) as post, mock.patch.object(
         transports.BareMetalSolutionRestInterceptor,
+        "post_enable_interactive_serial_console_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
+        transports.BareMetalSolutionRestInterceptor,
         "pre_enable_interactive_serial_console",
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = instance.EnableInteractiveSerialConsoleRequest.pb(
             instance.EnableInteractiveSerialConsoleRequest()
         )
@@ -30500,6 +30591,7 @@ def test_enable_interactive_serial_console_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.enable_interactive_serial_console(
             request,
@@ -30511,6 +30603,7 @@ def test_enable_interactive_serial_console_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_disable_interactive_serial_console_rest_bad_request(
@@ -30593,10 +30686,14 @@ def test_disable_interactive_serial_console_rest_interceptors(null_interceptor):
         "post_disable_interactive_serial_console",
     ) as post, mock.patch.object(
         transports.BareMetalSolutionRestInterceptor,
+        "post_disable_interactive_serial_console_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
+        transports.BareMetalSolutionRestInterceptor,
         "pre_disable_interactive_serial_console",
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = instance.DisableInteractiveSerialConsoleRequest.pb(
             instance.DisableInteractiveSerialConsoleRequest()
         )
@@ -30620,6 +30717,7 @@ def test_disable_interactive_serial_console_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.disable_interactive_serial_console(
             request,
@@ -30631,6 +30729,7 @@ def test_disable_interactive_serial_console_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_detach_lun_rest_bad_request(request_type=gcb_instance.DetachLunRequest):
@@ -30709,10 +30808,13 @@ def test_detach_lun_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.BareMetalSolutionRestInterceptor, "post_detach_lun"
     ) as post, mock.patch.object(
+        transports.BareMetalSolutionRestInterceptor, "post_detach_lun_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.BareMetalSolutionRestInterceptor, "pre_detach_lun"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = gcb_instance.DetachLunRequest.pb(gcb_instance.DetachLunRequest())
         transcode.return_value = {
             "method": "post",
@@ -30734,6 +30836,7 @@ def test_detach_lun_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.detach_lun(
             request,
@@ -30745,6 +30848,7 @@ def test_detach_lun_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_ssh_keys_rest_bad_request(request_type=ssh_key.ListSSHKeysRequest):
@@ -30827,10 +30931,13 @@ def test_list_ssh_keys_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.BareMetalSolutionRestInterceptor, "post_list_ssh_keys"
     ) as post, mock.patch.object(
+        transports.BareMetalSolutionRestInterceptor, "post_list_ssh_keys_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.BareMetalSolutionRestInterceptor, "pre_list_ssh_keys"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = ssh_key.ListSSHKeysRequest.pb(ssh_key.ListSSHKeysRequest())
         transcode.return_value = {
             "method": "post",
@@ -30854,6 +30961,7 @@ def test_list_ssh_keys_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = ssh_key.ListSSHKeysResponse()
+        post_with_metadata.return_value = ssh_key.ListSSHKeysResponse(), metadata
 
         client.list_ssh_keys(
             request,
@@ -30865,6 +30973,7 @@ def test_list_ssh_keys_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_ssh_key_rest_bad_request(request_type=gcb_ssh_key.CreateSSHKeyRequest):
@@ -31017,10 +31126,13 @@ def test_create_ssh_key_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.BareMetalSolutionRestInterceptor, "post_create_ssh_key"
     ) as post, mock.patch.object(
+        transports.BareMetalSolutionRestInterceptor, "post_create_ssh_key_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.BareMetalSolutionRestInterceptor, "pre_create_ssh_key"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = gcb_ssh_key.CreateSSHKeyRequest.pb(
             gcb_ssh_key.CreateSSHKeyRequest()
         )
@@ -31044,6 +31156,7 @@ def test_create_ssh_key_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = gcb_ssh_key.SSHKey()
+        post_with_metadata.return_value = gcb_ssh_key.SSHKey(), metadata
 
         client.create_ssh_key(
             request,
@@ -31055,6 +31168,7 @@ def test_create_ssh_key_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_ssh_key_rest_bad_request(request_type=ssh_key.DeleteSSHKeyRequest):
@@ -31244,10 +31358,13 @@ def test_list_volumes_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.BareMetalSolutionRestInterceptor, "post_list_volumes"
     ) as post, mock.patch.object(
+        transports.BareMetalSolutionRestInterceptor, "post_list_volumes_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.BareMetalSolutionRestInterceptor, "pre_list_volumes"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = volume.ListVolumesRequest.pb(volume.ListVolumesRequest())
         transcode.return_value = {
             "method": "post",
@@ -31269,6 +31386,7 @@ def test_list_volumes_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = volume.ListVolumesResponse()
+        post_with_metadata.return_value = volume.ListVolumesResponse(), metadata
 
         client.list_volumes(
             request,
@@ -31280,6 +31398,7 @@ def test_list_volumes_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_volume_rest_bad_request(request_type=volume.GetVolumeRequest):
@@ -31408,10 +31527,13 @@ def test_get_volume_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.BareMetalSolutionRestInterceptor, "post_get_volume"
     ) as post, mock.patch.object(
+        transports.BareMetalSolutionRestInterceptor, "post_get_volume_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.BareMetalSolutionRestInterceptor, "pre_get_volume"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = volume.GetVolumeRequest.pb(volume.GetVolumeRequest())
         transcode.return_value = {
             "method": "post",
@@ -31433,6 +31555,7 @@ def test_get_volume_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = volume.Volume()
+        post_with_metadata.return_value = volume.Volume(), metadata
 
         client.get_volume(
             request,
@@ -31444,6 +31567,7 @@ def test_get_volume_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_volume_rest_bad_request(request_type=gcb_volume.UpdateVolumeRequest):
@@ -31624,10 +31748,13 @@ def test_update_volume_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.BareMetalSolutionRestInterceptor, "post_update_volume"
     ) as post, mock.patch.object(
+        transports.BareMetalSolutionRestInterceptor, "post_update_volume_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.BareMetalSolutionRestInterceptor, "pre_update_volume"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = gcb_volume.UpdateVolumeRequest.pb(gcb_volume.UpdateVolumeRequest())
         transcode.return_value = {
             "method": "post",
@@ -31649,6 +31776,7 @@ def test_update_volume_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.update_volume(
             request,
@@ -31660,6 +31788,7 @@ def test_update_volume_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_rename_volume_rest_bad_request(request_type=volume.RenameVolumeRequest):
@@ -31788,10 +31917,13 @@ def test_rename_volume_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.BareMetalSolutionRestInterceptor, "post_rename_volume"
     ) as post, mock.patch.object(
+        transports.BareMetalSolutionRestInterceptor, "post_rename_volume_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.BareMetalSolutionRestInterceptor, "pre_rename_volume"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = volume.RenameVolumeRequest.pb(volume.RenameVolumeRequest())
         transcode.return_value = {
             "method": "post",
@@ -31813,6 +31945,7 @@ def test_rename_volume_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = volume.Volume()
+        post_with_metadata.return_value = volume.Volume(), metadata
 
         client.rename_volume(
             request,
@@ -31824,6 +31957,7 @@ def test_rename_volume_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_evict_volume_rest_bad_request(request_type=volume.EvictVolumeRequest):
@@ -31902,10 +32036,13 @@ def test_evict_volume_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.BareMetalSolutionRestInterceptor, "post_evict_volume"
     ) as post, mock.patch.object(
+        transports.BareMetalSolutionRestInterceptor, "post_evict_volume_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.BareMetalSolutionRestInterceptor, "pre_evict_volume"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = volume.EvictVolumeRequest.pb(volume.EvictVolumeRequest())
         transcode.return_value = {
             "method": "post",
@@ -31927,6 +32064,7 @@ def test_evict_volume_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.evict_volume(
             request,
@@ -31938,6 +32076,7 @@ def test_evict_volume_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_resize_volume_rest_bad_request(request_type=gcb_volume.ResizeVolumeRequest):
@@ -32016,10 +32155,13 @@ def test_resize_volume_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.BareMetalSolutionRestInterceptor, "post_resize_volume"
     ) as post, mock.patch.object(
+        transports.BareMetalSolutionRestInterceptor, "post_resize_volume_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.BareMetalSolutionRestInterceptor, "pre_resize_volume"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = gcb_volume.ResizeVolumeRequest.pb(gcb_volume.ResizeVolumeRequest())
         transcode.return_value = {
             "method": "post",
@@ -32041,6 +32183,7 @@ def test_resize_volume_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.resize_volume(
             request,
@@ -32052,6 +32195,7 @@ def test_resize_volume_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_networks_rest_bad_request(request_type=network.ListNetworksRequest):
@@ -32136,10 +32280,13 @@ def test_list_networks_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.BareMetalSolutionRestInterceptor, "post_list_networks"
     ) as post, mock.patch.object(
+        transports.BareMetalSolutionRestInterceptor, "post_list_networks_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.BareMetalSolutionRestInterceptor, "pre_list_networks"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = network.ListNetworksRequest.pb(network.ListNetworksRequest())
         transcode.return_value = {
             "method": "post",
@@ -32163,6 +32310,7 @@ def test_list_networks_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = network.ListNetworksResponse()
+        post_with_metadata.return_value = network.ListNetworksResponse(), metadata
 
         client.list_networks(
             request,
@@ -32174,6 +32322,7 @@ def test_list_networks_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_network_usage_rest_bad_request(
@@ -32255,10 +32404,14 @@ def test_list_network_usage_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.BareMetalSolutionRestInterceptor, "post_list_network_usage"
     ) as post, mock.patch.object(
+        transports.BareMetalSolutionRestInterceptor,
+        "post_list_network_usage_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.BareMetalSolutionRestInterceptor, "pre_list_network_usage"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = network.ListNetworkUsageRequest.pb(
             network.ListNetworkUsageRequest()
         )
@@ -32284,6 +32437,7 @@ def test_list_network_usage_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = network.ListNetworkUsageResponse()
+        post_with_metadata.return_value = network.ListNetworkUsageResponse(), metadata
 
         client.list_network_usage(
             request,
@@ -32295,6 +32449,7 @@ def test_list_network_usage_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_network_rest_bad_request(request_type=network.GetNetworkRequest):
@@ -32399,10 +32554,13 @@ def test_get_network_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.BareMetalSolutionRestInterceptor, "post_get_network"
     ) as post, mock.patch.object(
+        transports.BareMetalSolutionRestInterceptor, "post_get_network_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.BareMetalSolutionRestInterceptor, "pre_get_network"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = network.GetNetworkRequest.pb(network.GetNetworkRequest())
         transcode.return_value = {
             "method": "post",
@@ -32424,6 +32582,7 @@ def test_get_network_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = network.Network()
+        post_with_metadata.return_value = network.Network(), metadata
 
         client.get_network(
             request,
@@ -32435,6 +32594,7 @@ def test_get_network_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_network_rest_bad_request(request_type=gcb_network.UpdateNetworkRequest):
@@ -32630,10 +32790,13 @@ def test_update_network_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.BareMetalSolutionRestInterceptor, "post_update_network"
     ) as post, mock.patch.object(
+        transports.BareMetalSolutionRestInterceptor, "post_update_network_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.BareMetalSolutionRestInterceptor, "pre_update_network"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = gcb_network.UpdateNetworkRequest.pb(
             gcb_network.UpdateNetworkRequest()
         )
@@ -32657,6 +32820,7 @@ def test_update_network_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.update_network(
             request,
@@ -32668,6 +32832,7 @@ def test_update_network_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_volume_snapshot_rest_bad_request(
@@ -32837,10 +33002,14 @@ def test_create_volume_snapshot_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.BareMetalSolutionRestInterceptor, "post_create_volume_snapshot"
     ) as post, mock.patch.object(
+        transports.BareMetalSolutionRestInterceptor,
+        "post_create_volume_snapshot_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.BareMetalSolutionRestInterceptor, "pre_create_volume_snapshot"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = gcb_volume_snapshot.CreateVolumeSnapshotRequest.pb(
             gcb_volume_snapshot.CreateVolumeSnapshotRequest()
         )
@@ -32866,6 +33035,7 @@ def test_create_volume_snapshot_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = gcb_volume_snapshot.VolumeSnapshot()
+        post_with_metadata.return_value = gcb_volume_snapshot.VolumeSnapshot(), metadata
 
         client.create_volume_snapshot(
             request,
@@ -32877,6 +33047,7 @@ def test_create_volume_snapshot_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_restore_volume_snapshot_rest_bad_request(
@@ -32961,10 +33132,14 @@ def test_restore_volume_snapshot_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.BareMetalSolutionRestInterceptor, "post_restore_volume_snapshot"
     ) as post, mock.patch.object(
+        transports.BareMetalSolutionRestInterceptor,
+        "post_restore_volume_snapshot_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.BareMetalSolutionRestInterceptor, "pre_restore_volume_snapshot"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = gcb_volume_snapshot.RestoreVolumeSnapshotRequest.pb(
             gcb_volume_snapshot.RestoreVolumeSnapshotRequest()
         )
@@ -32988,6 +33163,7 @@ def test_restore_volume_snapshot_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.restore_volume_snapshot(
             request,
@@ -32999,6 +33175,7 @@ def test_restore_volume_snapshot_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_volume_snapshot_rest_bad_request(
@@ -33208,10 +33385,14 @@ def test_get_volume_snapshot_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.BareMetalSolutionRestInterceptor, "post_get_volume_snapshot"
     ) as post, mock.patch.object(
+        transports.BareMetalSolutionRestInterceptor,
+        "post_get_volume_snapshot_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.BareMetalSolutionRestInterceptor, "pre_get_volume_snapshot"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = volume_snapshot.GetVolumeSnapshotRequest.pb(
             volume_snapshot.GetVolumeSnapshotRequest()
         )
@@ -33237,6 +33418,7 @@ def test_get_volume_snapshot_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = volume_snapshot.VolumeSnapshot()
+        post_with_metadata.return_value = volume_snapshot.VolumeSnapshot(), metadata
 
         client.get_volume_snapshot(
             request,
@@ -33248,6 +33430,7 @@ def test_get_volume_snapshot_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_volume_snapshots_rest_bad_request(
@@ -33334,10 +33517,14 @@ def test_list_volume_snapshots_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.BareMetalSolutionRestInterceptor, "post_list_volume_snapshots"
     ) as post, mock.patch.object(
+        transports.BareMetalSolutionRestInterceptor,
+        "post_list_volume_snapshots_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.BareMetalSolutionRestInterceptor, "pre_list_volume_snapshots"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = volume_snapshot.ListVolumeSnapshotsRequest.pb(
             volume_snapshot.ListVolumeSnapshotsRequest()
         )
@@ -33363,6 +33550,10 @@ def test_list_volume_snapshots_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = volume_snapshot.ListVolumeSnapshotsResponse()
+        post_with_metadata.return_value = (
+            volume_snapshot.ListVolumeSnapshotsResponse(),
+            metadata,
+        )
 
         client.list_volume_snapshots(
             request,
@@ -33374,6 +33565,7 @@ def test_list_volume_snapshots_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_lun_rest_bad_request(request_type=lun.GetLunRequest):
@@ -33480,10 +33672,13 @@ def test_get_lun_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.BareMetalSolutionRestInterceptor, "post_get_lun"
     ) as post, mock.patch.object(
+        transports.BareMetalSolutionRestInterceptor, "post_get_lun_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.BareMetalSolutionRestInterceptor, "pre_get_lun"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = lun.GetLunRequest.pb(lun.GetLunRequest())
         transcode.return_value = {
             "method": "post",
@@ -33505,6 +33700,7 @@ def test_get_lun_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = lun.Lun()
+        post_with_metadata.return_value = lun.Lun(), metadata
 
         client.get_lun(
             request,
@@ -33516,6 +33712,7 @@ def test_get_lun_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_luns_rest_bad_request(request_type=lun.ListLunsRequest):
@@ -33600,10 +33797,13 @@ def test_list_luns_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.BareMetalSolutionRestInterceptor, "post_list_luns"
     ) as post, mock.patch.object(
+        transports.BareMetalSolutionRestInterceptor, "post_list_luns_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.BareMetalSolutionRestInterceptor, "pre_list_luns"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = lun.ListLunsRequest.pb(lun.ListLunsRequest())
         transcode.return_value = {
             "method": "post",
@@ -33625,6 +33825,7 @@ def test_list_luns_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = lun.ListLunsResponse()
+        post_with_metadata.return_value = lun.ListLunsResponse(), metadata
 
         client.list_luns(
             request,
@@ -33636,6 +33837,7 @@ def test_list_luns_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_evict_lun_rest_bad_request(request_type=lun.EvictLunRequest):
@@ -33718,10 +33920,13 @@ def test_evict_lun_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.BareMetalSolutionRestInterceptor, "post_evict_lun"
     ) as post, mock.patch.object(
+        transports.BareMetalSolutionRestInterceptor, "post_evict_lun_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.BareMetalSolutionRestInterceptor, "pre_evict_lun"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = lun.EvictLunRequest.pb(lun.EvictLunRequest())
         transcode.return_value = {
             "method": "post",
@@ -33743,6 +33948,7 @@ def test_evict_lun_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.evict_lun(
             request,
@@ -33754,6 +33960,7 @@ def test_evict_lun_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_nfs_share_rest_bad_request(request_type=nfs_share.GetNfsShareRequest):
@@ -33848,10 +34055,13 @@ def test_get_nfs_share_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.BareMetalSolutionRestInterceptor, "post_get_nfs_share"
     ) as post, mock.patch.object(
+        transports.BareMetalSolutionRestInterceptor, "post_get_nfs_share_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.BareMetalSolutionRestInterceptor, "pre_get_nfs_share"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = nfs_share.GetNfsShareRequest.pb(nfs_share.GetNfsShareRequest())
         transcode.return_value = {
             "method": "post",
@@ -33873,6 +34083,7 @@ def test_get_nfs_share_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = nfs_share.NfsShare()
+        post_with_metadata.return_value = nfs_share.NfsShare(), metadata
 
         client.get_nfs_share(
             request,
@@ -33884,6 +34095,7 @@ def test_get_nfs_share_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_nfs_shares_rest_bad_request(request_type=nfs_share.ListNfsSharesRequest):
@@ -33968,10 +34180,14 @@ def test_list_nfs_shares_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.BareMetalSolutionRestInterceptor, "post_list_nfs_shares"
     ) as post, mock.patch.object(
+        transports.BareMetalSolutionRestInterceptor,
+        "post_list_nfs_shares_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.BareMetalSolutionRestInterceptor, "pre_list_nfs_shares"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = nfs_share.ListNfsSharesRequest.pb(nfs_share.ListNfsSharesRequest())
         transcode.return_value = {
             "method": "post",
@@ -33995,6 +34211,7 @@ def test_list_nfs_shares_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = nfs_share.ListNfsSharesResponse()
+        post_with_metadata.return_value = nfs_share.ListNfsSharesResponse(), metadata
 
         client.list_nfs_shares(
             request,
@@ -34006,6 +34223,7 @@ def test_list_nfs_shares_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_nfs_share_rest_bad_request(
@@ -34179,10 +34397,14 @@ def test_update_nfs_share_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.BareMetalSolutionRestInterceptor, "post_update_nfs_share"
     ) as post, mock.patch.object(
+        transports.BareMetalSolutionRestInterceptor,
+        "post_update_nfs_share_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.BareMetalSolutionRestInterceptor, "pre_update_nfs_share"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = gcb_nfs_share.UpdateNfsShareRequest.pb(
             gcb_nfs_share.UpdateNfsShareRequest()
         )
@@ -34206,6 +34428,7 @@ def test_update_nfs_share_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.update_nfs_share(
             request,
@@ -34217,6 +34440,7 @@ def test_update_nfs_share_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_nfs_share_rest_bad_request(
@@ -34386,10 +34610,14 @@ def test_create_nfs_share_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.BareMetalSolutionRestInterceptor, "post_create_nfs_share"
     ) as post, mock.patch.object(
+        transports.BareMetalSolutionRestInterceptor,
+        "post_create_nfs_share_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.BareMetalSolutionRestInterceptor, "pre_create_nfs_share"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = gcb_nfs_share.CreateNfsShareRequest.pb(
             gcb_nfs_share.CreateNfsShareRequest()
         )
@@ -34413,6 +34641,7 @@ def test_create_nfs_share_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_nfs_share(
             request,
@@ -34424,6 +34653,7 @@ def test_create_nfs_share_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_rename_nfs_share_rest_bad_request(
@@ -34520,10 +34750,14 @@ def test_rename_nfs_share_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.BareMetalSolutionRestInterceptor, "post_rename_nfs_share"
     ) as post, mock.patch.object(
+        transports.BareMetalSolutionRestInterceptor,
+        "post_rename_nfs_share_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.BareMetalSolutionRestInterceptor, "pre_rename_nfs_share"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = nfs_share.RenameNfsShareRequest.pb(
             nfs_share.RenameNfsShareRequest()
         )
@@ -34547,6 +34781,7 @@ def test_rename_nfs_share_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = nfs_share.NfsShare()
+        post_with_metadata.return_value = nfs_share.NfsShare(), metadata
 
         client.rename_nfs_share(
             request,
@@ -34558,6 +34793,7 @@ def test_rename_nfs_share_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_nfs_share_rest_bad_request(
@@ -34638,10 +34874,14 @@ def test_delete_nfs_share_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.BareMetalSolutionRestInterceptor, "post_delete_nfs_share"
     ) as post, mock.patch.object(
+        transports.BareMetalSolutionRestInterceptor,
+        "post_delete_nfs_share_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.BareMetalSolutionRestInterceptor, "pre_delete_nfs_share"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = nfs_share.DeleteNfsShareRequest.pb(
             nfs_share.DeleteNfsShareRequest()
         )
@@ -34665,6 +34905,7 @@ def test_delete_nfs_share_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_nfs_share(
             request,
@@ -34676,6 +34917,7 @@ def test_delete_nfs_share_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_provisioning_quotas_rest_bad_request(
@@ -34760,10 +35002,14 @@ def test_list_provisioning_quotas_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.BareMetalSolutionRestInterceptor, "post_list_provisioning_quotas"
     ) as post, mock.patch.object(
+        transports.BareMetalSolutionRestInterceptor,
+        "post_list_provisioning_quotas_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.BareMetalSolutionRestInterceptor, "pre_list_provisioning_quotas"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = provisioning.ListProvisioningQuotasRequest.pb(
             provisioning.ListProvisioningQuotasRequest()
         )
@@ -34789,6 +35035,10 @@ def test_list_provisioning_quotas_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = provisioning.ListProvisioningQuotasResponse()
+        post_with_metadata.return_value = (
+            provisioning.ListProvisioningQuotasResponse(),
+            metadata,
+        )
 
         client.list_provisioning_quotas(
             request,
@@ -34800,6 +35050,7 @@ def test_list_provisioning_quotas_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_submit_provisioning_config_rest_bad_request(
@@ -34881,10 +35132,14 @@ def test_submit_provisioning_config_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.BareMetalSolutionRestInterceptor, "post_submit_provisioning_config"
     ) as post, mock.patch.object(
+        transports.BareMetalSolutionRestInterceptor,
+        "post_submit_provisioning_config_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.BareMetalSolutionRestInterceptor, "pre_submit_provisioning_config"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = provisioning.SubmitProvisioningConfigRequest.pb(
             provisioning.SubmitProvisioningConfigRequest()
         )
@@ -34910,6 +35165,10 @@ def test_submit_provisioning_config_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = provisioning.SubmitProvisioningConfigResponse()
+        post_with_metadata.return_value = (
+            provisioning.SubmitProvisioningConfigResponse(),
+            metadata,
+        )
 
         client.submit_provisioning_config(
             request,
@@ -34921,6 +35180,7 @@ def test_submit_provisioning_config_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_provisioning_config_rest_bad_request(
@@ -35027,10 +35287,14 @@ def test_get_provisioning_config_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.BareMetalSolutionRestInterceptor, "post_get_provisioning_config"
     ) as post, mock.patch.object(
+        transports.BareMetalSolutionRestInterceptor,
+        "post_get_provisioning_config_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.BareMetalSolutionRestInterceptor, "pre_get_provisioning_config"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = provisioning.GetProvisioningConfigRequest.pb(
             provisioning.GetProvisioningConfigRequest()
         )
@@ -35056,6 +35320,7 @@ def test_get_provisioning_config_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = provisioning.ProvisioningConfig()
+        post_with_metadata.return_value = provisioning.ProvisioningConfig(), metadata
 
         client.get_provisioning_config(
             request,
@@ -35067,6 +35332,7 @@ def test_get_provisioning_config_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_provisioning_config_rest_bad_request(
@@ -35329,10 +35595,14 @@ def test_create_provisioning_config_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.BareMetalSolutionRestInterceptor, "post_create_provisioning_config"
     ) as post, mock.patch.object(
+        transports.BareMetalSolutionRestInterceptor,
+        "post_create_provisioning_config_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.BareMetalSolutionRestInterceptor, "pre_create_provisioning_config"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = provisioning.CreateProvisioningConfigRequest.pb(
             provisioning.CreateProvisioningConfigRequest()
         )
@@ -35358,6 +35628,7 @@ def test_create_provisioning_config_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = provisioning.ProvisioningConfig()
+        post_with_metadata.return_value = provisioning.ProvisioningConfig(), metadata
 
         client.create_provisioning_config(
             request,
@@ -35369,6 +35640,7 @@ def test_create_provisioning_config_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_provisioning_config_rest_bad_request(
@@ -35639,10 +35911,14 @@ def test_update_provisioning_config_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.BareMetalSolutionRestInterceptor, "post_update_provisioning_config"
     ) as post, mock.patch.object(
+        transports.BareMetalSolutionRestInterceptor,
+        "post_update_provisioning_config_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.BareMetalSolutionRestInterceptor, "pre_update_provisioning_config"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = provisioning.UpdateProvisioningConfigRequest.pb(
             provisioning.UpdateProvisioningConfigRequest()
         )
@@ -35668,6 +35944,7 @@ def test_update_provisioning_config_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = provisioning.ProvisioningConfig()
+        post_with_metadata.return_value = provisioning.ProvisioningConfig(), metadata
 
         client.update_provisioning_config(
             request,
@@ -35679,6 +35956,7 @@ def test_update_provisioning_config_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_rename_network_rest_bad_request(request_type=network.RenameNetworkRequest):
@@ -35783,10 +36061,13 @@ def test_rename_network_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.BareMetalSolutionRestInterceptor, "post_rename_network"
     ) as post, mock.patch.object(
+        transports.BareMetalSolutionRestInterceptor, "post_rename_network_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.BareMetalSolutionRestInterceptor, "pre_rename_network"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = network.RenameNetworkRequest.pb(network.RenameNetworkRequest())
         transcode.return_value = {
             "method": "post",
@@ -35808,6 +36089,7 @@ def test_rename_network_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = network.Network()
+        post_with_metadata.return_value = network.Network(), metadata
 
         client.rename_network(
             request,
@@ -35819,6 +36101,7 @@ def test_rename_network_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_os_images_rest_bad_request(request_type=osimage.ListOSImagesRequest):
@@ -35901,10 +36184,13 @@ def test_list_os_images_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.BareMetalSolutionRestInterceptor, "post_list_os_images"
     ) as post, mock.patch.object(
+        transports.BareMetalSolutionRestInterceptor, "post_list_os_images_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.BareMetalSolutionRestInterceptor, "pre_list_os_images"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = osimage.ListOSImagesRequest.pb(osimage.ListOSImagesRequest())
         transcode.return_value = {
             "method": "post",
@@ -35928,6 +36214,7 @@ def test_list_os_images_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = osimage.ListOSImagesResponse()
+        post_with_metadata.return_value = osimage.ListOSImagesResponse(), metadata
 
         client.list_os_images(
             request,
@@ -35939,6 +36226,7 @@ def test_list_os_images_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_location_rest_bad_request(request_type=locations_pb2.GetLocationRequest):

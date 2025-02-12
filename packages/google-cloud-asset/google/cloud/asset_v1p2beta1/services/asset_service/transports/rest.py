@@ -129,11 +129,34 @@ class AssetServiceRestInterceptor:
     def post_create_feed(self, response: asset_service.Feed) -> asset_service.Feed:
         """Post-rpc interceptor for create_feed
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_feed_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AssetService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_feed` interceptor runs
+        before the `post_create_feed_with_metadata` interceptor.
         """
         return response
+
+    def post_create_feed_with_metadata(
+        self,
+        response: asset_service.Feed,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[asset_service.Feed, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_feed
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AssetService server but before it is returned to user code.
+
+        We recommend only using this `post_create_feed_with_metadata`
+        interceptor in new development instead of the `post_create_feed` interceptor.
+        When both interceptors are used, this `post_create_feed_with_metadata` interceptor runs after the
+        `post_create_feed` interceptor. The (possibly modified) response returned by
+        `post_create_feed` will be passed to
+        `post_create_feed_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_feed(
         self,
@@ -164,11 +187,34 @@ class AssetServiceRestInterceptor:
     def post_get_feed(self, response: asset_service.Feed) -> asset_service.Feed:
         """Post-rpc interceptor for get_feed
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_feed_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AssetService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_feed` interceptor runs
+        before the `post_get_feed_with_metadata` interceptor.
         """
         return response
+
+    def post_get_feed_with_metadata(
+        self,
+        response: asset_service.Feed,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[asset_service.Feed, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_feed
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AssetService server but before it is returned to user code.
+
+        We recommend only using this `post_get_feed_with_metadata`
+        interceptor in new development instead of the `post_get_feed` interceptor.
+        When both interceptors are used, this `post_get_feed_with_metadata` interceptor runs after the
+        `post_get_feed` interceptor. The (possibly modified) response returned by
+        `post_get_feed` will be passed to
+        `post_get_feed_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_feeds(
         self,
@@ -187,11 +233,36 @@ class AssetServiceRestInterceptor:
     ) -> asset_service.ListFeedsResponse:
         """Post-rpc interceptor for list_feeds
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_feeds_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AssetService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_feeds` interceptor runs
+        before the `post_list_feeds_with_metadata` interceptor.
         """
         return response
+
+    def post_list_feeds_with_metadata(
+        self,
+        response: asset_service.ListFeedsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        asset_service.ListFeedsResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_feeds
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AssetService server but before it is returned to user code.
+
+        We recommend only using this `post_list_feeds_with_metadata`
+        interceptor in new development instead of the `post_list_feeds` interceptor.
+        When both interceptors are used, this `post_list_feeds_with_metadata` interceptor runs after the
+        `post_list_feeds` interceptor. The (possibly modified) response returned by
+        `post_list_feeds` will be passed to
+        `post_list_feeds_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_feed(
         self,
@@ -210,11 +281,34 @@ class AssetServiceRestInterceptor:
     def post_update_feed(self, response: asset_service.Feed) -> asset_service.Feed:
         """Post-rpc interceptor for update_feed
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_feed_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AssetService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_feed` interceptor runs
+        before the `post_update_feed_with_metadata` interceptor.
         """
         return response
+
+    def post_update_feed_with_metadata(
+        self,
+        response: asset_service.Feed,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[asset_service.Feed, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_feed
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AssetService server but before it is returned to user code.
+
+        We recommend only using this `post_update_feed_with_metadata`
+        interceptor in new development instead of the `post_update_feed` interceptor.
+        When both interceptors are used, this `post_update_feed_with_metadata` interceptor runs after the
+        `post_update_feed` interceptor. The (possibly modified) response returned by
+        `post_update_feed` will be passed to
+        `post_update_feed_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_operation(
         self,
@@ -465,6 +559,10 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_feed(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_feed_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -725,6 +823,10 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_feed(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_feed_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -869,6 +971,10 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_feeds(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_feeds_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1029,6 +1135,10 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_feed(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_feed_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

@@ -76,6 +76,13 @@ from google.cloud.beyondcorp_appgateways_v1.services.app_gateways_service import
 )
 from google.cloud.beyondcorp_appgateways_v1.types import app_gateways_service
 
+CRED_INFO_JSON = {
+    "credential_source": "/path/to/file",
+    "credential_type": "service account credentials",
+    "principal": "service-account@example.com",
+}
+CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
 
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
@@ -345,6 +352,49 @@ def test__get_universe_domain():
     with pytest.raises(ValueError) as excinfo:
         AppGatewaysServiceClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+
+@pytest.mark.parametrize(
+    "error_code,cred_info_json,show_cred_info",
+    [
+        (401, CRED_INFO_JSON, True),
+        (403, CRED_INFO_JSON, True),
+        (404, CRED_INFO_JSON, True),
+        (500, CRED_INFO_JSON, False),
+        (401, None, False),
+        (403, None, False),
+        (404, None, False),
+        (500, None, False),
+    ],
+)
+def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
+    cred = mock.Mock(["get_cred_info"])
+    cred.get_cred_info = mock.Mock(return_value=cred_info_json)
+    client = AppGatewaysServiceClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=["foo"])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    if show_cred_info:
+        assert error.details == ["foo", CRED_INFO_STRING]
+    else:
+        assert error.details == ["foo"]
+
+
+@pytest.mark.parametrize("error_code", [401, 403, 404, 500])
+def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
+    cred = mock.Mock([])
+    assert not hasattr(cred, "get_cred_info")
+    client = AppGatewaysServiceClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=[])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    assert error.details == []
 
 
 @pytest.mark.parametrize(
@@ -4006,10 +4056,14 @@ def test_list_app_gateways_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.AppGatewaysServiceRestInterceptor, "post_list_app_gateways"
     ) as post, mock.patch.object(
+        transports.AppGatewaysServiceRestInterceptor,
+        "post_list_app_gateways_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.AppGatewaysServiceRestInterceptor, "pre_list_app_gateways"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = app_gateways_service.ListAppGatewaysRequest.pb(
             app_gateways_service.ListAppGatewaysRequest()
         )
@@ -4035,6 +4089,10 @@ def test_list_app_gateways_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = app_gateways_service.ListAppGatewaysResponse()
+        post_with_metadata.return_value = (
+            app_gateways_service.ListAppGatewaysResponse(),
+            metadata,
+        )
 
         client.list_app_gateways(
             request,
@@ -4046,6 +4104,7 @@ def test_list_app_gateways_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_app_gateway_rest_bad_request(
@@ -4144,10 +4203,14 @@ def test_get_app_gateway_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.AppGatewaysServiceRestInterceptor, "post_get_app_gateway"
     ) as post, mock.patch.object(
+        transports.AppGatewaysServiceRestInterceptor,
+        "post_get_app_gateway_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.AppGatewaysServiceRestInterceptor, "pre_get_app_gateway"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = app_gateways_service.GetAppGatewayRequest.pb(
             app_gateways_service.GetAppGatewayRequest()
         )
@@ -4173,6 +4236,7 @@ def test_get_app_gateway_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = app_gateways_service.AppGateway()
+        post_with_metadata.return_value = app_gateways_service.AppGateway(), metadata
 
         client.get_app_gateway(
             request,
@@ -4184,6 +4248,7 @@ def test_get_app_gateway_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_app_gateway_rest_bad_request(
@@ -4344,10 +4409,14 @@ def test_create_app_gateway_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.AppGatewaysServiceRestInterceptor, "post_create_app_gateway"
     ) as post, mock.patch.object(
+        transports.AppGatewaysServiceRestInterceptor,
+        "post_create_app_gateway_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.AppGatewaysServiceRestInterceptor, "pre_create_app_gateway"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = app_gateways_service.CreateAppGatewayRequest.pb(
             app_gateways_service.CreateAppGatewayRequest()
         )
@@ -4371,6 +4440,7 @@ def test_create_app_gateway_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_app_gateway(
             request,
@@ -4382,6 +4452,7 @@ def test_create_app_gateway_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_app_gateway_rest_bad_request(
@@ -4462,10 +4533,14 @@ def test_delete_app_gateway_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.AppGatewaysServiceRestInterceptor, "post_delete_app_gateway"
     ) as post, mock.patch.object(
+        transports.AppGatewaysServiceRestInterceptor,
+        "post_delete_app_gateway_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.AppGatewaysServiceRestInterceptor, "pre_delete_app_gateway"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = app_gateways_service.DeleteAppGatewayRequest.pb(
             app_gateways_service.DeleteAppGatewayRequest()
         )
@@ -4489,6 +4564,7 @@ def test_delete_app_gateway_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_app_gateway(
             request,
@@ -4500,6 +4576,7 @@ def test_delete_app_gateway_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_location_rest_bad_request(request_type=locations_pb2.GetLocationRequest):

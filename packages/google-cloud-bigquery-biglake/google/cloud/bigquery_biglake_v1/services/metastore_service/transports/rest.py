@@ -209,11 +209,34 @@ class MetastoreServiceRestInterceptor:
     def post_create_catalog(self, response: metastore.Catalog) -> metastore.Catalog:
         """Post-rpc interceptor for create_catalog
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_catalog_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the MetastoreService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_catalog` interceptor runs
+        before the `post_create_catalog_with_metadata` interceptor.
         """
         return response
+
+    def post_create_catalog_with_metadata(
+        self,
+        response: metastore.Catalog,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[metastore.Catalog, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_catalog
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the MetastoreService server but before it is returned to user code.
+
+        We recommend only using this `post_create_catalog_with_metadata`
+        interceptor in new development instead of the `post_create_catalog` interceptor.
+        When both interceptors are used, this `post_create_catalog_with_metadata` interceptor runs after the
+        `post_create_catalog` interceptor. The (possibly modified) response returned by
+        `post_create_catalog` will be passed to
+        `post_create_catalog_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_database(
         self,
@@ -232,11 +255,34 @@ class MetastoreServiceRestInterceptor:
     def post_create_database(self, response: metastore.Database) -> metastore.Database:
         """Post-rpc interceptor for create_database
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_database_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the MetastoreService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_database` interceptor runs
+        before the `post_create_database_with_metadata` interceptor.
         """
         return response
+
+    def post_create_database_with_metadata(
+        self,
+        response: metastore.Database,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[metastore.Database, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_database
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the MetastoreService server but before it is returned to user code.
+
+        We recommend only using this `post_create_database_with_metadata`
+        interceptor in new development instead of the `post_create_database` interceptor.
+        When both interceptors are used, this `post_create_database_with_metadata` interceptor runs after the
+        `post_create_database` interceptor. The (possibly modified) response returned by
+        `post_create_database` will be passed to
+        `post_create_database_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_table(
         self,
@@ -253,11 +299,34 @@ class MetastoreServiceRestInterceptor:
     def post_create_table(self, response: metastore.Table) -> metastore.Table:
         """Post-rpc interceptor for create_table
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_table_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the MetastoreService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_table` interceptor runs
+        before the `post_create_table_with_metadata` interceptor.
         """
         return response
+
+    def post_create_table_with_metadata(
+        self,
+        response: metastore.Table,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[metastore.Table, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_table
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the MetastoreService server but before it is returned to user code.
+
+        We recommend only using this `post_create_table_with_metadata`
+        interceptor in new development instead of the `post_create_table` interceptor.
+        When both interceptors are used, this `post_create_table_with_metadata` interceptor runs after the
+        `post_create_table` interceptor. The (possibly modified) response returned by
+        `post_create_table` will be passed to
+        `post_create_table_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_catalog(
         self,
@@ -274,11 +343,34 @@ class MetastoreServiceRestInterceptor:
     def post_delete_catalog(self, response: metastore.Catalog) -> metastore.Catalog:
         """Post-rpc interceptor for delete_catalog
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_catalog_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the MetastoreService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_catalog` interceptor runs
+        before the `post_delete_catalog_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_catalog_with_metadata(
+        self,
+        response: metastore.Catalog,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[metastore.Catalog, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_catalog
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the MetastoreService server but before it is returned to user code.
+
+        We recommend only using this `post_delete_catalog_with_metadata`
+        interceptor in new development instead of the `post_delete_catalog` interceptor.
+        When both interceptors are used, this `post_delete_catalog_with_metadata` interceptor runs after the
+        `post_delete_catalog` interceptor. The (possibly modified) response returned by
+        `post_delete_catalog` will be passed to
+        `post_delete_catalog_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_database(
         self,
@@ -297,11 +389,34 @@ class MetastoreServiceRestInterceptor:
     def post_delete_database(self, response: metastore.Database) -> metastore.Database:
         """Post-rpc interceptor for delete_database
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_database_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the MetastoreService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_database` interceptor runs
+        before the `post_delete_database_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_database_with_metadata(
+        self,
+        response: metastore.Database,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[metastore.Database, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_database
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the MetastoreService server but before it is returned to user code.
+
+        We recommend only using this `post_delete_database_with_metadata`
+        interceptor in new development instead of the `post_delete_database` interceptor.
+        When both interceptors are used, this `post_delete_database_with_metadata` interceptor runs after the
+        `post_delete_database` interceptor. The (possibly modified) response returned by
+        `post_delete_database` will be passed to
+        `post_delete_database_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_table(
         self,
@@ -318,11 +433,34 @@ class MetastoreServiceRestInterceptor:
     def post_delete_table(self, response: metastore.Table) -> metastore.Table:
         """Post-rpc interceptor for delete_table
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_table_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the MetastoreService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_table` interceptor runs
+        before the `post_delete_table_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_table_with_metadata(
+        self,
+        response: metastore.Table,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[metastore.Table, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_table
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the MetastoreService server but before it is returned to user code.
+
+        We recommend only using this `post_delete_table_with_metadata`
+        interceptor in new development instead of the `post_delete_table` interceptor.
+        When both interceptors are used, this `post_delete_table_with_metadata` interceptor runs after the
+        `post_delete_table` interceptor. The (possibly modified) response returned by
+        `post_delete_table` will be passed to
+        `post_delete_table_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_catalog(
         self,
@@ -339,11 +477,34 @@ class MetastoreServiceRestInterceptor:
     def post_get_catalog(self, response: metastore.Catalog) -> metastore.Catalog:
         """Post-rpc interceptor for get_catalog
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_catalog_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the MetastoreService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_catalog` interceptor runs
+        before the `post_get_catalog_with_metadata` interceptor.
         """
         return response
+
+    def post_get_catalog_with_metadata(
+        self,
+        response: metastore.Catalog,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[metastore.Catalog, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_catalog
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the MetastoreService server but before it is returned to user code.
+
+        We recommend only using this `post_get_catalog_with_metadata`
+        interceptor in new development instead of the `post_get_catalog` interceptor.
+        When both interceptors are used, this `post_get_catalog_with_metadata` interceptor runs after the
+        `post_get_catalog` interceptor. The (possibly modified) response returned by
+        `post_get_catalog` will be passed to
+        `post_get_catalog_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_database(
         self,
@@ -360,11 +521,34 @@ class MetastoreServiceRestInterceptor:
     def post_get_database(self, response: metastore.Database) -> metastore.Database:
         """Post-rpc interceptor for get_database
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_database_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the MetastoreService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_database` interceptor runs
+        before the `post_get_database_with_metadata` interceptor.
         """
         return response
+
+    def post_get_database_with_metadata(
+        self,
+        response: metastore.Database,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[metastore.Database, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_database
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the MetastoreService server but before it is returned to user code.
+
+        We recommend only using this `post_get_database_with_metadata`
+        interceptor in new development instead of the `post_get_database` interceptor.
+        When both interceptors are used, this `post_get_database_with_metadata` interceptor runs after the
+        `post_get_database` interceptor. The (possibly modified) response returned by
+        `post_get_database` will be passed to
+        `post_get_database_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_table(
         self,
@@ -381,11 +565,34 @@ class MetastoreServiceRestInterceptor:
     def post_get_table(self, response: metastore.Table) -> metastore.Table:
         """Post-rpc interceptor for get_table
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_table_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the MetastoreService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_table` interceptor runs
+        before the `post_get_table_with_metadata` interceptor.
         """
         return response
+
+    def post_get_table_with_metadata(
+        self,
+        response: metastore.Table,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[metastore.Table, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_table
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the MetastoreService server but before it is returned to user code.
+
+        We recommend only using this `post_get_table_with_metadata`
+        interceptor in new development instead of the `post_get_table` interceptor.
+        When both interceptors are used, this `post_get_table_with_metadata` interceptor runs after the
+        `post_get_table` interceptor. The (possibly modified) response returned by
+        `post_get_table` will be passed to
+        `post_get_table_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_catalogs(
         self,
@@ -404,11 +611,34 @@ class MetastoreServiceRestInterceptor:
     ) -> metastore.ListCatalogsResponse:
         """Post-rpc interceptor for list_catalogs
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_catalogs_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the MetastoreService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_catalogs` interceptor runs
+        before the `post_list_catalogs_with_metadata` interceptor.
         """
         return response
+
+    def post_list_catalogs_with_metadata(
+        self,
+        response: metastore.ListCatalogsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[metastore.ListCatalogsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for list_catalogs
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the MetastoreService server but before it is returned to user code.
+
+        We recommend only using this `post_list_catalogs_with_metadata`
+        interceptor in new development instead of the `post_list_catalogs` interceptor.
+        When both interceptors are used, this `post_list_catalogs_with_metadata` interceptor runs after the
+        `post_list_catalogs` interceptor. The (possibly modified) response returned by
+        `post_list_catalogs` will be passed to
+        `post_list_catalogs_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_databases(
         self,
@@ -427,11 +657,36 @@ class MetastoreServiceRestInterceptor:
     ) -> metastore.ListDatabasesResponse:
         """Post-rpc interceptor for list_databases
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_databases_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the MetastoreService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_databases` interceptor runs
+        before the `post_list_databases_with_metadata` interceptor.
         """
         return response
+
+    def post_list_databases_with_metadata(
+        self,
+        response: metastore.ListDatabasesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        metastore.ListDatabasesResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_databases
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the MetastoreService server but before it is returned to user code.
+
+        We recommend only using this `post_list_databases_with_metadata`
+        interceptor in new development instead of the `post_list_databases` interceptor.
+        When both interceptors are used, this `post_list_databases_with_metadata` interceptor runs after the
+        `post_list_databases` interceptor. The (possibly modified) response returned by
+        `post_list_databases` will be passed to
+        `post_list_databases_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_tables(
         self,
@@ -450,11 +705,34 @@ class MetastoreServiceRestInterceptor:
     ) -> metastore.ListTablesResponse:
         """Post-rpc interceptor for list_tables
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_tables_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the MetastoreService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_tables` interceptor runs
+        before the `post_list_tables_with_metadata` interceptor.
         """
         return response
+
+    def post_list_tables_with_metadata(
+        self,
+        response: metastore.ListTablesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[metastore.ListTablesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for list_tables
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the MetastoreService server but before it is returned to user code.
+
+        We recommend only using this `post_list_tables_with_metadata`
+        interceptor in new development instead of the `post_list_tables` interceptor.
+        When both interceptors are used, this `post_list_tables_with_metadata` interceptor runs after the
+        `post_list_tables` interceptor. The (possibly modified) response returned by
+        `post_list_tables` will be passed to
+        `post_list_tables_with_metadata`.
+        """
+        return response, metadata
 
     def pre_rename_table(
         self,
@@ -471,11 +749,34 @@ class MetastoreServiceRestInterceptor:
     def post_rename_table(self, response: metastore.Table) -> metastore.Table:
         """Post-rpc interceptor for rename_table
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_rename_table_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the MetastoreService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_rename_table` interceptor runs
+        before the `post_rename_table_with_metadata` interceptor.
         """
         return response
+
+    def post_rename_table_with_metadata(
+        self,
+        response: metastore.Table,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[metastore.Table, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for rename_table
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the MetastoreService server but before it is returned to user code.
+
+        We recommend only using this `post_rename_table_with_metadata`
+        interceptor in new development instead of the `post_rename_table` interceptor.
+        When both interceptors are used, this `post_rename_table_with_metadata` interceptor runs after the
+        `post_rename_table` interceptor. The (possibly modified) response returned by
+        `post_rename_table` will be passed to
+        `post_rename_table_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_database(
         self,
@@ -494,11 +795,34 @@ class MetastoreServiceRestInterceptor:
     def post_update_database(self, response: metastore.Database) -> metastore.Database:
         """Post-rpc interceptor for update_database
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_database_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the MetastoreService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_database` interceptor runs
+        before the `post_update_database_with_metadata` interceptor.
         """
         return response
+
+    def post_update_database_with_metadata(
+        self,
+        response: metastore.Database,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[metastore.Database, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_database
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the MetastoreService server but before it is returned to user code.
+
+        We recommend only using this `post_update_database_with_metadata`
+        interceptor in new development instead of the `post_update_database` interceptor.
+        When both interceptors are used, this `post_update_database_with_metadata` interceptor runs after the
+        `post_update_database` interceptor. The (possibly modified) response returned by
+        `post_update_database` will be passed to
+        `post_update_database_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_table(
         self,
@@ -515,11 +839,34 @@ class MetastoreServiceRestInterceptor:
     def post_update_table(self, response: metastore.Table) -> metastore.Table:
         """Post-rpc interceptor for update_table
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_table_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the MetastoreService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_table` interceptor runs
+        before the `post_update_table_with_metadata` interceptor.
         """
         return response
+
+    def post_update_table_with_metadata(
+        self,
+        response: metastore.Table,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[metastore.Table, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_table
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the MetastoreService server but before it is returned to user code.
+
+        We recommend only using this `post_update_table_with_metadata`
+        interceptor in new development instead of the `post_update_table` interceptor.
+        When both interceptors are used, this `post_update_table_with_metadata` interceptor runs after the
+        `post_update_table` interceptor. The (possibly modified) response returned by
+        `post_update_table` will be passed to
+        `post_update_table_with_metadata`.
+        """
+        return response, metadata
 
 
 @dataclasses.dataclass
@@ -744,6 +1091,10 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_catalog(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_catalog_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -891,6 +1242,10 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_database(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_database_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1038,6 +1393,10 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_table(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_table_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1181,6 +1540,10 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_catalog(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_catalog_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1322,6 +1685,10 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_database(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_database_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1463,6 +1830,10 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_table(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_table_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1606,6 +1977,10 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_catalog(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_catalog_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1747,6 +2122,10 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_database(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_database_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1890,6 +2269,10 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_table(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_table_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2033,6 +2416,10 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_catalogs(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_catalogs_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2176,6 +2563,10 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_databases(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_databases_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2319,6 +2710,10 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_tables(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_tables_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2466,6 +2861,10 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_rename_table(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_rename_table_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2613,6 +3012,10 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_database(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_database_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2760,6 +3163,10 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_table(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_table_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

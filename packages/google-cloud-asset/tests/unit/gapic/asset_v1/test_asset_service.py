@@ -75,6 +75,13 @@ from google.cloud.asset_v1.services.asset_service import (
 )
 from google.cloud.asset_v1.types import asset_service, assets
 
+CRED_INFO_JSON = {
+    "credential_source": "/path/to/file",
+    "credential_type": "service account credentials",
+    "principal": "service-account@example.com",
+}
+CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
 
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
@@ -316,6 +323,49 @@ def test__get_universe_domain():
     with pytest.raises(ValueError) as excinfo:
         AssetServiceClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+
+@pytest.mark.parametrize(
+    "error_code,cred_info_json,show_cred_info",
+    [
+        (401, CRED_INFO_JSON, True),
+        (403, CRED_INFO_JSON, True),
+        (404, CRED_INFO_JSON, True),
+        (500, CRED_INFO_JSON, False),
+        (401, None, False),
+        (403, None, False),
+        (404, None, False),
+        (500, None, False),
+    ],
+)
+def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
+    cred = mock.Mock(["get_cred_info"])
+    cred.get_cred_info = mock.Mock(return_value=cred_info_json)
+    client = AssetServiceClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=["foo"])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    if show_cred_info:
+        assert error.details == ["foo", CRED_INFO_STRING]
+    else:
+        assert error.details == ["foo"]
+
+
+@pytest.mark.parametrize("error_code", [401, 403, 404, 500])
+def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
+    cred = mock.Mock([])
+    assert not hasattr(cred, "get_cred_info")
+    client = AssetServiceClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=[])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    assert error.details == []
 
 
 @pytest.mark.parametrize(
@@ -15684,10 +15734,13 @@ def test_export_assets_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.AssetServiceRestInterceptor, "post_export_assets"
     ) as post, mock.patch.object(
+        transports.AssetServiceRestInterceptor, "post_export_assets_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.AssetServiceRestInterceptor, "pre_export_assets"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = asset_service.ExportAssetsRequest.pb(
             asset_service.ExportAssetsRequest()
         )
@@ -15711,6 +15764,7 @@ def test_export_assets_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.export_assets(
             request,
@@ -15722,6 +15776,7 @@ def test_export_assets_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_assets_rest_bad_request(request_type=asset_service.ListAssetsRequest):
@@ -15804,10 +15859,13 @@ def test_list_assets_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.AssetServiceRestInterceptor, "post_list_assets"
     ) as post, mock.patch.object(
+        transports.AssetServiceRestInterceptor, "post_list_assets_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.AssetServiceRestInterceptor, "pre_list_assets"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = asset_service.ListAssetsRequest.pb(
             asset_service.ListAssetsRequest()
         )
@@ -15833,6 +15891,7 @@ def test_list_assets_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = asset_service.ListAssetsResponse()
+        post_with_metadata.return_value = asset_service.ListAssetsResponse(), metadata
 
         client.list_assets(
             request,
@@ -15844,6 +15903,7 @@ def test_list_assets_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_batch_get_assets_history_rest_bad_request(
@@ -15925,10 +15985,14 @@ def test_batch_get_assets_history_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.AssetServiceRestInterceptor, "post_batch_get_assets_history"
     ) as post, mock.patch.object(
+        transports.AssetServiceRestInterceptor,
+        "post_batch_get_assets_history_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.AssetServiceRestInterceptor, "pre_batch_get_assets_history"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = asset_service.BatchGetAssetsHistoryRequest.pb(
             asset_service.BatchGetAssetsHistoryRequest()
         )
@@ -15954,6 +16018,10 @@ def test_batch_get_assets_history_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = asset_service.BatchGetAssetsHistoryResponse()
+        post_with_metadata.return_value = (
+            asset_service.BatchGetAssetsHistoryResponse(),
+            metadata,
+        )
 
         client.batch_get_assets_history(
             request,
@@ -15965,6 +16033,7 @@ def test_batch_get_assets_history_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_feed_rest_bad_request(request_type=asset_service.CreateFeedRequest):
@@ -16055,10 +16124,13 @@ def test_create_feed_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.AssetServiceRestInterceptor, "post_create_feed"
     ) as post, mock.patch.object(
+        transports.AssetServiceRestInterceptor, "post_create_feed_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.AssetServiceRestInterceptor, "pre_create_feed"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = asset_service.CreateFeedRequest.pb(
             asset_service.CreateFeedRequest()
         )
@@ -16082,6 +16154,7 @@ def test_create_feed_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = asset_service.Feed()
+        post_with_metadata.return_value = asset_service.Feed(), metadata
 
         client.create_feed(
             request,
@@ -16093,6 +16166,7 @@ def test_create_feed_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_feed_rest_bad_request(request_type=asset_service.GetFeedRequest):
@@ -16183,10 +16257,13 @@ def test_get_feed_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.AssetServiceRestInterceptor, "post_get_feed"
     ) as post, mock.patch.object(
+        transports.AssetServiceRestInterceptor, "post_get_feed_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.AssetServiceRestInterceptor, "pre_get_feed"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = asset_service.GetFeedRequest.pb(asset_service.GetFeedRequest())
         transcode.return_value = {
             "method": "post",
@@ -16208,6 +16285,7 @@ def test_get_feed_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = asset_service.Feed()
+        post_with_metadata.return_value = asset_service.Feed(), metadata
 
         client.get_feed(
             request,
@@ -16219,6 +16297,7 @@ def test_get_feed_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_feeds_rest_bad_request(request_type=asset_service.ListFeedsRequest):
@@ -16298,10 +16377,13 @@ def test_list_feeds_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.AssetServiceRestInterceptor, "post_list_feeds"
     ) as post, mock.patch.object(
+        transports.AssetServiceRestInterceptor, "post_list_feeds_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.AssetServiceRestInterceptor, "pre_list_feeds"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = asset_service.ListFeedsRequest.pb(asset_service.ListFeedsRequest())
         transcode.return_value = {
             "method": "post",
@@ -16325,6 +16407,7 @@ def test_list_feeds_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = asset_service.ListFeedsResponse()
+        post_with_metadata.return_value = asset_service.ListFeedsResponse(), metadata
 
         client.list_feeds(
             request,
@@ -16336,6 +16419,7 @@ def test_list_feeds_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_feed_rest_bad_request(request_type=asset_service.UpdateFeedRequest):
@@ -16426,10 +16510,13 @@ def test_update_feed_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.AssetServiceRestInterceptor, "post_update_feed"
     ) as post, mock.patch.object(
+        transports.AssetServiceRestInterceptor, "post_update_feed_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.AssetServiceRestInterceptor, "pre_update_feed"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = asset_service.UpdateFeedRequest.pb(
             asset_service.UpdateFeedRequest()
         )
@@ -16453,6 +16540,7 @@ def test_update_feed_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = asset_service.Feed()
+        post_with_metadata.return_value = asset_service.Feed(), metadata
 
         client.update_feed(
             request,
@@ -16464,6 +16552,7 @@ def test_update_feed_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_feed_rest_bad_request(request_type=asset_service.DeleteFeedRequest):
@@ -16655,10 +16744,14 @@ def test_search_all_resources_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.AssetServiceRestInterceptor, "post_search_all_resources"
     ) as post, mock.patch.object(
+        transports.AssetServiceRestInterceptor,
+        "post_search_all_resources_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.AssetServiceRestInterceptor, "pre_search_all_resources"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = asset_service.SearchAllResourcesRequest.pb(
             asset_service.SearchAllResourcesRequest()
         )
@@ -16684,6 +16777,10 @@ def test_search_all_resources_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = asset_service.SearchAllResourcesResponse()
+        post_with_metadata.return_value = (
+            asset_service.SearchAllResourcesResponse(),
+            metadata,
+        )
 
         client.search_all_resources(
             request,
@@ -16695,6 +16792,7 @@ def test_search_all_resources_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_search_all_iam_policies_rest_bad_request(
@@ -16779,10 +16877,14 @@ def test_search_all_iam_policies_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.AssetServiceRestInterceptor, "post_search_all_iam_policies"
     ) as post, mock.patch.object(
+        transports.AssetServiceRestInterceptor,
+        "post_search_all_iam_policies_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.AssetServiceRestInterceptor, "pre_search_all_iam_policies"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = asset_service.SearchAllIamPoliciesRequest.pb(
             asset_service.SearchAllIamPoliciesRequest()
         )
@@ -16808,6 +16910,10 @@ def test_search_all_iam_policies_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = asset_service.SearchAllIamPoliciesResponse()
+        post_with_metadata.return_value = (
+            asset_service.SearchAllIamPoliciesResponse(),
+            metadata,
+        )
 
         client.search_all_iam_policies(
             request,
@@ -16819,6 +16925,7 @@ def test_search_all_iam_policies_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_analyze_iam_policy_rest_bad_request(
@@ -16903,10 +17010,13 @@ def test_analyze_iam_policy_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.AssetServiceRestInterceptor, "post_analyze_iam_policy"
     ) as post, mock.patch.object(
+        transports.AssetServiceRestInterceptor, "post_analyze_iam_policy_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.AssetServiceRestInterceptor, "pre_analyze_iam_policy"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = asset_service.AnalyzeIamPolicyRequest.pb(
             asset_service.AnalyzeIamPolicyRequest()
         )
@@ -16932,6 +17042,10 @@ def test_analyze_iam_policy_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = asset_service.AnalyzeIamPolicyResponse()
+        post_with_metadata.return_value = (
+            asset_service.AnalyzeIamPolicyResponse(),
+            metadata,
+        )
 
         client.analyze_iam_policy(
             request,
@@ -16943,6 +17057,7 @@ def test_analyze_iam_policy_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_analyze_iam_policy_longrunning_rest_bad_request(
@@ -17023,10 +17138,14 @@ def test_analyze_iam_policy_longrunning_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.AssetServiceRestInterceptor, "post_analyze_iam_policy_longrunning"
     ) as post, mock.patch.object(
+        transports.AssetServiceRestInterceptor,
+        "post_analyze_iam_policy_longrunning_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.AssetServiceRestInterceptor, "pre_analyze_iam_policy_longrunning"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = asset_service.AnalyzeIamPolicyLongrunningRequest.pb(
             asset_service.AnalyzeIamPolicyLongrunningRequest()
         )
@@ -17050,6 +17169,7 @@ def test_analyze_iam_policy_longrunning_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.analyze_iam_policy_longrunning(
             request,
@@ -17061,6 +17181,7 @@ def test_analyze_iam_policy_longrunning_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_analyze_move_rest_bad_request(request_type=asset_service.AnalyzeMoveRequest):
@@ -17140,10 +17261,13 @@ def test_analyze_move_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.AssetServiceRestInterceptor, "post_analyze_move"
     ) as post, mock.patch.object(
+        transports.AssetServiceRestInterceptor, "post_analyze_move_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.AssetServiceRestInterceptor, "pre_analyze_move"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = asset_service.AnalyzeMoveRequest.pb(
             asset_service.AnalyzeMoveRequest()
         )
@@ -17169,6 +17293,7 @@ def test_analyze_move_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = asset_service.AnalyzeMoveResponse()
+        post_with_metadata.return_value = asset_service.AnalyzeMoveResponse(), metadata
 
         client.analyze_move(
             request,
@@ -17180,6 +17305,7 @@ def test_analyze_move_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_query_assets_rest_bad_request(request_type=asset_service.QueryAssetsRequest):
@@ -17264,10 +17390,13 @@ def test_query_assets_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.AssetServiceRestInterceptor, "post_query_assets"
     ) as post, mock.patch.object(
+        transports.AssetServiceRestInterceptor, "post_query_assets_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.AssetServiceRestInterceptor, "pre_query_assets"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = asset_service.QueryAssetsRequest.pb(
             asset_service.QueryAssetsRequest()
         )
@@ -17293,6 +17422,7 @@ def test_query_assets_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = asset_service.QueryAssetsResponse()
+        post_with_metadata.return_value = asset_service.QueryAssetsResponse(), metadata
 
         client.query_assets(
             request,
@@ -17304,6 +17434,7 @@ def test_query_assets_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_saved_query_rest_bad_request(
@@ -17490,10 +17621,13 @@ def test_create_saved_query_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.AssetServiceRestInterceptor, "post_create_saved_query"
     ) as post, mock.patch.object(
+        transports.AssetServiceRestInterceptor, "post_create_saved_query_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.AssetServiceRestInterceptor, "pre_create_saved_query"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = asset_service.CreateSavedQueryRequest.pb(
             asset_service.CreateSavedQueryRequest()
         )
@@ -17517,6 +17651,7 @@ def test_create_saved_query_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = asset_service.SavedQuery()
+        post_with_metadata.return_value = asset_service.SavedQuery(), metadata
 
         client.create_saved_query(
             request,
@@ -17528,6 +17663,7 @@ def test_create_saved_query_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_saved_query_rest_bad_request(
@@ -17618,10 +17754,13 @@ def test_get_saved_query_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.AssetServiceRestInterceptor, "post_get_saved_query"
     ) as post, mock.patch.object(
+        transports.AssetServiceRestInterceptor, "post_get_saved_query_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.AssetServiceRestInterceptor, "pre_get_saved_query"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = asset_service.GetSavedQueryRequest.pb(
             asset_service.GetSavedQueryRequest()
         )
@@ -17645,6 +17784,7 @@ def test_get_saved_query_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = asset_service.SavedQuery()
+        post_with_metadata.return_value = asset_service.SavedQuery(), metadata
 
         client.get_saved_query(
             request,
@@ -17656,6 +17796,7 @@ def test_get_saved_query_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_saved_queries_rest_bad_request(
@@ -17740,10 +17881,13 @@ def test_list_saved_queries_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.AssetServiceRestInterceptor, "post_list_saved_queries"
     ) as post, mock.patch.object(
+        transports.AssetServiceRestInterceptor, "post_list_saved_queries_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.AssetServiceRestInterceptor, "pre_list_saved_queries"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = asset_service.ListSavedQueriesRequest.pb(
             asset_service.ListSavedQueriesRequest()
         )
@@ -17769,6 +17913,10 @@ def test_list_saved_queries_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = asset_service.ListSavedQueriesResponse()
+        post_with_metadata.return_value = (
+            asset_service.ListSavedQueriesResponse(),
+            metadata,
+        )
 
         client.list_saved_queries(
             request,
@@ -17780,6 +17928,7 @@ def test_list_saved_queries_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_saved_query_rest_bad_request(
@@ -17966,10 +18115,13 @@ def test_update_saved_query_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.AssetServiceRestInterceptor, "post_update_saved_query"
     ) as post, mock.patch.object(
+        transports.AssetServiceRestInterceptor, "post_update_saved_query_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.AssetServiceRestInterceptor, "pre_update_saved_query"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = asset_service.UpdateSavedQueryRequest.pb(
             asset_service.UpdateSavedQueryRequest()
         )
@@ -17993,6 +18145,7 @@ def test_update_saved_query_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = asset_service.SavedQuery()
+        post_with_metadata.return_value = asset_service.SavedQuery(), metadata
 
         client.update_saved_query(
             request,
@@ -18004,6 +18157,7 @@ def test_update_saved_query_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_saved_query_rest_bad_request(
@@ -18196,10 +18350,14 @@ def test_batch_get_effective_iam_policies_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.AssetServiceRestInterceptor, "post_batch_get_effective_iam_policies"
     ) as post, mock.patch.object(
+        transports.AssetServiceRestInterceptor,
+        "post_batch_get_effective_iam_policies_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.AssetServiceRestInterceptor, "pre_batch_get_effective_iam_policies"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = asset_service.BatchGetEffectiveIamPoliciesRequest.pb(
             asset_service.BatchGetEffectiveIamPoliciesRequest()
         )
@@ -18225,6 +18383,10 @@ def test_batch_get_effective_iam_policies_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = asset_service.BatchGetEffectiveIamPoliciesResponse()
+        post_with_metadata.return_value = (
+            asset_service.BatchGetEffectiveIamPoliciesResponse(),
+            metadata,
+        )
 
         client.batch_get_effective_iam_policies(
             request,
@@ -18236,6 +18398,7 @@ def test_batch_get_effective_iam_policies_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_analyze_org_policies_rest_bad_request(
@@ -18320,10 +18483,14 @@ def test_analyze_org_policies_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.AssetServiceRestInterceptor, "post_analyze_org_policies"
     ) as post, mock.patch.object(
+        transports.AssetServiceRestInterceptor,
+        "post_analyze_org_policies_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.AssetServiceRestInterceptor, "pre_analyze_org_policies"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = asset_service.AnalyzeOrgPoliciesRequest.pb(
             asset_service.AnalyzeOrgPoliciesRequest()
         )
@@ -18349,6 +18516,10 @@ def test_analyze_org_policies_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = asset_service.AnalyzeOrgPoliciesResponse()
+        post_with_metadata.return_value = (
+            asset_service.AnalyzeOrgPoliciesResponse(),
+            metadata,
+        )
 
         client.analyze_org_policies(
             request,
@@ -18360,6 +18531,7 @@ def test_analyze_org_policies_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_analyze_org_policy_governed_containers_rest_bad_request(
@@ -18448,10 +18620,14 @@ def test_analyze_org_policy_governed_containers_rest_interceptors(null_intercept
         "post_analyze_org_policy_governed_containers",
     ) as post, mock.patch.object(
         transports.AssetServiceRestInterceptor,
+        "post_analyze_org_policy_governed_containers_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
+        transports.AssetServiceRestInterceptor,
         "pre_analyze_org_policy_governed_containers",
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = asset_service.AnalyzeOrgPolicyGovernedContainersRequest.pb(
             asset_service.AnalyzeOrgPolicyGovernedContainersRequest()
         )
@@ -18477,6 +18653,10 @@ def test_analyze_org_policy_governed_containers_rest_interceptors(null_intercept
         ]
         pre.return_value = request, metadata
         post.return_value = asset_service.AnalyzeOrgPolicyGovernedContainersResponse()
+        post_with_metadata.return_value = (
+            asset_service.AnalyzeOrgPolicyGovernedContainersResponse(),
+            metadata,
+        )
 
         client.analyze_org_policy_governed_containers(
             request,
@@ -18488,6 +18668,7 @@ def test_analyze_org_policy_governed_containers_rest_interceptors(null_intercept
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_analyze_org_policy_governed_assets_rest_bad_request(
@@ -18575,10 +18756,14 @@ def test_analyze_org_policy_governed_assets_rest_interceptors(null_interceptor):
         transports.AssetServiceRestInterceptor,
         "post_analyze_org_policy_governed_assets",
     ) as post, mock.patch.object(
+        transports.AssetServiceRestInterceptor,
+        "post_analyze_org_policy_governed_assets_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.AssetServiceRestInterceptor, "pre_analyze_org_policy_governed_assets"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = asset_service.AnalyzeOrgPolicyGovernedAssetsRequest.pb(
             asset_service.AnalyzeOrgPolicyGovernedAssetsRequest()
         )
@@ -18604,6 +18789,10 @@ def test_analyze_org_policy_governed_assets_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = asset_service.AnalyzeOrgPolicyGovernedAssetsResponse()
+        post_with_metadata.return_value = (
+            asset_service.AnalyzeOrgPolicyGovernedAssetsResponse(),
+            metadata,
+        )
 
         client.analyze_org_policy_governed_assets(
             request,
@@ -18615,6 +18804,7 @@ def test_analyze_org_policy_governed_assets_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_operation_rest_bad_request(
