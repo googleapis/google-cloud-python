@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.14.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-appengine-admin-v1.13.0...google-cloud-appengine-admin-v1.14.0) (2025-02-12)
+
+
+### Features
+
+* Add REST Interceptors which support reading metadata ([a961bc0](https://github.com/googleapis/google-cloud-python/commit/a961bc029201b72fc4923490aeb3d82781853e6a))
+* Add support for reading selective GAPIC generation methods from service YAML ([a961bc0](https://github.com/googleapis/google-cloud-python/commit/a961bc029201b72fc4923490aeb3d82781853e6a))
+
 ## [1.13.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-appengine-admin-v1.12.1...google-cloud-appengine-admin-v1.13.0) (2024-12-12)
 
 
