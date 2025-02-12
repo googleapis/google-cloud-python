@@ -166,6 +166,10 @@ class Expression(abc.ABC):
         )
 
     @property
+    def nullable(self) -> bool:
+        return True
+
+    @property
     @abc.abstractmethod
     def column_references(self) -> typing.Tuple[ids.ColumnId, ...]:
         ...
@@ -247,6 +251,10 @@ class ScalarConstantExpression(Expression):
     @property
     def column_references(self) -> typing.Tuple[ids.ColumnId, ...]:
         return ()
+
+    @property
+    def nullable(self) -> bool:
+        return pd.isna(self.value)  # type: ignore
 
     def output_type(
         self, input_types: dict[ids.ColumnId, bigframes.dtypes.Dtype]
@@ -344,6 +352,11 @@ class DerefOp(Expression):
     def is_const(self) -> bool:
         return False
 
+    @property
+    def nullable(self) -> bool:
+        # Safe default, need to actually bind input schema to determine
+        return True
+
     def output_type(
         self, input_types: dict[ids.ColumnId, bigframes.dtypes.Dtype]
     ) -> dtypes.ExpressionType:
@@ -407,6 +420,14 @@ class OpExpression(Expression):
     @property
     def children(self):
         return self.inputs
+
+    @property
+    def nullable(self) -> bool:
+        # This is very conservative, need to label null properties of individual ops to get more precise
+        null_free = self.is_identity and not any(
+            child.nullable for child in self.inputs
+        )
+        return not null_free
 
     def output_type(
         self, input_types: dict[ids.ColumnId, dtypes.ExpressionType]

@@ -29,11 +29,9 @@ import bigframes.core.compile.compiled as compiled
 import bigframes.core.compile.concat as concat_impl
 import bigframes.core.compile.explode
 import bigframes.core.compile.ibis_types
-import bigframes.core.compile.isin
 import bigframes.core.compile.scalar_op_compiler
 import bigframes.core.compile.scalar_op_compiler as compile_scalar
 import bigframes.core.compile.schema_translator
-import bigframes.core.compile.single_column
 import bigframes.core.expression as ex
 import bigframes.core.identifiers as ids
 import bigframes.core.nodes as nodes
@@ -130,24 +128,25 @@ class Compiler:
         condition_pairs = tuple(
             (left.id.sql, right.id.sql) for left, right in node.conditions
         )
+
         left_unordered = self.compile_node(node.left_child)
         right_unordered = self.compile_node(node.right_child)
-        return bigframes.core.compile.single_column.join_by_column_unordered(
-            left=left_unordered,
+        return left_unordered.join(
             right=right_unordered,
             type=node.type,
             conditions=condition_pairs,
+            join_nulls=node.joins_nulls,
         )
 
     @_compile_node.register
     def compile_isin(self, node: nodes.InNode):
         left_unordered = self.compile_node(node.left_child)
         right_unordered = self.compile_node(node.right_child)
-        return bigframes.core.compile.isin.isin_unordered(
-            left=left_unordered,
+        return left_unordered.isin_join(
             right=right_unordered,
             indicator_col=node.indicator_col.sql,
             conditions=(node.left_col.id.sql, node.right_col.id.sql),
+            join_nulls=node.joins_nulls,
         )
 
     @_compile_node.register

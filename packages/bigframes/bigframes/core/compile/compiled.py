@@ -16,7 +16,7 @@ from __future__ import annotations
 import functools
 import itertools
 import typing
-from typing import Optional, Sequence
+from typing import Literal, Optional, Sequence
 
 import bigframes_vendored.ibis
 import bigframes_vendored.ibis.backends.bigquery.backend as ibis_bigquery
@@ -94,7 +94,7 @@ class UnorderedIR:
         return typing.cast(str, sql)
 
     @property
-    def columns(self) -> typing.Tuple[ibis_types.Value, ...]:
+    def columns(self) -> tuple[ibis_types.Value, ...]:
         return self._columns
 
     @property
@@ -107,7 +107,7 @@ class UnorderedIR:
 
     def projection(
         self,
-        expression_id_pairs: typing.Tuple[typing.Tuple[ex.Expression, str], ...],
+        expression_id_pairs: tuple[tuple[ex.Expression, str], ...],
     ) -> UnorderedIR:
         """Apply an expression to the ArrayValue and assign the output to a column."""
         cannot_inline = any(expr.expensive for expr, _ in expression_id_pairs)
@@ -126,7 +126,7 @@ class UnorderedIR:
 
     def selection(
         self,
-        input_output_pairs: typing.Tuple[typing.Tuple[ex.DerefOp, str], ...],
+        input_output_pairs: tuple[tuple[ex.DerefOp, str], ...],
     ) -> UnorderedIR:
         """Apply an expression to the ArrayValue and assign the output to a column."""
         bindings = {col: self._get_ibis_column(col) for col in self.column_ids}
@@ -203,7 +203,7 @@ class UnorderedIR:
 
     def aggregate(
         self,
-        aggregations: typing.Sequence[typing.Tuple[ex.Aggregation, str]],
+        aggregations: typing.Sequence[tuple[ex.Aggregation, str]],
         by_column_ids: typing.Sequence[ex.DerefOp] = (),
         dropna: bool = True,
         order_by: typing.Sequence[OrderingExpression] = (),
@@ -323,7 +323,105 @@ class UnorderedIR:
             columns=columns,
         )
 
-    ## Methods that only work with ordering
+    def join(
+        self: UnorderedIR,
+        right: UnorderedIR,
+        conditions: tuple[tuple[str, str], ...],
+        type: Literal["inner", "outer", "left", "right", "cross"],
+        *,
+        join_nulls: bool = True,
+    ) -> UnorderedIR:
+        """Join two expressions by column equality.
+
+        Arguments:
+            left: Expression for left table to join.
+            left_column_ids: Column IDs (not label) to join by.
+            right: Expression for right table to join.
+            right_column_ids: Column IDs (not label) to join by.
+            how: The type of join to perform.
+            join_nulls (bool):
+                If True, will joins NULL keys to each other.
+        Returns:
+            The joined expression. The resulting columns will be, in order,
+            first the coalesced join keys, then, all the left columns, and
+            finally, all the right columns.
+        """
+        # Shouldn't need to select the column ids explicitly, but it seems that ibis has some
+        # bug resolving column ids otherwise, potentially because of the "JoinChain" op
+        left_table = self._to_ibis_expr().select(self.column_ids)
+        right_table = right._to_ibis_expr().select(right.column_ids)
+
+        join_conditions = [
+            _join_condition(
+                left_table[left_index], right_table[right_index], nullsafe=join_nulls
+            )
+            for left_index, right_index in conditions
+        ]
+
+        combined_table = bigframes_vendored.ibis.join(
+            left_table,
+            right_table,
+            predicates=join_conditions,
+            how=type,  # type: ignore
+        )
+        columns = [combined_table[col.get_name()] for col in self.columns] + [
+            combined_table[col.get_name()] for col in right.columns
+        ]
+        return UnorderedIR(
+            combined_table,
+            columns=columns,
+        )
+
+    def isin_join(
+        self: UnorderedIR,
+        right: UnorderedIR,
+        indicator_col: str,
+        conditions: tuple[str, str],
+        *,
+        join_nulls: bool = True,
+    ) -> UnorderedIR:
+        """Join two expressions by column equality.
+
+        Arguments:
+            left: Expression for left table to join.
+            right: Expression for right table to join.
+            conditions: Id pairs to compare
+        Returns:
+            The joined expression.
+        """
+        left_table = self._to_ibis_expr()
+        right_table = right._to_ibis_expr()
+        if join_nulls:  # nullsafe isin join must actually use "exists" subquery
+            new_column = (
+                (
+                    _join_condition(
+                        left_table[conditions[0]],
+                        right_table[conditions[1]],
+                        nullsafe=True,
+                    )
+                )
+                .any()
+                .name(indicator_col)
+            )
+
+        else:  # Can do simpler "in" subquery
+            new_column = (
+                (left_table[conditions[0]])
+                .isin((right_table[conditions[1]]))
+                .name(indicator_col)
+            )
+
+        columns = tuple(
+            itertools.chain(
+                (left_table[col.get_name()] for col in self.columns), (new_column,)
+            )
+        )
+
+        return UnorderedIR(
+            left_table,
+            columns=columns,
+        )
+
     def project_window_op(
         self,
         expression: ex.Aggregation,
@@ -429,7 +527,7 @@ class UnorderedIR:
         group_by: typing.List[ibis_types.Value] = (
             [
                 typing.cast(
-                    ibis_types.Column, _as_identity(self._compile_expression(column))
+                    ibis_types.Column, _as_groupable(self._compile_expression(column))
                 )
                 for column in window_spec.grouping_keys
             ]
@@ -514,7 +612,68 @@ def _convert_ordering_to_table_values(
     return ordering_values
 
 
-def _as_identity(value: ibis_types.Value):
+def _string_cast_join_cond(
+    lvalue: ibis_types.Column, rvalue: ibis_types.Column
+) -> ibis_types.BooleanColumn:
+    result = (
+        lvalue.cast(ibis_dtypes.str).fill_null(ibis_types.literal("0"))
+        == rvalue.cast(ibis_dtypes.str).fill_null(ibis_types.literal("0"))
+    ) & (
+        lvalue.cast(ibis_dtypes.str).fill_null(ibis_types.literal("1"))
+        == rvalue.cast(ibis_dtypes.str).fill_null(ibis_types.literal("1"))
+    )
+    return typing.cast(ibis_types.BooleanColumn, result)
+
+
+def _numeric_join_cond(
+    lvalue: ibis_types.Column, rvalue: ibis_types.Column
+) -> ibis_types.BooleanColumn:
+    lvalue1 = lvalue.fill_null(ibis_types.literal(0))
+    lvalue2 = lvalue.fill_null(ibis_types.literal(1))
+    rvalue1 = rvalue.fill_null(ibis_types.literal(0))
+    rvalue2 = rvalue.fill_null(ibis_types.literal(1))
+    if lvalue.type().is_floating() and rvalue.type().is_floating():
+        # NaN aren't equal so need to coalesce as well with diff constants
+        lvalue1 = (
+            typing.cast(ibis_types.FloatingColumn, lvalue)
+            .isnan()
+            .ifelse(ibis_types.literal(2), lvalue1)
+        )
+        lvalue2 = (
+            typing.cast(ibis_types.FloatingColumn, lvalue)
+            .isnan()
+            .ifelse(ibis_types.literal(3), lvalue2)
+        )
+        rvalue1 = (
+            typing.cast(ibis_types.FloatingColumn, rvalue)
+            .isnan()
+            .ifelse(ibis_types.literal(2), rvalue1)
+        )
+        rvalue2 = (
+            typing.cast(ibis_types.FloatingColumn, rvalue)
+            .isnan()
+            .ifelse(ibis_types.literal(3), rvalue2)
+        )
+    result = (lvalue1 == rvalue1) & (lvalue2 == rvalue2)
+    return typing.cast(ibis_types.BooleanColumn, result)
+
+
+def _join_condition(
+    lvalue: ibis_types.Column, rvalue: ibis_types.Column, nullsafe: bool
+) -> ibis_types.BooleanColumn:
+    if (lvalue.type().is_floating()) and (lvalue.type().is_floating()):
+        # Need to always make safe join condition to handle nan, even if no nulls
+        return _numeric_join_cond(lvalue, rvalue)
+    if nullsafe:
+        # TODO: Define more coalesce constants for non-numeric types to avoid cast
+        if (lvalue.type().is_numeric()) and (lvalue.type().is_numeric()):
+            return _numeric_join_cond(lvalue, rvalue)
+        else:
+            return _string_cast_join_cond(lvalue, rvalue)
+    return typing.cast(ibis_types.BooleanColumn, lvalue == rvalue)
+
+
+def _as_groupable(value: ibis_types.Value):
     # Some types need to be converted to string to enable groupby
     if value.type().is_float64() or value.type().is_geospatial():
         return value.cast(ibis_dtypes.str)

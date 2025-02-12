@@ -216,7 +216,7 @@ class InNode(BigFrameNode, AdditiveNode):
 
     @property
     def added_fields(self) -> Tuple[Field, ...]:
-        return (Field(self.indicator_col, bigframes.dtypes.BOOL_DTYPE),)
+        return (Field(self.indicator_col, bigframes.dtypes.BOOL_DTYPE, nullable=False),)
 
     @property
     def fields(self) -> Iterable[Field]:
@@ -249,6 +249,12 @@ class InNode(BigFrameNode, AdditiveNode):
     @property
     def additive_base(self) -> BigFrameNode:
         return self.left_child
+
+    @property
+    def joins_nulls(self) -> bool:
+        left_nullable = self.left_child.field_by_id[self.left_col.id].nullable
+        right_nullable = self.right_child.field_by_id[self.right_col.id].nullable
+        return left_nullable or right_nullable
 
     def replace_additive_base(self, node: BigFrameNode):
         return dataclasses.replace(self, left_child=node)
@@ -310,7 +316,23 @@ class JoinNode(BigFrameNode):
 
     @property
     def fields(self) -> Iterable[Field]:
-        return itertools.chain(self.left_child.fields, self.right_child.fields)
+        left_fields = self.left_child.fields
+        if self.type in ("right", "outer"):
+            left_fields = map(lambda x: x.with_nullable(), left_fields)
+        right_fields = self.right_child.fields
+        if self.type in ("left", "outer"):
+            right_fields = map(lambda x: x.with_nullable(), right_fields)
+        return itertools.chain(left_fields, right_fields)
+
+    @property
+    def joins_nulls(self) -> bool:
+        for left_ref, right_ref in self.conditions:
+            if (
+                self.left_child.field_by_id[left_ref.id].nullable
+                and self.right_child.field_by_id[right_ref.id].nullable
+            ):
+                return True
+        return False
 
     @functools.cached_property
     def variables_introduced(self) -> int:
@@ -403,6 +425,7 @@ class ConcatNode(BigFrameNode):
     @property
     def fields(self) -> Iterable[Field]:
         # TODO: Output names should probably be aligned beforehand or be part of concat definition
+        # TODO: Handle nullability
         return (
             Field(id, field.dtype)
             for id, field in zip(self.output_ids, self.children[0].fields)
@@ -476,7 +499,9 @@ class FromRangeNode(BigFrameNode):
 
     @functools.cached_property
     def fields(self) -> Iterable[Field]:
-        return (Field(self.output_id, next(iter(self.start.fields)).dtype),)
+        return (
+            Field(self.output_id, next(iter(self.start.fields)).dtype, nullable=False),
+        )
 
     @functools.cached_property
     def variables_introduced(self) -> int:
@@ -555,6 +580,7 @@ class ScanList:
 @dataclasses.dataclass(frozen=True, eq=False)
 class ReadLocalNode(LeafNode):
     # TODO: Combine feather_bytes, data_schema, n_rows into a LocalDataDef struct
+    # TODO: Track nullability for local data
     feather_bytes: bytes
     data_schema: schemata.ArraySchema
     n_rows: int
@@ -569,7 +595,8 @@ class ReadLocalNode(LeafNode):
         fields = (Field(col_id, dtype) for col_id, dtype, _ in self.scan_list.items)
         if self.offsets_col is not None:
             return itertools.chain(
-                fields, (Field(self.offsets_col, bigframes.dtypes.INT_DTYPE),)
+                fields,
+                (Field(self.offsets_col, bigframes.dtypes.INT_DTYPE, nullable=False),),
             )
         return fields
 
@@ -655,6 +682,11 @@ class GbqTable:
             else tuple(table.clustering_fields),
         )
 
+    @property
+    @functools.cache
+    def schema_by_id(self):
+        return {col.name: col for col in self.physical_schema}
+
 
 @dataclasses.dataclass(frozen=True)
 class BigqueryDataSource:
@@ -697,7 +729,10 @@ class ReadTableNode(LeafNode):
 
     @property
     def fields(self) -> Iterable[Field]:
-        return (Field(col_id, dtype) for col_id, dtype, _ in self.scan_list.items)
+        return (
+            Field(col_id, dtype, self.source.table.schema_by_id[source_id].is_nullable)
+            for col_id, dtype, source_id in self.scan_list.items
+        )
 
     @property
     def relation_ops_created(self) -> int:
@@ -808,9 +843,7 @@ class PromoteOffsetsNode(UnaryNode, AdditiveNode):
 
     @property
     def fields(self) -> Iterable[Field]:
-        return itertools.chain(
-            self.child.fields, [Field(self.col_id, bigframes.dtypes.INT_DTYPE)]
-        )
+        return itertools.chain(self.child.fields, self.added_fields)
 
     @property
     def relation_ops_created(self) -> int:
@@ -834,7 +867,7 @@ class PromoteOffsetsNode(UnaryNode, AdditiveNode):
 
     @property
     def added_fields(self) -> Tuple[Field, ...]:
-        return (Field(self.col_id, bigframes.dtypes.INT_DTYPE),)
+        return (Field(self.col_id, bigframes.dtypes.INT_DTYPE, nullable=False),)
 
     @property
     def additive_base(self) -> BigFrameNode:
@@ -856,6 +889,7 @@ class PromoteOffsetsNode(UnaryNode, AdditiveNode):
 
 @dataclasses.dataclass(frozen=True, eq=False)
 class FilterNode(UnaryNode):
+    # TODO: Infer null constraints from predicate
     predicate: ex.Expression
 
     @property
@@ -1025,8 +1059,13 @@ class SelectionNode(UnaryNode):
 
     @functools.cached_property
     def fields(self) -> Iterable[Field]:
+        input_fields_by_id = {field.id: field for field in self.child.fields}
         return tuple(
-            Field(output, self.child.get_type(ref.id))
+            Field(
+                output,
+                input_fields_by_id[ref.id].dtype,
+                input_fields_by_id[ref.id].nullable,
+            )
             for ref, output in self.input_output_pairs
         )
 
@@ -1091,10 +1130,22 @@ class ProjectionNode(UnaryNode, AdditiveNode):
     @functools.cached_property
     def added_fields(self) -> Tuple[Field, ...]:
         input_types = self.child._dtype_lookup
-        return tuple(
-            Field(id, bigframes.dtypes.dtype_for_etype(ex.output_type(input_types)))
-            for ex, id in self.assignments
-        )
+
+        fields = []
+        for expr, id in self.assignments:
+            field = Field(
+                id,
+                bigframes.dtypes.dtype_for_etype(expr.output_type(input_types)),
+                nullable=expr.nullable,
+            )
+            # Special case until we get better nullability inference in expression objects themselves
+            if expr.is_identity and not any(
+                self.child.field_by_id[id].nullable for id in expr.column_references
+            ):
+                field = field.with_nonnull()
+            fields.append(field)
+
+        return tuple(fields)
 
     @property
     def fields(self) -> Iterable[Field]:
@@ -1169,7 +1220,7 @@ class RowCountNode(UnaryNode):
 
     @property
     def fields(self) -> Iterable[Field]:
-        return (Field(self.col_id, bigframes.dtypes.INT_DTYPE),)
+        return (Field(self.col_id, bigframes.dtypes.INT_DTYPE, nullable=False),)
 
     @property
     def variables_introduced(self) -> int:
@@ -1219,19 +1270,22 @@ class AggregateNode(UnaryNode):
 
     @functools.cached_property
     def fields(self) -> Iterable[Field]:
-        by_items = (
-            Field(ref.id, self.child.get_type(ref.id)) for ref in self.by_column_ids
-        )
+        # TODO: Use child nullability to infer grouping key nullability
+        by_fields = (self.child.field_by_id[ref.id] for ref in self.by_column_ids)
+        if self.dropna:
+            by_fields = (field.with_nonnull() for field in by_fields)
+        # TODO: Label aggregate ops to determine which are guaranteed non-null
         agg_items = (
             Field(
                 id,
                 bigframes.dtypes.dtype_for_etype(
                     agg.output_type(self.child._dtype_lookup)
                 ),
+                nullable=True,
             )
             for agg, id in self.aggregations
         )
-        return tuple(itertools.chain(by_items, agg_items))
+        return tuple(itertools.chain(by_fields, agg_items))
 
     @property
     def variables_introduced(self) -> int:
@@ -1336,6 +1390,7 @@ class WindowOpNode(UnaryNode, AdditiveNode):
     @functools.cached_property
     def added_field(self) -> Field:
         input_types = self.child._dtype_lookup
+        # TODO: Determine if output could be non-null
         return Field(
             self.output_name,
             bigframes.dtypes.dtype_for_etype(self.expression.output_type(input_types)),
@@ -1453,6 +1508,7 @@ class ExplodeNode(UnaryNode):
                 bigframes.dtypes.arrow_dtype_to_bigframes_dtype(
                     self.child.get_type(field.id).pyarrow_dtype.value_type  # type: ignore
                 ),
+                nullable=True,
             )
             if field.id in set(map(lambda x: x.id, self.column_ids))
             else field
@@ -1460,7 +1516,8 @@ class ExplodeNode(UnaryNode):
         )
         if self.offsets_col is not None:
             return itertools.chain(
-                fields, (Field(self.offsets_col, bigframes.dtypes.INT_DTYPE),)
+                fields,
+                (Field(self.offsets_col, bigframes.dtypes.INT_DTYPE, nullable=False),),
             )
         return fields
 

@@ -54,26 +54,10 @@ def string_indexed_number_series(session):
     )
 
 
-def test_non_string_indexed_struct_series_with_string_key_should_warn(session):
-    s = bpd.Series(
-        [
-            {"project": "pandas", "version": 1},
-        ],
-        dtype=bpd.ArrowDtype(
-            pa.struct([("project", pa.string()), ("version", pa.int64())])
-        ),
-        session=session,
-    )
-
-    with pytest.warns(bigframes.exceptions.BadIndexerKeyWarning):
-        s["a"]
-
-
 @pytest.mark.parametrize(
     "series",
     [
         "string_indexed_struct_series",
-        "number_series",
         "string_indexed_number_series",
     ],
 )

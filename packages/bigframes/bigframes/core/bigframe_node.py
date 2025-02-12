@@ -37,6 +37,17 @@ COLUMN_SET = frozenset[identifiers.ColumnId]
 class Field:
     id: identifiers.ColumnId
     dtype: bigframes.dtypes.Dtype
+    # Best effort, nullable=True if not certain
+    nullable: bool = True
+
+    def with_nullable(self) -> Field:
+        return Field(self.id, self.dtype, nullable=True)
+
+    def with_nonnull(self) -> Field:
+        return Field(self.id, self.dtype, nullable=False)
+
+    def with_id(self, id: identifiers.ColumnId) -> Field:
+        return Field(id, self.dtype, nullable=self.nullable)
 
 
 @dataclasses.dataclass(eq=False, frozen=True)
@@ -274,9 +285,14 @@ class BigFrameNode:
     def get_type(self, id: identifiers.ColumnId) -> bigframes.dtypes.Dtype:
         return self._dtype_lookup[id]
 
+    # TODO: Deprecate in favor of field_by_id, and eventually, by rich references
     @functools.cached_property
-    def _dtype_lookup(self):
+    def _dtype_lookup(self) -> dict[identifiers.ColumnId, bigframes.dtypes.Dtype]:
         return {field.id: field.dtype for field in self.fields}
+
+    @functools.cached_property
+    def field_by_id(self) -> Mapping[identifiers.ColumnId, Field]:
+        return {field.id: field for field in self.fields}
 
     # Plan algorithms
     def unique_nodes(

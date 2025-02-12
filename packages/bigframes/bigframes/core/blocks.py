@@ -2049,7 +2049,6 @@ class Block:
 
     def isin(self, other: Block):
         # TODO: Support multiple other columns and match on label
-        # TODO: Model as explicit "IN" subquery/join to better allow db to optimize
         assert len(other.value_columns) == 1
         unique_other_values = other.expr.select_columns(
             [other.value_columns[0]]
