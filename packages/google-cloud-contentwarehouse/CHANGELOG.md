@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.7.13](https://github.com/googleapis/google-cloud-python/compare/google-cloud-contentwarehouse-v0.7.12...google-cloud-contentwarehouse-v0.7.13) (2025-02-12)
+
+
+### Features
+
+* Add REST Interceptors which support reading metadata ([e22e2bd](https://github.com/googleapis/google-cloud-python/commit/e22e2bde55d11d2f85e9d2caf1d152a4027f88cf))
+* Add support for reading selective GAPIC generation methods from service YAML ([e22e2bd](https://github.com/googleapis/google-cloud-python/commit/e22e2bde55d11d2f85e9d2caf1d152a4027f88cf))
+
 ## [0.7.12](https://github.com/googleapis/google-cloud-python/compare/google-cloud-contentwarehouse-v0.7.11...google-cloud-contentwarehouse-v0.7.12) (2024-12-12)
 
 

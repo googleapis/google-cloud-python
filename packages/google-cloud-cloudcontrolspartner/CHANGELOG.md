@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.2.5](https://github.com/googleapis/google-cloud-python/compare/google-cloud-cloudcontrolspartner-v0.2.4...google-cloud-cloudcontrolspartner-v0.2.5) (2025-02-12)
+
+
+### Features
+
+* Add REST Interceptors which support reading metadata ([e22e2bd](https://github.com/googleapis/google-cloud-python/commit/e22e2bde55d11d2f85e9d2caf1d152a4027f88cf))
+* Add support for reading selective GAPIC generation methods from service YAML ([e22e2bd](https://github.com/googleapis/google-cloud-python/commit/e22e2bde55d11d2f85e9d2caf1d152a4027f88cf))
+
 ## [0.2.4](https://github.com/googleapis/google-cloud-python/compare/google-cloud-cloudcontrolspartner-v0.2.3...google-cloud-cloudcontrolspartner-v0.2.4) (2025-01-27)
 
 
