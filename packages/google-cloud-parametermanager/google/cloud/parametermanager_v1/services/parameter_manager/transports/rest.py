@@ -171,11 +171,34 @@ class ParameterManagerRestInterceptor:
     def post_create_parameter(self, response: service.Parameter) -> service.Parameter:
         """Post-rpc interceptor for create_parameter
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_parameter_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ParameterManager server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_parameter` interceptor runs
+        before the `post_create_parameter_with_metadata` interceptor.
         """
         return response
+
+    def post_create_parameter_with_metadata(
+        self,
+        response: service.Parameter,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.Parameter, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_parameter
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ParameterManager server but before it is returned to user code.
+
+        We recommend only using this `post_create_parameter_with_metadata`
+        interceptor in new development instead of the `post_create_parameter` interceptor.
+        When both interceptors are used, this `post_create_parameter_with_metadata` interceptor runs after the
+        `post_create_parameter` interceptor. The (possibly modified) response returned by
+        `post_create_parameter` will be passed to
+        `post_create_parameter_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_parameter_version(
         self,
@@ -196,11 +219,34 @@ class ParameterManagerRestInterceptor:
     ) -> service.ParameterVersion:
         """Post-rpc interceptor for create_parameter_version
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_parameter_version_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ParameterManager server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_parameter_version` interceptor runs
+        before the `post_create_parameter_version_with_metadata` interceptor.
         """
         return response
+
+    def post_create_parameter_version_with_metadata(
+        self,
+        response: service.ParameterVersion,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.ParameterVersion, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_parameter_version
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ParameterManager server but before it is returned to user code.
+
+        We recommend only using this `post_create_parameter_version_with_metadata`
+        interceptor in new development instead of the `post_create_parameter_version` interceptor.
+        When both interceptors are used, this `post_create_parameter_version_with_metadata` interceptor runs after the
+        `post_create_parameter_version` interceptor. The (possibly modified) response returned by
+        `post_create_parameter_version` will be passed to
+        `post_create_parameter_version_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_parameter(
         self,
@@ -243,11 +289,34 @@ class ParameterManagerRestInterceptor:
     def post_get_parameter(self, response: service.Parameter) -> service.Parameter:
         """Post-rpc interceptor for get_parameter
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_parameter_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ParameterManager server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_parameter` interceptor runs
+        before the `post_get_parameter_with_metadata` interceptor.
         """
         return response
+
+    def post_get_parameter_with_metadata(
+        self,
+        response: service.Parameter,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.Parameter, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_parameter
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ParameterManager server but before it is returned to user code.
+
+        We recommend only using this `post_get_parameter_with_metadata`
+        interceptor in new development instead of the `post_get_parameter` interceptor.
+        When both interceptors are used, this `post_get_parameter_with_metadata` interceptor runs after the
+        `post_get_parameter` interceptor. The (possibly modified) response returned by
+        `post_get_parameter` will be passed to
+        `post_get_parameter_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_parameter_version(
         self,
@@ -268,11 +337,34 @@ class ParameterManagerRestInterceptor:
     ) -> service.ParameterVersion:
         """Post-rpc interceptor for get_parameter_version
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_parameter_version_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ParameterManager server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_parameter_version` interceptor runs
+        before the `post_get_parameter_version_with_metadata` interceptor.
         """
         return response
+
+    def post_get_parameter_version_with_metadata(
+        self,
+        response: service.ParameterVersion,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.ParameterVersion, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_parameter_version
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ParameterManager server but before it is returned to user code.
+
+        We recommend only using this `post_get_parameter_version_with_metadata`
+        interceptor in new development instead of the `post_get_parameter_version` interceptor.
+        When both interceptors are used, this `post_get_parameter_version_with_metadata` interceptor runs after the
+        `post_get_parameter_version` interceptor. The (possibly modified) response returned by
+        `post_get_parameter_version` will be passed to
+        `post_get_parameter_version_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_parameters(
         self,
@@ -291,11 +383,34 @@ class ParameterManagerRestInterceptor:
     ) -> service.ListParametersResponse:
         """Post-rpc interceptor for list_parameters
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_parameters_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ParameterManager server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_parameters` interceptor runs
+        before the `post_list_parameters_with_metadata` interceptor.
         """
         return response
+
+    def post_list_parameters_with_metadata(
+        self,
+        response: service.ListParametersResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.ListParametersResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for list_parameters
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ParameterManager server but before it is returned to user code.
+
+        We recommend only using this `post_list_parameters_with_metadata`
+        interceptor in new development instead of the `post_list_parameters` interceptor.
+        When both interceptors are used, this `post_list_parameters_with_metadata` interceptor runs after the
+        `post_list_parameters` interceptor. The (possibly modified) response returned by
+        `post_list_parameters` will be passed to
+        `post_list_parameters_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_parameter_versions(
         self,
@@ -316,11 +431,36 @@ class ParameterManagerRestInterceptor:
     ) -> service.ListParameterVersionsResponse:
         """Post-rpc interceptor for list_parameter_versions
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_parameter_versions_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ParameterManager server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_parameter_versions` interceptor runs
+        before the `post_list_parameter_versions_with_metadata` interceptor.
         """
         return response
+
+    def post_list_parameter_versions_with_metadata(
+        self,
+        response: service.ListParameterVersionsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        service.ListParameterVersionsResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_parameter_versions
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ParameterManager server but before it is returned to user code.
+
+        We recommend only using this `post_list_parameter_versions_with_metadata`
+        interceptor in new development instead of the `post_list_parameter_versions` interceptor.
+        When both interceptors are used, this `post_list_parameter_versions_with_metadata` interceptor runs after the
+        `post_list_parameter_versions` interceptor. The (possibly modified) response returned by
+        `post_list_parameter_versions` will be passed to
+        `post_list_parameter_versions_with_metadata`.
+        """
+        return response, metadata
 
     def pre_render_parameter_version(
         self,
@@ -341,11 +481,36 @@ class ParameterManagerRestInterceptor:
     ) -> service.RenderParameterVersionResponse:
         """Post-rpc interceptor for render_parameter_version
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_render_parameter_version_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ParameterManager server but before
-        it is returned to user code.
+        it is returned to user code. This `post_render_parameter_version` interceptor runs
+        before the `post_render_parameter_version_with_metadata` interceptor.
         """
         return response
+
+    def post_render_parameter_version_with_metadata(
+        self,
+        response: service.RenderParameterVersionResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        service.RenderParameterVersionResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for render_parameter_version
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ParameterManager server but before it is returned to user code.
+
+        We recommend only using this `post_render_parameter_version_with_metadata`
+        interceptor in new development instead of the `post_render_parameter_version` interceptor.
+        When both interceptors are used, this `post_render_parameter_version_with_metadata` interceptor runs after the
+        `post_render_parameter_version` interceptor. The (possibly modified) response returned by
+        `post_render_parameter_version` will be passed to
+        `post_render_parameter_version_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_parameter(
         self,
@@ -362,11 +527,34 @@ class ParameterManagerRestInterceptor:
     def post_update_parameter(self, response: service.Parameter) -> service.Parameter:
         """Post-rpc interceptor for update_parameter
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_parameter_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ParameterManager server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_parameter` interceptor runs
+        before the `post_update_parameter_with_metadata` interceptor.
         """
         return response
+
+    def post_update_parameter_with_metadata(
+        self,
+        response: service.Parameter,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.Parameter, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_parameter
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ParameterManager server but before it is returned to user code.
+
+        We recommend only using this `post_update_parameter_with_metadata`
+        interceptor in new development instead of the `post_update_parameter` interceptor.
+        When both interceptors are used, this `post_update_parameter_with_metadata` interceptor runs after the
+        `post_update_parameter` interceptor. The (possibly modified) response returned by
+        `post_update_parameter` will be passed to
+        `post_update_parameter_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_parameter_version(
         self,
@@ -387,11 +575,34 @@ class ParameterManagerRestInterceptor:
     ) -> service.ParameterVersion:
         """Post-rpc interceptor for update_parameter_version
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_parameter_version_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ParameterManager server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_parameter_version` interceptor runs
+        before the `post_update_parameter_version_with_metadata` interceptor.
         """
         return response
+
+    def post_update_parameter_version_with_metadata(
+        self,
+        response: service.ParameterVersion,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.ParameterVersion, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_parameter_version
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ParameterManager server but before it is returned to user code.
+
+        We recommend only using this `post_update_parameter_version_with_metadata`
+        interceptor in new development instead of the `post_update_parameter_version` interceptor.
+        When both interceptors are used, this `post_update_parameter_version_with_metadata` interceptor runs after the
+        `post_update_parameter_version` interceptor. The (possibly modified) response returned by
+        `post_update_parameter_version` will be passed to
+        `post_update_parameter_version_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_location(
         self,
@@ -656,6 +867,10 @@ class ParameterManagerRestTransport(_BaseParameterManagerRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_parameter(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_parameter_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -810,6 +1025,10 @@ class ParameterManagerRestTransport(_BaseParameterManagerRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_parameter_version(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_parameter_version_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1171,6 +1390,10 @@ class ParameterManagerRestTransport(_BaseParameterManagerRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_parameter(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_parameter_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1317,6 +1540,10 @@ class ParameterManagerRestTransport(_BaseParameterManagerRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_parameter_version(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_parameter_version_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1460,6 +1687,10 @@ class ParameterManagerRestTransport(_BaseParameterManagerRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_parameters(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_parameters_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1608,6 +1839,10 @@ class ParameterManagerRestTransport(_BaseParameterManagerRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_parameter_versions(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_parameter_versions_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1758,6 +1993,10 @@ class ParameterManagerRestTransport(_BaseParameterManagerRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_render_parameter_version(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_render_parameter_version_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1909,6 +2148,10 @@ class ParameterManagerRestTransport(_BaseParameterManagerRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_parameter(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_parameter_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2063,6 +2306,10 @@ class ParameterManagerRestTransport(_BaseParameterManagerRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_parameter_version(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_parameter_version_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
