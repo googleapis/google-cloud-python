@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.3.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-storage-control-v1.2.0...google-cloud-storage-control-v1.3.0) (2025-02-12)
+
+
+### Features
+
+* Add REST Interceptors which support reading metadata ([87b5382](https://github.com/googleapis/google-cloud-python/commit/87b5382a05b7a0c9faeabaf3e2baa6f05c88bb8e))
+* Add support for reading selective GAPIC generation methods from service YAML ([87b5382](https://github.com/googleapis/google-cloud-python/commit/87b5382a05b7a0c9faeabaf3e2baa6f05c88bb8e))
+
 ## [1.2.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-storage-control-v1.1.1...google-cloud-storage-control-v1.2.0) (2024-12-12)
 
 

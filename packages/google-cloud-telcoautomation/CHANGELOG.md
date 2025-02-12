@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.2.9](https://github.com/googleapis/google-cloud-python/compare/google-cloud-telcoautomation-v0.2.8...google-cloud-telcoautomation-v0.2.9) (2025-02-12)
+
+
+### Features
+
+* Add REST Interceptors which support reading metadata ([87b5382](https://github.com/googleapis/google-cloud-python/commit/87b5382a05b7a0c9faeabaf3e2baa6f05c88bb8e))
+* Add support for reading selective GAPIC generation methods from service YAML ([87b5382](https://github.com/googleapis/google-cloud-python/commit/87b5382a05b7a0c9faeabaf3e2baa6f05c88bb8e))
+
 ## [0.2.8](https://github.com/googleapis/google-cloud-python/compare/google-cloud-telcoautomation-v0.2.7...google-cloud-telcoautomation-v0.2.8) (2024-12-12)
 
 

@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-talent/#history
 
+## [2.17.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-talent-v2.16.0...google-cloud-talent-v2.17.0) (2025-02-12)
+
+
+### Features
+
+* Add REST Interceptors which support reading metadata ([87b5382](https://github.com/googleapis/google-cloud-python/commit/87b5382a05b7a0c9faeabaf3e2baa6f05c88bb8e))
+* Add support for reading selective GAPIC generation methods from service YAML ([87b5382](https://github.com/googleapis/google-cloud-python/commit/87b5382a05b7a0c9faeabaf3e2baa6f05c88bb8e))
+
 ## [2.16.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-talent-v2.15.0...google-cloud-talent-v2.16.0) (2025-01-13)
 
 
