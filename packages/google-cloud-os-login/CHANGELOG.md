@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-oslogin/#history
 
+## [2.17.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-os-login-v2.16.0...google-cloud-os-login-v2.17.0) (2025-02-12)
+
+
+### Features
+
+* Add REST Interceptors which support reading metadata ([a0910dd](https://github.com/googleapis/google-cloud-python/commit/a0910dd51541d238bc5fcf10159066ddfd928579))
+* Add support for reading selective GAPIC generation methods from service YAML ([a0910dd](https://github.com/googleapis/google-cloud-python/commit/a0910dd51541d238bc5fcf10159066ddfd928579))
+
 ## [2.16.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-os-login-v2.15.1...google-cloud-os-login-v2.16.0) (2024-12-12)
 
 
