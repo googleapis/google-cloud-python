@@ -46,7 +46,7 @@ List handling
 Struct handling
 ^^^^^^^^^^^^^^^
 
-.. automodule:: bigframes.operations.structs
+.. autoclass:: bigframes.operations.structs.StructAccessor
     :members:
     :inherited-members:
     :undoc-members:

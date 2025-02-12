@@ -38,8 +38,13 @@
       uid: bigframes.exceptions
     name: Core Objects
   - items:
-    - name: DataFrame
-      uid: bigframes.dataframe.DataFrame
+    - items:
+      - name: DataFrame
+        uid: bigframes.dataframe.DataFrame
+      - name: PlotAccessor
+        uid: bigframes.operations.plotting.PlotAccessor
+      - name: StructAccessor
+        uid: bigframes.operations.structs.StructFrameAccessor
     - items:
       - name: DataFrameGroupBy
         uid: bigframes.core.groupby.DataFrameGroupBy
@@ -69,12 +74,6 @@
     - name: pandas
       uid: bigframes.pandas
     - items:
-      - name: Plotting
-        uid: bigframes.operations.plotting
-      - name: PlotAccessor
-        uid: bigframes.operations.plotting.PlotAccessor
-      name: Plotting
-    - items:
       - name: Series
         uid: bigframes.series.Series
       - name: DatetimeMethods
@@ -83,6 +82,8 @@
         uid: bigframes.operations.strings.StringMethods
       - name: StructAccessor
         uid: bigframes.operations.structs.StructAccessor
+      - name: PlotAccessor
+        uid: bigframes.operations.plotting.PlotAccessor
       name: Series
     - name: Window
       uid: bigframes.core.window.Window
