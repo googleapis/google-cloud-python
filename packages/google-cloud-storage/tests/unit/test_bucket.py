@@ -2289,6 +2289,69 @@ class Test_Bucket(unittest.TestCase):
             _target_object=new_blob,
         )
 
+    def test_move_blob_w_no_retry_timeout_and_generation_match(self):
+        source_name = "source"
+        blob_name = "blob-name"
+        new_name = "new_name"
+        api_response = {}
+        client = mock.Mock(spec=["_post_resource"])
+        client._post_resource.return_value = api_response
+        source = self._make_one(client=client, name=source_name)
+        blob = self._make_blob(source_name, blob_name)
+
+        new_blob = source.move_blob(
+            blob, new_name, if_generation_match=0, retry=None, timeout=30
+        )
+
+        self.assertIs(new_blob.bucket, source)
+        self.assertEqual(new_blob.name, new_name)
+
+        expected_path = "/b/{}/o/{}/moveTo/o/{}".format(
+            source_name, blob_name, new_name
+        )
+        expected_data = None
+        expected_query_params = {"ifGenerationMatch": 0}
+        client._post_resource.assert_called_once_with(
+            expected_path,
+            expected_data,
+            query_params=expected_query_params,
+            timeout=30,
+            retry=None,
+            _target_object=new_blob,
+        )
+
+    def test_move_blob_w_user_project(self):
+        source_name = "source"
+        blob_name = "blob-name"
+        new_name = "new_name"
+        user_project = "user-project-123"
+        api_response = {}
+        client = mock.Mock(spec=["_post_resource"])
+        client._post_resource.return_value = api_response
+        source = self._make_one(
+            client=client, name=source_name, user_project=user_project
+        )
+        blob = self._make_blob(source_name, blob_name)
+
+        new_blob = source.move_blob(blob, new_name)
+
+        self.assertIs(new_blob.bucket, source)
+        self.assertEqual(new_blob.name, new_name)
+
+        expected_path = "/b/{}/o/{}/moveTo/o/{}".format(
+            source_name, blob_name, new_name
+        )
+        expected_data = None
+        expected_query_params = {"userProject": user_project}
+        client._post_resource.assert_called_once_with(
+            expected_path,
+            expected_data,
+            query_params=expected_query_params,
+            timeout=self._get_default_timeout(),
+            retry=DEFAULT_RETRY_IF_GENERATION_SPECIFIED,
+            _target_object=new_blob,
+        )
+
     def _rename_blob_helper(self, explicit_client=False, same_name=False, **kw):
         bucket_name = "BUCKET_NAME"
         blob_name = "blob-name"

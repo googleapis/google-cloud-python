@@ -2236,6 +2236,130 @@ class Bucket(_PropertyMixin):
             )
         return new_blob
 
+    @create_trace_span(name="Storage.Bucket.moveBlob")
+    def move_blob(
+        self,
+        blob,
+        new_name,
+        client=None,
+        if_generation_match=None,
+        if_generation_not_match=None,
+        if_metageneration_match=None,
+        if_metageneration_not_match=None,
+        if_source_generation_match=None,
+        if_source_generation_not_match=None,
+        if_source_metageneration_match=None,
+        if_source_metageneration_not_match=None,
+        timeout=_DEFAULT_TIMEOUT,
+        retry=DEFAULT_RETRY_IF_GENERATION_SPECIFIED,
+    ):
+        """Move a blob to a new name within a single HNS bucket.
+
+        *This feature is currently only supported for HNS (Heirarchical
+        Namespace) buckets.*
+
+        If :attr:`user_project` is set on the bucket, bills the API request to that project.
+
+        :type blob: :class:`google.cloud.storage.blob.Blob`
+        :param blob: The blob to be renamed.
+
+        :type new_name: str
+        :param new_name: The new name for this blob.
+
+        :type client: :class:`~google.cloud.storage.client.Client` or
+                      ``NoneType``
+        :param client: (Optional) The client to use.  If not passed, falls back
+                       to the ``client`` stored on the current bucket.
+
+        :type if_generation_match: int
+        :param if_generation_match:
+            (Optional) See :ref:`using-if-generation-match`
+            Note that the generation to be matched is that of the
+            ``destination`` blob.
+
+        :type if_generation_not_match: int
+        :param if_generation_not_match:
+            (Optional) See :ref:`using-if-generation-not-match`
+            Note that the generation to be matched is that of the
+            ``destination`` blob.
+
+        :type if_metageneration_match: int
+        :param if_metageneration_match:
+            (Optional) See :ref:`using-if-metageneration-match`
+            Note that the metageneration to be matched is that of the
+            ``destination`` blob.
+
+        :type if_metageneration_not_match: int
+        :param if_metageneration_not_match:
+            (Optional) See :ref:`using-if-metageneration-not-match`
+            Note that the metageneration to be matched is that of the
+            ``destination`` blob.
+
+        :type if_source_generation_match: int
+        :param if_source_generation_match:
+            (Optional) Makes the operation conditional on whether the source
+            object's generation matches the given value.
+
+        :type if_source_generation_not_match: int
+        :param if_source_generation_not_match:
+            (Optional) Makes the operation conditional on whether the source
+            object's generation does not match the given value.
+
+        :type if_source_metageneration_match: int
+        :param if_source_metageneration_match:
+            (Optional) Makes the operation conditional on whether the source
+            object's current metageneration matches the given value.
+
+        :type if_source_metageneration_not_match: int
+        :param if_source_metageneration_not_match:
+            (Optional) Makes the operation conditional on whether the source
+            object's current metageneration does not match the given value.
+
+        :type timeout: float or tuple
+        :param timeout:
+            (Optional) The amount of time, in seconds, to wait
+            for the server response.  See: :ref:`configuring_timeouts`
+
+        :type retry: google.api_core.retry.Retry
+        :param retry:
+            (Optional) How to retry the RPC.
+            See [Configuring Retries](https://cloud.google.com/python/docs/reference/storage/latest/retry_timeout).
+
+        :rtype: :class:`Blob`
+        :returns: The newly-moved blob.
+        """
+        client = self._require_client(client)
+        query_params = {}
+
+        if self.user_project is not None:
+            query_params["userProject"] = self.user_project
+
+        _add_generation_match_parameters(
+            query_params,
+            if_generation_match=if_generation_match,
+            if_generation_not_match=if_generation_not_match,
+            if_metageneration_match=if_metageneration_match,
+            if_metageneration_not_match=if_metageneration_not_match,
+            if_source_generation_match=if_source_generation_match,
+            if_source_generation_not_match=if_source_generation_not_match,
+            if_source_metageneration_match=if_source_metageneration_match,
+            if_source_metageneration_not_match=if_source_metageneration_not_match,
+        )
+
+        new_blob = Blob(bucket=self, name=new_name)
+        api_path = blob.path + "/moveTo/o/" + new_blob.name
+        move_result = client._post_resource(
+            api_path,
+            None,
+            query_params=query_params,
+            timeout=timeout,
+            retry=retry,
+            _target_object=new_blob,
+        )
+
+        new_blob._set_properties(move_result)
+        return new_blob
+
     @create_trace_span(name="Storage.Bucket.restore_blob")
     def restore_blob(
         self,
