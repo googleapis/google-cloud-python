@@ -15,37 +15,24 @@ def q(project_id: str, dataset_id: str, session: bigframes.Session):
     )
 
     country_codes = ["13", "31", "23", "29", "30", "18", "17"]
-
     customer["CNTRYCODE"] = customer["C_PHONE"].str.slice(0, 2)
+    customer = customer[customer["CNTRYCODE"].isin(country_codes)]
 
     avg_acctbal = (
-        customer[
-            (customer["CNTRYCODE"].isin(country_codes)) & (customer["C_ACCTBAL"] > 0)
-        ][["C_ACCTBAL"]]
+        customer[customer["C_ACCTBAL"] > 0.0][["C_ACCTBAL"]]
         .mean()
         .rename("AVG_ACCTBAL")
     )
-
-    orders_unique = orders["O_CUSTKEY"].unique(keep_order=False).to_frame()
-
-    matched_customers = customer.merge(
-        orders_unique, left_on="C_CUSTKEY", right_on="O_CUSTKEY"
-    )
-    matched_customers["IS_IN_ORDERS"] = True
-
-    customer = customer.merge(
-        matched_customers[["C_CUSTKEY", "IS_IN_ORDERS"]], on="C_CUSTKEY", how="left"
-    )
-    customer["IS_IN_ORDERS"] = customer["IS_IN_ORDERS"].fillna(False)
     customer = customer.merge(avg_acctbal, how="cross")
 
-    filtered_customers = customer[
-        (customer["CNTRYCODE"].isin(country_codes))
-        & (customer["C_ACCTBAL"] > customer["AVG_ACCTBAL"])
-        & (~customer["IS_IN_ORDERS"])
-    ]
+    filtered_customer = customer[customer["C_ACCTBAL"] > customer["AVG_ACCTBAL"]]
 
-    result = filtered_customers.groupby("CNTRYCODE", as_index=False).agg(
+    orders_unique = orders["O_CUSTKEY"].unique(keep_order=False).to_frame()
+    filtered_customer = filtered_customer.merge(
+        orders_unique, left_on="C_CUSTKEY", right_on="O_CUSTKEY", how="left"
+    )
+    filtered_customer = filtered_customer[filtered_customer["O_CUSTKEY"].isnull()]
+    result = filtered_customer.groupby("CNTRYCODE", as_index=False).agg(
         NUMCUST=bpd.NamedAgg(column="C_CUSTKEY", aggfunc="count"),
         TOTACCTBAL=bpd.NamedAgg(column="C_ACCTBAL", aggfunc="sum"),
     )

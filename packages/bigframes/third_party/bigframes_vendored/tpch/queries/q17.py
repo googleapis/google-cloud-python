@@ -19,7 +19,7 @@ def q(project_id: str, dataset_id: str, session: bigframes.Session):
 
     filtered_part = part[(part["P_BRAND"] == VAR1) & (part["P_CONTAINER"] == VAR2)]
     q1 = bpd.merge(
-        filtered_part, lineitem, how="left", left_on="P_PARTKEY", right_on="L_PARTKEY"
+        lineitem, filtered_part, how="right", left_on="L_PARTKEY", right_on="P_PARTKEY"
     )
 
     grouped = (

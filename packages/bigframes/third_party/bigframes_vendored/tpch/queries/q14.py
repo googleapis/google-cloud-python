@@ -18,7 +18,7 @@ def q(project_id: str, dataset_id: str, session: bigframes.Session):
     var1 = date(1995, 9, 1)
     var2 = date(1995, 10, 1)
 
-    merged = lineitem.merge(part, left_on="L_PARTKEY", right_on="P_PARTKEY")
+    merged = part.merge(lineitem, left_on="P_PARTKEY", right_on="L_PARTKEY")
 
     filtered = merged[(merged["L_SHIPDATE"] >= var1) & (merged["L_SHIPDATE"] < var2)]
 

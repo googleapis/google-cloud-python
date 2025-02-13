@@ -49,8 +49,10 @@ def q(project_id: str, dataset_id: str, session: bigframes.Session):
         partsupp, left_on="P_PARTKEY", right_on="PS_PARTKEY"
     )
 
-    final_join = joined_parts.merge(
-        q1, left_on=["PS_SUPPKEY", "P_PARTKEY"], right_on=["L_SUPPKEY", "L_PARTKEY"]
+    final_join = q1.merge(
+        joined_parts,
+        left_on=["L_SUPPKEY", "L_PARTKEY"],
+        right_on=["PS_SUPPKEY", "P_PARTKEY"],
     )
     final_filtered = final_join[final_join["PS_AVAILQTY"] > final_join["SUM_QUANTITY"]]
 

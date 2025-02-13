@@ -23,11 +23,13 @@ def q(project_id: str, dataset_id: str, session: bigframes.Session):
 
     fcustomer = customer[customer["C_MKTSEGMENT"] == "BUILDING"]
 
-    jn1 = fcustomer.merge(orders, left_on="C_CUSTKEY", right_on="O_CUSTKEY")
-    jn2 = jn1.merge(lineitem, left_on="O_ORDERKEY", right_on="L_ORDERKEY")
+    filtered_orders = orders[orders["O_ORDERDATE"] < date_var]
+    filtered_lineitem = lineitem[lineitem["L_SHIPDATE"] > date_var]
 
-    jn2 = jn2[jn2["O_ORDERDATE"] < date_var]
-    jn2 = jn2[jn2["L_SHIPDATE"] > date_var]
+    jn1 = filtered_lineitem.merge(
+        filtered_orders, left_on="L_ORDERKEY", right_on="O_ORDERKEY"
+    )
+    jn2 = fcustomer.merge(jn1, left_on="C_CUSTKEY", right_on="O_CUSTKEY")
     jn2["REVENUE"] = jn2["L_EXTENDEDPRICE"] * (1 - jn2["L_DISCOUNT"])
 
     gb = jn2.groupby(["O_ORDERKEY", "O_ORDERDATE", "O_SHIPPRIORITY"], as_index=False)

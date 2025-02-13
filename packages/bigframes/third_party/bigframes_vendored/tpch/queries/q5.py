@@ -35,19 +35,19 @@ def q(project_id: str, dataset_id: str, session: bigframes.Session):
     var2 = date(1994, 1, 1)
     var3 = date(1995, 1, 1)
 
+    region = region[region["R_NAME"] == var1]
+    orders = orders[(orders["O_ORDERDATE"] >= var2) & (orders["O_ORDERDATE"] < var3)]
+    lineitem["REVENUE"] = lineitem["L_EXTENDEDPRICE"] * (1.0 - lineitem["L_DISCOUNT"])
+
     jn1 = region.merge(nation, left_on="R_REGIONKEY", right_on="N_REGIONKEY")
     jn2 = jn1.merge(customer, left_on="N_NATIONKEY", right_on="C_NATIONKEY")
-    jn3 = jn2.merge(orders, left_on="C_CUSTKEY", right_on="O_CUSTKEY")
-    jn4 = jn3.merge(lineitem, left_on="O_ORDERKEY", right_on="L_ORDERKEY")
+    jn3 = orders.merge(jn2, left_on="O_CUSTKEY", right_on="C_CUSTKEY")
+    jn4 = lineitem.merge(jn3, left_on="L_ORDERKEY", right_on="O_ORDERKEY")
     jn5 = jn4.merge(
         supplier,
         left_on=["L_SUPPKEY", "N_NATIONKEY"],
         right_on=["S_SUPPKEY", "S_NATIONKEY"],
     )
-
-    jn5 = jn5[jn5["R_NAME"] == var1]
-    jn5 = jn5[(jn5["O_ORDERDATE"] >= var2) & (jn5["O_ORDERDATE"] < var3)]
-    jn5["REVENUE"] = jn5["L_EXTENDEDPRICE"] * (1.0 - jn5["L_DISCOUNT"])
 
     gb = jn5.groupby("N_NAME", as_index=False)["REVENUE"].sum()
     result_df = gb.sort_values("REVENUE", ascending=False)
