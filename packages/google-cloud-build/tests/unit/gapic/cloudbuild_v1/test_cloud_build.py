@@ -12923,6 +12923,9 @@ def test_create_build_rest_call_success(request_type):
             "inline": [{"kms_key_name": "kms_key_name_value", "env_map": {}}],
         },
         "warnings": [{"text": "text_value", "priority": 1}],
+        "git_config": {
+            "http": {"proxy_secret_version_name": "proxy_secret_version_name_value"}
+        },
         "failure_info": {"type_": 1, "detail": "detail_value"},
         "dependencies": [
             {
@@ -13995,6 +13998,9 @@ def test_create_build_trigger_rest_call_success(request_type):
                 "inline": [{"kms_key_name": "kms_key_name_value", "env_map": {}}],
             },
             "warnings": [{"text": "text_value", "priority": 1}],
+            "git_config": {
+                "http": {"proxy_secret_version_name": "proxy_secret_version_name_value"}
+            },
             "failure_info": {"type_": 1, "detail": "detail_value"},
             "dependencies": [
                 {
@@ -14860,6 +14866,9 @@ def test_update_build_trigger_rest_call_success(request_type):
                 "inline": [{"kms_key_name": "kms_key_name_value", "env_map": {}}],
             },
             "warnings": [{"text": "text_value", "priority": 1}],
+            "git_config": {
+                "http": {"proxy_secret_version_name": "proxy_secret_version_name_value"}
+            },
             "failure_info": {"type_": 1, "detail": "detail_value"},
             "dependencies": [
                 {

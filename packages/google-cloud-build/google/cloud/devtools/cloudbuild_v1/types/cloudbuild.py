@@ -44,6 +44,7 @@ __protobuf__ = proto.module(
         "ArtifactResult",
         "Build",
         "Dependency",
+        "GitConfig",
         "Artifacts",
         "TimeSpan",
         "BuildOperationMetadata",
@@ -857,8 +858,9 @@ class Results(proto.Message):
             `Cloud
             Builders <https://cloud.google.com/cloud-build/docs/cloud-builders>`__
             can produce this output by writing to
-            ``$BUILDER_OUTPUT/output``. Only the first 4KB of data is
-            stored.
+            ``$BUILDER_OUTPUT/output``. Only the first 50KB of data is
+            stored. Note that the ``$BUILDER_OUTPUT`` variable is
+            read-only and can't be substituted.
         artifact_timing (google.cloud.devtools.cloudbuild_v1.types.TimeSpan):
             Time to push all non-container artifacts to
             Cloud Storage.
@@ -1088,6 +1090,8 @@ class Build(proto.Message):
         warnings (MutableSequence[google.cloud.devtools.cloudbuild_v1.types.Build.Warning]):
             Output only. Non-fatal problems encountered
             during the execution of the build.
+        git_config (google.cloud.devtools.cloudbuild_v1.types.GitConfig):
+            Optional. Configuration for git operations.
         failure_info (google.cloud.devtools.cloudbuild_v1.types.Build.FailureInfo):
             Output only. Contains information about the
             build when status=FAILURE.
@@ -1360,6 +1364,11 @@ class Build(proto.Message):
         number=49,
         message=Warning,
     )
+    git_config: "GitConfig" = proto.Field(
+        proto.MESSAGE,
+        number=48,
+        message="GitConfig",
+    )
     failure_info: FailureInfo = proto.Field(
         proto.MESSAGE,
         number=51,
@@ -1484,6 +1493,41 @@ class Dependency(proto.Message):
         number=2,
         oneof="dep",
         message=GitSourceDependency,
+    )
+
+
+class GitConfig(proto.Message):
+    r"""GitConfig is a configuration for git operations.
+
+    Attributes:
+        http (google.cloud.devtools.cloudbuild_v1.types.GitConfig.HttpConfig):
+            Configuration for HTTP related git
+            operations.
+    """
+
+    class HttpConfig(proto.Message):
+        r"""HttpConfig is a configuration for HTTP related git
+        operations.
+
+        Attributes:
+            proxy_secret_version_name (str):
+                SecretVersion resource of the HTTP proxy URL. The Service
+                Account used in the build (either the default Service
+                Account or user-specified Service Account) should have
+                ``secretmanager.versions.access`` permissions on this
+                secret. The proxy URL should be in format
+                ``[protocol://][user[:password]@]proxyhost[:port]``.
+        """
+
+        proxy_secret_version_name: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+
+    http: HttpConfig = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=HttpConfig,
     )
 
 
@@ -2663,10 +2707,11 @@ class BuildTrigger(proto.Message):
         service_account (str):
             The service account used for all user-controlled operations
             including UpdateBuildTrigger, RunBuildTrigger, CreateBuild,
-            and CancelBuild. If no service account is set, then the
-            standard Cloud Build service account
-            ([PROJECT_NUM]@system.gserviceaccount.com) will be used
-            instead. Format:
+            and CancelBuild. If no service account is set and the legacy
+            Cloud Build service account
+            (``[PROJECT_NUM]@cloudbuild.gserviceaccount.com``) is the
+            default for the project then it will be used instead.
+            Format:
             ``projects/{PROJECT_ID}/serviceAccounts/{ACCOUNT_ID_OR_EMAIL}``
         repository_event_config (google.cloud.devtools.cloudbuild_v1.types.RepositoryEventConfig):
             The configuration of a trigger that creates a
@@ -3041,29 +3086,52 @@ class PullRequestFilter(proto.Message):
 
             This field is a member of `oneof`_ ``git_ref``.
         comment_control (google.cloud.devtools.cloudbuild_v1.types.PullRequestFilter.CommentControl):
-            Configure builds to run whether a repository owner or
-            collaborator need to comment ``/gcbrun``.
+            If CommentControl is enabled, depending on the setting,
+            builds may not fire until a repository writer comments
+            ``/gcbrun`` on a pull request or ``/gcbrun`` is in the pull
+            request description. Only PR comments that contain
+            ``/gcbrun`` will trigger builds.
+
+            If CommentControl is set to disabled, comments with
+            ``/gcbrun`` from a user with repository write permission or
+            above will still trigger builds to run.
         invert_regex (bool):
             If true, branches that do NOT match the git_ref will trigger
             a build.
     """
 
     class CommentControl(proto.Enum):
-        r"""Controls behavior of Pull Request comments.
+        r"""Controls whether or not a ``/gcbrun`` comment is required from a
+        user with repository write permission or above in order to trigger
+        Build runs for pull requests. Pull Request update events differ
+        between repo types. Check repo specific guides
+        (`GitHub <https://cloud.google.com/build/docs/automating-builds/github/build-repos-from-github-enterprise#creating_a_github_enterprise_trigger>`__,
+        `Bitbucket <https://cloud.google.com/build/docs/automating-builds/bitbucket/build-repos-from-bitbucket-server#creating_a_bitbucket_server_trigger>`__,
+        `GitLab <https://cloud.google.com/build/docs/automating-builds/gitlab/build-repos-from-gitlab#creating_a_gitlab_trigger>`__
+        for details.
 
         Values:
             COMMENTS_DISABLED (0):
-                Do not require comments on Pull Requests
-                before builds are triggered.
+                Do not require ``/gcbrun`` comments from a user with
+                repository write permission or above on pull requests before
+                builds are triggered. Comments that contain ``/gcbrun`` will
+                still fire builds so this should be thought of as comments
+                not required.
             COMMENTS_ENABLED (1):
-                Enforce that repository owners or
-                collaborators must comment on Pull Requests
-                before builds are triggered.
+                Builds will only fire in response to pull requests if:
+
+                1. The pull request author has repository write permission
+                   or above and ``/gcbrun`` is in the PR description.
+                2. A user with repository writer permissions or above
+                   comments ``/gcbrun`` on a pull request authored by any
+                   user.
             COMMENTS_ENABLED_FOR_EXTERNAL_CONTRIBUTORS_ONLY (2):
-                Enforce that repository owners or
-                collaborators must comment on external
-                contributors' Pull Requests before builds are
-                triggered.
+                Builds will only fire in response to pull requests if:
+
+                1. The pull request author is a repository writer or above.
+                2. If the author does not have write permissions, a user
+                   with write permissions or above must comment ``/gcbrun``
+                   in order to fire a build.
         """
         COMMENTS_DISABLED = 0
         COMMENTS_ENABLED = 1
@@ -3336,7 +3404,7 @@ class BuildOptions(proto.Message):
             used by the operating system and build utilities. Also note
             that this is the minimum disk size that will be allocated
             for the build -- the build may run with a larger disk than
-            requested. At present, the maximum disk size is 2000GB;
+            requested. At present, the maximum disk size is 4000GB;
             builds that request more than the maximum are rejected with
             an error.
         substitution_option (google.cloud.devtools.cloudbuild_v1.types.BuildOptions.SubstitutionOption):
@@ -3693,7 +3761,8 @@ class ReceiveTriggerWebhookResponse(proto.Message):
 
 
 class GitHubEnterpriseConfig(proto.Message):
-    r"""
+    r"""GitHubEnterpriseConfig represents a configuration for a
+    GitHub Enterprise server.
 
     Attributes:
         name (str):
