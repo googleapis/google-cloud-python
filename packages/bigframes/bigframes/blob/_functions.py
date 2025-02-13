@@ -130,6 +130,32 @@ def image_blur_func(
 image_blur_def = FunctionDef(image_blur_func, ["opencv-python", "numpy", "requests"])
 
 
+def image_blur_to_bytes_func(src_obj_ref_rt: str, ksize_x: int, ksize_y: int) -> bytes:
+    import json
+
+    import cv2 as cv  # type: ignore
+    import numpy as np
+    import requests
+
+    src_obj_ref_rt_json = json.loads(src_obj_ref_rt)
+    src_url = src_obj_ref_rt_json["access_urls"]["read_url"]
+
+    response = requests.get(src_url)
+    bts = response.content
+
+    nparr = np.frombuffer(bts, np.uint8)
+    img = cv.imdecode(nparr, cv.IMREAD_UNCHANGED)
+    img_blurred = cv.blur(img, ksize=(ksize_x, ksize_y))
+    bts = cv.imencode(".jpeg", img_blurred)[1].tobytes()
+
+    return bts
+
+
+image_blur_to_bytes_def = FunctionDef(
+    image_blur_to_bytes_func, ["opencv-python", "numpy", "requests"]
+)
+
+
 def image_resize_func(
     src_obj_ref_rt: str,
     dst_obj_ref_rt: str,
@@ -171,6 +197,38 @@ def image_resize_func(
 
 image_resize_def = FunctionDef(
     image_resize_func, ["opencv-python", "numpy", "requests"]
+)
+
+
+def image_resize_to_bytes_func(
+    src_obj_ref_rt: str,
+    dsize_x: int,
+    dsize_y: int,
+    fx: float,
+    fy: float,
+) -> bytes:
+    import json
+
+    import cv2 as cv  # type: ignore
+    import numpy as np
+    import requests
+
+    src_obj_ref_rt_json = json.loads(src_obj_ref_rt)
+    src_url = src_obj_ref_rt_json["access_urls"]["read_url"]
+
+    response = requests.get(src_url)
+    bts = response.content
+
+    nparr = np.frombuffer(bts, np.uint8)
+    img = cv.imdecode(nparr, cv.IMREAD_UNCHANGED)
+    img_resized = cv.resize(img, dsize=(dsize_x, dsize_y), fx=fx, fy=fy)
+    bts = cv.imencode(".jpeg", img_resized)[1].tobytes()
+
+    return bts
+
+
+image_resize_to_bytes_def = FunctionDef(
+    image_resize_to_bytes_func, ["opencv-python", "numpy", "requests"]
 )
 
 
@@ -219,6 +277,43 @@ def image_normalize_func(
 
 image_normalize_def = FunctionDef(
     image_normalize_func, ["opencv-python", "numpy", "requests"]
+)
+
+
+def image_normalize_to_bytes_func(
+    src_obj_ref_rt: str, alpha: float, beta: float, norm_type: str
+) -> bytes:
+    import json
+
+    import cv2 as cv  # type: ignore
+    import numpy as np
+    import requests
+
+    norm_type_mapping = {
+        "inf": cv.NORM_INF,
+        "l1": cv.NORM_L1,
+        "l2": cv.NORM_L2,
+        "minmax": cv.NORM_MINMAX,
+    }
+
+    src_obj_ref_rt_json = json.loads(src_obj_ref_rt)
+    src_url = src_obj_ref_rt_json["access_urls"]["read_url"]
+
+    response = requests.get(src_url)
+    bts = response.content
+
+    nparr = np.frombuffer(bts, np.uint8)
+    img = cv.imdecode(nparr, cv.IMREAD_UNCHANGED)
+    img_normalized = cv.normalize(
+        img, None, alpha=alpha, beta=beta, norm_type=norm_type_mapping[norm_type]
+    )
+    bts = cv.imencode(".jpeg", img_normalized)[1].tobytes()
+
+    return bts
+
+
+image_normalize_to_bytes_def = FunctionDef(
+    image_normalize_to_bytes_func, ["opencv-python", "numpy", "requests"]
 )
 
 
