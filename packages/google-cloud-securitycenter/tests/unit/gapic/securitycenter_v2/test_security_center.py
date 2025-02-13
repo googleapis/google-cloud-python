@@ -91,7 +91,11 @@ from google.cloud.securitycenter_v2.types import (
     connection,
     contact_details,
     container,
+    data_access_event,
+    data_flow_event,
+    data_retention_deletion_event,
     database,
+    disk,
     exfiltration,
 )
 from google.cloud.securitycenter_v2.types import (
@@ -29030,6 +29034,7 @@ def test_create_finding_rest_call_success(request_type):
                 "observed_in_the_wild": True,
                 "zero_day": True,
                 "exploit_release_date": {},
+                "first_exploitation_date": {},
             },
             "offending_package": {
                 "package_name": "package_name_value",
@@ -29268,9 +29273,11 @@ def test_create_finding_rest_call_success(request_type):
             },
             "adaptive_protection": {"confidence": 0.1038},
             "attack": {
+                "volume_pps_long": 1625,
+                "volume_bps_long": 1611,
+                "classification": "classification_value",
                 "volume_pps": 1098,
                 "volume_bps": 1084,
-                "classification": "classification_value",
             },
             "threat_vector": "threat_vector_value",
             "duration": {"seconds": 751, "nanos": 543},
@@ -29286,6 +29293,32 @@ def test_create_finding_rest_call_success(request_type):
             "related_findings": ["related_findings_value1", "related_findings_value2"],
         },
         "group_memberships": [{"group_type": 1, "group_id": "group_id_value"}],
+        "disk": {"name": "name_value"},
+        "data_access_events": [
+            {
+                "event_id": "event_id_value",
+                "principal_email": "principal_email_value",
+                "operation": 1,
+                "event_time": {},
+            }
+        ],
+        "data_flow_events": [
+            {
+                "event_id": "event_id_value",
+                "principal_email": "principal_email_value",
+                "operation": 1,
+                "violated_location": "violated_location_value",
+                "event_time": {},
+            }
+        ],
+        "data_retention_deletion_events": [
+            {
+                "event_detection_time": {},
+                "data_object_count": 1784,
+                "max_retention_allowed": {},
+                "event_type": 1,
+            }
+        ],
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -33986,6 +34019,7 @@ def test_update_finding_rest_call_success(request_type):
                 "observed_in_the_wild": True,
                 "zero_day": True,
                 "exploit_release_date": {},
+                "first_exploitation_date": {},
             },
             "offending_package": {
                 "package_name": "package_name_value",
@@ -34224,9 +34258,11 @@ def test_update_finding_rest_call_success(request_type):
             },
             "adaptive_protection": {"confidence": 0.1038},
             "attack": {
+                "volume_pps_long": 1625,
+                "volume_bps_long": 1611,
+                "classification": "classification_value",
                 "volume_pps": 1098,
                 "volume_bps": 1084,
-                "classification": "classification_value",
             },
             "threat_vector": "threat_vector_value",
             "duration": {"seconds": 751, "nanos": 543},
@@ -34242,6 +34278,32 @@ def test_update_finding_rest_call_success(request_type):
             "related_findings": ["related_findings_value1", "related_findings_value2"],
         },
         "group_memberships": [{"group_type": 1, "group_id": "group_id_value"}],
+        "disk": {"name": "name_value"},
+        "data_access_events": [
+            {
+                "event_id": "event_id_value",
+                "principal_email": "principal_email_value",
+                "operation": 1,
+                "event_time": {},
+            }
+        ],
+        "data_flow_events": [
+            {
+                "event_id": "event_id_value",
+                "principal_email": "principal_email_value",
+                "operation": 1,
+                "violated_location": "violated_location_value",
+                "event_time": {},
+            }
+        ],
+        "data_retention_deletion_events": [
+            {
+                "event_detection_time": {},
+                "data_object_count": 1784,
+                "max_retention_allowed": {},
+                "event_type": 1,
+            }
+        ],
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
