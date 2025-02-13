@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.6.0](https://github.com/googleapis/python-bigquery-magics/compare/v0.5.0...v0.6.0) (2025-02-12)
+
+
+### Features
+
+* Add '--use-geodataframe' argument to return a GeoDataFrame ([#91](https://github.com/googleapis/python-bigquery-magics/issues/91)) ([fc04f34](https://github.com/googleapis/python-bigquery-magics/commit/fc04f343d0e9c5c6b11e784d698c28865c2909cd))
+* Add an is_registered global value to indicate whether the extension has been loaded ([#83](https://github.com/googleapis/python-bigquery-magics/issues/83)) ([0bc4473](https://github.com/googleapis/python-bigquery-magics/commit/0bc4473d550c612241ea1428f7538938257b2656))
+
 ## [0.5.0](https://github.com/googleapis/python-bigquery-magics/compare/v0.4.0...v0.5.0) (2024-12-17)
 
 

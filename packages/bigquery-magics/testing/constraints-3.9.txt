@@ -5,4 +5,4 @@
 # This is the last pandas 2.0.x release.
 pandas==2.0.3
 bigframes==1.17.0
-
+geopandas==1.0.1
