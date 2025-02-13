@@ -14,6 +14,7 @@
 
 
 import datetime
+import operator
 
 import numpy as np
 import pandas as pd
@@ -28,12 +29,23 @@ def temporal_dfs(session):
             "datetime_col": [
                 pd.Timestamp("2025-02-01 01:00:01"),
                 pd.Timestamp("2019-01-02 02:00:00"),
+                pd.Timestamp("1997-01-01 19:00:00"),
             ],
             "timestamp_col": [
                 pd.Timestamp("2023-01-01 01:00:01", tz="UTC"),
                 pd.Timestamp("2024-01-02 02:00:00", tz="UTC"),
+                pd.Timestamp("2005-03-05 02:00:00", tz="UTC"),
             ],
-            "timedelta_col": [pd.Timedelta(3, "s"), pd.Timedelta(-4, "d")],
+            "timedelta_col_1": [
+                pd.Timedelta(3, "s"),
+                pd.Timedelta(-4, "d"),
+                pd.Timedelta(5, "h"),
+            ],
+            "timedelta_col_2": [
+                pd.Timedelta(2, "s"),
+                pd.Timedelta(-4, "d"),
+                pd.Timedelta(6, "h"),
+            ],
         }
     )
 
@@ -53,10 +65,10 @@ def test_timestamp_add__ts_series_plus_td_series(temporal_dfs, column, pd_dtype)
     bf_df, pd_df = temporal_dfs
 
     actual_result = (
-        (bf_df[column] + bf_df["timedelta_col"]).to_pandas().astype(pd_dtype)
+        (bf_df[column] + bf_df["timedelta_col_1"]).to_pandas().astype(pd_dtype)
     )
 
-    expected_result = pd_df[column] + pd_df["timedelta_col"]
+    expected_result = pd_df[column] + pd_df["timedelta_col_1"]
     pandas.testing.assert_series_equal(
         actual_result, expected_result, check_index_type=False
     )
@@ -94,10 +106,10 @@ def test_timestamp_add__td_series_plus_ts_series(temporal_dfs, column, pd_dtype)
     bf_df, pd_df = temporal_dfs
 
     actual_result = (
-        (bf_df["timedelta_col"] + bf_df[column]).to_pandas().astype(pd_dtype)
+        (bf_df["timedelta_col_1"] + bf_df[column]).to_pandas().astype(pd_dtype)
     )
 
-    expected_result = pd_df["timedelta_col"] + pd_df[column]
+    expected_result = pd_df["timedelta_col_1"] + pd_df[column]
     pandas.testing.assert_series_equal(
         actual_result, expected_result, check_index_type=False
     )
@@ -120,10 +132,10 @@ def test_timestamp_add__ts_literal_plus_td_series(temporal_dfs):
     timestamp = pd.Timestamp("2025-01-01", tz="UTC")
 
     actual_result = (
-        (timestamp + bf_df["timedelta_col"]).to_pandas().astype("datetime64[ns, UTC]")
+        (timestamp + bf_df["timedelta_col_1"]).to_pandas().astype("datetime64[ns, UTC]")
     )
 
-    expected_result = timestamp + pd_df["timedelta_col"]
+    expected_result = timestamp + pd_df["timedelta_col_1"]
     pandas.testing.assert_series_equal(
         actual_result, expected_result, check_index_type=False
     )
@@ -140,10 +152,10 @@ def test_timestamp_add_with_numpy_op(temporal_dfs, column, pd_dtype):
     bf_df, pd_df = temporal_dfs
 
     actual_result = (
-        np.add(bf_df[column], bf_df["timedelta_col"]).to_pandas().astype(pd_dtype)
+        np.add(bf_df[column], bf_df["timedelta_col_1"]).to_pandas().astype(pd_dtype)
     )
 
-    expected_result = np.add(pd_df[column], pd_df["timedelta_col"])
+    expected_result = np.add(pd_df[column], pd_df["timedelta_col_1"])
     pandas.testing.assert_series_equal(
         actual_result, expected_result, check_index_type=False
     )
@@ -162,5 +174,107 @@ def test_timestamp_add_dataframes(temporal_dfs):
 
     expected_result = pd_df[columns] + timedelta
     pandas.testing.assert_frame_equal(
+        actual_result, expected_result, check_index_type=False
+    )
+
+
+@pytest.mark.parametrize(
+    "compare_func",
+    [
+        pytest.param(operator.gt, id="gt"),
+        pytest.param(operator.ge, id="ge"),
+        pytest.param(operator.eq, id="eq"),
+        pytest.param(operator.ne, id="ne"),
+        pytest.param(operator.lt, id="lt"),
+        pytest.param(operator.le, id="le"),
+    ],
+)
+def test_timedelta_series_comparison(temporal_dfs, compare_func):
+    bf_df, pd_df = temporal_dfs
+
+    actual_result = compare_func(
+        bf_df["timedelta_col_1"], bf_df["timedelta_col_2"]
+    ).to_pandas()
+
+    expected_result = compare_func(
+        pd_df["timedelta_col_1"], pd_df["timedelta_col_2"]
+    ).astype("boolean")
+    pandas.testing.assert_series_equal(
+        actual_result, expected_result, check_index_type=False
+    )
+
+
+@pytest.mark.parametrize(
+    "compare_func",
+    [
+        pytest.param(operator.gt, id="gt"),
+        pytest.param(operator.ge, id="ge"),
+        pytest.param(operator.eq, id="eq"),
+        pytest.param(operator.ne, id="ne"),
+        pytest.param(operator.lt, id="lt"),
+        pytest.param(operator.le, id="le"),
+    ],
+)
+def test_timedelta_series_and_literal_comparison(temporal_dfs, compare_func):
+    bf_df, pd_df = temporal_dfs
+    literal = pd.Timedelta(3, "s")
+
+    actual_result = compare_func(literal, bf_df["timedelta_col_2"]).to_pandas()
+
+    expected_result = compare_func(literal, pd_df["timedelta_col_2"]).astype("boolean")
+    pandas.testing.assert_series_equal(
+        actual_result, expected_result, check_index_type=False
+    )
+
+
+def test_timedelta_filtering(session):
+    pd_series = pd.Series(
+        [
+            pd.Timestamp("2025-01-01 01:00:00"),
+            pd.Timestamp("2025-01-01 02:00:00"),
+            pd.Timestamp("2025-01-01 03:00:00"),
+        ]
+    )
+    bf_series = session.read_pandas(pd_series)
+    timestamp = pd.Timestamp("2025-01-01, 00:00:01")
+
+    actual_result = (
+        bf_series[((bf_series - timestamp) > pd.Timedelta(1, "h"))]
+        .to_pandas()
+        .astype("<M8[ns]")
+    )
+
+    expected_result = pd_series[(pd_series - timestamp) > pd.Timedelta(1, "h")]
+    pandas.testing.assert_series_equal(
+        actual_result, expected_result, check_index_type=False
+    )
+
+
+def test_timedelta_ordering(session):
+    pd_df = pd.DataFrame(
+        {
+            "col_1": [
+                pd.Timestamp("2025-01-01 01:00:00"),
+                pd.Timestamp("2025-01-01 02:00:00"),
+                pd.Timestamp("2025-01-01 03:00:00"),
+            ],
+            "col_2": [
+                pd.Timestamp("2025-01-01 01:00:02"),
+                pd.Timestamp("2025-01-01 02:00:01"),
+                pd.Timestamp("2025-01-01 02:59:59"),
+            ],
+        }
+    )
+    bf_df = session.read_pandas(pd_df)
+
+    actual_result = (
+        (bf_df["col_2"] - bf_df["col_1"])
+        .sort_values()
+        .to_pandas()
+        .astype("timedelta64[ns]")
+    )
+
+    expected_result = (pd_df["col_2"] - pd_df["col_1"]).sort_values()
+    pandas.testing.assert_series_equal(
         actual_result, expected_result, check_index_type=False
     )

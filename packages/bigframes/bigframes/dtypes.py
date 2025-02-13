@@ -358,7 +358,7 @@ _ORDERABLE_SIMPLE_TYPES = set(
 
 def is_orderable(type_: ExpressionType) -> bool:
     # On BQ side, ARRAY, STRUCT, GEOGRAPHY, JSON are not orderable
-    return type_ in _ORDERABLE_SIMPLE_TYPES
+    return type_ in _ORDERABLE_SIMPLE_TYPES or type_ is TIMEDELTA_DTYPE
 
 
 _CLUSTERABLE_SIMPLE_TYPES = set(
