@@ -24,6 +24,7 @@ import pandas as pd
 import pandas.api.types as pdtypes
 import typing_extensions
 
+import bigframes.dtypes as dtypes
 import bigframes.exceptions as bfe
 
 UNNAMED_COLUMN_ID = "bigframes_unnamed_column"
@@ -223,6 +224,27 @@ def replace_timedeltas_with_micros(dataframe: pd.DataFrame) -> List[str]:
 
     if pdtypes.is_timedelta64_dtype(dataframe.index.dtype):
         dataframe.index = dataframe.index.map(timedelta_to_micros)
+        updated_columns.append(dataframe.index.name)
+
+    return updated_columns
+
+
+def replace_json_with_string(dataframe: pd.DataFrame) -> List[str]:
+    """
+    Due to a BigQuery IO limitation with loading JSON from Parquet files (b/374784249),
+    we're using a workaround: storing JSON as strings and then parsing them into JSON
+    objects.
+    TODO(b/395912450): Remove workaround solution once b/374784249 got resolved.
+    """
+    updated_columns = []
+
+    for col in dataframe.columns:
+        if dataframe[col].dtype == dtypes.JSON_DTYPE:
+            dataframe[col] = dataframe[col].astype(dtypes.STRING_DTYPE)
+            updated_columns.append(col)
+
+    if dataframe.index.dtype == dtypes.JSON_DTYPE:
+        dataframe.index = dataframe.index.astype(dtypes.STRING_DTYPE)
         updated_columns.append(dataframe.index.name)
 
     return updated_columns

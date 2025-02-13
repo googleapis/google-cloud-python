@@ -14,7 +14,8 @@
 from __future__ import annotations
 
 import dataclasses
-from typing import Collection, List, Union
+import typing
+from typing import Collection, Union
 
 import bigframes_vendored.constants as constants
 import db_dtypes  # type: ignore
@@ -38,7 +39,7 @@ class DataFrameAndLabels:
     column_labels: Collection
     index_labels: Collection
     ordering_col: str
-    timedelta_cols: List[str]
+    col_type_overrides: typing.Dict[str, bigframes.dtypes.Dtype]
 
 
 def _arrow_to_pandas_arrowdtype(
@@ -165,11 +166,16 @@ def pandas_to_bq_compatible(pandas_dataframe: pandas.DataFrame) -> DataFrameAndL
     pandas_dataframe_copy[ordering_col] = np.arange(pandas_dataframe_copy.shape[0])
 
     timedelta_cols = utils.replace_timedeltas_with_micros(pandas_dataframe_copy)
+    json_cols = utils.replace_json_with_string(pandas_dataframe_copy)
+    col_type_overrides: typing.Dict[str, bigframes.dtypes.Dtype] = {
+        **{col: bigframes.dtypes.TIMEDELTA_DTYPE for col in timedelta_cols},
+        **{col: bigframes.dtypes.JSON_DTYPE for col in json_cols},
+    }
 
     return DataFrameAndLabels(
         df=pandas_dataframe_copy,
         column_labels=col_labels,
         index_labels=idx_labels,
         ordering_col=ordering_col,
-        timedelta_cols=timedelta_cols,
+        col_type_overrides=col_type_overrides,
     )

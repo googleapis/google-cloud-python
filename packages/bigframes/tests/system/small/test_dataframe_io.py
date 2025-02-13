@@ -658,6 +658,21 @@ def test_to_gbq_w_invalid_destination_table(scalars_df_index):
         scalars_df_index.to_gbq("table_id")
 
 
+def test_to_gbq_w_json(bigquery_client):
+    """Test the `to_gbq` API can get a JSON column."""
+    s1 = bpd.Series([1, 2, 3, 4])
+    s2 = bpd.Series(
+        ["a", 1, False, ["a", {"b": 1}], {"c": [1, 2, 3]}], dtype=db_dtypes.JSONDtype()
+    )
+
+    df = bpd.DataFrame({"id": s1, "json_col": s2})
+    destination_table = df.to_gbq()
+    table = bigquery_client.get_table(destination_table)
+
+    assert table.schema[1].name == "json_col"
+    assert table.schema[1].field_type == "JSON"
+
+
 @pytest.mark.parametrize(
     ("index"),
     [True, False],

@@ -237,7 +237,7 @@ def test_series_construct_geodata():
         pytest.param(pd.StringDtype(storage="pyarrow"), id="string"),
     ],
 )
-def test_series_construct_w_dtype_for_int(dtype):
+def test_series_construct_w_dtype(dtype):
     data = [1, 2, 3]
     expected = pd.Series(data, dtype=dtype)
     expected.index = expected.index.astype("Int64")
@@ -300,6 +300,26 @@ def test_series_construct_w_dtype_for_array_struct():
     pd.testing.assert_series_equal(
         series.to_pandas(), expected, check_dtype=check_dtype
     )
+
+
+def test_series_construct_w_dtype_for_json():
+    data = [
+        1,
+        "str",
+        False,
+        ["a", {"b": 1}, None],
+        None,
+        {"a": {"b": [1, 2, 3], "c": True}},
+    ]
+    s = bigframes.pandas.Series(data, dtype=db_dtypes.JSONDtype())
+
+    assert s[0] == 1
+    assert s[1] == "str"
+    assert s[2] is False
+    assert s[3][0] == "a"
+    assert s[3][1]["b"] == 1
+    assert pd.isna(s[4])
+    assert s[5]["a"] == {"b": [1, 2, 3], "c": True}
 
 
 def test_series_keys(scalars_dfs):
