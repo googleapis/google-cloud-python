@@ -179,6 +179,96 @@ def test_timestamp_add_dataframes(temporal_dfs):
 
 
 @pytest.mark.parametrize(
+    ("column", "pd_dtype"),
+    [
+        ("datetime_col", "<M8[ns]"),
+        ("timestamp_col", "datetime64[ns, UTC]"),
+    ],
+)
+def test_timestamp_sub__ts_series_minus_td_series(temporal_dfs, column, pd_dtype):
+    bf_df, pd_df = temporal_dfs
+
+    actual_result = (
+        (bf_df[column] - bf_df["timedelta_col_1"]).to_pandas().astype(pd_dtype)
+    )
+
+    expected_result = pd_df[column] - pd_df["timedelta_col_1"]
+    pandas.testing.assert_series_equal(
+        actual_result, expected_result, check_index_type=False
+    )
+
+
+@pytest.mark.parametrize(
+    ("column", "pd_dtype"),
+    [
+        ("datetime_col", "<M8[ns]"),
+        ("timestamp_col", "datetime64[ns, UTC]"),
+    ],
+)
+def test_timestamp_sub__ts_series_minus_td_literal(temporal_dfs, column, pd_dtype):
+    bf_df, pd_df = temporal_dfs
+    literal = pd.Timedelta(1, "h")
+
+    actual_result = (bf_df[column] - literal).to_pandas().astype(pd_dtype)
+
+    expected_result = pd_df[column] - literal
+    pandas.testing.assert_series_equal(
+        actual_result, expected_result, check_index_type=False
+    )
+
+
+def test_timestamp_sub__ts_literal_minus_td_series(temporal_dfs):
+    bf_df, pd_df = temporal_dfs
+    literal = pd.Timestamp("2025-01-01 01:00:00")
+
+    actual_result = (literal - bf_df["timedelta_col_1"]).to_pandas().astype("<M8[ns]")
+
+    expected_result = literal - pd_df["timedelta_col_1"]
+    pandas.testing.assert_series_equal(
+        actual_result, expected_result, check_index_type=False
+    )
+
+
+@pytest.mark.parametrize(
+    ("column", "pd_dtype"),
+    [
+        ("datetime_col", "<M8[ns]"),
+        ("timestamp_col", "datetime64[ns, UTC]"),
+    ],
+)
+def test_timestamp_sub_with_numpy_op(temporal_dfs, column, pd_dtype):
+    bf_df, pd_df = temporal_dfs
+
+    actual_result = (
+        np.subtract(bf_df[column], bf_df["timedelta_col_1"])
+        .to_pandas()
+        .astype(pd_dtype)
+    )
+
+    expected_result = np.subtract(pd_df[column], pd_df["timedelta_col_1"])
+    pandas.testing.assert_series_equal(
+        actual_result, expected_result, check_index_type=False
+    )
+
+
+def test_timestamp_sub_dataframes(temporal_dfs):
+    columns = ["datetime_col", "timestamp_col"]
+    timedelta = pd.Timedelta(1, unit="s")
+    bf_df, pd_df = temporal_dfs
+
+    actual_result = (bf_df[columns] - timedelta).to_pandas()
+    actual_result["datetime_col"] = actual_result["datetime_col"].astype("<M8[ns]")
+    actual_result["timestamp_col"] = actual_result["timestamp_col"].astype(
+        "datetime64[ns, UTC]"
+    )
+
+    expected_result = pd_df[columns] - timedelta
+    pandas.testing.assert_frame_equal(
+        actual_result, expected_result, check_index_type=False
+    )
+
+
+@pytest.mark.parametrize(
     "compare_func",
     [
         pytest.param(operator.gt, id="gt"),

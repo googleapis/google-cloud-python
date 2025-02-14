@@ -151,6 +151,9 @@ class SubOp(base_ops.BinaryOp):
         if dtypes.is_datetime_like(left_type) and dtypes.is_datetime_like(right_type):
             return dtypes.TIMEDELTA_DTYPE
 
+        if dtypes.is_datetime_like(left_type) and right_type is dtypes.TIMEDELTA_DTYPE:
+            return left_type
+
         raise TypeError(f"Cannot subtract dtypes {left_type} and {right_type}")
 
 
