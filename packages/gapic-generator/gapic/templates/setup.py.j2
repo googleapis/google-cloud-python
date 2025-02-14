@@ -1,5 +1,6 @@
 {# TODO(https://github.com/googleapis/gapic-generator-python/issues/2121): Remove the following variable (and the condition later in this file) for async rest transport once support for it is GA. #}
 {% set rest_async_io_enabled = api.all_library_settings[api.naming.proto_package].python_settings.experimental_features.rest_async_io_enabled %}
+{% set unversioned_package_disabled = api.all_library_settings[api.naming.proto_package].python_settings.experimental_features.unversioned_package_disabled %}
 {% extends '_base.py.j2' %}
 {% from '_pypi_packages.j2' import pypi_packages %}
 {% block content %}
@@ -15,8 +16,8 @@ package_root = os.path.abspath(os.path.dirname(__file__))
 name = '{{ api.naming.warehouse_package_name }}'
 
 {% set warehouse_description = api.naming.warehouse_package_name.replace('-',' ')|title %}
-{% set package_path = api.naming.module_namespace|join('/') + "/" + api.naming.module_name %}
 
+{% set package_path = api.naming.module_namespace|join('/') + "/" + (api.naming.versioned_module_name if unversioned_package_disabled else api.naming.module_name) %}
 description = "{{ warehouse_description }} API client library"
 
 version = None

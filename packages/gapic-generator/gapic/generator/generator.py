@@ -244,6 +244,16 @@ class Generator:
         if not opts.metadata and template_name.endswith("gapic_metadata.json.j2"):
             return answer
 
+        # Disables generation of an unversioned Python package for this client
+        # library. This means that the module names will need to be versioned in
+        # import statements. For example `import google.cloud.library_v2` instead
+        # of `import google.cloud.library`.
+        if template_name.startswith("%namespace/%name/") and \
+                api_schema.all_library_settings[
+                    api_schema.naming.proto_package
+                ].python_settings.experimental_features.unversioned_package_disabled:
+            return answer
+
         # Quick check: Rendering per service and per proto would be a
         # combinatorial explosion and is almost certainly not what anyone
         # ever wants. Error colorfully on it.

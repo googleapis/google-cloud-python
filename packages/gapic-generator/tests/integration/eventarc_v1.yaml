@@ -116,3 +116,11 @@ authentication:
     oauth:
       canonical_scopes: |-
         https://www.googleapis.com/auth/cloud-platform
+
+
+publishing:
+  library_settings:
+  - version: 'google.cloud.eventarc.v1'
+    python_settings:
+      experimental_features:
+        unversioned_package_disabled: true
