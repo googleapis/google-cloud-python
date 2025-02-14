@@ -44,21 +44,19 @@ def q(project_id: str, dataset_id: str, session: bigframes.Session):
 
     filtered_parts = part[part["P_NAME"].str.startswith(var4)]
 
-    filtered_parts = filtered_parts["P_PARTKEY"].unique(keep_order=False).to_frame()
-    joined_parts = filtered_parts.merge(
-        partsupp, left_on="P_PARTKEY", right_on="PS_PARTKEY"
-    )
+    filtered_parts = filtered_parts["P_PARTKEY"]
+    joined_parts = partsupp[partsupp["PS_PARTKEY"].isin(filtered_parts)]
 
     final_join = q1.merge(
         joined_parts,
         left_on=["L_SUPPKEY", "L_PARTKEY"],
-        right_on=["PS_SUPPKEY", "P_PARTKEY"],
+        right_on=["PS_SUPPKEY", "PS_PARTKEY"],
     )
-    final_filtered = final_join[final_join["PS_AVAILQTY"] > final_join["SUM_QUANTITY"]]
+    final_filtered = final_join[final_join["PS_AVAILQTY"] > final_join["SUM_QUANTITY"]][
+        "PS_SUPPKEY"
+    ]
 
-    final_filtered = final_filtered["PS_SUPPKEY"].unique(keep_order=False).to_frame()
-
-    final_result = final_filtered.merge(q3, left_on="PS_SUPPKEY", right_on="S_SUPPKEY")
+    final_result = q3[q3["S_SUPPKEY"].isin(final_filtered)]
     final_result = final_result[["S_NAME", "S_ADDRESS"]].sort_values(by="S_NAME")
 
     next(final_result.to_pandas_batches(max_results=1500))

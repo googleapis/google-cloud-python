@@ -20,22 +20,16 @@ def q(project_id: str, dataset_id: str, session: bigframes.Session):
 
     var1 = "Brand#45"
 
-    supplier = (
-        supplier[
-            ~supplier["S_COMMENT"].str.contains("Customer.*Complaints", regex=True)
-        ]["S_SUPPKEY"]
-        .unique(keep_order=False)
-        .to_frame()
-    )
+    supplier = supplier[
+        ~supplier["S_COMMENT"].str.contains("Customer.*Complaints", regex=True)
+    ]["S_SUPPKEY"]
 
     q_filtered = part.merge(partsupp, left_on="P_PARTKEY", right_on="PS_PARTKEY")
     q_filtered = q_filtered[q_filtered["P_BRAND"] != var1]
     q_filtered = q_filtered[~q_filtered["P_TYPE"].str.contains("MEDIUM POLISHED")]
     q_filtered = q_filtered[q_filtered["P_SIZE"].isin([49, 14, 23, 45, 19, 3, 36, 9])]
 
-    final_df = q_filtered.merge(
-        supplier, left_on=["PS_SUPPKEY"], right_on=["S_SUPPKEY"]
-    )
+    final_df = q_filtered[q_filtered["PS_SUPPKEY"].isin(supplier)]
 
     grouped = final_df.groupby(["P_BRAND", "P_TYPE", "P_SIZE"], as_index=False)
     result = grouped.agg(

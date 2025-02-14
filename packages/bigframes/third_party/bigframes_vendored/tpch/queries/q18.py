@@ -22,14 +22,13 @@ def q(project_id: str, dataset_id: str, session: bigframes.Session):
 
     var1 = 300
 
+    # order with over 300 items
     q1 = lineitem.groupby("L_ORDERKEY", as_index=False).agg(
         SUM_QUANTITY=bpd.NamedAgg(column="L_QUANTITY", aggfunc="sum")
     )
     q1 = q1[q1["SUM_QUANTITY"] > var1]
 
-    filtered_orders = orders.merge(
-        q1, left_on="O_ORDERKEY", right_on="L_ORDERKEY", how="inner"
-    )
+    filtered_orders = orders[orders["O_ORDERKEY"].isin(q1["L_ORDERKEY"])]
 
     result = filtered_orders.merge(
         lineitem, left_on="O_ORDERKEY", right_on="L_ORDERKEY"

@@ -27,11 +27,9 @@ def q(project_id: str, dataset_id: str, session: bigframes.Session):
 
     filtered_customer = customer[customer["C_ACCTBAL"] > customer["AVG_ACCTBAL"]]
 
-    orders_unique = orders["O_CUSTKEY"].unique(keep_order=False).to_frame()
-    filtered_customer = filtered_customer.merge(
-        orders_unique, left_on="C_CUSTKEY", right_on="O_CUSTKEY", how="left"
-    )
-    filtered_customer = filtered_customer[filtered_customer["O_CUSTKEY"].isnull()]
+    filtered_customer = filtered_customer[
+        ~filtered_customer["C_CUSTKEY"].isin(orders["O_CUSTKEY"])
+    ]
     result = filtered_customer.groupby("CNTRYCODE", as_index=False).agg(
         NUMCUST=bpd.NamedAgg(column="C_CUSTKEY", aggfunc="count"),
         TOTACCTBAL=bpd.NamedAgg(column="C_ACCTBAL", aggfunc="sum"),
