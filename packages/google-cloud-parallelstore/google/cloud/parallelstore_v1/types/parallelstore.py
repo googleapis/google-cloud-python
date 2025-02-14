@@ -19,6 +19,7 @@ from typing import MutableMapping, MutableSequence
 
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
+from google.rpc import code_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -27,6 +28,7 @@ __protobuf__ = proto.module(
         "TransferType",
         "FileStripeLevel",
         "DirectoryStripeLevel",
+        "DeploymentType",
         "Instance",
         "ListInstancesRequest",
         "ListInstancesResponse",
@@ -42,6 +44,8 @@ __protobuf__ = proto.module(
         "ImportDataRequest",
         "ExportDataRequest",
         "ImportDataResponse",
+        "TransferErrorLogEntry",
+        "TransferErrorSummary",
         "ImportDataMetadata",
         "ExportDataResponse",
         "ExportDataMetadata",
@@ -107,6 +111,23 @@ class DirectoryStripeLevel(proto.Enum):
     DIRECTORY_STRIPE_LEVEL_MAX = 3
 
 
+class DeploymentType(proto.Enum):
+    r"""Represents the deployment type for the instance.
+
+    Values:
+        DEPLOYMENT_TYPE_UNSPECIFIED (0):
+            Default Deployment Type
+            It is equivalent to SCRATCH
+        SCRATCH (1):
+            Scratch
+        PERSISTENT (2):
+            Persistent
+    """
+    DEPLOYMENT_TYPE_UNSPECIFIED = 0
+    SCRATCH = 1
+    PERSISTENT = 2
+
+
 class Instance(proto.Message):
     r"""A Parallelstore instance.
 
@@ -139,8 +160,8 @@ class Instance(proto.Message):
             between 12000 and 100000, in multiples of 4000;
             e.g., 12000, 16000, 20000, ...
         daos_version (str):
-            Output only. The version of DAOS software
-            running in the instance.
+            Deprecated 'daos_version' field. Output only. The version of
+            DAOS software running in the instance.
         access_points (MutableSequence[str]):
             Output only. A list of IPv4 addresses used
             for client side configuration.
@@ -160,7 +181,8 @@ class Instance(proto.Message):
             and contains the value currently used by the
             service.
         file_stripe_level (google.cloud.parallelstore_v1.types.FileStripeLevel):
-            Optional. Stripe level for files. Allowed values are:
+            Optional. Immutable. Stripe level for files. Allowed values
+            are:
 
             -  ``FILE_STRIPE_LEVEL_MIN``: offers the best performance
                for small size files.
@@ -169,7 +191,8 @@ class Instance(proto.Message):
             -  ``FILE_STRIPE_LEVEL_MAX``: higher throughput performance
                for larger files.
         directory_stripe_level (google.cloud.parallelstore_v1.types.DirectoryStripeLevel):
-            Optional. Stripe level for directories. Allowed values are:
+            Optional. Immutable. Stripe level for directories. Allowed
+            values are:
 
             -  ``DIRECTORY_STRIPE_LEVEL_MIN``: recommended when
                directories contain a small number of files.
@@ -178,6 +201,12 @@ class Instance(proto.Message):
                directories.
             -  ``DIRECTORY_STRIPE_LEVEL_MAX``: recommended for
                directories with a large number of files.
+        deployment_type (google.cloud.parallelstore_v1.types.DeploymentType):
+            Optional. Immutable. The deployment type of the instance.
+            Allowed values are:
+
+            -  ``SCRATCH``: the instance is a scratch instance.
+            -  ``PERSISTENT``: the instance is a persistent instance.
     """
 
     class State(proto.Enum):
@@ -196,6 +225,9 @@ class Instance(proto.Message):
                 The instance is not usable.
             UPGRADING (5):
                 The instance is being upgraded.
+            REPAIRING (6):
+                The instance is being repaired. This should only be used by
+                instances using the ``PERSISTENT`` deployment type.
         """
         STATE_UNSPECIFIED = 0
         CREATING = 1
@@ -203,6 +235,7 @@ class Instance(proto.Message):
         DELETING = 3
         FAILED = 4
         UPGRADING = 5
+        REPAIRING = 6
 
     name: str = proto.Field(
         proto.STRING,
@@ -265,6 +298,11 @@ class Instance(proto.Message):
         proto.ENUM,
         number=16,
         enum="DirectoryStripeLevel",
+    )
+    deployment_type: "DeploymentType" = proto.Field(
+        proto.ENUM,
+        number=17,
+        enum="DeploymentType",
     )
 
 
@@ -792,6 +830,60 @@ class ImportDataResponse(proto.Message):
     r"""The response to a request to import data to Parallelstore."""
 
 
+class TransferErrorLogEntry(proto.Message):
+    r"""An entry describing an error that has occurred.
+
+    Attributes:
+        uri (str):
+            A URL that refers to the target (a data
+            source, a data sink, or an object) with which
+            the error is associated.
+        error_details (MutableSequence[str]):
+            A list of messages that carry the error
+            details.
+    """
+
+    uri: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    error_details: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=2,
+    )
+
+
+class TransferErrorSummary(proto.Message):
+    r"""A summary of errors by error code, plus a count and sample
+    error log entries.
+
+    Attributes:
+        error_code (google.rpc.code_pb2.Code):
+            One of the error codes that caused the
+            transfer failure.
+        error_count (int):
+            Count of this type of error.
+        error_log_entries (MutableSequence[google.cloud.parallelstore_v1.types.TransferErrorLogEntry]):
+            A list of messages that carry the error
+            details.
+    """
+
+    error_code: code_pb2.Code = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=code_pb2.Code,
+    )
+    error_count: int = proto.Field(
+        proto.INT64,
+        number=2,
+    )
+    error_log_entries: MutableSequence["TransferErrorLogEntry"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=4,
+        message="TransferErrorLogEntry",
+    )
+
+
 class ImportDataMetadata(proto.Message):
     r"""Metadata related to the data import operation.
 
@@ -968,6 +1060,10 @@ class TransferOperationMetadata(proto.Message):
             operation.
         transfer_type (google.cloud.parallelstore_v1.types.TransferType):
             Output only. The type of transfer occurring.
+        error_summary (MutableSequence[google.cloud.parallelstore_v1.types.TransferErrorSummary]):
+            Output only. List of files that failed to be
+            transferred. This list will have a maximum size
+            of 5 elements.
     """
 
     source_parallelstore: "SourceParallelstore" = proto.Field(
@@ -1004,6 +1100,11 @@ class TransferOperationMetadata(proto.Message):
         number=6,
         enum="TransferType",
     )
+    error_summary: MutableSequence["TransferErrorSummary"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=13,
+        message="TransferErrorSummary",
+    )
 
 
 class TransferCounters(proto.Message):
@@ -1035,6 +1136,12 @@ class TransferCounters(proto.Message):
         bytes_copied (int):
             Bytes that are copied to the data
             destination.
+        objects_failed (int):
+            Objects that failed to write to the data
+            destination.
+        bytes_failed (int):
+            Number of Bytes that failed to be written to
+            the data destination.
     """
 
     objects_found: int = proto.Field(
@@ -1060,6 +1167,14 @@ class TransferCounters(proto.Message):
     bytes_copied: int = proto.Field(
         proto.INT64,
         number=6,
+    )
+    objects_failed: int = proto.Field(
+        proto.INT64,
+        number=7,
+    )
+    bytes_failed: int = proto.Field(
+        proto.INT64,
+        number=8,
     )
 
 
