@@ -167,7 +167,7 @@ message SnippetSignature {
 
     // Languages that support both async and sync methods should generate both a
     // sync and an async snippets. Note that different samples should be in
-    // differnt files.
+    // different files.
     // Languages that support only one of async and sync methods should
     // generate the supported snippet.
     BOTH = 3;
@@ -494,7 +494,7 @@ message Snippet {
   // Describes how to handle LRO responses.
   message LroResponseHandling {
     // The name of the variable to capture the LRO response in. Required.
-    // This will capture the response to the LRO operaion call and not to
+    // This will capture the response to the LRO operation call and not to
     // polling operations.
     string response_name = 1;
 
@@ -556,7 +556,7 @@ message Statement {
     // An iteration statement. A given Statement set will be executed
     // repeatedly according to the iteration definition.
     // Each iteration type will make a per-step Expression.NameValue set
-    // available that may be used withing the given Statement set.
+    // available that may be used within the given Statement set.
     Iteration iteration = 5;
   }
 
@@ -617,7 +617,7 @@ message Statement {
   // An iteration statement. A given Statement set will be executed
   // repeatedly according to the iteration definition.
   // Each iteration type will make a per-step Expression.NameValue set
-  // available that may be used withing the given Statement set.
+  // available that may be used within the given Statement set.
   message Iteration {
     oneof iteration_type {
       // A numeric sequence iteration.
@@ -642,7 +642,7 @@ message Statement {
     // Represents a numeric sequence iteration.
     // A numeric sequence is defined over which to iterate making the current
     // element of the sequence available in a variable.
-    // It's ultimately the responsability of the user to define a finite
+    // It's ultimately the responsibility of the user to define a finite
     // sequence, although tooling may be provided to help.
     message NumericSequenceIteration {
       // Where to start the sequence at, ie. the first element of the iteration.
@@ -740,7 +740,7 @@ message Statement {
 
       // How to split the byte sequence in chunks to iterate over.
       oneof chunk {
-        // The size of the chuncks to split the byte sequence in. The last chunk
+        // The size of the chunks to split the byte sequence in. The last chunk
         // will be at most chunk_size. Must be positive.
         // Should resolve to an integer type.
         Expression chunk_size = 2;
@@ -1010,7 +1010,7 @@ message Expression {
     // and a Declaration of
     // - Declaration.type => SampleMessage and
     // - Declaration.name => sample_value
-    // then posible NameValues that refer to the variable declared are:
+    // then possible NameValues that refer to the variable declared are:
     // - NameValue.name => sample_value and NameValue.path => unset to reference
     //   the value of the sample_value variable, i.e. using the variable
     //   sample_value

@@ -80,7 +80,7 @@ def test_snippet_init(sample_str):
 
     # This is the same as the sample_str above, minus the # [START ...]
     # and # [END ...] lines
-    expected_full_snipppet = """from molluscs.v1 import molluscclient
+    expected_full_snippet = """from molluscs.v1 import molluscclient
 
 
 def sample_classify(video, location):
@@ -109,7 +109,7 @@ def sample_classify(video, location):
 
 """
 
-    assert snippet.full_snippet == expected_full_snipppet
+    assert snippet.full_snippet == expected_full_snippet
 
 
 def test_add_snippet_no_matching_service(sample_str):

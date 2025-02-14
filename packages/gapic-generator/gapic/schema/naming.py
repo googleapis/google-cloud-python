@@ -34,7 +34,7 @@ class Naming(abc.ABC):
     This class contains the naming nomenclature used for this API
     within templates.
 
-    An concrete child of this object is made available to every template
+    A concrete child of this object is made available to every template
     (as ``api.naming``).
     """
     name: str = ''

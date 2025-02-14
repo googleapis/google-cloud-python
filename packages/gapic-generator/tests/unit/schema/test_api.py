@@ -3482,7 +3482,7 @@ def test_selective_gapic_api_build_extended_lro():
                 make_message_pb2(name='CreateBarRequest'),
                 make_message_pb2(name='GetBarOperationRequest'),
                 make_message_pb2(name='PoorlyOrganizedMethodRequest'),
-                make_message_pb2(name='PoorlyOrganizedMethodReponse')
+                make_message_pb2(name='PoorlyOrganizedMethodResponse')
             ),
             services=(
                 descriptor_pb2.ServiceDescriptorProto(
@@ -3497,7 +3497,7 @@ def test_selective_gapic_api_build_extended_lro():
                         descriptor_pb2.MethodDescriptorProto(
                             name='PoorlyOrganizedMethod',
                             input_type='google.example.v1.PoorlyOrganizedMethodRequest',
-                            output_type='google.example.v1.PoorlyOrganizedMethodReponse',
+                            output_type='google.example.v1.PoorlyOrganizedMethodResponse',
                         ),
                     ),
                 ),

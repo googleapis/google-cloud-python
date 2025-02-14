@@ -665,7 +665,7 @@ def test_extended_operations_lro_detection():
     )
 
     assert user_service.any_extended_operations_methods
-    # Note: we can't have the operation_serivce property point to the actual operation service
+    # Note: we can't have the operation_service property point to the actual operation service
     # because Service objects can't perform the lookup.
     # Instead we kick that can to the API object and make it do the lookup and verification.
     assert lro.operation_service == "CustomOperations"

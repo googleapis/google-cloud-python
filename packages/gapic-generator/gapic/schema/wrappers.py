@@ -218,7 +218,7 @@ class Field:
             answer = f'{self.type.ident}({sub.name}={{}})'
 
         if self.map:
-            # Maps are a special case beacuse they're represented internally as
+            # Maps are a special case because they're represented internally as
             # a list of a generated type with two fields: 'key' and 'value'.
             answer = '{{{}: {}}}'.format(
                 self.type.fields["key"].mock_value,

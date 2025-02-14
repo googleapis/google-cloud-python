@@ -243,7 +243,7 @@ class SnippetSignature(google.protobuf.message.Message):
         BOTH: SnippetSignature._SyncPreference.ValueType  # 3
         """Languages that support both async and sync methods should generate both a
         sync and an async snippets. Note that different samples should be in
-        differnt files.
+        different files.
         Languages that support only one of async and sync methods should
         generate the supported snippet.
         """
@@ -271,7 +271,7 @@ class SnippetSignature(google.protobuf.message.Message):
     BOTH: SnippetSignature.SyncPreference.ValueType  # 3
     """Languages that support both async and sync methods should generate both a
     sync and an async snippets. Note that different samples should be in
-    differnt files.
+    different files.
     Languages that support only one of async and sync methods should
     generate the supported snippet.
     """
@@ -919,7 +919,7 @@ class Snippet(google.protobuf.message.Message):
         POLLING_CALL_FIELD_NUMBER: builtins.int
         response_name: builtins.str
         """The name of the variable to capture the LRO response in. Required.
-        This will capture the response to the LRO operaion call and not to
+        This will capture the response to the LRO operation call and not to
         polling operations.
         """
         polling_type: global___Snippet.LroResponseHandling.PollingType.ValueType
@@ -1154,7 +1154,7 @@ class Statement(google.protobuf.message.Message):
         """An iteration statement. A given Statement set will be executed
         repeatedly according to the iteration definition.
         Each iteration type will make a per-step Expression.NameValue set
-        available that may be used withing the given Statement set.
+        available that may be used within the given Statement set.
         """
 
         DESCRIPTOR: google.protobuf.descriptor.Descriptor
@@ -1164,7 +1164,7 @@ class Statement(google.protobuf.message.Message):
             """Represents a numeric sequence iteration.
             A numeric sequence is defined over which to iterate making the current
             element of the sequence available in a variable.
-            It's ultimately the responsability of the user to define a finite
+            It's ultimately the responsibility of the user to define a finite
             sequence, although tooling may be provided to help.
             """
 
@@ -1336,7 +1336,7 @@ class Statement(google.protobuf.message.Message):
                 """
             @property
             def chunk_size(self) -> global___Expression:
-                """The size of the chuncks to split the byte sequence in. The last chunk
+                """The size of the chunks to split the byte sequence in. The last chunk
                 will be at most chunk_size. Must be positive.
                 Should resolve to an integer type.
                 """
@@ -1432,7 +1432,7 @@ class Statement(google.protobuf.message.Message):
         """An iteration statement. A given Statement set will be executed
         repeatedly according to the iteration definition.
         Each iteration type will make a per-step Expression.NameValue set
-        available that may be used withing the given Statement set.
+        available that may be used within the given Statement set.
         """
     def __init__(
         self,
@@ -1814,7 +1814,7 @@ class Expression(google.protobuf.message.Message):
             and a Declaration of
             - Declaration.type => SampleMessage and
             - Declaration.name => sample_value
-            then posible NameValues that refer to the variable declared are:
+            then possible NameValues that refer to the variable declared are:
             - NameValue.name => sample_value and NameValue.path => unset to reference
               the value of the sample_value variable, i.e. using the variable
               sample_value

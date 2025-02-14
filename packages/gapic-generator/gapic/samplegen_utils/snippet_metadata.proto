@@ -61,13 +61,13 @@ message Snippet {
   // may be written in F# or VB .NET.
   // Note that this does not contain information about the snippet supported
   // platforms or language versions, etc. This is just a quick way to identify
-  // the generally supported langauge.
+  // the generally supported language.
   Language language = 5;
 
   // The client library method this snippet is for.
   ClientMethod client_method = 6;
 
-  // Wether this is the canonical snippet for the corresponding service method.
+  // Whether this is the canonical snippet for the corresponding service method.
   // This is to be interpreted in conjunction with origin as follows:
   // For a given service method:
   // - A handwritten canonical takes precedence over
@@ -128,7 +128,7 @@ message Snippet {
       FULL = 1;
 
       // A shorter version of the full sample, may not include imports and some
-      // langauge specific initialization code. This is to be used in contexts
+      // language specific initialization code. This is to be used in contexts
       // in which the full aspects of the sample are made clear outside the
       // code.
       SHORT = 2;
@@ -166,7 +166,7 @@ message ClientMethod {
   // This may not be unique within the service client because of overloads.
   string full_name = 2;
 
-  // Indicates wether this method is synchronous or asynchronous.
+  // Indicates whether this method is synchronous or asynchronous.
   // Some languages may support only one of the variants, in which case, this
   // field will always have the same value (for that language).
   bool async = 3;
@@ -205,7 +205,7 @@ message ServiceClient {
 
   // The fully qualified name of the service client, which is the short_name
   // qualified by the namespace/package/type name this client is declared in.
-  // This will be unique within the client libray.
+  // This will be unique within the client library.
   string full_name = 2;
 }
 
@@ -228,7 +228,7 @@ message ClientLibrary {
   // The programming language the library is written in.
   // Note that this does not contain information about the library supported
   // platforms or language versions, etc. This is just a quick way to identify
-  // the generally supported langauge.
+  // the generally supported language.
   Language language = 3;
 
   // The APIs this client library is for.
