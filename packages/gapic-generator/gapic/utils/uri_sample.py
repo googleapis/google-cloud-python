@@ -48,7 +48,7 @@ def add_field(obj, path, value):
         not a dict.: e.g. path='a.b', obj = {'a':'abc'}
     """
 
-    segments = path.split('.')
+    segments = path.split(".")
     leaf = segments.pop()
     subfield = obj
     for segment in segments:
@@ -71,8 +71,7 @@ def sample_from_path_fields(paths: List[Tuple[str, str]]) -> Dict[Any, Any]:
 
     for path, template in paths:
         sample_value = re.sub(
-            r"(\*\*|\*)",
-            lambda n: next(sample_names_), template if template else '*'
+            r"(\*\*|\*)", lambda n: next(sample_names_), template if template else "*"
         )
         add_field(request, path, sample_value)
     return request
@@ -86,11 +85,11 @@ def sample_from_path_template(field: str, path_template: str) -> Dict[Any, Any]:
     Returns:
           A new nested dict that has field as key and the instantiated template as value.
     """
-    if '{' in path_template:
-        i = path_template.index('{')
-        j = path_template.index('}')
-        seg = path_template[i:j + 1]
+    if "{" in path_template:
+        i = path_template.index("{")
+        j = path_template.index("}")
+        seg = path_template[i : j + 1]
         # Skip "}"
-        seg = seg[seg.index('=') + 1:-1]
-        path_template = path_template[:i] + seg + path_template[j + 1:]
+        seg = seg[seg.index("=") + 1 : -1]
+        path_template = path_template[:i] + seg + path_template[j + 1 :]
     return sample_from_path_fields([(field, path_template)])

@@ -32,7 +32,8 @@ def convert_uri_fieldnames(uri: str) -> str:
 
     def _fix_field_path(field_path: str) -> str:
         return ".".join(
-            (_fix_name_segment(name_seg) for name_seg in field_path.split(".")))
+            (_fix_name_segment(name_seg) for name_seg in field_path.split("."))
+        )
 
     last = 0
     pieces = []

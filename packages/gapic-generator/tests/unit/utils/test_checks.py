@@ -17,18 +17,18 @@ from test_utils.test_utils import make_field, make_message
 
 
 def test_is_str_field_pb():
-    msg_field = make_field('msg_field', message=make_message('test_msg'))
-    str_field = make_field('str_field', type=9)
-    int_field = make_field('int_field', type=5)
+    msg_field = make_field("msg_field", message=make_message("test_msg"))
+    str_field = make_field("str_field", type=9)
+    int_field = make_field("int_field", type=5)
     assert not checks.is_str_field_pb(msg_field.field_pb)
     assert checks.is_str_field_pb(str_field.field_pb)
     assert not checks.is_str_field_pb(int_field.field_pb)
 
 
 def test_is_msg_field_pb():
-    msg_field = make_field('msg_field', message=make_message('test_msg'))
-    str_field = make_field('str_field', type=9)
-    int_field = make_field('int_field', type=5)
+    msg_field = make_field("msg_field", message=make_message("test_msg"))
+    str_field = make_field("str_field", type=9)
+    int_field = make_field("int_field", type=5)
     assert checks.is_msg_field_pb(msg_field.field_pb)
     assert not checks.is_msg_field_pb(str_field.field_pb)
     assert not checks.is_msg_field_pb(int_field.field_pb)

@@ -16,36 +16,36 @@ from gapic.schema import imp
 
 
 def test_str():
-    i = imp.Import(package=('foo', 'bar'), module='baz')
-    assert str(i) == 'from foo.bar import baz'
+    i = imp.Import(package=("foo", "bar"), module="baz")
+    assert str(i) == "from foo.bar import baz"
 
 
 def test_str_no_package():
-    i = imp.Import(package=(), module='baz')
-    assert str(i) == 'import baz'
+    i = imp.Import(package=(), module="baz")
+    assert str(i) == "import baz"
 
 
 def test_str_alias():
-    i = imp.Import(package=('foo', 'bar'), module='baz', alias='bacon')
-    assert str(i) == 'from foo.bar import baz as bacon'
+    i = imp.Import(package=("foo", "bar"), module="baz", alias="bacon")
+    assert str(i) == "from foo.bar import baz as bacon"
 
 
 def test_str_untyped_pb2():
-    i = imp.Import(package=('foo', 'bar'), module='baz_pb2', alias='bacon')
-    assert str(i) == 'from foo.bar import baz_pb2 as bacon  # type: ignore'
+    i = imp.Import(package=("foo", "bar"), module="baz_pb2", alias="bacon")
+    assert str(i) == "from foo.bar import baz_pb2 as bacon  # type: ignore"
 
 
 def test_str_untyped_api_core():
-    i = imp.Import(package=('foo', 'api_core'), module='baz', alias='bacon')
-    assert str(i) == 'from foo.api_core import baz as bacon  # type: ignore'
+    i = imp.Import(package=("foo", "api_core"), module="baz", alias="bacon")
+    assert str(i) == "from foo.api_core import baz as bacon  # type: ignore"
 
 
 def test_str_eq():
-    i1 = imp.Import(package=('foo', 'bar'), module='baz')
-    i2 = imp.Import(package=('foo', 'bar'), module='baz')
-    i3 = imp.Import(package=('foo', 'bar'), module='baz', alias='bacon')
-    j1 = imp.Import(package=('foo', 'bar'), module='not_baz')
-    k1 = imp.Import(package=('spam', 'eggs'), module='baz')
+    i1 = imp.Import(package=("foo", "bar"), module="baz")
+    i2 = imp.Import(package=("foo", "bar"), module="baz")
+    i3 = imp.Import(package=("foo", "bar"), module="baz", alias="bacon")
+    j1 = imp.Import(package=("foo", "bar"), module="not_baz")
+    k1 = imp.Import(package=("spam", "eggs"), module="baz")
     assert i1 == i2
     assert i1 == i3
     assert i2 == i3

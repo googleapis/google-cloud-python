@@ -23,41 +23,41 @@ from gapic.utils import Options
 
 
 def test_options_empty():
-    opts = Options.build('')
+    opts = Options.build("")
     assert len(opts.templates) == 1
-    assert opts.templates[0].endswith('gapic/templates')
+    assert opts.templates[0].endswith("gapic/templates")
     assert not opts.lazy_import
     assert not opts.old_naming
 
 
 def test_options_replace_templates():
-    opts = Options.build('python-gapic-templates=/foo/')
+    opts = Options.build("python-gapic-templates=/foo/")
     assert len(opts.templates) == 1
-    assert opts.templates[0] == '/foo'
+    assert opts.templates[0] == "/foo"
 
 
 def test_options_relative_templates():
-    opts = Options.build('python-gapic-templates=../../squid/clam')
+    opts = Options.build("python-gapic-templates=../../squid/clam")
 
-    expected = (os.path.abspath('../squid/clam'),)
+    expected = (os.path.abspath("../squid/clam"),)
     assert opts.templates == expected
 
 
 def test_options_unrecognized():
-    with mock.patch.object(warnings, 'warn') as warn:
-        Options.build('python-gapic-abc=xyz')
-    warn.assert_called_once_with('Unrecognized option: `python-gapic-abc`.')
+    with mock.patch.object(warnings, "warn") as warn:
+        Options.build("python-gapic-abc=xyz")
+    warn.assert_called_once_with("Unrecognized option: `python-gapic-abc`.")
 
 
 def test_flags_unrecognized():
-    with mock.patch.object(warnings, 'warn') as warn:
-        Options.build('python-gapic-abc')
-    warn.assert_called_once_with('Unrecognized option: `python-gapic-abc`.')
+    with mock.patch.object(warnings, "warn") as warn:
+        Options.build("python-gapic-abc")
+    warn.assert_called_once_with("Unrecognized option: `python-gapic-abc`.")
 
 
 def test_options_unrecognized_likely_typo():
-    with mock.patch.object(warnings, 'warn') as warn:
-        Options.build('go-gapic-abc=xyz')
+    with mock.patch.object(warnings, "warn") as warn:
+        Options.build("go-gapic-abc=xyz")
     assert len(warn.mock_calls) == 0
 
 
@@ -65,12 +65,13 @@ def test_options_trim_whitespace():
     # When writing shell scripts, users may construct options strings with
     # whitespace that needs to be trimmed after tokenizing.
     opts = Options.build(
-        '''
+        """
         python-gapic-templates=/squid/clam/whelk ,
         python-gapic-name=mollusca ,
-        ''')
-    assert opts.templates[0] == '/squid/clam/whelk'
-    assert opts.name == 'mollusca'
+        """
+    )
+    assert opts.templates[0] == "/squid/clam/whelk"
+    assert opts.name == "mollusca"
 
 
 def test_options_no_valid_sample_config(fs):
@@ -85,7 +86,9 @@ def test_options_service_config(fs):
 
     # Default of None is okay, verify build can read a config.
     service_config_fpath = "service_config.json"
-    fs.create_file(service_config_fpath, contents="""{
+    fs.create_file(
+        service_config_fpath,
+        contents="""{
     "methodConfig": [
         {
             "name": [
@@ -107,7 +110,8 @@ def test_options_service_config(fs):
             "timeout": "5s"
         }
       ]
-    }""")
+    }""",
+    )
 
     opt_string = f"retry-config={service_config_fpath}"
     opts = Options.build(opt_string)
@@ -127,13 +131,9 @@ def test_options_service_config(fs):
                     "maxBackoff": "3s",
                     "initialBackoff": "0.2s",
                     "backoffMultiplier": 2,
-                    "retryableStatusCodes":
-                    [
-                        "UNAVAILABLE",
-                        "UNKNOWN"
-                    ]
+                    "retryableStatusCodes": ["UNAVAILABLE", "UNKNOWN"],
                 },
-                "timeout": "5s"
+                "timeout": "5s",
             }
         ]
     }
@@ -145,28 +145,27 @@ def test_options_service_yaml_config(fs):
     assert opts.service_yaml_config == {}
 
     service_yaml_fpath = "testapi_v1.yaml"
-    fs.create_file(service_yaml_fpath,
-                   contents=("type: google.api.Service\n"
-                             "config_version: 3\n"
-                             "name: testapi.googleapis.com\n"))
+    fs.create_file(
+        service_yaml_fpath,
+        contents=(
+            "type: google.api.Service\n"
+            "config_version: 3\n"
+            "name: testapi.googleapis.com\n"
+        ),
+    )
     opt_string = f"service-yaml={service_yaml_fpath}"
     opts = Options.build(opt_string)
-    expected_config = {
-        "config_version": 3,
-        "name": "testapi.googleapis.com"
-    }
+    expected_config = {"config_version": 3, "name": "testapi.googleapis.com"}
     assert opts.service_yaml_config == expected_config
 
     service_yaml_fpath = "testapi_v2.yaml"
-    fs.create_file(service_yaml_fpath,
-                   contents=("config_version: 3\n"
-                             "name: testapi.googleapis.com\n"))
+    fs.create_file(
+        service_yaml_fpath,
+        contents=("config_version: 3\n" "name: testapi.googleapis.com\n"),
+    )
     opt_string = f"service-yaml={service_yaml_fpath}"
     opts = Options.build(opt_string)
-    expected_config = {
-        "config_version": 3,
-        "name": "testapi.googleapis.com"
-    }
+    expected_config = {"config_version": 3, "name": "testapi.googleapis.com"}
     assert opts.service_yaml_config == expected_config
 
 
@@ -189,14 +188,15 @@ def test_options_bool_flags():
     # New options should follow the dash-case/snake_case convention.
     opt_str_to_attr_name = {
         name: re.sub(r"-", "_", name)
-        for name in
-        ["lazy-import",
-         "old-naming",
-         "add-iam-methods",
-         "metadata",
-         "warehouse-package-name",
-         "rest-numeric-enums",
-         ]}
+        for name in [
+            "lazy-import",
+            "old-naming",
+            "add-iam-methods",
+            "metadata",
+            "warehouse-package-name",
+            "rest-numeric-enums",
+        ]
+    }
 
     for opt, attr in opt_str_to_attr_name.items():
         options = Options.build("")
@@ -227,10 +227,10 @@ def test_options_autogen_snippets_false_for_old_naming():
 
 def test_options_proto_plus_deps():
     opts = Options.build("proto-plus-deps=")
-    assert opts.proto_plus_deps == ('',)
+    assert opts.proto_plus_deps == ("",)
 
     opts = Options.build("proto-plus-deps=google.apps.script.type.calendar")
-    assert opts.proto_plus_deps == ('google.apps.script.type.calendar',)
+    assert opts.proto_plus_deps == ("google.apps.script.type.calendar",)
 
     opts = Options.build(
         "proto-plus-deps=\
@@ -249,5 +249,5 @@ google.apps.script.type"
         "google.apps.script.type.gmail",
         "google.apps.script.type.sheets",
         "google.apps.script.type.slides",
-        "google.apps.script.type"
+        "google.apps.script.type",
     )

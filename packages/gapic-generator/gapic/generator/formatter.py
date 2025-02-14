@@ -29,13 +29,13 @@ def fix_whitespace(code: str) -> str:
         str: Formatted code.
     """
     # Remove trailing whitespace from any line.
-    code = re.sub(r'[ ]+\n', '\n', code)
+    code = re.sub(r"[ ]+\n", "\n", code)
 
     # Ensure at most two blank lines before top level definitions.
-    code = re.sub(r'\s+\n\s*\n\s*\n(class|def|@|#|_)', r'\n\n\n\1', code)
+    code = re.sub(r"\s+\n\s*\n\s*\n(class|def|@|#|_)", r"\n\n\n\1", code)
 
     # Ensure at most one line before nested definitions.
-    code = re.sub(r'\s+\n\s*\n((    )+)(\w|_|@|#)', r'\n\n\1\3', code)
+    code = re.sub(r"\s+\n\s*\n((    )+)(\w|_|@|#)", r"\n\n\1\3", code)
 
     # All files shall end in one and exactly one line break.
-    return f'{code.rstrip()}\n'
+    return f"{code.rstrip()}\n"

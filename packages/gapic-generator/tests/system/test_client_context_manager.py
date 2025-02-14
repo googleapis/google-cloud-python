@@ -20,10 +20,8 @@ from google.auth import exceptions
 
 def test_client(echo):
     with echo as c:
-        resp = c.echo({
-            'content': 'hello'
-        })
-        assert resp.content == 'hello'
+        resp = c.echo({"content": "hello"})
+        assert resp.content == "hello"
 
 
 def test_client_destroyed(echo):
@@ -33,9 +31,7 @@ def test_client_destroyed(echo):
 
     echo.__exit__(None, None, None)
     with pytest.raises(ValueError):
-        echo.echo({
-            'content': 'hello'
-        })
+        echo.echo({"content": "hello"})
 
 
 if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
@@ -43,15 +39,11 @@ if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
     @pytest.mark.asyncio
     async def test_client_async(async_echo):
         async with async_echo:
-            response = await async_echo.echo({
-                'content': 'hello'
-            })
-            assert response.content == 'hello'
+            response = await async_echo.echo({"content": "hello"})
+            assert response.content == "hello"
 
     @pytest.mark.asyncio
     async def test_client_destroyed_async(async_echo):
         await async_echo.__aexit__(None, None, None)
         with pytest.raises((grpc._cython.cygrpc.UsageError, exceptions.TransportError)):
-            await async_echo.echo({
-                'content': 'hello'
-            })
+            await async_echo.echo({"content": "hello"})

@@ -163,9 +163,9 @@ class ConfiguredSnippet:
 
             # The result of applying a transformer could be of a different type
             # in general, but we will only update the sample function def here.
-            self._sample_function_def = self._sample_function_def.visit(
+            self._sample_function_def = self._sample_function_def.visit(  # type: ignore
                 transformer
-            )  # type: ignore
+            )
 
     def _add_sample_function_parameters(self) -> None:
         """Adds sample function parameters.
@@ -230,13 +230,11 @@ class ConfiguredSnippet:
         # TODO: https://github.com/googleapis/gapic-generator-python/issues/1536, add return type.
         # TODO: https://github.com/googleapis/gapic-generator-python/issues/1538, add docstring.
         self._add_sample_function_parameters()
-        self._extend_sample_function_def_body(
-            self._get_service_client_initialization())
+        self._extend_sample_function_def_body(self._get_service_client_initialization())
         self._extend_sample_function_def_body(self._get_call())
 
     def _add_sample_function(self) -> None:
-        self._module = self._module.with_changes(
-            body=[self._sample_function_def])
+        self._module = self._module.with_changes(body=[self._sample_function_def])
 
     def generate(self) -> None:
         """Generates the snippet.

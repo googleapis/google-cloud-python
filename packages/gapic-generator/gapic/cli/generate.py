@@ -26,16 +26,21 @@ from gapic.utils import Options
 
 
 @click.command()
-@click.option('--request', type=click.File('rb'), default=sys.stdin.buffer,
-              help='Location of the `CodeGeneratorRequest` to be processed. '
-                   'This defaults to stdin (which is what protoc uses) '
-                   'but this option can be set for testing/debugging.')
-@click.option('--output', type=click.File('wb'), default=sys.stdout.buffer,
-              help='Where to output the `CodeGeneratorResponse`. '
-                   'Defaults to stdout.')
-def generate(
-        request: typing.BinaryIO,
-        output: typing.BinaryIO) -> None:
+@click.option(
+    "--request",
+    type=click.File("rb"),
+    default=sys.stdin.buffer,
+    help="Location of the `CodeGeneratorRequest` to be processed. "
+    "This defaults to stdin (which is what protoc uses) "
+    "but this option can be set for testing/debugging.",
+)
+@click.option(
+    "--output",
+    type=click.File("wb"),
+    default=sys.stdout.buffer,
+    help="Where to output the `CodeGeneratorResponse`. " "Defaults to stdout.",
+)
+def generate(request: typing.BinaryIO, output: typing.BinaryIO) -> None:
     """Generate a full API client description."""
     # Load the protobuf CodeGeneratorRequest.
     req = plugin_pb2.CodeGeneratorRequest.FromString(request.read())
@@ -47,11 +52,9 @@ def generate(
     # This generator uses a slightly different mechanism for determining
     # which files to generate; it tracks at package level rather than file
     # level.
-    package = os.path.commonprefix([
-        p.package
-        for p in req.proto_file
-        if p.name in req.file_to_generate
-    ]).rstrip('.')
+    package = os.path.commonprefix(
+        [p.package for p in req.proto_file if p.name in req.file_to_generate]
+    ).rstrip(".")
 
     # Build the API model object.
     # This object is a frozen representation of the whole API, and is sent

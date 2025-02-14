@@ -20,8 +20,13 @@ import pypandoc  # type: ignore
 from gapic.utils.lines import wrap
 
 
-def rst(text: str, width: int = 72, indent: int = 0, nl: Optional[bool] = None,
-        source_format: str = 'commonmark'):
+def rst(
+    text: str,
+    width: int = 72,
+    indent: int = 0,
+    nl: Optional[bool] = None,
+    source_format: str = "commonmark",
+):
     """Convert the given text to ReStructured Text.
 
     Args:
@@ -42,32 +47,39 @@ def rst(text: str, width: int = 72, indent: int = 0, nl: Optional[bool] = None,
     # do not convert it.
     # (This makes code generation significantly faster; calling out to pandoc
     # is by far the most expensive thing we do.)
-    if not re.search(r'[|*`_[\]]', text):
-        answer = wrap(text,
+    if not re.search(r"[|*`_[\]]", text):
+        answer = wrap(
+            text,
             indent=indent,
             offset=indent + 3,
             width=width - indent,
-                      )
+        )
     else:
         # Convert from CommonMark to ReStructured Text.
-        answer = pypandoc.convert_text(text, 'rst',
-            format=source_format,
-            extra_args=['--columns=%d' % (width - indent)],
-        ).strip().replace('\n', f"\n{' ' * indent}")
+        answer = (
+            pypandoc.convert_text(
+                text,
+                "rst",
+                format=source_format,
+                extra_args=["--columns=%d" % (width - indent)],
+            )
+            .strip()
+            .replace("\n", f"\n{' ' * indent}")
+        )
 
     # Add a newline to the end of the document if any line breaks are
     # already present.
     #
     # This causes the closing """ to be on the subsequent line only when
     # appropriate.
-    if nl or ('\n' in answer and nl is None):
-        answer += '\n' + ' ' * indent
+    if nl or ("\n" in answer and nl is None):
+        answer += "\n" + " " * indent
 
     # If the text ends in a double-quote, append a period.
     # This ensures that we do not get a parse error when this output is
     # followed by triple-quotes.
     if answer.endswith('"'):
-        answer += '.'
+        answer += "."
 
     # Done; return the answer.
     return answer

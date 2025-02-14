@@ -35,79 +35,80 @@ from test_utils.test_utils import (
 
 
 def test_message_properties():
-    message = make_message('MyMessage')
-    assert message.name == 'MyMessage'
+    message = make_message("MyMessage")
+    assert message.name == "MyMessage"
 
 
 def test_message_docstring():
     L = descriptor_pb2.SourceCodeInfo.Location
 
-    meta = metadata.Metadata(documentation=L(
-        leading_comments='Lorem ipsum',
-        trailing_comments='dolor set amet',
-    ))
-    message = make_message('Name', meta=meta)
-    assert message.meta.doc == 'Lorem ipsum'
+    meta = metadata.Metadata(
+        documentation=L(
+            leading_comments="Lorem ipsum",
+            trailing_comments="dolor set amet",
+        )
+    )
+    message = make_message("Name", meta=meta)
+    assert message.meta.doc == "Lorem ipsum"
 
 
 def test_message_ident():
-    message = make_message('Baz', package='foo.v1', module='bar')
-    assert str(message.ident) == 'bar.Baz'
-    assert message.ident.sphinx == 'foo.v1.bar.Baz'
+    message = make_message("Baz", package="foo.v1", module="bar")
+    assert str(message.ident) == "bar.Baz"
+    assert message.ident.sphinx == "foo.v1.bar.Baz"
 
 
 def test_message_ident_collisions():
-    message = make_message('Baz', package='foo.v1', module='bar').with_context(
-        collisions=frozenset({'bar'}),
+    message = make_message("Baz", package="foo.v1", module="bar").with_context(
+        collisions=frozenset({"bar"}),
     )
-    assert str(message.ident) == 'fv_bar.Baz'
-    assert message.ident.sphinx == 'foo.v1.bar.Baz'
+    assert str(message.ident) == "fv_bar.Baz"
+    assert message.ident.sphinx == "foo.v1.bar.Baz"
 
 
 def test_message_pb2_sphinx_ident():
     meta = metadata.Metadata(
         address=metadata.Address(
-            name='Timestamp',
-            package=('google', 'protobuf'),
-            module='timestamp',
-            api_naming=naming.NewNaming(
-                proto_package="foo.bar"
-            )
+            name="Timestamp",
+            package=("google", "protobuf"),
+            module="timestamp",
+            api_naming=naming.NewNaming(proto_package="foo.bar"),
         )
     )
-    message = make_message("Timestamp", package='google.protobuf',
-        module='timestamp', meta=meta)
-    assert message.ident.sphinx == 'google.protobuf.timestamp_pb2.Timestamp'
+    message = make_message(
+        "Timestamp", package="google.protobuf", module="timestamp", meta=meta
+    )
+    assert message.ident.sphinx == "google.protobuf.timestamp_pb2.Timestamp"
 
 
 def test_get_field():
-    fields = (make_field('field_one'), make_field('field_two'))
-    message = make_message('Message', fields=fields)
-    field_one = message.get_field('field_one')
+    fields = (make_field("field_one"), make_field("field_two"))
+    message = make_message("Message", fields=fields)
+    field_one = message.get_field("field_one")
     assert isinstance(field_one, wrappers.Field)
-    assert field_one.name == 'field_one'
+    assert field_one.name == "field_one"
 
 
 def test_field_types():
     # Create the inner message.
     inner_msg = make_message(
-        'InnerMessage',
+        "InnerMessage",
         fields=(
             make_field(
-                'hidden_message',
-                message=make_message('HiddenMessage'),
+                "hidden_message",
+                message=make_message("HiddenMessage"),
             ),
-        )
+        ),
     )
-    inner_enum = make_enum('InnerEnum')
+    inner_enum = make_enum("InnerEnum")
 
     # Create the outer message, which contains an Inner as a field.
     fields = (
-        make_field('inner_message', message=inner_msg),
-        make_field('inner_enum', enum=inner_enum),
-        make_field('not_interesting'),
+        make_field("inner_message", message=inner_msg),
+        make_field("inner_enum", enum=inner_enum),
+        make_field("not_interesting"),
     )
-    outer = make_message('Outer', fields=fields)
+    outer = make_message("Outer", fields=fields)
 
     # Assert that composite field types are recognized but primitives are not.
     assert len(outer.field_types) == 2
@@ -116,25 +117,19 @@ def test_field_types():
 
 
 def test_field_types_recursive():
-    enumeration = make_enum('Enumeration')
+    enumeration = make_enum("Enumeration")
     innest_msg = make_message(
-        'InnestMessage',
-        fields=(
-            make_field('enumeration', enum=enumeration),
-        )
+        "InnestMessage", fields=(make_field("enumeration", enum=enumeration),)
     )
     inner_msg = make_message(
-        'InnerMessage',
-        fields=(
-            make_field('innest_message', message=innest_msg),
-        )
+        "InnerMessage", fields=(make_field("innest_message", message=innest_msg),)
     )
     topmost_msg = make_message(
-        'TopmostMessage',
+        "TopmostMessage",
         fields=(
-            make_field('inner_message', message=inner_msg),
-            make_field('uninteresting')
-        )
+            make_field("inner_message", message=inner_msg),
+            make_field("uninteresting"),
+        ),
     )
 
     actual = {t.name for t in topmost_msg.recursive_field_types}
@@ -144,58 +139,56 @@ def test_field_types_recursive():
 
 def test_get_field_recursive():
     # Create the inner message.
-    inner_fields = (make_field('zero'), make_field('one'))
-    inner = make_message('Inner', fields=inner_fields, package='foo.v1')
+    inner_fields = (make_field("zero"), make_field("one"))
+    inner = make_message("Inner", fields=inner_fields, package="foo.v1")
 
     # Create the outer message, which contains an Inner as a field.
-    outer_field = make_field('inner', message=inner)
-    outer = make_message('Outer', fields=(outer_field,))
+    outer_field = make_field("inner", message=inner)
+    outer = make_message("Outer", fields=(outer_field,))
 
     # Assert that a recursive retrieval works.
-    assert outer.get_field('inner', 'zero') == inner_fields[0]
-    assert outer.get_field('inner', 'one') == inner_fields[1]
-    assert outer.get_field('inner.one') == inner_fields[1]
+    assert outer.get_field("inner", "zero") == inner_fields[0]
+    assert outer.get_field("inner", "one") == inner_fields[1]
+    assert outer.get_field("inner.one") == inner_fields[1]
 
 
 def test_get_field_nested_not_found_error():
     # Create the inner message.
-    inner_field = make_field('zero')
-    inner = make_message('Inner', fields=(inner_field,), package='foo.v1')
+    inner_field = make_field("zero")
+    inner = make_message("Inner", fields=(inner_field,), package="foo.v1")
 
     # Create the outer message, which contains an Inner as a field.
-    outer_field = make_field('inner', message=inner)
-    outer = make_message('Outer', fields=(outer_field,))
+    outer_field = make_field("inner", message=inner)
+    outer = make_message("Outer", fields=(outer_field,))
 
     # Assert that a recursive retrieval fails.
     with pytest.raises(KeyError):
-        assert outer.get_field('inner', 'zero', 'beyond')
+        assert outer.get_field("inner", "zero", "beyond")
 
 
 def test_get_field_nonterminal_repeated_error():
     # Create the inner message.
-    inner_fields = (make_field('zero'), make_field('one'))
-    inner = make_message('Inner', fields=inner_fields, package='foo.v1')
+    inner_fields = (make_field("zero"), make_field("one"))
+    inner = make_message("Inner", fields=inner_fields, package="foo.v1")
 
     # Create the outer message, which contains an Inner as a field.
-    outer_field = make_field('inner', message=inner, repeated=True)
-    outer = make_message('Outer', fields=(outer_field,))
+    outer_field = make_field("inner", message=inner, repeated=True)
+    outer = make_message("Outer", fields=(outer_field,))
 
     # Assert that a recursive retrieval fails.
     with pytest.raises(KeyError):
-        assert outer.get_field('inner', 'zero') == inner_fields[0]
+        assert outer.get_field("inner", "zero") == inner_fields[0]
     with pytest.raises(KeyError):
-        assert outer.get_field('inner', 'one') == inner_fields[1]
+        assert outer.get_field("inner", "one") == inner_fields[1]
 
 
 def test_resource_path():
     options = descriptor_pb2.MessageOptions()
     resource = options.Extensions[resource_pb2.resource]
-    resource.pattern.append(
-        "kingdoms/{kingdom}/phyla/{phylum}/classes/{klass}")
-    resource.pattern.append(
-        "kingdoms/{kingdom}/divisions/{division}/classes/{klass}")
+    resource.pattern.append("kingdoms/{kingdom}/phyla/{phylum}/classes/{klass}")
+    resource.pattern.append("kingdoms/{kingdom}/divisions/{division}/classes/{klass}")
     resource.type = "taxonomy.biology.com/Class"
-    message = make_message('Squid', options=options)
+    message = make_message("Squid", options=options)
 
     assert message.resource_path == "kingdoms/{kingdom}/phyla/{phylum}/classes/{klass}"
     assert message.resource_path_args == ["kingdom", "phylum", "klass"]
@@ -205,23 +198,31 @@ def test_resource_path():
 def test_resource_path_with_wildcard():
     options = descriptor_pb2.MessageOptions()
     resource = options.Extensions[resource_pb2.resource]
-    resource.pattern.append(
-        "kingdoms/{kingdom}/phyla/{phylum}/classes/{klass=**}")
-    resource.pattern.append(
-        "kingdoms/{kingdom}/divisions/{division}/classes/{klass}")
+    resource.pattern.append("kingdoms/{kingdom}/phyla/{phylum}/classes/{klass=**}")
+    resource.pattern.append("kingdoms/{kingdom}/divisions/{division}/classes/{klass}")
     resource.type = "taxonomy.biology.com/Class"
-    message = make_message('Squid', options=options)
+    message = make_message("Squid", options=options)
 
-    assert message.resource_path == "kingdoms/{kingdom}/phyla/{phylum}/classes/{klass=**}"
+    assert (
+        message.resource_path == "kingdoms/{kingdom}/phyla/{phylum}/classes/{klass=**}"
+    )
     assert message.resource_path_args == ["kingdom", "phylum", "klass"]
     assert message.resource_type == "Class"
-    assert re.match(message.path_regex_str,
-                    "kingdoms/my-kingdom/phyla/my-phylum/classes/my-klass")
-    assert re.match(message.path_regex_str,
-                    "kingdoms/my-kingdom/phyla/my-phylum/classes/my-klass/additional-segment")
-    assert re.match(message.path_regex_str,
-                    "kingdoms/my-kingdom/phyla/my-phylum/classes/") is None
-    assert message.resource_path_formatted == "kingdoms/{kingdom}/phyla/{phylum}/classes/{klass}"
+    assert re.match(
+        message.path_regex_str, "kingdoms/my-kingdom/phyla/my-phylum/classes/my-klass"
+    )
+    assert re.match(
+        message.path_regex_str,
+        "kingdoms/my-kingdom/phyla/my-phylum/classes/my-klass/additional-segment",
+    )
+    assert (
+        re.match(message.path_regex_str, "kingdoms/my-kingdom/phyla/my-phylum/classes/")
+        is None
+    )
+    assert (
+        message.resource_path_formatted
+        == "kingdoms/{kingdom}/phyla/{phylum}/classes/{klass}"
+    )
 
 
 def test_resource_path_pure_wildcard():
@@ -229,7 +230,7 @@ def test_resource_path_pure_wildcard():
     resource = options.Extensions[resource_pb2.resource]
     resource.pattern.append("*")
     resource.type = "taxonomy.biology.com/Class"
-    message = make_message('Squid', options=options)
+    message = make_message("Squid", options=options)
 
     # Pure wildcard resource names do not really help construct resources
     # but they are a part of the spec so we need to support them, which means at
@@ -239,29 +240,31 @@ def test_resource_path_pure_wildcard():
     assert message.resource_type == "Class"
 
     # Pure wildcard resource names match everything...
-    assert re.match(message.path_regex_str,
-                    "kingdoms/my-kingdom/phyla/my-phylum/classes/my-klass")
-    assert re.match(message.path_regex_str,
-                    "kingdoms/my-kingdom/phyla/my-phylum/classes/my-klass/additional-segment")
-    assert re.match(message.path_regex_str,
-                    "kingdoms/my-kingdom/phyla/my-phylum/classes/")
+    assert re.match(
+        message.path_regex_str, "kingdoms/my-kingdom/phyla/my-phylum/classes/my-klass"
+    )
+    assert re.match(
+        message.path_regex_str,
+        "kingdoms/my-kingdom/phyla/my-phylum/classes/my-klass/additional-segment",
+    )
+    assert re.match(
+        message.path_regex_str, "kingdoms/my-kingdom/phyla/my-phylum/classes/"
+    )
 
 
 def test_parse_resource_path():
     options = descriptor_pb2.MessageOptions()
     resource = options.Extensions[resource_pb2.resource]
-    resource.pattern.append(
-        "kingdoms/{kingdom}/phyla/{phylum}/classes/{klass}"
-    )
+    resource.pattern.append("kingdoms/{kingdom}/phyla/{phylum}/classes/{klass}")
     resource.type = "taxonomy.biology.com/Klass"
-    message = make_message('Klass', options=options)
+    message = make_message("Klass", options=options)
 
     # Plausible resource ID path
     path = "kingdoms/animalia/phyla/mollusca/classes/cephalopoda"
     expected = {
-        'kingdom': 'animalia',
-        'phylum': 'mollusca',
-        'klass': 'cephalopoda',
+        "kingdom": "animalia",
+        "phylum": "mollusca",
+        "klass": "cephalopoda",
     }
     actual = re.match(message.path_regex_str, path).groupdict()
 
@@ -269,18 +272,16 @@ def test_parse_resource_path():
 
     options2 = descriptor_pb2.MessageOptions()
     resource2 = options2.Extensions[resource_pb2.resource]
-    resource2.pattern.append(
-        "kingdoms-{kingdom}_{phylum}#classes%{klass}"
-    )
+    resource2.pattern.append("kingdoms-{kingdom}_{phylum}#classes%{klass}")
     resource2.type = "taxonomy.biology.com/Klass"
-    message2 = make_message('Klass', options=options2)
+    message2 = make_message("Klass", options=options2)
 
     # Plausible resource ID path from a non-standard schema
     path2 = "kingdoms-Animalia/_Mollusca~#classes%Cephalopoda"
     expected2 = {
-        'kingdom': 'Animalia/',
-        'phylum': 'Mollusca~',
-        'klass': 'Cephalopoda',
+        "kingdom": "Animalia/",
+        "phylum": "Mollusca~",
+        "klass": "Cephalopoda",
     }
     actual2 = re.match(message2.path_regex_str, path2).groupdict()
 
@@ -290,14 +291,14 @@ def test_parse_resource_path():
 def test_field_map():
     # Create an Entry message.
     entry_msg = make_message(
-        name='FooEntry',
+        name="FooEntry",
         fields=(
-            make_field(name='key', type=9),
-            make_field(name='value', type=9),
+            make_field(name="key", type=9),
+            make_field(name="value", type=9),
         ),
         options=descriptor_pb2.MessageOptions(map_entry=True),
     )
-    entry_field = make_field('foos', message=entry_msg, repeated=True)
+    entry_field = make_field("foos", message=entry_msg, repeated=True)
     assert entry_msg.map
     assert entry_field.map
 
@@ -327,22 +328,16 @@ def test_oneof_fields():
 
 
 def test_required_fields():
-    REQUIRED = field_behavior_pb2.FieldBehavior.Value('REQUIRED')
+    REQUIRED = field_behavior_pb2.FieldBehavior.Value("REQUIRED")
 
     mass_kg = make_field(name="mass_kg", type=5)
-    mass_kg.options.Extensions[field_behavior_pb2.field_behavior].append(
-        REQUIRED
-    )
+    mass_kg.options.Extensions[field_behavior_pb2.field_behavior].append(REQUIRED)
 
     length_m = make_field(name="length_m", type=5)
-    length_m.options.Extensions[field_behavior_pb2.field_behavior].append(
-        REQUIRED
-    )
+    length_m.options.Extensions[field_behavior_pb2.field_behavior].append(REQUIRED)
 
     color = make_field(name="color", type=5)
-    color.options.Extensions[field_behavior_pb2.field_behavior].append(
-        REQUIRED
-    )
+    color.options.Extensions[field_behavior_pb2.field_behavior].append(REQUIRED)
 
     request = make_message(
         name="CreateMolluscRequest",
@@ -365,8 +360,10 @@ def test_is_extended_operation():
         name="Operation",
         fields=tuple(
             make_field(name=name, type=T.Value("TYPE_STRING"), number=i)
-            for i, name in enumerate(("name", "status", "error_code", "error_message"), start=1)
-        )
+            for i, name in enumerate(
+                ("name", "status", "error_code", "error_message"), start=1
+            )
+        ),
     )
     for f in operation.fields.values():
         options = descriptor_pb2.FieldOptions()
@@ -384,7 +381,7 @@ def test_is_extended_operation():
             make_field(name=name, type=T.Value("TYPE_STRING"), number=i)
             # Missing error_message
             for i, name in enumerate(("name", "status", "error_code"), start=1)
-        )
+        ),
     )
     for f in missing.fields.values():
         options = descriptor_pb2.FieldOptions()
@@ -399,8 +396,10 @@ def test_is_extended_operation():
         name="MyMessage",
         fields=tuple(
             make_field(name=name, type=T.Value("TYPE_STRING"), number=i)
-            for i, name in enumerate(("name", "status", "error_code", "error_message"), start=1)
-        )
+            for i, name in enumerate(
+                ("name", "status", "error_code", "error_message"), start=1
+            )
+        ),
     )
     for f in my_message.fields.values():
         options = descriptor_pb2.FieldOptions()
@@ -415,8 +414,10 @@ def test_is_extended_operation():
             name="Operation",
             fields=tuple(
                 make_field(name=name, type=T.Value("TYPE_STRING"), number=i)
-                for i, name in enumerate(("name", "status", "error_code", "error_message"), start=1)
-            )
+                for i, name in enumerate(
+                    ("name", "status", "error_code", "error_message"), start=1
+                )
+            ),
         )
         for f in duplicate.fields.values():
             options = descriptor_pb2.FieldOptions()
@@ -464,7 +465,7 @@ def test_extended_operation_request_response_fields():
         fields=[
             make_field(name=name, type=T.Value("TYPE_STRING"), number=i)
             for i, name in enumerate(("name", "rank", "affinity", "serial"))
-        ]
+        ],
     )
     expected = (poll_request.fields["name"], poll_request.fields["affinity"])
     for field in expected:

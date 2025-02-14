@@ -40,7 +40,7 @@ def make_service(
     service_pb = desc.ServiceDescriptorProto(name=name)
     if host:
         service_pb.options.Extensions[client_pb2.default_host] = host
-    service_pb.options.Extensions[client_pb2.oauth_scopes] = ','.join(scopes)
+    service_pb.options.Extensions[client_pb2.oauth_scopes] = ",".join(scopes)
     if version:
         service_pb.options.Extensions[client_pb2.api_version] = version
 
@@ -57,25 +57,27 @@ def make_service(
 def make_service_with_method_options(
     *,
     http_rule: http_pb2.HttpRule = None,
-    method_signature: str = '',
+    method_signature: str = "",
     in_fields: typing.Tuple[desc.FieldDescriptorProto] = (),
-    visible_resources: typing.Optional[typing.Mapping[str, wrappers.CommonResource]] = None,
+    visible_resources: typing.Optional[
+        typing.Mapping[str, wrappers.CommonResource]
+    ] = None,
 ) -> wrappers.Service:
     # Declare a method with options enabled for long-running operations and
     # field headers.
     method = get_method(
-        'DoBigThing',
-        'foo.bar.ThingRequest',
-        'google.longrunning.operations_pb2.Operation',
-        lro_response_type='foo.baz.ThingResponse',
-        lro_metadata_type='foo.qux.ThingMetadata',
+        "DoBigThing",
+        "foo.bar.ThingRequest",
+        "google.longrunning.operations_pb2.Operation",
+        lro_response_type="foo.baz.ThingResponse",
+        lro_metadata_type="foo.qux.ThingMetadata",
         in_fields=in_fields,
         http_rule=http_rule,
         method_signature=method_signature,
     )
 
     # Define a service descriptor.
-    service_pb = desc.ServiceDescriptorProto(name='ThingDoer')
+    service_pb = desc.ServiceDescriptorProto(name="ThingDoer")
 
     # Return a service object to test.
     return wrappers.Service(
@@ -85,15 +87,17 @@ def make_service_with_method_options(
     )
 
 
-def get_method(name: str,
-               in_type: str,
-               out_type: str,
-               lro_response_type: str = '',
-               lro_metadata_type: str = '', *,
-               in_fields: typing.Tuple[desc.FieldDescriptorProto] = (),
-               http_rule: http_pb2.HttpRule = None,
-               method_signature: str = '',
-               ) -> wrappers.Method:
+def get_method(
+    name: str,
+    in_type: str,
+    out_type: str,
+    lro_response_type: str = "",
+    lro_metadata_type: str = "",
+    *,
+    in_fields: typing.Tuple[desc.FieldDescriptorProto] = (),
+    http_rule: http_pb2.HttpRule = None,
+    method_signature: str = "",
+) -> wrappers.Method:
     input_ = get_message(in_type, fields=in_fields)
     output = get_message(out_type)
     lro = None
@@ -125,9 +129,11 @@ def get_method(name: str,
     )
 
 
-def get_message(dot_path: str, *,
-                fields: typing.Tuple[desc.FieldDescriptorProto] = (),
-                ) -> wrappers.MessageType:
+def get_message(
+    dot_path: str,
+    *,
+    fields: typing.Tuple[desc.FieldDescriptorProto] = (),
+) -> wrappers.MessageType:
     # Pass explicit None through (for lro_metadata).
     if dot_path is None:
         return None
@@ -138,47 +144,52 @@ def get_message(dot_path: str, *,
     # So, if trying to test the DescriptorProto message here, the path
     # would be google.protobuf.descriptor.DescriptorProto (whereas the proto
     # path is just google.protobuf.DescriptorProto).
-    pieces = dot_path.split('.')
+    pieces = dot_path.split(".")
     pkg, module, name = pieces[:-2], pieces[-2], pieces[-1]
 
     return wrappers.MessageType(
-        fields={i.name: wrappers.Field(
-            field_pb=i,
-            enum=get_enum(i.type_name) if i.type_name else None,
-        ) for i in fields},
+        fields={
+            i.name: wrappers.Field(
+                field_pb=i,
+                enum=get_enum(i.type_name) if i.type_name else None,
+            )
+            for i in fields
+        },
         nested_messages={},
         nested_enums={},
         message_pb=desc.DescriptorProto(name=name, field=fields),
-        meta=metadata.Metadata(address=metadata.Address(
-            name=name,
-            package=tuple(pkg),
-            module=module,
-        )),
+        meta=metadata.Metadata(
+            address=metadata.Address(
+                name=name,
+                package=tuple(pkg),
+                module=module,
+            )
+        ),
     )
 
 
 def make_method(
-        name: str,
-        input_message: wrappers.MessageType = None,
-        output_message: wrappers.MessageType = None,
-        package: typing.Union[typing.Tuple[str], str] = 'foo.bar.v1',
-        module: str = 'baz',
-        http_rule: http_pb2.HttpRule = None,
-        signatures: typing.Sequence[str] = (),
-        is_deprecated: bool = False,
-        routing_rule: routing_pb2.RoutingRule = None,
-        **kwargs
+    name: str,
+    input_message: wrappers.MessageType = None,
+    output_message: wrappers.MessageType = None,
+    package: typing.Union[typing.Tuple[str], str] = "foo.bar.v1",
+    module: str = "baz",
+    http_rule: http_pb2.HttpRule = None,
+    signatures: typing.Sequence[str] = (),
+    is_deprecated: bool = False,
+    routing_rule: routing_pb2.RoutingRule = None,
+    **kwargs,
 ) -> wrappers.Method:
     # Use default input and output messages if they are not provided.
-    input_message = input_message or make_message('MethodInput')
-    output_message = output_message or make_message('MethodOutput')
+    input_message = input_message or make_message("MethodInput")
+    output_message = output_message or make_message("MethodOutput")
 
     # Create the method pb2.
     method_pb = desc.MethodDescriptorProto(
         name=name,
         input_type=str(input_message.meta.address),
         output_type=str(output_message.meta.address),
-        **kwargs
+        **kwargs,
     )
 
     if routing_rule:
@@ -196,7 +207,7 @@ def make_method(
         method_pb.options.Extensions[ext_key].append(sig)
 
     if isinstance(package, str):
-        package = tuple(package.split('.'))
+        package = tuple(package.split("."))
 
     if is_deprecated:
         method_pb.options.deprecated = True
@@ -206,45 +217,44 @@ def make_method(
         method_pb=method_pb,
         input=input_message,
         output=output_message,
-        meta=metadata.Metadata(address=metadata.Address(
-            name=name,
-            package=package,
-            module=module,
-            parent=(f'{name}Service',),
-        )),
+        meta=metadata.Metadata(
+            address=metadata.Address(
+                name=name,
+                package=package,
+                module=module,
+                parent=(f"{name}Service",),
+            )
+        ),
     )
 
 
 def make_field(
-    name: str = 'my_field',
+    name: str = "my_field",
     number: int = 1,
     repeated: bool = False,
     message: wrappers.MessageType = None,
     enum: wrappers.EnumType = None,
     meta: metadata.Metadata = None,
     oneof: str = None,
-    **kwargs
+    **kwargs,
 ) -> wrappers.Field:
     T = desc.FieldDescriptorProto.Type
 
     if message:
-        kwargs.setdefault('type_name', str(message.meta.address))
-        kwargs['type'] = 'TYPE_MESSAGE'
+        kwargs.setdefault("type_name", str(message.meta.address))
+        kwargs["type"] = "TYPE_MESSAGE"
     elif enum:
-        kwargs.setdefault('type_name',  str(enum.meta.address))
-        kwargs['type'] = 'TYPE_ENUM'
+        kwargs.setdefault("type_name", str(enum.meta.address))
+        kwargs["type"] = "TYPE_ENUM"
     else:
-        kwargs.setdefault('type', T.Value('TYPE_BOOL'))
+        kwargs.setdefault("type", T.Value("TYPE_BOOL"))
 
-    if isinstance(kwargs['type'], str):
-        kwargs['type'] = T.Value(kwargs['type'])
+    if isinstance(kwargs["type"], str):
+        kwargs["type"] = T.Value(kwargs["type"])
 
-    label = kwargs.pop('label', 3 if repeated else 1)
+    label = kwargs.pop("label", 3 if repeated else 1)
     field_pb = desc.FieldDescriptorProto(
-        name=name,
-        label=label,
-        number=number,
-        **kwargs
+        name=name, label=label, number=number, **kwargs
     )
 
     return wrappers.Field(
@@ -258,8 +268,8 @@ def make_field(
 
 def make_message(
     name: str,
-    package: str = 'foo.bar.v1',
-    module: str = 'baz',
+    package: str = "foo.bar.v1",
+    module: str = "baz",
     fields: typing.Sequence[wrappers.Field] = (),
     meta: metadata.Metadata = None,
     options: desc.MethodOptions = None,
@@ -274,39 +284,43 @@ def make_message(
         fields=collections.OrderedDict((i.name, i) for i in fields),
         nested_messages={},
         nested_enums={},
-        meta=meta or metadata.Metadata(address=metadata.Address(
-            name=name,
-            package=tuple(package.split('.')),
-            module=module,
-        )),
+        meta=meta
+        or metadata.Metadata(
+            address=metadata.Address(
+                name=name,
+                package=tuple(package.split(".")),
+                module=module,
+            )
+        ),
     )
 
 
 def get_enum(dot_path: str) -> wrappers.EnumType:
-    pieces = dot_path.split('.')
+    pieces = dot_path.split(".")
     pkg, module, name = pieces[:-2], pieces[-2], pieces[-1]
     return wrappers.EnumType(
         enum_pb=desc.EnumDescriptorProto(name=name),
-        meta=metadata.Metadata(address=metadata.Address(
-            name=name,
-            package=tuple(pkg),
-            module=module,
-        )),
+        meta=metadata.Metadata(
+            address=metadata.Address(
+                name=name,
+                package=tuple(pkg),
+                module=module,
+            )
+        ),
         values=[],
     )
 
 
 def make_enum(
     name: str,
-    package: str = 'foo.bar.v1',
-    module: str = 'baz',
+    package: str = "foo.bar.v1",
+    module: str = "baz",
     values: typing.Sequence[typing.Tuple[str, int]] = (),
     meta: metadata.Metadata = None,
     options: desc.EnumOptions = None,
 ) -> wrappers.EnumType:
     enum_value_pbs = [
-        desc.EnumValueDescriptorProto(name=i[0], number=i[1])
-        for i in values
+        desc.EnumValueDescriptorProto(name=i[0], number=i[1]) for i in values
     ]
     enum_pb = desc.EnumDescriptorProto(
         name=name,
@@ -315,52 +329,52 @@ def make_enum(
     )
     return wrappers.EnumType(
         enum_pb=enum_pb,
-        values=[wrappers.EnumValueType(enum_value_pb=evpb)
-                for evpb in enum_value_pbs],
-        meta=meta or metadata.Metadata(address=metadata.Address(
-            name=name,
-            package=tuple(package.split('.')),
-            module=module,
-        )),
+        values=[wrappers.EnumValueType(enum_value_pb=evpb) for evpb in enum_value_pbs],
+        meta=meta
+        or metadata.Metadata(
+            address=metadata.Address(
+                name=name,
+                package=tuple(package.split(".")),
+                module=module,
+            )
+        ),
     )
 
 
 def make_naming(**kwargs) -> naming.Naming:
-    kwargs.setdefault('name', 'Hatstand')
-    kwargs.setdefault('namespace', ('Google', 'Cloud'))
-    kwargs.setdefault('version', 'v1')
-    kwargs.setdefault('product_name', 'Hatstand')
+    kwargs.setdefault("name", "Hatstand")
+    kwargs.setdefault("namespace", ("Google", "Cloud"))
+    kwargs.setdefault("version", "v1")
+    kwargs.setdefault("product_name", "Hatstand")
     return naming.NewNaming(**kwargs)
 
 
 def make_enum_pb2(
-    name: str,
-    *values: typing.Sequence[str],
-    **kwargs
+    name: str, *values: typing.Sequence[str], **kwargs
 ) -> desc.EnumDescriptorProto:
     enum_value_pbs = [
-        desc.EnumValueDescriptorProto(name=n, number=i)
-        for i, n in enumerate(values)
+        desc.EnumValueDescriptorProto(name=n, number=i) for i, n in enumerate(values)
     ]
     enum_pb = desc.EnumDescriptorProto(name=name, value=enum_value_pbs, **kwargs)
     return enum_pb
 
 
 def make_message_pb2(
-        name: str,
-        fields: tuple = (),
-        oneof_decl: tuple = (),
-        **kwargs
+    name: str, fields: tuple = (), oneof_decl: tuple = (), **kwargs
 ) -> desc.DescriptorProto:
-    return desc.DescriptorProto(name=name, field=fields, oneof_decl=oneof_decl, **kwargs)
+    return desc.DescriptorProto(
+        name=name, field=fields, oneof_decl=oneof_decl, **kwargs
+    )
 
 
-def make_field_pb2(name: str, number: int,
-                   type: int = 11,  # 11 == message
-                   type_name: str = None,
-                   oneof_index: int = None,
-                   **kwargs,
-                   ) -> desc.FieldDescriptorProto:
+def make_field_pb2(
+    name: str,
+    number: int,
+    type: int = 11,  # 11 == message
+    type_name: str = None,
+    oneof_index: int = None,
+    **kwargs,
+) -> desc.FieldDescriptorProto:
     return desc.FieldDescriptorProto(
         name=name,
         number=number,
@@ -370,18 +384,22 @@ def make_field_pb2(name: str, number: int,
         **kwargs,
     )
 
+
 def make_oneof_pb2(name: str) -> desc.OneofDescriptorProto:
     return desc.OneofDescriptorProto(
         name=name,
     )
 
 
-def make_file_pb2(name: str = 'my_proto.proto', package: str = 'example.v1', *,
-                  messages: typing.Sequence[desc.DescriptorProto] = (),
-                  enums: typing.Sequence[desc.EnumDescriptorProto] = (),
-                  services: typing.Sequence[desc.ServiceDescriptorProto] = (),
-                  locations: typing.Sequence[desc.SourceCodeInfo.Location] = (),
-                  ) -> desc.FileDescriptorProto:
+def make_file_pb2(
+    name: str = "my_proto.proto",
+    package: str = "example.v1",
+    *,
+    messages: typing.Sequence[desc.DescriptorProto] = (),
+    enums: typing.Sequence[desc.EnumDescriptorProto] = (),
+    services: typing.Sequence[desc.ServiceDescriptorProto] = (),
+    locations: typing.Sequence[desc.SourceCodeInfo.Location] = (),
+) -> desc.FileDescriptorProto:
     return desc.FileDescriptorProto(
         name=name,
         package=package,
@@ -393,10 +411,10 @@ def make_file_pb2(name: str = 'my_proto.proto', package: str = 'example.v1', *,
 
 
 def make_doc_meta(
-        *,
-        leading: str = '',
-        trailing: str = '',
-        detached: typing.List[str] = [],
+    *,
+    leading: str = "",
+    trailing: str = "",
+    detached: typing.List[str] = [],
 ) -> desc.SourceCodeInfo.Location:
     return metadata.Metadata(
         documentation=desc.SourceCodeInfo.Location(

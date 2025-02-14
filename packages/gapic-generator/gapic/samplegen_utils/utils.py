@@ -18,7 +18,7 @@ that will eventually move somewhere else (probably)."""
 import os
 import yaml
 
-from typing import (Generator, Tuple, List, Union)
+from typing import Generator, Tuple, List, Union
 
 from gapic.samplegen_utils import types
 
@@ -37,7 +37,7 @@ def render_format_string(s: str, expressions: List[str] = []) -> str:
         expressions (Optional[List[str]]): A list of expressions.
     """
 
-    s = s.replace('\"', '\\\"')
+    s = s.replace('"', '\\"')
 
     for exp in expressions:
         # some expressions will contain references to "$resp"
@@ -62,9 +62,9 @@ def coerce_response_name(s: str) -> str:
 
 
 def is_valid_sample_cfg(
-        doc,
-        min_version: Tuple[int, int, int] = MIN_SCHEMA_VERSION,
-        config_type: str = VALID_CONFIG_TYPE,
+    doc,
+    min_version: Tuple[int, int, int] = MIN_SCHEMA_VERSION,
+    config_type: str = VALID_CONFIG_TYPE,
 ) -> bool:
     """Predicate that takes a parsed yaml doc checks if it is a valid sample config.
 
@@ -78,6 +78,7 @@ def is_valid_sample_cfg(
         bool: True if doc is a valid sample config document.
 
     """
+
     def parse_version(version_str: str) -> Tuple[int, ...]:
         return tuple(int(tok) for tok in version_str.split("."))
 
@@ -114,14 +115,14 @@ def generate_all_sample_fpaths(path: str) -> Generator[str, None, None]:
     # Directly named files, however, should generate an error, because silently
     # ignoring them is less helpful than failing loudly.
     if os.path.isfile(path):
-        if not path.endswith('.yaml'):
+        if not path.endswith(".yaml"):
             raise types.InvalidConfig(f"Not a yaml file: {path}")
 
         with open(path) as f:
-            if not any(is_valid_sample_cfg(doc)
-                       for doc in yaml.safe_load_all(f.read())):
-                raise types.InvalidConfig(
-                    f"No valid sample config in file: {path}")
+            if not any(
+                is_valid_sample_cfg(doc) for doc in yaml.safe_load_all(f.read())
+            ):
+                raise types.InvalidConfig(f"No valid sample config in file: {path}")
 
             yield path
     # Note: if we ever need to recursively check directories for sample configs,

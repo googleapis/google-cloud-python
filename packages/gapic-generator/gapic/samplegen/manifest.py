@@ -16,7 +16,7 @@ import os
 import time
 from typing import Optional, Tuple
 
-from gapic.samplegen_utils import (types, yaml)
+from gapic.samplegen_utils import types, yaml
 from gapic.utils import case
 
 BASE_PATH_KEY = "base_path"
@@ -41,11 +41,11 @@ PYTHON3_ENVIRONMENT = yaml.Map(
 
 
 def generate(
-        fpaths_and_samples,
-        api_schema,
-        *,
-        environment: yaml.Map = PYTHON3_ENVIRONMENT,
-        manifest_time: Optional[int] = None
+    fpaths_and_samples,
+    api_schema,
+    *,
+    environment: yaml.Map = PYTHON3_ENVIRONMENT,
+    manifest_time: Optional[int] = None,
 ) -> Tuple[str, yaml.Doc]:
     """Generate a samplegen manifest for use by sampletest
 
@@ -73,7 +73,8 @@ def generate(
         fpath = os.path.normpath(fpath)
         if not fpath.startswith(base_path):
             raise types.InvalidSampleFpath(
-                f"Sample fpath does not start with '{base_path}': {fpath}")
+                f"Sample fpath does not start with '{base_path}': {fpath}"
+            )
 
         return "'{base_path}/%s'" % os.path.relpath(fpath, base_path)
 
@@ -90,12 +91,12 @@ def generate(
                         # "region_tag" conditional expression.
                         yaml.Alias(environment.anchor_name or ""),
                         yaml.KeyVal("sample", sample["id"]),
-                        yaml.KeyVal(
-                            "path", transform_path(fpath)
+                        yaml.KeyVal("path", transform_path(fpath)),
+                        (
+                            yaml.KeyVal("region_tag", sample["region_tag"])  # type: ignore
+                            if "region_tag" in sample
+                            else yaml.Null
                         ),
-                        (yaml.KeyVal("region_tag", sample["region_tag"])  # type: ignore
-                         if "region_tag" in sample else
-                         yaml.Null),
                     ]
                     for fpath, sample in fpaths_and_samples
                 ],

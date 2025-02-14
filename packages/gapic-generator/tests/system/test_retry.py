@@ -22,23 +22,27 @@ from google.rpc import code_pb2
 def test_retry_bubble(echo):
     # Note: DeadlineExceeded is from gRPC, GatewayTimeout from http
     with pytest.raises((exceptions.DeadlineExceeded, exceptions.GatewayTimeout)):
-        echo.echo({
-            'error': {
-                'code': code_pb2.Code.Value('DEADLINE_EXCEEDED'),
-                'message': 'This took longer than you said it should.',
-            },
-        })
+        echo.echo(
+            {
+                "error": {
+                    "code": code_pb2.Code.Value("DEADLINE_EXCEEDED"),
+                    "message": "This took longer than you said it should.",
+                },
+            }
+        )
 
     if isinstance(echo.transport, type(echo).get_transport_class("grpc")):
         # Under gRPC, we raise exceptions.DeadlineExceeded, which is a
         # sub-class of exceptions.GatewayTimeout.
         with pytest.raises(exceptions.DeadlineExceeded):
-            echo.echo({
-                'error': {
-                    'code': code_pb2.Code.Value('DEADLINE_EXCEEDED'),
-                    'message': 'This took longer than you said it should.',
-                },
-            })
+            echo.echo(
+                {
+                    "error": {
+                        "code": code_pb2.Code.Value("DEADLINE_EXCEEDED"),
+                        "message": "This took longer than you said it should.",
+                    },
+                }
+            )
 
 
 if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
@@ -46,12 +50,14 @@ if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
     @pytest.mark.asyncio
     async def test_retry_bubble_async(async_echo):
         with pytest.raises(exceptions.RetryError):
-            await async_echo.echo({
-                'error': {
-                    'code': code_pb2.Code.Value('UNAVAILABLE'),
-                    'message': 'This service is not available.',
-                },
-            })
+            await async_echo.echo(
+                {
+                    "error": {
+                        "code": code_pb2.Code.Value("UNAVAILABLE"),
+                        "message": "This service is not available.",
+                    },
+                }
+            )
 
     # Note: This test verifies that:
     # Using gapic_v1.method.wrap_method in *AsyncClient raises a RPCError (Incorrect behaviour).
@@ -60,6 +66,4 @@ if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
     @pytest.mark.asyncio
     async def test_method_async_wrapper_for_async_client(async_echo):
         with pytest.raises(exceptions.NotFound):
-            await async_echo.get_operation({
-                'name': "operations/echo"
-            })
+            await async_echo.get_operation({"name": "operations/echo"})

@@ -21,6 +21,4 @@ which divides up the processing of individual templates.
 from .generator import Generator
 
 
-__all__ = (
-    'Generator',
-)
+__all__ = ("Generator",)

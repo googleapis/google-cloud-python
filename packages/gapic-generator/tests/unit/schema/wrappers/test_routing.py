@@ -27,8 +27,7 @@ class RoutingTestRequest(proto.Message):
 @pytest.mark.parametrize(
     "req, expected",
     [
-        (RoutingTestRequest(app_profile_id="foo.123"),
-         {"app_profile_id": "foo.123"}),
+        (RoutingTestRequest(app_profile_id="foo.123"), {"app_profile_id": "foo.123"}),
         (
             RoutingTestRequest(app_profile_id="projects/100"),
             {"app_profile_id": "projects/100"},
@@ -37,19 +36,16 @@ class RoutingTestRequest(proto.Message):
     ],
 )
 def test_routing_rule_resolve_simple_extraction(req, expected):
-    rule = wrappers.RoutingRule(
-        [wrappers.RoutingParameter("app_profile_id", "")])
-    assert wrappers.RoutingRule.resolve(
-        rule,
-        RoutingTestRequest.to_dict(req)
-    ) == expected
+    rule = wrappers.RoutingRule([wrappers.RoutingParameter("app_profile_id", "")])
+    assert (
+        wrappers.RoutingRule.resolve(rule, RoutingTestRequest.to_dict(req)) == expected
+    )
 
 
 @pytest.mark.parametrize(
     "req, expected",
     [
-        (RoutingTestRequest(app_profile_id="foo.123"),
-         {"routing_id": "foo.123"}),
+        (RoutingTestRequest(app_profile_id="foo.123"), {"routing_id": "foo.123"}),
         (
             RoutingTestRequest(app_profile_id="projects/100"),
             {"routing_id": "projects/100"},
@@ -61,10 +57,9 @@ def test_routing_rule_resolve_rename_extraction(req, expected):
     rule = wrappers.RoutingRule(
         [wrappers.RoutingParameter("app_profile_id", "{routing_id=**}")]
     )
-    assert wrappers.RoutingRule.resolve(
-        rule,
-        RoutingTestRequest.to_dict(req)
-    ) == expected
+    assert (
+        wrappers.RoutingRule.resolve(rule, RoutingTestRequest.to_dict(req)) == expected
+    )
 
 
 @pytest.mark.parametrize(
@@ -75,8 +70,7 @@ def test_routing_rule_resolve_rename_extraction(req, expected):
             {"table_name": "projects/100/instances/200"},
         ),
         (
-            RoutingTestRequest(
-                table_name="projects/100/instances/200/whatever"),
+            RoutingTestRequest(table_name="projects/100/instances/200/whatever"),
             {"table_name": "projects/100/instances/200/whatever"},
         ),
         (RoutingTestRequest(table_name="foo"), {}),
@@ -93,10 +87,9 @@ def test_routing_rule_resolve_field_match(req, expected):
             ),
         ]
     )
-    assert wrappers.RoutingRule.resolve(
-        rule,
-        RoutingTestRequest.to_dict(req)
-    ) == expected
+    assert (
+        wrappers.RoutingRule.resolve(rule, RoutingTestRequest.to_dict(req)) == expected
+    )
 
 
 @pytest.mark.parametrize(
@@ -108,8 +101,7 @@ def test_routing_rule_resolve_field_match(req, expected):
                     "table_name", "{project_id=projects/*}/instances/*/**"
                 )
             ],
-            RoutingTestRequest(
-                table_name="projects/100/instances/200/tables/300"),
+            RoutingTestRequest(table_name="projects/100/instances/200/tables/300"),
             {"project_id": "projects/100"},
         ),
         (
@@ -124,17 +116,14 @@ def test_routing_rule_resolve_field_match(req, expected):
                     "doesnotexist", "projects/*/{instance_id=instances/*}/**"
                 ),
             ],
-            RoutingTestRequest(
-                table_name="projects/100/instances/200/tables/300"),
+            RoutingTestRequest(table_name="projects/100/instances/200/tables/300"),
             {"project_id": "projects/100", "instance_id": "instances/200"},
         ),
     ],
 )
 def test_routing_rule_resolve(routing_parameters, req, expected):
     rule = wrappers.RoutingRule(routing_parameters)
-    got = wrappers.RoutingRule.resolve(
-        rule, RoutingTestRequest.to_dict(req)
-    )
+    got = wrappers.RoutingRule.resolve(rule, RoutingTestRequest.to_dict(req))
     assert got == expected
 
     rule = wrappers.RoutingRule(routing_parameters)
@@ -148,8 +137,7 @@ def test_routing_rule_resolve(routing_parameters, req, expected):
     "field, path_template, expected",
     [
         ("table_name", "{project_id=projects/*}/instances/*/**", "project_id"),
-        ("table_name",
-         "projects/*/{instance_id=instances/*}/**", "instance_id"),
+        ("table_name", "projects/*/{instance_id=instances/*}/**", "instance_id"),
         ("table_name", "projects/*/{instance_id}/**", "instance_id"),
     ],
 )

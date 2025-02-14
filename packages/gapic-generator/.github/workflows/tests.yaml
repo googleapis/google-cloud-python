@@ -390,7 +390,7 @@ jobs:
           nox -f tests/integration/goldens/eventarc/noxfile.py -s prerelease_deps
           nox -f tests/integration/goldens/logging/noxfile.py -s prerelease_deps
           nox -f tests/integration/goldens/redis/noxfile.py -s prerelease_deps
-  style-check:
+  lint:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -399,9 +399,9 @@ jobs:
         with:
           python-version: "3.13"
           cache: 'pip'
-      - name: Install autopep8
+      - name: Install nox.
         run: |
-            python -m pip install autopep8
-      - name: Check diff
+            python -m pip install nox
+      - name: Run lint
         run: |
-            find gapic tests -name "*.py" -not -path 'tests/**/goldens/*' | xargs autopep8 --diff --exit-code
+            nox -s lint

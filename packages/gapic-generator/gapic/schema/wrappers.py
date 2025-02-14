@@ -35,9 +35,24 @@ import json
 import keyword
 import re
 from itertools import chain
-from typing import (Any, cast, Dict, FrozenSet, Iterator, Iterable, List, Mapping,
-                    ClassVar, Optional, Sequence, Set, Tuple, Union, Pattern)
-from google.api import annotations_pb2      # type: ignore
+from typing import (
+    Any,
+    cast,
+    Dict,
+    FrozenSet,
+    Iterator,
+    Iterable,
+    List,
+    Mapping,
+    ClassVar,
+    Optional,
+    Sequence,
+    Set,
+    Tuple,
+    Union,
+    Pattern,
+)
+from google.api import annotations_pb2  # type: ignore
 from google.api import client_pb2
 from google.api import field_behavior_pb2
 from google.api import field_info_pb2
@@ -59,9 +74,10 @@ from gapic.utils import make_private
 @dataclasses.dataclass(frozen=True)
 class Field:
     """Description of a field."""
+
     field_pb: descriptor_pb2.FieldDescriptorProto
-    message: Optional['MessageType'] = None
-    enum: Optional['EnumType'] = None
+    message: Optional["MessageType"] = None
+    enum: Optional["EnumType"] = None
     meta: metadata.Metadata = dataclasses.field(
         default_factory=metadata.Metadata,
     )
@@ -80,7 +96,11 @@ class Field:
     def name(self) -> str:
         """Used to prevent collisions with python keywords"""
         name = self.field_pb.name
-        return name + "_" if name in utils.RESERVED_NAMES and self.meta.address.is_proto_plus_type else name
+        return (
+            name + "_"
+            if name in utils.RESERVED_NAMES and self.meta.address.is_proto_plus_type
+            else name
+        )
 
     @utils.cached_property
     def ident(self) -> metadata.FieldIdentifier:
@@ -117,7 +137,9 @@ class Field:
         return self.options.Extensions[ex_ops_pb2.operation_response_field]
 
     @utils.cached_property
-    def mock_value_original_type(self) -> Union[bool, str, bytes, int, float, Dict[str, Any], List[Any], None]:
+    def mock_value_original_type(
+        self,
+    ) -> Union[bool, str, bytes, int, float, Dict[str, Any], List[Any], None]:
         visited_messages = set()
 
         def recursive_mock_original_type(field):
@@ -137,7 +159,7 @@ class Field:
                     # Duration in this specific case.
                     msg_dict = {
                         "type_url": "type.googleapis.com/google.protobuf.Duration",
-                        "value": b'\x08\x0c\x10\xdb\x07',
+                        "value": b"\x08\x0c\x10\xdb\x07",
                     }
                 else:
                     msg_dict = {
@@ -150,7 +172,8 @@ class Field:
             if field.enum:
                 # First Truthy value, fallback to the first value
                 answer = next(
-                    (v for v in field.type.values if v.number), field.type.values[0]).number
+                    (v for v in field.type.values if v.number), field.type.values[0]
+                ).number
                 if field.repeated:
                     answer = [answer]
                 return answer
@@ -190,7 +213,7 @@ class Field:
         """Return a repr of a valid, usually truthy mock value."""
         # For primitives, send a truthy value computed from the
         # field name.
-        answer = 'None'
+        answer = "None"
         if isinstance(self.type, PrimitiveType):
             answer = self.primitive_mock_as_str()
 
@@ -200,39 +223,41 @@ class Field:
             # Note: The slightly-goofy [:2][-1] lets us gracefully fall
             # back to index 0 if there is only one element.
             mock_value = self.type.values[:2][-1]
-            answer = f'{self.type.ident}.{mock_value.name}'
+            answer = f"{self.type.ident}.{mock_value.name}"
 
         # If this is another message, set one value on the message.
         if (
-                not self.map    # Maps are handled separately
-                and isinstance(self.type, MessageType)
-                and len(self.type.fields)
-                # Nested message types need to terminate eventually
-                and self not in visited_fields
+            not self.map  # Maps are handled separately
+            and isinstance(self.type, MessageType)
+            and len(self.type.fields)
+            # Nested message types need to terminate eventually
+            and self not in visited_fields
         ):
             sub = next(iter(self.type.fields.values()))
             stack.append(sub)
             visited_fields.add(self)
             # Don't do the recursive rendering here, just set up
             # where the nested value should go with the double {}.
-            answer = f'{self.type.ident}({sub.name}={{}})'
+            answer = f"{self.type.ident}({sub.name}={{}})"
 
         if self.map:
             # Maps are a special case because they're represented internally as
             # a list of a generated type with two fields: 'key' and 'value'.
-            answer = '{{{}: {}}}'.format(
+            answer = "{{{}: {}}}".format(
                 self.type.fields["key"].mock_value,
                 self.type.fields["value"].mock_value,
             )
         elif self.repeated:
             # If this is a repeated field, then the mock answer should
             # be a list.
-            answer = f'[{answer}]'
+            answer = f"[{answer}]"
 
         # Done; return the mock value.
         return answer
 
-    def primitive_mock(self, suffix: int = 0) -> Union[bool, str, bytes, int, float, List[Any], None]:
+    def primitive_mock(
+        self, suffix: int = 0
+    ) -> Union[bool, str, bytes, int, float, List[Any], None]:
         """Generate a valid mock for a primitive type. This function
         returns the original (Python) type.
 
@@ -242,8 +267,10 @@ class Field:
         answer: Union[bool, str, bytes, int, float, List[Any], None] = None
 
         if not isinstance(self.type, PrimitiveType):
-            raise TypeError(f"'primitive_mock' can only be used for "
-                f"PrimitiveType, but type is {self.type}")
+            raise TypeError(
+                f"'primitive_mock' can only be used for "
+                f"PrimitiveType, but type is {self.type}"
+            )
 
         else:
             if self.type.python_type == bool:
@@ -256,9 +283,13 @@ class Field:
                     # is not Any.
                     answer = "type.googleapis.com/google.protobuf.Empty"
                 else:
-                    answer = f"{self.name}_value{suffix}" if suffix else f"{self.name}_value"
+                    answer = (
+                        f"{self.name}_value{suffix}" if suffix else f"{self.name}_value"
+                    )
             elif self.type.python_type == bytes:
-                answer_str = f"{self.name}_blob{suffix}" if suffix else f"{self.name}_blob"
+                answer_str = (
+                    f"{self.name}_blob{suffix}" if suffix else f"{self.name}_blob"
+                )
                 answer = bytes(answer_str, encoding="utf-8")
             elif self.type.python_type == int:
                 answer = sum([ord(i) for i in self.name]) + suffix
@@ -266,8 +297,10 @@ class Field:
                 name_sum = sum([ord(i) for i in self.name]) + suffix
                 answer = name_sum * pow(10, -1 * len(str(name_sum)))
             else:  # Impossible; skip coverage checks.
-                raise TypeError('Unrecognized PrimitiveType. This should '
-                                'never happen; please file an issue.')
+                raise TypeError(
+                    "Unrecognized PrimitiveType. This should "
+                    "never happen; please file an issue."
+                )
 
         return answer
 
@@ -285,9 +318,12 @@ class Field:
     @property
     def proto_type(self) -> str:
         """Return the proto type constant to be used in templates."""
-        return cast(str, descriptor_pb2.FieldDescriptorProto.Type.Name(
-            self.field_pb.type,
-        ))[len('TYPE_'):]
+        return cast(
+            str,
+            descriptor_pb2.FieldDescriptorProto.Type.Name(
+                self.field_pb.type,
+            ),
+        )[len("TYPE_") :]
 
     @property
     def repeated(self) -> bool:
@@ -296,9 +332,9 @@ class Field:
         Returns:
             bool: Whether this field is repeated.
         """
-        return self.label == \
-            descriptor_pb2.FieldDescriptorProto.Label.Value(
-                'LABEL_REPEATED')   # type: ignore
+        return self.label == descriptor_pb2.FieldDescriptorProto.Label.Value(
+            "LABEL_REPEATED"
+        )  # type: ignore
 
     @property
     def required(self) -> bool:
@@ -307,8 +343,10 @@ class Field:
         Returns:
             bool: Whether this field is required.
         """
-        return (field_behavior_pb2.FieldBehavior.Value('REQUIRED') in
-                self.options.Extensions[field_behavior_pb2.field_behavior])
+        return (
+            field_behavior_pb2.FieldBehavior.Value("REQUIRED")
+            in self.options.Extensions[field_behavior_pb2.field_behavior]
+        )
 
     @property
     def uuid4(self) -> bool:
@@ -319,7 +357,9 @@ class Field:
         Returns:
             bool: Whether this field is UUID4.
         """
-        return self.options.Extensions[field_info_pb2.field_info].format == field_info_pb2.FieldInfo.Format.Value("UUID4")
+        return self.options.Extensions[
+            field_info_pb2.field_info
+        ].format == field_info_pb2.FieldInfo.Format.Value("UUID4")
 
     @property
     def resource_reference(self) -> Optional[str]:
@@ -328,12 +368,14 @@ class Field:
         This is only applicable for string fields.
         Example: "translate.googleapis.com/Glossary"
         """
-        return (self.options.Extensions[resource_pb2.resource_reference].type
+        return (
+            self.options.Extensions[resource_pb2.resource_reference].type
             or self.options.Extensions[resource_pb2.resource_reference].child_type
-            or None)
+            or None
+        )
 
     @utils.cached_property
-    def type(self) -> Union['MessageType', 'EnumType', 'PrimitiveType']:
+    def type(self) -> Union["MessageType", "EnumType", "PrimitiveType"]:
         """Return the type of this field."""
         # If this is a message or enum, return the appropriate thing.
         if self.type_name and self.message:
@@ -363,15 +405,17 @@ class Field:
             return PrimitiveType.build(bytes)
 
         # This should never happen.
-        raise TypeError(f'Unrecognized protobuf type: {self.field_pb.type}. '
-                        'This code should not be reachable; please file a bug.')
+        raise TypeError(
+            f"Unrecognized protobuf type: {self.field_pb.type}. "
+            "This code should not be reachable; please file a bug."
+        )
 
     def with_context(
-            self,
-            *,
-            collisions: Set[str],
-            visited_messages: Optional[Set["MessageType"]] = None,
-    ) -> 'Field':
+        self,
+        *,
+        collisions: Set[str],
+        visited_messages: Optional[Set["MessageType"]] = None,
+    ) -> "Field":
         """Return a derivative of this field with the provided context.
 
         This method is used to address naming collisions. The returned
@@ -380,20 +424,27 @@ class Field:
         """
         return dataclasses.replace(
             self,
-            message=self.message.with_context(
-                collisions=collisions,
-                skip_fields=self.message in visited_messages if visited_messages else False,
-                visited_messages=visited_messages,
-            ) if self.message else None,
-            enum=self.enum.with_context(collisions=collisions)
-            if self.enum else None,
+            message=(
+                self.message.with_context(
+                    collisions=collisions,
+                    skip_fields=(
+                        self.message in visited_messages if visited_messages else False
+                    ),
+                    visited_messages=visited_messages,
+                )
+                if self.message
+                else None
+            ),
+            enum=self.enum.with_context(collisions=collisions) if self.enum else None,
             meta=self.meta.with_context(collisions=collisions),
         )
 
-    def add_to_address_allowlist(self, *,
-                                 address_allowlist: Set['metadata.Address'],
-                                 resource_messages: Dict[str, 'MessageType']
-                                 ) -> None:
+    def add_to_address_allowlist(
+        self,
+        *,
+        address_allowlist: Set["metadata.Address"],
+        resource_messages: Dict[str, "MessageType"],
+    ) -> None:
         """Adds to the set of Addresses of wrapper objects to be included in selective GAPIC generation.
 
         This method is used to create an allowlist of addresses to be used to filter out unneeded
@@ -443,6 +494,7 @@ class FieldHeader:
 @dataclasses.dataclass(frozen=True)
 class Oneof:
     """Description of a field."""
+
     oneof_pb: descriptor_pb2.OneofDescriptorProto
 
     def __getattr__(self, name):
@@ -452,19 +504,20 @@ class Oneof:
 @dataclasses.dataclass(frozen=True)
 class MessageType:
     """Description of a message (defined with the ``message`` keyword)."""
+
     # Class attributes
     # https://google.aip.dev/122
-    PATH_ARG_RE = re.compile(r'\{([a-zA-Z0-9_\-]+)(?:=\*\*)?\}')
+    PATH_ARG_RE = re.compile(r"\{([a-zA-Z0-9_\-]+)(?:=\*\*)?\}")
 
     # Instance attributes
     message_pb: descriptor_pb2.DescriptorProto
     fields: Mapping[str, Field]
-    nested_enums: Mapping[str, 'EnumType']
-    nested_messages: Mapping[str, 'MessageType']
+    nested_enums: Mapping[str, "EnumType"]
+    nested_messages: Mapping[str, "MessageType"]
     meta: metadata.Metadata = dataclasses.field(
         default_factory=metadata.Metadata,
     )
-    oneofs: Optional[Mapping[str, 'Oneof']] = None
+    oneofs: Optional[Mapping[str, "Oneof"]] = None
 
     def __getattr__(self, name):
         return getattr(self.message_pb, name)
@@ -488,11 +541,7 @@ class MessageType:
         If this message is the request for a method that uses extended operations,
         return the fields that correspond to operation request fields in the operation message.
         """
-        return tuple(
-            f
-            for f in self.fields.values()
-            if f.operation_request_field
-        )
+        return tuple(f for f in self.fields.values() if f.operation_request_field)
 
     @utils.cached_property
     def extended_operation_response_fields(self) -> Sequence[Field]:
@@ -500,11 +549,7 @@ class MessageType:
         If this message is the request for a method that uses extended operations,
         return the fields that correspond to operation response fields in the polling message.
         """
-        return tuple(
-            f
-            for f in self.fields.values()
-            if f.operation_response_field
-        )
+        return tuple(f for f in self.fields.values() if f.operation_response_field)
 
     @utils.cached_property
     def differently_named_extended_operation_fields(self) -> Optional[Dict[str, Field]]:
@@ -573,28 +618,23 @@ class MessageType:
         )
 
     @utils.cached_property
-    def required_fields(self) -> Sequence['Field']:
-        required_fields = [
-            field for field in self.fields.values() if field.required]
+    def required_fields(self) -> Sequence["Field"]:
+        required_fields = [field for field in self.fields.values() if field.required]
 
         return required_fields
 
     @utils.cached_property
-    def field_types(self) -> Sequence[Union['MessageType', 'EnumType']]:
+    def field_types(self) -> Sequence[Union["MessageType", "EnumType"]]:
         answer = tuple(
-            field.type
-            for field in self.fields.values()
-            if field.message or field.enum
+            field.type for field in self.fields.values() if field.message or field.enum
         )
 
         return answer
 
     @utils.cached_property
-    def recursive_field_types(self) -> Sequence[
-        Union['MessageType', 'EnumType']
-    ]:
+    def recursive_field_types(self) -> Sequence[Union["MessageType", "EnumType"]]:
         """Return all composite fields used in this proto's messages."""
-        types: Set[Union['MessageType', 'EnumType']] = set()
+        types: Set[Union["MessageType", "EnumType"]] = set()
 
         stack = [iter(self.fields.values())]
         while stack:
@@ -611,15 +651,20 @@ class MessageType:
     def recursive_resource_fields(self) -> FrozenSet[Field]:
         all_fields = chain(
             self.fields.values(),
-            (field
-             for t in self.recursive_field_types if isinstance(t, MessageType)
-             for field in t.fields.values()),
+            (
+                field
+                for t in self.recursive_field_types
+                if isinstance(t, MessageType)
+                for field in t.fields.values()
+            ),
         )
         return frozenset(
             f
             for f in all_fields
-            if (f.options.Extensions[resource_pb2.resource_reference].type or
-                f.options.Extensions[resource_pb2.resource_reference].child_type)
+            if (
+                f.options.Extensions[resource_pb2.resource_reference].type
+                or f.options.Extensions[resource_pb2.resource_reference].child_type
+            )
         )
 
     @property
@@ -636,15 +681,12 @@ class MessageType:
     def resource_path(self) -> Optional[str]:
         """If this message describes a resource, return the path to the resource.
         If there are multiple paths, returns the first one."""
-        return next(
-            iter(self.options.Extensions[resource_pb2.resource].pattern),
-            None
-        )
+        return next(iter(self.options.Extensions[resource_pb2.resource].pattern), None)
 
     @property
     def resource_type(self) -> Optional[str]:
         resource = self.options.Extensions[resource_pb2.resource]
-        return resource.type[resource.type.find('/') + 1:] if resource else None
+        return resource.type[resource.type.find("/") + 1 :] if resource else None
 
     @property
     def resource_type_full_path(self) -> Optional[str]:
@@ -653,7 +695,7 @@ class MessageType:
 
     @property
     def resource_path_args(self) -> Sequence[str]:
-        return self.PATH_ARG_RE.findall(self.resource_path or '')
+        return self.PATH_ARG_RE.findall(self.resource_path or "")
 
     @property
     def resource_path_formatted(self) -> str:
@@ -663,7 +705,7 @@ class MessageType:
         to 'projects/{project}/metricDescriptors/{metric_descriptor}
         so it can be used in an f-string.
         """
-        return self.PATH_ARG_RE.sub(r"{\g<1>}", self.resource_path or '')
+        return self.PATH_ARG_RE.sub(r"{\g<1>}", self.resource_path or "")
 
     @utils.cached_property
     def path_regex_str(self) -> str:
@@ -675,8 +717,8 @@ class MessageType:
         # becomes the regex
         # ^kingdoms/(?P<kingdom>.+?)/phyla/(?P<phylum>.+?)$
         parsing_regex_str = (
-            "^" +
-            self.PATH_ARG_RE.sub(
+            "^"
+            + self.PATH_ARG_RE.sub(
                 # We can't just use (?P<name>[^/]+) because segments may be
                 # separated by delimiters other than '/'.
                 # Multiple delimiter characters within one schema are allowed,
@@ -684,9 +726,9 @@ class MessageType:
                 # as/{a}-{b}/cs/{c}%{d}_{e}
                 # This is discouraged but permitted by AIP4231
                 lambda m: "(?P<{name}>.+?)".format(name=m.groups()[0]),
-                self.resource_path or ''
-            ) +
-            "$"
+                self.resource_path or "",
+            )
+            + "$"
         )
         # Special case for wildcard resource names
         if parsing_regex_str == "^*$":
@@ -694,8 +736,9 @@ class MessageType:
 
         return parsing_regex_str
 
-    def get_field(self, *field_path: str,
-                  collisions: Optional[Set[str]] = None) -> Field:
+    def get_field(
+        self, *field_path: str, collisions: Optional[Set[str]] = None
+    ) -> Field:
         """Return a field arbitrarily deep in this message's structure.
 
         This method recursively traverses the message tree to return the
@@ -715,8 +758,8 @@ class MessageType:
                 in the path.
         """
         # This covers the case when field_path is a string path.
-        if len(field_path) == 1 and '.' in field_path[0]:
-            field_path = tuple(field_path[0].split('.'))
+        if len(field_path) == 1 and "." in field_path[0]:
+            field_path = tuple(field_path[0].split("."))
 
         # If collisions are not explicitly specified, retrieve them
         # from this message's address.
@@ -729,8 +772,9 @@ class MessageType:
 
         # Get the first field in the path.
         first_field = field_path[0]
-        cursor = self.fields[first_field +
-                             ('_' if first_field in utils.RESERVED_NAMES else '')]
+        cursor = self.fields[
+            first_field + ("_" if first_field in utils.RESERVED_NAMES else "")
+        ]
 
         # Base case: If this is the last field in the path, return it outright.
         if len(field_path) == 1:
@@ -743,29 +787,31 @@ class MessageType:
         # Repeated fields are only permitted in the terminal position.
         if cursor.repeated:
             raise KeyError(
-                f'The {cursor.name} field is repeated; unable to use '
-                '`get_field` to retrieve its children.\n'
-                'This exception usually indicates that a '
-                'google.api.method_signature annotation uses a repeated field '
-                'in the fields list in a position other than the end.',
+                f"The {cursor.name} field is repeated; unable to use "
+                "`get_field` to retrieve its children.\n"
+                "This exception usually indicates that a "
+                "google.api.method_signature annotation uses a repeated field "
+                "in the fields list in a position other than the end.",
             )
 
         # Quick check: If this cursor has no message, there is a problem.
         if not cursor.message:
             raise KeyError(
                 f'Field {".".join(field_path)} could not be resolved from '
-                f'{cursor.name}.',
+                f"{cursor.name}.",
             )
 
         # Recursion case: Pass the remainder of the path to the sub-field's
         # message.
         return cursor.message.get_field(*field_path[1:], collisions=collisions)
 
-    def with_context(self, *,
-                     collisions: Set[str],
-                     skip_fields: bool = False,
-                     visited_messages: Optional[Set["MessageType"]] = None,
-                     ) -> 'MessageType':
+    def with_context(
+        self,
+        *,
+        collisions: Set[str],
+        skip_fields: bool = False,
+        visited_messages: Optional[Set["MessageType"]] = None,
+    ) -> "MessageType":
         """Return a derivative of this message with the provided context.
 
         This method is used to address naming collisions. The returned
@@ -780,12 +826,16 @@ class MessageType:
         visited_messages = visited_messages | {self}
         return dataclasses.replace(
             self,
-            fields={
-                k: v.with_context(
-                    collisions=collisions,
-                    visited_messages=visited_messages
-                ) for k, v in self.fields.items()
-            } if not skip_fields else self.fields,
+            fields=(
+                {
+                    k: v.with_context(
+                        collisions=collisions, visited_messages=visited_messages
+                    )
+                    for k, v in self.fields.items()
+                }
+                if not skip_fields
+                else self.fields
+            ),
             nested_enums={
                 k: v.with_context(collisions=collisions)
                 for k, v in self.nested_enums.items()
@@ -801,10 +851,12 @@ class MessageType:
             meta=self.meta.with_context(collisions=collisions),
         )
 
-    def add_to_address_allowlist(self, *,
-                                 address_allowlist: Set['metadata.Address'],
-                                 resource_messages: Dict[str, 'MessageType']
-                                 ) -> None:
+    def add_to_address_allowlist(
+        self,
+        *,
+        address_allowlist: Set["metadata.Address"],
+        resource_messages: Dict[str, "MessageType"],
+    ) -> None:
         """Adds to the set of Addresses of wrapper objects to be included in selective GAPIC generation.
 
         This method is used to create an allowlist of addresses to be used to filter out unneeded
@@ -828,7 +880,7 @@ class MessageType:
             for field in self.fields.values():
                 field.add_to_address_allowlist(
                     address_allowlist=address_allowlist,
-                    resource_messages=resource_messages
+                    resource_messages=resource_messages,
                 )
 
             for enum in self.nested_enums.values():
@@ -846,6 +898,7 @@ class MessageType:
 @dataclasses.dataclass(frozen=True)
 class EnumValueType:
     """Description of an enum value."""
+
     enum_value_pb: descriptor_pb2.EnumValueDescriptorProto
     meta: metadata.Metadata = dataclasses.field(
         default_factory=metadata.Metadata,
@@ -858,6 +911,7 @@ class EnumValueType:
 @dataclasses.dataclass(frozen=True)
 class EnumType:
     """Description of an enum (defined with the ``enum`` keyword.)"""
+
     enum_pb: descriptor_pb2.EnumDescriptorProto
     values: List[EnumValueType]
     meta: metadata.Metadata = dataclasses.field(
@@ -883,20 +937,25 @@ class EnumType:
         """Return the identifier data to be used in templates."""
         return self.meta.address
 
-    def with_context(self, *, collisions: Set[str]) -> 'EnumType':
+    def with_context(self, *, collisions: Set[str]) -> "EnumType":
         """Return a derivative of this enum with the provided context.
 
         This method is used to address naming collisions. The returned
         ``EnumType`` object aliases module names to avoid naming collisions in
         the file being written.
         """
-        return dataclasses.replace(
-            self,
-            meta=self.meta.with_context(collisions=collisions),
-        ) if collisions else self
+        return (
+            dataclasses.replace(
+                self,
+                meta=self.meta.with_context(collisions=collisions),
+            )
+            if collisions
+            else self
+        )
 
-    def add_to_address_allowlist(self, *,
-                                 address_allowlist: Set['metadata.Address']) -> None:
+    def add_to_address_allowlist(
+        self, *, address_allowlist: Set["metadata.Address"]
+    ) -> None:
         """Adds to the set of Addresses of wrapper objects to be included in selective GAPIC generation.
 
         This method is used to create an allowlist of addresses to be used to filter out unneeded
@@ -919,10 +978,7 @@ class EnumType:
         This is a hack to support a pythonic structure representation for
         the generator templates.
         """
-        return MessageToDict(
-            self.enum_pb.options,
-            preserving_proto_field_name=True
-        )
+        return MessageToDict(self.enum_pb.options, preserving_proto_field_name=True)
 
 
 @dataclasses.dataclass(frozen=True)
@@ -933,6 +989,7 @@ class PythonType:
     :meth:`Field.type` can return an object and the caller can be confident
     that a ``name`` property will be present.
     """
+
     meta: metadata.Metadata
 
     def __eq__(self, other):
@@ -951,13 +1008,14 @@ class PythonType:
         return self.ident.name
 
     @property
-    def field_types(self) -> Sequence[Union['MessageType', 'EnumType']]:
+    def field_types(self) -> Sequence[Union["MessageType", "EnumType"]]:
         return tuple()
 
 
 @dataclasses.dataclass(frozen=True)
 class PrimitiveType(PythonType):
     """A representation of a Python primitive type."""
+
     python_type: Optional[type]
 
     @classmethod
@@ -974,14 +1032,19 @@ class PrimitiveType(PythonType):
         """
         # Primitives have no import, and no module to reference, so the
         # address just uses the name of the class (e.g. "int", "str").
-        return cls(meta=metadata.Metadata(address=metadata.Address(
-            name='None' if primitive_type is None else primitive_type.__name__,
-        )), python_type=primitive_type)
+        return cls(
+            meta=metadata.Metadata(
+                address=metadata.Address(
+                    name="None" if primitive_type is None else primitive_type.__name__,
+                )
+            ),
+            python_type=primitive_type,
+        )
 
     def __eq__(self, other):
         # If we are sent the actual Python type (not the PrimitiveType object),
         # claim to be equal to that.
-        if not hasattr(other, 'meta'):
+        if not hasattr(other, "meta"):
             return self.python_type is other
         return super().__eq__(other)
 
@@ -991,34 +1054,44 @@ class ExtendedOperationInfo:
     """A handle to the request type of the extended operation polling method
     and the underlying operation type.
     """
+
     request_type: MessageType
     operation_type: MessageType
 
-    def with_context(self, *,
-                     collisions: Set[str],
-                     visited_messages: Optional[Set["MessageType"]] = None,
-                     ) -> 'ExtendedOperationInfo':
+    def with_context(
+        self,
+        *,
+        collisions: Set[str],
+        visited_messages: Optional[Set["MessageType"]] = None,
+    ) -> "ExtendedOperationInfo":
         """Return a derivative of this OperationInfo with the provided context.
 
-          This method is used to address naming collisions. The returned
-          ``OperationInfo`` object aliases module names to avoid naming collisions
-          in the file being written.
-          """
-        return self if not collisions else dataclasses.replace(
-            self,
-            request_type=self.request_type.with_context(
-                collisions=collisions,
-                visited_messages=visited_messages,
-            ),
-            operation_type=self.operation_type.with_context(
-                collisions=collisions,
-                visited_messages=visited_messages,
-            ),
+        This method is used to address naming collisions. The returned
+        ``OperationInfo`` object aliases module names to avoid naming collisions
+        in the file being written.
+        """
+        return (
+            self
+            if not collisions
+            else dataclasses.replace(
+                self,
+                request_type=self.request_type.with_context(
+                    collisions=collisions,
+                    visited_messages=visited_messages,
+                ),
+                operation_type=self.operation_type.with_context(
+                    collisions=collisions,
+                    visited_messages=visited_messages,
+                ),
+            )
         )
 
-    def add_to_address_allowlist(self, *,
-                                 address_allowlist: Set['metadata.Address'],
-                                 resource_messages: Dict[str, 'MessageType']) -> None:
+    def add_to_address_allowlist(
+        self,
+        *,
+        address_allowlist: Set["metadata.Address"],
+        resource_messages: Dict[str, "MessageType"],
+    ) -> None:
         """Adds to the set of Addresses of wrapper objects to be included in selective GAPIC generation.
 
         This method is used to create an allowlist of addresses to be used to filter out unneeded
@@ -1050,19 +1123,22 @@ class ExtendedOperationInfo:
 @dataclasses.dataclass(frozen=True)
 class OperationInfo:
     """Representation of long-running operation info."""
+
     response_type: MessageType
     metadata_type: MessageType
 
-    def with_context(self, *,
-                     collisions: Set[str],
-                     visited_messages: Optional[Set["MessageType"]] = None,
-                     ) -> 'OperationInfo':
+    def with_context(
+        self,
+        *,
+        collisions: Set[str],
+        visited_messages: Optional[Set["MessageType"]] = None,
+    ) -> "OperationInfo":
         """Return a derivative of this OperationInfo with the provided context.
 
-          This method is used to address naming collisions. The returned
-          ``OperationInfo`` object aliases module names to avoid naming collisions
-          in the file being written.
-          """
+        This method is used to address naming collisions. The returned
+        ``OperationInfo`` object aliases module names to avoid naming collisions
+        in the file being written.
+        """
         return dataclasses.replace(
             self,
             response_type=self.response_type.with_context(
@@ -1075,9 +1151,12 @@ class OperationInfo:
             ),
         )
 
-    def add_to_address_allowlist(self, *,
-                                 address_allowlist: Set['metadata.Address'],
-                                 resource_messages: Dict[str, 'MessageType']) -> None:
+    def add_to_address_allowlist(
+        self,
+        *,
+        address_allowlist: Set["metadata.Address"],
+        resource_messages: Dict[str, "MessageType"],
+    ) -> None:
         """Adds to the set of Addresses of wrapper objects to be included in selective GAPIC generation.
 
         This method is used to create an allowlist of addresses to be used to filter out unneeded
@@ -1101,14 +1180,14 @@ class OperationInfo:
         )
 
         self.metadata_type.add_to_address_allowlist(
-            address_allowlist=address_allowlist,
-            resource_messages=resource_messages
+            address_allowlist=address_allowlist, resource_messages=resource_messages
         )
 
 
 @dataclasses.dataclass(frozen=True)
 class RetryInfo:
     """Representation of the method's retry behavior."""
+
     max_attempts: int
     initial_backoff: float
     max_backoff: float
@@ -1123,16 +1202,16 @@ class RoutingParameter:
 
     def _split_into_segments(self, path_template):
         segments = path_template.split("/")
-        named_segment_ids = [i for i, x in enumerate(
-            segments) if "{" in x or "}" in x]
+        named_segment_ids = [i for i, x in enumerate(segments) if "{" in x or "}" in x]
         # bar/{foo}/baz, bar/{foo=one/two/three}/baz.
         assert len(named_segment_ids) <= 2
         if len(named_segment_ids) == 2:
             # Need to merge a named segment.
             i, j = named_segment_ids
             segments = (
-                segments[:i] +
-                [self._merge_segments(segments[i: j + 1])] + segments[j + 1:]
+                segments[:i]
+                + [self._merge_segments(segments[i : j + 1])]
+                + segments[j + 1 :]
             )
         return segments
 
@@ -1176,8 +1255,11 @@ class RoutingParameter:
     def _convert_to_regex(self, path_template):
         if self._how_many_named_segments(path_template) > 1:
             # This also takes care of complex patterns (i.e. {foo}~{bar})
-            raise ValueError("There must be exactly one named segment. {} has {}.".format(
-                path_template, self._how_many_named_segments(path_template)))
+            raise ValueError(
+                "There must be exactly one named segment. {} has {}.".format(
+                    path_template, self._how_many_named_segments(path_template)
+                )
+            )
         segments = self._split_into_segments(path_template)
         segment_regexes = [self._convert_segment_to_regex(x) for x in segments]
         final_regex = self._merge_segments(segment_regexes)
@@ -1220,8 +1302,7 @@ class RoutingParameter:
     @property
     def sample_request(self) -> str:
         """return json dict for sample request matching the uri template."""
-        sample = uri_sample.sample_from_path_template(
-            self.field, self.path_template)
+        sample = uri_sample.sample_from_path_template(self.field, self.path_template)
         return json.dumps(sample)
 
 
@@ -1230,15 +1311,19 @@ class RoutingRule:
     routing_parameters: List[RoutingParameter]
 
     @classmethod
-    def try_parse_routing_rule(cls, routing_rule: routing_pb2.RoutingRule) -> Optional['RoutingRule']:
-        params = getattr(routing_rule, 'routing_parameters')
+    def try_parse_routing_rule(
+        cls, routing_rule: routing_pb2.RoutingRule
+    ) -> Optional["RoutingRule"]:
+        params = getattr(routing_rule, "routing_parameters")
         if not params:
             return None
         params = [RoutingParameter(x.field, x.path_template) for x in params]
         return cls(params)
 
     @classmethod
-    def resolve(cls, routing_rule: routing_pb2.RoutingRule, request: Union[dict, str]) -> dict:
+    def resolve(
+        cls, routing_rule: routing_pb2.RoutingRule, request: Union[dict, str]
+    ) -> dict:
         """Resolves the routing header which should be sent along with the request.
         The routing header is determined based on the given routing rule and request.
         See the following link for more information on explicit routing headers:
@@ -1289,9 +1374,7 @@ class RoutingRule:
                 routing_parameter_key = routing_param.key
                 if routing_param.path_template:
                     routing_param_regex = routing_param.to_regex()
-                    regex_match = routing_param_regex.match(
-                        request_field_value
-                    )
+                    regex_match = routing_param_regex.match(request_field_value)
                     if regex_match:
                         header_params[routing_parameter_key] = regex_match.group(
                             routing_parameter_key
@@ -1304,6 +1387,7 @@ class RoutingRule:
 @dataclasses.dataclass(frozen=True)
 class HttpRule:
     """Representation of the method's http bindings."""
+
     method: str
     uri: str
     body: Optional[str]
@@ -1312,8 +1396,11 @@ class HttpRule:
         """return list of (name, template) tuples extracted from uri."""
         input = method.input
         return [
-            (input.get_field(*match.group("name").split(".")),
-             match.group("name"), match.group("template"))
+            (
+                input.get_field(*match.group("name").split(".")),
+                match.group("name"),
+                match.group("template"),
+            )
             for match in path_template._VARIABLE_RE.finditer(self.uri)
             if match.group("name")
         ]
@@ -1321,7 +1408,9 @@ class HttpRule:
     def sample_request(self, method: "Method") -> Dict[str, Any]:
         """return json dict for sample request matching the uri template."""
 
-        def sample_from_path_fields(paths: List[Tuple[Field, str, str]]) -> Dict[str, Any]:
+        def sample_from_path_fields(
+            paths: List[Tuple[Field, str, str]],
+        ) -> Dict[str, Any]:
             """Construct a dict for a sample request object from a list of fields
                and template patterns.
 
@@ -1334,19 +1423,20 @@ class HttpRule:
 
             sample_names_ = uri_sample.sample_names()
             for field, path, template in paths:
-                sample_value = re.sub(
-                    r"(\*\*|\*)",
-                    lambda n: next(sample_names_),
-                    template or '*'
-                ) if field.type == PrimitiveType.build(str) else field.mock_value_original_type
+                sample_value = (
+                    re.sub(r"(\*\*|\*)", lambda n: next(sample_names_), template or "*")
+                    if field.type == PrimitiveType.build(str)
+                    else field.mock_value_original_type
+                )
                 uri_sample.add_field(request, path, sample_value)
 
             return request
+
         sample = sample_from_path_fields(self.path_fields(method))
         return sample
 
     @classmethod
-    def try_parse_http_rule(cls, http_rule) -> Optional['HttpRule']:
+    def try_parse_http_rule(cls, http_rule) -> Optional["HttpRule"]:
         method = http_rule.WhichOneof("pattern")
         if method is None or method == "custom":
             return None
@@ -1392,13 +1482,13 @@ class MixinHttpRule(HttpRule):
 @dataclasses.dataclass(frozen=True)
 class Method:
     """Description of a method (defined with the ``rpc`` keyword)."""
+
     method_pb: descriptor_pb2.MethodDescriptorProto
     input: MessageType
     output: MessageType
     is_internal: bool = False
     lro: Optional[OperationInfo] = dataclasses.field(default=None)
-    extended_lro: Optional[ExtendedOperationInfo] = dataclasses.field(
-        default=None)
+    extended_lro: Optional[ExtendedOperationInfo] = dataclasses.field(default=None)
     retry: Optional[RetryInfo] = dataclasses.field(default=None)
     timeout: Optional[float] = None
     meta: metadata.Metadata = dataclasses.field(
@@ -1431,15 +1521,26 @@ class Method:
             },
             keyword.kwlist,
         )
-        return f"{self.name}_" if self.name.lower() in TRANSPORT_UNSAFE_NAMES else self.name
+        return (
+            f"{self.name}_"
+            if self.name.lower() in TRANSPORT_UNSAFE_NAMES
+            else self.name
+        )
 
     @property
     def is_operation_polling_method(self):
-        return self.output.is_extended_operation and self.options.Extensions[ex_ops_pb2.operation_polling_method]
+        return (
+            self.output.is_extended_operation
+            and self.options.Extensions[ex_ops_pb2.operation_polling_method]
+        )
 
     @utils.cached_property
     def name(self):
-        return make_private(self.method_pb.name) if self.is_internal else self.method_pb.name
+        return (
+            make_private(self.method_pb.name)
+            if self.is_internal
+            else self.method_pb.name
+        )
 
     @utils.cached_property
     def client_output(self):
@@ -1475,22 +1576,24 @@ class Method:
         # If this method is an LRO, return a PythonType instance representing
         # that.
         if self.lro:
-            return PythonType(meta=metadata.Metadata(
-                address=metadata.Address(
-                    name='AsyncOperation' if enable_asyncio else 'Operation',
-                    module='operation_async' if enable_asyncio else 'operation',
-                    package=('google', 'api_core'),
-                    collisions=self.lro.response_type.ident.collisions,
-                ),
-                documentation=utils.doc(
-                    'An object representing a long-running operation. \n\n'
-                    'The result type for the operation will be '
-                    ':class:`{ident}` {doc}'.format(
-                        doc=self.lro.response_type.meta.doc,
-                        ident=self.lro.response_type.ident.sphinx,
+            return PythonType(
+                meta=metadata.Metadata(
+                    address=metadata.Address(
+                        name="AsyncOperation" if enable_asyncio else "Operation",
+                        module="operation_async" if enable_asyncio else "operation",
+                        package=("google", "api_core"),
+                        collisions=self.lro.response_type.ident.collisions,
                     ),
-                ),
-            ))
+                    documentation=utils.doc(
+                        "An object representing a long-running operation. \n\n"
+                        "The result type for the operation will be "
+                        ":class:`{ident}` {doc}".format(
+                            doc=self.lro.response_type.meta.doc,
+                            ident=self.lro.response_type.ident.sphinx,
+                        ),
+                    ),
+                )
+            )
 
         if self.extended_lro:
             return PythonType(
@@ -1509,22 +1612,31 @@ class Method:
 
         # If this method is paginated, return that method's pager class.
         if self.paged_result_field:
-            return PythonType(meta=metadata.Metadata(
-                address=metadata.Address(
-                    name=f'{self.name}AsyncPager' if enable_asyncio else f'{self.name}Pager',
-                    package=self.ident.api_naming.module_namespace + (self.ident.api_naming.versioned_module_name,) + self.ident.subpackage + (
-                        'services',
-                        utils.to_snake_case(self.ident.parent[-1]),
+            return PythonType(
+                meta=metadata.Metadata(
+                    address=metadata.Address(
+                        name=(
+                            f"{self.name}AsyncPager"
+                            if enable_asyncio
+                            else f"{self.name}Pager"
+                        ),
+                        package=self.ident.api_naming.module_namespace
+                        + (self.ident.api_naming.versioned_module_name,)
+                        + self.ident.subpackage
+                        + (
+                            "services",
+                            utils.to_snake_case(self.ident.parent[-1]),
+                        ),
+                        module="pagers",
+                        collisions=self.input.ident.collisions,
                     ),
-                    module='pagers',
-                    collisions=self.input.ident.collisions,
-                ),
-                documentation=utils.doc(
-                    f'{self.output.meta.doc}\n\n'
-                    'Iterating over this object will yield results and '
-                    'resolve additional pages automatically.',
-                ),
-            ))
+                    documentation=utils.doc(
+                        f"{self.output.meta.doc}\n\n"
+                        "Iterating over this object will yield results and "
+                        "resolve additional pages automatically.",
+                    ),
+                )
+            )
 
         # Return the usual output.
         return self.output
@@ -1536,7 +1648,7 @@ class Method:
     @property
     def is_deprecated(self) -> bool:
         """Returns true if the method is deprecated, false otherwise."""
-        return descriptor_pb2.MethodOptions.HasField(self.options, 'deprecated')
+        return descriptor_pb2.MethodOptions.HasField(self.options, "deprecated")
 
     # TODO(yon-mg): remove or rewrite: don't think it performs as intended
     #               e.g. doesn't work with basic case of gRPC transcoding
@@ -1549,7 +1661,7 @@ class Method:
 
         # Copied from Node generator.
         # https://github.com/googleapis/gapic-generator-typescript/blob/3ab47f04678d72171ddf25b439d50f6dfb44584c/typescript/src/schema/proto.ts#L587
-        pattern = re.compile(r'{(.*?)[=}]')
+        pattern = re.compile(r"{(.*?)[=}]")
 
         potential_verbs = [
             http.get,
@@ -1560,8 +1672,7 @@ class Method:
             http.custom.path,
         ]
         field_headers = (
-            tuple(FieldHeader(field_header)
-                  for field_header in pattern.findall(verb))
+            tuple(FieldHeader(field_header) for field_header in pattern.findall(verb))
             for verb in potential_verbs
             if verb
         )
@@ -1584,17 +1695,18 @@ class Method:
         """Return a list of the http bindings for this method."""
         http = self.options.Extensions[annotations_pb2.http]
         http_options = [http] + list(http.additional_bindings)
-        opt_gen = (HttpRule.try_parse_http_rule(http_rule)
-                   for http_rule in http_options)
+        opt_gen = (
+            HttpRule.try_parse_http_rule(http_rule) for http_rule in http_options
+        )
         return [rule for rule in opt_gen if rule]
 
     @property
     def http_opt(self) -> Optional[Dict[str, str]]:
         """Return the (main) http option for this method.
 
-          e.g. {'verb': 'post'
-                'url': '/some/path'
-                'body': '*'}
+        e.g. {'verb': 'post'
+              'url': '/some/path'
+              'body': '*'}
 
         """
         http: List[Tuple[descriptor_pb2.FieldDescriptorProto, str]]
@@ -1605,8 +1717,8 @@ class Method:
 
         http_method = http[0]
         answer: Dict[str, str] = {
-            'verb': http_method[0].name,
-            'url': http_method[1],
+            "verb": http_method[0].name,
+            "url": http_method[1],
         }
         if len(http) > 1:
             body_spec = http[1]
@@ -1623,8 +1735,8 @@ class Method:
         if self.http_opt is None:
             return []
 
-        pattern = r'\{(\w+)(?:=.+?)?\}'
-        return re.findall(pattern, self.http_opt['url'])
+        pattern = r"\{(\w+)(?:=.+?)?\}"
+        return re.findall(pattern, self.http_opt["url"])
 
     @property
     def query_params(self) -> Set[str]:
@@ -1635,7 +1747,7 @@ class Method:
             return set()
 
         params = set(self.path_params)
-        body = self.http_opt.get('body')
+        body = self.http_opt.get("body")
         if body:
             if body == "*":
                 # The entire request is the REST body.
@@ -1664,13 +1776,13 @@ class Method:
         cross_pkg_request = self.input.ident.package != self.ident.package
 
         def filter_fields(sig: str) -> Iterable[Tuple[str, Field]]:
-            for f in sig.split(','):
+            for f in sig.split(","):
                 if not f:
                     # Special case for an empty signature
                     continue
                 name = f.strip()
-                field = self.input.get_field(*name.split('.'))
-                name += '_' if field.field_pb.name in utils.RESERVED_NAMES else ''
+                field = self.input.get_field(*name.split("."))
+                name += "_" if field.field_pb.name in utils.RESERVED_NAMES else ""
                 if cross_pkg_request and not field.is_primitive:
                     # This is not a proto-plus wrapped message type,
                     # and setting a non-primitive field directly is verboten.
@@ -1694,17 +1806,17 @@ class Method:
     def legacy_flattened_fields(self) -> Mapping[str, Field]:
         """Return the legacy flattening interface: top level fields only,
         required fields first"""
-        required, optional = utils.partition(lambda f: f.required,
-                                             self.input.fields.values())
-        return collections.OrderedDict((f.name, f)
-                                       for f in chain(required, optional))
+        required, optional = utils.partition(
+            lambda f: f.required, self.input.fields.values()
+        )
+        return collections.OrderedDict((f.name, f) for f in chain(required, optional))
 
     @property
     def grpc_stub_type(self) -> str:
         """Return the type of gRPC stub to use."""
-        return '{client}_{server}'.format(
-            client='stream' if self.client_streaming else 'unary',
-            server='stream' if self.server_streaming else 'unary',
+        return "{client}_{server}".format(
+            client="stream" if self.client_streaming else "unary",
+            server="stream" if self.server_streaming else "unary",
         )
 
     # TODO(yon-mg): figure out why idempotent is reliant on http annotation
@@ -1730,17 +1842,20 @@ class Method:
         # then the method is not paginated.
 
         # The request must have page_token and next_page_token as they keep track of pages
-        for source, source_type, name in ((self.input, str, 'page_token'),
-                                          (self.output, str, 'next_page_token')):
+        for source, source_type, name in (
+            (self.input, str, "page_token"),
+            (self.output, str, "next_page_token"),
+        ):
             field = source.fields.get(name, None)
             if not field or field.type != source_type:
                 return None
 
         # The request must have max_results or page_size
-        page_fields = (self.input.fields.get('max_results', None),
-                       self.input.fields.get('page_size', None))
-        page_field_size = next(
-            (field for field in page_fields if field), None)
+        page_fields = (
+            self.input.fields.get("max_results", None),
+            self.input.fields.get("page_size", None),
+        )
+        page_field_size = next((field for field in page_fields if field), None)
         if not page_field_size or page_field_size.type != int:
             return None
 
@@ -1765,12 +1880,9 @@ class Method:
         # Begin with the input (request) and output (response) messages.
         answer: List[Union[MessageType, EnumType]] = [self.input]
         types: Iterable[Union[MessageType, EnumType]] = (
-            self.input.recursive_field_types if recursive
-            else (
-                f.type
-                for f in self.flattened_fields.values()
-                if f.message or f.enum
-            )
+            self.input.recursive_field_types
+            if recursive
+            else (f.type for f in self.flattened_fields.values() if f.message or f.enum)
         )
         answer.extend(types)
 
@@ -1802,12 +1914,14 @@ class Method:
     @property
     def void(self) -> bool:
         """Return True if this method has no return value, False otherwise."""
-        return self.output.ident.proto == 'google.protobuf.Empty'
+        return self.output.ident.proto == "google.protobuf.Empty"
 
-    def with_context(self, *,
-                     collisions: Set[str],
-                     visited_messages: Optional[Set["MessageType"]] = None,
-                     ) -> 'Method':
+    def with_context(
+        self,
+        *,
+        collisions: Set[str],
+        visited_messages: Optional[Set["MessageType"]] = None,
+    ) -> "Method":
         """Return a derivative of this method with the provided context.
 
         This method is used to address naming collisions. The returned
@@ -1816,16 +1930,22 @@ class Method:
         """
         maybe_lro = None
         if self.lro:
-            maybe_lro = self.lro.with_context(
-                collisions=collisions,
-                visited_messages=visited_messages,
-            ) if collisions else self.lro
+            maybe_lro = (
+                self.lro.with_context(
+                    collisions=collisions,
+                    visited_messages=visited_messages,
+                )
+                if collisions
+                else self.lro
+            )
 
         maybe_extended_lro = (
             self.extended_lro.with_context(
                 collisions=collisions,
                 visited_messages=visited_messages,
-            ) if self.extended_lro else None
+            )
+            if self.extended_lro
+            else None
         )
 
         return dataclasses.replace(
@@ -1843,11 +1963,13 @@ class Method:
             meta=self.meta.with_context(collisions=collisions),
         )
 
-    def add_to_address_allowlist(self, *,
-                                 address_allowlist: Set['metadata.Address'],
-                                 resource_messages: Dict[str, 'MessageType'],
-                                 services_in_proto: Dict[str, 'Service'],
-                                 ) -> None:
+    def add_to_address_allowlist(
+        self,
+        *,
+        address_allowlist: Set["metadata.Address"],
+        resource_messages: Dict[str, "MessageType"],
+        services_in_proto: Dict[str, "Service"],
+    ) -> None:
         """Adds to the allowlist of Addresses of wrapper objects to be included in selective GAPIC generation.
 
         This method is used to create an allowlist of addresses to be used to filter out unneeded
@@ -1873,16 +1995,16 @@ class Method:
         address_allowlist.add(self.ident)
 
         if self.lro:
-            self.lro.add_to_address_allowlist(address_allowlist=address_allowlist,
-                                              resource_messages=resource_messages)
+            self.lro.add_to_address_allowlist(
+                address_allowlist=address_allowlist, resource_messages=resource_messages
+            )
 
-        if self.extended_lro:
+        if self.extended_lro and self.operation_service:
             # We need to add the service/method pointed to by self.operation_service to
             # the allowlist, as it might not have been specified by
             # the methods under selective_gapic_generation.
             # We assume that the operation service lives in the same proto file as this one.
-            operation_service = services_in_proto[
-                self.operation_service]  # type: ignore
+            operation_service = services_in_proto[self.operation_service]
             address_allowlist.add(operation_service.meta.address)
             operation_service.operation_polling_method.add_to_address_allowlist(
                 address_allowlist=address_allowlist,
@@ -1905,7 +2027,7 @@ class Method:
             resource_messages=resource_messages,
         )
 
-    def with_internal_methods(self, *, public_methods: Set[str]) -> 'Method':
+    def with_internal_methods(self, *, public_methods: Set[str]) -> "Method":
         """Returns a version of this ``Method`` marked as internal
 
         The methods not in the public_methods set will be marked as internal and
@@ -1934,10 +2056,7 @@ class CommonResource:
 
     @classmethod
     def build(cls, resource: resource_pb2.ResourceDescriptor):
-        return cls(
-            type_name=resource.type,
-            pattern=next(iter(resource.pattern))
-        )
+        return cls(type_name=resource.type, pattern=next(iter(resource.pattern)))
 
     @utils.cached_property
     def message_type(self):
@@ -1957,6 +2076,7 @@ class CommonResource:
 @dataclasses.dataclass(frozen=True)
 class Service:
     """Description of a service (defined with the ``service`` keyword)."""
+
     service_pb: descriptor_pb2.ServiceDescriptorProto
     methods: Mapping[str, Method]
     # N.B.: visible_resources is intended to be a read-only view
@@ -2053,7 +2173,7 @@ class Service:
         """
         if self.options.Extensions[client_pb2.default_host]:
             return self.options.Extensions[client_pb2.default_host]
-        return ''
+        return ""
 
     @property
     def version(self) -> str:
@@ -2064,7 +2184,7 @@ class Service:
         """
         if self.options.Extensions[client_pb2.api_version]:
             return self.options.Extensions[client_pb2.api_version]
-        return ''
+        return ""
 
     @property
     def shortname(self) -> str:
@@ -2089,7 +2209,7 @@ class Service:
         # Return the OAuth scopes, split on comma.
         return tuple(
             i.strip()
-            for i in self.options.Extensions[client_pb2.oauth_scopes].split(',')
+            for i in self.options.Extensions[client_pb2.oauth_scopes].split(",")
             if i
         )
 
@@ -2111,9 +2231,7 @@ class Service:
         """
         # Put together a set of the service and method names.
         answer = {self.name, self.client_name, self.async_client_name}
-        answer.update(
-            utils.to_snake_case(i.name) for i in self.methods.values()
-        )
+        answer.update(utils.to_snake_case(i.name) for i in self.methods.values())
 
         # Identify any import module names where the same module name is used
         # from distinct packages.
@@ -2135,6 +2253,7 @@ class Service:
     def resource_messages(self) -> FrozenSet[MessageType]:
         """Returns all the resource message types used in all
         request and response fields in the service."""
+
         def gen_resources(message):
             if message.resource_path:
                 yield message
@@ -2145,8 +2264,7 @@ class Service:
 
         def gen_indirect_resources_used(message):
             for field in message.recursive_resource_fields:
-                resource = field.options.Extensions[
-                    resource_pb2.resource_reference]
+                resource = field.options.Extensions[resource_pb2.resource_reference]
                 resource_type = resource.type or resource.child_type
                 # The resource may not be visible if the resource type is one of
                 # the common_resources (see the class var in class definition)
@@ -2181,7 +2299,8 @@ class Service:
                 `{"locations.googleapis.com/Location": MessageType(...)}`
         """
         service_resource_messages = {
-            r.resource_type_full_path: r for r in self.resource_messages}
+            r.resource_type_full_path: r for r in self.resource_messages
+        }
 
         # Add common resources
         service_resource_messages.update(
@@ -2210,22 +2329,19 @@ class Service:
     @utils.cached_property
     def operation_polling_method(self) -> Optional[Method]:
         return next(
-            (
-                m
-                for m in self.methods.values()
-                if m.is_operation_polling_method
-            ),
-            None
+            (m for m in self.methods.values() if m.is_operation_polling_method), None
         )
 
     @utils.cached_property
     def is_internal(self) -> bool:
         return any(m.is_internal for m in self.methods.values())
 
-    def with_context(self, *,
-                     collisions: Set[str],
-                     visited_messages: Optional[Set["MessageType"]] = None,
-                     ) -> 'Service':
+    def with_context(
+        self,
+        *,
+        collisions: Set[str],
+        visited_messages: Optional[Set["MessageType"]] = None,
+    ) -> "Service":
         """Return a derivative of this service with the provided context.
 
         This method is used to address naming collisions. The returned
@@ -2246,12 +2362,14 @@ class Service:
             meta=self.meta.with_context(collisions=collisions),
         )
 
-    def add_to_address_allowlist(self, *,
-                                 address_allowlist: Set['metadata.Address'],
-                                 method_allowlist: Set[str],
-                                 resource_messages: Dict[str, 'MessageType'],
-                                 services_in_proto: Dict[str, 'Service'],
-                                 ) -> None:
+    def add_to_address_allowlist(
+        self,
+        *,
+        address_allowlist: Set["metadata.Address"],
+        method_allowlist: Set[str],
+        resource_messages: Dict[str, "MessageType"],
+        services_in_proto: Dict[str, "Service"],
+    ) -> None:
         """Adds to the allowlist of Addresses of wrapper objects to be included in selective GAPIC generation.
 
         This method is used to create an allowlist of addresses to be used to filter out unneeded
@@ -2267,7 +2385,7 @@ class Service:
                 resource type name of a resource message to the corresponding MessageType object
                 representing that resource message. Only resources with a message representation
                 should be included in the dictionary.
-            services_in_proto (Dict[str, Service]): 
+            services_in_proto (Dict[str, Service]):
         Returns:
             None
         """
@@ -2282,8 +2400,9 @@ class Service:
                     services_in_proto=services_in_proto,
                 )
 
-    def prune_messages_for_selective_generation(self, *,
-                                                address_allowlist: Set['metadata.Address']) -> 'Service':
+    def prune_messages_for_selective_generation(
+        self, *, address_allowlist: Set["metadata.Address"]
+    ) -> "Service":
         """Returns a truncated version of this Service.
 
         Only the methods, messages, and enums contained in the address allowlist
@@ -2299,13 +2418,11 @@ class Service:
         return dataclasses.replace(
             self,
             methods={
-                k: v
-                for k, v in self.methods.items() if v.ident in address_allowlist
-            }
+                k: v for k, v in self.methods.items() if v.ident in address_allowlist
+            },
         )
 
-    def with_internal_methods(self, *,
-                              public_methods: Set[str]) -> 'Service':
+    def with_internal_methods(self, *, public_methods: Set[str]) -> "Service":
         """Returns a version of this ``Service`` with some Methods marked as internal.
 
         The methods not in the public_methods set will be marked as internal and
@@ -2330,5 +2447,5 @@ class Service:
                     meth.with_internal_methods(public_methods=public_methods)
                     for meth in self.methods.values()
                 )
-            }
+            },
         )

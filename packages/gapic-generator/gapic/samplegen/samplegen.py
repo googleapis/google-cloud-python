@@ -30,7 +30,18 @@ from gapic.schema import api
 from gapic.schema import wrappers
 
 from collections import defaultdict, namedtuple, ChainMap as chainmap
-from typing import Any, ChainMap, Dict, FrozenSet, Generator, List, Mapping, Optional, Sequence, Tuple
+from typing import (
+    Any,
+    ChainMap,
+    Dict,
+    FrozenSet,
+    Generator,
+    List,
+    Mapping,
+    Optional,
+    Sequence,
+    Tuple,
+)
 
 # There is no library stub file for this module, so ignore it.
 from google.api import resource_pb2  # type: ignore
@@ -163,13 +174,14 @@ class TransformedRequest:
             #
             # It's a precondition that the base field is
             # a valid field of the request message type.
-            resource_reference = request_type.fields[base].options.Extensions[resource_pb2.resource_reference]
+            resource_reference = request_type.fields[base].options.Extensions[
+                resource_pb2.resource_reference
+            ]
             resource_typestr = resource_reference.type or resource_reference.child_type
 
             resource_message = None
             for service in api_schema.services.values():
-                resource_message = service.resource_messages_dict.get(
-                    resource_typestr)
+                resource_message = service.resource_messages_dict.get(resource_typestr)
                 if resource_message is not None:
                     break
 
@@ -178,7 +190,8 @@ class TransformedRequest:
                     f"No message exists for resource: {resource_typestr}",
                 )
             resource_message_descriptor = resource_message.options.Extensions[
-                resource_pb2.resource]
+                resource_pb2.resource
+            ]
 
             # The field is only ever empty for singleton attributes.
             attr_names: List[str] = [a.field for a in attrs]  # type: ignore
@@ -204,7 +217,12 @@ class TransformedRequest:
             # so it can be used in sample code as an f-string.
             pattern = cls.RESOURCE_RE.sub(r"{\g<1>}", pattern)
 
-            return cls(base=base, body=attrs, single=None, pattern=pattern,)
+            return cls(
+                base=base,
+                body=attrs,
+                single=None,
+                pattern=pattern,
+            )
 
 
 @dataclasses.dataclass
@@ -214,8 +232,7 @@ class RequestEntry:
     Deliberatly NOT frozen: is_resource_request is mutable on purpose."""
 
     is_resource_request: bool = False
-    attrs: List[AttributeRequestSetup] = dataclasses.field(
-        default_factory=list)
+    attrs: List[AttributeRequestSetup] = dataclasses.field(default_factory=list)
 
 
 @dataclasses.dataclass(frozen=True)
@@ -276,9 +293,7 @@ class Validator:
             # and whether it's an enum or a message or a primitive type.
             # The method call response isn't a field, so construct an artificial
             # field that wraps the response.
-            {
-                "$resp": MockField(response_type, False)  # type: ignore
-            }
+            {"$resp": MockField(response_type, False)}  # type: ignore
         )
 
     @staticmethod
@@ -300,7 +315,9 @@ class Validator:
         transport = sample.setdefault("transport", api.TRANSPORT_GRPC)
 
         is_async = transport == api.TRANSPORT_GRPC_ASYNC
-        sample["client_name"] = service.async_client_name if is_async else service.client_name
+        sample["client_name"] = (
+            service.async_client_name if is_async else service.client_name
+        )
 
         # the MessageType of the request object passed to the rpc e.g., `ListRequest`
         sample["request_type"] = rpc.input
@@ -316,8 +333,7 @@ class Validator:
         # If no request was specified in the config
         # Add reasonable default values as placeholders
         if "request" not in sample:
-            sample["request"] = generate_request_object(
-                api_schema, service, rpc.input)
+            sample["request"] = generate_request_object(api_schema, service, rpc.input)
 
         # If no response was specified in the config
         # Add reasonable defaults depending on the type of the sample
@@ -488,8 +504,7 @@ class Validator:
                                      construction.
 
         """
-        base_param_to_attrs: Dict[str,
-            RequestEntry] = defaultdict(RequestEntry)
+        base_param_to_attrs: Dict[str, RequestEntry] = defaultdict(RequestEntry)
         for r in request:
             r_dup = dict(r)
             val = r_dup.get("value")
@@ -516,8 +531,7 @@ class Validator:
             if input_parameter:
                 self._handle_lvalue(
                     input_parameter,
-                    wrappers.Field(
-                        field_pb=descriptor_pb2.FieldDescriptorProto()),
+                    wrappers.Field(field_pb=descriptor_pb2.FieldDescriptorProto()),
                 )
 
             # The percentage sign is used for setting up resource based requests
@@ -538,7 +552,7 @@ class Validator:
                 # It's a resource based request.
                 base_param, resource_attr = (
                     field[:percent_idx],
-                    field[percent_idx + 1:],
+                    field[percent_idx + 1 :],
                 )
                 request_entry = base_param_to_attrs.get(base_param)
                 if request_entry and not request_entry.is_resource_request:
@@ -596,8 +610,7 @@ class Validator:
 
         for statement in response:
             if len(statement) != 1:
-                raise types.InvalidStatement(
-                    "Invalid statement: {}".format(statement))
+                raise types.InvalidStatement("Invalid statement: {}".format(statement))
 
             keyword, body = next(iter(statement.items()))
             validater = self.STATEMENT_DISPATCH_TABLE.get(keyword)
@@ -675,8 +688,7 @@ class Validator:
                 # See https://github.com/protocolbuffers/protobuf/blob/master/src/google/protobuf/descriptor.proto#L496
                 # for a better understanding of how map attributes are handled in protobuf
                 if not message or not message.options.map_field:
-                    raise types.BadAttributeLookup(
-                        f"Badly formed mapped field: {base}")
+                    raise types.BadAttributeLookup(f"Badly formed mapped field: {base}")
 
                 value_field = message.fields.get("value")
                 if not value_field:
@@ -703,7 +715,7 @@ class Validator:
                     f"Non-terminal attribute is not a message: {base}"
                 )
 
-            return validate_recursively(expression[first_dot + 1:], scope, depth + 1)
+            return validate_recursively(expression[first_dot + 1 :], scope, depth + 1)
 
         return validate_recursively(exp, self.var_defs_)
 
@@ -715,30 +727,28 @@ class Validator:
         """
         if lval in RESERVED_WORDS:
             raise types.ReservedVariableName(
-                "Tried to define a variable with reserved name: {}".format(
-                    lval)
+                "Tried to define a variable with reserved name: {}".format(lval)
             )
 
         # Even though it's valid python to reassign variables to any rvalue,
         # the samplegen spec prohibits this.
         if lval in self.var_defs_:
-            raise types.RedefinedVariable(
-                "Tried to redefine variable: {}".format(lval))
+            raise types.RedefinedVariable("Tried to redefine variable: {}".format(lval))
 
         self.var_defs_[lval] = type_
 
     def _validate_format(self, body: List[str]):
         """Validates a format string and corresponding arguments.
 
-         The number of format tokens in the string must equal the
-         number of arguments, and each argument must be a defined variable.
+        The number of format tokens in the string must equal the
+        number of arguments, and each argument must be a defined variable.
 
-         Raises:
-             MismatchedFormatSpecifier: If the number of format string segments ("%s") in
-                                        a "print" or "comment" block does not equal the
-                                        size number of strings in the block minus 1.
-             UndefinedVariableReference: If the base lvalue in an expression chain
-                                         is not a previously defined lvalue.
+        Raises:
+            MismatchedFormatSpecifier: If the number of format string segments ("%s") in
+                                       a "print" or "comment" block does not equal the
+                                       size number of strings in the block minus 1.
+            UndefinedVariableReference: If the base lvalue in an expression chain
+                                        is not a previously defined lvalue.
         """
         fmt_str = body[0]
         num_prints = fmt_str.count("%s")
@@ -753,7 +763,7 @@ class Validator:
             self.validate_expression(expression)
 
     def _validate_define(self, body: str):
-        """"Validates 'define' statements.
+        """ "Validates 'define' statements.
 
         Adds the defined lvalue to the lexical scope.
         Other statements can reference it.
@@ -883,8 +893,7 @@ class Validator:
             segments -= {self.KEY_KWORD, self.VAL_KWORD}
             if segments:
                 raise types.BadLoop(
-                    "Unexpected keywords in loop statement: {}".format(
-                        segments)
+                    "Unexpected keywords in loop statement: {}".format(segments)
                 )
 
             map_field = self.validate_expression(loop[self.MAP_KWORD])
@@ -921,7 +930,9 @@ class Validator:
     }
 
 
-def parse_handwritten_specs(sample_configs: Sequence[str]) -> Generator[Dict[str, Any], None, None]:
+def parse_handwritten_specs(
+    sample_configs: Sequence[str],
+) -> Generator[Dict[str, Any], None, None]:
     """Parse a handwritten sample spec"""
 
     for config_fpath in sample_configs:
@@ -932,12 +943,21 @@ def parse_handwritten_specs(sample_configs: Sequence[str]) -> Generator[Dict[str
                 valid = is_valid_sample_cfg(cfg)
                 if not valid:
                     raise types.InvalidConfig(
-                        "Sample config in '{}' is invalid\n\n{}".format(config_fpath, cfg), valid)
+                        "Sample config in '{}' is invalid\n\n{}".format(
+                            config_fpath, cfg
+                        ),
+                        valid,
+                    )
                 for spec in cfg.get("samples", []):
                     yield spec
 
 
-def generate_request_object(api_schema: api.API, service: wrappers.Service, message: wrappers.MessageType, field_name_prefix: str = ""):
+def generate_request_object(
+    api_schema: api.API,
+    service: wrappers.Service,
+    message: wrappers.MessageType,
+    field_name_prefix: str = "",
+):
     """Generate dummy input for a given message.
 
     Args:
@@ -956,23 +976,24 @@ def generate_request_object(api_schema: api.API, service: wrappers.Service, mess
     # There is no standard syntax to mark a oneof as "required" in protos.
     # Assume every oneof is required and pick the first option
     # in each oneof.
-    selected_oneofs: List[wrappers.Field] = [oneof_fields[0]
-        for oneof_fields in message.oneof_fields().values()]
+    selected_oneofs: List[wrappers.Field] = [
+        oneof_fields[0] for oneof_fields in message.oneof_fields().values()
+    ]
 
     # Don't add required fields if they're also marked as oneof
-    required_fields = [
-        field for field in message.required_fields if not field.oneof]
+    required_fields = [field for field in message.required_fields if not field.oneof]
     request_fields = selected_oneofs + required_fields
 
     for field in request_fields:
         # TransformedRequest expects nested fields to be referenced like
         # `destination.input_config.name`
-        field_name = ".".join([field_name_prefix, field.name]).lstrip('.')
+        field_name = ".".join([field_name_prefix, field.name]).lstrip(".")
 
         # TODO(busunkim): Properly handle map fields
         if field.is_primitive:
             request.append(
-                {"field": field_name, "value": field.mock_value_original_type})
+                {"field": field_name, "value": field.mock_value_original_type}
+            )
         elif field.enum:
             # Choose the last enum value in the list since index 0 is often "unspecified"
             enum_value = field.enum.values[-1].name
@@ -981,8 +1002,7 @@ def generate_request_object(api_schema: api.API, service: wrappers.Service, mess
             else:
                 field_value = enum_value
 
-            request.append(
-                {"field": field_name, "value": field_value})
+            request.append({"field": field_name, "value": field_value})
         else:
             # This is a message type, recurse
             # TODO(busunkim):  Some real world APIs have
@@ -990,7 +1010,9 @@ def generate_request_object(api_schema: api.API, service: wrappers.Service, mess
             # Reference `Field.mock_value` to ensure
             # this always terminates.
             request += generate_request_object(
-                api_schema, service, field.type,
+                api_schema,
+                service,
+                field.type,
                 field_name_prefix=field_name,
             )
 
@@ -1009,7 +1031,9 @@ def _supports_grpc(service) -> bool:
     return api.TRANSPORT_GRPC in service.clients.keys()
 
 
-def generate_sample_specs(api_schema: api.API, *, opts) -> Generator[Dict[str, Any], None, None]:
+def generate_sample_specs(
+    api_schema: api.API, *, opts
+) -> Generator[Dict[str, Any], None, None]:
     """Given an API, generate basic sample specs for each method.
 
     If a service supports gRPC transport, we do not generate
@@ -1025,7 +1049,9 @@ def generate_sample_specs(api_schema: api.API, *, opts) -> Generator[Dict[str, A
     gapic_metadata = api_schema.gapic_metadata(opts)
 
     for service_name, service in gapic_metadata.services.items():
-        api_short_name = api_schema.services[f"{api_schema.naming.proto_package}.{service_name}"].shortname
+        api_short_name = api_schema.services[
+            f"{api_schema.naming.proto_package}.{service_name}"
+        ].shortname
         api_version = api_schema.naming.version
         supports_grpc = _supports_grpc(service)
         for transport, client in service.clients.items():
@@ -1048,7 +1074,7 @@ def generate_sample_specs(api_schema: api.API, *, opts) -> Generator[Dict[str, A
                     # `request` and `response` are populated in `preprocess_sample`
                     "service": f"{api_schema.naming.proto_package}.{service_name}",
                     "region_tag": region_tag,
-                    "description": f"Snippet for {utils.to_snake_case(rpc_name)}"
+                    "description": f"Snippet for {utils.to_snake_case(rpc_name)}",
                 }
 
                 yield spec
@@ -1074,46 +1100,75 @@ def _fill_sample_metadata(sample: dict, api_schema: api.API):
     snippet_metadata.origin = snippet_metadata_pb2.Snippet.Origin.API_DEFINITION  # type: ignore
 
     # Service Client
-    snippet_metadata.client_method.client.short_name = service.async_client_name if async_ else service.client_name
+    snippet_metadata.client_method.client.short_name = (
+        service.async_client_name if async_ else service.client_name
+    )
     snippet_metadata.client_method.client.full_name = f"{'.'.join(sample['module_namespace'])}.{sample['module_name']}.{snippet_metadata.client_method.client.short_name}"
 
     # Service
     snippet_metadata.client_method.method.service.short_name = service.name
-    snippet_metadata.client_method.method.service.full_name = f"{api_schema.naming.proto_package}.{service.name}"
+    snippet_metadata.client_method.method.service.full_name = (
+        f"{api_schema.naming.proto_package}.{service.name}"
+    )
 
     # RPC
     snippet_metadata.client_method.method.short_name = method.name
-    snippet_metadata.client_method.method.full_name = f"{api_schema.naming.proto_package}.{service.name}.{method.name}"
+    snippet_metadata.client_method.method.full_name = (
+        f"{api_schema.naming.proto_package}.{service.name}.{method.name}"
+    )
 
     # Client Method
     setattr(snippet_metadata.client_method, "async", async_)
-    snippet_metadata.client_method.short_name = utils.to_snake_case(
-        method.name)
+    snippet_metadata.client_method.short_name = utils.to_snake_case(method.name)
     snippet_metadata.client_method.full_name = f"{snippet_metadata.client_method.client.full_name}.{snippet_metadata.client_method.short_name}"
 
     if not method.void:
-        snippet_metadata.client_method.result_type = method.client_output_async.ident.sphinx if async_ else method.client_output.ident.sphinx
+        snippet_metadata.client_method.result_type = (
+            method.client_output_async.ident.sphinx
+            if async_
+            else method.client_output.ident.sphinx
+        )
         if method.server_streaming:
-            snippet_metadata.client_method.result_type = f"Iterable[{snippet_metadata.client_method.result_type}]"
+            snippet_metadata.client_method.result_type = (
+                f"Iterable[{snippet_metadata.client_method.result_type}]"
+            )
 
     # Client Method Parameters
     parameters = snippet_metadata.client_method.parameters
     if not method.client_streaming:
-        parameters.append(snippet_metadata_pb2.ClientMethod.Parameter(  # type: ignore
-            type=method.input.ident.sphinx, name="request"))
+        parameters.append(
+            snippet_metadata_pb2.ClientMethod.Parameter(  # type: ignore
+                type=method.input.ident.sphinx, name="request"
+            )
+        )
         for field in method.flattened_fields.values():
-            parameters.append(snippet_metadata_pb2.ClientMethod.Parameter(  # type: ignore
-                type=field.ident.sphinx, name=field.name))
+            parameters.append(
+                snippet_metadata_pb2.ClientMethod.Parameter(  # type: ignore
+                    type=field.ident.sphinx, name=field.name
+                )
+            )
     else:
-        parameters.append(snippet_metadata_pb2.ClientMethod.Parameter(  # type: ignore
-            type=f"Iterator[{method.input.ident.sphinx}]", name="requests"))
+        parameters.append(
+            snippet_metadata_pb2.ClientMethod.Parameter(  # type: ignore
+                type=f"Iterator[{method.input.ident.sphinx}]", name="requests"
+            )
+        )
 
-    parameters.append(snippet_metadata_pb2.ClientMethod.Parameter(  # type: ignore
-        name="retry", type="google.api_core.retry.Retry"))
-    parameters.append(snippet_metadata_pb2.ClientMethod.Parameter(  # type: ignore
-        name="timeout", type="float"))
-    parameters.append(snippet_metadata_pb2.ClientMethod.Parameter(  # type: ignore
-        name="metadata", type="Sequence[Tuple[str, Union[str, bytes]]]"))
+    parameters.append(
+        snippet_metadata_pb2.ClientMethod.Parameter(  # type: ignore
+            name="retry", type="google.api_core.retry.Retry"
+        )
+    )
+    parameters.append(
+        snippet_metadata_pb2.ClientMethod.Parameter(  # type: ignore
+            name="timeout", type="float"
+        )
+    )
+    parameters.append(
+        snippet_metadata_pb2.ClientMethod.Parameter(  # type: ignore
+            name="metadata", type="Sequence[Tuple[str, Union[str, bytes]]]"
+        )
+    )
 
     return snippet_metadata
 
@@ -1134,7 +1189,9 @@ def _get_sample_imports(sample: Dict, rpc: wrappers.Method) -> List[str]:
         return sorted([module_import, request_import])
 
 
-def generate_sample(sample, api_schema, sample_template: jinja2.Template) -> Tuple[str, Any]:
+def generate_sample(
+    sample, api_schema, sample_template: jinja2.Template
+) -> Tuple[str, Any]:
     """Generate a standalone, runnable sample.
 
     Writing the rendered output is left for the caller.
@@ -1156,8 +1213,7 @@ def generate_sample(sample, api_schema, sample_template: jinja2.Template) -> Tup
     rpc = service.methods.get(rpc_name)
     if not rpc:
         raise types.RpcMethodNotFound(
-            "Could not find rpc in service {}: {}".format(
-                service_name, rpc_name)
+            "Could not find rpc in service {}: {}".format(service_name, rpc_name)
         )
 
     calling_form = types.CallingForm.method_default(rpc)
@@ -1177,11 +1233,14 @@ def generate_sample(sample, api_schema, sample_template: jinja2.Template) -> Tup
     # The sample must be preprocessed before calling _get_sample_imports.
     imports = _get_sample_imports(sample, rpc)
 
-    return sample_template.render(
-        sample=sample,
-        imports=imports,
-        calling_form=calling_form,
-        calling_form_enum=types.CallingForm,
-        trim_blocks=True,
-        lstrip_blocks=True,
-    ), snippet_metadata
+    return (
+        sample_template.render(
+            sample=sample,
+            imports=imports,
+            calling_form=calling_form,
+            calling_form_enum=types.CallingForm,
+            trim_blocks=True,
+            lstrip_blocks=True,
+        ),
+        snippet_metadata,
+    )

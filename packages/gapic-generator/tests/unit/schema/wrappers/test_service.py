@@ -45,7 +45,8 @@ def make_resource_opts(*args):
         "/".join(f"{arg}/{{{arg}}}" for arg in args)
     )
     opts.Extensions[resource_pb2.resource].type = "/".join(
-        f"{arg}/{{{arg}}}" for arg in args)
+        f"{arg}/{{{arg}}}" for arg in args
+    )
     return opts
 
 
@@ -55,29 +56,29 @@ def make_resource_opts(*args):
 
 
 def test_service_properties():
-    service = make_service(name='ThingDoer')
-    assert service.name == 'ThingDoer'
-    assert service.client_name == 'ThingDoerClient'
-    assert service.client_package_version == ''
-    assert service.async_client_name == 'ThingDoerAsyncClient'
-    assert service.transport_name == 'ThingDoerTransport'
-    assert service.grpc_transport_name == 'ThingDoerGrpcTransport'
-    assert service.grpc_asyncio_transport_name == 'ThingDoerGrpcAsyncIOTransport'
-    assert service.rest_transport_name == 'ThingDoerRestTransport'
+    service = make_service(name="ThingDoer")
+    assert service.name == "ThingDoer"
+    assert service.client_name == "ThingDoerClient"
+    assert service.client_package_version == ""
+    assert service.async_client_name == "ThingDoerAsyncClient"
+    assert service.transport_name == "ThingDoerTransport"
+    assert service.grpc_transport_name == "ThingDoerGrpcTransport"
+    assert service.grpc_asyncio_transport_name == "ThingDoerGrpcAsyncIOTransport"
+    assert service.rest_transport_name == "ThingDoerRestTransport"
 
 
 def test_service_host():
-    service = make_service(host='thingdoer.googleapis.com')
-    assert service.host == 'thingdoer.googleapis.com'
+    service = make_service(host="thingdoer.googleapis.com")
+    assert service.host == "thingdoer.googleapis.com"
 
 
 def test_service_api_version_not_specified():
-    service = make_service(host='thingdoer.googleapis.com')
+    service = make_service(host="thingdoer.googleapis.com")
     assert not service.version
 
 
 def test_service_api_version_exists():
-    service = make_service(host='thingdoer.googleapis.com', version="goose")
+    service = make_service(host="thingdoer.googleapis.com", version="goose")
     assert service.version == "goose"
 
 
@@ -87,30 +88,49 @@ def test_service_no_host():
 
 
 def test_service_scopes():
-    service = make_service(scopes=('https://foo/user/', 'https://foo/admin/'))
-    assert 'https://foo/user/' in service.oauth_scopes
-    assert 'https://foo/admin/' in service.oauth_scopes
+    service = make_service(scopes=("https://foo/user/", "https://foo/admin/"))
+    assert "https://foo/user/" in service.oauth_scopes
+    assert "https://foo/admin/" in service.oauth_scopes
 
 
 def test_service_names():
-    service = make_service(name='ThingDoer', methods=(
-        get_method('DoThing', 'foo.bar.ThingRequest', 'foo.baz.ThingResponse'),
-        get_method('Jump', 'foo.bacon.JumpRequest', 'foo.bacon.JumpResponse'),
-        get_method('Yawn', 'a.b.v1.c.YawnRequest', 'x.y.v1.z.YawnResponse'),
-    ))
-    expected_names = {'ThingDoer', 'ThingDoerClient', 'ThingDoerAsyncClient',
-                      'do_thing', 'jump', 'yawn'}
+    service = make_service(
+        name="ThingDoer",
+        methods=(
+            get_method("DoThing", "foo.bar.ThingRequest", "foo.baz.ThingResponse"),
+            get_method("Jump", "foo.bacon.JumpRequest", "foo.bacon.JumpResponse"),
+            get_method("Yawn", "a.b.v1.c.YawnRequest", "x.y.v1.z.YawnResponse"),
+        ),
+    )
+    expected_names = {
+        "ThingDoer",
+        "ThingDoerClient",
+        "ThingDoerAsyncClient",
+        "do_thing",
+        "jump",
+        "yawn",
+    }
     assert service.names == expected_names
 
 
 def test_service_name_colliding_modules():
-    service = make_service(name='ThingDoer', methods=(
-        get_method('DoThing', 'foo.bar.ThingRequest', 'foo.bar.ThingResponse'),
-        get_method('Jump', 'bacon.bar.JumpRequest', 'bacon.bar.JumpResponse'),
-        get_method('Yawn', 'a.b.v1.c.YawnRequest', 'a.b.v1.c.YawnResponse'),
-    ))
-    expected_names = {'ThingDoer', 'ThingDoerClient', 'ThingDoerAsyncClient',
-                      'do_thing', 'jump', 'yawn', 'bar'}
+    service = make_service(
+        name="ThingDoer",
+        methods=(
+            get_method("DoThing", "foo.bar.ThingRequest", "foo.bar.ThingResponse"),
+            get_method("Jump", "bacon.bar.JumpRequest", "bacon.bar.JumpResponse"),
+            get_method("Yawn", "a.b.v1.c.YawnRequest", "a.b.v1.c.YawnResponse"),
+        ),
+    )
+    expected_names = {
+        "ThingDoer",
+        "ThingDoerClient",
+        "ThingDoerAsyncClient",
+        "do_thing",
+        "jump",
+        "yawn",
+        "bar",
+    }
     assert service.names == expected_names
 
 
@@ -120,35 +140,35 @@ def test_service_no_scopes():
 
 
 def test_service_python_modules():
-    service = make_service(methods=(
-        get_method('DoThing', 'foo.bar.ThingRequest', 'foo.baz.ThingResponse'),
-        get_method('Jump', 'foo.bacon.JumpRequest', 'foo.bacon.JumpResponse'),
-        get_method('Yawn', 'a.b.v1.c.YawnRequest', 'x.y.v1.z.YawnResponse'),
-    ))
+    service = make_service(
+        methods=(
+            get_method("DoThing", "foo.bar.ThingRequest", "foo.baz.ThingResponse"),
+            get_method("Jump", "foo.bacon.JumpRequest", "foo.bacon.JumpResponse"),
+            get_method("Yawn", "a.b.v1.c.YawnRequest", "x.y.v1.z.YawnResponse"),
+        )
+    )
     imports = {
-        i.ident.python_import
-        for m in service.methods.values()
-        for i in m.ref_types
+        i.ident.python_import for m in service.methods.values() for i in m.ref_types
     }
     assert imports == {
-        imp.Import(package=('a', 'b', 'v1'), module='c'),
-        imp.Import(package=('foo',), module='bacon'),
-        imp.Import(package=('foo',), module='bar'),
-        imp.Import(package=('foo',), module='baz'),
-        imp.Import(package=('x', 'y', 'v1'), module='z'),
+        imp.Import(package=("a", "b", "v1"), module="c"),
+        imp.Import(package=("foo",), module="bacon"),
+        imp.Import(package=("foo",), module="bar"),
+        imp.Import(package=("foo",), module="baz"),
+        imp.Import(package=("x", "y", "v1"), module="z"),
     }
 
 
 def test_service_python_modules_lro():
     service = make_service_with_method_options()
-    method = service.methods['DoBigThing']
+    method = service.methods["DoBigThing"]
     imports = {i.ident.python_import for i in method.ref_types}
     assert imports == {
-        imp.Import(package=('foo',), module='bar'),
-        imp.Import(package=('foo',), module='baz'),
-        imp.Import(package=('foo',), module='qux'),
-        imp.Import(package=('google', 'api_core'), module='operation'),
-        imp.Import(package=('google', 'api_core'), module='operation_async'),
+        imp.Import(package=("foo",), module="bar"),
+        imp.Import(package=("foo",), module="baz"),
+        imp.Import(package=("foo",), module="qux"),
+        imp.Import(package=("google", "api_core"), module="operation"),
+        imp.Import(package=("google", "api_core"), module="operation_async"),
     }
 
 
@@ -156,26 +176,26 @@ def test_service_python_modules_signature():
     service = make_service_with_method_options(
         in_fields=(
             # type=5 is int, so nothing is added.
-            descriptor_pb2.FieldDescriptorProto(name='secs', type=5),
+            descriptor_pb2.FieldDescriptorProto(name="secs", type=5),
             descriptor_pb2.FieldDescriptorProto(
-                name='d',
+                name="d",
                 type=14,  # enum
-                type_name='a.b.c.v2.D',
+                type_name="a.b.c.v2.D",
             ),
         ),
-        method_signature='secs,d',
+        method_signature="secs,d",
     )
 
     # Ensure that the service will have the expected imports.
-    method = service.methods['DoBigThing']
+    method = service.methods["DoBigThing"]
     imports = {i.ident.python_import for i in method.ref_types}
     assert imports == {
-        imp.Import(package=('a', 'b', 'c'), module='v2'),
-        imp.Import(package=('foo',), module='bar'),
-        imp.Import(package=('foo',), module='baz'),
-        imp.Import(package=('foo',), module='qux'),
-        imp.Import(package=('google', 'api_core'), module='operation'),
-        imp.Import(package=('google', 'api_core'), module='operation_async'),
+        imp.Import(package=("a", "b", "c"), module="v2"),
+        imp.Import(package=("foo",), module="bar"),
+        imp.Import(package=("foo",), module="baz"),
+        imp.Import(package=("foo",), module="qux"),
+        imp.Import(package=("google", "api_core"), module="operation"),
+        imp.Import(package=("google", "api_core"), module="operation_async"),
     }
 
 
@@ -190,8 +210,8 @@ def test_service_has_lro():
 
 
 def test_module_name():
-    service = make_service(name='MyService')
-    assert service.module_name == 'my_service'
+    service = make_service(name="MyService")
+    assert service.module_name == "my_service"
 
 
 def test_resource_messages():
@@ -199,9 +219,7 @@ def test_resource_messages():
     squid_resource = make_message("Squid", options=make_resource_opts("squid"))
     squid_request = make_message(
         "CreateSquid",
-        fields=(
-            make_field('squid', message=squid_resource),
-        ),
+        fields=(make_field("squid", message=squid_resource),),
     )
 
     # Nested resource
@@ -212,17 +230,15 @@ def test_resource_messages():
     clam_resource = make_message(
         "Clam",
         options=make_resource_opts("clam"),
-        fields=(
-            make_field('squamosa', message=squamosa_message),
-        ),
+        fields=(make_field("squamosa", message=squamosa_message),),
     )
     clam_request = make_message(
-        'CreateClam',
+        "CreateClam",
         fields=(
-            make_field('clam', message=clam_resource),
+            make_field("clam", message=clam_resource),
             # Red herring, not resources :)
-            make_field('zone', 2, enum=make_enum('Zone')),
-            make_field('pearls', 3, True, message=make_message('Pearl')),
+            make_field("zone", 2, enum=make_enum("Zone")),
+            make_field("pearls", 3, True, message=make_message("Pearl")),
         ),
     )
 
@@ -232,13 +248,11 @@ def test_resource_messages():
     # Not a resource
     octopus_request = make_message(
         "CreateOctopus",
-        fields=(
-            make_field('Octopus', message=make_message('Octopus')),
-        ),
+        fields=(make_field("Octopus", message=make_message("Octopus")),),
     )
 
     service = make_service(
-        'Molluscs',
+        "Molluscs",
         methods=(
             make_method(
                 f"{message.name}",
@@ -250,7 +264,7 @@ def test_resource_messages():
                 whelk_resource,
                 octopus_request,
             )
-        )
+        ),
     )
 
     expected = {
@@ -268,9 +282,7 @@ def test_resource_messages_dict():
     squid_resource = make_message("Squid", options=make_resource_opts("squid"))
     squid_request = make_message(
         "CreateSquid",
-        fields=(
-            make_field('squid', message=squid_resource),
-        ),
+        fields=(make_field("squid", message=squid_resource),),
     )
 
     # Nested resource
@@ -281,17 +293,15 @@ def test_resource_messages_dict():
     clam_resource = make_message(
         "Clam",
         options=make_resource_opts("clam"),
-        fields=(
-            make_field('squamosa', message=squamosa_message),
-        ),
+        fields=(make_field("squamosa", message=squamosa_message),),
     )
     clam_request = make_message(
-        'CreateClam',
+        "CreateClam",
         fields=(
-            make_field('clam', message=clam_resource),
+            make_field("clam", message=clam_resource),
             # Red herring, not resources :)
-            make_field('zone', 2, enum=make_enum('Zone')),
-            make_field('pearls', 3, True, message=make_message('Pearl')),
+            make_field("zone", 2, enum=make_enum("Zone")),
+            make_field("pearls", 3, True, message=make_message("Pearl")),
         ),
     )
 
@@ -301,13 +311,11 @@ def test_resource_messages_dict():
     # Not a resource
     octopus_request = make_message(
         "CreateOctopus",
-        fields=(
-            make_field('Octopus', message=make_message('Octopus')),
-        ),
+        fields=(make_field("Octopus", message=make_message("Octopus")),),
     )
 
     service = make_service(
-        'Molluscs',
+        "Molluscs",
         methods=(
             make_method(
                 f"{message.name}",
@@ -319,7 +327,7 @@ def test_resource_messages_dict():
                 whelk_resource,
                 octopus_request,
             )
-        )
+        ),
     )
 
     expected = {
@@ -329,16 +337,21 @@ def test_resource_messages_dict():
         "whelk/{whelk}": whelk_resource,
         "clam/{clam}/squamosa/{squamosa}": squamosa_message,
         # Common resources
-        "cloudresourcemanager.googleapis.com/Project":
-            service.common_resources["cloudresourcemanager.googleapis.com/Project"].message_type,
-        "cloudresourcemanager.googleapis.com/Organization":
-            service.common_resources["cloudresourcemanager.googleapis.com/Organization"].message_type,
-        "cloudresourcemanager.googleapis.com/Folder":
-            service.common_resources["cloudresourcemanager.googleapis.com/Folder"].message_type,
-        "cloudbilling.googleapis.com/BillingAccount":
-            service.common_resources["cloudbilling.googleapis.com/BillingAccount"].message_type,
-        "locations.googleapis.com/Location":
-            service.common_resources["locations.googleapis.com/Location"].message_type
+        "cloudresourcemanager.googleapis.com/Project": service.common_resources[
+            "cloudresourcemanager.googleapis.com/Project"
+        ].message_type,
+        "cloudresourcemanager.googleapis.com/Organization": service.common_resources[
+            "cloudresourcemanager.googleapis.com/Organization"
+        ].message_type,
+        "cloudresourcemanager.googleapis.com/Folder": service.common_resources[
+            "cloudresourcemanager.googleapis.com/Folder"
+        ].message_type,
+        "cloudbilling.googleapis.com/BillingAccount": service.common_resources[
+            "cloudbilling.googleapis.com/BillingAccount"
+        ].message_type,
+        "locations.googleapis.com/Location": service.common_resources[
+            "locations.googleapis.com/Location"
+        ].message_type,
     }
     actual = service.resource_messages_dict
     assert expected == actual
@@ -352,7 +365,11 @@ def test_service_unknown_resource_reference():
     squid_request = make_message(
         "CreateSquid",
         fields=(
-            make_field("parent", type="TYPE_STRING", options=opts,),
+            make_field(
+                "parent",
+                type="TYPE_STRING",
+                options=opts,
+            ),
         ),
     )
     squid_service = make_service(
@@ -371,7 +388,7 @@ def test_service_unknown_resource_reference():
 def test_service_any_streaming():
     for client, server in itertools.product((True, False), (True, False)):
         service = make_service(
-            f'ClientStream{client}:ServerStream{server}',
+            f"ClientStream{client}:ServerStream{server}",
             methods=(
                 (
                     make_method(
@@ -386,7 +403,7 @@ def test_service_any_streaming():
                         server_streaming=server,
                     ),
                 )
-            )
+            ),
         )
 
         assert service.any_client_streaming == client
@@ -395,74 +412,77 @@ def test_service_any_streaming():
 
 def test_service_any_deprecated():
     service = make_service(
-        name='Service',
+        name="Service",
         methods=(
-                (
-                    make_method(
-                        f"GetMollusc",
-                        input_message=make_message(
-                            "GetMolluscRequest",
-                        ),
-                        output_message=make_message(
-                            "GetMolluscResponse",
-                        ),
+            (
+                make_method(
+                    f"GetMollusc",
+                    input_message=make_message(
+                        "GetMolluscRequest",
                     ),
-                )
-            ))
+                    output_message=make_message(
+                        "GetMolluscResponse",
+                    ),
+                ),
+            )
+        ),
+    )
 
     assert service.any_deprecated == False
 
     deprecated_service = make_service(
-        name='ServiceWithDeprecatedMethod',
+        name="ServiceWithDeprecatedMethod",
         methods=(
-                (
-                    make_method(
-                        f"GetMollusc",
-                        input_message=make_message(
-                            "GetMolluscRequest",
-                        ),
-                        output_message=make_message(
-                            "GetMolluscResponse",
-                        ),
-                        is_deprecated=True,
+            (
+                make_method(
+                    f"GetMollusc",
+                    input_message=make_message(
+                        "GetMolluscRequest",
                     ),
-                )
-            ))
+                    output_message=make_message(
+                        "GetMolluscResponse",
+                    ),
+                    is_deprecated=True,
+                ),
+            )
+        ),
+    )
 
     assert deprecated_service.any_deprecated == True
 
 
 def test_has_pagers():
-    paged = make_field(name='foos', message=make_message('Foo'), repeated=True)
+    paged = make_field(name="foos", message=make_message("Foo"), repeated=True)
     input_msg = make_message(
-        name='ListFoosRequest',
+        name="ListFoosRequest",
         fields=(
-            make_field(name='parent', type=9),      # str
-            make_field(name='page_size', type=5),   # int
-            make_field(name='page_token', type=9),  # str
+            make_field(name="parent", type=9),  # str
+            make_field(name="page_size", type=5),  # int
+            make_field(name="page_token", type=9),  # str
         ),
     )
     output_msg = make_message(
-        name='ListFoosResponse',
+        name="ListFoosResponse",
         fields=(
             paged,
-            make_field(name='next_page_token', type=9),  # str
+            make_field(name="next_page_token", type=9),  # str
         ),
     )
     method = make_method(
-        'ListFoos',
+        "ListFoos",
         input_message=input_msg,
         output_message=output_msg,
     )
 
-    service = make_service(name="Fooer", methods=(method,),)
+    service = make_service(
+        name="Fooer",
+        methods=(method,),
+    )
     assert service.has_pagers
 
     other_service = make_service(
         name="Unfooer",
-        methods=(
-            get_method("Unfoo", "foo.bar.UnfooReq", "foo.bar.UnFooResp"),
-        ),
+        methods=(get_method("Unfoo", "foo.bar.UnfooReq", "foo.bar.UnFooResp"),),
     )
     assert not other_service.has_pagers
 
@@ -501,10 +521,16 @@ def test_common_resource_patterns():
     )
     species_msg = species.message_type
 
-    assert species_msg.resource_path == "families/{family}/genera/{genus}/species/{species}"
+    assert (
+        species_msg.resource_path
+        == "families/{family}/genera/{genus}/species/{species}"
+    )
     assert species_msg.resource_type == "Species"
     assert species_msg.resource_path_args == ["family", "genus", "species"]
-    assert species_msg.path_regex_str == '^families/(?P<family>.+?)/genera/(?P<genus>.+?)/species/(?P<species>.+?)$'
+    assert (
+        species_msg.path_regex_str
+        == "^families/(?P<family>.+?)/genera/(?P<genus>.+?)/species/(?P<species>.+?)$"
+    )
 
 
 def test_resource_response():
@@ -516,9 +542,7 @@ def test_resource_response():
     clam_resource = make_message("Clam", options=make_resource_opts("clam"))
     clam_response = make_message(
         "CreateClamResponse",
-        fields=(
-            make_field('clam', message=clam_resource),
-        ),
+        fields=(make_field("clam", message=clam_resource),),
     )
     clam_request = make_message("CreateClamRequest")
 
@@ -545,7 +569,9 @@ def test_operation_polling_method():
         name="Operation",
         fields=[
             make_field(name=name, type=T.Value("TYPE_STRING"), number=i)
-            for i, name in enumerate(("name", "status", "error_code", "error_message"), start=1)
+            for i, name in enumerate(
+                ("name", "status", "error_code", "error_message"), start=1
+            )
         ],
     )
     for f in operation.fields.values():
@@ -556,9 +582,7 @@ def test_operation_polling_method():
 
     request = make_message(
         name="GetOperation",
-        fields=[
-            make_field(name="name", type=T.Value("TYPE_STRING"), number=1)
-        ],
+        fields=[make_field(name="name", type=T.Value("TYPE_STRING"), number=1)],
     )
 
     options = descriptor_pb2.MethodOptions()
@@ -607,7 +631,9 @@ def test_extended_operations_lro_detection():
         name="Operation",
         fields=[
             make_field(name=name, type=T.Value("TYPE_STRING"), number=i)
-            for i, name in enumerate(("name", "status", "error_code", "error_message"), start=1)
+            for i, name in enumerate(
+                ("name", "status", "error_code", "error_message"), start=1
+            )
         ],
     )
     for f in operation.fields.values():
@@ -618,9 +644,7 @@ def test_extended_operations_lro_detection():
 
     request = make_message(
         name="GetOperation",
-        fields=[
-            make_field(name="name", type=T.Value("TYPE_STRING"), number=1)
-        ],
+        fields=[make_field(name="name", type=T.Value("TYPE_STRING"), number=1)],
     )
 
     options = descriptor_pb2.MethodOptions()

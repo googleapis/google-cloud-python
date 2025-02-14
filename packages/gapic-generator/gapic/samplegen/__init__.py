@@ -16,6 +16,6 @@ from gapic.samplegen import samplegen
 from gapic.samplegen import manifest
 
 __all__ = (
-    'manifest',
-    'samplegen',
+    "manifest",
+    "samplegen",
 )

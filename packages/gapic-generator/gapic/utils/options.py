@@ -33,47 +33,49 @@ class Options:
     on unrecognized arguments (essentially, we throw them away, but we do
     warn if it looks like it was meant for us).
     """
-    name: str = ''
+
+    name: str = ""
     namespace: Tuple[str, ...] = dataclasses.field(default=())
-    warehouse_package_name: str = ''
+    warehouse_package_name: str = ""
     retry: Optional[Dict[str, Any]] = None
     sample_configs: Tuple[str, ...] = dataclasses.field(default=())
     autogen_snippets: bool = True
-    templates: Tuple[str, ...] = dataclasses.field(default=('DEFAULT',))
+    templates: Tuple[str, ...] = dataclasses.field(default=("DEFAULT",))
     lazy_import: bool = False
     old_naming: bool = False
     add_iam_methods: bool = False
     metadata: bool = False
     # TODO(yon-mg): should there be an enum for transport type?
     transport: List[str] = dataclasses.field(default_factory=lambda: [])
-    service_yaml_config: Dict[str, Any] = dataclasses.field(
-        default_factory=dict)
+    service_yaml_config: Dict[str, Any] = dataclasses.field(default_factory=dict)
     rest_numeric_enums: bool = False
-    proto_plus_deps: Tuple[str, ...] = dataclasses.field(default=('',))
+    proto_plus_deps: Tuple[str, ...] = dataclasses.field(default=("",))
 
     # Class constants
-    PYTHON_GAPIC_PREFIX: str = 'python-gapic-'
-    OPT_FLAGS: FrozenSet[str] = frozenset((
-        'add-iam-methods',      # microgenerator implementation for `reroute_to_grpc_interface`
-        'lazy-import',          # requires >= 3.7
-        'metadata',             # generate GAPIC metadata JSON file
-        'old-naming',           # TODO(dovs): Come up with a better comment
-        'retry-config',         # takes a path
-        'service-yaml',         # takes a path
-        'samples',              # output dir
-        'autogen-snippets',     # produce auto-generated snippets
-        # transport type(s) delineated by '+' (i.e. grpc, rest, custom.[something], etc?)
-        'transport',
-        'warehouse-package-name',  # change the package name on PyPI
-        # when transport includes "rest", request that response enums be JSON-encoded as numbers
-        'rest-numeric-enums',
-        # proto plus dependencies delineated by '+'
-        # For example, 'google.cloud.api.v1+google.cloud.anotherapi.v2'
-        'proto-plus-deps',
-    ))
+    PYTHON_GAPIC_PREFIX: str = "python-gapic-"
+    OPT_FLAGS: FrozenSet[str] = frozenset(
+        (
+            "add-iam-methods",  # microgenerator implementation for `reroute_to_grpc_interface`
+            "lazy-import",  # requires >= 3.7
+            "metadata",  # generate GAPIC metadata JSON file
+            "old-naming",  # TODO(dovs): Come up with a better comment
+            "retry-config",  # takes a path
+            "service-yaml",  # takes a path
+            "samples",  # output dir
+            "autogen-snippets",  # produce auto-generated snippets
+            # transport type(s) delineated by '+' (i.e. grpc, rest, custom.[something], etc?)
+            "transport",
+            "warehouse-package-name",  # change the package name on PyPI
+            # when transport includes "rest", request that response enums be JSON-encoded as numbers
+            "rest-numeric-enums",
+            # proto plus dependencies delineated by '+'
+            # For example, 'google.cloud.api.v1+google.cloud.anotherapi.v2'
+            "proto-plus-deps",
+        )
+    )
 
     @classmethod
-    def build(cls, opt_string: str) -> 'Options':
+    def build(cls, opt_string: str) -> "Options":
         """Build an Options instance based on a protoc opt string.
 
         Args:
@@ -93,12 +95,12 @@ class Options:
         """
         # Parse out every option beginning with `python-gapic`
         opts: DefaultDict[str, List[str]] = defaultdict(list)
-        for opt in opt_string.split(','):
+        for opt in opt_string.split(","):
             opt = opt.strip()
             # Parse out the key and value.
-            value = 'true'
-            if '=' in opt:
-                opt, value = opt.split('=')
+            value = "true"
+            if "=" in opt:
+                opt, value = opt.split("=")
 
             # Save known, expected keys.
             if opt in cls.OPT_FLAGS:
@@ -113,14 +115,14 @@ class Options:
             #
             # Just assume everything is a list at this point, and the
             # final instantiation step can de-list-ify where appropriate.
-            opts[opt[len(cls.PYTHON_GAPIC_PREFIX):]].append(value)
+            opts[opt[len(cls.PYTHON_GAPIC_PREFIX) :]].append(value)
 
         # If templates are specified, one of the specified directories
         # may be our default; perform that replacement.
-        default_token = 'DEFAULT'
-        templates = opts.pop('templates', [default_token])
-        pwd = path.join(path.dirname(__file__), '..')
-        default_path = path.realpath(path.join(pwd, 'templates'))
+        default_token = "DEFAULT"
+        templates = opts.pop("templates", [default_token])
+        pwd = path.join(path.dirname(__file__), "..")
+        default_path = path.realpath(path.join(pwd, "templates"))
 
         def tweak_path(p):
             if p == default_token:
@@ -134,46 +136,50 @@ class Options:
         templates = [tweak_path(p) for p in templates]
 
         retry_cfg = None
-        retry_paths = opts.pop('retry-config', None)
+        retry_paths = opts.pop("retry-config", None)
         if retry_paths:
             # Just use the last config specified.
             with open(retry_paths[-1]) as f:
                 retry_cfg = json.load(f)
 
         service_yaml_config = {}
-        service_yaml_paths = opts.pop('service-yaml', None)
+        service_yaml_paths = opts.pop("service-yaml", None)
         if service_yaml_paths:
             # Just use the last file specified.
             with open(service_yaml_paths[-1]) as f:
                 service_yaml_config = yaml.load(f, Loader=yaml.Loader)
         # The yaml service files typically have this field,
         # but it is not a field in the gogle.api.Service proto.
-        service_yaml_config.pop('type', None)
+        service_yaml_config.pop("type", None)
 
         # Build the options instance.
-        sample_paths = opts.pop('samples', [])
+        sample_paths = opts.pop("samples", [])
 
         # autogen-snippets is True by default, so make sure users can disable
         # by passing `autogen-snippets=false`
-        autogen_snippets = opts.pop(
-            "autogen-snippets", ["True"])[0] in ("True", "true", "T", "t", "TRUE")
+        autogen_snippets = opts.pop("autogen-snippets", ["True"])[0] in (
+            "True",
+            "true",
+            "T",
+            "t",
+            "TRUE",
+        )
 
         # NOTE: Snippets are not currently correct for the alternative (Ads) templates
         # so always disable snippetgen in that case
         # https://github.com/googleapis/gapic-generator-python/issues/1052
-        old_naming = bool(opts.pop('old-naming', False))
+        old_naming = bool(opts.pop("old-naming", False))
         if old_naming:
             autogen_snippets = False
 
-        proto_plus_deps = tuple(opts.pop('proto-plus-deps', ''))
+        proto_plus_deps = tuple(opts.pop("proto-plus-deps", ""))
         if len(proto_plus_deps):
-            proto_plus_deps = tuple(proto_plus_deps[0].split('+'))
+            proto_plus_deps = tuple(proto_plus_deps[0].split("+"))
 
         answer = Options(
-            name=opts.pop('name', ['']).pop(),
-            namespace=tuple(opts.pop('namespace', [])),
-            warehouse_package_name=opts.pop(
-                'warehouse-package-name', ['']).pop(),
+            name=opts.pop("name", [""]).pop(),
+            namespace=tuple(opts.pop("namespace", [])),
+            warehouse_package_name=opts.pop("warehouse-package-name", [""]).pop(),
             retry=retry_cfg,
             sample_configs=tuple(
                 cfg_path
@@ -182,14 +188,14 @@ class Options:
             ),
             autogen_snippets=autogen_snippets,
             templates=tuple(path.expanduser(i) for i in templates),
-            lazy_import=bool(opts.pop('lazy-import', False)),
+            lazy_import=bool(opts.pop("lazy-import", False)),
             old_naming=old_naming,
-            add_iam_methods=bool(opts.pop('add-iam-methods', False)),
-            metadata=bool(opts.pop('metadata', False)),
+            add_iam_methods=bool(opts.pop("add-iam-methods", False)),
+            metadata=bool(opts.pop("metadata", False)),
             # transport should include desired transports delimited by '+', e.g. transport='grpc+rest'
-            transport=opts.pop('transport', ['grpc'])[0].split('+'),
+            transport=opts.pop("transport", ["grpc"])[0].split("+"),
             service_yaml_config=service_yaml_config,
-            rest_numeric_enums=bool(opts.pop('rest-numeric-enums', False)),
+            rest_numeric_enums=bool(opts.pop("rest-numeric-enums", False)),
             proto_plus_deps=proto_plus_deps,
         )
 
@@ -199,7 +205,7 @@ class Options:
         # If there are any options remaining, then we failed to recognize
         # them -- complain.
         for key in opts.keys():
-            warnings.warn(f'Unrecognized option: `python-gapic-{key}`.')
+            warnings.warn(f"Unrecognized option: `python-gapic-{key}`.")
 
         # Done; return the built options.
         return answer

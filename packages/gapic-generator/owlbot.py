@@ -26,3 +26,5 @@ s.move(templated_files / ".trampolinerc")
 
 s.move(templated_files / "LICENSE")
 s.move(templated_files / ".github", excludes=["workflows", "CODEOWNERS", "auto-approve.yml"])
+
+s.shell.run(["nox", "-s", "blacken"], hide_output=False)

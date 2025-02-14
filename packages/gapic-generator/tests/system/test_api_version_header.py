@@ -27,16 +27,20 @@ def test_api_version_in_grpc_trailing_metadata(echo):
 
     # This feature requires version 0.35.0 of `gapic-showcase` or newer which has the
     # ability to echo request headers
-    content = 'The hail in Wales falls mainly on the snails.'
-    responses = echo.expand({
-        'content': content,
-    })
+    content = "The hail in Wales falls mainly on the snails."
+    responses = echo.expand(
+        {
+            "content": content,
+        }
+    )
     if isinstance(echo.transport, type(echo).get_transport_class("grpc")):
         response_metadata = [
-            (metadata.key, metadata.value)
-            for metadata in responses.trailing_metadata()
+            (metadata.key, metadata.value) for metadata in responses.trailing_metadata()
         ]
         assert ("x-goog-api-version", "v1_20240408") in response_metadata
     else:
         assert "X-Showcase-Request-X-Goog-Api-Version" in responses._response.headers
-        assert responses._response.headers["X-Showcase-Request-X-Goog-Api-Version"] == "v1_20240408"
+        assert (
+            responses._response.headers["X-Showcase-Request-X-Goog-Api-Version"]
+            == "v1_20240408"
+        )

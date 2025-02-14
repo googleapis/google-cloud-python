@@ -16,28 +16,28 @@ from gapic.utils import case
 
 
 def test_pascal_to_snake():
-    assert case.to_snake_case('PascalCaseThing') == 'pascal_case_thing'
+    assert case.to_snake_case("PascalCaseThing") == "pascal_case_thing"
 
 
 def test_camel_to_snake():
-    assert case.to_snake_case('camelCaseThing') == 'camel_case_thing'
+    assert case.to_snake_case("camelCaseThing") == "camel_case_thing"
 
 
 def test_constant_to_snake():
-    assert case.to_snake_case('CONSTANT_CASE_THING') == 'constant_case_thing'
+    assert case.to_snake_case("CONSTANT_CASE_THING") == "constant_case_thing"
 
 
 def test_pascal_to_camel():
-    assert case.to_camel_case('PascalCaseThing') == 'pascalCaseThing'
+    assert case.to_camel_case("PascalCaseThing") == "pascalCaseThing"
 
 
 def test_snake_to_camel():
-    assert case.to_camel_case('snake_case_thing') == 'snakeCaseThing'
+    assert case.to_camel_case("snake_case_thing") == "snakeCaseThing"
 
 
 def test_constant_to_camel():
-    assert case.to_camel_case('CONSTANT_CASE_THING') == 'constantCaseThing'
+    assert case.to_camel_case("CONSTANT_CASE_THING") == "constantCaseThing"
 
 
 def test_kebab_to_camel():
-    assert case.to_camel_case('kebab-case-thing') == 'kebabCaseThing'
+    assert case.to_camel_case("kebab-case-thing") == "kebabCaseThing"

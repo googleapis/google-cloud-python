@@ -20,15 +20,17 @@ def test_crud_with_request(identity):
     count = len(identity.list_users().users)
     user = identity.create_user(
         request={
-            "user": {"display_name": "Guido van Rossum", "email": "guido@guido.fake", }
+            "user": {
+                "display_name": "Guido van Rossum",
+                "email": "guido@guido.fake",
+            }
         }
     )
     try:
         assert user.display_name == "Guido van Rossum"
         assert user.email == "guido@guido.fake"
         assert len(identity.list_users().users) == count + 1
-        assert identity.get_user(
-            {"name": user.name}).display_name == "Guido van Rossum"
+        assert identity.get_user({"name": user.name}).display_name == "Guido van Rossum"
     finally:
         identity.delete_user({"name": user.name})
 
@@ -36,7 +38,9 @@ def test_crud_with_request(identity):
 def test_crud_flattened(identity):
     count = len(identity.list_users().users)
     user = identity.create_user(
-        display_name="Monty Python", email="monty@python.org", )
+        display_name="Monty Python",
+        email="monty@python.org",
+    )
     try:
         assert user.display_name == "Monty Python"
         assert user.email == "monty@python.org"
@@ -83,33 +87,39 @@ if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
     async def test_crud_with_request_async(async_identity):
         pager = await async_identity.list_users()
         count = len(pager.users)
-        user = await async_identity.create_user(request={'user': {
-            'display_name': 'Guido van Rossum',
-            'email': 'guido@guido.fake',
-        }})
+        user = await async_identity.create_user(
+            request={
+                "user": {
+                    "display_name": "Guido van Rossum",
+                    "email": "guido@guido.fake",
+                }
+            }
+        )
         try:
-            assert user.display_name == 'Guido van Rossum'
-            assert user.email == 'guido@guido.fake'
-            pager = (await async_identity.list_users())
+            assert user.display_name == "Guido van Rossum"
+            assert user.email == "guido@guido.fake"
+            pager = await async_identity.list_users()
             assert len(pager.users) == count + 1
-            assert (await async_identity.get_user({
-                'name': user.name
-            })).display_name == 'Guido van Rossum'
+            assert (
+                await async_identity.get_user({"name": user.name})
+            ).display_name == "Guido van Rossum"
         finally:
-            await async_identity.delete_user({'name': user.name})
+            await async_identity.delete_user({"name": user.name})
 
     @pytest.mark.asyncio
     async def test_crud_flattened_async(async_identity):
         count = len((await async_identity.list_users()).users)
         user = await async_identity.create_user(
-            display_name='Monty Python',
-            email='monty@python.org',
+            display_name="Monty Python",
+            email="monty@python.org",
         )
         try:
-            assert user.display_name == 'Monty Python'
-            assert user.email == 'monty@python.org'
+            assert user.display_name == "Monty Python"
+            assert user.email == "monty@python.org"
             assert len((await async_identity.list_users()).users) == count + 1
-            assert (await async_identity.get_user(name=user.name)).display_name == 'Monty Python'
+            assert (
+                await async_identity.get_user(name=user.name)
+            ).display_name == "Monty Python"
         finally:
             await async_identity.delete_user(name=user.name)
 

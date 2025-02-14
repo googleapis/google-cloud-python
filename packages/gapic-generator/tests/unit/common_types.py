@@ -16,7 +16,7 @@ import dataclasses
 import itertools
 
 from collections import namedtuple
-from typing import (Any, Dict, Iterable, Optional)
+from typing import Any, Dict, Iterable, Optional
 
 from google.protobuf import descriptor_pb2
 
@@ -52,19 +52,23 @@ DummyMessageTypePB = namedtuple("DummyMessageTypePB", ["name"])
 # DummyMessageBase.__new__.__defaults__ = (False,) * len(DummyMessageBase._fields)
 
 
-DummyFieldBase = namedtuple("DummyField",
-                        ["message",
-                         "enum",
-                         "name",
-                         "repeated",
-                         "required",
-                         "resource_reference",
-                         "oneof",
-                         "field_pb",
-                         "meta",
-                         "is_primitive",
-                         "ident",
-                         "type"])
+DummyFieldBase = namedtuple(
+    "DummyField",
+    [
+        "message",
+        "enum",
+        "name",
+        "repeated",
+        "required",
+        "resource_reference",
+        "oneof",
+        "field_pb",
+        "meta",
+        "is_primitive",
+        "ident",
+        "type",
+    ],
+)
 DummyFieldBase.__new__.__defaults__ = (False,) * len(DummyFieldBase._fields)
 
 
@@ -75,7 +79,16 @@ class DummyField(DummyFieldBase):
 
 
 class DummyMessage:
-    def __init__(self, *, fields={}, type="", options=False, ident=False, resource_path=False, meta=None):
+    def __init__(
+        self,
+        *,
+        fields={},
+        type="",
+        options=False,
+        ident=False,
+        resource_path=False,
+        meta=None
+    ):
         self.fields = fields
         self.type = type
         self.options = options
@@ -87,7 +100,9 @@ class DummyMessage:
         return self.fields[field_name]
 
     def oneof_fields(self):
-        return dict((field.oneof, field) for field in self.fields.values() if field.oneof)
+        return dict(
+            (field.oneof, field) for field in self.fields.values() if field.oneof
+        )
 
     @property
     def required_fields(self):
@@ -95,26 +110,37 @@ class DummyMessage:
 
     @property
     def resource_path_args(self):
-        return wrappers.MessageType.PATH_ARG_RE.findall(self.resource_path or '')
+        return wrappers.MessageType.PATH_ARG_RE.findall(self.resource_path or "")
 
 
-DummyService = namedtuple("DummyService", [
-                          "name", "methods", "client_name", "async_client_name", "resource_messages_dict"])
+DummyService = namedtuple(
+    "DummyService",
+    ["name", "methods", "client_name", "async_client_name", "resource_messages_dict"],
+)
 DummyService.__new__.__defaults__ = (False,) * len(DummyService._fields)
 
-DummyApiSchema = namedtuple("DummyApiSchema",
-                            ["services", "naming", "messages"])
+DummyApiSchema = namedtuple("DummyApiSchema", ["services", "naming", "messages"])
 DummyApiSchema.__new__.__defaults__ = (False,) * len(DummyApiSchema._fields)
 
 DummyNaming = namedtuple(
-    "DummyNaming", ["warehouse_package_name", "name", "version", "versioned_module_name", "module_namespace", "proto_package"])
+    "DummyNaming",
+    [
+        "warehouse_package_name",
+        "name",
+        "version",
+        "versioned_module_name",
+        "module_namespace",
+        "proto_package",
+    ],
+)
 DummyNaming.__new__.__defaults__ = (False,) * len(DummyNaming._fields)
 
 
-def message_factory(exp: str,
-                    repeated_iter=itertools.repeat(False),
-                    enum: Optional[wrappers.EnumType] = None,
-                    ) -> DummyMessage:
+def message_factory(
+    exp: str,
+    repeated_iter=itertools.repeat(False),
+    enum: Optional[wrappers.EnumType] = None,
+) -> DummyMessage:
     # This mimics the structure of MessageType in the wrappers module:
     # A MessageType has a map from field names to Fields,
     # and a Field has an (optional) MessageType.
@@ -122,17 +148,18 @@ def message_factory(exp: str,
     # used to describe the field and type hierarchy,
     # e.g. "mollusc.cephalopod.coleoid"
     toks = exp.split(".")
-    messages = [DummyMessage(fields={}, type=tok.upper() + "_TYPE")
-                for tok in toks]
+    messages = [DummyMessage(fields={}, type=tok.upper() + "_TYPE") for tok in toks]
     if enum:
         messages[-1] = enum
 
     for base, field, attr_name, repeated_field in zip(
         messages, messages[1:], toks[1:], repeated_iter
     ):
-        base.fields[attr_name] = (DummyField(message=field, repeated=repeated_field)
-                                  if isinstance(field, DummyMessage)
-                                  else DummyField(enum=field))
+        base.fields[attr_name] = (
+            DummyField(message=field, repeated=repeated_field)
+            if isinstance(field, DummyMessage)
+            else DummyField(enum=field)
+        )
     return messages[0]
 
 
@@ -142,12 +169,12 @@ def enum_factory(name: str, variants: Iterable[str]) -> wrappers.EnumType:
         value=tuple(
             descriptor_pb2.EnumValueDescriptorProto(name=v, number=i)
             for i, v in enumerate(variants)
-        )
+        ),
     )
 
     enum = wrappers.EnumType(
         enum_pb=enum_pb,
-        values=[wrappers.EnumValueType(enum_value_pb=v) for v in enum_pb.value]
+        values=[wrappers.EnumValueType(enum_value_pb=v) for v in enum_pb.value],
     )
 
     return enum

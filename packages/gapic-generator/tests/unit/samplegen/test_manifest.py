@@ -25,8 +25,10 @@ from ..common_types import DummyApiSchema, DummyNaming
 def test_generate_manifest():
     fpath_to_dummy_sample = {
         "samples/squid_fpath.py": {"id": "squid_sample"},
-        "samples/clam_fpath.py": {"id": "clam_sample",
-                                  "region_tag": "giant_clam_sample"},
+        "samples/clam_fpath.py": {
+            "id": "clam_sample",
+            "region_tag": "giant_clam_sample",
+        },
     }
 
     fname, info = manifest.generate(
@@ -35,48 +37,44 @@ def test_generate_manifest():
         # Empirically derived number such that the
         # corresponding time_struct tests the zero
         # padding in the returned filename.
-        manifest_time=4486525628
+        manifest_time=4486525628,
     )
 
     assert fname == "mollusc.v1.python.21120304.090708.manifest.yaml"
 
-    doc = gapic_yaml.Doc([
-        gapic_yaml.KeyVal("type", "manifest/samples"),
-        gapic_yaml.KeyVal("schema_version", "3"),
-        gapic_yaml.Map(name="python",
-                       anchor_name="python",
-                       elements=[
-                           gapic_yaml.KeyVal(
-                               "environment", "python"),
-                           gapic_yaml.KeyVal(
-                               "bin", "python3"),
-                           gapic_yaml.KeyVal(
-                               "base_path", "samples"),
-                           gapic_yaml.KeyVal(
-                               "invocation", "'{bin} {path} @args'"),
-                       ]),
-        gapic_yaml.Collection(name="samples",
-                              elements=[
-                                  [
-                                      gapic_yaml.Alias(
-                                          "python"),
-                                      gapic_yaml.KeyVal(
-                                          "sample", "squid_sample"),
-                                      gapic_yaml.KeyVal(
-                                          "path", "'{base_path}/squid_fpath.py'"),
-                                      gapic_yaml.Null,
-                                  ],
-                                  [
-                                      gapic_yaml.Alias("python"),
-                                      gapic_yaml.KeyVal(
-                                          "sample", "clam_sample"),
-                                      gapic_yaml.KeyVal(
-                                          "path", "'{base_path}/clam_fpath.py'"),
-                                      gapic_yaml.KeyVal(
-                                          "region_tag", "giant_clam_sample")
-                                  ],
-                              ])
-    ])
+    doc = gapic_yaml.Doc(
+        [
+            gapic_yaml.KeyVal("type", "manifest/samples"),
+            gapic_yaml.KeyVal("schema_version", "3"),
+            gapic_yaml.Map(
+                name="python",
+                anchor_name="python",
+                elements=[
+                    gapic_yaml.KeyVal("environment", "python"),
+                    gapic_yaml.KeyVal("bin", "python3"),
+                    gapic_yaml.KeyVal("base_path", "samples"),
+                    gapic_yaml.KeyVal("invocation", "'{bin} {path} @args'"),
+                ],
+            ),
+            gapic_yaml.Collection(
+                name="samples",
+                elements=[
+                    [
+                        gapic_yaml.Alias("python"),
+                        gapic_yaml.KeyVal("sample", "squid_sample"),
+                        gapic_yaml.KeyVal("path", "'{base_path}/squid_fpath.py'"),
+                        gapic_yaml.Null,
+                    ],
+                    [
+                        gapic_yaml.Alias("python"),
+                        gapic_yaml.KeyVal("sample", "clam_sample"),
+                        gapic_yaml.KeyVal("path", "'{base_path}/clam_fpath.py'"),
+                        gapic_yaml.KeyVal("region_tag", "giant_clam_sample"),
+                    ],
+                ],
+            ),
+        ]
+    )
 
     assert info == doc
 
@@ -98,7 +96,8 @@ def test_generate_manifest():
           sample: clam_sample
           path: '{base_path}/clam_fpath.py'
           region_tag: giant_clam_sample
-        """)
+        """
+    )
 
     rendered_yaml = doc.render()
     assert rendered_yaml == expected_rendering
@@ -141,5 +140,5 @@ def test_generate_manifest_relative_path_quick_check():
     with pytest.raises(types.InvalidSampleFpath):
         manifest.generate(
             {"molluscs/squid.py": {"id": "squid_sample"}}.items(),
-            DummyApiSchema(naming=DummyNaming(name="Mollusc", version="v1"))
+            DummyApiSchema(naming=DummyNaming(name="Mollusc", version="v1")),
         )

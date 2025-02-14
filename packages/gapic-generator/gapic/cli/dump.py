@@ -20,10 +20,14 @@ import click
 
 
 @click.command()
-@click.option('--request', type=click.File('rb'), default=sys.stdin.buffer,
-              help='Location of the `CodeGeneratorRequest` to be dumped. '
-                   'This defaults to stdin (which is what protoc uses) '
-                   'but this option can be set for testing/debugging.')
+@click.option(
+    "--request",
+    type=click.File("rb"),
+    default=sys.stdin.buffer,
+    help="Location of the `CodeGeneratorRequest` to be dumped. "
+    "This defaults to stdin (which is what protoc uses) "
+    "but this option can be set for testing/debugging.",
+)
 def dump(request: typing.BinaryIO) -> None:
     """Dump the CodeGeneratorRequest, unmodified, to the given output."""
     # Ideally, this would output a CodeGeneratorResponse with the content
@@ -32,13 +36,14 @@ def dump(request: typing.BinaryIO) -> None:
     # valid utf-8.
 
     # Dump the CodeGeneratorRequest to disk.
-    with io.open('request.desc', 'wb+') as output:
+    with io.open("request.desc", "wb+") as output:
         output.write(request.read())
 
     # Log what happened.
     click.secho(
-        'Request dumped to `request.desc`. '
-        'This script will now exit 1 to satisfy protoc.',
-        file=sys.stderr, fg='green',
+        "Request dumped to `request.desc`. "
+        "This script will now exit 1 to satisfy protoc.",
+        file=sys.stderr,
+        fg="green",
     )
     sys.exit(1)

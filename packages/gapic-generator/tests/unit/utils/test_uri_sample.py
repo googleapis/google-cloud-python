@@ -19,13 +19,11 @@ def test_sample_from_path_template_inner():
     field = "table_name"
     path_template = "{project_id=projects/*}/instances/*/tables/*"
     res = uri_sample.sample_from_path_template(field, path_template)
-    assert res == {
-        "table_name": "projects/sample1/instances/sample2/tables/sample3"}
+    assert res == {"table_name": "projects/sample1/instances/sample2/tables/sample3"}
 
 
 def test_sample_from_path_template_no_inner():
     field = "table_name"
     path_template = "projects/*/instances/*/tables/*"
     res = uri_sample.sample_from_path_template(field, path_template)
-    assert res == {
-        "table_name": "projects/sample1/instances/sample2/tables/sample3"}
+    assert res == {"table_name": "projects/sample1/instances/sample2/tables/sample3"}

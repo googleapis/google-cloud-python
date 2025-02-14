@@ -19,15 +19,21 @@ from gapic.schema import wrappers
 
 
 def test_python_eq():
-    meta = metadata.Metadata(address=metadata.Address(
-        name='Foo', module='bar', package=('google', 'api'),
-    ))
+    meta = metadata.Metadata(
+        address=metadata.Address(
+            name="Foo",
+            module="bar",
+            package=("google", "api"),
+        )
+    )
     assert wrappers.PythonType(meta=meta) == wrappers.PythonType(
         meta=copy.copy(meta),
     )
-    assert wrappers.PythonType(meta=metadata.Metadata(
-        address=metadata.Address(name='Baz', module='bar', package=()),
-    )) != wrappers.PythonType(meta=meta)
+    assert wrappers.PythonType(
+        meta=metadata.Metadata(
+            address=metadata.Address(name="Baz", module="bar", package=()),
+        )
+    ) != wrappers.PythonType(meta=meta)
 
 
 def test_primitive_eq():
@@ -42,4 +48,4 @@ def test_primitive_eq():
 
 
 def test_primitive_name():
-    assert wrappers.PrimitiveType.build(int).name == 'int'
+    assert wrappers.PrimitiveType.build(int).name == "int"

@@ -46,18 +46,23 @@ class Snippet:
         self.sample_lines = self.sample_str.splitlines(keepends=True)
 
         self._full_snippet = snippet_metadata_pb2.Snippet.Segment(
-            type=snippet_metadata_pb2.Snippet.Segment.SegmentType.FULL)
+            type=snippet_metadata_pb2.Snippet.Segment.SegmentType.FULL
+        )
         self._short_snippet = snippet_metadata_pb2.Snippet.Segment(
-            type=snippet_metadata_pb2.Snippet.Segment.SegmentType.SHORT)
+            type=snippet_metadata_pb2.Snippet.Segment.SegmentType.SHORT
+        )
         self._client_init = snippet_metadata_pb2.Snippet.Segment(
-            type=snippet_metadata_pb2.Snippet.Segment.SegmentType.CLIENT_INITIALIZATION)
+            type=snippet_metadata_pb2.Snippet.Segment.SegmentType.CLIENT_INITIALIZATION
+        )
         self._request_init = snippet_metadata_pb2.Snippet.Segment(
-            type=snippet_metadata_pb2.Snippet.Segment.SegmentType.REQUEST_INITIALIZATION)
+            type=snippet_metadata_pb2.Snippet.Segment.SegmentType.REQUEST_INITIALIZATION
+        )
         self._request_exec = snippet_metadata_pb2.Snippet.Segment(
-            type=snippet_metadata_pb2.Snippet.Segment.SegmentType.REQUEST_EXECUTION)
+            type=snippet_metadata_pb2.Snippet.Segment.SegmentType.REQUEST_EXECUTION
+        )
         self._response_handling = snippet_metadata_pb2.Snippet.Segment(
             type=snippet_metadata_pb2.Snippet.Segment.SegmentType.RESPONSE_HANDLING,
-            end=len(self.sample_lines)
+            end=len(self.sample_lines),
         )
 
         # Index starts at 1 since these represent line numbers
@@ -80,8 +85,16 @@ class Snippet:
                 self._request_exec.end = i - 1
                 self._response_handling.start = i
 
-        self.metadata.segments.extend([self._full_snippet, self._short_snippet, self._client_init,
-                                      self._request_init, self._request_exec, self._response_handling])
+        self.metadata.segments.extend(
+            [
+                self._full_snippet,
+                self._short_snippet,
+                self._client_init,
+                self._request_init,
+                self._request_exec,
+                self._response_handling,
+            ]
+        )
 
     @property
     def full_snippet(self) -> str:
@@ -101,17 +114,20 @@ class SnippetIndex:
     def __init__(self, api_schema: api.API):
         self.metadata_index = snippet_metadata_pb2.Index()  # type: ignore
 
-        self.metadata_index.client_library.name = api_schema.naming.warehouse_package_name
+        self.metadata_index.client_library.name = (
+            api_schema.naming.warehouse_package_name
+        )
         self.metadata_index.client_library.language = snippet_metadata_pb2.Language.PYTHON  # type: ignore
 
         # This is just a placeholder.  release-please is responsible for
         # updating the metadata file to the correct library version.
         self.metadata_index.client_library.version = "0.1.0"
 
-        self.metadata_index.client_library.apis.append(snippet_metadata_pb2.Api(  # type: ignore
-            id=api_schema.naming.proto_package,
-            version=api_schema.naming.version
-        ))
+        self.metadata_index.client_library.apis.append(
+            snippet_metadata_pb2.Api(  # type: ignore
+                id=api_schema.naming.proto_package, version=api_schema.naming.version
+            )
+        )
 
         # Construct a dictionary to insert samples into based on the API schema
         # NOTE: In the future we expect the generator to support configured samples,
@@ -141,12 +157,16 @@ class SnippetIndex:
         service = self._index.get(service_name)
         if service is None:
             raise types.UnknownService(
-                "API does not have a service named '{}'.".format(service_name))
+                "API does not have a service named '{}'.".format(service_name)
+            )
 
         method = service.get(rpc_name)
         if method is None:
             raise types.RpcMethodNotFound(
-                "API does not have method '{}' in service '{}'".format(rpc_name, service_name))
+                "API does not have method '{}' in service '{}'".format(
+                    rpc_name, service_name
+                )
+            )
 
         if getattr(snippet.metadata.client_method, "async"):
             method["async"] = snippet
@@ -155,7 +175,9 @@ class SnippetIndex:
 
         self.metadata_index.snippets.append(snippet.metadata)
 
-    def get_snippet(self, service_name: str, rpc_name: str, sync: bool = True) -> Optional[Snippet]:
+    def get_snippet(
+        self, service_name: str, rpc_name: str, sync: bool = True
+    ) -> Optional[Snippet]:
         """Fetch a single snippet from the index.
 
         Args:
@@ -174,11 +196,15 @@ class SnippetIndex:
         service = self._index.get(service_name)
         if service is None:
             raise types.UnknownService(
-                "API does not have a service named '{}'.".format(service_name))
+                "API does not have a service named '{}'.".format(service_name)
+            )
         method = service.get(rpc_name)
         if method is None:
             raise types.RpcMethodNotFound(
-                "API does not have method '{}' in service '{}'".format(rpc_name, service_name))
+                "API does not have method '{}' in service '{}'".format(
+                    rpc_name, service_name
+                )
+            )
 
         return method["sync" if sync else "async"]
 

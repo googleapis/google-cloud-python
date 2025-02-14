@@ -42,8 +42,8 @@ from gapic.utils import RESERVED_NAMES
 
 @dataclasses.dataclass(frozen=True)
 class BaseAddress:
-    name: str = ''
-    module: str = ''
+    name: str = ""
+    module: str = ""
     module_path: Tuple[int, ...] = dataclasses.field(default_factory=tuple)
     package: Tuple[str, ...] = dataclasses.field(default_factory=tuple)
     parent: Tuple[str, ...] = dataclasses.field(default_factory=tuple)
@@ -92,14 +92,14 @@ class Address(BaseAddress):
 
             # Add _pb2 suffix except when it is a proto-plus type
             if not self.is_proto_plus_type:
-                module_name = f'{self.module}_pb2'
+                module_name = f"{self.module}_pb2"
 
             # Return the dot-separated Python identifier.
-            return '.'.join((module_name,) + self.parent + (self.name,))
+            return ".".join((module_name,) + self.parent + (self.name,))
 
         # This type does not have a module (most common for PythonType).
         # Return the Python identifier.
-        return '.'.join(self.parent + (self.name,))
+        return ".".join(self.parent + (self.name,))
 
     @property
     def is_proto_plus_type(self) -> bool:
@@ -150,9 +150,9 @@ class Address(BaseAddress):
         """
         # This is a minor optimization to prevent constructing a temporary set.
         if self.module in self.collisions or self.module in RESERVED_NAMES:
-            return '_'.join(
+            return "_".join(
                 (
-                    ''.join(
+                    "".join(
                         partial_name[0]
                         for i in self.package
                         for partial_name in i.split("_")
@@ -161,17 +161,17 @@ class Address(BaseAddress):
                     self.module,
                 )
             )
-        return ''
+        return ""
 
     @property
     def proto(self) -> str:
         """Return the proto selector for this type."""
-        return '.'.join(self.package + self.parent + (self.name,))
+        return ".".join(self.package + self.parent + (self.name,))
 
     @property
     def proto_package(self) -> str:
         """Return the proto package for this type."""
-        return '.'.join(self.package)
+        return ".".join(self.package)
 
     @property
     def proto_package_versioned(self) -> str:
@@ -213,16 +213,17 @@ class Address(BaseAddress):
         # rewrite the package to our structure.
         if self.proto_package.startswith(self.api_naming.proto_package):
             return imp.Import(
-                package=self.api_naming.module_namespace + (
-                    self.api_naming.versioned_module_name,
-                ) + self.subpackage + ('types',),
+                package=self.api_naming.module_namespace
+                + (self.api_naming.versioned_module_name,)
+                + self.subpackage
+                + ("types",),
                 module=self.module,
                 alias=self.module_alias,
             )
 
         if self.is_proto_plus_type:
             return imp.Import(
-                package=self.convert_to_versioned_package() + ('types',),
+                package=self.convert_to_versioned_package() + ("types",),
                 module=self.module,
                 alias=self.module_alias,
             )
@@ -230,7 +231,7 @@ class Address(BaseAddress):
         # Return the standard import.
         return imp.Import(
             package=self.package,
-            module=f'{self.module}_pb2',
+            module=f"{self.module}_pb2",
         )
 
     @property
@@ -239,16 +240,21 @@ class Address(BaseAddress):
 
         if not self.api_naming:
             if self.package:
-                return '.'.join(self.package + (self.module, self.name))
+                return ".".join(self.package + (self.module, self.name))
             else:
                 return str(self)
 
         # Check if this is a generated type
         # Use the original module name rather than the module_alias
         if self.proto_package.startswith(self.api_naming.proto_package):
-            return '.'.join(self.api_naming.module_namespace + (
-                self.api_naming.versioned_module_name,
-            ) + self.subpackage + ('types',) + self.parent + (self.name, ))
+            return ".".join(
+                self.api_naming.module_namespace
+                + (self.api_naming.versioned_module_name,)
+                + self.subpackage
+                + ("types",)
+                + self.parent
+                + (self.name,)
+            )
         elif self.is_proto_plus_type:
             return ".".join(
                 self.convert_to_versioned_package()
@@ -258,16 +264,14 @@ class Address(BaseAddress):
             )
 
         # Anything left is a standard _pb2 type
-        return f'{self.proto_package}.{self.module}_pb2.{self.name}'
+        return f"{self.proto_package}.{self.module}_pb2.{self.name}"
 
     @property
     def subpackage(self) -> Tuple[str, ...]:
         """Return the subpackage below the versioned module name, if any."""
-        return tuple(
-            self.package[len(self.api_naming.proto_package.split('.')):]
-        )
+        return tuple(self.package[len(self.api_naming.proto_package.split(".")) :])
 
-    def child(self, child_name: str, path: Tuple[int, ...]) -> 'Address':
+    def child(self, child_name: str, path: Tuple[int, ...]) -> "Address":
         """Return a new child of the current Address.
 
         Args:
@@ -284,7 +288,7 @@ class Address(BaseAddress):
             parent=self.parent + (self.name,) if self.name else self.parent,
         )
 
-    def rel(self, address: 'Address') -> str:
+    def rel(self, address: "Address") -> str:
         """Return an identifier for this type, relative to the given address.
 
         Similar to :meth:`__str__`, but accepts an address (expected to be the
@@ -308,8 +312,7 @@ class Address(BaseAddress):
             # scope in Python, without reference to the parent class being
             # created, so there is no way for one nested class to reference
             # another at class instantiation time.
-            if (self.parent and address.parent and
-                    self.parent[0] == address.parent[0]):
+            if self.parent and address.parent and self.parent[0] == address.parent[0]:
                 return f"'{'.'.join(self.parent)}.{self.name}'"
 
             # Edge case: Similar to above, if this is a message that is
@@ -317,7 +320,7 @@ class Address(BaseAddress):
             # the message to be referenced relative to this message's
             # namespace.
             if self.parent and self.parent[0] == address.name:
-                return '.'.join(self.parent[1:] + (self.name,))
+                return ".".join(self.parent[1:] + (self.name,))
 
             # It is possible that a field references a message that has
             # not yet been declared. If so, send its name enclosed in quotes
@@ -352,11 +355,11 @@ class Address(BaseAddress):
         Returns:
             str: An absolute selector.
         """
-        if '.' not in selector:
+        if "." not in selector:
             return f'{".".join(self.package)}.{selector}'
         return selector
 
-    def with_context(self, *, collisions: Set[str]) -> 'Address':
+    def with_context(self, *, collisions: Set[str]) -> "Address":
         """Return a derivative of this address with the provided context.
 
         This method is used to address naming collisions. The returned
@@ -392,20 +395,24 @@ class Metadata:
         if self.documentation.trailing_comments:
             return self.documentation.trailing_comments.strip()
         if self.documentation.leading_detached_comments:
-            return '\n\n'.join(self.documentation.leading_detached_comments)
-        return ''
+            return "\n\n".join(self.documentation.leading_detached_comments)
+        return ""
 
-    def with_context(self, *, collisions: Set[str]) -> 'Metadata':
+    def with_context(self, *, collisions: Set[str]) -> "Metadata":
         """Return a derivative of this metadata with the provided context.
 
         This method is used to address naming collisions. The returned
         ``Address`` object aliases module names to avoid naming collisions in
         the file being written.
         """
-        return dataclasses.replace(
-            self,
-            address=self.address.with_context(collisions=collisions),
-        ) if collisions and collisions != self.address.collisions else self
+        return (
+            dataclasses.replace(
+                self,
+                address=self.address.with_context(collisions=collisions),
+            )
+            if collisions and collisions != self.address.collisions
+            else self
+        )
 
 
 @dataclasses.dataclass(frozen=True)
@@ -416,15 +423,15 @@ class FieldIdentifier:
 
     def __str__(self) -> str:
         if self.mapping:
-            return f'MutableMapping[{self.mapping[0].ident}, {self.mapping[1].ident}]'
+            return f"MutableMapping[{self.mapping[0].ident}, {self.mapping[1].ident}]"
         if self.repeated:
-            return f'MutableSequence[{self.ident}]'
+            return f"MutableSequence[{self.ident}]"
         return str(self.ident)
 
     @property
     def sphinx(self) -> str:
         if self.mapping:
-            return f'MutableMapping[{self.mapping[0].ident.sphinx}, {self.mapping[1].ident.sphinx}]'
+            return f"MutableMapping[{self.mapping[0].ident.sphinx}, {self.mapping[1].ident.sphinx}]"
         if self.repeated:
-            return f'MutableSequence[{self.ident.sphinx}]'
+            return f"MutableSequence[{self.ident.sphinx}]"
         return self.ident.sphinx

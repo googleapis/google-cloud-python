@@ -93,19 +93,6 @@ if [ -x /usr/lib/git-core/google_hook ]; then
   /usr/lib/git-core/google_hook pre-commit "$@"
 fi
 
-# Check Python format.
-if [ $NUM_PYTHON_FILES_CHANGED -gt 0 ]
-then
-  echo_status "Running Python linter..."
-  find gapic tests -name "*.py" -not -path 'tests/integration/goldens/*' | xargs autopep8 --diff --exit-code
-  FORMAT_STATUS=$?
-  if [ $FORMAT_STATUS != 0 ]
-  then
-    echo_error "Linting failed." "Please try again after running autopep8 on the gapic/ and tests/ directories."
-    exit 1
-  fi
-fi
-
 # Check unit tests.
 if [ $NUM_PYTHON_FILES_CHANGED -gt 0 ] || [ $NUM_UNIT_GOLDEN_FILES_CHANGED -gt 0 ]
 then

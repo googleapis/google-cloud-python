@@ -18,7 +18,10 @@ from gapic.generator import formatter
 
 
 def test_fix_whitespace_top_level():
-    assert formatter.fix_whitespace(textwrap.dedent("""\
+    assert (
+        formatter.fix_whitespace(
+            textwrap.dedent(
+                """\
     import something
 
 
@@ -32,7 +35,11 @@ def test_fix_whitespace_top_level():
 
     class TooClose:  # remains too close
         pass
-    """)) == textwrap.dedent("""\
+    """
+            )
+        )
+        == textwrap.dedent(
+            """\
     import something
 
 
@@ -45,11 +52,16 @@ def test_fix_whitespace_top_level():
 
     class TooClose:  # remains too close
         pass
-    """)
+    """
+        )
+    )
 
 
 def test_fix_whitespace_nested():
-    assert formatter.fix_whitespace(textwrap.dedent("""\
+    assert (
+        formatter.fix_whitespace(
+            textwrap.dedent(
+                """\
     class JustAClass:
         def foo(self):
             pass
@@ -57,18 +69,27 @@ def test_fix_whitespace_nested():
 
         def too_far_down(self):
             pass
-    """)) == textwrap.dedent("""\
+    """
+            )
+        )
+        == textwrap.dedent(
+            """\
     class JustAClass:
         def foo(self):
             pass
 
         def too_far_down(self):
             pass
-    """)
+    """
+        )
+    )
 
 
 def test_fix_whitespace_decorators():
-    assert formatter.fix_whitespace(textwrap.dedent("""\
+    assert (
+        formatter.fix_whitespace(
+            textwrap.dedent(
+                """\
     class JustAClass:
         def foo(self):
             pass
@@ -77,7 +98,11 @@ def test_fix_whitespace_decorators():
         @property
         def too_far_down(self):
             return 42
-    """)) == textwrap.dedent("""\
+    """
+            )
+        )
+        == textwrap.dedent(
+            """\
     class JustAClass:
         def foo(self):
             pass
@@ -85,11 +110,16 @@ def test_fix_whitespace_decorators():
         @property
         def too_far_down(self):
             return 42
-    """)
+    """
+        )
+    )
 
 
 def test_fix_whitespace_intermediate_whitespace():
-    assert formatter.fix_whitespace(textwrap.dedent("""\
+    assert (
+        formatter.fix_whitespace(
+            textwrap.dedent(
+                """\
     class JustAClass:
         def foo(self):
             pass
@@ -99,7 +129,11 @@ def test_fix_whitespace_intermediate_whitespace():
         @property
         def too_far_down(self):
             return 42
-    """)) == textwrap.dedent("""\
+    """
+            )
+        )
+        == textwrap.dedent(
+            """\
     class JustAClass:
         def foo(self):
             pass
@@ -107,25 +141,36 @@ def test_fix_whitespace_intermediate_whitespace():
         @property
         def too_far_down(self):
             return 42
-    """)
+    """
+        )
+    )
 
 
 def test_fix_whitespace_comment():
-    assert formatter.fix_whitespace(textwrap.dedent("""\
+    assert (
+        formatter.fix_whitespace(
+            textwrap.dedent(
+                """\
     def do_something():
         do_first_thing()
 
 
         # Something something something.
         do_second_thing()
-    """)) == textwrap.dedent("""\
+    """
+            )
+        )
+        == textwrap.dedent(
+            """\
     def do_something():
         do_first_thing()
 
         # Something something something.
         do_second_thing()
-    """)
+    """
+        )
+    )
 
 
 def test_file_newline_ending():
-    assert formatter.fix_whitespace('') == '\n'
+    assert formatter.fix_whitespace("") == "\n"

@@ -65,7 +65,7 @@ branchProtectionRules:
     - 'goldens-lint'
     - 'goldens-prerelease'
     - 'goldens-unit'
-    - 'style-check'
+    - 'lint'
     - 'snippetgen'
     - 'unit (3.7)'
     - 'unit (3.8)'

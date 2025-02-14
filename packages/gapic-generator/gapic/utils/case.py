@@ -27,12 +27,12 @@ def to_snake_case(s: str) -> str:
         str: The string in snake case (and all lower-cased).
     """
     # Replace all capital letters that are preceded by a lower-case letter.
-    s = re.sub(r'(?<=[a-z])([A-Z])', r'_\1', str(s))
+    s = re.sub(r"(?<=[a-z])([A-Z])", r"_\1", str(s))
 
     # Find all capital letters that are followed by a lower-case letter,
     # and are preceded by any character other than underscore.
     # (Note: This also excludes beginning-of-string.)
-    s = re.sub(r'(?<=[^_])([A-Z])(?=[a-z])', r'_\1', s)
+    s = re.sub(r"(?<=[^_])([A-Z])(?=[a-z])", r"_\1", s)
 
     # Numbers are a weird case; the goal is to spot when they _start_
     # some kind of name or acronym (e.g. 2FA, 3M).
@@ -40,15 +40,15 @@ def to_snake_case(s: str) -> str:
     # Find cases of a number preceded by a lower-case letter _and_
     # followed by at least two capital letters or a single capital and
     # end of string.
-    s = re.sub(r'(?<=[a-z])(\d)(?=[A-Z]{2})', r'_\1', s)
-    s = re.sub(r'(?<=[a-z])(\d)(?=[A-Z]$)', r'_\1', s)
+    s = re.sub(r"(?<=[a-z])(\d)(?=[A-Z]{2})", r"_\1", s)
+    s = re.sub(r"(?<=[a-z])(\d)(?=[A-Z]$)", r"_\1", s)
 
     # Done; return the camel-cased string.
     return s.lower()
 
 
 def to_camel_case(s: str) -> str:
-    '''Convert any string to camel case.
+    """Convert any string to camel case.
 
     This is provided to templates as the ``camel_case`` filter.
 
@@ -57,7 +57,7 @@ def to_camel_case(s: str) -> str:
 
     Returns:
         str: The string in lower camel case.
-    '''
+    """
 
-    items = re.split(r'[_-]', to_snake_case(s))
+    items = re.split(r"[_-]", to_snake_case(s))
     return items[0].lower() + "".join(x.capitalize() for x in items[1:])

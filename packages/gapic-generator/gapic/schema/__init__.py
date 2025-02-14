@@ -26,7 +26,7 @@ from gapic.schema import wrappers
 
 
 __all__ = (
-    'API',
-    'metadata',
-    'wrappers',
+    "API",
+    "metadata",
+    "wrappers",
 )

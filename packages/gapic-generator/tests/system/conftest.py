@@ -38,13 +38,20 @@ if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
     import asyncio
     from google.showcase import EchoAsyncClient
     from google.showcase import IdentityAsyncClient
+
     try:
-        from google.showcase_v1beta1.services.echo.transports import AsyncEchoRestTransport
+        from google.showcase_v1beta1.services.echo.transports import (
+            AsyncEchoRestTransport,
+        )
+
         HAS_ASYNC_REST_ECHO_TRANSPORT = True
     except:
         HAS_ASYNC_REST_ECHO_TRANSPORT = False
     try:
-        from google.showcase_v1beta1.services.identity.transports import AsyncIdentityRestTransport
+        from google.showcase_v1beta1.services.identity.transports import (
+            AsyncIdentityRestTransport,
+        )
+
         HAS_ASYNC_REST_IDENTITY_TRANSPORT = True
     except:
         HAS_ASYNC_REST_IDENTITY_TRANSPORT = False
@@ -77,7 +84,9 @@ if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
             EchoAsyncClient,
             use_mtls,
             transport_name=transport,
-            channel_creator=aio.insecure_channel if request.param == "grpc_asyncio" else None,
+            channel_creator=(
+                aio.insecure_channel if request.param == "grpc_asyncio" else None
+            ),
             credentials=async_anonymous_credentials(),
         )
 
@@ -90,7 +99,9 @@ if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
             IdentityAsyncClient,
             use_mtls,
             transport_name=transport,
-            channel_creator=aio.insecure_channel if request.param == "grpc_asyncio" else None,
+            channel_creator=(
+                aio.insecure_channel if request.param == "grpc_asyncio" else None
+            ),
             credentials=async_anonymous_credentials(),
         )
 

@@ -117,8 +117,11 @@ class CallingForm(Enum):
         if m.paged_result_field:
             return cls.RequestPagedAll
         if m.client_streaming:
-            return (cls.RequestStreamingBidi if m.server_streaming else
-                    cls.RequestStreamingClient)
+            return (
+                cls.RequestStreamingBidi
+                if m.server_streaming
+                else cls.RequestStreamingClient
+            )
         if m.server_streaming:
             return cls.RequestStreamingServer
 

@@ -47,9 +47,7 @@ def test_set_iam_policy(echo):
 
 def test_get_iam_policy(echo):
     # First we need to set a policy, before we can get it
-    echo.set_iam_policy(
-        {"resource": "users/user", "policy": {"version": 20240920}}
-    )
+    echo.set_iam_policy({"resource": "users/user", "policy": {"version": 20240920}})
     policy = echo.get_iam_policy(
         {
             "resource": "users/user",
@@ -60,9 +58,7 @@ def test_get_iam_policy(echo):
 
 def test_test_iam_permissions(echo):
     # First we need to set a policy, before we can call test_iam_permissions
-    echo.set_iam_policy(
-        {"resource": "users/user", "policy": {"version": 20240920}}
-    )
+    echo.set_iam_policy({"resource": "users/user", "policy": {"version": 20240920}})
     response = echo.test_iam_permissions(
         {"resource": "users/user", "permissions": ["test_some_permission"]}
     )

@@ -24,7 +24,7 @@ def test_metadata_string(echo):
             request_id="some_value",
             other_request_id="",
         ),
-        metadata=[('some-key', 'some_value')]
+        metadata=[("some-key", "some_value")],
     )
 
 
@@ -35,7 +35,7 @@ def test_metadata_binary(echo):
             request_id="some_value",
             other_request_id="",
         ),
-        metadata=[('some-key-bin', b'some_value')]
+        metadata=[("some-key-bin", b"some_value")],
     )
 
     if isinstance(echo.transport, type(echo).get_transport_class("grpc")):
@@ -50,5 +50,5 @@ def test_metadata_binary(echo):
                     request_id="some_value",
                     other_request_id="",
                 ),
-                metadata=[('some-key-bin', 'some_value')]
+                metadata=[("some-key-bin", "some_value")],
             )

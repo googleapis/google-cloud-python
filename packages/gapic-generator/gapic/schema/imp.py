@@ -20,17 +20,17 @@ from typing import Tuple
 class Import:
     package: Tuple[str, ...]
     module: str
-    alias: str = ''
+    alias: str = ""
 
     def __eq__(self, other) -> bool:
         return self.package == other.package and self.module == other.module
 
     def __str__(self) -> str:
-        answer = f'import {self.module}'
+        answer = f"import {self.module}"
         if self.package:
             answer = f"from {'.'.join(self.package)} {answer}"
         if self.alias:
-            answer += f' as {self.alias}'
-        if self.module.endswith('_pb2') or 'api_core' in self.package:
-            answer += '  # type: ignore'
+            answer += f" as {self.alias}"
+        if self.module.endswith("_pb2") or "api_core" in self.package:
+            answer += "  # type: ignore"
         return answer

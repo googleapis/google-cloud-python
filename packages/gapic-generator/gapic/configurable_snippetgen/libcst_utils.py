@@ -46,8 +46,7 @@ def convert_expression(
         string_value = config_expression.string_value
         return libcst.SimpleString(value=f'"{string_value}"')
     else:
-        raise ValueError(
-            f"Conversion from Expression value {value_name} unsupported.")
+        raise ValueError(f"Conversion from Expression value {value_name} unsupported.")
 
 
 def convert_parameter(
@@ -65,12 +64,10 @@ def convert_py_dict(key_value_pairs: Sequence[Tuple[str, str]]) -> libcst.Dict:
     elements = []
     for key, value in key_value_pairs:
         if not (isinstance(key, str) and isinstance(value, str)):
-            raise ValueError(
-                f"convert_py_dict supports only string keys and values.")
+            raise ValueError(f"convert_py_dict supports only string keys and values.")
         elements.append(
             libcst.DictElement(
-                libcst.SimpleString(
-                    f'"{key}"'), libcst.SimpleString(f'"{value}"')
+                libcst.SimpleString(f'"{key}"'), libcst.SimpleString(f'"{value}"')
             )
         )
     return libcst.Dict(elements=elements)

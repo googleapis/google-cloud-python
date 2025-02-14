@@ -37,23 +37,24 @@ class Naming(abc.ABC):
     A concrete child of this object is made available to every template
     (as ``api.naming``).
     """
-    name: str = ''
+
+    name: str = ""
     namespace: Tuple[str, ...] = dataclasses.field(default_factory=tuple)
-    version: str = ''
-    product_name: str = ''
-    proto_package: str = ''
-    _warehouse_package_name: str = ''
+    version: str = ""
+    product_name: str = ""
+    proto_package: str = ""
+    _warehouse_package_name: str = ""
     proto_plus_deps: Tuple[str, ...] = dataclasses.field(default_factory=tuple)
 
     def __post_init__(self):
         if not self.product_name:
-            self.__dict__['product_name'] = self.name
+            self.__dict__["product_name"] = self.name
 
     @staticmethod
     def build(
         *file_descriptors: descriptor_pb2.FileDescriptorProto,
         opts: Options = Options(),
-    ) -> 'Naming':
+    ) -> "Naming":
         """Return a full Naming instance based on these file descriptors.
 
         This is pieced together from the proto package names as well as the
@@ -76,15 +77,15 @@ class Naming(abc.ABC):
         """
         # Determine the set of proto packages.
         proto_packages = {fd.package for fd in file_descriptors}
-        root_package = os.path.commonprefix(tuple(proto_packages)).rstrip('.')
+        root_package = os.path.commonprefix(tuple(proto_packages)).rstrip(".")
 
         # Quick check: If there is no common ground in the package,
         # we are obviously in trouble.
         if not root_package:
             raise ValueError(
-                'The protos provided do not share a common root package. '
-                'Ensure that all explicitly-specified protos are for a '
-                'single API. '
+                "The protos provided do not share a common root package. "
+                "Ensure that all explicitly-specified protos are for a "
+                "single API. "
                 f'The packages we got are: {", ".join(proto_packages)}'
             )
 
@@ -93,7 +94,7 @@ class Naming(abc.ABC):
         # It is not necessary for the regex to be as particular about package
         # name validity (e.g. avoiding .. or segments starting with numbers)
         # because protoc is guaranteed to give us valid package names.
-        pattern = r'^((?P<namespace>[a-z0-9_.]+)\.)?(?P<name>[a-z0-9_]+)'
+        pattern = r"^((?P<namespace>[a-z0-9_.]+)\.)?(?P<name>[a-z0-9_]+)"
 
         # Only require the version portion of the regex if the version is
         # present.
@@ -101,30 +102,29 @@ class Naming(abc.ABC):
         # This code may look counter-intuitive (why not use ? to make it
         # optional), but the engine's greediness routine will decide that
         # the version is the name, which is not what we want.
-        version = r'\.(?P<version>v[0-9]+(p[0-9]+)?((alpha|beta)[0-9]*)?)'
+        version = r"\.(?P<version>v[0-9]+(p[0-9]+)?((alpha|beta)[0-9]*)?)"
         if re.search(version, root_package):
             pattern += version
 
         # Okay, do the match
-        match = cast(Match,
-                     re.search(pattern=pattern, string=root_package)).groupdict()
-        match['namespace'] = match['namespace'] or ''
+        match = cast(Match, re.search(pattern=pattern, string=root_package)).groupdict()
+        match["namespace"] = match["namespace"] or ""
         klass = OldNaming if opts.old_naming else NewNaming
         package_info = klass(
-            name=match['name'].capitalize(),
-            namespace=tuple(
-                i.capitalize() for i in match['namespace'].split('.') if i
-            ),
-            product_name=match['name'].capitalize(),
+            name=match["name"].capitalize(),
+            namespace=tuple(i.capitalize() for i in match["namespace"].split(".") if i),
+            product_name=match["name"].capitalize(),
             proto_package=root_package,
-            version=match.get('version', ''),
+            version=match.get("version", ""),
         )
 
         # Quick check: Ensure that the package directives all inferred
         # the same information.
         if not package_info.version and len(proto_packages) > 1:
-            raise ValueError('All protos must have the same proto package '
-                             'up to and including the version.')
+            raise ValueError(
+                "All protos must have the same proto package "
+                "up to and including the version."
+            )
 
         # If a naming information was provided on the CLI, override the naming
         # value.
@@ -133,20 +133,27 @@ class Naming(abc.ABC):
         # likely make sense to many users to use dot-separated namespaces and
         # snake case, so handle that and do the right thing.
         if opts.name:
-            package_info = dataclasses.replace(package_info, name=' '.join((
-                i.capitalize() for i in opts.name.replace('_', ' ').split(' ')
-            )))
+            package_info = dataclasses.replace(
+                package_info,
+                name=" ".join(
+                    (i.capitalize() for i in opts.name.replace("_", " ").split(" "))
+                ),
+            )
         if opts.namespace:
-            package_info = dataclasses.replace(package_info, namespace=tuple(
-                # The join-and-split on "." here causes us to expand out
-                # dot notation that we may have been sent; e.g. a one-tuple
-                # with ('x.y',) will become a two-tuple: ('x', 'y')
-                i.capitalize() for i in '.'.join(opts.namespace).split('.')
-            ))
+            package_info = dataclasses.replace(
+                package_info,
+                namespace=tuple(
+                    # The join-and-split on "." here causes us to expand out
+                    # dot notation that we may have been sent; e.g. a one-tuple
+                    # with ('x.y',) will become a two-tuple: ('x', 'y')
+                    i.capitalize()
+                    for i in ".".join(opts.namespace).split(".")
+                ),
+            )
         if opts.warehouse_package_name:
-            package_info = dataclasses.replace(package_info,
-                _warehouse_package_name=opts.warehouse_package_name
-                                               )
+            package_info = dataclasses.replace(
+                package_info, _warehouse_package_name=opts.warehouse_package_name
+            )
         if opts.proto_plus_deps:
             package_info = dataclasses.replace(
                 package_info,
@@ -165,7 +172,7 @@ class Naming(abc.ABC):
     @property
     def long_name(self) -> str:
         """Return an appropriate title-cased long name."""
-        return ' '.join(tuple(self.namespace) + (self.name,))
+        return " ".join(tuple(self.namespace) + (self.name,))
 
     @property
     def module_name(self) -> str:
@@ -182,7 +189,7 @@ class Naming(abc.ABC):
         """Return the appropriate Python namespace packages."""
         answer: List[str] = []
         for cursor in (i.lower() for i in self.namespace):
-            answer.append(f'{answer[-1]}.{cursor}' if answer else cursor)
+            answer.append(f"{answer[-1]}.{cursor}" if answer else cursor)
         return tuple(answer)
 
     @property
@@ -202,8 +209,8 @@ class Naming(abc.ABC):
             return self._warehouse_package_name
         # Otherwise piece the name and namespace together to come
         # up with the proper package name.
-        answer = list(self.namespace) + self.name.split(' ')
-        return '-'.join(answer).lower()
+        answer = list(self.namespace) + self.name.split(" ")
+        return "-".join(answer).lower()
 
 
 class NewNaming(Naming):
@@ -213,7 +220,7 @@ class NewNaming(Naming):
 
         If there is no version, this is the same as ``module_name``.
         """
-        return self.module_name + (f'_{self.version}' if self.version else '')
+        return self.module_name + (f"_{self.version}" if self.version else "")
 
 
 class OldNaming(Naming):
@@ -223,4 +230,4 @@ class OldNaming(Naming):
 
         If there is no version, this is the same as ``module_name``.
         """
-        return self.module_name + (f'.{self.version}' if self.version else '')
+        return self.module_name + (f".{self.version}" if self.version else "")

@@ -17,7 +17,7 @@ import gapic.samplegen_utils.utils
 import gapic.samplegen_utils.yaml
 
 __all__ = (
-    'types',
-    'utils',
-    'yaml',
+    "types",
+    "utils",
+    "yaml",
 )

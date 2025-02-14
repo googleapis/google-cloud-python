@@ -75,7 +75,7 @@ def test_snippet_init(sample_str):
             {"end": 22, "start": 9, "type": "REQUEST_INITIALIZATION"},
             {"end": 25, "start": 23, "type": "REQUEST_EXECUTION"},
             {"end": 29, "start": 26, "type": "RESPONSE_HANDLING"},
-        ]
+        ],
     }
 
     # This is the same as the sample_str above, minus the # [START ...]
@@ -113,55 +113,59 @@ def sample_classify(video, location):
 
 
 def test_add_snippet_no_matching_service(sample_str):
-    snippet_metadata = snippet_metadata_pb2.Snippet(
-    )
+    snippet_metadata = snippet_metadata_pb2.Snippet()
     snippet_metadata.client_method.method.service.short_name = "Clam"
     snippet = snippet_index.Snippet(sample_str, snippet_metadata)
 
     # No 'Clam' service in API Schema
-    index = snippet_index.SnippetIndex(api_schema=DummyApiSchema(
-        services={"Squid": DummyService(name="Squid", methods={})},
-        naming=DummyNaming(
-            proto_package="google.mollusca",
-            warehouse_package_name="google-mollusca",
-            version="v1"
-        ),
-
-    ))
+    index = snippet_index.SnippetIndex(
+        api_schema=DummyApiSchema(
+            services={"Squid": DummyService(name="Squid", methods={})},
+            naming=DummyNaming(
+                proto_package="google.mollusca",
+                warehouse_package_name="google-mollusca",
+                version="v1",
+            ),
+        )
+    )
     with pytest.raises(types.UnknownService):
         index.add_snippet(snippet)
 
 
 def test_add_snippet_no_matching_rpc(sample_str):
-    snippet_metadata = snippet_metadata_pb2.Snippet(
-    )
+    snippet_metadata = snippet_metadata_pb2.Snippet()
     snippet_metadata.client_method.method.service.short_name = "Squid"
     snippet_metadata.client_method.short_name = "classify"
     snippet = snippet_index.Snippet(sample_str, snippet_metadata)
 
     # No 'classify' method in 'Squid' service
-    index = snippet_index.SnippetIndex(api_schema=DummyApiSchema(
-        services={"Squid": DummyService(name="Squid", methods={"list": None})},
-        naming=DummyNaming(
-            proto_package="google.mollusca",
-            warehouse_package_name="google-mollusca",
-            version="v1"
-        ),
-    ))
+    index = snippet_index.SnippetIndex(
+        api_schema=DummyApiSchema(
+            services={"Squid": DummyService(name="Squid", methods={"list": None})},
+            naming=DummyNaming(
+                proto_package="google.mollusca",
+                warehouse_package_name="google-mollusca",
+                version="v1",
+            ),
+        )
+    )
     with pytest.raises(types.RpcMethodNotFound):
         index.add_snippet(snippet)
 
 
 def test_get_snippet_no_matching_service():
-    index = snippet_index.SnippetIndex(api_schema=DummyApiSchema(
-        naming=DummyNaming(
-            proto_package="google.mollusca",
-            warehouse_package_name="google-mollusca",
-            version="v1"
-        ),
-        services={"Squid": DummyService(
-            name="Squid", methods={"classify": DummyMethod()})}
-    ))
+    index = snippet_index.SnippetIndex(
+        api_schema=DummyApiSchema(
+            naming=DummyNaming(
+                proto_package="google.mollusca",
+                warehouse_package_name="google-mollusca",
+                version="v1",
+            ),
+            services={
+                "Squid": DummyService(name="Squid", methods={"classify": DummyMethod()})
+            },
+        )
+    )
 
     # No 'Clam' service in API Schema
     with pytest.raises(types.UnknownService):
@@ -169,15 +173,18 @@ def test_get_snippet_no_matching_service():
 
 
 def test_get_snippet_no_matching_rpc():
-    index = snippet_index.SnippetIndex(api_schema=DummyApiSchema(
-        services={"Squid": DummyService(
-            name="Squid", methods={"classify": DummyMethod()})},
-        naming=DummyNaming(
-            proto_package="google.mollusca",
-            warehouse_package_name="google-mollusca",
-            version="v1"
-        ),
-    ))
+    index = snippet_index.SnippetIndex(
+        api_schema=DummyApiSchema(
+            services={
+                "Squid": DummyService(name="Squid", methods={"classify": DummyMethod()})
+            },
+            naming=DummyNaming(
+                proto_package="google.mollusca",
+                warehouse_package_name="google-mollusca",
+                version="v1",
+            ),
+        )
+    )
 
     # No 'list' RPC in 'Squid' service
     with pytest.raises(types.RpcMethodNotFound):
@@ -190,15 +197,18 @@ def test_add_and_get_snippet_sync(sample_str):
     snippet_metadata.client_method.method.short_name = "classify"
     snippet = snippet_index.Snippet(sample_str, snippet_metadata)
 
-    index = snippet_index.SnippetIndex(api_schema=DummyApiSchema(
-        services={"Squid": DummyService(
-            name="Squid", methods={"classify": DummyMethod()})},
-        naming=DummyNaming(
-            proto_package="google.mollusca",
-            warehouse_package_name="google-mollusca",
-            version="v1"
-        ),
-    ))
+    index = snippet_index.SnippetIndex(
+        api_schema=DummyApiSchema(
+            services={
+                "Squid": DummyService(name="Squid", methods={"classify": DummyMethod()})
+            },
+            naming=DummyNaming(
+                proto_package="google.mollusca",
+                warehouse_package_name="google-mollusca",
+                version="v1",
+            ),
+        )
+    )
 
     index.add_snippet(snippet)
 
@@ -212,15 +222,18 @@ def test_add_and_get_snippet_async(sample_str):
     setattr(snippet_metadata.client_method, "async", True)
     snippet = snippet_index.Snippet(sample_str, snippet_metadata)
 
-    index = snippet_index.SnippetIndex(api_schema=DummyApiSchema(
-        services={"Squid": DummyService(
-            name="Squid", methods={"classify": DummyMethod()})},
-        naming=DummyNaming(
-            proto_package="google.mollusca",
-            warehouse_package_name="google-mollusca",
-            version="v1"
-        ),
-    ))
+    index = snippet_index.SnippetIndex(
+        api_schema=DummyApiSchema(
+            services={
+                "Squid": DummyService(name="Squid", methods={"classify": DummyMethod()})
+            },
+            naming=DummyNaming(
+                proto_package="google.mollusca",
+                warehouse_package_name="google-mollusca",
+                version="v1",
+            ),
+        )
+    )
 
     index.add_snippet(snippet)
 
@@ -233,73 +246,45 @@ def test_get_metadata_json(sample_str):
     snippet_metadata.client_method.method.short_name = "classify"
     snippet = snippet_index.Snippet(sample_str, snippet_metadata)
 
-    index = snippet_index.SnippetIndex(api_schema=DummyApiSchema(
-        services={"Squid": DummyService(
-            name="Squid", methods={"classify": DummyMethod()})},
-        naming=DummyNaming(
-            proto_package="google.mollusca",
-            warehouse_package_name="google-mollusca",
-            version="v1"
-        ),
-    ))
+    index = snippet_index.SnippetIndex(
+        api_schema=DummyApiSchema(
+            services={
+                "Squid": DummyService(name="Squid", methods={"classify": DummyMethod()})
+            },
+            naming=DummyNaming(
+                proto_package="google.mollusca",
+                warehouse_package_name="google-mollusca",
+                version="v1",
+            ),
+        )
+    )
 
     index.add_snippet(snippet)
 
     print(index.get_metadata_json())
     assert json.loads(index.get_metadata_json()) == {
         "clientLibrary": {
-            "apis": [
-                {
-                    "id": "google.mollusca",
-                    "version": "v1"
-                    }
-                ],
+            "apis": [{"id": "google.mollusca", "version": "v1"}],
             "language": "PYTHON",
             "name": "google-mollusca",
-            "version": "0.1.0"
-            },
+            "version": "0.1.0",
+        },
         "snippets": [
             {
                 "clientMethod": {
                     "method": {
-                        "service": {
-                            "shortName": "Squid"
-                            },
-                        "shortName": "classify"
-                        }
-                    },
+                        "service": {"shortName": "Squid"},
+                        "shortName": "classify",
+                    }
+                },
                 "segments": [
-                    {
-                        "end": 28,
-                        "start": 2,
-                        "type": "FULL"
-                        },
-                    {
-                        "end": 28,
-                        "start": 2,
-                        "type": "SHORT"
-                        },
-                    {
-                        "end": 8,
-                        "start": 6,
-                        "type": "CLIENT_INITIALIZATION"
-                        },
-                    {
-                        "end": 22,
-                        "start": 9,
-                        "type": "REQUEST_INITIALIZATION"
-                        },
-                    {
-                        "end": 25,
-                        "start": 23,
-                        "type": "REQUEST_EXECUTION"
-                        },
-                    {
-                        "end": 29,
-                        "start": 26,
-                        "type": "RESPONSE_HANDLING"
-                        }
-                    ]
-                }
-            ]
-        }
+                    {"end": 28, "start": 2, "type": "FULL"},
+                    {"end": 28, "start": 2, "type": "SHORT"},
+                    {"end": 8, "start": 6, "type": "CLIENT_INITIALIZATION"},
+                    {"end": 22, "start": 9, "type": "REQUEST_INITIALIZATION"},
+                    {"end": 25, "start": 23, "type": "REQUEST_EXECUTION"},
+                    {"end": 29, "start": 26, "type": "RESPONSE_HANDLING"},
+                ],
+            }
+        ],
+    }

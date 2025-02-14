@@ -65,8 +65,7 @@ def test_convert_expression_should_raise_error_if_unsupported():
 def test_convert_parameter():
     config_parameter = snippet_config_language_pb2.Statement.Declaration(
         name="some_variable",
-        value=snippet_config_language_pb2.Expression(
-            string_value="hello world"),
+        value=snippet_config_language_pb2.Expression(string_value="hello world"),
     )
     node = libcst_utils.convert_parameter(config_parameter)
     expected_node = libcst.Param(

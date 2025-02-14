@@ -28,6 +28,7 @@ it is not advised for general use.
 
 class Element(ABC):
     """Abstract element that can be rendered."""
+
     INDENT_SPACES: int = 2
 
     @abstractmethod
@@ -44,6 +45,7 @@ class Null(Element):
 @dataclasses.dataclass(frozen=True)
 class KeyVal(Element):
     """A single key/value entry."""
+
     key: str
     val: str
 
@@ -55,6 +57,7 @@ class KeyVal(Element):
 @dataclasses.dataclass(frozen=True)
 class Collection(Element):
     """An ordered list of subobjects."""
+
     name: str
     elements: List[List[Element]]
 
@@ -72,9 +75,7 @@ class Collection(Element):
             indent(
                 "-"
                 + "\n".join(
-                    r
-                    for r in (e.render(spaces + self.INDENT_SPACES) for e in l)
-                    if r
+                    r for r in (e.render(spaces + self.INDENT_SPACES) for e in l) if r
                 )[1:],
                 " " * (spaces),
             )
@@ -85,6 +86,7 @@ class Collection(Element):
 @dataclasses.dataclass(frozen=True)
 class Alias(Element):
     """An anchor to a map."""
+
     target: str
 
     def render(self, spaces: int = 0) -> str:
@@ -95,6 +97,7 @@ class Alias(Element):
 @dataclasses.dataclass(frozen=True)
 class Map(Element):
     """A named collection with a list of attributes."""
+
     name: str
     anchor_name: Optional[str]
     elements: List[Element]
@@ -112,17 +115,18 @@ class Map(Element):
         # See https://github.com/pytest-dev/pytest-cov/issues/310 for details.
         return next(
             iter(
-                [e.val  # type: ignore
-                 for e in self.elements
-                 if e.key == key]  # type: ignore
+                [
+                    e.val for e in self.elements if e.key == key  # type: ignore
+                ]  # type: ignore
             ),
-            default
+            default,
         )
 
 
 @dataclasses.dataclass(frozen=True)
 class Doc(Element):
     """A yaml document"""
+
     elements: List[Element]
 
     def render(self):

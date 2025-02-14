@@ -27,8 +27,7 @@ from gapic.schema import api
 
 
 CURRENT_DIRECTORY = Path(__file__).parent.absolute()
-SPEECH_V1_REQUEST_PATH = CURRENT_DIRECTORY / \
-    "resources" / "speech" / "request.desc"
+SPEECH_V1_REQUEST_PATH = CURRENT_DIRECTORY / "resources" / "speech" / "request.desc"
 CONFIG_JSON_PATH = (
     CURRENT_DIRECTORY / "resources" / "speech" / "speech_createCustomClass.json"
 )
@@ -237,8 +236,7 @@ def test_AppendToSampleFunctionBody():
     statement = libcst.parse_statement("'world'")
     transformer = configured_snippet._AppendToSampleFunctionBody(statement)
     updated_function_def = function_def.visit(transformer)
-    expected_function_def = libcst.parse_statement(
-        "def f():\n    'hello'\n    'world'")
+    expected_function_def = libcst.parse_statement("def f():\n    'hello'\n    'world'")
     assert updated_function_def.deep_equals(expected_function_def)
 
 
@@ -249,8 +247,7 @@ def test_AppendToSampleFunctionBody():
     statement = libcst.parse_statement("'world'")
     transformer = configured_snippet._AppendToSampleFunctionBody(statement)
     updated_function_def = function_def.visit(transformer)
-    expected_function_def = libcst.parse_statement(
-        "def f():\n    'hello'\n    'world'")
+    expected_function_def = libcst.parse_statement("def f():\n    'hello'\n    'world'")
     assert updated_function_def.deep_equals(expected_function_def)
 
 
