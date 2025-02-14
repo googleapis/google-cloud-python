@@ -164,9 +164,7 @@ def _(
 ) -> ibis_types.NumericValue:
     # Will be null if all inputs are null. Pandas defaults to zero sum though.
     bq_sum = _apply_window_if_present(column.sum(), window)
-    return (
-        ibis_api.case().when(bq_sum.isnull(), ibis_types.literal(0)).else_(bq_sum).end()  # type: ignore
-    )
+    return bq_sum.fillna(ibis_types.literal(0))
 
 
 @compile_unary_agg.register

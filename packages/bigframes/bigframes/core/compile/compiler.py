@@ -25,7 +25,7 @@ import bigframes_vendored.ibis.expr.types as ibis_types
 import google.cloud.bigquery
 import pandas as pd
 
-from bigframes import dtypes
+from bigframes import dtypes, operations
 from bigframes.core import utils
 import bigframes.core.compile.compiled as compiled
 import bigframes.core.compile.concat as concat_impl
@@ -278,8 +278,13 @@ class Compiler:
     def compile_aggregate(self, node: nodes.AggregateNode):
         aggs = tuple((agg, id.sql) for agg, id in node.aggregations)
         result = self.compile_node(node.child).aggregate(
-            aggs, node.by_column_ids, node.dropna, order_by=node.order_by
+            aggs, node.by_column_ids, order_by=node.order_by
         )
+        # TODO: Remove dropna field and use filter node instead
+        if node.dropna:
+            for key in node.by_column_ids:
+                if node.child.field_by_id[key.id].nullable:
+                    result = result.filter(operations.notnull_op.as_expr(key))
         return result
 
     @_compile_node.register

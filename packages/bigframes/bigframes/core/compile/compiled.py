@@ -205,7 +205,6 @@ class UnorderedIR:
         self,
         aggregations: typing.Sequence[tuple[ex.Aggregation, str]],
         by_column_ids: typing.Sequence[ex.DerefOp] = (),
-        dropna: bool = True,
         order_by: typing.Sequence[OrderingExpression] = (),
     ) -> UnorderedIR:
         """
@@ -230,10 +229,6 @@ class UnorderedIR:
             for aggregate, col_out in aggregations
         }
         if by_column_ids:
-            if dropna:
-                table = table.filter(
-                    [table[ref.id.sql].notnull() for ref in by_column_ids]
-                )
             result = table.group_by((ref.id.sql for ref in by_column_ids)).aggregate(
                 **stats
             )
