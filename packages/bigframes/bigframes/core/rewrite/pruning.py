@@ -79,12 +79,17 @@ def prune_selection_child(
     elif isinstance(child, bigframes.core.nodes.AdditiveNode):
         if not set(field.id for field in child.added_fields) & selection.consumed_ids:
             return selection.replace_child(child.additive_base)
-        return selection.replace_child(
-            child.replace_additive_base(
-                prune_node(
-                    child.additive_base, selection.consumed_ids | child.referenced_ids
-                )
+        needed_ids = selection.consumed_ids | child.referenced_ids
+        if isinstance(child, bigframes.core.nodes.ProjectionNode):
+            # Projection expressions are independent, so can be individually removed from the node
+            child = dataclasses.replace(
+                child,
+                assignments=tuple(
+                    (ex, id) for (ex, id) in child.assignments if id in needed_ids
+                ),
             )
+        return selection.replace_child(
+            child.replace_additive_base(prune_node(child.additive_base, needed_ids))
         )
     elif isinstance(child, bigframes.core.nodes.ConcatNode):
         indices = [
