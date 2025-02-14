@@ -2799,6 +2799,7 @@ def test_python_settings_selective_gapic_version_mismatch_method_raises_error():
 def get_service_yaml_for_selective_gapic_tests(
         apis: Sequence[str] = ["google.example.v1.FooService"],
         methods=["google.example.v1.FooService.GetFoo"],
+        generate_omitted_as_internal=False,
 ) -> Dict[str, Any]:
     return {
         "apis": [
@@ -2812,7 +2813,8 @@ def get_service_yaml_for_selective_gapic_tests(
                         "experimental_features": {"rest_async_io_enabled": True},
                         "common": {
                             "selective_gapic_generation": {
-                                "methods": methods
+                                "methods": methods,
+                                "generate_omitted_as_internal": generate_omitted_as_internal,
                             }
                         }
                     },
@@ -3556,6 +3558,75 @@ def test_selective_gapic_api_build_extended_lro():
     assert 'google.example.v1.GetBarOperationRequest' not in api_schema.messages
     assert 'google.example.v1.CreateBarRequest' not in api_schema.messages
     assert 'google.example.v1.FooOpsService.PoorlyOrganizedMethod' not in api_schema.all_methods
+
+
+def test_selective_gapic_api_build_generate_omitted_as_internal():
+    # Put together a couple of minimal protos.
+    fds = (
+        make_file_pb2(
+            name='foo.proto',
+            package='google.example.v1',
+            messages=(
+                make_message_pb2(name='GenericRequest', fields=()),
+                make_message_pb2(name='GenericResponse', fields=()),
+            ),
+            services=(
+                descriptor_pb2.ServiceDescriptorProto(
+                    name='ServiceOne',
+                    method=(
+                        descriptor_pb2.MethodDescriptorProto(
+                            name='InternalMethod',
+                            input_type='google.example.v1.GenericRequest',
+                            output_type='google.example.v1.GenericResponse',
+                        ),
+                        descriptor_pb2.MethodDescriptorProto(
+                            name='NonInternalMethod',
+                            input_type='google.example.v1.GenericRequest',
+                            output_type='google.example.v1.GenericResponse',
+                        ),
+                    ),
+                ),
+                descriptor_pb2.ServiceDescriptorProto(
+                    name='ServiceTwo',
+                    method=(
+                        descriptor_pb2.MethodDescriptorProto(
+                            name='NonInternalMethod',
+                            input_type='google.example.v1.GenericRequest',
+                            output_type='google.example.v1.GenericResponse',
+                        ),
+                    ),
+                ),
+            ),
+        ),
+    )
+
+    service_yaml_config = get_service_yaml_for_selective_gapic_tests(
+        apis=['google.example.v1.ServiceOne', 'google.example.v1.ServiceTwo'],
+        methods=[
+            'google.example.v1.ServiceOne.NonInternalMethod',
+            'google.example.v1.ServiceTwo.NonInternalMethod'
+        ],
+        generate_omitted_as_internal=True
+    )
+
+    opts = Options(service_yaml_config=service_yaml_config)
+
+    api_schema = api.API.build(fds, 'google.example.v1', opts=opts)
+
+    assert 'google.example.v1.ServiceOne' in api_schema.services
+    assert 'google.example.v1.ServiceTwo' in api_schema.services
+    assert 'google.example.v1.ServiceOne.InternalMethod' not in api_schema.all_methods
+    assert 'google.example.v1.ServiceOne._InternalMethod' in api_schema.all_methods
+
+    assert api_schema.services['google.example.v1.ServiceOne'].is_internal
+    assert not api_schema.services['google.example.v1.ServiceTwo'].is_internal
+    assert api_schema.all_methods['google.example.v1.ServiceOne._InternalMethod'].is_internal
+    assert not api_schema.all_methods['google.example.v1.ServiceOne.NonInternalMethod'].is_internal
+    assert not api_schema.all_methods['google.example.v1.ServiceTwo.NonInternalMethod'].is_internal
+
+    assert api_schema.services['google.example.v1.ServiceOne'].client_name == 'BaseServiceOneClient'
+    assert api_schema.services['google.example.v1.ServiceOne'].async_client_name == 'BaseServiceOneAsyncClient'
+    assert api_schema.all_methods['google.example.v1.ServiceOne._InternalMethod'].name == '_InternalMethod'
 
 
 def test_read_empty_python_settings_from_service_yaml():

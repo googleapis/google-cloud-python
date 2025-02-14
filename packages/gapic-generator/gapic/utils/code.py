@@ -63,3 +63,20 @@ def nth(iterable: Iterable[T], n: int, default: Optional[T] = None) -> Optional[
                                  fewer than n elements.
     """
     return next(itertools.islice(iterable, n, None), default)
+
+
+def make_private(object_name: str) -> str:
+    """Labels the object name like a private object (i.e. prefixes it with underscore)
+
+    If the object name already starts with underscore, returns the original name instead.
+    This is to avoid adding name manging to an object.
+
+    This is provided to templates as the ``make_private`` filter.
+
+    Args:
+        object_name (str): The name of the object to be made private.
+
+    Returns:
+        str: The final name of the privated object.
+    """
+    return object_name if object_name.startswith('_') else f'_{object_name}'

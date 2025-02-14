@@ -159,7 +159,7 @@ class Async{{service.name}}RestTransport(_Base{{ service.name }}RestTransport):
     {{ shared_macros.wrap_async_method_macro()|indent(4) }}
 
     {% for method in service.methods.values()|sort(attribute="name") %}
-    class _{{method.name}}(_Base{{ service.name }}RestTransport._Base{{method.name}}, Async{{service.name}}RestStub):
+    class {{ method.name|make_private }}(_Base{{ service.name }}RestTransport._Base{{method.name}}, Async{{service.name}}RestStub):
         def __hash__(self):
             return hash("Async{{service.name}}RestTransport.{{method.name}}")
 

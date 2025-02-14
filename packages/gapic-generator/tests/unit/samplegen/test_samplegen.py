@@ -2240,6 +2240,120 @@ def test_generate_sample_spec_basic(opts_transport, expected):
     assert specs == expected
 
 
+def test_generate_sample_spec_internal_method():
+    service_options = descriptor_pb2.ServiceOptions()
+    service_options.Extensions[client_pb2.default_host] = "example.googleapis.com"
+
+    file_descriptors = [
+        descriptor_pb2.FileDescriptorProto(
+            name="cephalopod.proto",
+            package="animalia.mollusca.v1",
+            message_type=[
+                descriptor_pb2.DescriptorProto(
+                    name="MolluscRequest",
+                ),
+                descriptor_pb2.DescriptorProto(
+                    name="Mollusc",
+                ),
+            ],
+            service=[
+                descriptor_pb2.ServiceDescriptorProto(
+                    name="Squid",
+                    options=service_options,
+                    method=[
+                        descriptor_pb2.MethodDescriptorProto(
+                            name="Ramshorn",
+                            input_type="animalia.mollusca.v1.MolluscRequest",
+                            output_type="animalia.mollusca.v1.Mollusc",
+                        ),
+                        descriptor_pb2.MethodDescriptorProto(
+                            name="NotRamshorn",
+                            input_type="animalia.mollusca.v1.MolluscRequest",
+                            output_type="animalia.mollusca.v1.Mollusc",
+                        )
+                    ],
+                ),
+                descriptor_pb2.ServiceDescriptorProto(
+                    name="Octopus",
+                    options=service_options,
+                    method=[
+                        descriptor_pb2.MethodDescriptorProto(
+                            name="Bighead",
+                            input_type="animalia.mollusca.v1.MolluscRequest",
+                            output_type="animalia.mollusca.v1.Mollusc",
+                        ),
+                    ],
+                ),
+            ],
+        )
+    ]
+
+    # The internal method should be animalia.mollusca.v1.Squid.NotRamshorn
+    service_yaml = {
+        "apis": [
+            {"name": "animalia.mollusca.v1"}
+        ],
+        "publishing": {
+            "library_settings": [
+                {
+                    "version": "animalia.mollusca.v1",
+                    "python_settings": {
+                        "experimental_features": {"rest_async_io_enabled": True},
+                        "common": {
+                            "selective_gapic_generation": {
+                                "methods": [
+                                    "animalia.mollusca.v1.Squid.Ramshorn",
+                                    "animalia.mollusca.v1.Octopus.Bighead"
+                                ],
+                                "generate_omitted_as_internal": True
+                            }
+                        }
+                    },
+                }
+            ]
+        },
+    }
+
+    api_opts = Options(service_yaml_config=service_yaml)
+
+    api_schema = api.API.build(
+        file_descriptors, "animalia.mollusca.v1", opts=api_opts)
+
+    samplegen_opts = Options.build("transport=rest")
+
+    specs = sorted(
+        samplegen.generate_sample_specs(api_schema, opts=samplegen_opts),
+        key=lambda x: x["rpc"],
+    )
+    specs.sort(key=lambda x: x["rpc"])
+
+    expected_specs = [
+        {
+            "rpc": "Bighead",
+            "transport": "rest",
+            "service": "animalia.mollusca.v1.Octopus",
+            "region_tag": "example_v1_generated_Octopus_Bighead_sync",
+            "description": "Snippet for bighead"
+        },
+        {
+            "rpc": "Ramshorn",
+            "transport": "rest",
+            "service": "animalia.mollusca.v1.Squid",
+            "region_tag": "example_v1_generated_Squid_Ramshorn_sync",
+            "description": "Snippet for ramshorn"
+        },
+        {
+            "rpc": "_NotRamshorn",
+            "transport": "rest",
+            "service": "animalia.mollusca.v1.Squid",
+            "region_tag": "example_v1_generated_Squid__NotRamshorn_sync_internal",
+            "description": "Snippet for _not_ramshorn"
+        },
+    ]
+
+    assert specs == expected_specs
+
+
 def test__set_sample_metadata_server_streaming():
     sample = {
         "rpc": "Ramshorn",

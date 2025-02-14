@@ -366,7 +366,7 @@ class {{ service.name }}Transport(abc.ABC):
 
     {% for operations_service in api.get_extended_operations_services(service)|sort(attribute="name") %}
     @property
-    def _{{ operations_service.client_name|snake_case }}(self) -> {{ operations_service.name|snake_case }}.{{ operations_service.client_name }}:
+    def {{ operations_service.client_name|snake_case|make_private }}(self) -> {{ operations_service.name|snake_case }}.{{ operations_service.client_name }}:
         ex_op_service = self._extended_operations_services.get("{{ operations_service.name|snake_case }}")
         if not ex_op_service:
             ex_op_service = {{ operations_service.name|snake_case }}.{{ operations_service.client_name }}(

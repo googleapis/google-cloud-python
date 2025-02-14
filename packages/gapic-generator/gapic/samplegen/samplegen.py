@@ -1036,6 +1036,12 @@ def generate_sample_specs(api_schema: api.API, *, opts) -> Generator[Dict[str, A
                 # Region Tag Format:
                 # [{START|END} ${apishortname}_${apiVersion}_generated_${serviceName}_${rpcName}_{sync|async|rest}]
                 region_tag = f"{api_short_name}_{api_version}_generated_{service_name}_{rpc_name}_{sync_or_async}"
+
+                # We assume that the only methods that start with an underscore are internal methods.
+                is_internal = rpc_name.startswith("_")
+                if is_internal:
+                    region_tag += "_internal"
+
                 spec = {
                     "rpc": rpc_name,
                     "transport": transport,

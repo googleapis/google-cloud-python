@@ -326,6 +326,26 @@ class Proto:
             all_enums=all_enums
         )
 
+    def with_internal_methods(self, *, public_methods: Set[str]) -> 'Proto':
+        """Returns a version of this Proto with some Methods marked as internal.
+
+        The methods not in the public_methods set will be marked as internal and
+        services containing these methods will also be marked as internal by extension.
+        (See :meth:`Service.is_internal` for more details).
+
+        Args:
+            public_methods (Set[str]): An allowlist of fully-qualified method names.
+                Methods not in this allowlist will be marked as internal.
+        Returns:
+            Proto: A version of this Proto with Method objects corresponding to methods
+                not in `public_methods` marked as internal.
+        """
+        services = {
+            k: v.with_internal_methods(public_methods=public_methods)
+            for k, v in self.services.items()
+        }
+        return dataclasses.replace(self, services=services)
+
 
 @dataclasses.dataclass(frozen=True)
 class API:
@@ -462,34 +482,43 @@ class API:
                   service_yaml_config=service_yaml_config)
 
         if package in api.all_library_settings:
-            selective_gapic_methods = set(
-                api.all_library_settings[package].python_settings.common.selective_gapic_generation.methods
-            )
+            selective_gapic_settings = api.all_library_settings[package].python_settings.\
+                common.selective_gapic_generation
+
+            selective_gapic_methods = set(selective_gapic_settings.methods)
             if selective_gapic_methods:
-
-                all_resource_messages = collections.ChainMap(
-                    *(proto.resource_messages for proto in protos.values())
-                )
-
-                # Prepare a list of addresses to include in selective generation,
-                # then prune each Proto object. We look at metadata.Addresses, not objects, because
-                # objects that refer to the same thing in the proto are different Python objects
-                # in memory.
-                address_allowlist: Set['metadata.Address'] = set([])
-                for proto in api.protos.values():
-                    proto.add_to_address_allowlist(address_allowlist=address_allowlist,
-                                                   method_allowlist=selective_gapic_methods,
-                                                   resource_messages=all_resource_messages)
-
                 # The list of explicitly allow-listed protos to generate, plus all
                 # the proto dependencies regardless of the allow-list.
-                new_all_protos = {}
+                #
+                # Both selective GAPIC generation settings (omitting + internal) only alter
+                # protos that are not dependencies, so we iterate over api.all_protos and copy
+                # all dependencies as is here.
+                new_all_protos = {
+                    k: v for k, v in api.all_protos.items()
+                    if k not in api.protos
+                }
 
-                # We only prune services/messages/enums from protos that are not dependencies.
-                for name, proto in api.all_protos.items():
-                    if name not in api.protos:
-                        new_all_protos[name] = proto
-                    else:
+                if selective_gapic_settings.generate_omitted_as_internal:
+                    for name, proto in api.protos.items():
+                        new_all_protos[name] = proto.with_internal_methods(
+                            public_methods=selective_gapic_methods)
+                else:
+                    all_resource_messages = collections.ChainMap(
+                        *(proto.resource_messages for proto in protos.values())
+                    )
+
+                    # Prepare a list of addresses to include in selective generation,
+                    # then prune each Proto object. We look at metadata.Addresses, not objects, because
+                    # objects that refer to the same thing in the proto are different Python objects
+                    # in memory.
+                    address_allowlist: Set['metadata.Address'] = set([])
+                    for proto in api.protos.values():
+                        proto.add_to_address_allowlist(address_allowlist=address_allowlist,
+                                                    method_allowlist=selective_gapic_methods,
+                                                    resource_messages=all_resource_messages)
+
+                    # We only prune services/messages/enums from protos that are not dependencies.
+                    for name, proto in api.protos.items():
                         proto_to_generate = proto.prune_messages_for_selective_generation(
                             address_allowlist=address_allowlist)
                         if proto_to_generate:

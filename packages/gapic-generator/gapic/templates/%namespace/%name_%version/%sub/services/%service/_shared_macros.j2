@@ -452,9 +452,9 @@ class {{ async_method_name_prefix }}{{ service.name }}RestInterceptor:
 
 @property
 def {{ name|snake_case }}(self):
-    return self._{{ name }}(self._session, self._host, self._interceptor) # type: ignore
+    return self.{{ name|make_private }}(self._session, self._host, self._interceptor) # type: ignore
 
-class _{{ name }}(_Base{{ service.name }}RestTransport._Base{{name}}, {{ async_method_name_prefix }}{{service.name}}RestStub):
+class {{ name|make_private }}(_Base{{ service.name }}RestTransport._Base{{name}}, {{ async_method_name_prefix }}{{service.name}}RestStub):
     def __hash__(self):
         return hash("{{ async_method_name_prefix }}{{ service.name }}RestTransport.{{ name }}")
 

@@ -20,6 +20,7 @@ from gapic.utils.checks import is_str_field_pb
 from gapic.utils.code import empty
 from gapic.utils.code import nth
 from gapic.utils.code import partition
+from gapic.utils.code import make_private
 from gapic.utils.doc import doc
 from gapic.utils.filename import to_valid_filename
 from gapic.utils.filename import to_valid_module_name
@@ -38,6 +39,7 @@ __all__ = (
     'empty',
     'is_msg_field_pb',
     'is_str_field_pb',
+    'make_private',
     'nth',
     'Options',
     'partition',

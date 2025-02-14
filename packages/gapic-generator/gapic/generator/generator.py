@@ -59,6 +59,7 @@ class Generator:
 
         # Add filters which templates require.
         self._env.filters["rst"] = utils.rst
+        self._env.filters["make_private"] = utils.make_private
         self._env.filters["snake_case"] = utils.to_snake_case
         self._env.filters["camel_case"] = utils.to_camel_case
         self._env.filters["sort_lines"] = utils.sort_lines

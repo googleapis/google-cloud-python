@@ -53,6 +53,7 @@ from google.protobuf.json_format import MessageToDict  # type: ignore
 from gapic import utils
 from gapic.schema import metadata
 from gapic.utils import uri_sample
+from gapic.utils import make_private
 
 
 @dataclasses.dataclass(frozen=True)
@@ -900,6 +901,14 @@ class EnumType:
 
         This method is used to create an allowlist of addresses to be used to filter out unneeded
         services, methods, messages, and enums at a later step.
+
+        Args:
+            address_allowlist (Set[metadata.Address]): A set of allowlisted metadata.Address
+                objects to add to. Only the addresses of the allowlisted methods, the services
+                containing these methods, and messages/enums those methods use will be part of the
+                final address_allowlist. The set may be modified during this call.
+        Returns:
+            None
         """
         address_allowlist.add(self.ident)
 
@@ -1014,6 +1023,18 @@ class ExtendedOperationInfo:
 
         This method is used to create an allowlist of addresses to be used to filter out unneeded
         services, methods, messages, and enums at a later step.
+
+        Args:
+            address_allowlist (Set[metadata.Address]): A set of allowlisted metadata.Address
+                objects to add to. Only the addresses of the allowlisted methods, the services
+                containing these methods, and messages/enums those methods use will be part of the
+                final address_allowlist. The set may be modified during this call.
+            resource_messages (Dict[str, wrappers.MessageType]): A dictionary mapping the unified
+                resource type name of a resource message to the corresponding MessageType object
+                representing that resource message. Only resources with a message representation
+                should be included in the dictionary.
+        Returns:
+            None
         """
 
         self.request_type.add_to_address_allowlist(
@@ -1061,6 +1082,18 @@ class OperationInfo:
 
         This method is used to create an allowlist of addresses to be used to filter out unneeded
         services, methods, messages, and enums at a later step.
+
+        Args:
+            address_allowlist (Set[metadata.Address]): A set of allowlisted metadata.Address
+                objects to add to. Only the addresses of the allowlisted methods, the services
+                containing these methods, and messages/enums those methods use will be part of the
+                final address_allowlist. The set may be modified during this call.
+            resource_messages (Dict[str, wrappers.MessageType]): A dictionary mapping the unified
+                resource type name of a resource message to the corresponding MessageType object
+                representing that resource message. Only resources with a message representation
+                should be included in the dictionary.
+        Returns:
+            None
         """
         self.response_type.add_to_address_allowlist(
             address_allowlist=address_allowlist,
@@ -1362,6 +1395,7 @@ class Method:
     method_pb: descriptor_pb2.MethodDescriptorProto
     input: MessageType
     output: MessageType
+    is_internal: bool = False
     lro: Optional[OperationInfo] = dataclasses.field(default=None)
     extended_lro: Optional[ExtendedOperationInfo] = dataclasses.field(
         default=None)
@@ -1402,6 +1436,10 @@ class Method:
     @property
     def is_operation_polling_method(self):
         return self.output.is_extended_operation and self.options.Extensions[ex_ops_pb2.operation_polling_method]
+
+    @utils.cached_property
+    def name(self):
+        return make_private(self.method_pb.name) if self.is_internal else self.method_pb.name
 
     @utils.cached_property
     def client_output(self):
@@ -1814,6 +1852,22 @@ class Method:
 
         This method is used to create an allowlist of addresses to be used to filter out unneeded
         services, methods, messages, and enums at a later step.
+
+        Args:
+            address_allowlist (Set[metadata.Address]): A set of allowlisted metadata.Address
+                objects to add to. Only the addresses of the allowlisted methods, the services
+                containing these methods, and messages/enums those methods use will be part of the
+                final address_allowlist. The set may be modified during this call.
+            method_allowlist (Set[str]): An allowlist of fully-qualified method names.
+            resource_messages (Dict[str, wrappers.MessageType]): A dictionary mapping the unified
+                resource type name of a resource message to the corresponding MessageType object
+                representing that resource message. Only resources with a message representation
+                should be included in the dictionary.
+            services_in_proto (Dict[str, wrappers.Service]): A dictionary mapping the names of Service
+                objects in the proto containing this method to the Service objects. This is necessary
+                for traversing the operation service in the case of extended LROs.
+        Returns:
+            None
         """
 
         address_allowlist.add(self.ident)
@@ -1849,6 +1903,27 @@ class Method:
         self.output.add_to_address_allowlist(
             address_allowlist=address_allowlist,
             resource_messages=resource_messages,
+        )
+
+    def with_internal_methods(self, *, public_methods: Set[str]) -> 'Method':
+        """Returns a version of this ``Method`` marked as internal
+
+        The methods not in the public_methods set will be marked as internal and
+        this ``Service`` will as well by extension (see :meth:`Service.is_internal`).
+
+        Args:
+            public_methods (Set[str]): An allowlist of fully-qualified method names.
+                Methods not in this allowlist will be marked as internal.
+        Returns:
+            Service: A version of this `Service` with `Method` objects corresponding to methods
+                not in `public_methods` marked as internal.
+        """
+        if self.ident.proto in public_methods:
+            return self
+
+        return dataclasses.replace(
+            self,
+            is_internal=True,
         )
 
 
@@ -1928,7 +2003,7 @@ class Service:
     @property
     def client_name(self) -> str:
         """Returns the name of the generated client class"""
-        return self.name + "Client"
+        return ("Base" if self.is_internal else "") + self.name + "Client"
 
     @property
     def client_package_version(self) -> str:
@@ -1937,7 +2012,7 @@ class Service:
     @property
     def async_client_name(self) -> str:
         """Returns the name of the generated AsyncIO client class"""
-        return self.name + "AsyncClient"
+        return ("Base" if self.is_internal else "") + self.name + "AsyncClient"
 
     @property
     def transport_name(self):
@@ -2143,6 +2218,10 @@ class Service:
             None
         )
 
+    @utils.cached_property
+    def is_internal(self) -> bool:
+        return any(m.is_internal for m in self.methods.values())
+
     def with_context(self, *,
                      collisions: Set[str],
                      visited_messages: Optional[Set["MessageType"]] = None,
@@ -2222,5 +2301,34 @@ class Service:
             methods={
                 k: v
                 for k, v in self.methods.items() if v.ident in address_allowlist
+            }
+        )
+
+    def with_internal_methods(self, *,
+                              public_methods: Set[str]) -> 'Service':
+        """Returns a version of this ``Service`` with some Methods marked as internal.
+
+        The methods not in the public_methods set will be marked as internal and
+        this ``Service`` will as well by extension (see :meth:`Service.is_internal`).
+
+        Args:
+            public_methods (Set[str]): An allowlist of fully-qualified method names.
+                Methods not in this allowlist will be marked as internal.
+        Returns:
+            Service: A version of this `Service` with `Method` objects corresponding to methods
+                not in `public_methods` marked as internal.
+        """
+
+        # Internal methods need to be keyed with underscore prefixed method names
+        # (e.g. google.Service.Method -> google.Service._Method) in order for
+        # samplegen to work properly.
+        return dataclasses.replace(
+            self,
+            methods={
+                meth.name: meth
+                for meth in (
+                    meth.with_internal_methods(public_methods=public_methods)
+                    for meth in self.methods.values()
+                )
             }
         )

@@ -39,6 +39,7 @@ class DummyMethod:
     flattened_fields: Dict[str, Any] = dataclasses.field(default_factory=dict)
     client_output: bool = False
     client_output_async: bool = False
+    is_internal: bool = False
 
 
 DummyIdent = namedtuple("DummyIdent", ["name", "sphinx"])

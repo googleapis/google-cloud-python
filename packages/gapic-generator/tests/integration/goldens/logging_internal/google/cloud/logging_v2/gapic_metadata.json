@@ -1,0 +1,481 @@
+ {
+  "comment": "This file maps proto services/RPCs to the corresponding library clients/methods",
+  "language": "python",
+  "libraryPackage": "google.cloud.logging_v2",
+  "protoPackage": "google.logging.v2",
+  "schema": "1.0",
+  "services": {
+    "ConfigServiceV2": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "BaseConfigServiceV2Client",
+          "rpcs": {
+            "CreateBucket": {
+              "methods": [
+                "create_bucket"
+              ]
+            },
+            "CreateBucketAsync": {
+              "methods": [
+                "create_bucket_async"
+              ]
+            },
+            "DeleteBucket": {
+              "methods": [
+                "delete_bucket"
+              ]
+            },
+            "GetBucket": {
+              "methods": [
+                "get_bucket"
+              ]
+            },
+            "ListBuckets": {
+              "methods": [
+                "list_buckets"
+              ]
+            },
+            "UndeleteBucket": {
+              "methods": [
+                "undelete_bucket"
+              ]
+            },
+            "UpdateBucket": {
+              "methods": [
+                "update_bucket"
+              ]
+            },
+            "UpdateBucketAsync": {
+              "methods": [
+                "update_bucket_async"
+              ]
+            },
+            "_CopyLogEntries": {
+              "methods": [
+                "_copy_log_entries"
+              ]
+            },
+            "_CreateExclusion": {
+              "methods": [
+                "_create_exclusion"
+              ]
+            },
+            "_CreateLink": {
+              "methods": [
+                "_create_link"
+              ]
+            },
+            "_CreateSink": {
+              "methods": [
+                "_create_sink"
+              ]
+            },
+            "_CreateView": {
+              "methods": [
+                "_create_view"
+              ]
+            },
+            "_DeleteExclusion": {
+              "methods": [
+                "_delete_exclusion"
+              ]
+            },
+            "_DeleteLink": {
+              "methods": [
+                "_delete_link"
+              ]
+            },
+            "_DeleteSink": {
+              "methods": [
+                "_delete_sink"
+              ]
+            },
+            "_DeleteView": {
+              "methods": [
+                "_delete_view"
+              ]
+            },
+            "_GetCmekSettings": {
+              "methods": [
+                "_get_cmek_settings"
+              ]
+            },
+            "_GetExclusion": {
+              "methods": [
+                "_get_exclusion"
+              ]
+            },
+            "_GetLink": {
+              "methods": [
+                "_get_link"
+              ]
+            },
+            "_GetSettings": {
+              "methods": [
+                "_get_settings"
+              ]
+            },
+            "_GetSink": {
+              "methods": [
+                "_get_sink"
+              ]
+            },
+            "_GetView": {
+              "methods": [
+                "_get_view"
+              ]
+            },
+            "_ListExclusions": {
+              "methods": [
+                "_list_exclusions"
+              ]
+            },
+            "_ListLinks": {
+              "methods": [
+                "_list_links"
+              ]
+            },
+            "_ListSinks": {
+              "methods": [
+                "_list_sinks"
+              ]
+            },
+            "_ListViews": {
+              "methods": [
+                "_list_views"
+              ]
+            },
+            "_UpdateCmekSettings": {
+              "methods": [
+                "_update_cmek_settings"
+              ]
+            },
+            "_UpdateExclusion": {
+              "methods": [
+                "_update_exclusion"
+              ]
+            },
+            "_UpdateSettings": {
+              "methods": [
+                "_update_settings"
+              ]
+            },
+            "_UpdateSink": {
+              "methods": [
+                "_update_sink"
+              ]
+            },
+            "_UpdateView": {
+              "methods": [
+                "_update_view"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "BaseConfigServiceV2AsyncClient",
+          "rpcs": {
+            "CreateBucket": {
+              "methods": [
+                "create_bucket"
+              ]
+            },
+            "CreateBucketAsync": {
+              "methods": [
+                "create_bucket_async"
+              ]
+            },
+            "DeleteBucket": {
+              "methods": [
+                "delete_bucket"
+              ]
+            },
+            "GetBucket": {
+              "methods": [
+                "get_bucket"
+              ]
+            },
+            "ListBuckets": {
+              "methods": [
+                "list_buckets"
+              ]
+            },
+            "UndeleteBucket": {
+              "methods": [
+                "undelete_bucket"
+              ]
+            },
+            "UpdateBucket": {
+              "methods": [
+                "update_bucket"
+              ]
+            },
+            "UpdateBucketAsync": {
+              "methods": [
+                "update_bucket_async"
+              ]
+            },
+            "_CopyLogEntries": {
+              "methods": [
+                "_copy_log_entries"
+              ]
+            },
+            "_CreateExclusion": {
+              "methods": [
+                "_create_exclusion"
+              ]
+            },
+            "_CreateLink": {
+              "methods": [
+                "_create_link"
+              ]
+            },
+            "_CreateSink": {
+              "methods": [
+                "_create_sink"
+              ]
+            },
+            "_CreateView": {
+              "methods": [
+                "_create_view"
+              ]
+            },
+            "_DeleteExclusion": {
+              "methods": [
+                "_delete_exclusion"
+              ]
+            },
+            "_DeleteLink": {
+              "methods": [
+                "_delete_link"
+              ]
+            },
+            "_DeleteSink": {
+              "methods": [
+                "_delete_sink"
+              ]
+            },
+            "_DeleteView": {
+              "methods": [
+                "_delete_view"
+              ]
+            },
+            "_GetCmekSettings": {
+              "methods": [
+                "_get_cmek_settings"
+              ]
+            },
+            "_GetExclusion": {
+              "methods": [
+                "_get_exclusion"
+              ]
+            },
+            "_GetLink": {
+              "methods": [
+                "_get_link"
+              ]
+            },
+            "_GetSettings": {
+              "methods": [
+                "_get_settings"
+              ]
+            },
+            "_GetSink": {
+              "methods": [
+                "_get_sink"
+              ]
+            },
+            "_GetView": {
+              "methods": [
+                "_get_view"
+              ]
+            },
+            "_ListExclusions": {
+              "methods": [
+                "_list_exclusions"
+              ]
+            },
+            "_ListLinks": {
+              "methods": [
+                "_list_links"
+              ]
+            },
+            "_ListSinks": {
+              "methods": [
+                "_list_sinks"
+              ]
+            },
+            "_ListViews": {
+              "methods": [
+                "_list_views"
+              ]
+            },
+            "_UpdateCmekSettings": {
+              "methods": [
+                "_update_cmek_settings"
+              ]
+            },
+            "_UpdateExclusion": {
+              "methods": [
+                "_update_exclusion"
+              ]
+            },
+            "_UpdateSettings": {
+              "methods": [
+                "_update_settings"
+              ]
+            },
+            "_UpdateSink": {
+              "methods": [
+                "_update_sink"
+              ]
+            },
+            "_UpdateView": {
+              "methods": [
+                "_update_view"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "LoggingServiceV2": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "LoggingServiceV2Client",
+          "rpcs": {
+            "DeleteLog": {
+              "methods": [
+                "delete_log"
+              ]
+            },
+            "ListLogEntries": {
+              "methods": [
+                "list_log_entries"
+              ]
+            },
+            "ListLogs": {
+              "methods": [
+                "list_logs"
+              ]
+            },
+            "ListMonitoredResourceDescriptors": {
+              "methods": [
+                "list_monitored_resource_descriptors"
+              ]
+            },
+            "TailLogEntries": {
+              "methods": [
+                "tail_log_entries"
+              ]
+            },
+            "WriteLogEntries": {
+              "methods": [
+                "write_log_entries"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "LoggingServiceV2AsyncClient",
+          "rpcs": {
+            "DeleteLog": {
+              "methods": [
+                "delete_log"
+              ]
+            },
+            "ListLogEntries": {
+              "methods": [
+                "list_log_entries"
+              ]
+            },
+            "ListLogs": {
+              "methods": [
+                "list_logs"
+              ]
+            },
+            "ListMonitoredResourceDescriptors": {
+              "methods": [
+                "list_monitored_resource_descriptors"
+              ]
+            },
+            "TailLogEntries": {
+              "methods": [
+                "tail_log_entries"
+              ]
+            },
+            "WriteLogEntries": {
+              "methods": [
+                "write_log_entries"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "MetricsServiceV2": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "BaseMetricsServiceV2Client",
+          "rpcs": {
+            "_CreateLogMetric": {
+              "methods": [
+                "_create_log_metric"
+              ]
+            },
+            "_DeleteLogMetric": {
+              "methods": [
+                "_delete_log_metric"
+              ]
+            },
+            "_GetLogMetric": {
+              "methods": [
+                "_get_log_metric"
+              ]
+            },
+            "_ListLogMetrics": {
+              "methods": [
+                "_list_log_metrics"
+              ]
+            },
+            "_UpdateLogMetric": {
+              "methods": [
+                "_update_log_metric"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "BaseMetricsServiceV2AsyncClient",
+          "rpcs": {
+            "_CreateLogMetric": {
+              "methods": [
+                "_create_log_metric"
+              ]
+            },
+            "_DeleteLogMetric": {
+              "methods": [
+                "_delete_log_metric"
+              ]
+            },
+            "_GetLogMetric": {
+              "methods": [
+                "_get_log_metric"
+              ]
+            },
+            "_ListLogMetrics": {
+              "methods": [
+                "_list_log_metrics"
+              ]
+            },
+            "_UpdateLogMetric": {
+              "methods": [
+                "_update_log_metric"
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}

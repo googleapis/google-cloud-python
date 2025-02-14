@@ -43,3 +43,11 @@ def test_nth():
     assert code.nth((i * i for i in range(20)), 4) == 16
     # default
     assert code.nth((i * i for i in range(20)), 30, 2112) == 2112
+
+
+def test_make_private():
+    # Regular case
+    assert code.make_private('private_func') == '_private_func'
+
+    # Starts with underscore
+    assert code.make_private('_no_dunder_plz') == '_no_dunder_plz'
