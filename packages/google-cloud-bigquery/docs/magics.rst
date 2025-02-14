@@ -6,7 +6,7 @@ in a Jupyter notebook cell.
 
 .. code::
 
-    %load_ext google.cloud.bigquery
+    %load_ext bigquery_magics
 
 This makes the ``%%bigquery`` magic available.
 
@@ -27,8 +27,9 @@ Running a parameterized query:
    :start-after: [START bigquery_jupyter_query_params_scalars]
    :end-before: [END bigquery_jupyter_query_params_scalars]
 
-API Reference
--------------
+BigQuery Magics Reference
+-------------------------
 
-.. automodule:: google.cloud.bigquery.magics.magics
-    :members:
+-  `BigQuery Magics Documentation`_
+
+.. _BigQuery Magics Documentation: https://googleapis.dev/python/bigquery-magics/latest
