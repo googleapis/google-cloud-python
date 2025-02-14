@@ -1,6 +1,14 @@
 # Changelog
 
 
+## [1.23.0](https://github.com/googleapis/gapic-generator-python/compare/v1.22.1...v1.23.0) (2025-02-14)
+
+
+### Features
+
+* Add ability to remove unversioned modules ([#2329](https://github.com/googleapis/gapic-generator-python/issues/2329)) ([ccd619f](https://github.com/googleapis/gapic-generator-python/commit/ccd619f0461f6b1aa22cdd6fbcc37039bcdc541a))
+* Added support for internal methods in selective GAPIC generation ([#2325](https://github.com/googleapis/gapic-generator-python/issues/2325)) ([eb8a69e](https://github.com/googleapis/gapic-generator-python/commit/eb8a69e3141f865903716b9c5013e2c7650c60da))
+
 ## [1.22.1](https://github.com/googleapis/gapic-generator-python/compare/v1.22.0...v1.22.1) (2025-02-12)
 
 
