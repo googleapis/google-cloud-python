@@ -1967,6 +1967,11 @@
                 "add_association"
               ]
             },
+            "AddPacketMirroringRule": {
+              "methods": [
+                "add_packet_mirroring_rule"
+              ]
+            },
             "AddRule": {
               "methods": [
                 "add_rule"
@@ -2002,6 +2007,11 @@
                 "get_iam_policy"
               ]
             },
+            "GetPacketMirroringRule": {
+              "methods": [
+                "get_packet_mirroring_rule"
+              ]
+            },
             "GetRule": {
               "methods": [
                 "get_rule"
@@ -2022,6 +2032,11 @@
                 "patch"
               ]
             },
+            "PatchPacketMirroringRule": {
+              "methods": [
+                "patch_packet_mirroring_rule"
+              ]
+            },
             "PatchRule": {
               "methods": [
                 "patch_rule"
@@ -2030,6 +2045,11 @@
             "RemoveAssociation": {
               "methods": [
                 "remove_association"
+              ]
+            },
+            "RemovePacketMirroringRule": {
+              "methods": [
+                "remove_packet_mirroring_rule"
               ]
             },
             "RemoveRule": {
