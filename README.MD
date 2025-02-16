@@ -1,7 +1,7 @@
-⚡ Dato curioso: ...<!--- Javier111228/Javier111228 es un repositorio ✨ especial ✨ porque su README.md (este archivo) aparece en su perfil de GitHub. Puede hacer clic en el enlace Vista previa para echar un vistazo a sus cambios. -->Google Cloud Python ClientDato curioso: ...<!--- Javier111228/Javier111228 es un repositorio ✨ especial ✨ porque su README.md (este archivo) aparece en su perfil de GitHub. Puede hacer clic en el enlace Vista previa para echar un vistazo a sus cambios. -->Google Cloud Python Client
+⚡ Datos curiosos: ...<!--- Javier111228/Javier111228 es un repositorio ✨ especial ✨ porque su README....<!--- Javier111228/Javier111228 es un repositorio ✨ especial ✨ porque su README. md (este archivo)  aparece en su perfil de GitHub.  Puede  hacer clic en el enlace Vista previa para echar un vistazo a sus cambios. -->Google Cloud Python ClientDato curioso:   ...este archivomd (este archivo)  aparece en su perfil de GitHub.  Puede  hacer clic en el enlace Vista previa para echar un vistazo a sus cambios. -->Google Cloud Python Client
 ==========================
 
-Python idiomatic clients for `Google Cloud Platform`_ services.
+ Clientes idiomáticos Python   "Google Cloud Platform"`Google Cloud Platform`_ servicios.
 
 .. _Google Cloud Platform: https://cloud.google.com/
 
@@ -9,140 +9,140 @@ Python idiomatic clients for `Google Cloud Platform`_ services.
 Stability levels
 *******************
 
-The `development status classifier`_ on PyPI indicates the current stability
+ El   "clasificador de estatus de desarrollo""clasificador de estatus de desarrollo"_ en PyPI indica la estabilidad actual
 of a package.
 
-.. _development status classifier: https://pypi.org/classifiers/
+.. _clasificador de estado de desarrollo: https://pypi.org/classifiers/
 
 General Availability
 --------------------
 
-**GA** (general availability) indicates that the client library for a
-particular service is stable, and that the code surface will not change in
-backwards-incompatible ways unless either absolutely necessary (e.g. because
-of critical security issues) or with an extensive deprecation period.
-Issues and requests against GA libraries are addressed with the highest
-priority.
+**ga** 
+  servicio particular es estable,    
+formas
+de problemas críticos de seguridad) o con un extenso período de depreciación.) o con un extenso período de depreciación.
+LosLos  problemas y solicitudes contra las bibliotecas de GA se abordan con la mayor
+prioridad.
 
-GA libraries have development status classifier ``Development Status :: 5 - Production/Stable``.
+   bibliotecas GA tienen un clasificador de estado de desarrollo  "Estado de desarrollo::  " Estado de desarrollo::   5  - Producción / Estable".5 - Producción / Estable".
 
-Nota::
+NotaNota::
 
- Subcomponentes de las bibliotecas GA explícitamente marcados como beta en el 
- ruta de importación (por ejemplo, "google.cloud.language_v1beta2") debe considerarse 
+    Subcomponentes de las bibliotecas GA explícitamente marcados como beta en el    
+     ruta de importación  ruta de importación  (por ejemplo,   "google.cloud.language_v1beta2" ) debe considerarse  (por ejemplo, ) debe considerarse  (por ejemplo,   ") debe considerarse  (por ejemplo, ) debe considerarse  (por ejemplo,  "google.cloud.language_v1beta2"  ) debe considerarse    
  ser beta. 
 
-Soporte beta
+SoporteSoporte beta
 ------------
 
 **Beta** indica que la biblioteca de clientes para un servicio en particular es
-en su mayoría estable y se está preparando para la liberación. Problemas y solicitudes
+en su mayoría estable y se está preparando para la liberación.  Problemas y solicitudesProblemas y solicitudes
 Las bibliotecas beta se abordan con mayor prioridad.
 
-Las bibliotecas beta tienen un clasificador de estado de desarrollo "Estado de desarrollo:: 4 - Beta".
+LasLas  bibliotecas beta tienen un clasificador de estado de desarrollo  " Estado de desarrollo::   4  - BetaEstado de desarrollo::   4 - Beta".4 - Beta".
 
-Soporte alfa
+SoporteSoporte alfa
 -------------
 
 **Alpha** indica que la biblioteca de clientes para un servicio en particular es
 Sigue siendo un trabajo en progreso y es más probable que se vuelva incompatible con el retroceso.
-actualizaciones. Ver 'versioning'_ para más detalles.
+actualizacionesactualizaciones. Ver  'versioning'_ para más detalles.Ver  'versioning'_ para más detalles._ para más detalles.Ver  'versioning'_ para más detalles.
 
 
-Las bibliotecas alfa tienen un clasificador de estado de desarrollo "Estado de desarrollo:: 3 - Alpha".
+LasLas  bibliotecas alfa tienen un clasificador de estado de desarrollo  " Estado de desarrollo::   3 - Alpha".3 - Alpha".
 
-Si necesitas soporte para otras API de Google, echa un vistazo a la
+SiSi  necesitas soporte para otras API de Google, echa un vistazo a la
 'Google APIs Python Client library'_.
 
-.. _Google APIs Python Client library: https://github.com/google/google-api-python-client
+.. _Google APIs Python Client library: https://github.com/google/google-api-python-client//github.com/google/google-api-python-client
 
 
 Bibliotecas
 *********
 
-.. Se genera esta tabla, consulte synth.py para más detalles.
+.. Se genera esta tabla, consulte synth.py para más detalles.py para más detalles.
 
 .. API_TABLE_START
 
 .. list-table::
- :Encabezado-fianzas: 1 
+      :Encabezado-fianzas:    1  1   1  1   
 
- * - cliente 
- - nivel de liberación 
- - versión 
+     * - cliente     
+     - nivel de liberación     
+     - versión     
  - Problemas de API 
- - Presentar un problema de API 
- - Problemas de biblioteca de clientes 
- * - 'Una envoltura de pitón de la biblioteca C 'CRC32C' <https://github.com/googleapis/python-crc32c>'_ 
- - estable 
+     - Presentar un problema de API     
+     - Problemas de biblioteca de clientes     
+ * - 'Una envoltura de pitón de la biblioteca C 'CRC32C' <https://github.com/googleapis/python-crc32c>'_ //github.com/googleapis/python-crc32c>'_ * - 'Una envoltura de pitón de la biblioteca C 'CRC32C' <https:'Una envoltura de pitón de la biblioteca C 'CRC32C' <https:'Una envoltura de pitón de la biblioteca C  'CRC32C' <https://github.com/googleapis/python-crc32c>'_ //github.com/googleapis/python-crc32c>'_ 
+       - estable   - estable     
  - |PyPI-google-crc32c| 
  - 
  - 
- - 'Problemas de la biblioteca del cliente <https://github.com/googleapis/python-crc32c/issues>'_ 
- * - 'Ai Platform <https://github.com/googleapis/python-aiplatform>'_ 
- - estable 
+    - 'Problemas de la biblioteca del cliente <https: //github.com/googleapis/python-crc32c/issues>'_  //github.com/googleapis/python-crc32c/issues>'_   'Problemas de la biblioteca del cliente <https: //github.com/googleapis/python-crc32c/issues>'_  //github.com/googleapis/python-crc32c/issues>'_   - 'Problemas de la biblioteca del cliente <https:  - Problemas de la biblioteca del cliente <https:  - 'Problemas de la biblioteca del cliente <https: //github.com/googleapis/python-crc32c/issues>Problemas de la biblioteca del cliente <https: //github.com/googleapis/python-crc32c/issues>'_  //github.com/googleapis/python-crc32c/issues>'_  
+ * - 'Ai Platform <https:* - 'Ai Platform <https://github.com/googleapis/python-aiplatform>'_ 
+    - estable   - estable   
  - |PyPI-google-cloud-aiplatform| 
- - 'API Issues <https://issuetracker.google.com/savedsearches/559744>'_ 
-     - `File an API Issue <https://issuetracker.google.com/issues/new?component=187220>`_
-     - `Client Library Issues <https://github.com/googleapis/python-aiplatform/issues>`_
-   * - `AI Platform Notebooks <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-notebooks>`_
+ - 'API Issues <https:- 'API Issues <https://issuetracker.google.com/savedsearches/559744>'_ 
+ - 'Archivar un problema de API <https: `File an API Issue <https://issuetracker.google.com/issues/new?component=187220>`_
+ - 'Problemas de la biblioteca del cliente <https: - `Client Library Issues <https://github.com/googleapis/python-aiplatform/issues>`_
+ * - 'Ai Platform Notebooks <https: `AI Platform Notebooks <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-notebooks>`_
      - stable
      - |PyPI-google-cloud-notebooks|
      -
      -
-     - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
-   * - `API Gateway <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-api-gateway>`_
+ - 'Problemas de la biblioteca del cliente <https: - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
+ * - 'API Gateway <https: `API Gateway <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-api-gateway>`_
      - stable
      - |PyPI-google-cloud-api-gateway|
      -
      -
-     - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
-   * - `Access Approval <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-access-approval>`_
+ - 'Problemas de la biblioteca del cliente <https: - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
+ * - 'Aprobación de acceso <https: `Access Approval <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-access-approval>`_
      - stable
      - |PyPI-google-cloud-access-approval|
      -
      -
-     - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
-   * - `Apigee Connect <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-apigee-connect>`_
+ - 'Problemas de la biblioteca del cliente <https: - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
+ * - 'Apigee Connect <https: `Apigee Connect <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-apigee-connect>`_
      - stable
      - |PyPI-google-cloud-apigee-connect|
      -
      -
-     - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
-   * - `App Engine Admin <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-appengine-admin>`_
-     - stable
-     - |PyPI-google-cloud-appengine-admin|
-     -
-     -
-     - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
-   * - `App Engine Logging Protos <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-appengine-logging>`_
-     - stable
-     - |PyPI-google-cloud-appengine-logging|
-     -
-     -
-     - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
-   * - `Artifact Registry <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-artifact-registry>`_
-     - stable
-     - |PyPI-google-cloud-artifact-registry|
-     -
-     -
-     - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
-   * - `Asset Inventory <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-asset>`_
-     - stable
-     - |PyPI-google-cloud-asset|
-     - `API Issues <https://issuetracker.google.com/savedsearches/559757>`_
-     - `File an API Issue <https://issuetracker.google.com/issues/new?component=187210>`_
-     - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
-   * - `Assured Workloads for Government <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-assured-workloads>`_
+ - 'Problemas de la biblioteca del cliente <https: - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
+ * - 'Administrador de motores de aplicaciones <https: Administrador de motores de aplicaciones <https: `App Engine Admin <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-appengine-admin>`__
+ - estable - stable
+ - |PyPI-google-cloud-appengine-admin| - |PyPI-google-cloud-appengine-admin|
+ - -
+ - -
+ - - ''Problemas de la biblioteca del cliente https://github.com/googleapis/google-cloud-python/issues>'
+ * - * - 'Protos de registro de motores de aplicaciones <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-appengine-logging>'_ * - 'Protos de registro de motores de aplicaciones <https: Protos de registro de motores de aplicaciones <https: `App Engine Logging Protos <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-appengine-logging>`__
+ - estable - stable
+ - |PyPI-google-cloud-appengine-logging| - |PyPI-google-cloud-appengine-logging|
+ - -
+ - -
+ - - ''Problemas de la biblioteca del cliente https://github.com/googleapis/google-cloud-python/issues>'
+ * - * - 'Registro de artefactos <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-artifact-registry>'_ * - 'Registro de artefactos <https: `Artifact Registry <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-artifact-registry>`_
+ - estable - stable
+ - |PyPI-google-cloud-artifact-registry| - |PyPI-google-cloud-artifact-registry|
+ - -
+ - -
+ - - ''Problemas de la biblioteca del cliente https://github.com/googleapis/google-cloud-python/issues>'
+ * - 'Inventario de activos <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-asset>'_ * - 'Inventario de activos <https: `Asset Inventory <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-asset>`_
+ - estable - stable
+ - |PyPI-google-cloud-asset| - |PyPI-google-cloud-asset|
+ - - 'API Issues <https://issuetracker.google.com/savedsearches/559757>'_ - 'API Issues <https: - `API Issues <https://issuetracker.google.com/savedsearches/559757>`_
+ - - 'File an API Issue <https://issuetracker.google.com/issues/new?component=187210>'_ - 'Archivar un problema de API <https: `File an API Issue <https://issuetracker.google.com/issues/new?component=187210>`_
+ - - 'Problemas de la biblioteca del cliente <https://github.com/googleapis/google-cloud-python/issues>'_ - 'Problemas de la biblioteca del cliente <https: - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
+ * - * - 'Cargas de trabajo aseguradas para el gobierno <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-assured-workloads>'_ * - 'cargas de trabajo aseguradas `Assured Workloads for Government <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-assured-workloads>`_
      - stable
      - |PyPI-google-cloud-assured-workloads|
-     -
-     -
-     - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
-   * - `AutoML <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-automl>`_
+ - -
+ - -
+ - - 'Problemas de la biblioteca del cliente <https://github.com/googleapis/google-cloud-python/issues>'_ - 'Problemas de la biblioteca del cliente <https: - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
+ * - * - 'AutoML <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-automl>'_ * - 'AutoML <https: `AutoML <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-automl>`_
      - stable
      - |PyPI-google-cloud-automl|
-     - `API Issues <https://issuetracker.google.com/savedsearches/559744>`_
+ - - 'API Issues <https://issuetracker.google.com/savedsearches/559744>'_ - 'API Issues <https: - `API Issues <https://issuetracker.google.com/savedsearches/559744>`_
      - `File an API Issue <https://issuetracker.google.com/issues/new?component=187220>`_
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Bare Metal Solution <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-bare-metal-solution>`_
