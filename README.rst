@@ -1,4 +1,4 @@
-Google Cloud Python Client
+⚡ Dato curioso: ...<!--- Javier111228/Javier111228 es un repositorio ✨ especial ✨ porque su README.md (este archivo) aparece en su perfil de GitHub. Puede hacer clic en el enlace Vista previa para echar un vistazo a sus cambios. -->Google Cloud Python ClientDato curioso: ...<!--- Javier111228/Javier111228 es un repositorio ✨ especial ✨ porque su README.md (este archivo) aparece en su perfil de GitHub. Puede hacer clic en el enlace Vista previa para echar un vistazo a sus cambios. -->Google Cloud Python Client
 ==========================
 
 Python idiomatic clients for `Google Cloud Platform`_ services.
@@ -26,63 +26,63 @@ priority.
 
 GA libraries have development status classifier ``Development Status :: 5 - Production/Stable``.
 
-.. note::
+Nota::
 
-    Sub-components of GA libraries explicitly marked as beta in the
-    import path (e.g. ``google.cloud.language_v1beta2``) should be considered
-    to be beta.
+ Subcomponentes de las bibliotecas GA explícitamente marcados como beta en el 
+ ruta de importación (por ejemplo, "google.cloud.language_v1beta2") debe considerarse 
+ ser beta. 
 
-Beta Support
+Soporte beta
 ------------
 
-**Beta** indicates that the client library for a particular service is
-mostly stable and is being prepared for release. Issues and requests
-against beta libraries are addressed with a higher priority.
+**Beta** indica que la biblioteca de clientes para un servicio en particular es
+en su mayoría estable y se está preparando para la liberación. Problemas y solicitudes
+Las bibliotecas beta se abordan con mayor prioridad.
 
-Beta libraries have development status classifier ``Development Status :: 4 - Beta``.
+Las bibliotecas beta tienen un clasificador de estado de desarrollo "Estado de desarrollo:: 4 - Beta".
 
-Alpha Support
+Soporte alfa
 -------------
 
-**Alpha** indicates that the client library for a particular service is
-still a work-in-progress and is more likely to get backwards-incompatible
-updates. See `versioning`_ for more details.
+**Alpha** indica que la biblioteca de clientes para un servicio en particular es
+Sigue siendo un trabajo en progreso y es más probable que se vuelva incompatible con el retroceso.
+actualizaciones. Ver 'versioning'_ para más detalles.
 
 
-Alpha libraries have development status classifier ``Development Status :: 3 - Alpha``.
+Las bibliotecas alfa tienen un clasificador de estado de desarrollo "Estado de desarrollo:: 3 - Alpha".
 
-If you need support for other Google APIs, check out the
-`Google APIs Python Client library`_.
+Si necesitas soporte para otras API de Google, echa un vistazo a la
+'Google APIs Python Client library'_.
 
 .. _Google APIs Python Client library: https://github.com/google/google-api-python-client
 
 
-Libraries
+Bibliotecas
 *********
 
-.. This table is generated, see synth.py for details.
+.. Se genera esta tabla, consulte synth.py para más detalles.
 
 .. API_TABLE_START
 
 .. list-table::
-   :header-rows: 1
+ :Encabezado-fianzas: 1 
 
-   * - Client
-     - Release Level
-     - Version
-     - API Issues
-     - File an API Issue
-     - Client Library Issues
-   * - `A python wrapper of the C library 'CRC32C' <https://github.com/googleapis/python-crc32c>`_
-     - stable
-     - |PyPI-google-crc32c|
-     -
-     -
-     - `Client Library Issues <https://github.com/googleapis/python-crc32c/issues>`_
-   * - `AI Platform <https://github.com/googleapis/python-aiplatform>`_
-     - stable
-     - |PyPI-google-cloud-aiplatform|
-     - `API Issues <https://issuetracker.google.com/savedsearches/559744>`_
+ * - cliente 
+ - nivel de liberación 
+ - versión 
+ - Problemas de API 
+ - Presentar un problema de API 
+ - Problemas de biblioteca de clientes 
+ * - 'Una envoltura de pitón de la biblioteca C 'CRC32C' <https://github.com/googleapis/python-crc32c>'_ 
+ - estable 
+ - |PyPI-google-crc32c| 
+ - 
+ - 
+ - 'Problemas de la biblioteca del cliente <https://github.com/googleapis/python-crc32c/issues>'_ 
+ * - 'Ai Platform <https://github.com/googleapis/python-aiplatform>'_ 
+ - estable 
+ - |PyPI-google-cloud-aiplatform| 
+ - 'API Issues <https://issuetracker.google.com/savedsearches/559744>'_ 
      - `File an API Issue <https://issuetracker.google.com/issues/new?component=187220>`_
      - `Client Library Issues <https://github.com/googleapis/python-aiplatform/issues>`_
    * - `AI Platform Notebooks <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-notebooks>`_
