@@ -10,26 +10,26 @@ Stability levels
 *******************
 
  El   "clasificador de estatus de desarrollo""clasificador de estatus de desarrollo"_ en PyPI indica la estabilidad actual
-of a package.
+de un paquete.
 
 .. _clasificador de estado de desarrollo: https://pypi.org/classifiers/
 
-General Availability
+Disponibilidad general.
 --------------------
 
 **ga** 
-  servicio particular es estable,    
+   servicio particular es estable,     
 formas
 de problemas críticos de seguridad) o con un extenso período de depreciación.) o con un extenso período de depreciación.
 LosLos  problemas y solicitudes contra las bibliotecas de GA se abordan con la mayor
 prioridad.
 
-   bibliotecas GA tienen un clasificador de estado de desarrollo  "Estado de desarrollo::  " Estado de desarrollo::   5  - Producción / Estable".5 - Producción / Estable".
+    bibliotecas GA tienen un clasificador de estado de desarrollo  "Estado de desarrollo::  " Estado de desarrollo::   5  - Producción / Estable".5 - Producción / Estable". 
 
 NotaNota::
 
-    Subcomponentes de las bibliotecas GA explícitamente marcados como beta en el    
-     ruta de importación  ruta de importación  (por ejemplo,   "google.cloud.language_v1beta2" ) debe considerarse  (por ejemplo, ) debe considerarse  (por ejemplo,   ") debe considerarse  (por ejemplo, ) debe considerarse  (por ejemplo,  "google.cloud.language_v1beta2"  ) debe considerarse    
+     Subcomponentes de las bibliotecas GA explícitamente marcados como beta en el     
+                                                                                                                                                                                                                                                                                                                                                                                             ruta de importación  ruta de importación  (por ejemplo,   "google.cloud.language_v1beta2" ) debe considerarse  (por ejemplo, ) debe considerarse  (por ejemplo,   ") debe considerarse  (por ejemplo, ) debe considerarse  (por ejemplo,  "google.cloud.language_v1beta2"  ) debe considerarse                                                                                                                                                                                                                                                                                                                                                                                            
  ser beta. 
 
 SoporteSoporte beta
@@ -65,16 +65,16 @@ Bibliotecas
 .. API_TABLE_START
 
 .. list-table::
-      :Encabezado-fianzas:    1  1   1  1   
+       :Encabezado-fianzas:    1  1   1  1    
 
-     * - cliente     
-     - nivel de liberación     
-     - versión     
+      * - cliente      
+      - nivel de liberación      
+      - versión      
  - Problemas de API 
-     - Presentar un problema de API     
-     - Problemas de biblioteca de clientes     
- * - 'Una envoltura de pitón de la biblioteca C 'CRC32C' <https://github.com/googleapis/python-crc32c>'_ //github.com/googleapis/python-crc32c>'_ * - 'Una envoltura de pitón de la biblioteca C 'CRC32C' <https:'Una envoltura de pitón de la biblioteca C 'CRC32C' <https:'Una envoltura de pitón de la biblioteca C  'CRC32C' <https://github.com/googleapis/python-crc32c>'_ //github.com/googleapis/python-crc32c>'_ 
-       - estable   - estable     
+      - Presentar un problema de API      
+      - Problemas de biblioteca de clientes      
+ * - 'Una envoltura de pitón de la biblioteca C 'CRC32C' <https://github.com/googleapis/python-crc32c>'_ //github.com/googleapis/python-crc32c'_ * - 'Una envoltura de pitón de la biblioteca C 'CRC32C' <https:'Una envoltura de pitón de la biblioteca C 'CRC32C' <https:'Una envoltura de pitón de la biblioteca C 'CRC32C' <https://github.com/googleapis/python-crc32c>'_ /github.com/googleapis/python-crc32c>'_ '_ * - 'Una envoltura de pitón de la biblioteca C 'CRC32C' <https:'Una envoltura de pitón de la biblioteca C 'CRC32C' <https:'Una envoltura de pitón de la biblioteca C 'CRC32C' <https://github.com/googleapis/python-crc32c>'_ /github.com/googleapis/python-crc32c>'_ 
+        - estable   - estable      
  - |PyPI-google-crc32c| 
  - 
  - 
