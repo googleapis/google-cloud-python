@@ -4,9 +4,9 @@
 #
 #    pip-compile --generate-hashes requirements.in
 #
-argcomplete==3.5.2 \
-    --hash=sha256:036d020d79048a5d525bc63880d7a4b8d1668566b8a76daf1144c0bbe0f63472 \
-    --hash=sha256:23146ed7ac4403b70bd6026402468942ceba34a6732255b9edf5b7354f68a6bb
+argcomplete==3.5.3 \
+    --hash=sha256:2ab2c4a215c59fd6caaff41a869480a23e8f6a5f910b266c1808037f4e375b61 \
+    --hash=sha256:c12bf50eded8aebb298c7b7da7a5ff3ee24dffd9f5281867dfe1424b58c55392
     # via nox
 attrs==24.3.0 \
     --hash=sha256:8f5c07333d543103541ba7be0e2ce16eeee8130cb0b3f9238ab904ce1e85baff \
