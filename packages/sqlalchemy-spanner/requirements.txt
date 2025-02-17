@@ -497,9 +497,9 @@ typing-extensions==4.12.2 \
     #   alembic
     #   opentelemetry-sdk
     #   sqlalchemy
-urllib3==2.2.3 \
-    --hash=sha256:ca899ca043dcb1bafa3e262d73aa25c465bfb49e0bd9dd5d59f1d0acba2f8fac \
-    --hash=sha256:e7d814a81dad81e6caf2ec9fdedb284ecc9c73076b62654547cc64ccdcae26e9
+urllib3==2.3.0 \
+    --hash=sha256:1cee9ad369867bfdbbb48b7dd50374c0967a0bb7710050facf0dd6911440e3df \
+    --hash=sha256:f8c5449b3cf0861679ce7e0503c7b44b5ec981bec0d1d3795a07f1ba96f0204d
     # via requests
 wheel==0.45.1 \
     --hash=sha256:661e1abd9198507b1409a20c02106d9670b2576e916d58f520316666abca6729 \
