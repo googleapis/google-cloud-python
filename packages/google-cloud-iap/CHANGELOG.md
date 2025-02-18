@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.16.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-iap-v1.16.0...google-cloud-iap-v1.16.1) (2025-02-18)
+
+
+### Bug Fixes
+
+* **deps:** Require grpc-google-iam-v1&gt;=0.14.0 ([16e14c8](https://github.com/googleapis/google-cloud-python/commit/16e14c8d547864360dcab45d90e9e55169204fc6))
+
 ## [1.16.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-iap-v1.15.0...google-cloud-iap-v1.16.0) (2025-02-12)
 
 
