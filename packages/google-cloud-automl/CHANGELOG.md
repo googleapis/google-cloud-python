@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-automl/#history
 
+## [2.16.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-automl-v2.16.0...google-cloud-automl-v2.16.1) (2025-02-18)
+
+
+### Bug Fixes
+
+* allow google-cloud-storage 3.x ([#13535](https://github.com/googleapis/google-cloud-python/issues/13535)) ([5dabf55](https://github.com/googleapis/google-cloud-python/commit/5dabf5556d505f55171344fd7c95384b8478e453))
+
 ## [2.16.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-automl-v2.15.0...google-cloud-automl-v2.16.0) (2025-02-12)
 
 

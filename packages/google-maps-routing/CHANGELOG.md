@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.6.14](https://github.com/googleapis/google-cloud-python/compare/google-maps-routing-v0.6.13...google-maps-routing-v0.6.14) (2025-02-18)
+
+
+### Features
+
+* Add REST Interceptors which support reading metadata ([30b675e](https://github.com/googleapis/google-cloud-python/commit/30b675e7e9eaee87f9e7bdf4dc910b01f6a3044f))
+* Add support for reading selective GAPIC generation methods from service YAML ([30b675e](https://github.com/googleapis/google-cloud-python/commit/30b675e7e9eaee87f9e7bdf4dc910b01f6a3044f))
+
 ## [0.6.13](https://github.com/googleapis/google-cloud-python/compare/google-maps-routing-v0.6.12...google-maps-routing-v0.6.13) (2024-12-12)
 
 

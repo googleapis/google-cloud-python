@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-scheduler/#history
 
+## [2.16.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-scheduler-v2.15.1...google-cloud-scheduler-v2.16.0) (2025-02-18)
+
+
+### Features
+
+* Add REST Interceptors which support reading metadata ([c8e0760](https://github.com/googleapis/google-cloud-python/commit/c8e0760e8088950c62279335216ad1d17716ce59))
+* Add support for reading selective GAPIC generation methods from service YAML ([c8e0760](https://github.com/googleapis/google-cloud-python/commit/c8e0760e8088950c62279335216ad1d17716ce59))
+
 ## [2.15.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-scheduler-v2.15.0...google-cloud-scheduler-v2.15.1) (2025-01-27)
 
 

@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.16](https://github.com/googleapis/google-cloud-python/compare/google-cloud-beyondcorp-appconnectors-v0.4.15...google-cloud-beyondcorp-appconnectors-v0.4.16) (2025-02-18)
+
+
+### Bug Fixes
+
+* **deps:** Require grpc-google-iam-v1&gt;=0.14.0 ([4571dff](https://github.com/googleapis/google-cloud-python/commit/4571dff9614843c6944c8568bd234c6ac5197218))
+
 ## [0.4.15](https://github.com/googleapis/google-cloud-python/compare/google-cloud-beyondcorp-appconnectors-v0.4.14...google-cloud-beyondcorp-appconnectors-v0.4.15) (2025-02-12)
 
 

@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-asset/#history
 
+## [3.29.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-asset-v3.29.0...google-cloud-asset-v3.29.1) (2025-02-18)
+
+
+### Bug Fixes
+
+* **deps:** Require grpc-google-iam-v1&gt;=0.14.0 ([4571dff](https://github.com/googleapis/google-cloud-python/commit/4571dff9614843c6944c8568bd234c6ac5197218))
+
 ## [3.29.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-asset-v3.28.0...google-cloud-asset-v3.29.0) (2025-02-12)
 
 

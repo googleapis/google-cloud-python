@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.8](https://github.com/googleapis/google-cloud-python/compare/google-cloud-visionai-v0.1.7...google-cloud-visionai-v0.1.8) (2025-02-18)
+
+
+### Bug Fixes
+
+* **deps:** Require grpc-google-iam-v1&gt;=0.14.0 ([770cf0f](https://github.com/googleapis/google-cloud-python/commit/770cf0f31125586a8622e9639f6d24c1bafa9b31))
+
 ## [0.1.7](https://github.com/googleapis/google-cloud-python/compare/google-cloud-visionai-v0.1.6...google-cloud-visionai-v0.1.7) (2025-02-12)
 
 

@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.1.13](https://github.com/googleapis/google-cloud-python/compare/google-shopping-css-v0.1.12...google-shopping-css-v0.1.13) (2025-02-18)
+
+
+### Features
+
+* Add REST Interceptors which support reading metadata ([30b675e](https://github.com/googleapis/google-cloud-python/commit/30b675e7e9eaee87f9e7bdf4dc910b01f6a3044f))
+* Add support for reading selective GAPIC generation methods from service YAML ([30b675e](https://github.com/googleapis/google-cloud-python/commit/30b675e7e9eaee87f9e7bdf4dc910b01f6a3044f))
+
 ## [0.1.12](https://github.com/googleapis/google-cloud-python/compare/google-shopping-css-v0.1.11...google-shopping-css-v0.1.12) (2025-01-02)
 
 

@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.25.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-management-v1.25.0...google-cloud-network-management-v1.25.1) (2025-02-18)
+
+
+### Bug Fixes
+
+* **deps:** Require grpc-google-iam-v1&gt;=0.14.0 ([770cf0f](https://github.com/googleapis/google-cloud-python/commit/770cf0f31125586a8622e9639f6d24c1bafa9b31))
+
 ## [1.25.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-management-v1.24.0...google-cloud-network-management-v1.25.0) (2025-02-12)
 
 

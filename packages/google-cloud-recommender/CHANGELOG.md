@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-recommender/#history
 
+## [2.18.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-recommender-v2.17.0...google-cloud-recommender-v2.18.0) (2025-02-18)
+
+
+### Features
+
+* Add REST Interceptors which support reading metadata ([c8e0760](https://github.com/googleapis/google-cloud-python/commit/c8e0760e8088950c62279335216ad1d17716ce59))
+* Add support for reading selective GAPIC generation methods from service YAML ([c8e0760](https://github.com/googleapis/google-cloud-python/commit/c8e0760e8088950c62279335216ad1d17716ce59))
+
 ## [2.17.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-recommender-v2.16.1...google-cloud-recommender-v2.17.0) (2024-12-12)
 
 

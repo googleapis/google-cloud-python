@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.1.6](https://github.com/googleapis/google-cloud-python/compare/google-cloud-privilegedaccessmanager-v0.1.5...google-cloud-privilegedaccessmanager-v0.1.6) (2025-02-18)
+
+
+### Features
+
+* Add REST Interceptors which support reading metadata ([c8e0760](https://github.com/googleapis/google-cloud-python/commit/c8e0760e8088950c62279335216ad1d17716ce59))
+* Add support for reading selective GAPIC generation methods from service YAML ([c8e0760](https://github.com/googleapis/google-cloud-python/commit/c8e0760e8088950c62279335216ad1d17716ce59))
+
 ## [0.1.5](https://github.com/googleapis/google-cloud-python/compare/google-cloud-privilegedaccessmanager-v0.1.4...google-cloud-privilegedaccessmanager-v0.1.5) (2024-12-12)
 
 

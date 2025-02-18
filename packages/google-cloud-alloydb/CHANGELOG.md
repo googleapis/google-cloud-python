@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-alloydb-v0.4.2...google-cloud-alloydb-v0.4.3) (2025-02-18)
+
+
+### Bug Fixes
+
+* **deps:** Require grpc-google-iam-v1&gt;=0.14.0 ([4571dff](https://github.com/googleapis/google-cloud-python/commit/4571dff9614843c6944c8568bd234c6ac5197218))
+
 ## [0.4.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-alloydb-v0.4.1...google-cloud-alloydb-v0.4.2) (2025-02-12)
 
 

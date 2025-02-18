@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.1.7](https://github.com/googleapis/google-cloud-python/compare/google-shopping-merchant-conversions-v0.1.6...google-shopping-merchant-conversions-v0.1.7) (2025-02-18)
+
+
+### Features
+
+* Add REST Interceptors which support reading metadata ([30b675e](https://github.com/googleapis/google-cloud-python/commit/30b675e7e9eaee87f9e7bdf4dc910b01f6a3044f))
+* Add support for reading selective GAPIC generation methods from service YAML ([30b675e](https://github.com/googleapis/google-cloud-python/commit/30b675e7e9eaee87f9e7bdf4dc910b01f6a3044f))
+
 ## [0.1.6](https://github.com/googleapis/google-cloud-python/compare/google-shopping-merchant-conversions-v0.1.5...google-shopping-merchant-conversions-v0.1.6) (2024-12-12)
 
 

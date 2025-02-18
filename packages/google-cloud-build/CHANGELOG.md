@@ -4,6 +4,24 @@
 
 [1]: https://pypi.org/project/google-cloud-build/#history
 
+## [3.31.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-build-v3.30.0...google-cloud-build-v3.31.0) (2025-02-18)
+
+
+### Features
+
+* Add option to enable fetching dependencies ([3fe8899](https://github.com/googleapis/google-cloud-python/commit/3fe88999b3f56faeae0c8f36b4fe8f750d168f18))
+* Support for git proxy setup ([3fe8899](https://github.com/googleapis/google-cloud-python/commit/3fe88999b3f56faeae0c8f36b4fe8f750d168f18))
+
+
+### Bug Fixes
+
+* **deps:** Require grpc-google-iam-v1&gt;=0.14.0 ([3fe8899](https://github.com/googleapis/google-cloud-python/commit/3fe88999b3f56faeae0c8f36b4fe8f750d168f18))
+
+
+### Documentation
+
+* Updates to proto message comments ([3fe8899](https://github.com/googleapis/google-cloud-python/commit/3fe88999b3f56faeae0c8f36b4fe8f750d168f18))
+
 ## [3.30.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-build-v3.29.0...google-cloud-build-v3.30.0) (2025-02-12)
 
 

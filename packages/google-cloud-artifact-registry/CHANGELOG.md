@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.15.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-artifact-registry-v1.15.0...google-cloud-artifact-registry-v1.15.1) (2025-02-18)
+
+
+### Bug Fixes
+
+* **deps:** Require grpc-google-iam-v1&gt;=0.14.0 ([4571dff](https://github.com/googleapis/google-cloud-python/commit/4571dff9614843c6944c8568bd234c6ac5197218))
+
 ## [1.15.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-artifact-registry-v1.14.0...google-cloud-artifact-registry-v1.15.0) (2025-02-12)
 
 

@@ -5,6 +5,13 @@
 [1]: https://pypi.org/project/google-cloud-translate/#history
 
 
+## [3.20.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-translate-v3.20.0...google-cloud-translate-v3.20.1) (2025-02-18)
+
+
+### Bug Fixes
+
+* **deps:** Require grpc-google-iam-v1&gt;=0.14.0 ([770cf0f](https://github.com/googleapis/google-cloud-python/commit/770cf0f31125586a8622e9639f6d24c1bafa9b31))
+
 ## [3.20.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-translate-v3.19.0...google-cloud-translate-v3.20.0) (2025-02-12)
 
 

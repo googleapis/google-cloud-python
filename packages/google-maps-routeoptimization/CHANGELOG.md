@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.1.8](https://github.com/googleapis/google-cloud-python/compare/google-maps-routeoptimization-v0.1.7...google-maps-routeoptimization-v0.1.8) (2025-02-18)
+
+
+### Features
+
+* Add REST Interceptors which support reading metadata ([30b675e](https://github.com/googleapis/google-cloud-python/commit/30b675e7e9eaee87f9e7bdf4dc910b01f6a3044f))
+* Add support for reading selective GAPIC generation methods from service YAML ([30b675e](https://github.com/googleapis/google-cloud-python/commit/30b675e7e9eaee87f9e7bdf4dc910b01f6a3044f))
+
 ## [0.1.7](https://github.com/googleapis/google-cloud-python/compare/google-maps-routeoptimization-v0.1.6...google-maps-routeoptimization-v0.1.7) (2024-12-12)
 
 

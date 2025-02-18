@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.14.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-private-ca-v1.14.0...google-cloud-private-ca-v1.14.1) (2025-02-18)
+
+
+### Bug Fixes
+
+* **deps:** Require grpc-google-iam-v1&gt;=0.14.0 ([770cf0f](https://github.com/googleapis/google-cloud-python/commit/770cf0f31125586a8622e9639f6d24c1bafa9b31))
+
 ## [1.14.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-private-ca-v1.13.1...google-cloud-private-ca-v1.14.0) (2024-12-12)
 
 
