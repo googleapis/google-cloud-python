@@ -270,3 +270,155 @@ class ListPager:
 
     def __repr__(self) -> str:
         return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListBgpRoutesPager:
+    """A pager for iterating through ``list_bgp_routes`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.compute_v1.types.RoutersListBgpRoutes` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``result`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``ListBgpRoutes`` requests and continue to iterate
+    through the ``result`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.compute_v1.types.RoutersListBgpRoutes`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., compute.RoutersListBgpRoutes],
+        request: compute.ListBgpRoutesRoutersRequest,
+        response: compute.RoutersListBgpRoutes,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.compute_v1.types.ListBgpRoutesRoutersRequest):
+                The initial request object.
+            response (google.cloud.compute_v1.types.RoutersListBgpRoutes):
+                The initial response object.
+            retry (google.api_core.retry.Retry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+        """
+        self._method = method
+        self._request = compute.ListBgpRoutesRoutersRequest(request)
+        self._response = response
+        self._retry = retry
+        self._timeout = timeout
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(self) -> Iterator[compute.RoutersListBgpRoutes]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
+            yield self._response
+
+    def __iter__(self) -> Iterator[compute.BgpRoute]:
+        for page in self.pages:
+            yield from page.result
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListRoutePoliciesPager:
+    """A pager for iterating through ``list_route_policies`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.compute_v1.types.RoutersListRoutePolicies` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``result`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``ListRoutePolicies`` requests and continue to iterate
+    through the ``result`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.compute_v1.types.RoutersListRoutePolicies`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., compute.RoutersListRoutePolicies],
+        request: compute.ListRoutePoliciesRoutersRequest,
+        response: compute.RoutersListRoutePolicies,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.compute_v1.types.ListRoutePoliciesRoutersRequest):
+                The initial request object.
+            response (google.cloud.compute_v1.types.RoutersListRoutePolicies):
+                The initial response object.
+            retry (google.api_core.retry.Retry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+        """
+        self._method = method
+        self._request = compute.ListRoutePoliciesRoutersRequest(request)
+        self._response = response
+        self._retry = retry
+        self._timeout = timeout
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(self) -> Iterator[compute.RoutersListRoutePolicies]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
+            yield self._response
+
+    def __iter__(self) -> Iterator[compute.RoutePolicy]:
+        for page in self.pages:
+            yield from page.result
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)

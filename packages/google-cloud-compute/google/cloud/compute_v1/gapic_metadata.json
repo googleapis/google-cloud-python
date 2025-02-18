@@ -3735,6 +3735,11 @@
                 "delete"
               ]
             },
+            "DeleteRoutePolicy": {
+              "methods": [
+                "delete_route_policy"
+              ]
+            },
             "Get": {
               "methods": [
                 "get"
@@ -3748,6 +3753,11 @@
             "GetNatMappingInfo": {
               "methods": [
                 "get_nat_mapping_info"
+              ]
+            },
+            "GetRoutePolicy": {
+              "methods": [
+                "get_route_policy"
               ]
             },
             "GetRouterStatus": {
@@ -3765,9 +3775,24 @@
                 "list"
               ]
             },
+            "ListBgpRoutes": {
+              "methods": [
+                "list_bgp_routes"
+              ]
+            },
+            "ListRoutePolicies": {
+              "methods": [
+                "list_route_policies"
+              ]
+            },
             "Patch": {
               "methods": [
                 "patch"
+              ]
+            },
+            "PatchRoutePolicy": {
+              "methods": [
+                "patch_route_policy"
               ]
             },
             "Preview": {
@@ -3778,6 +3803,11 @@
             "Update": {
               "methods": [
                 "update"
+              ]
+            },
+            "UpdateRoutePolicy": {
+              "methods": [
+                "update_route_policy"
               ]
             }
           }
