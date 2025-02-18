@@ -7,8 +7,6 @@
   ],
   "ignorePaths": [
     ".kokoro/docker/docs/requirements.txt",
-    // TODO(https://github.com/googleapis/google-cloud-python/issues/13536): Remove the line below (unittest.yml) once
-    // https://github.com/googleapis/gapic-generator-python/issues/2303 is fixed.
     ".github/workflows/unittest.yml"
   ]
 }
