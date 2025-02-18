@@ -187,17 +187,35 @@ class Attack(proto.Message):
     r"""Information about DDoS attack volume and classification.
 
     Attributes:
-        volume_pps (int):
+        volume_pps_long (int):
             Total PPS (packets per second) volume of
             attack.
-        volume_bps (int):
+        volume_bps_long (int):
             Total BPS (bytes per second) volume of
             attack.
         classification (str):
             Type of attack, for example, 'SYN-flood',
             'NTP-udp', or 'CHARGEN-udp'.
+        volume_pps (int):
+            Total PPS (packets per second) volume of attack. Deprecated
+            - refer to volume_pps_long instead.
+        volume_bps (int):
+            Total BPS (bytes per second) volume of attack. Deprecated -
+            refer to volume_bps_long instead.
     """
 
+    volume_pps_long: int = proto.Field(
+        proto.INT64,
+        number=4,
+    )
+    volume_bps_long: int = proto.Field(
+        proto.INT64,
+        number=5,
+    )
+    classification: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
     volume_pps: int = proto.Field(
         proto.INT32,
         number=1,
@@ -205,10 +223,6 @@ class Attack(proto.Message):
     volume_bps: int = proto.Field(
         proto.INT32,
         number=2,
-    )
-    classification: str = proto.Field(
-        proto.STRING,
-        number=3,
     )
 
 

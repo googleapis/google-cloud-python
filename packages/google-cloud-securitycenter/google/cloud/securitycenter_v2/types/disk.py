@@ -22,19 +22,19 @@ import proto  # type: ignore
 __protobuf__ = proto.module(
     package="google.cloud.securitycenter.v2",
     manifest={
-        "OrgPolicy",
+        "Disk",
     },
 )
 
 
-class OrgPolicy(proto.Message):
-    r"""Contains information about the org policies associated with
-    the finding.
+class Disk(proto.Message):
+    r"""Contains information about the disk associated with the
+    finding.
 
     Attributes:
         name (str):
-            Identifier. The resource name of the org policy. Example:
-            "organizations/{organization_id}/policies/{constraint_name}".
+            The name of the disk, for example,
+            ``https://www.googleapis.com/compute/v1/projects/{project-id}/zones/{zone-id}/disks/{disk-id}``.
     """
 
     name: str = proto.Field(

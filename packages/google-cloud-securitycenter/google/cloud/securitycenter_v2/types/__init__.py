@@ -32,7 +32,11 @@ from .compliance import Compliance
 from .connection import Connection
 from .contact_details import Contact, ContactDetails
 from .container import Container
+from .data_access_event import DataAccessEvent
+from .data_flow_event import DataFlowEvent
+from .data_retention_deletion_event import DataRetentionDeletionEvent
 from .database import Database
+from .disk import Disk
 from .exfiltration import ExfilResource, Exfiltration
 from .external_system import ExternalSystem
 from .file import File
@@ -150,7 +154,11 @@ __all__ = (
     "Contact",
     "ContactDetails",
     "Container",
+    "DataAccessEvent",
+    "DataFlowEvent",
+    "DataRetentionDeletionEvent",
     "Database",
+    "Disk",
     "ExfilResource",
     "Exfiltration",
     "ExternalSystem",
