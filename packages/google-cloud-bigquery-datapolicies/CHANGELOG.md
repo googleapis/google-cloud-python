@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.13](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-datapolicies-v0.6.12...google-cloud-bigquery-datapolicies-v0.6.13) (2025-02-18)
+
+
+### Bug Fixes
+
+* **deps:** Require grpc-google-iam-v1&gt;=0.14.0 ([4571dff](https://github.com/googleapis/google-cloud-python/commit/4571dff9614843c6944c8568bd234c6ac5197218))
+
 ## [0.6.12](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-datapolicies-v0.6.11...google-cloud-bigquery-datapolicies-v0.6.12) (2025-02-12)
 
 

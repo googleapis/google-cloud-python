@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.23.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-contact-center-insights-v1.23.0...google-cloud-contact-center-insights-v1.23.1) (2025-02-18)
+
+
+### Bug Fixes
+
+* **deps:** Require grpc-google-iam-v1&gt;=0.14.0 ([4571dff](https://github.com/googleapis/google-cloud-python/commit/4571dff9614843c6944c8568bd234c6ac5197218))
+
 ## [1.23.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-contact-center-insights-v1.22.0...google-cloud-contact-center-insights-v1.23.0) (2025-02-12)
 
 
