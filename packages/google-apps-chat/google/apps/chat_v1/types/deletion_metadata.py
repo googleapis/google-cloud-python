@@ -58,6 +58,9 @@ class DeletionMetadata(proto.Message):
             SPACE_OWNER_VIA_APP (6):
                 A Chat app deleted the message on behalf of
                 the space owner.
+            SPACE_MEMBER (7):
+                A member of the space deleted the message.
+                Human users can delete messages sent by apps.
         """
         DELETION_TYPE_UNSPECIFIED = 0
         CREATOR = 1
@@ -66,6 +69,7 @@ class DeletionMetadata(proto.Message):
         APP_MESSAGE_EXPIRY = 4
         CREATOR_VIA_APP = 5
         SPACE_OWNER_VIA_APP = 6
+        SPACE_MEMBER = 7
 
     deletion_type: DeletionType = proto.Field(
         proto.ENUM,
