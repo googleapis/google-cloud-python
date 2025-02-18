@@ -582,6 +582,49 @@ replacements:
 
 
       @pytest.mark.parametrize\(
+          "error_code,cred_info_json,show_cred_info",
+          \[
+              \(401, CRED_INFO_JSON, True\),
+              \(403, CRED_INFO_JSON, True\),
+              \(404, CRED_INFO_JSON, True\),
+              \(500, CRED_INFO_JSON, False\),
+              \(401, None, False\),
+              \(403, None, False\),
+              \(404, None, False\),
+              \(500, None, False\),
+          \],
+      \)
+      def test__add_cred_info_for_auth_errors\(error_code, cred_info_json, show_cred_info\):
+          cred = mock.Mock\(\["get_cred_info"\]\)
+          cred.get_cred_info = mock.Mock\(return_value=cred_info_json\)
+          client = GrafeasClient\(credentials=cred\)
+          client._transport._credentials = cred
+
+          error = core_exceptions.GoogleAPICallError\("message", details=\["foo"\]\)
+          error.code = error_code
+
+          client._add_cred_info_for_auth_errors\(error\)
+          if show_cred_info:
+              assert error.details == \["foo", CRED_INFO_STRING\]
+          else:
+              assert error.details == \["foo"\]
+
+
+      @pytest.mark.parametrize\("error_code", \[401, 403, 404, 500\]\)
+      def test__add_cred_info_for_auth_errors_no_get_cred_info\(error_code\):
+          cred = mock.Mock\(\[\]\)
+          assert not hasattr\(cred, "get_cred_info"\)
+          client = GrafeasClient\(credentials=cred\)
+          client._transport._credentials = cred
+
+          error = core_exceptions.GoogleAPICallError\("message", details=\[\]\)
+          error.code = error_code
+
+          client._add_cred_info_for_auth_errors\(error\)
+          assert error.details == \[\]
+
+
+      @pytest.mark.parametrize\(
           "client_class,transport_name",
           \[
               \(GrafeasClient, "grpc"\),
@@ -1497,6 +1540,33 @@ replacements:
       \
       \        # NOTE \(b\/349488459\): universe validation is disabled until further notice.
       \        return True
+      \
+      \    def _add_cred_info_for_auth_errors\(
+      \        self, error: core_exceptions.GoogleAPICallError
+      \    \) -> None:
+      \        """Adds credential info string to error details for 401/403/404 errors.
+      \
+      \        Args:
+      \            error \(google.api_core.exceptions.GoogleAPICallError\): The error to add the cred info.
+      \        """
+      \        if error.code not in \[
+      \            HTTPStatus.UNAUTHORIZED,
+      \            HTTPStatus.FORBIDDEN,
+      \            HTTPStatus.NOT_FOUND,
+      \        \]:
+      \            return
+      \
+      \        cred = self._transport._credentials
+      \
+      \        # get_cred_info is only available in google-auth>=2.35.0
+      \        if not hasattr\(cred, "get_cred_info"\):
+      \            return
+      \
+      \        # ignore the type check since pypy test fails when get_cred_info
+      \        # is not available
+      \        cred_info = cred.get_cred_info\(\)  # type: ignore
+      \        if cred_info and hasattr\(error._details, "append"\):
+      \            error._details.append\(json.dumps\(cred_info\)\)
       \
       \    @property
       \    def api_endpoint\(self\):

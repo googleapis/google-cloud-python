@@ -109,11 +109,34 @@ class CssProductsServiceRestInterceptor:
     ) -> css_products.CssProduct:
         """Post-rpc interceptor for get_css_product
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_css_product_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CssProductsService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_css_product` interceptor runs
+        before the `post_get_css_product_with_metadata` interceptor.
         """
         return response
+
+    def post_get_css_product_with_metadata(
+        self,
+        response: css_products.CssProduct,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[css_products.CssProduct, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_css_product
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CssProductsService server but before it is returned to user code.
+
+        We recommend only using this `post_get_css_product_with_metadata`
+        interceptor in new development instead of the `post_get_css_product` interceptor.
+        When both interceptors are used, this `post_get_css_product_with_metadata` interceptor runs after the
+        `post_get_css_product` interceptor. The (possibly modified) response returned by
+        `post_get_css_product` will be passed to
+        `post_get_css_product_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_css_products(
         self,
@@ -134,11 +157,36 @@ class CssProductsServiceRestInterceptor:
     ) -> css_products.ListCssProductsResponse:
         """Post-rpc interceptor for list_css_products
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_css_products_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CssProductsService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_css_products` interceptor runs
+        before the `post_list_css_products_with_metadata` interceptor.
         """
         return response
+
+    def post_list_css_products_with_metadata(
+        self,
+        response: css_products.ListCssProductsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        css_products.ListCssProductsResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_css_products
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CssProductsService server but before it is returned to user code.
+
+        We recommend only using this `post_list_css_products_with_metadata`
+        interceptor in new development instead of the `post_list_css_products` interceptor.
+        When both interceptors are used, this `post_list_css_products_with_metadata` interceptor runs after the
+        `post_list_css_products` interceptor. The (possibly modified) response returned by
+        `post_list_css_products` will be passed to
+        `post_list_css_products_with_metadata`.
+        """
+        return response, metadata
 
 
 @dataclasses.dataclass
@@ -346,6 +394,10 @@ class CssProductsServiceRestTransport(_BaseCssProductsServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_css_product(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_css_product_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -492,6 +544,10 @@ class CssProductsServiceRestTransport(_BaseCssProductsServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_css_products(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_css_products_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

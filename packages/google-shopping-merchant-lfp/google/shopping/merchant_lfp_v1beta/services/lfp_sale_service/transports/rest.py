@@ -97,11 +97,34 @@ class LfpSaleServiceRestInterceptor:
     def post_insert_lfp_sale(self, response: lfpsale.LfpSale) -> lfpsale.LfpSale:
         """Post-rpc interceptor for insert_lfp_sale
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_insert_lfp_sale_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the LfpSaleService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_insert_lfp_sale` interceptor runs
+        before the `post_insert_lfp_sale_with_metadata` interceptor.
         """
         return response
+
+    def post_insert_lfp_sale_with_metadata(
+        self,
+        response: lfpsale.LfpSale,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[lfpsale.LfpSale, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for insert_lfp_sale
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the LfpSaleService server but before it is returned to user code.
+
+        We recommend only using this `post_insert_lfp_sale_with_metadata`
+        interceptor in new development instead of the `post_insert_lfp_sale` interceptor.
+        When both interceptors are used, this `post_insert_lfp_sale_with_metadata` interceptor runs after the
+        `post_insert_lfp_sale` interceptor. The (possibly modified) response returned by
+        `post_insert_lfp_sale` will be passed to
+        `post_insert_lfp_sale_with_metadata`.
+        """
+        return response, metadata
 
 
 @dataclasses.dataclass
@@ -316,6 +339,10 @@ class LfpSaleServiceRestTransport(_BaseLfpSaleServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_insert_lfp_sale(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_insert_lfp_sale_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

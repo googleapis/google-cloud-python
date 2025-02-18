@@ -130,11 +130,36 @@ class CssProductInputsServiceRestInterceptor:
     ) -> css_product_inputs.CssProductInput:
         """Post-rpc interceptor for insert_css_product_input
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_insert_css_product_input_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CssProductInputsService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_insert_css_product_input` interceptor runs
+        before the `post_insert_css_product_input_with_metadata` interceptor.
         """
         return response
+
+    def post_insert_css_product_input_with_metadata(
+        self,
+        response: css_product_inputs.CssProductInput,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        css_product_inputs.CssProductInput, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for insert_css_product_input
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CssProductInputsService server but before it is returned to user code.
+
+        We recommend only using this `post_insert_css_product_input_with_metadata`
+        interceptor in new development instead of the `post_insert_css_product_input` interceptor.
+        When both interceptors are used, this `post_insert_css_product_input_with_metadata` interceptor runs after the
+        `post_insert_css_product_input` interceptor. The (possibly modified) response returned by
+        `post_insert_css_product_input` will be passed to
+        `post_insert_css_product_input_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_css_product_input(
         self,
@@ -156,11 +181,36 @@ class CssProductInputsServiceRestInterceptor:
     ) -> css_product_inputs.CssProductInput:
         """Post-rpc interceptor for update_css_product_input
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_css_product_input_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CssProductInputsService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_css_product_input` interceptor runs
+        before the `post_update_css_product_input_with_metadata` interceptor.
         """
         return response
+
+    def post_update_css_product_input_with_metadata(
+        self,
+        response: css_product_inputs.CssProductInput,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        css_product_inputs.CssProductInput, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for update_css_product_input
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CssProductInputsService server but before it is returned to user code.
+
+        We recommend only using this `post_update_css_product_input_with_metadata`
+        interceptor in new development instead of the `post_update_css_product_input` interceptor.
+        When both interceptors are used, this `post_update_css_product_input_with_metadata` interceptor runs after the
+        `post_update_css_product_input` interceptor. The (possibly modified) response returned by
+        `post_update_css_product_input` will be passed to
+        `post_update_css_product_input_with_metadata`.
+        """
+        return response, metadata
 
 
 @dataclasses.dataclass
@@ -492,6 +542,10 @@ class CssProductInputsServiceRestTransport(_BaseCssProductInputsServiceRestTrans
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_insert_css_product_input(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_insert_css_product_input_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -649,6 +703,10 @@ class CssProductInputsServiceRestTransport(_BaseCssProductInputsServiceRestTrans
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_css_product_input(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_css_product_input_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
