@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.11](https://github.com/googleapis/google-cloud-python/compare/google-cloud-policytroubleshooter-iam-v0.1.10...google-cloud-policytroubleshooter-iam-v0.1.11) (2025-02-18)
+
+
+### Bug Fixes
+
+* **deps:** Require grpc-google-iam-v1&gt;=0.14.0 ([770cf0f](https://github.com/googleapis/google-cloud-python/commit/770cf0f31125586a8622e9639f6d24c1bafa9b31))
+
 ## [0.1.10](https://github.com/googleapis/google-cloud-python/compare/google-cloud-policytroubleshooter-iam-v0.1.9...google-cloud-policytroubleshooter-iam-v0.1.10) (2024-12-12)
 
 

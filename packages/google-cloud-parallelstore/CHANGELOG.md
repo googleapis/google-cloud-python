@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.2.11](https://github.com/googleapis/google-cloud-python/compare/google-cloud-parallelstore-v0.2.10...google-cloud-parallelstore-v0.2.11) (2025-02-18)
+
+
+### Features
+
+* Adding `deployment_type` field ([03649eb](https://github.com/googleapis/google-cloud-python/commit/03649eb7f4b41de2981b1d49e7a6fc2bf20686d1))
+* deprecating `daos_version` field ([03649eb](https://github.com/googleapis/google-cloud-python/commit/03649eb7f4b41de2981b1d49e7a6fc2bf20686d1))
+
+
+### Documentation
+
+* updated `directory_stripe_level` in message `.google.cloud.parallelstore.v1.Instance` to reflect that the field is now immutable ([03649eb](https://github.com/googleapis/google-cloud-python/commit/03649eb7f4b41de2981b1d49e7a6fc2bf20686d1))
+* updated documentation for field `daos_version` in message `.google.cloud.parallelstore.v1.Instance` to reflect that the field is deprecated. ([03649eb](https://github.com/googleapis/google-cloud-python/commit/03649eb7f4b41de2981b1d49e7a6fc2bf20686d1))
+* Updated field `file_stripe_level` in message `.google.cloud.parallelstore.v1.Instance` to reflected that message is now immutable ([03649eb](https://github.com/googleapis/google-cloud-python/commit/03649eb7f4b41de2981b1d49e7a6fc2bf20686d1))
+
 ## [0.2.10](https://github.com/googleapis/google-cloud-python/compare/google-cloud-parallelstore-v0.2.9...google-cloud-parallelstore-v0.2.10) (2025-02-12)
 
 
