@@ -99,6 +99,10 @@ class CloudBuildAsyncClient:
     parse_github_enterprise_config_path = staticmethod(
         CloudBuildClient.parse_github_enterprise_config_path
     )
+    git_repository_link_path = staticmethod(CloudBuildClient.git_repository_link_path)
+    parse_git_repository_link_path = staticmethod(
+        CloudBuildClient.parse_git_repository_link_path
+    )
     network_path = staticmethod(CloudBuildClient.network_path)
     parse_network_path = staticmethod(CloudBuildClient.parse_network_path)
     network_attachment_path = staticmethod(CloudBuildClient.network_attachment_path)
