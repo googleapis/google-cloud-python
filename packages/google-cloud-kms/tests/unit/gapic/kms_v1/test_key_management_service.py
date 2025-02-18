@@ -4390,6 +4390,7 @@ def test_get_public_key(request_type, transport: str = "grpc"):
             algorithm=resources.CryptoKeyVersion.CryptoKeyVersionAlgorithm.GOOGLE_SYMMETRIC_ENCRYPTION,
             name="name_value",
             protection_level=resources.ProtectionLevel.SOFTWARE,
+            public_key_format=resources.PublicKey.PublicKeyFormat.PEM,
         )
         response = client.get_public_key(request)
 
@@ -4408,6 +4409,7 @@ def test_get_public_key(request_type, transport: str = "grpc"):
     )
     assert response.name == "name_value"
     assert response.protection_level == resources.ProtectionLevel.SOFTWARE
+    assert response.public_key_format == resources.PublicKey.PublicKeyFormat.PEM
 
 
 def test_get_public_key_non_empty_request_with_auto_populated_field():
@@ -4537,6 +4539,7 @@ async def test_get_public_key_async(
                 algorithm=resources.CryptoKeyVersion.CryptoKeyVersionAlgorithm.GOOGLE_SYMMETRIC_ENCRYPTION,
                 name="name_value",
                 protection_level=resources.ProtectionLevel.SOFTWARE,
+                public_key_format=resources.PublicKey.PublicKeyFormat.PEM,
             )
         )
         response = await client.get_public_key(request)
@@ -4556,6 +4559,7 @@ async def test_get_public_key_async(
     )
     assert response.name == "name_value"
     assert response.protection_level == resources.ProtectionLevel.SOFTWARE
+    assert response.public_key_format == resources.PublicKey.PublicKeyFormat.PEM
 
 
 @pytest.mark.asyncio
@@ -13375,6 +13379,8 @@ def test_get_public_key_rest_required_fields(request_type=service.GetPublicKeyRe
     unset_fields = transport_class(
         credentials=ga_credentials.AnonymousCredentials()
     ).get_public_key._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("public_key_format",))
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -13429,7 +13435,7 @@ def test_get_public_key_rest_unset_required_fields():
     )
 
     unset_fields = transport.get_public_key._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name",)))
+    assert set(unset_fields) == (set(("publicKeyFormat",)) & set(("name",)))
 
 
 def test_get_public_key_rest_flattened():
@@ -18097,6 +18103,7 @@ async def test_get_public_key_empty_call_grpc_asyncio():
                 algorithm=resources.CryptoKeyVersion.CryptoKeyVersionAlgorithm.GOOGLE_SYMMETRIC_ENCRYPTION,
                 name="name_value",
                 protection_level=resources.ProtectionLevel.SOFTWARE,
+                public_key_format=resources.PublicKey.PublicKeyFormat.PEM,
             )
         )
         await client.get_public_key(request=None)
@@ -19753,6 +19760,7 @@ def test_get_public_key_rest_call_success(request_type):
             algorithm=resources.CryptoKeyVersion.CryptoKeyVersionAlgorithm.GOOGLE_SYMMETRIC_ENCRYPTION,
             name="name_value",
             protection_level=resources.ProtectionLevel.SOFTWARE,
+            public_key_format=resources.PublicKey.PublicKeyFormat.PEM,
         )
 
         # Wrap the value into a proper Response obj
@@ -19776,6 +19784,7 @@ def test_get_public_key_rest_call_success(request_type):
     )
     assert response.name == "name_value"
     assert response.protection_level == resources.ProtectionLevel.SOFTWARE
+    assert response.public_key_format == resources.PublicKey.PublicKeyFormat.PEM
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
