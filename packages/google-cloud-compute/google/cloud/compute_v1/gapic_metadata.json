@@ -1967,6 +1967,11 @@
                 "add_association"
               ]
             },
+            "AddPacketMirroringRule": {
+              "methods": [
+                "add_packet_mirroring_rule"
+              ]
+            },
             "AddRule": {
               "methods": [
                 "add_rule"
@@ -2002,6 +2007,11 @@
                 "get_iam_policy"
               ]
             },
+            "GetPacketMirroringRule": {
+              "methods": [
+                "get_packet_mirroring_rule"
+              ]
+            },
             "GetRule": {
               "methods": [
                 "get_rule"
@@ -2022,6 +2032,11 @@
                 "patch"
               ]
             },
+            "PatchPacketMirroringRule": {
+              "methods": [
+                "patch_packet_mirroring_rule"
+              ]
+            },
             "PatchRule": {
               "methods": [
                 "patch_rule"
@@ -2030,6 +2045,11 @@
             "RemoveAssociation": {
               "methods": [
                 "remove_association"
+              ]
+            },
+            "RemovePacketMirroringRule": {
+              "methods": [
+                "remove_packet_mirroring_rule"
               ]
             },
             "RemoveRule": {
@@ -3715,6 +3735,11 @@
                 "delete"
               ]
             },
+            "DeleteRoutePolicy": {
+              "methods": [
+                "delete_route_policy"
+              ]
+            },
             "Get": {
               "methods": [
                 "get"
@@ -3728,6 +3753,11 @@
             "GetNatMappingInfo": {
               "methods": [
                 "get_nat_mapping_info"
+              ]
+            },
+            "GetRoutePolicy": {
+              "methods": [
+                "get_route_policy"
               ]
             },
             "GetRouterStatus": {
@@ -3745,9 +3775,24 @@
                 "list"
               ]
             },
+            "ListBgpRoutes": {
+              "methods": [
+                "list_bgp_routes"
+              ]
+            },
+            "ListRoutePolicies": {
+              "methods": [
+                "list_route_policies"
+              ]
+            },
             "Patch": {
               "methods": [
                 "patch"
+              ]
+            },
+            "PatchRoutePolicy": {
+              "methods": [
+                "patch_route_policy"
               ]
             },
             "Preview": {
@@ -3758,6 +3803,11 @@
             "Update": {
               "methods": [
                 "update"
+              ]
+            },
+            "UpdateRoutePolicy": {
+              "methods": [
+                "update_route_policy"
               ]
             }
           }

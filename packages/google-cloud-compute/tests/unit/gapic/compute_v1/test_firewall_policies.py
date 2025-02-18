@@ -7879,10 +7879,7 @@ def test_insert_rest_call_success(request_type):
         "id": 205,
         "kind": "kind_value",
         "name": "name_value",
-        "parent": "parent_value",
-        "region": "region_value",
-        "rule_tuple_count": 1737,
-        "rules": [
+        "packet_mirroring_rules": [
             {
                 "action": "action_value",
                 "description": "description_value",
@@ -7946,6 +7943,10 @@ def test_insert_rest_call_success(request_type):
                 "tls_inspect": True,
             }
         ],
+        "parent": "parent_value",
+        "region": "region_value",
+        "rule_tuple_count": 1737,
+        "rules": {},
         "self_link": "self_link_value",
         "self_link_with_id": "self_link_with_id_value",
         "short_name": "short_name_value",
@@ -8634,10 +8635,7 @@ def test_patch_rest_call_success(request_type):
         "id": 205,
         "kind": "kind_value",
         "name": "name_value",
-        "parent": "parent_value",
-        "region": "region_value",
-        "rule_tuple_count": 1737,
-        "rules": [
+        "packet_mirroring_rules": [
             {
                 "action": "action_value",
                 "description": "description_value",
@@ -8701,6 +8699,10 @@ def test_patch_rest_call_success(request_type):
                 "tls_inspect": True,
             }
         ],
+        "parent": "parent_value",
+        "region": "region_value",
+        "rule_tuple_count": 1737,
+        "rules": {},
         "self_link": "self_link_value",
         "self_link_with_id": "self_link_with_id_value",
         "short_name": "short_name_value",

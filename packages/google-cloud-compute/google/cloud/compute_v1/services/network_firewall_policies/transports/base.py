@@ -138,6 +138,11 @@ class NetworkFirewallPoliciesTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.add_packet_mirroring_rule: gapic_v1.method.wrap_method(
+                self.add_packet_mirroring_rule,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.add_rule: gapic_v1.method.wrap_method(
                 self.add_rule,
                 default_timeout=None,
@@ -173,6 +178,11 @@ class NetworkFirewallPoliciesTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.get_packet_mirroring_rule: gapic_v1.method.wrap_method(
+                self.get_packet_mirroring_rule,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.get_rule: gapic_v1.method.wrap_method(
                 self.get_rule,
                 default_timeout=None,
@@ -193,6 +203,11 @@ class NetworkFirewallPoliciesTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.patch_packet_mirroring_rule: gapic_v1.method.wrap_method(
+                self.patch_packet_mirroring_rule,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.patch_rule: gapic_v1.method.wrap_method(
                 self.patch_rule,
                 default_timeout=None,
@@ -200,6 +215,11 @@ class NetworkFirewallPoliciesTransport(abc.ABC):
             ),
             self.remove_association: gapic_v1.method.wrap_method(
                 self.remove_association,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.remove_packet_mirroring_rule: gapic_v1.method.wrap_method(
+                self.remove_packet_mirroring_rule,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -234,6 +254,15 @@ class NetworkFirewallPoliciesTransport(abc.ABC):
         self,
     ) -> Callable[
         [compute.AddAssociationNetworkFirewallPolicyRequest],
+        Union[compute.Operation, Awaitable[compute.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def add_packet_mirroring_rule(
+        self,
+    ) -> Callable[
+        [compute.AddPacketMirroringRuleNetworkFirewallPolicyRequest],
         Union[compute.Operation, Awaitable[compute.Operation]],
     ]:
         raise NotImplementedError()
@@ -308,6 +337,15 @@ class NetworkFirewallPoliciesTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
+    def get_packet_mirroring_rule(
+        self,
+    ) -> Callable[
+        [compute.GetPacketMirroringRuleNetworkFirewallPolicyRequest],
+        Union[compute.FirewallPolicyRule, Awaitable[compute.FirewallPolicyRule]],
+    ]:
+        raise NotImplementedError()
+
+    @property
     def get_rule(
         self,
     ) -> Callable[
@@ -344,6 +382,15 @@ class NetworkFirewallPoliciesTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
+    def patch_packet_mirroring_rule(
+        self,
+    ) -> Callable[
+        [compute.PatchPacketMirroringRuleNetworkFirewallPolicyRequest],
+        Union[compute.Operation, Awaitable[compute.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
     def patch_rule(
         self,
     ) -> Callable[
@@ -357,6 +404,15 @@ class NetworkFirewallPoliciesTransport(abc.ABC):
         self,
     ) -> Callable[
         [compute.RemoveAssociationNetworkFirewallPolicyRequest],
+        Union[compute.Operation, Awaitable[compute.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def remove_packet_mirroring_rule(
+        self,
+    ) -> Callable[
+        [compute.RemovePacketMirroringRuleNetworkFirewallPolicyRequest],
         Union[compute.Operation, Awaitable[compute.Operation]],
     ]:
         raise NotImplementedError()

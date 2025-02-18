@@ -1928,6 +1928,7 @@ def test_get_rest_call_success(request_type):
             id=205,
             kind="kind_value",
             local_ssd_gb=1244,
+            max_vms=763,
             memory_mb=967,
             name="name_value",
             self_link="self_link_value",
@@ -1955,6 +1956,7 @@ def test_get_rest_call_success(request_type):
     assert response.id == 205
     assert response.kind == "kind_value"
     assert response.local_ssd_gb == 1244
+    assert response.max_vms == 763
     assert response.memory_mb == 967
     assert response.name == "name_value"
     assert response.self_link == "self_link_value"

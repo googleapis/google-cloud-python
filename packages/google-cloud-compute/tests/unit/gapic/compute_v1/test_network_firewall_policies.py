@@ -1430,6 +1430,452 @@ def test_add_association_unary_rest_flattened_error(transport: str = "rest"):
         )
 
 
+def test_add_packet_mirroring_rule_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = NetworkFirewallPoliciesClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.add_packet_mirroring_rule
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.add_packet_mirroring_rule
+        ] = mock_rpc
+
+        request = {}
+        client.add_packet_mirroring_rule(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.add_packet_mirroring_rule(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_add_packet_mirroring_rule_rest_required_fields(
+    request_type=compute.AddPacketMirroringRuleNetworkFirewallPolicyRequest,
+):
+    transport_class = transports.NetworkFirewallPoliciesRestTransport
+
+    request_init = {}
+    request_init["firewall_policy"] = ""
+    request_init["project"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).add_packet_mirroring_rule._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["firewallPolicy"] = "firewall_policy_value"
+    jsonified_request["project"] = "project_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).add_packet_mirroring_rule._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "max_priority",
+            "min_priority",
+            "request_id",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "firewallPolicy" in jsonified_request
+    assert jsonified_request["firewallPolicy"] == "firewall_policy_value"
+    assert "project" in jsonified_request
+    assert jsonified_request["project"] == "project_value"
+
+    client = NetworkFirewallPoliciesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = compute.Operation()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = compute.Operation.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.add_packet_mirroring_rule(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_add_packet_mirroring_rule_rest_unset_required_fields():
+    transport = transports.NetworkFirewallPoliciesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.add_packet_mirroring_rule._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "maxPriority",
+                "minPriority",
+                "requestId",
+            )
+        )
+        & set(
+            (
+                "firewallPolicy",
+                "firewallPolicyRuleResource",
+                "project",
+            )
+        )
+    )
+
+
+def test_add_packet_mirroring_rule_rest_flattened():
+    client = NetworkFirewallPoliciesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = compute.Operation()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"project": "sample1", "firewall_policy": "sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            project="project_value",
+            firewall_policy="firewall_policy_value",
+            firewall_policy_rule_resource=compute.FirewallPolicyRule(
+                action="action_value"
+            ),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        client.add_packet_mirroring_rule(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/compute/v1/projects/{project}/global/firewallPolicies/{firewall_policy}/addPacketMirroringRule"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_add_packet_mirroring_rule_rest_flattened_error(transport: str = "rest"):
+    client = NetworkFirewallPoliciesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.add_packet_mirroring_rule(
+            compute.AddPacketMirroringRuleNetworkFirewallPolicyRequest(),
+            project="project_value",
+            firewall_policy="firewall_policy_value",
+            firewall_policy_rule_resource=compute.FirewallPolicyRule(
+                action="action_value"
+            ),
+        )
+
+
+def test_add_packet_mirroring_rule_unary_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = NetworkFirewallPoliciesClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.add_packet_mirroring_rule
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.add_packet_mirroring_rule
+        ] = mock_rpc
+
+        request = {}
+        client.add_packet_mirroring_rule_unary(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.add_packet_mirroring_rule_unary(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_add_packet_mirroring_rule_unary_rest_required_fields(
+    request_type=compute.AddPacketMirroringRuleNetworkFirewallPolicyRequest,
+):
+    transport_class = transports.NetworkFirewallPoliciesRestTransport
+
+    request_init = {}
+    request_init["firewall_policy"] = ""
+    request_init["project"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).add_packet_mirroring_rule._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["firewallPolicy"] = "firewall_policy_value"
+    jsonified_request["project"] = "project_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).add_packet_mirroring_rule._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "max_priority",
+            "min_priority",
+            "request_id",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "firewallPolicy" in jsonified_request
+    assert jsonified_request["firewallPolicy"] == "firewall_policy_value"
+    assert "project" in jsonified_request
+    assert jsonified_request["project"] == "project_value"
+
+    client = NetworkFirewallPoliciesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = compute.Operation()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = compute.Operation.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.add_packet_mirroring_rule_unary(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_add_packet_mirroring_rule_unary_rest_unset_required_fields():
+    transport = transports.NetworkFirewallPoliciesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.add_packet_mirroring_rule._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "maxPriority",
+                "minPriority",
+                "requestId",
+            )
+        )
+        & set(
+            (
+                "firewallPolicy",
+                "firewallPolicyRuleResource",
+                "project",
+            )
+        )
+    )
+
+
+def test_add_packet_mirroring_rule_unary_rest_flattened():
+    client = NetworkFirewallPoliciesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = compute.Operation()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"project": "sample1", "firewall_policy": "sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            project="project_value",
+            firewall_policy="firewall_policy_value",
+            firewall_policy_rule_resource=compute.FirewallPolicyRule(
+                action="action_value"
+            ),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        client.add_packet_mirroring_rule_unary(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/compute/v1/projects/{project}/global/firewallPolicies/{firewall_policy}/addPacketMirroringRule"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_add_packet_mirroring_rule_unary_rest_flattened_error(transport: str = "rest"):
+    client = NetworkFirewallPoliciesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.add_packet_mirroring_rule_unary(
+            compute.AddPacketMirroringRuleNetworkFirewallPolicyRequest(),
+            project="project_value",
+            firewall_policy="firewall_policy_value",
+            firewall_policy_rule_resource=compute.FirewallPolicyRule(
+                action="action_value"
+            ),
+        )
+
+
 def test_add_rule_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -3534,6 +3980,205 @@ def test_get_iam_policy_rest_flattened_error(transport: str = "rest"):
         )
 
 
+def test_get_packet_mirroring_rule_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = NetworkFirewallPoliciesClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.get_packet_mirroring_rule
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.get_packet_mirroring_rule
+        ] = mock_rpc
+
+        request = {}
+        client.get_packet_mirroring_rule(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.get_packet_mirroring_rule(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_get_packet_mirroring_rule_rest_required_fields(
+    request_type=compute.GetPacketMirroringRuleNetworkFirewallPolicyRequest,
+):
+    transport_class = transports.NetworkFirewallPoliciesRestTransport
+
+    request_init = {}
+    request_init["firewall_policy"] = ""
+    request_init["project"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_packet_mirroring_rule._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["firewallPolicy"] = "firewall_policy_value"
+    jsonified_request["project"] = "project_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_packet_mirroring_rule._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("priority",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "firewallPolicy" in jsonified_request
+    assert jsonified_request["firewallPolicy"] == "firewall_policy_value"
+    assert "project" in jsonified_request
+    assert jsonified_request["project"] == "project_value"
+
+    client = NetworkFirewallPoliciesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = compute.FirewallPolicyRule()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = compute.FirewallPolicyRule.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.get_packet_mirroring_rule(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_packet_mirroring_rule_rest_unset_required_fields():
+    transport = transports.NetworkFirewallPoliciesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_packet_mirroring_rule._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(("priority",))
+        & set(
+            (
+                "firewallPolicy",
+                "project",
+            )
+        )
+    )
+
+
+def test_get_packet_mirroring_rule_rest_flattened():
+    client = NetworkFirewallPoliciesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = compute.FirewallPolicyRule()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"project": "sample1", "firewall_policy": "sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            project="project_value",
+            firewall_policy="firewall_policy_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = compute.FirewallPolicyRule.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        client.get_packet_mirroring_rule(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/compute/v1/projects/{project}/global/firewallPolicies/{firewall_policy}/getPacketMirroringRule"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_packet_mirroring_rule_rest_flattened_error(transport: str = "rest"):
+    client = NetworkFirewallPoliciesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_packet_mirroring_rule(
+            compute.GetPacketMirroringRuleNetworkFirewallPolicyRequest(),
+            project="project_value",
+            firewall_policy="firewall_policy_value",
+        )
+
+
 def test_get_rule_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -4830,6 +5475,450 @@ def test_patch_unary_rest_flattened_error(transport: str = "rest"):
         )
 
 
+def test_patch_packet_mirroring_rule_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = NetworkFirewallPoliciesClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.patch_packet_mirroring_rule
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.patch_packet_mirroring_rule
+        ] = mock_rpc
+
+        request = {}
+        client.patch_packet_mirroring_rule(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.patch_packet_mirroring_rule(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_patch_packet_mirroring_rule_rest_required_fields(
+    request_type=compute.PatchPacketMirroringRuleNetworkFirewallPolicyRequest,
+):
+    transport_class = transports.NetworkFirewallPoliciesRestTransport
+
+    request_init = {}
+    request_init["firewall_policy"] = ""
+    request_init["project"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).patch_packet_mirroring_rule._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["firewallPolicy"] = "firewall_policy_value"
+    jsonified_request["project"] = "project_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).patch_packet_mirroring_rule._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "priority",
+            "request_id",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "firewallPolicy" in jsonified_request
+    assert jsonified_request["firewallPolicy"] == "firewall_policy_value"
+    assert "project" in jsonified_request
+    assert jsonified_request["project"] == "project_value"
+
+    client = NetworkFirewallPoliciesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = compute.Operation()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = compute.Operation.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.patch_packet_mirroring_rule(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_patch_packet_mirroring_rule_rest_unset_required_fields():
+    transport = transports.NetworkFirewallPoliciesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.patch_packet_mirroring_rule._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "priority",
+                "requestId",
+            )
+        )
+        & set(
+            (
+                "firewallPolicy",
+                "firewallPolicyRuleResource",
+                "project",
+            )
+        )
+    )
+
+
+def test_patch_packet_mirroring_rule_rest_flattened():
+    client = NetworkFirewallPoliciesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = compute.Operation()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"project": "sample1", "firewall_policy": "sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            project="project_value",
+            firewall_policy="firewall_policy_value",
+            firewall_policy_rule_resource=compute.FirewallPolicyRule(
+                action="action_value"
+            ),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        client.patch_packet_mirroring_rule(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/compute/v1/projects/{project}/global/firewallPolicies/{firewall_policy}/patchPacketMirroringRule"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_patch_packet_mirroring_rule_rest_flattened_error(transport: str = "rest"):
+    client = NetworkFirewallPoliciesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.patch_packet_mirroring_rule(
+            compute.PatchPacketMirroringRuleNetworkFirewallPolicyRequest(),
+            project="project_value",
+            firewall_policy="firewall_policy_value",
+            firewall_policy_rule_resource=compute.FirewallPolicyRule(
+                action="action_value"
+            ),
+        )
+
+
+def test_patch_packet_mirroring_rule_unary_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = NetworkFirewallPoliciesClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.patch_packet_mirroring_rule
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.patch_packet_mirroring_rule
+        ] = mock_rpc
+
+        request = {}
+        client.patch_packet_mirroring_rule_unary(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.patch_packet_mirroring_rule_unary(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_patch_packet_mirroring_rule_unary_rest_required_fields(
+    request_type=compute.PatchPacketMirroringRuleNetworkFirewallPolicyRequest,
+):
+    transport_class = transports.NetworkFirewallPoliciesRestTransport
+
+    request_init = {}
+    request_init["firewall_policy"] = ""
+    request_init["project"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).patch_packet_mirroring_rule._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["firewallPolicy"] = "firewall_policy_value"
+    jsonified_request["project"] = "project_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).patch_packet_mirroring_rule._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "priority",
+            "request_id",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "firewallPolicy" in jsonified_request
+    assert jsonified_request["firewallPolicy"] == "firewall_policy_value"
+    assert "project" in jsonified_request
+    assert jsonified_request["project"] == "project_value"
+
+    client = NetworkFirewallPoliciesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = compute.Operation()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = compute.Operation.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.patch_packet_mirroring_rule_unary(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_patch_packet_mirroring_rule_unary_rest_unset_required_fields():
+    transport = transports.NetworkFirewallPoliciesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.patch_packet_mirroring_rule._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "priority",
+                "requestId",
+            )
+        )
+        & set(
+            (
+                "firewallPolicy",
+                "firewallPolicyRuleResource",
+                "project",
+            )
+        )
+    )
+
+
+def test_patch_packet_mirroring_rule_unary_rest_flattened():
+    client = NetworkFirewallPoliciesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = compute.Operation()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"project": "sample1", "firewall_policy": "sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            project="project_value",
+            firewall_policy="firewall_policy_value",
+            firewall_policy_rule_resource=compute.FirewallPolicyRule(
+                action="action_value"
+            ),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        client.patch_packet_mirroring_rule_unary(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/compute/v1/projects/{project}/global/firewallPolicies/{firewall_policy}/patchPacketMirroringRule"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_patch_packet_mirroring_rule_unary_rest_flattened_error(
+    transport: str = "rest",
+):
+    client = NetworkFirewallPoliciesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.patch_packet_mirroring_rule_unary(
+            compute.PatchPacketMirroringRuleNetworkFirewallPolicyRequest(),
+            project="project_value",
+            firewall_policy="firewall_policy_value",
+            firewall_policy_rule_resource=compute.FirewallPolicyRule(
+                action="action_value"
+            ),
+        )
+
+
 def test_patch_rule_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -5681,6 +6770,434 @@ def test_remove_association_unary_rest_flattened_error(transport: str = "rest"):
     with pytest.raises(ValueError):
         client.remove_association_unary(
             compute.RemoveAssociationNetworkFirewallPolicyRequest(),
+            project="project_value",
+            firewall_policy="firewall_policy_value",
+        )
+
+
+def test_remove_packet_mirroring_rule_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = NetworkFirewallPoliciesClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.remove_packet_mirroring_rule
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.remove_packet_mirroring_rule
+        ] = mock_rpc
+
+        request = {}
+        client.remove_packet_mirroring_rule(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.remove_packet_mirroring_rule(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_remove_packet_mirroring_rule_rest_required_fields(
+    request_type=compute.RemovePacketMirroringRuleNetworkFirewallPolicyRequest,
+):
+    transport_class = transports.NetworkFirewallPoliciesRestTransport
+
+    request_init = {}
+    request_init["firewall_policy"] = ""
+    request_init["project"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).remove_packet_mirroring_rule._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["firewallPolicy"] = "firewall_policy_value"
+    jsonified_request["project"] = "project_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).remove_packet_mirroring_rule._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "priority",
+            "request_id",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "firewallPolicy" in jsonified_request
+    assert jsonified_request["firewallPolicy"] == "firewall_policy_value"
+    assert "project" in jsonified_request
+    assert jsonified_request["project"] == "project_value"
+
+    client = NetworkFirewallPoliciesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = compute.Operation()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = compute.Operation.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.remove_packet_mirroring_rule(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_remove_packet_mirroring_rule_rest_unset_required_fields():
+    transport = transports.NetworkFirewallPoliciesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.remove_packet_mirroring_rule._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "priority",
+                "requestId",
+            )
+        )
+        & set(
+            (
+                "firewallPolicy",
+                "project",
+            )
+        )
+    )
+
+
+def test_remove_packet_mirroring_rule_rest_flattened():
+    client = NetworkFirewallPoliciesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = compute.Operation()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"project": "sample1", "firewall_policy": "sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            project="project_value",
+            firewall_policy="firewall_policy_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        client.remove_packet_mirroring_rule(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/compute/v1/projects/{project}/global/firewallPolicies/{firewall_policy}/removePacketMirroringRule"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_remove_packet_mirroring_rule_rest_flattened_error(transport: str = "rest"):
+    client = NetworkFirewallPoliciesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.remove_packet_mirroring_rule(
+            compute.RemovePacketMirroringRuleNetworkFirewallPolicyRequest(),
+            project="project_value",
+            firewall_policy="firewall_policy_value",
+        )
+
+
+def test_remove_packet_mirroring_rule_unary_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = NetworkFirewallPoliciesClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.remove_packet_mirroring_rule
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.remove_packet_mirroring_rule
+        ] = mock_rpc
+
+        request = {}
+        client.remove_packet_mirroring_rule_unary(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.remove_packet_mirroring_rule_unary(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_remove_packet_mirroring_rule_unary_rest_required_fields(
+    request_type=compute.RemovePacketMirroringRuleNetworkFirewallPolicyRequest,
+):
+    transport_class = transports.NetworkFirewallPoliciesRestTransport
+
+    request_init = {}
+    request_init["firewall_policy"] = ""
+    request_init["project"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).remove_packet_mirroring_rule._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["firewallPolicy"] = "firewall_policy_value"
+    jsonified_request["project"] = "project_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).remove_packet_mirroring_rule._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "priority",
+            "request_id",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "firewallPolicy" in jsonified_request
+    assert jsonified_request["firewallPolicy"] == "firewall_policy_value"
+    assert "project" in jsonified_request
+    assert jsonified_request["project"] == "project_value"
+
+    client = NetworkFirewallPoliciesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = compute.Operation()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = compute.Operation.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.remove_packet_mirroring_rule_unary(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_remove_packet_mirroring_rule_unary_rest_unset_required_fields():
+    transport = transports.NetworkFirewallPoliciesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.remove_packet_mirroring_rule._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "priority",
+                "requestId",
+            )
+        )
+        & set(
+            (
+                "firewallPolicy",
+                "project",
+            )
+        )
+    )
+
+
+def test_remove_packet_mirroring_rule_unary_rest_flattened():
+    client = NetworkFirewallPoliciesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = compute.Operation()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"project": "sample1", "firewall_policy": "sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            project="project_value",
+            firewall_policy="firewall_policy_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        client.remove_packet_mirroring_rule_unary(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/compute/v1/projects/{project}/global/firewallPolicies/{firewall_policy}/removePacketMirroringRule"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_remove_packet_mirroring_rule_unary_rest_flattened_error(
+    transport: str = "rest",
+):
+    client = NetworkFirewallPoliciesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.remove_packet_mirroring_rule_unary(
+            compute.RemovePacketMirroringRuleNetworkFirewallPolicyRequest(),
             project="project_value",
             firewall_policy="firewall_policy_value",
         )
@@ -6830,6 +8347,306 @@ def test_add_association_rest_interceptors(null_interceptor):
         post_with_metadata.return_value = compute.Operation(), metadata
 
         client.add_association(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+        post_with_metadata.assert_called_once()
+
+
+def test_add_packet_mirroring_rule_rest_bad_request(
+    request_type=compute.AddPacketMirroringRuleNetworkFirewallPolicyRequest,
+):
+    client = NetworkFirewallPoliciesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "firewall_policy": "sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.add_packet_mirroring_rule(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        compute.AddPacketMirroringRuleNetworkFirewallPolicyRequest,
+        dict,
+    ],
+)
+def test_add_packet_mirroring_rule_rest_call_success(request_type):
+    client = NetworkFirewallPoliciesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "firewall_policy": "sample2"}
+    request_init["firewall_policy_rule_resource"] = {
+        "action": "action_value",
+        "description": "description_value",
+        "direction": "direction_value",
+        "disabled": True,
+        "enable_logging": True,
+        "kind": "kind_value",
+        "match": {
+            "dest_address_groups": [
+                "dest_address_groups_value1",
+                "dest_address_groups_value2",
+            ],
+            "dest_fqdns": ["dest_fqdns_value1", "dest_fqdns_value2"],
+            "dest_ip_ranges": ["dest_ip_ranges_value1", "dest_ip_ranges_value2"],
+            "dest_region_codes": [
+                "dest_region_codes_value1",
+                "dest_region_codes_value2",
+            ],
+            "dest_threat_intelligences": [
+                "dest_threat_intelligences_value1",
+                "dest_threat_intelligences_value2",
+            ],
+            "layer4_configs": [
+                {
+                    "ip_protocol": "ip_protocol_value",
+                    "ports": ["ports_value1", "ports_value2"],
+                }
+            ],
+            "src_address_groups": [
+                "src_address_groups_value1",
+                "src_address_groups_value2",
+            ],
+            "src_fqdns": ["src_fqdns_value1", "src_fqdns_value2"],
+            "src_ip_ranges": ["src_ip_ranges_value1", "src_ip_ranges_value2"],
+            "src_region_codes": ["src_region_codes_value1", "src_region_codes_value2"],
+            "src_secure_tags": [{"name": "name_value", "state": "state_value"}],
+            "src_threat_intelligences": [
+                "src_threat_intelligences_value1",
+                "src_threat_intelligences_value2",
+            ],
+        },
+        "priority": 898,
+        "rule_name": "rule_name_value",
+        "rule_tuple_count": 1737,
+        "security_profile_group": "security_profile_group_value",
+        "target_resources": ["target_resources_value1", "target_resources_value2"],
+        "target_secure_tags": {},
+        "target_service_accounts": [
+            "target_service_accounts_value1",
+            "target_service_accounts_value2",
+        ],
+        "tls_inspect": True,
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = compute.AddPacketMirroringRuleNetworkFirewallPolicyRequest.meta.fields[
+        "firewall_policy_rule_resource"
+    ]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init[
+        "firewall_policy_rule_resource"
+    ].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(
+                    0, len(request_init["firewall_policy_rule_resource"][field])
+                ):
+                    del request_init["firewall_policy_rule_resource"][field][i][
+                        subfield
+                    ]
+            else:
+                del request_init["firewall_policy_rule_resource"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = compute.Operation(
+            client_operation_id="client_operation_id_value",
+            creation_timestamp="creation_timestamp_value",
+            description="description_value",
+            end_time="end_time_value",
+            http_error_message="http_error_message_value",
+            http_error_status_code=2374,
+            id=205,
+            insert_time="insert_time_value",
+            kind="kind_value",
+            name="name_value",
+            operation_group_id="operation_group_id_value",
+            operation_type="operation_type_value",
+            progress=885,
+            region="region_value",
+            self_link="self_link_value",
+            start_time="start_time_value",
+            status=compute.Operation.Status.DONE,
+            status_message="status_message_value",
+            target_id=947,
+            target_link="target_link_value",
+            user="user_value",
+            zone="zone_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.add_packet_mirroring_rule(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, extended_operation.ExtendedOperation)
+    assert response.client_operation_id == "client_operation_id_value"
+    assert response.creation_timestamp == "creation_timestamp_value"
+    assert response.description == "description_value"
+    assert response.end_time == "end_time_value"
+    assert response.http_error_message == "http_error_message_value"
+    assert response.http_error_status_code == 2374
+    assert response.id == 205
+    assert response.insert_time == "insert_time_value"
+    assert response.kind == "kind_value"
+    assert response.name == "name_value"
+    assert response.operation_group_id == "operation_group_id_value"
+    assert response.operation_type == "operation_type_value"
+    assert response.progress == 885
+    assert response.region == "region_value"
+    assert response.self_link == "self_link_value"
+    assert response.start_time == "start_time_value"
+    assert response.status == compute.Operation.Status.DONE
+    assert response.status_message == "status_message_value"
+    assert response.target_id == 947
+    assert response.target_link == "target_link_value"
+    assert response.user == "user_value"
+    assert response.zone == "zone_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_add_packet_mirroring_rule_rest_interceptors(null_interceptor):
+    transport = transports.NetworkFirewallPoliciesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.NetworkFirewallPoliciesRestInterceptor(),
+    )
+    client = NetworkFirewallPoliciesClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.NetworkFirewallPoliciesRestInterceptor,
+        "post_add_packet_mirroring_rule",
+    ) as post, mock.patch.object(
+        transports.NetworkFirewallPoliciesRestInterceptor,
+        "post_add_packet_mirroring_rule_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
+        transports.NetworkFirewallPoliciesRestInterceptor,
+        "pre_add_packet_mirroring_rule",
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        post_with_metadata.assert_not_called()
+        pb_message = compute.AddPacketMirroringRuleNetworkFirewallPolicyRequest.pb(
+            compute.AddPacketMirroringRuleNetworkFirewallPolicyRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = compute.Operation.to_json(compute.Operation())
+        req.return_value.content = return_value
+
+        request = compute.AddPacketMirroringRuleNetworkFirewallPolicyRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = compute.Operation()
+        post_with_metadata.return_value = compute.Operation(), metadata
+
+        client.add_packet_mirroring_rule(
             request,
             metadata=[
                 ("key", "val"),
@@ -8038,6 +9855,160 @@ def test_get_iam_policy_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
+def test_get_packet_mirroring_rule_rest_bad_request(
+    request_type=compute.GetPacketMirroringRuleNetworkFirewallPolicyRequest,
+):
+    client = NetworkFirewallPoliciesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "firewall_policy": "sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.get_packet_mirroring_rule(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        compute.GetPacketMirroringRuleNetworkFirewallPolicyRequest,
+        dict,
+    ],
+)
+def test_get_packet_mirroring_rule_rest_call_success(request_type):
+    client = NetworkFirewallPoliciesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "firewall_policy": "sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = compute.FirewallPolicyRule(
+            action="action_value",
+            description="description_value",
+            direction="direction_value",
+            disabled=True,
+            enable_logging=True,
+            kind="kind_value",
+            priority=898,
+            rule_name="rule_name_value",
+            rule_tuple_count=1737,
+            security_profile_group="security_profile_group_value",
+            target_resources=["target_resources_value"],
+            target_service_accounts=["target_service_accounts_value"],
+            tls_inspect=True,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = compute.FirewallPolicyRule.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.get_packet_mirroring_rule(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, compute.FirewallPolicyRule)
+    assert response.action == "action_value"
+    assert response.description == "description_value"
+    assert response.direction == "direction_value"
+    assert response.disabled is True
+    assert response.enable_logging is True
+    assert response.kind == "kind_value"
+    assert response.priority == 898
+    assert response.rule_name == "rule_name_value"
+    assert response.rule_tuple_count == 1737
+    assert response.security_profile_group == "security_profile_group_value"
+    assert response.target_resources == ["target_resources_value"]
+    assert response.target_service_accounts == ["target_service_accounts_value"]
+    assert response.tls_inspect is True
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_packet_mirroring_rule_rest_interceptors(null_interceptor):
+    transport = transports.NetworkFirewallPoliciesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.NetworkFirewallPoliciesRestInterceptor(),
+    )
+    client = NetworkFirewallPoliciesClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.NetworkFirewallPoliciesRestInterceptor,
+        "post_get_packet_mirroring_rule",
+    ) as post, mock.patch.object(
+        transports.NetworkFirewallPoliciesRestInterceptor,
+        "post_get_packet_mirroring_rule_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
+        transports.NetworkFirewallPoliciesRestInterceptor,
+        "pre_get_packet_mirroring_rule",
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        post_with_metadata.assert_not_called()
+        pb_message = compute.GetPacketMirroringRuleNetworkFirewallPolicyRequest.pb(
+            compute.GetPacketMirroringRuleNetworkFirewallPolicyRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = compute.FirewallPolicyRule.to_json(compute.FirewallPolicyRule())
+        req.return_value.content = return_value
+
+        request = compute.GetPacketMirroringRuleNetworkFirewallPolicyRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = compute.FirewallPolicyRule()
+        post_with_metadata.return_value = compute.FirewallPolicyRule(), metadata
+
+        client.get_packet_mirroring_rule(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+        post_with_metadata.assert_called_once()
+
+
 def test_get_rule_rest_bad_request(
     request_type=compute.GetRuleNetworkFirewallPolicyRequest,
 ):
@@ -8245,10 +10216,7 @@ def test_insert_rest_call_success(request_type):
         "id": 205,
         "kind": "kind_value",
         "name": "name_value",
-        "parent": "parent_value",
-        "region": "region_value",
-        "rule_tuple_count": 1737,
-        "rules": [
+        "packet_mirroring_rules": [
             {
                 "action": "action_value",
                 "description": "description_value",
@@ -8312,6 +10280,10 @@ def test_insert_rest_call_success(request_type):
                 "tls_inspect": True,
             }
         ],
+        "parent": "parent_value",
+        "region": "region_value",
+        "rule_tuple_count": 1737,
+        "rules": {},
         "self_link": "self_link_value",
         "self_link_with_id": "self_link_with_id_value",
         "short_name": "short_name_value",
@@ -8700,10 +10672,7 @@ def test_patch_rest_call_success(request_type):
         "id": 205,
         "kind": "kind_value",
         "name": "name_value",
-        "parent": "parent_value",
-        "region": "region_value",
-        "rule_tuple_count": 1737,
-        "rules": [
+        "packet_mirroring_rules": [
             {
                 "action": "action_value",
                 "description": "description_value",
@@ -8767,6 +10736,10 @@ def test_patch_rest_call_success(request_type):
                 "tls_inspect": True,
             }
         ],
+        "parent": "parent_value",
+        "region": "region_value",
+        "rule_tuple_count": 1737,
+        "rules": {},
         "self_link": "self_link_value",
         "self_link_with_id": "self_link_with_id_value",
         "short_name": "short_name_value",
@@ -8960,6 +10933,308 @@ def test_patch_rest_interceptors(null_interceptor):
         post_with_metadata.return_value = compute.Operation(), metadata
 
         client.patch(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+        post_with_metadata.assert_called_once()
+
+
+def test_patch_packet_mirroring_rule_rest_bad_request(
+    request_type=compute.PatchPacketMirroringRuleNetworkFirewallPolicyRequest,
+):
+    client = NetworkFirewallPoliciesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "firewall_policy": "sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.patch_packet_mirroring_rule(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        compute.PatchPacketMirroringRuleNetworkFirewallPolicyRequest,
+        dict,
+    ],
+)
+def test_patch_packet_mirroring_rule_rest_call_success(request_type):
+    client = NetworkFirewallPoliciesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "firewall_policy": "sample2"}
+    request_init["firewall_policy_rule_resource"] = {
+        "action": "action_value",
+        "description": "description_value",
+        "direction": "direction_value",
+        "disabled": True,
+        "enable_logging": True,
+        "kind": "kind_value",
+        "match": {
+            "dest_address_groups": [
+                "dest_address_groups_value1",
+                "dest_address_groups_value2",
+            ],
+            "dest_fqdns": ["dest_fqdns_value1", "dest_fqdns_value2"],
+            "dest_ip_ranges": ["dest_ip_ranges_value1", "dest_ip_ranges_value2"],
+            "dest_region_codes": [
+                "dest_region_codes_value1",
+                "dest_region_codes_value2",
+            ],
+            "dest_threat_intelligences": [
+                "dest_threat_intelligences_value1",
+                "dest_threat_intelligences_value2",
+            ],
+            "layer4_configs": [
+                {
+                    "ip_protocol": "ip_protocol_value",
+                    "ports": ["ports_value1", "ports_value2"],
+                }
+            ],
+            "src_address_groups": [
+                "src_address_groups_value1",
+                "src_address_groups_value2",
+            ],
+            "src_fqdns": ["src_fqdns_value1", "src_fqdns_value2"],
+            "src_ip_ranges": ["src_ip_ranges_value1", "src_ip_ranges_value2"],
+            "src_region_codes": ["src_region_codes_value1", "src_region_codes_value2"],
+            "src_secure_tags": [{"name": "name_value", "state": "state_value"}],
+            "src_threat_intelligences": [
+                "src_threat_intelligences_value1",
+                "src_threat_intelligences_value2",
+            ],
+        },
+        "priority": 898,
+        "rule_name": "rule_name_value",
+        "rule_tuple_count": 1737,
+        "security_profile_group": "security_profile_group_value",
+        "target_resources": ["target_resources_value1", "target_resources_value2"],
+        "target_secure_tags": {},
+        "target_service_accounts": [
+            "target_service_accounts_value1",
+            "target_service_accounts_value2",
+        ],
+        "tls_inspect": True,
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = (
+        compute.PatchPacketMirroringRuleNetworkFirewallPolicyRequest.meta.fields[
+            "firewall_policy_rule_resource"
+        ]
+    )
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init[
+        "firewall_policy_rule_resource"
+    ].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(
+                    0, len(request_init["firewall_policy_rule_resource"][field])
+                ):
+                    del request_init["firewall_policy_rule_resource"][field][i][
+                        subfield
+                    ]
+            else:
+                del request_init["firewall_policy_rule_resource"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = compute.Operation(
+            client_operation_id="client_operation_id_value",
+            creation_timestamp="creation_timestamp_value",
+            description="description_value",
+            end_time="end_time_value",
+            http_error_message="http_error_message_value",
+            http_error_status_code=2374,
+            id=205,
+            insert_time="insert_time_value",
+            kind="kind_value",
+            name="name_value",
+            operation_group_id="operation_group_id_value",
+            operation_type="operation_type_value",
+            progress=885,
+            region="region_value",
+            self_link="self_link_value",
+            start_time="start_time_value",
+            status=compute.Operation.Status.DONE,
+            status_message="status_message_value",
+            target_id=947,
+            target_link="target_link_value",
+            user="user_value",
+            zone="zone_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.patch_packet_mirroring_rule(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, extended_operation.ExtendedOperation)
+    assert response.client_operation_id == "client_operation_id_value"
+    assert response.creation_timestamp == "creation_timestamp_value"
+    assert response.description == "description_value"
+    assert response.end_time == "end_time_value"
+    assert response.http_error_message == "http_error_message_value"
+    assert response.http_error_status_code == 2374
+    assert response.id == 205
+    assert response.insert_time == "insert_time_value"
+    assert response.kind == "kind_value"
+    assert response.name == "name_value"
+    assert response.operation_group_id == "operation_group_id_value"
+    assert response.operation_type == "operation_type_value"
+    assert response.progress == 885
+    assert response.region == "region_value"
+    assert response.self_link == "self_link_value"
+    assert response.start_time == "start_time_value"
+    assert response.status == compute.Operation.Status.DONE
+    assert response.status_message == "status_message_value"
+    assert response.target_id == 947
+    assert response.target_link == "target_link_value"
+    assert response.user == "user_value"
+    assert response.zone == "zone_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_patch_packet_mirroring_rule_rest_interceptors(null_interceptor):
+    transport = transports.NetworkFirewallPoliciesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.NetworkFirewallPoliciesRestInterceptor(),
+    )
+    client = NetworkFirewallPoliciesClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.NetworkFirewallPoliciesRestInterceptor,
+        "post_patch_packet_mirroring_rule",
+    ) as post, mock.patch.object(
+        transports.NetworkFirewallPoliciesRestInterceptor,
+        "post_patch_packet_mirroring_rule_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
+        transports.NetworkFirewallPoliciesRestInterceptor,
+        "pre_patch_packet_mirroring_rule",
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        post_with_metadata.assert_not_called()
+        pb_message = compute.PatchPacketMirroringRuleNetworkFirewallPolicyRequest.pb(
+            compute.PatchPacketMirroringRuleNetworkFirewallPolicyRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = compute.Operation.to_json(compute.Operation())
+        req.return_value.content = return_value
+
+        request = compute.PatchPacketMirroringRuleNetworkFirewallPolicyRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = compute.Operation()
+        post_with_metadata.return_value = compute.Operation(), metadata
+
+        client.patch_packet_mirroring_rule(
             request,
             metadata=[
                 ("key", "val"),
@@ -9428,6 +11703,178 @@ def test_remove_association_rest_interceptors(null_interceptor):
         post_with_metadata.return_value = compute.Operation(), metadata
 
         client.remove_association(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+        post_with_metadata.assert_called_once()
+
+
+def test_remove_packet_mirroring_rule_rest_bad_request(
+    request_type=compute.RemovePacketMirroringRuleNetworkFirewallPolicyRequest,
+):
+    client = NetworkFirewallPoliciesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "firewall_policy": "sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.remove_packet_mirroring_rule(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        compute.RemovePacketMirroringRuleNetworkFirewallPolicyRequest,
+        dict,
+    ],
+)
+def test_remove_packet_mirroring_rule_rest_call_success(request_type):
+    client = NetworkFirewallPoliciesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "firewall_policy": "sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = compute.Operation(
+            client_operation_id="client_operation_id_value",
+            creation_timestamp="creation_timestamp_value",
+            description="description_value",
+            end_time="end_time_value",
+            http_error_message="http_error_message_value",
+            http_error_status_code=2374,
+            id=205,
+            insert_time="insert_time_value",
+            kind="kind_value",
+            name="name_value",
+            operation_group_id="operation_group_id_value",
+            operation_type="operation_type_value",
+            progress=885,
+            region="region_value",
+            self_link="self_link_value",
+            start_time="start_time_value",
+            status=compute.Operation.Status.DONE,
+            status_message="status_message_value",
+            target_id=947,
+            target_link="target_link_value",
+            user="user_value",
+            zone="zone_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.remove_packet_mirroring_rule(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, extended_operation.ExtendedOperation)
+    assert response.client_operation_id == "client_operation_id_value"
+    assert response.creation_timestamp == "creation_timestamp_value"
+    assert response.description == "description_value"
+    assert response.end_time == "end_time_value"
+    assert response.http_error_message == "http_error_message_value"
+    assert response.http_error_status_code == 2374
+    assert response.id == 205
+    assert response.insert_time == "insert_time_value"
+    assert response.kind == "kind_value"
+    assert response.name == "name_value"
+    assert response.operation_group_id == "operation_group_id_value"
+    assert response.operation_type == "operation_type_value"
+    assert response.progress == 885
+    assert response.region == "region_value"
+    assert response.self_link == "self_link_value"
+    assert response.start_time == "start_time_value"
+    assert response.status == compute.Operation.Status.DONE
+    assert response.status_message == "status_message_value"
+    assert response.target_id == 947
+    assert response.target_link == "target_link_value"
+    assert response.user == "user_value"
+    assert response.zone == "zone_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_remove_packet_mirroring_rule_rest_interceptors(null_interceptor):
+    transport = transports.NetworkFirewallPoliciesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.NetworkFirewallPoliciesRestInterceptor(),
+    )
+    client = NetworkFirewallPoliciesClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.NetworkFirewallPoliciesRestInterceptor,
+        "post_remove_packet_mirroring_rule",
+    ) as post, mock.patch.object(
+        transports.NetworkFirewallPoliciesRestInterceptor,
+        "post_remove_packet_mirroring_rule_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
+        transports.NetworkFirewallPoliciesRestInterceptor,
+        "pre_remove_packet_mirroring_rule",
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        post_with_metadata.assert_not_called()
+        pb_message = compute.RemovePacketMirroringRuleNetworkFirewallPolicyRequest.pb(
+            compute.RemovePacketMirroringRuleNetworkFirewallPolicyRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = compute.Operation.to_json(compute.Operation())
+        req.return_value.content = return_value
+
+        request = compute.RemovePacketMirroringRuleNetworkFirewallPolicyRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = compute.Operation()
+        post_with_metadata.return_value = compute.Operation(), metadata
+
+        client.remove_packet_mirroring_rule(
             request,
             metadata=[
                 ("key", "val"),
@@ -10095,6 +12542,28 @@ def test_add_association_unary_empty_call_rest():
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
+def test_add_packet_mirroring_rule_unary_empty_call_rest():
+    client = NetworkFirewallPoliciesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.add_packet_mirroring_rule), "__call__"
+    ) as call:
+        client.add_packet_mirroring_rule_unary(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = compute.AddPacketMirroringRuleNetworkFirewallPolicyRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
 def test_add_rule_unary_empty_call_rest():
     client = NetworkFirewallPoliciesClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -10235,6 +12704,28 @@ def test_get_iam_policy_empty_call_rest():
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
+def test_get_packet_mirroring_rule_empty_call_rest():
+    client = NetworkFirewallPoliciesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_packet_mirroring_rule), "__call__"
+    ) as call:
+        client.get_packet_mirroring_rule(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = compute.GetPacketMirroringRuleNetworkFirewallPolicyRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
 def test_get_rule_empty_call_rest():
     client = NetworkFirewallPoliciesClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -10315,6 +12806,28 @@ def test_patch_unary_empty_call_rest():
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
+def test_patch_packet_mirroring_rule_unary_empty_call_rest():
+    client = NetworkFirewallPoliciesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.patch_packet_mirroring_rule), "__call__"
+    ) as call:
+        client.patch_packet_mirroring_rule_unary(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = compute.PatchPacketMirroringRuleNetworkFirewallPolicyRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
 def test_patch_rule_unary_empty_call_rest():
     client = NetworkFirewallPoliciesClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -10351,6 +12864,28 @@ def test_remove_association_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.RemoveAssociationNetworkFirewallPolicyRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_remove_packet_mirroring_rule_unary_empty_call_rest():
+    client = NetworkFirewallPoliciesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.remove_packet_mirroring_rule), "__call__"
+    ) as call:
+        client.remove_packet_mirroring_rule_unary(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = compute.RemovePacketMirroringRuleNetworkFirewallPolicyRequest()
 
         assert args[0] == request_msg
 
@@ -10440,6 +12975,7 @@ def test_network_firewall_policies_base_transport():
     # raise NotImplementedError.
     methods = (
         "add_association",
+        "add_packet_mirroring_rule",
         "add_rule",
         "aggregated_list",
         "clone_rules",
@@ -10447,12 +12983,15 @@ def test_network_firewall_policies_base_transport():
         "get",
         "get_association",
         "get_iam_policy",
+        "get_packet_mirroring_rule",
         "get_rule",
         "insert",
         "list",
         "patch",
+        "patch_packet_mirroring_rule",
         "patch_rule",
         "remove_association",
+        "remove_packet_mirroring_rule",
         "remove_rule",
         "set_iam_policy",
         "test_iam_permissions",
@@ -10596,6 +13135,9 @@ def test_network_firewall_policies_client_transport_session_collision(transport_
     session1 = client1.transport.add_association._session
     session2 = client2.transport.add_association._session
     assert session1 != session2
+    session1 = client1.transport.add_packet_mirroring_rule._session
+    session2 = client2.transport.add_packet_mirroring_rule._session
+    assert session1 != session2
     session1 = client1.transport.add_rule._session
     session2 = client2.transport.add_rule._session
     assert session1 != session2
@@ -10617,6 +13159,9 @@ def test_network_firewall_policies_client_transport_session_collision(transport_
     session1 = client1.transport.get_iam_policy._session
     session2 = client2.transport.get_iam_policy._session
     assert session1 != session2
+    session1 = client1.transport.get_packet_mirroring_rule._session
+    session2 = client2.transport.get_packet_mirroring_rule._session
+    assert session1 != session2
     session1 = client1.transport.get_rule._session
     session2 = client2.transport.get_rule._session
     assert session1 != session2
@@ -10629,11 +13174,17 @@ def test_network_firewall_policies_client_transport_session_collision(transport_
     session1 = client1.transport.patch._session
     session2 = client2.transport.patch._session
     assert session1 != session2
+    session1 = client1.transport.patch_packet_mirroring_rule._session
+    session2 = client2.transport.patch_packet_mirroring_rule._session
+    assert session1 != session2
     session1 = client1.transport.patch_rule._session
     session2 = client2.transport.patch_rule._session
     assert session1 != session2
     session1 = client1.transport.remove_association._session
     session2 = client2.transport.remove_association._session
+    assert session1 != session2
+    session1 = client1.transport.remove_packet_mirroring_rule._session
+    session2 = client2.transport.remove_packet_mirroring_rule._session
     assert session1 != session2
     session1 = client1.transport.remove_rule._session
     session2 = client2.transport.remove_rule._session

@@ -76,6 +76,14 @@ class NetworkFirewallPoliciesRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_add_packet_mirroring_rule(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_add_packet_mirroring_rule(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_add_rule(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -132,6 +140,14 @@ class NetworkFirewallPoliciesRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_get_packet_mirroring_rule(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_packet_mirroring_rule(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_get_rule(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -164,6 +180,14 @@ class NetworkFirewallPoliciesRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_patch_packet_mirroring_rule(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_patch_packet_mirroring_rule(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_patch_rule(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -177,6 +201,14 @@ class NetworkFirewallPoliciesRestInterceptor:
                 return request, metadata
 
             def post_remove_association(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_remove_packet_mirroring_rule(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_remove_packet_mirroring_rule(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -254,6 +286,55 @@ class NetworkFirewallPoliciesRestInterceptor:
         `post_add_association` interceptor. The (possibly modified) response returned by
         `post_add_association` will be passed to
         `post_add_association_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_add_packet_mirroring_rule(
+        self,
+        request: compute.AddPacketMirroringRuleNetworkFirewallPolicyRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.AddPacketMirroringRuleNetworkFirewallPolicyRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for add_packet_mirroring_rule
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the NetworkFirewallPolicies server.
+        """
+        return request, metadata
+
+    def post_add_packet_mirroring_rule(
+        self, response: compute.Operation
+    ) -> compute.Operation:
+        """Post-rpc interceptor for add_packet_mirroring_rule
+
+        DEPRECATED. Please use the `post_add_packet_mirroring_rule_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the NetworkFirewallPolicies server but before
+        it is returned to user code. This `post_add_packet_mirroring_rule` interceptor runs
+        before the `post_add_packet_mirroring_rule_with_metadata` interceptor.
+        """
+        return response
+
+    def post_add_packet_mirroring_rule_with_metadata(
+        self,
+        response: compute.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for add_packet_mirroring_rule
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the NetworkFirewallPolicies server but before it is returned to user code.
+
+        We recommend only using this `post_add_packet_mirroring_rule_with_metadata`
+        interceptor in new development instead of the `post_add_packet_mirroring_rule` interceptor.
+        When both interceptors are used, this `post_add_packet_mirroring_rule_with_metadata` interceptor runs after the
+        `post_add_packet_mirroring_rule` interceptor. The (possibly modified) response returned by
+        `post_add_packet_mirroring_rule` will be passed to
+        `post_add_packet_mirroring_rule_with_metadata`.
         """
         return response, metadata
 
@@ -594,6 +675,55 @@ class NetworkFirewallPoliciesRestInterceptor:
         """
         return response, metadata
 
+    def pre_get_packet_mirroring_rule(
+        self,
+        request: compute.GetPacketMirroringRuleNetworkFirewallPolicyRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.GetPacketMirroringRuleNetworkFirewallPolicyRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for get_packet_mirroring_rule
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the NetworkFirewallPolicies server.
+        """
+        return request, metadata
+
+    def post_get_packet_mirroring_rule(
+        self, response: compute.FirewallPolicyRule
+    ) -> compute.FirewallPolicyRule:
+        """Post-rpc interceptor for get_packet_mirroring_rule
+
+        DEPRECATED. Please use the `post_get_packet_mirroring_rule_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the NetworkFirewallPolicies server but before
+        it is returned to user code. This `post_get_packet_mirroring_rule` interceptor runs
+        before the `post_get_packet_mirroring_rule_with_metadata` interceptor.
+        """
+        return response
+
+    def post_get_packet_mirroring_rule_with_metadata(
+        self,
+        response: compute.FirewallPolicyRule,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[compute.FirewallPolicyRule, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_packet_mirroring_rule
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the NetworkFirewallPolicies server but before it is returned to user code.
+
+        We recommend only using this `post_get_packet_mirroring_rule_with_metadata`
+        interceptor in new development instead of the `post_get_packet_mirroring_rule` interceptor.
+        When both interceptors are used, this `post_get_packet_mirroring_rule_with_metadata` interceptor runs after the
+        `post_get_packet_mirroring_rule` interceptor. The (possibly modified) response returned by
+        `post_get_packet_mirroring_rule` will be passed to
+        `post_get_packet_mirroring_rule_with_metadata`.
+        """
+        return response, metadata
+
     def pre_get_rule(
         self,
         request: compute.GetRuleNetworkFirewallPolicyRequest,
@@ -786,6 +916,55 @@ class NetworkFirewallPoliciesRestInterceptor:
         """
         return response, metadata
 
+    def pre_patch_packet_mirroring_rule(
+        self,
+        request: compute.PatchPacketMirroringRuleNetworkFirewallPolicyRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.PatchPacketMirroringRuleNetworkFirewallPolicyRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for patch_packet_mirroring_rule
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the NetworkFirewallPolicies server.
+        """
+        return request, metadata
+
+    def post_patch_packet_mirroring_rule(
+        self, response: compute.Operation
+    ) -> compute.Operation:
+        """Post-rpc interceptor for patch_packet_mirroring_rule
+
+        DEPRECATED. Please use the `post_patch_packet_mirroring_rule_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the NetworkFirewallPolicies server but before
+        it is returned to user code. This `post_patch_packet_mirroring_rule` interceptor runs
+        before the `post_patch_packet_mirroring_rule_with_metadata` interceptor.
+        """
+        return response
+
+    def post_patch_packet_mirroring_rule_with_metadata(
+        self,
+        response: compute.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for patch_packet_mirroring_rule
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the NetworkFirewallPolicies server but before it is returned to user code.
+
+        We recommend only using this `post_patch_packet_mirroring_rule_with_metadata`
+        interceptor in new development instead of the `post_patch_packet_mirroring_rule` interceptor.
+        When both interceptors are used, this `post_patch_packet_mirroring_rule_with_metadata` interceptor runs after the
+        `post_patch_packet_mirroring_rule` interceptor. The (possibly modified) response returned by
+        `post_patch_packet_mirroring_rule` will be passed to
+        `post_patch_packet_mirroring_rule_with_metadata`.
+        """
+        return response, metadata
+
     def pre_patch_rule(
         self,
         request: compute.PatchRuleNetworkFirewallPolicyRequest,
@@ -877,6 +1056,55 @@ class NetworkFirewallPoliciesRestInterceptor:
         `post_remove_association` interceptor. The (possibly modified) response returned by
         `post_remove_association` will be passed to
         `post_remove_association_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_remove_packet_mirroring_rule(
+        self,
+        request: compute.RemovePacketMirroringRuleNetworkFirewallPolicyRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.RemovePacketMirroringRuleNetworkFirewallPolicyRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for remove_packet_mirroring_rule
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the NetworkFirewallPolicies server.
+        """
+        return request, metadata
+
+    def post_remove_packet_mirroring_rule(
+        self, response: compute.Operation
+    ) -> compute.Operation:
+        """Post-rpc interceptor for remove_packet_mirroring_rule
+
+        DEPRECATED. Please use the `post_remove_packet_mirroring_rule_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the NetworkFirewallPolicies server but before
+        it is returned to user code. This `post_remove_packet_mirroring_rule` interceptor runs
+        before the `post_remove_packet_mirroring_rule_with_metadata` interceptor.
+        """
+        return response
+
+    def post_remove_packet_mirroring_rule_with_metadata(
+        self,
+        response: compute.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for remove_packet_mirroring_rule
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the NetworkFirewallPolicies server but before it is returned to user code.
+
+        We recommend only using this `post_remove_packet_mirroring_rule_with_metadata`
+        interceptor in new development instead of the `post_remove_packet_mirroring_rule` interceptor.
+        When both interceptors are used, this `post_remove_packet_mirroring_rule_with_metadata` interceptor runs after the
+        `post_remove_packet_mirroring_rule` interceptor. The (possibly modified) response returned by
+        `post_remove_packet_mirroring_rule` will be passed to
+        `post_remove_packet_mirroring_rule_with_metadata`.
         """
         return response, metadata
 
@@ -1282,6 +1510,178 @@ class NetworkFirewallPoliciesRestTransport(_BaseNetworkFirewallPoliciesRestTrans
                     extra={
                         "serviceName": "google.cloud.compute.v1.NetworkFirewallPolicies",
                         "rpcName": "AddAssociation",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _AddPacketMirroringRule(
+        _BaseNetworkFirewallPoliciesRestTransport._BaseAddPacketMirroringRule,
+        NetworkFirewallPoliciesRestStub,
+    ):
+        def __hash__(self):
+            return hash("NetworkFirewallPoliciesRestTransport.AddPacketMirroringRule")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: compute.AddPacketMirroringRuleNetworkFirewallPolicyRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> compute.Operation:
+            r"""Call the add packet mirroring rule method over HTTP.
+
+            Args:
+                request (~.compute.AddPacketMirroringRuleNetworkFirewallPolicyRequest):
+                    The request object. A request message for
+                NetworkFirewallPolicies.AddPacketMirroringRule.
+                See the method description for details.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.compute.Operation:
+                    Represents an Operation resource. Google Compute Engine
+                has three Operation resources: \*
+                `Global </compute/docs/reference/rest/v1/globalOperations>`__
+                \*
+                `Regional </compute/docs/reference/rest/v1/regionOperations>`__
+                \*
+                `Zonal </compute/docs/reference/rest/v1/zoneOperations>`__
+                You can use an operation resource to manage asynchronous
+                API requests. For more information, read Handling API
+                responses. Operations can be global, regional or zonal.
+                - For global operations, use the ``globalOperations``
+                resource. - For regional operations, use the
+                ``regionOperations`` resource. - For zonal operations,
+                use the ``zoneOperations`` resource. For more
+                information, read Global, Regional, and Zonal Resources.
+                Note that completed Operation resources have a limited
+                retention period.
+
+            """
+
+            http_options = (
+                _BaseNetworkFirewallPoliciesRestTransport._BaseAddPacketMirroringRule._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_add_packet_mirroring_rule(
+                request, metadata
+            )
+            transcoded_request = _BaseNetworkFirewallPoliciesRestTransport._BaseAddPacketMirroringRule._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseNetworkFirewallPoliciesRestTransport._BaseAddPacketMirroringRule._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseNetworkFirewallPoliciesRestTransport._BaseAddPacketMirroringRule._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.NetworkFirewallPoliciesClient.AddPacketMirroringRule",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.NetworkFirewallPolicies",
+                        "rpcName": "AddPacketMirroringRule",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = NetworkFirewallPoliciesRestTransport._AddPacketMirroringRule._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = compute.Operation()
+            pb_resp = compute.Operation.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_add_packet_mirroring_rule(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_add_packet_mirroring_rule_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.NetworkFirewallPoliciesClient.add_packet_mirroring_rule",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.NetworkFirewallPolicies",
+                        "rpcName": "AddPacketMirroringRule",
                         "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
@@ -2405,6 +2805,159 @@ class NetworkFirewallPoliciesRestTransport(_BaseNetworkFirewallPoliciesRestTrans
                 )
             return resp
 
+    class _GetPacketMirroringRule(
+        _BaseNetworkFirewallPoliciesRestTransport._BaseGetPacketMirroringRule,
+        NetworkFirewallPoliciesRestStub,
+    ):
+        def __hash__(self):
+            return hash("NetworkFirewallPoliciesRestTransport.GetPacketMirroringRule")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: compute.GetPacketMirroringRuleNetworkFirewallPolicyRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> compute.FirewallPolicyRule:
+            r"""Call the get packet mirroring rule method over HTTP.
+
+            Args:
+                request (~.compute.GetPacketMirroringRuleNetworkFirewallPolicyRequest):
+                    The request object. A request message for
+                NetworkFirewallPolicies.GetPacketMirroringRule.
+                See the method description for details.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.compute.FirewallPolicyRule:
+                    Represents a rule that describes one
+                or more match conditions along with the
+                action to be taken when traffic matches
+                this condition (allow or deny).
+
+            """
+
+            http_options = (
+                _BaseNetworkFirewallPoliciesRestTransport._BaseGetPacketMirroringRule._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_get_packet_mirroring_rule(
+                request, metadata
+            )
+            transcoded_request = _BaseNetworkFirewallPoliciesRestTransport._BaseGetPacketMirroringRule._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseNetworkFirewallPoliciesRestTransport._BaseGetPacketMirroringRule._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.NetworkFirewallPoliciesClient.GetPacketMirroringRule",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.NetworkFirewallPolicies",
+                        "rpcName": "GetPacketMirroringRule",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = NetworkFirewallPoliciesRestTransport._GetPacketMirroringRule._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = compute.FirewallPolicyRule()
+            pb_resp = compute.FirewallPolicyRule.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_get_packet_mirroring_rule(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_packet_mirroring_rule_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.FirewallPolicyRule.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.NetworkFirewallPoliciesClient.get_packet_mirroring_rule",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.NetworkFirewallPolicies",
+                        "rpcName": "GetPacketMirroringRule",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     class _GetRule(
         _BaseNetworkFirewallPoliciesRestTransport._BaseGetRule,
         NetworkFirewallPoliciesRestStub,
@@ -3041,6 +3594,179 @@ class NetworkFirewallPoliciesRestTransport(_BaseNetworkFirewallPoliciesRestTrans
                 )
             return resp
 
+    class _PatchPacketMirroringRule(
+        _BaseNetworkFirewallPoliciesRestTransport._BasePatchPacketMirroringRule,
+        NetworkFirewallPoliciesRestStub,
+    ):
+        def __hash__(self):
+            return hash("NetworkFirewallPoliciesRestTransport.PatchPacketMirroringRule")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: compute.PatchPacketMirroringRuleNetworkFirewallPolicyRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> compute.Operation:
+            r"""Call the patch packet mirroring
+            rule method over HTTP.
+
+                Args:
+                    request (~.compute.PatchPacketMirroringRuleNetworkFirewallPolicyRequest):
+                        The request object. A request message for
+                    NetworkFirewallPolicies.PatchPacketMirroringRule.
+                    See the method description for details.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
+
+                Returns:
+                    ~.compute.Operation:
+                        Represents an Operation resource. Google Compute Engine
+                    has three Operation resources: \*
+                    `Global </compute/docs/reference/rest/v1/globalOperations>`__
+                    \*
+                    `Regional </compute/docs/reference/rest/v1/regionOperations>`__
+                    \*
+                    `Zonal </compute/docs/reference/rest/v1/zoneOperations>`__
+                    You can use an operation resource to manage asynchronous
+                    API requests. For more information, read Handling API
+                    responses. Operations can be global, regional or zonal.
+                    - For global operations, use the ``globalOperations``
+                    resource. - For regional operations, use the
+                    ``regionOperations`` resource. - For zonal operations,
+                    use the ``zoneOperations`` resource. For more
+                    information, read Global, Regional, and Zonal Resources.
+                    Note that completed Operation resources have a limited
+                    retention period.
+
+            """
+
+            http_options = (
+                _BaseNetworkFirewallPoliciesRestTransport._BasePatchPacketMirroringRule._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_patch_packet_mirroring_rule(
+                request, metadata
+            )
+            transcoded_request = _BaseNetworkFirewallPoliciesRestTransport._BasePatchPacketMirroringRule._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseNetworkFirewallPoliciesRestTransport._BasePatchPacketMirroringRule._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseNetworkFirewallPoliciesRestTransport._BasePatchPacketMirroringRule._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.NetworkFirewallPoliciesClient.PatchPacketMirroringRule",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.NetworkFirewallPolicies",
+                        "rpcName": "PatchPacketMirroringRule",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = NetworkFirewallPoliciesRestTransport._PatchPacketMirroringRule._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = compute.Operation()
+            pb_resp = compute.Operation.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_patch_packet_mirroring_rule(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_patch_packet_mirroring_rule_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.NetworkFirewallPoliciesClient.patch_packet_mirroring_rule",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.NetworkFirewallPolicies",
+                        "rpcName": "PatchPacketMirroringRule",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     class _PatchRule(
         _BaseNetworkFirewallPoliciesRestTransport._BasePatchRule,
         NetworkFirewallPoliciesRestStub,
@@ -3373,6 +4099,175 @@ class NetworkFirewallPoliciesRestTransport(_BaseNetworkFirewallPoliciesRestTrans
                     extra={
                         "serviceName": "google.cloud.compute.v1.NetworkFirewallPolicies",
                         "rpcName": "RemoveAssociation",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _RemovePacketMirroringRule(
+        _BaseNetworkFirewallPoliciesRestTransport._BaseRemovePacketMirroringRule,
+        NetworkFirewallPoliciesRestStub,
+    ):
+        def __hash__(self):
+            return hash(
+                "NetworkFirewallPoliciesRestTransport.RemovePacketMirroringRule"
+            )
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: compute.RemovePacketMirroringRuleNetworkFirewallPolicyRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> compute.Operation:
+            r"""Call the remove packet mirroring
+            rule method over HTTP.
+
+                Args:
+                    request (~.compute.RemovePacketMirroringRuleNetworkFirewallPolicyRequest):
+                        The request object. A request message for
+                    NetworkFirewallPolicies.RemovePacketMirroringRule.
+                    See the method description for details.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
+
+                Returns:
+                    ~.compute.Operation:
+                        Represents an Operation resource. Google Compute Engine
+                    has three Operation resources: \*
+                    `Global </compute/docs/reference/rest/v1/globalOperations>`__
+                    \*
+                    `Regional </compute/docs/reference/rest/v1/regionOperations>`__
+                    \*
+                    `Zonal </compute/docs/reference/rest/v1/zoneOperations>`__
+                    You can use an operation resource to manage asynchronous
+                    API requests. For more information, read Handling API
+                    responses. Operations can be global, regional or zonal.
+                    - For global operations, use the ``globalOperations``
+                    resource. - For regional operations, use the
+                    ``regionOperations`` resource. - For zonal operations,
+                    use the ``zoneOperations`` resource. For more
+                    information, read Global, Regional, and Zonal Resources.
+                    Note that completed Operation resources have a limited
+                    retention period.
+
+            """
+
+            http_options = (
+                _BaseNetworkFirewallPoliciesRestTransport._BaseRemovePacketMirroringRule._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_remove_packet_mirroring_rule(
+                request, metadata
+            )
+            transcoded_request = _BaseNetworkFirewallPoliciesRestTransport._BaseRemovePacketMirroringRule._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseNetworkFirewallPoliciesRestTransport._BaseRemovePacketMirroringRule._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.NetworkFirewallPoliciesClient.RemovePacketMirroringRule",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.NetworkFirewallPolicies",
+                        "rpcName": "RemovePacketMirroringRule",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = NetworkFirewallPoliciesRestTransport._RemovePacketMirroringRule._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = compute.Operation()
+            pb_resp = compute.Operation.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_remove_packet_mirroring_rule(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_remove_packet_mirroring_rule_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.NetworkFirewallPoliciesClient.remove_packet_mirroring_rule",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.NetworkFirewallPolicies",
+                        "rpcName": "RemovePacketMirroringRule",
                         "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
@@ -3887,6 +4782,16 @@ class NetworkFirewallPoliciesRestTransport(_BaseNetworkFirewallPoliciesRestTrans
         return self._AddAssociation(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def add_packet_mirroring_rule(
+        self,
+    ) -> Callable[
+        [compute.AddPacketMirroringRuleNetworkFirewallPolicyRequest], compute.Operation
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._AddPacketMirroringRule(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def add_rule(
         self,
     ) -> Callable[[compute.AddRuleNetworkFirewallPolicyRequest], compute.Operation]:
@@ -3949,6 +4854,17 @@ class NetworkFirewallPoliciesRestTransport(_BaseNetworkFirewallPoliciesRestTrans
         return self._GetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def get_packet_mirroring_rule(
+        self,
+    ) -> Callable[
+        [compute.GetPacketMirroringRuleNetworkFirewallPolicyRequest],
+        compute.FirewallPolicyRule,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetPacketMirroringRule(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def get_rule(
         self,
     ) -> Callable[
@@ -3985,6 +4901,17 @@ class NetworkFirewallPoliciesRestTransport(_BaseNetworkFirewallPoliciesRestTrans
         return self._Patch(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def patch_packet_mirroring_rule(
+        self,
+    ) -> Callable[
+        [compute.PatchPacketMirroringRuleNetworkFirewallPolicyRequest],
+        compute.Operation,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._PatchPacketMirroringRule(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def patch_rule(
         self,
     ) -> Callable[[compute.PatchRuleNetworkFirewallPolicyRequest], compute.Operation]:
@@ -4001,6 +4928,17 @@ class NetworkFirewallPoliciesRestTransport(_BaseNetworkFirewallPoliciesRestTrans
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._RemoveAssociation(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def remove_packet_mirroring_rule(
+        self,
+    ) -> Callable[
+        [compute.RemovePacketMirroringRuleNetworkFirewallPolicyRequest],
+        compute.Operation,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._RemovePacketMirroringRule(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def remove_rule(

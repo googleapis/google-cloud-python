@@ -84,6 +84,14 @@ class RoutersRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_delete_route_policy(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_delete_route_policy(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_get(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -105,6 +113,14 @@ class RoutersRestInterceptor:
                 return request, metadata
 
             def post_get_nat_mapping_info(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_get_route_policy(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_route_policy(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -132,11 +148,35 @@ class RoutersRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_list_bgp_routes(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_bgp_routes(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_list_route_policies(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_route_policies(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_patch(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
             def post_patch(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_patch_route_policy(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_patch_route_policy(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -153,6 +193,14 @@ class RoutersRestInterceptor:
                 return request, metadata
 
             def post_update(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_update_route_policy(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_update_route_policy(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -251,6 +299,54 @@ class RoutersRestInterceptor:
         `post_delete` interceptor. The (possibly modified) response returned by
         `post_delete` will be passed to
         `post_delete_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_delete_route_policy(
+        self,
+        request: compute.DeleteRoutePolicyRouterRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.DeleteRoutePolicyRouterRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for delete_route_policy
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Routers server.
+        """
+        return request, metadata
+
+    def post_delete_route_policy(
+        self, response: compute.Operation
+    ) -> compute.Operation:
+        """Post-rpc interceptor for delete_route_policy
+
+        DEPRECATED. Please use the `post_delete_route_policy_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the Routers server but before
+        it is returned to user code. This `post_delete_route_policy` interceptor runs
+        before the `post_delete_route_policy_with_metadata` interceptor.
+        """
+        return response
+
+    def post_delete_route_policy_with_metadata(
+        self,
+        response: compute.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_route_policy
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Routers server but before it is returned to user code.
+
+        We recommend only using this `post_delete_route_policy_with_metadata`
+        interceptor in new development instead of the `post_delete_route_policy` interceptor.
+        When both interceptors are used, this `post_delete_route_policy_with_metadata` interceptor runs after the
+        `post_delete_route_policy` interceptor. The (possibly modified) response returned by
+        `post_delete_route_policy` will be passed to
+        `post_delete_route_policy_with_metadata`.
         """
         return response, metadata
 
@@ -396,6 +492,56 @@ class RoutersRestInterceptor:
         """
         return response, metadata
 
+    def pre_get_route_policy(
+        self,
+        request: compute.GetRoutePolicyRouterRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.GetRoutePolicyRouterRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for get_route_policy
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Routers server.
+        """
+        return request, metadata
+
+    def post_get_route_policy(
+        self, response: compute.RoutersGetRoutePolicyResponse
+    ) -> compute.RoutersGetRoutePolicyResponse:
+        """Post-rpc interceptor for get_route_policy
+
+        DEPRECATED. Please use the `post_get_route_policy_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the Routers server but before
+        it is returned to user code. This `post_get_route_policy` interceptor runs
+        before the `post_get_route_policy_with_metadata` interceptor.
+        """
+        return response
+
+    def post_get_route_policy_with_metadata(
+        self,
+        response: compute.RoutersGetRoutePolicyResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.RoutersGetRoutePolicyResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for get_route_policy
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Routers server but before it is returned to user code.
+
+        We recommend only using this `post_get_route_policy_with_metadata`
+        interceptor in new development instead of the `post_get_route_policy` interceptor.
+        When both interceptors are used, this `post_get_route_policy_with_metadata` interceptor runs after the
+        `post_get_route_policy` interceptor. The (possibly modified) response returned by
+        `post_get_route_policy` will be passed to
+        `post_get_route_policy_with_metadata`.
+        """
+        return response, metadata
+
     def pre_get_router_status(
         self,
         request: compute.GetRouterStatusRouterRequest,
@@ -532,6 +678,104 @@ class RoutersRestInterceptor:
         """
         return response, metadata
 
+    def pre_list_bgp_routes(
+        self,
+        request: compute.ListBgpRoutesRoutersRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.ListBgpRoutesRoutersRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for list_bgp_routes
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Routers server.
+        """
+        return request, metadata
+
+    def post_list_bgp_routes(
+        self, response: compute.RoutersListBgpRoutes
+    ) -> compute.RoutersListBgpRoutes:
+        """Post-rpc interceptor for list_bgp_routes
+
+        DEPRECATED. Please use the `post_list_bgp_routes_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the Routers server but before
+        it is returned to user code. This `post_list_bgp_routes` interceptor runs
+        before the `post_list_bgp_routes_with_metadata` interceptor.
+        """
+        return response
+
+    def post_list_bgp_routes_with_metadata(
+        self,
+        response: compute.RoutersListBgpRoutes,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[compute.RoutersListBgpRoutes, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for list_bgp_routes
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Routers server but before it is returned to user code.
+
+        We recommend only using this `post_list_bgp_routes_with_metadata`
+        interceptor in new development instead of the `post_list_bgp_routes` interceptor.
+        When both interceptors are used, this `post_list_bgp_routes_with_metadata` interceptor runs after the
+        `post_list_bgp_routes` interceptor. The (possibly modified) response returned by
+        `post_list_bgp_routes` will be passed to
+        `post_list_bgp_routes_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_list_route_policies(
+        self,
+        request: compute.ListRoutePoliciesRoutersRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.ListRoutePoliciesRoutersRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for list_route_policies
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Routers server.
+        """
+        return request, metadata
+
+    def post_list_route_policies(
+        self, response: compute.RoutersListRoutePolicies
+    ) -> compute.RoutersListRoutePolicies:
+        """Post-rpc interceptor for list_route_policies
+
+        DEPRECATED. Please use the `post_list_route_policies_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the Routers server but before
+        it is returned to user code. This `post_list_route_policies` interceptor runs
+        before the `post_list_route_policies_with_metadata` interceptor.
+        """
+        return response
+
+    def post_list_route_policies_with_metadata(
+        self,
+        response: compute.RoutersListRoutePolicies,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.RoutersListRoutePolicies, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_route_policies
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Routers server but before it is returned to user code.
+
+        We recommend only using this `post_list_route_policies_with_metadata`
+        interceptor in new development instead of the `post_list_route_policies` interceptor.
+        When both interceptors are used, this `post_list_route_policies_with_metadata` interceptor runs after the
+        `post_list_route_policies` interceptor. The (possibly modified) response returned by
+        `post_list_route_policies` will be passed to
+        `post_list_route_policies_with_metadata`.
+        """
+        return response, metadata
+
     def pre_patch(
         self,
         request: compute.PatchRouterRequest,
@@ -573,6 +817,52 @@ class RoutersRestInterceptor:
         `post_patch` interceptor. The (possibly modified) response returned by
         `post_patch` will be passed to
         `post_patch_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_patch_route_policy(
+        self,
+        request: compute.PatchRoutePolicyRouterRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.PatchRoutePolicyRouterRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for patch_route_policy
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Routers server.
+        """
+        return request, metadata
+
+    def post_patch_route_policy(self, response: compute.Operation) -> compute.Operation:
+        """Post-rpc interceptor for patch_route_policy
+
+        DEPRECATED. Please use the `post_patch_route_policy_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the Routers server but before
+        it is returned to user code. This `post_patch_route_policy` interceptor runs
+        before the `post_patch_route_policy_with_metadata` interceptor.
+        """
+        return response
+
+    def post_patch_route_policy_with_metadata(
+        self,
+        response: compute.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for patch_route_policy
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Routers server but before it is returned to user code.
+
+        We recommend only using this `post_patch_route_policy_with_metadata`
+        interceptor in new development instead of the `post_patch_route_policy` interceptor.
+        When both interceptors are used, this `post_patch_route_policy_with_metadata` interceptor runs after the
+        `post_patch_route_policy` interceptor. The (possibly modified) response returned by
+        `post_patch_route_policy` will be passed to
+        `post_patch_route_policy_with_metadata`.
         """
         return response, metadata
 
@@ -663,6 +953,54 @@ class RoutersRestInterceptor:
         `post_update` interceptor. The (possibly modified) response returned by
         `post_update` will be passed to
         `post_update_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_update_route_policy(
+        self,
+        request: compute.UpdateRoutePolicyRouterRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.UpdateRoutePolicyRouterRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for update_route_policy
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Routers server.
+        """
+        return request, metadata
+
+    def post_update_route_policy(
+        self, response: compute.Operation
+    ) -> compute.Operation:
+        """Post-rpc interceptor for update_route_policy
+
+        DEPRECATED. Please use the `post_update_route_policy_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the Routers server but before
+        it is returned to user code. This `post_update_route_policy` interceptor runs
+        before the `post_update_route_policy_with_metadata` interceptor.
+        """
+        return response
+
+    def post_update_route_policy_with_metadata(
+        self,
+        response: compute.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_route_policy
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Routers server but before it is returned to user code.
+
+        We recommend only using this `post_update_route_policy_with_metadata`
+        interceptor in new development instead of the `post_update_route_policy` interceptor.
+        When both interceptors are used, this `post_update_route_policy_with_metadata` interceptor runs after the
+        `post_update_route_policy` interceptor. The (possibly modified) response returned by
+        `post_update_route_policy` will be passed to
+        `post_update_route_policy_with_metadata`.
         """
         return response, metadata
 
@@ -1061,6 +1399,173 @@ class RoutersRestTransport(_BaseRoutersRestTransport):
                     extra={
                         "serviceName": "google.cloud.compute.v1.Routers",
                         "rpcName": "Delete",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _DeleteRoutePolicy(
+        _BaseRoutersRestTransport._BaseDeleteRoutePolicy, RoutersRestStub
+    ):
+        def __hash__(self):
+            return hash("RoutersRestTransport.DeleteRoutePolicy")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: compute.DeleteRoutePolicyRouterRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> compute.Operation:
+            r"""Call the delete route policy method over HTTP.
+
+            Args:
+                request (~.compute.DeleteRoutePolicyRouterRequest):
+                    The request object. A request message for
+                Routers.DeleteRoutePolicy. See the
+                method description for details.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.compute.Operation:
+                    Represents an Operation resource. Google Compute Engine
+                has three Operation resources: \*
+                `Global </compute/docs/reference/rest/v1/globalOperations>`__
+                \*
+                `Regional </compute/docs/reference/rest/v1/regionOperations>`__
+                \*
+                `Zonal </compute/docs/reference/rest/v1/zoneOperations>`__
+                You can use an operation resource to manage asynchronous
+                API requests. For more information, read Handling API
+                responses. Operations can be global, regional or zonal.
+                - For global operations, use the ``globalOperations``
+                resource. - For regional operations, use the
+                ``regionOperations`` resource. - For zonal operations,
+                use the ``zoneOperations`` resource. For more
+                information, read Global, Regional, and Zonal Resources.
+                Note that completed Operation resources have a limited
+                retention period.
+
+            """
+
+            http_options = (
+                _BaseRoutersRestTransport._BaseDeleteRoutePolicy._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_delete_route_policy(
+                request, metadata
+            )
+            transcoded_request = _BaseRoutersRestTransport._BaseDeleteRoutePolicy._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseRoutersRestTransport._BaseDeleteRoutePolicy._get_query_params_json(
+                    transcoded_request
+                )
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.RoutersClient.DeleteRoutePolicy",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.Routers",
+                        "rpcName": "DeleteRoutePolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = RoutersRestTransport._DeleteRoutePolicy._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = compute.Operation()
+            pb_resp = compute.Operation.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_delete_route_policy(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_route_policy_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.RoutersClient.delete_route_policy",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.Routers",
+                        "rpcName": "DeleteRoutePolicy",
                         "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
@@ -1507,6 +2012,160 @@ class RoutersRestTransport(_BaseRoutersRestTransport):
                     extra={
                         "serviceName": "google.cloud.compute.v1.Routers",
                         "rpcName": "GetNatMappingInfo",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _GetRoutePolicy(
+        _BaseRoutersRestTransport._BaseGetRoutePolicy, RoutersRestStub
+    ):
+        def __hash__(self):
+            return hash("RoutersRestTransport.GetRoutePolicy")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: compute.GetRoutePolicyRouterRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> compute.RoutersGetRoutePolicyResponse:
+            r"""Call the get route policy method over HTTP.
+
+            Args:
+                request (~.compute.GetRoutePolicyRouterRequest):
+                    The request object. A request message for
+                Routers.GetRoutePolicy. See the method
+                description for details.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.compute.RoutersGetRoutePolicyResponse:
+
+            """
+
+            http_options = (
+                _BaseRoutersRestTransport._BaseGetRoutePolicy._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_get_route_policy(
+                request, metadata
+            )
+            transcoded_request = (
+                _BaseRoutersRestTransport._BaseGetRoutePolicy._get_transcoded_request(
+                    http_options, request
+                )
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseRoutersRestTransport._BaseGetRoutePolicy._get_query_params_json(
+                    transcoded_request
+                )
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.RoutersClient.GetRoutePolicy",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.Routers",
+                        "rpcName": "GetRoutePolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = RoutersRestTransport._GetRoutePolicy._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = compute.RoutersGetRoutePolicyResponse()
+            pb_resp = compute.RoutersGetRoutePolicyResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_get_route_policy(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_route_policy_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.RoutersGetRoutePolicyResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.RoutersClient.get_route_policy",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.Routers",
+                        "rpcName": "GetRoutePolicy",
                         "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
@@ -1972,6 +2631,306 @@ class RoutersRestTransport(_BaseRoutersRestTransport):
                 )
             return resp
 
+    class _ListBgpRoutes(_BaseRoutersRestTransport._BaseListBgpRoutes, RoutersRestStub):
+        def __hash__(self):
+            return hash("RoutersRestTransport.ListBgpRoutes")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: compute.ListBgpRoutesRoutersRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> compute.RoutersListBgpRoutes:
+            r"""Call the list bgp routes method over HTTP.
+
+            Args:
+                request (~.compute.ListBgpRoutesRoutersRequest):
+                    The request object. A request message for
+                Routers.ListBgpRoutes. See the method
+                description for details.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.compute.RoutersListBgpRoutes:
+
+            """
+
+            http_options = (
+                _BaseRoutersRestTransport._BaseListBgpRoutes._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_list_bgp_routes(request, metadata)
+            transcoded_request = (
+                _BaseRoutersRestTransport._BaseListBgpRoutes._get_transcoded_request(
+                    http_options, request
+                )
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseRoutersRestTransport._BaseListBgpRoutes._get_query_params_json(
+                    transcoded_request
+                )
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.RoutersClient.ListBgpRoutes",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.Routers",
+                        "rpcName": "ListBgpRoutes",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = RoutersRestTransport._ListBgpRoutes._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = compute.RoutersListBgpRoutes()
+            pb_resp = compute.RoutersListBgpRoutes.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_list_bgp_routes(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_bgp_routes_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.RoutersListBgpRoutes.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.RoutersClient.list_bgp_routes",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.Routers",
+                        "rpcName": "ListBgpRoutes",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _ListRoutePolicies(
+        _BaseRoutersRestTransport._BaseListRoutePolicies, RoutersRestStub
+    ):
+        def __hash__(self):
+            return hash("RoutersRestTransport.ListRoutePolicies")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: compute.ListRoutePoliciesRoutersRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> compute.RoutersListRoutePolicies:
+            r"""Call the list route policies method over HTTP.
+
+            Args:
+                request (~.compute.ListRoutePoliciesRoutersRequest):
+                    The request object. A request message for
+                Routers.ListRoutePolicies. See the
+                method description for details.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.compute.RoutersListRoutePolicies:
+
+            """
+
+            http_options = (
+                _BaseRoutersRestTransport._BaseListRoutePolicies._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_list_route_policies(
+                request, metadata
+            )
+            transcoded_request = _BaseRoutersRestTransport._BaseListRoutePolicies._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseRoutersRestTransport._BaseListRoutePolicies._get_query_params_json(
+                    transcoded_request
+                )
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.RoutersClient.ListRoutePolicies",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.Routers",
+                        "rpcName": "ListRoutePolicies",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = RoutersRestTransport._ListRoutePolicies._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = compute.RoutersListRoutePolicies()
+            pb_resp = compute.RoutersListRoutePolicies.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_list_route_policies(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_route_policies_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.RoutersListRoutePolicies.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.RoutersClient.list_route_policies",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.Routers",
+                        "rpcName": "ListRoutePolicies",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     class _Patch(_BaseRoutersRestTransport._BasePatch, RoutersRestStub):
         def __hash__(self):
             return hash("RoutersRestTransport.Patch")
@@ -2132,6 +3091,183 @@ class RoutersRestTransport(_BaseRoutersRestTransport):
                     extra={
                         "serviceName": "google.cloud.compute.v1.Routers",
                         "rpcName": "Patch",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _PatchRoutePolicy(
+        _BaseRoutersRestTransport._BasePatchRoutePolicy, RoutersRestStub
+    ):
+        def __hash__(self):
+            return hash("RoutersRestTransport.PatchRoutePolicy")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: compute.PatchRoutePolicyRouterRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> compute.Operation:
+            r"""Call the patch route policy method over HTTP.
+
+            Args:
+                request (~.compute.PatchRoutePolicyRouterRequest):
+                    The request object. A request message for
+                Routers.PatchRoutePolicy. See the method
+                description for details.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.compute.Operation:
+                    Represents an Operation resource. Google Compute Engine
+                has three Operation resources: \*
+                `Global </compute/docs/reference/rest/v1/globalOperations>`__
+                \*
+                `Regional </compute/docs/reference/rest/v1/regionOperations>`__
+                \*
+                `Zonal </compute/docs/reference/rest/v1/zoneOperations>`__
+                You can use an operation resource to manage asynchronous
+                API requests. For more information, read Handling API
+                responses. Operations can be global, regional or zonal.
+                - For global operations, use the ``globalOperations``
+                resource. - For regional operations, use the
+                ``regionOperations`` resource. - For zonal operations,
+                use the ``zoneOperations`` resource. For more
+                information, read Global, Regional, and Zonal Resources.
+                Note that completed Operation resources have a limited
+                retention period.
+
+            """
+
+            http_options = (
+                _BaseRoutersRestTransport._BasePatchRoutePolicy._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_patch_route_policy(
+                request, metadata
+            )
+            transcoded_request = (
+                _BaseRoutersRestTransport._BasePatchRoutePolicy._get_transcoded_request(
+                    http_options, request
+                )
+            )
+
+            body = (
+                _BaseRoutersRestTransport._BasePatchRoutePolicy._get_request_body_json(
+                    transcoded_request
+                )
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseRoutersRestTransport._BasePatchRoutePolicy._get_query_params_json(
+                    transcoded_request
+                )
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.RoutersClient.PatchRoutePolicy",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.Routers",
+                        "rpcName": "PatchRoutePolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = RoutersRestTransport._PatchRoutePolicy._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = compute.Operation()
+            pb_resp = compute.Operation.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_patch_route_policy(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_patch_route_policy_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.RoutersClient.patch_route_policy",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.Routers",
+                        "rpcName": "PatchRoutePolicy",
                         "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
@@ -2456,6 +3592,181 @@ class RoutersRestTransport(_BaseRoutersRestTransport):
                 )
             return resp
 
+    class _UpdateRoutePolicy(
+        _BaseRoutersRestTransport._BaseUpdateRoutePolicy, RoutersRestStub
+    ):
+        def __hash__(self):
+            return hash("RoutersRestTransport.UpdateRoutePolicy")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: compute.UpdateRoutePolicyRouterRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> compute.Operation:
+            r"""Call the update route policy method over HTTP.
+
+            Args:
+                request (~.compute.UpdateRoutePolicyRouterRequest):
+                    The request object. A request message for
+                Routers.UpdateRoutePolicy. See the
+                method description for details.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.compute.Operation:
+                    Represents an Operation resource. Google Compute Engine
+                has three Operation resources: \*
+                `Global </compute/docs/reference/rest/v1/globalOperations>`__
+                \*
+                `Regional </compute/docs/reference/rest/v1/regionOperations>`__
+                \*
+                `Zonal </compute/docs/reference/rest/v1/zoneOperations>`__
+                You can use an operation resource to manage asynchronous
+                API requests. For more information, read Handling API
+                responses. Operations can be global, regional or zonal.
+                - For global operations, use the ``globalOperations``
+                resource. - For regional operations, use the
+                ``regionOperations`` resource. - For zonal operations,
+                use the ``zoneOperations`` resource. For more
+                information, read Global, Regional, and Zonal Resources.
+                Note that completed Operation resources have a limited
+                retention period.
+
+            """
+
+            http_options = (
+                _BaseRoutersRestTransport._BaseUpdateRoutePolicy._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_update_route_policy(
+                request, metadata
+            )
+            transcoded_request = _BaseRoutersRestTransport._BaseUpdateRoutePolicy._get_transcoded_request(
+                http_options, request
+            )
+
+            body = (
+                _BaseRoutersRestTransport._BaseUpdateRoutePolicy._get_request_body_json(
+                    transcoded_request
+                )
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseRoutersRestTransport._BaseUpdateRoutePolicy._get_query_params_json(
+                    transcoded_request
+                )
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.RoutersClient.UpdateRoutePolicy",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.Routers",
+                        "rpcName": "UpdateRoutePolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = RoutersRestTransport._UpdateRoutePolicy._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = compute.Operation()
+            pb_resp = compute.Operation.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_update_route_policy(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_route_policy_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.RoutersClient.update_route_policy",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.Routers",
+                        "rpcName": "UpdateRoutePolicy",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     @property
     def aggregated_list(
         self,
@@ -2469,6 +3780,14 @@ class RoutersRestTransport(_BaseRoutersRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._Delete(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def delete_route_policy(
+        self,
+    ) -> Callable[[compute.DeleteRoutePolicyRouterRequest], compute.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._DeleteRoutePolicy(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get(self) -> Callable[[compute.GetRouterRequest], compute.Router]:
@@ -2495,6 +3814,16 @@ class RoutersRestTransport(_BaseRoutersRestTransport):
         return self._GetNatMappingInfo(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def get_route_policy(
+        self,
+    ) -> Callable[
+        [compute.GetRoutePolicyRouterRequest], compute.RoutersGetRoutePolicyResponse
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetRoutePolicy(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def get_router_status(
         self,
     ) -> Callable[[compute.GetRouterStatusRouterRequest], compute.RouterStatusResponse]:
@@ -2515,10 +3844,36 @@ class RoutersRestTransport(_BaseRoutersRestTransport):
         return self._List(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def list_bgp_routes(
+        self,
+    ) -> Callable[[compute.ListBgpRoutesRoutersRequest], compute.RoutersListBgpRoutes]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListBgpRoutes(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def list_route_policies(
+        self,
+    ) -> Callable[
+        [compute.ListRoutePoliciesRoutersRequest], compute.RoutersListRoutePolicies
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListRoutePolicies(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def patch(self) -> Callable[[compute.PatchRouterRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._Patch(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def patch_route_policy(
+        self,
+    ) -> Callable[[compute.PatchRoutePolicyRouterRequest], compute.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._PatchRoutePolicy(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def preview(
@@ -2533,6 +3888,14 @@ class RoutersRestTransport(_BaseRoutersRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._Update(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def update_route_policy(
+        self,
+    ) -> Callable[[compute.UpdateRoutePolicyRouterRequest], compute.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._UpdateRoutePolicy(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def kind(self) -> str:

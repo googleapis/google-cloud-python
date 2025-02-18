@@ -640,15 +640,16 @@ class RegionCommitmentsRestTransport(_BaseRegionCommitmentsRestTransport):
 
             Returns:
                 ~.compute.Commitment:
-                    Represents a regional Commitment
-                resource. Creating a commitment resource
-                means that you are purchasing a
-                committed use contract with an explicit
-                start and end time. You can create
-                commitments based on vCPUs and memory
-                usage and receive discounted rates. For
-                full details, read Signing Up for
-                Committed Use Discounts.
+                    Represents a regional resource-based
+                commitment resource. Creating this
+                commitment resource means that you are
+                purchasing a resource-based committed
+                use contract, with an explicit start and
+                end time. You can purchase
+                resource-based commitments for both
+                hardware and software resources. For
+                more information, read Resource-based
+                committed use discounts
 
             """
 

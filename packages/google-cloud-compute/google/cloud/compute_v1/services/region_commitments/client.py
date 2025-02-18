@@ -886,15 +886,16 @@ class RegionCommitmentsClient(metaclass=RegionCommitmentsClientMeta):
 
         Returns:
             google.cloud.compute_v1.types.Commitment:
-                Represents a regional Commitment
-                resource. Creating a commitment resource
-                means that you are purchasing a
-                committed use contract with an explicit
-                start and end time. You can create
-                commitments based on vCPUs and memory
-                usage and receive discounted rates. For
-                full details, read Signing Up for
-                Committed Use Discounts.
+                Represents a regional resource-based
+                commitment resource. Creating this
+                commitment resource means that you are
+                purchasing a resource-based committed
+                use contract, with an explicit start and
+                end time. You can purchase
+                resource-based commitments for both
+                hardware and software resources. For
+                more information, read Resource-based
+                committed use discounts
 
         """
         # Create or coerce a protobuf request object.
@@ -1377,8 +1378,8 @@ class RegionCommitmentsClient(metaclass=RegionCommitmentsClientMeta):
     ) -> compute.Operation:
         r"""Updates the specified commitment with the data included in the
         request. Update is performed only on selected fields included as
-        part of update-mask. Only the following fields can be modified:
-        auto_renew.
+        part of update-mask. Only the following fields can be updated:
+        auto_renew and plan.
 
         .. code-block:: python
 
@@ -1424,8 +1425,8 @@ class RegionCommitmentsClient(metaclass=RegionCommitmentsClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             commitment (str):
-                Name of the commitment for which auto
-                renew is being updated.
+                Name of the commitment that you want
+                to update.
 
                 This corresponds to the ``commitment`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1518,8 +1519,8 @@ class RegionCommitmentsClient(metaclass=RegionCommitmentsClientMeta):
     ) -> extended_operation.ExtendedOperation:
         r"""Updates the specified commitment with the data included in the
         request. Update is performed only on selected fields included as
-        part of update-mask. Only the following fields can be modified:
-        auto_renew.
+        part of update-mask. Only the following fields can be updated:
+        auto_renew and plan.
 
         .. code-block:: python
 
@@ -1565,8 +1566,8 @@ class RegionCommitmentsClient(metaclass=RegionCommitmentsClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             commitment (str):
-                Name of the commitment for which auto
-                renew is being updated.
+                Name of the commitment that you want
+                to update.
 
                 This corresponds to the ``commitment`` field
                 on the ``request`` instance; if ``request`` is provided, this
