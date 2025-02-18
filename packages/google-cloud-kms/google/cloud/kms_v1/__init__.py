@@ -56,6 +56,7 @@ from .types.ekm_service import (
 )
 from .types.resources import (
     AccessReason,
+    ChecksummedData,
     CryptoKey,
     CryptoKeyVersion,
     CryptoKeyVersionTemplate,
@@ -127,6 +128,7 @@ __all__ = (
     "AutokeyClient",
     "AutokeyConfig",
     "Certificate",
+    "ChecksummedData",
     "CreateCryptoKeyRequest",
     "CreateCryptoKeyVersionRequest",
     "CreateEkmConnectionRequest",

@@ -44,6 +44,7 @@ from .ekm_service import (
 )
 from .resources import (
     AccessReason,
+    ChecksummedData,
     CryptoKey,
     CryptoKeyVersion,
     CryptoKeyVersionTemplate,
@@ -125,6 +126,7 @@ __all__ = (
     "UpdateEkmConnectionRequest",
     "VerifyConnectivityRequest",
     "VerifyConnectivityResponse",
+    "ChecksummedData",
     "CryptoKey",
     "CryptoKeyVersion",
     "CryptoKeyVersionTemplate",

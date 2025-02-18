@@ -63,6 +63,7 @@ from google.cloud.kms_v1.types.ekm_service import (
 )
 from google.cloud.kms_v1.types.resources import (
     AccessReason,
+    ChecksummedData,
     CryptoKey,
     CryptoKeyVersion,
     CryptoKeyVersionTemplate,
@@ -152,6 +153,7 @@ __all__ = (
     "UpdateEkmConnectionRequest",
     "VerifyConnectivityRequest",
     "VerifyConnectivityResponse",
+    "ChecksummedData",
     "CryptoKey",
     "CryptoKeyVersion",
     "CryptoKeyVersionTemplate",

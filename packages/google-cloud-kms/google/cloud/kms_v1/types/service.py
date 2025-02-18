@@ -513,11 +513,26 @@ class GetPublicKeyRequest(proto.Message):
             [name][google.cloud.kms.v1.CryptoKeyVersion.name] of the
             [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]
             public key to get.
+        public_key_format (google.cloud.kms_v1.types.PublicKey.PublicKeyFormat):
+            Optional. The [PublicKey][google.cloud.kms.v1.PublicKey]
+            format specified by the user. This field is required for PQC
+            algorithms. If specified, the public key will be exported
+            through the
+            [public_key][google.cloud.kms.v1.PublicKey.public_key] field
+            in the requested format. Otherwise, the
+            [pem][google.cloud.kms.v1.PublicKey.pem] field will be
+            populated for non-PQC algorithms, and an error will be
+            returned for PQC algorithms.
     """
 
     name: str = proto.Field(
         proto.STRING,
         number=1,
+    )
+    public_key_format: resources.PublicKey.PublicKeyFormat = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=resources.PublicKey.PublicKeyFormat,
     )
 
 

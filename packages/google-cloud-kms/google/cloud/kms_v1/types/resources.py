@@ -32,6 +32,7 @@ __protobuf__ = proto.module(
         "CryptoKeyVersionTemplate",
         "KeyOperationAttestation",
         "CryptoKeyVersion",
+        "ChecksummedData",
         "PublicKey",
         "ImportJob",
         "ExternalProtectionLevelOptions",
@@ -785,6 +786,14 @@ class CryptoKeyVersion(proto.Message):
             EXTERNAL_SYMMETRIC_ENCRYPTION (18):
                 Algorithm representing symmetric encryption
                 by an external key manager.
+            PQ_SIGN_ML_DSA_65 (56):
+                The post-quantum Module-Lattice-Based Digital
+                Signature Algorithm, at security level 3.
+                Randomized version.
+            PQ_SIGN_SLH_DSA_SHA2_128S (57):
+                The post-quantum stateless hash-based digital
+                signature algorithm, at security level 1.
+                Randomized version.
         """
         CRYPTO_KEY_VERSION_ALGORITHM_UNSPECIFIED = 0
         GOOGLE_SYMMETRIC_ENCRYPTION = 1
@@ -822,6 +831,8 @@ class CryptoKeyVersion(proto.Message):
         HMAC_SHA512 = 35
         HMAC_SHA224 = 36
         EXTERNAL_SYMMETRIC_ENCRYPTION = 18
+        PQ_SIGN_ML_DSA_65 = 56
+        PQ_SIGN_SLH_DSA_SHA2_128S = 57
 
     class CryptoKeyVersionState(proto.Enum):
         r"""The state of a
@@ -1002,6 +1013,42 @@ class CryptoKeyVersion(proto.Message):
     )
 
 
+class ChecksummedData(proto.Message):
+    r"""Data with integrity verification field.
+
+    Attributes:
+        data (bytes):
+            Raw Data.
+        crc32c_checksum (google.protobuf.wrappers_pb2.Int64Value):
+            Integrity verification field. A CRC32C checksum of the
+            returned
+            [ChecksummedData.data][google.cloud.kms.v1.ChecksummedData.data].
+            An integrity check of
+            [ChecksummedData.data][google.cloud.kms.v1.ChecksummedData.data]
+            can be performed by computing the CRC32C checksum of
+            [ChecksummedData.data][google.cloud.kms.v1.ChecksummedData.data]
+            and comparing your results to this field. Discard the
+            response in case of non-matching checksum values, and
+            perform a limited number of retries. A persistent mismatch
+            may indicate an issue in your computation of the CRC32C
+            checksum. Note: This field is defined as int64 for reasons
+            of compatibility across different languages. However, it is
+            a non-negative integer, which will never exceed ``2^32-1``,
+            and can be safely downconverted to uint32 in languages that
+            support this type.
+    """
+
+    data: bytes = proto.Field(
+        proto.BYTES,
+        number=3,
+    )
+    crc32c_checksum: wrappers_pb2.Int64Value = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=wrappers_pb2.Int64Value,
+    )
+
+
 class PublicKey(proto.Message):
     r"""The public keys for a given
     [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]. Obtained
@@ -1033,8 +1080,8 @@ class PublicKey(proto.Message):
             indicate an issue in your computation of the CRC32C
             checksum. Note: This field is defined as int64 for reasons
             of compatibility across different languages. However, it is
-            a non-negative integer, which will never exceed 2^32-1, and
-            can be safely downconverted to uint32 in languages that
+            a non-negative integer, which will never exceed ``2^32-1``,
+            and can be safely downconverted to uint32 in languages that
             support this type.
 
             NOTE: This field is in Beta.
@@ -1049,7 +1096,52 @@ class PublicKey(proto.Message):
             of the
             [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]
             public key.
+        public_key_format (google.cloud.kms_v1.types.PublicKey.PublicKeyFormat):
+            The [PublicKey][google.cloud.kms.v1.PublicKey] format
+            specified by the customer through the
+            [public_key_format][google.cloud.kms.v1.GetPublicKeyRequest.public_key_format]
+            field.
+        public_key (google.cloud.kms_v1.types.ChecksummedData):
+            This field contains the public key (with integrity
+            verification), formatted according to the
+            [public_key_format][google.cloud.kms.v1.PublicKey.public_key_format]
+            field.
     """
+
+    class PublicKeyFormat(proto.Enum):
+        r"""The supported [PublicKey][google.cloud.kms.v1.PublicKey] formats.
+
+        Values:
+            PUBLIC_KEY_FORMAT_UNSPECIFIED (0):
+                If the
+                [public_key_format][google.cloud.kms.v1.GetPublicKeyRequest.public_key_format]
+                field is not specified:
+
+                -  For PQC algorithms, an error will be returned.
+                -  For non-PQC algorithms, the default format is PEM, and
+                   the field [pem][google.cloud.kms.v1.PublicKey.pem] will
+                   be populated.
+
+                Otherwise, the public key will be exported through the
+                [public_key][google.cloud.kms.v1.PublicKey.public_key] field
+                in the requested format.
+            PEM (1):
+                The returned public key will be encoded in PEM format. See
+                the `RFC7468 <https://tools.ietf.org/html/rfc7468>`__
+                sections for `General
+                Considerations <https://tools.ietf.org/html/rfc7468#section-2>`__
+                and [Textual Encoding of Subject Public Key Info]
+                (https://tools.ietf.org/html/rfc7468#section-13) for more
+                information.
+            NIST_PQC (3):
+                This is supported only for PQC algorithms.
+                The key material is returned in the format
+                defined by NIST PQC standards (FIPS 203, FIPS
+                204, and FIPS 205).
+        """
+        PUBLIC_KEY_FORMAT_UNSPECIFIED = 0
+        PEM = 1
+        NIST_PQC = 3
 
     pem: str = proto.Field(
         proto.STRING,
@@ -1073,6 +1165,16 @@ class PublicKey(proto.Message):
         proto.ENUM,
         number=5,
         enum="ProtectionLevel",
+    )
+    public_key_format: PublicKeyFormat = proto.Field(
+        proto.ENUM,
+        number=7,
+        enum=PublicKeyFormat,
+    )
+    public_key: "ChecksummedData" = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        message="ChecksummedData",
     )
 
 
