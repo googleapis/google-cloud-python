@@ -74,6 +74,13 @@ from google.cloud.recommender_v1.types import recommendation
 from google.cloud.recommender_v1.types import recommender_config
 from google.cloud.recommender_v1.types import recommender_service
 
+CRED_INFO_JSON = {
+    "credential_source": "/path/to/file",
+    "credential_type": "service account credentials",
+    "principal": "service-account@example.com",
+}
+CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
 
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
@@ -311,6 +318,49 @@ def test__get_universe_domain():
     with pytest.raises(ValueError) as excinfo:
         RecommenderClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+
+@pytest.mark.parametrize(
+    "error_code,cred_info_json,show_cred_info",
+    [
+        (401, CRED_INFO_JSON, True),
+        (403, CRED_INFO_JSON, True),
+        (404, CRED_INFO_JSON, True),
+        (500, CRED_INFO_JSON, False),
+        (401, None, False),
+        (403, None, False),
+        (404, None, False),
+        (500, None, False),
+    ],
+)
+def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
+    cred = mock.Mock(["get_cred_info"])
+    cred.get_cred_info = mock.Mock(return_value=cred_info_json)
+    client = RecommenderClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=["foo"])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    if show_cred_info:
+        assert error.details == ["foo", CRED_INFO_STRING]
+    else:
+        assert error.details == ["foo"]
+
+
+@pytest.mark.parametrize("error_code", [401, 403, 404, 500])
+def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
+    cred = mock.Mock([])
+    assert not hasattr(cred, "get_cred_info")
+    client = RecommenderClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=[])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    assert error.details == []
 
 
 @pytest.mark.parametrize(
@@ -9627,10 +9677,13 @@ def test_list_insights_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.RecommenderRestInterceptor, "post_list_insights"
     ) as post, mock.patch.object(
+        transports.RecommenderRestInterceptor, "post_list_insights_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.RecommenderRestInterceptor, "pre_list_insights"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = recommender_service.ListInsightsRequest.pb(
             recommender_service.ListInsightsRequest()
         )
@@ -9656,6 +9709,10 @@ def test_list_insights_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = recommender_service.ListInsightsResponse()
+        post_with_metadata.return_value = (
+            recommender_service.ListInsightsResponse(),
+            metadata,
+        )
 
         client.list_insights(
             request,
@@ -9667,6 +9724,7 @@ def test_list_insights_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_insight_rest_bad_request(
@@ -9767,10 +9825,13 @@ def test_get_insight_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.RecommenderRestInterceptor, "post_get_insight"
     ) as post, mock.patch.object(
+        transports.RecommenderRestInterceptor, "post_get_insight_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.RecommenderRestInterceptor, "pre_get_insight"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = recommender_service.GetInsightRequest.pb(
             recommender_service.GetInsightRequest()
         )
@@ -9794,6 +9855,7 @@ def test_get_insight_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = insight.Insight()
+        post_with_metadata.return_value = insight.Insight(), metadata
 
         client.get_insight(
             request,
@@ -9805,6 +9867,7 @@ def test_get_insight_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_mark_insight_accepted_rest_bad_request(
@@ -9905,10 +9968,14 @@ def test_mark_insight_accepted_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.RecommenderRestInterceptor, "post_mark_insight_accepted"
     ) as post, mock.patch.object(
+        transports.RecommenderRestInterceptor,
+        "post_mark_insight_accepted_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.RecommenderRestInterceptor, "pre_mark_insight_accepted"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = recommender_service.MarkInsightAcceptedRequest.pb(
             recommender_service.MarkInsightAcceptedRequest()
         )
@@ -9932,6 +9999,7 @@ def test_mark_insight_accepted_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = insight.Insight()
+        post_with_metadata.return_value = insight.Insight(), metadata
 
         client.mark_insight_accepted(
             request,
@@ -9943,6 +10011,7 @@ def test_mark_insight_accepted_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_recommendations_rest_bad_request(
@@ -10027,10 +10096,13 @@ def test_list_recommendations_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.RecommenderRestInterceptor, "post_list_recommendations"
     ) as post, mock.patch.object(
+        transports.RecommenderRestInterceptor, "post_list_recommendations_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.RecommenderRestInterceptor, "pre_list_recommendations"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = recommender_service.ListRecommendationsRequest.pb(
             recommender_service.ListRecommendationsRequest()
         )
@@ -10056,6 +10128,10 @@ def test_list_recommendations_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = recommender_service.ListRecommendationsResponse()
+        post_with_metadata.return_value = (
+            recommender_service.ListRecommendationsResponse(),
+            metadata,
+        )
 
         client.list_recommendations(
             request,
@@ -10067,6 +10143,7 @@ def test_list_recommendations_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_recommendation_rest_bad_request(
@@ -10165,10 +10242,13 @@ def test_get_recommendation_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.RecommenderRestInterceptor, "post_get_recommendation"
     ) as post, mock.patch.object(
+        transports.RecommenderRestInterceptor, "post_get_recommendation_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.RecommenderRestInterceptor, "pre_get_recommendation"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = recommender_service.GetRecommendationRequest.pb(
             recommender_service.GetRecommendationRequest()
         )
@@ -10194,6 +10274,7 @@ def test_get_recommendation_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = recommendation.Recommendation()
+        post_with_metadata.return_value = recommendation.Recommendation(), metadata
 
         client.get_recommendation(
             request,
@@ -10205,6 +10286,7 @@ def test_get_recommendation_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_mark_recommendation_dismissed_rest_bad_request(
@@ -10303,10 +10385,14 @@ def test_mark_recommendation_dismissed_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.RecommenderRestInterceptor, "post_mark_recommendation_dismissed"
     ) as post, mock.patch.object(
+        transports.RecommenderRestInterceptor,
+        "post_mark_recommendation_dismissed_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.RecommenderRestInterceptor, "pre_mark_recommendation_dismissed"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = recommender_service.MarkRecommendationDismissedRequest.pb(
             recommender_service.MarkRecommendationDismissedRequest()
         )
@@ -10332,6 +10418,7 @@ def test_mark_recommendation_dismissed_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = recommendation.Recommendation()
+        post_with_metadata.return_value = recommendation.Recommendation(), metadata
 
         client.mark_recommendation_dismissed(
             request,
@@ -10343,6 +10430,7 @@ def test_mark_recommendation_dismissed_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_mark_recommendation_claimed_rest_bad_request(
@@ -10441,10 +10529,14 @@ def test_mark_recommendation_claimed_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.RecommenderRestInterceptor, "post_mark_recommendation_claimed"
     ) as post, mock.patch.object(
+        transports.RecommenderRestInterceptor,
+        "post_mark_recommendation_claimed_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.RecommenderRestInterceptor, "pre_mark_recommendation_claimed"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = recommender_service.MarkRecommendationClaimedRequest.pb(
             recommender_service.MarkRecommendationClaimedRequest()
         )
@@ -10470,6 +10562,7 @@ def test_mark_recommendation_claimed_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = recommendation.Recommendation()
+        post_with_metadata.return_value = recommendation.Recommendation(), metadata
 
         client.mark_recommendation_claimed(
             request,
@@ -10481,6 +10574,7 @@ def test_mark_recommendation_claimed_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_mark_recommendation_succeeded_rest_bad_request(
@@ -10579,10 +10673,14 @@ def test_mark_recommendation_succeeded_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.RecommenderRestInterceptor, "post_mark_recommendation_succeeded"
     ) as post, mock.patch.object(
+        transports.RecommenderRestInterceptor,
+        "post_mark_recommendation_succeeded_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.RecommenderRestInterceptor, "pre_mark_recommendation_succeeded"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = recommender_service.MarkRecommendationSucceededRequest.pb(
             recommender_service.MarkRecommendationSucceededRequest()
         )
@@ -10608,6 +10706,7 @@ def test_mark_recommendation_succeeded_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = recommendation.Recommendation()
+        post_with_metadata.return_value = recommendation.Recommendation(), metadata
 
         client.mark_recommendation_succeeded(
             request,
@@ -10619,6 +10718,7 @@ def test_mark_recommendation_succeeded_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_mark_recommendation_failed_rest_bad_request(
@@ -10717,10 +10817,14 @@ def test_mark_recommendation_failed_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.RecommenderRestInterceptor, "post_mark_recommendation_failed"
     ) as post, mock.patch.object(
+        transports.RecommenderRestInterceptor,
+        "post_mark_recommendation_failed_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.RecommenderRestInterceptor, "pre_mark_recommendation_failed"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = recommender_service.MarkRecommendationFailedRequest.pb(
             recommender_service.MarkRecommendationFailedRequest()
         )
@@ -10746,6 +10850,7 @@ def test_mark_recommendation_failed_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = recommendation.Recommendation()
+        post_with_metadata.return_value = recommendation.Recommendation(), metadata
 
         client.mark_recommendation_failed(
             request,
@@ -10757,6 +10862,7 @@ def test_mark_recommendation_failed_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_recommender_config_rest_bad_request(
@@ -10851,10 +10957,14 @@ def test_get_recommender_config_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.RecommenderRestInterceptor, "post_get_recommender_config"
     ) as post, mock.patch.object(
+        transports.RecommenderRestInterceptor,
+        "post_get_recommender_config_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.RecommenderRestInterceptor, "pre_get_recommender_config"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = recommender_service.GetRecommenderConfigRequest.pb(
             recommender_service.GetRecommenderConfigRequest()
         )
@@ -10880,6 +10990,10 @@ def test_get_recommender_config_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = recommender_config.RecommenderConfig()
+        post_with_metadata.return_value = (
+            recommender_config.RecommenderConfig(),
+            metadata,
+        )
 
         client.get_recommender_config(
             request,
@@ -10891,6 +11005,7 @@ def test_get_recommender_config_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_recommender_config_rest_bad_request(
@@ -11067,10 +11182,14 @@ def test_update_recommender_config_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.RecommenderRestInterceptor, "post_update_recommender_config"
     ) as post, mock.patch.object(
+        transports.RecommenderRestInterceptor,
+        "post_update_recommender_config_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.RecommenderRestInterceptor, "pre_update_recommender_config"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = recommender_service.UpdateRecommenderConfigRequest.pb(
             recommender_service.UpdateRecommenderConfigRequest()
         )
@@ -11096,6 +11215,10 @@ def test_update_recommender_config_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = gcr_recommender_config.RecommenderConfig()
+        post_with_metadata.return_value = (
+            gcr_recommender_config.RecommenderConfig(),
+            metadata,
+        )
 
         client.update_recommender_config(
             request,
@@ -11107,6 +11230,7 @@ def test_update_recommender_config_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_insight_type_config_rest_bad_request(
@@ -11201,10 +11325,14 @@ def test_get_insight_type_config_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.RecommenderRestInterceptor, "post_get_insight_type_config"
     ) as post, mock.patch.object(
+        transports.RecommenderRestInterceptor,
+        "post_get_insight_type_config_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.RecommenderRestInterceptor, "pre_get_insight_type_config"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = recommender_service.GetInsightTypeConfigRequest.pb(
             recommender_service.GetInsightTypeConfigRequest()
         )
@@ -11230,6 +11358,10 @@ def test_get_insight_type_config_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = insight_type_config.InsightTypeConfig()
+        post_with_metadata.return_value = (
+            insight_type_config.InsightTypeConfig(),
+            metadata,
+        )
 
         client.get_insight_type_config(
             request,
@@ -11241,6 +11373,7 @@ def test_get_insight_type_config_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_insight_type_config_rest_bad_request(
@@ -11417,10 +11550,14 @@ def test_update_insight_type_config_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.RecommenderRestInterceptor, "post_update_insight_type_config"
     ) as post, mock.patch.object(
+        transports.RecommenderRestInterceptor,
+        "post_update_insight_type_config_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.RecommenderRestInterceptor, "pre_update_insight_type_config"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = recommender_service.UpdateInsightTypeConfigRequest.pb(
             recommender_service.UpdateInsightTypeConfigRequest()
         )
@@ -11446,6 +11583,10 @@ def test_update_insight_type_config_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = gcr_insight_type_config.InsightTypeConfig()
+        post_with_metadata.return_value = (
+            gcr_insight_type_config.InsightTypeConfig(),
+            metadata,
+        )
 
         client.update_insight_type_config(
             request,
@@ -11457,6 +11598,7 @@ def test_update_insight_type_config_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_initialize_client_w_rest():

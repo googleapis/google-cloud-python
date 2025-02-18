@@ -117,11 +117,37 @@ class PredictionApiKeyRegistryRestInterceptor:
     ) -> prediction_apikey_registry_service.PredictionApiKeyRegistration:
         """Post-rpc interceptor for create_prediction_api_key_registration
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_prediction_api_key_registration_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the PredictionApiKeyRegistry server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_prediction_api_key_registration` interceptor runs
+        before the `post_create_prediction_api_key_registration_with_metadata` interceptor.
         """
         return response
+
+    def post_create_prediction_api_key_registration_with_metadata(
+        self,
+        response: prediction_apikey_registry_service.PredictionApiKeyRegistration,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        prediction_apikey_registry_service.PredictionApiKeyRegistration,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for create_prediction_api_key_registration
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the PredictionApiKeyRegistry server but before it is returned to user code.
+
+        We recommend only using this `post_create_prediction_api_key_registration_with_metadata`
+        interceptor in new development instead of the `post_create_prediction_api_key_registration` interceptor.
+        When both interceptors are used, this `post_create_prediction_api_key_registration_with_metadata` interceptor runs after the
+        `post_create_prediction_api_key_registration` interceptor. The (possibly modified) response returned by
+        `post_create_prediction_api_key_registration` will be passed to
+        `post_create_prediction_api_key_registration_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_prediction_api_key_registration(
         self,
@@ -159,11 +185,37 @@ class PredictionApiKeyRegistryRestInterceptor:
     ) -> prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsResponse:
         """Post-rpc interceptor for list_prediction_api_key_registrations
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_prediction_api_key_registrations_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the PredictionApiKeyRegistry server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_prediction_api_key_registrations` interceptor runs
+        before the `post_list_prediction_api_key_registrations_with_metadata` interceptor.
         """
         return response
+
+    def post_list_prediction_api_key_registrations_with_metadata(
+        self,
+        response: prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_prediction_api_key_registrations
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the PredictionApiKeyRegistry server but before it is returned to user code.
+
+        We recommend only using this `post_list_prediction_api_key_registrations_with_metadata`
+        interceptor in new development instead of the `post_list_prediction_api_key_registrations` interceptor.
+        When both interceptors are used, this `post_list_prediction_api_key_registrations_with_metadata` interceptor runs after the
+        `post_list_prediction_api_key_registrations` interceptor. The (possibly modified) response returned by
+        `post_list_prediction_api_key_registrations` will be passed to
+        `post_list_prediction_api_key_registrations_with_metadata`.
+        """
+        return response, metadata
 
 
 @dataclasses.dataclass
@@ -392,6 +444,13 @@ class PredictionApiKeyRegistryRestTransport(_BasePredictionApiKeyRegistryRestTra
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_prediction_api_key_registration(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_create_prediction_api_key_registration_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -668,6 +727,13 @@ class PredictionApiKeyRegistryRestTransport(_BasePredictionApiKeyRegistryRestTra
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_prediction_api_key_registrations(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_list_prediction_api_key_registrations_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

@@ -109,11 +109,32 @@ class BranchServiceRestInterceptor:
     def post_get_branch(self, response: branch.Branch) -> branch.Branch:
         """Post-rpc interceptor for get_branch
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_branch_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the BranchService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_branch` interceptor runs
+        before the `post_get_branch_with_metadata` interceptor.
         """
         return response
+
+    def post_get_branch_with_metadata(
+        self, response: branch.Branch, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[branch.Branch, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_branch
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the BranchService server but before it is returned to user code.
+
+        We recommend only using this `post_get_branch_with_metadata`
+        interceptor in new development instead of the `post_get_branch` interceptor.
+        When both interceptors are used, this `post_get_branch_with_metadata` interceptor runs after the
+        `post_get_branch` interceptor. The (possibly modified) response returned by
+        `post_get_branch` will be passed to
+        `post_get_branch_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_branches(
         self,
@@ -134,11 +155,36 @@ class BranchServiceRestInterceptor:
     ) -> branch_service.ListBranchesResponse:
         """Post-rpc interceptor for list_branches
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_branches_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the BranchService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_branches` interceptor runs
+        before the `post_list_branches_with_metadata` interceptor.
         """
         return response
+
+    def post_list_branches_with_metadata(
+        self,
+        response: branch_service.ListBranchesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        branch_service.ListBranchesResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_branches
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the BranchService server but before it is returned to user code.
+
+        We recommend only using this `post_list_branches_with_metadata`
+        interceptor in new development instead of the `post_list_branches` interceptor.
+        When both interceptors are used, this `post_list_branches_with_metadata` interceptor runs after the
+        `post_list_branches` interceptor. The (possibly modified) response returned by
+        `post_list_branches` will be passed to
+        `post_list_branches_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_operation(
         self,
@@ -408,6 +454,10 @@ class BranchServiceRestTransport(_BaseBranchServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_branch(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_branch_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -553,6 +603,10 @@ class BranchServiceRestTransport(_BaseBranchServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_branches(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_branches_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

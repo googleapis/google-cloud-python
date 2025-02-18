@@ -65,6 +65,13 @@ from google.cloud.retail_v2beta.types import (
     generative_question_service,
 )
 
+CRED_INFO_JSON = {
+    "credential_source": "/path/to/file",
+    "credential_type": "service account credentials",
+    "principal": "service-account@example.com",
+}
+CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
 
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
@@ -342,6 +349,49 @@ def test__get_universe_domain():
     with pytest.raises(ValueError) as excinfo:
         GenerativeQuestionServiceClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+
+@pytest.mark.parametrize(
+    "error_code,cred_info_json,show_cred_info",
+    [
+        (401, CRED_INFO_JSON, True),
+        (403, CRED_INFO_JSON, True),
+        (404, CRED_INFO_JSON, True),
+        (500, CRED_INFO_JSON, False),
+        (401, None, False),
+        (403, None, False),
+        (404, None, False),
+        (500, None, False),
+    ],
+)
+def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
+    cred = mock.Mock(["get_cred_info"])
+    cred.get_cred_info = mock.Mock(return_value=cred_info_json)
+    client = GenerativeQuestionServiceClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=["foo"])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    if show_cred_info:
+        assert error.details == ["foo", CRED_INFO_STRING]
+    else:
+        assert error.details == ["foo"]
+
+
+@pytest.mark.parametrize("error_code", [401, 403, 404, 500])
+def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
+    cred = mock.Mock([])
+    assert not hasattr(cred, "get_cred_info")
+    client = GenerativeQuestionServiceClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=[])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    assert error.details == []
 
 
 @pytest.mark.parametrize(
@@ -4626,10 +4676,14 @@ def test_update_generative_questions_feature_config_rest_interceptors(null_inter
         "post_update_generative_questions_feature_config",
     ) as post, mock.patch.object(
         transports.GenerativeQuestionServiceRestInterceptor,
+        "post_update_generative_questions_feature_config_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
+        transports.GenerativeQuestionServiceRestInterceptor,
         "pre_update_generative_questions_feature_config",
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = generative_question_service.UpdateGenerativeQuestionsFeatureConfigRequest.pb(
             generative_question_service.UpdateGenerativeQuestionsFeatureConfigRequest()
         )
@@ -4657,6 +4711,10 @@ def test_update_generative_questions_feature_config_rest_interceptors(null_inter
         ]
         pre.return_value = request, metadata
         post.return_value = generative_question.GenerativeQuestionsFeatureConfig()
+        post_with_metadata.return_value = (
+            generative_question.GenerativeQuestionsFeatureConfig(),
+            metadata,
+        )
 
         client.update_generative_questions_feature_config(
             request,
@@ -4668,6 +4726,7 @@ def test_update_generative_questions_feature_config_rest_interceptors(null_inter
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_generative_questions_feature_config_rest_bad_request(
@@ -4760,10 +4819,14 @@ def test_get_generative_questions_feature_config_rest_interceptors(null_intercep
         "post_get_generative_questions_feature_config",
     ) as post, mock.patch.object(
         transports.GenerativeQuestionServiceRestInterceptor,
+        "post_get_generative_questions_feature_config_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
+        transports.GenerativeQuestionServiceRestInterceptor,
         "pre_get_generative_questions_feature_config",
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = (
             generative_question_service.GetGenerativeQuestionsFeatureConfigRequest.pb(
                 generative_question_service.GetGenerativeQuestionsFeatureConfigRequest()
@@ -4793,6 +4856,10 @@ def test_get_generative_questions_feature_config_rest_interceptors(null_intercep
         ]
         pre.return_value = request, metadata
         post.return_value = generative_question.GenerativeQuestionsFeatureConfig()
+        post_with_metadata.return_value = (
+            generative_question.GenerativeQuestionsFeatureConfig(),
+            metadata,
+        )
 
         client.get_generative_questions_feature_config(
             request,
@@ -4804,6 +4871,7 @@ def test_get_generative_questions_feature_config_rest_interceptors(null_intercep
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_generative_question_configs_rest_bad_request(
@@ -4895,10 +4963,14 @@ def test_list_generative_question_configs_rest_interceptors(null_interceptor):
         "post_list_generative_question_configs",
     ) as post, mock.patch.object(
         transports.GenerativeQuestionServiceRestInterceptor,
+        "post_list_generative_question_configs_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
+        transports.GenerativeQuestionServiceRestInterceptor,
         "pre_list_generative_question_configs",
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = (
             generative_question_service.ListGenerativeQuestionConfigsRequest.pb(
                 generative_question_service.ListGenerativeQuestionConfigsRequest()
@@ -4930,6 +5002,10 @@ def test_list_generative_question_configs_rest_interceptors(null_interceptor):
         post.return_value = (
             generative_question_service.ListGenerativeQuestionConfigsResponse()
         )
+        post_with_metadata.return_value = (
+            generative_question_service.ListGenerativeQuestionConfigsResponse(),
+            metadata,
+        )
 
         client.list_generative_question_configs(
             request,
@@ -4941,6 +5017,7 @@ def test_list_generative_question_configs_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_generative_question_config_rest_bad_request(
@@ -5131,10 +5208,14 @@ def test_update_generative_question_config_rest_interceptors(null_interceptor):
         "post_update_generative_question_config",
     ) as post, mock.patch.object(
         transports.GenerativeQuestionServiceRestInterceptor,
+        "post_update_generative_question_config_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
+        transports.GenerativeQuestionServiceRestInterceptor,
         "pre_update_generative_question_config",
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = (
             generative_question_service.UpdateGenerativeQuestionConfigRequest.pb(
                 generative_question_service.UpdateGenerativeQuestionConfigRequest()
@@ -5162,6 +5243,10 @@ def test_update_generative_question_config_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = generative_question.GenerativeQuestionConfig()
+        post_with_metadata.return_value = (
+            generative_question.GenerativeQuestionConfig(),
+            metadata,
+        )
 
         client.update_generative_question_config(
             request,
@@ -5173,6 +5258,7 @@ def test_update_generative_question_config_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_batch_update_generative_question_configs_rest_bad_request(
@@ -5265,10 +5351,14 @@ def test_batch_update_generative_question_configs_rest_interceptors(null_interce
         "post_batch_update_generative_question_configs",
     ) as post, mock.patch.object(
         transports.GenerativeQuestionServiceRestInterceptor,
+        "post_batch_update_generative_question_configs_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
+        transports.GenerativeQuestionServiceRestInterceptor,
         "pre_batch_update_generative_question_configs",
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = generative_question_service.BatchUpdateGenerativeQuestionConfigsRequest.pb(
             generative_question_service.BatchUpdateGenerativeQuestionConfigsRequest()
         )
@@ -5298,6 +5388,10 @@ def test_batch_update_generative_question_configs_rest_interceptors(null_interce
         post.return_value = (
             generative_question_service.BatchUpdateGenerativeQuestionConfigsResponse()
         )
+        post_with_metadata.return_value = (
+            generative_question_service.BatchUpdateGenerativeQuestionConfigsResponse(),
+            metadata,
+        )
 
         client.batch_update_generative_question_configs(
             request,
@@ -5309,6 +5403,7 @@ def test_batch_update_generative_question_configs_rest_interceptors(null_interce
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_operation_rest_bad_request(
