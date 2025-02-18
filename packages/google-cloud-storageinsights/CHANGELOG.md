@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.1.14](https://github.com/googleapis/google-cloud-python/compare/google-cloud-storageinsights-v0.1.13...google-cloud-storageinsights-v0.1.14) (2025-02-12)
+
+
+### Features
+
+* Add REST Interceptors which support reading metadata ([87b5382](https://github.com/googleapis/google-cloud-python/commit/87b5382a05b7a0c9faeabaf3e2baa6f05c88bb8e))
+* Add support for reading selective GAPIC generation methods from service YAML ([87b5382](https://github.com/googleapis/google-cloud-python/commit/87b5382a05b7a0c9faeabaf3e2baa6f05c88bb8e))
+
 ## [0.1.13](https://github.com/googleapis/google-cloud-python/compare/google-cloud-storageinsights-v0.1.12...google-cloud-storageinsights-v0.1.13) (2024-12-12)
 
 

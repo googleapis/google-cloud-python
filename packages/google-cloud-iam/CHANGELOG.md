@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-iam/#history
 
+## [2.18.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-iam-v2.17.0...google-cloud-iam-v2.18.0) (2025-02-12)
+
+
+### Features
+
+* Add REST Interceptors which support reading metadata ([908d742](https://github.com/googleapis/google-cloud-python/commit/908d7421a4adadd7407df7ec2a25e25688ff180f))
+* Add support for reading selective GAPIC generation methods from service YAML ([908d742](https://github.com/googleapis/google-cloud-python/commit/908d7421a4adadd7407df7ec2a25e25688ff180f))
+
 ## [2.17.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-iam-v2.16.1...google-cloud-iam-v2.17.0) (2024-12-12)
 
 

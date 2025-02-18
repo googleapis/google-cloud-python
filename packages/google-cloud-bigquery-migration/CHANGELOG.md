@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.11.13](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-migration-v0.11.12...google-cloud-bigquery-migration-v0.11.13) (2025-02-12)
+
+
+### Features
+
+* Add REST Interceptors which support reading metadata ([e22e2bd](https://github.com/googleapis/google-cloud-python/commit/e22e2bde55d11d2f85e9d2caf1d152a4027f88cf))
+* Add support for reading selective GAPIC generation methods from service YAML ([e22e2bd](https://github.com/googleapis/google-cloud-python/commit/e22e2bde55d11d2f85e9d2caf1d152a4027f88cf))
+
 ## [0.11.12](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-migration-v0.11.11...google-cloud-bigquery-migration-v0.11.12) (2024-12-12)
 
 

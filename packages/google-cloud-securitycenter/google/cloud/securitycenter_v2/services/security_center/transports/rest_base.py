@@ -1375,6 +1375,10 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
                 },
                 {
                     "method": "get",
+                    "uri": "/v2/{parent=organizations/*}/attackPaths",
+                },
+                {
+                    "method": "get",
                     "uri": "/v2/{parent=organizations/*/simulations/*/valuedResources/*}/attackPaths",
                 },
                 {
@@ -1793,6 +1797,10 @@ class _BaseSecurityCenterRestTransport(SecurityCenterTransport):
                 {
                     "method": "get",
                     "uri": "/v2/{parent=organizations/*/simulations/*/attackExposureResults/*}/valuedResources",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v2/{parent=organizations/*}/valuedResources",
                 },
             ]
             return http_options

@@ -10787,6 +10787,7 @@ def test_create_service_config_rest_call_success(request_type):
                         "experimental_features": {
                             "rest_async_io_enabled": True,
                             "protobuf_pythonic_types_enabled": True,
+                            "unversioned_package_disabled": True,
                         },
                     },
                     "node_settings": {"common": {}},

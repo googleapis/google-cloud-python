@@ -63,6 +63,13 @@ from google.shopping.merchant_accounts_v1beta.types import accessright
 from google.shopping.merchant_accounts_v1beta.types import user
 from google.shopping.merchant_accounts_v1beta.types import user as gsma_user
 
+CRED_INFO_JSON = {
+    "credential_source": "/path/to/file",
+    "credential_type": "service account credentials",
+    "principal": "service-account@example.com",
+}
+CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
 
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
@@ -300,6 +307,49 @@ def test__get_universe_domain():
     with pytest.raises(ValueError) as excinfo:
         UserServiceClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+
+@pytest.mark.parametrize(
+    "error_code,cred_info_json,show_cred_info",
+    [
+        (401, CRED_INFO_JSON, True),
+        (403, CRED_INFO_JSON, True),
+        (404, CRED_INFO_JSON, True),
+        (500, CRED_INFO_JSON, False),
+        (401, None, False),
+        (403, None, False),
+        (404, None, False),
+        (500, None, False),
+    ],
+)
+def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
+    cred = mock.Mock(["get_cred_info"])
+    cred.get_cred_info = mock.Mock(return_value=cred_info_json)
+    client = UserServiceClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=["foo"])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    if show_cred_info:
+        assert error.details == ["foo", CRED_INFO_STRING]
+    else:
+        assert error.details == ["foo"]
+
+
+@pytest.mark.parametrize("error_code", [401, 403, 404, 500])
+def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
+    cred = mock.Mock([])
+    assert not hasattr(cred, "get_cred_info")
+    client = UserServiceClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=[])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    assert error.details == []
 
 
 @pytest.mark.parametrize(
@@ -4286,10 +4336,13 @@ def test_get_user_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.UserServiceRestInterceptor, "post_get_user"
     ) as post, mock.patch.object(
+        transports.UserServiceRestInterceptor, "post_get_user_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.UserServiceRestInterceptor, "pre_get_user"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = user.GetUserRequest.pb(user.GetUserRequest())
         transcode.return_value = {
             "method": "post",
@@ -4311,6 +4364,7 @@ def test_get_user_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = user.User()
+        post_with_metadata.return_value = user.User(), metadata
 
         client.get_user(
             request,
@@ -4322,6 +4376,7 @@ def test_get_user_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_user_rest_bad_request(request_type=gsma_user.CreateUserRequest):
@@ -4476,10 +4531,13 @@ def test_create_user_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.UserServiceRestInterceptor, "post_create_user"
     ) as post, mock.patch.object(
+        transports.UserServiceRestInterceptor, "post_create_user_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.UserServiceRestInterceptor, "pre_create_user"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = gsma_user.CreateUserRequest.pb(gsma_user.CreateUserRequest())
         transcode.return_value = {
             "method": "post",
@@ -4501,6 +4559,7 @@ def test_create_user_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = gsma_user.User()
+        post_with_metadata.return_value = gsma_user.User(), metadata
 
         client.create_user(
             request,
@@ -4512,6 +4571,7 @@ def test_create_user_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_user_rest_bad_request(request_type=user.DeleteUserRequest):
@@ -4775,10 +4835,13 @@ def test_update_user_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.UserServiceRestInterceptor, "post_update_user"
     ) as post, mock.patch.object(
+        transports.UserServiceRestInterceptor, "post_update_user_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.UserServiceRestInterceptor, "pre_update_user"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = gsma_user.UpdateUserRequest.pb(gsma_user.UpdateUserRequest())
         transcode.return_value = {
             "method": "post",
@@ -4800,6 +4863,7 @@ def test_update_user_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = gsma_user.User()
+        post_with_metadata.return_value = gsma_user.User(), metadata
 
         client.update_user(
             request,
@@ -4811,6 +4875,7 @@ def test_update_user_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_users_rest_bad_request(request_type=user.ListUsersRequest):
@@ -4893,10 +4958,13 @@ def test_list_users_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.UserServiceRestInterceptor, "post_list_users"
     ) as post, mock.patch.object(
+        transports.UserServiceRestInterceptor, "post_list_users_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.UserServiceRestInterceptor, "pre_list_users"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = user.ListUsersRequest.pb(user.ListUsersRequest())
         transcode.return_value = {
             "method": "post",
@@ -4918,6 +4986,7 @@ def test_list_users_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = user.ListUsersResponse()
+        post_with_metadata.return_value = user.ListUsersResponse(), metadata
 
         client.list_users(
             request,
@@ -4929,6 +4998,7 @@ def test_list_users_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_initialize_client_w_rest():

@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.5.16](https://github.com/googleapis/google-cloud-python/compare/google-cloud-edgecontainer-v0.5.15...google-cloud-edgecontainer-v0.5.16) (2025-02-12)
+
+
+### Features
+
+* Add REST Interceptors which support reading metadata ([e92d527](https://github.com/googleapis/google-cloud-python/commit/e92d52797ffbce45d033eb81af24e0cad32baa55))
+* Add support for reading selective GAPIC generation methods from service YAML ([e92d527](https://github.com/googleapis/google-cloud-python/commit/e92d52797ffbce45d033eb81af24e0cad32baa55))
+
 ## [0.5.15](https://github.com/googleapis/google-cloud-python/compare/google-cloud-edgecontainer-v0.5.14...google-cloud-edgecontainer-v0.5.15) (2024-12-12)
 
 

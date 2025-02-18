@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.16.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-iap-v1.15.0...google-cloud-iap-v1.16.0) (2025-02-12)
+
+
+### Features
+
+* Add REST Interceptors which support reading metadata ([908d742](https://github.com/googleapis/google-cloud-python/commit/908d7421a4adadd7407df7ec2a25e25688ff180f))
+* Add support for reading selective GAPIC generation methods from service YAML ([908d742](https://github.com/googleapis/google-cloud-python/commit/908d7421a4adadd7407df7ec2a25e25688ff180f))
+
 ## [1.15.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-iap-v1.14.1...google-cloud-iap-v1.15.0) (2024-12-12)
 
 

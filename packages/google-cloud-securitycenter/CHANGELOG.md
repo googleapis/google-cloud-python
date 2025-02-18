@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-securitycenter/#history
 
+## [1.37.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-securitycenter-v1.36.0...google-cloud-securitycenter-v1.37.0) (2025-02-12)
+
+
+### Features
+
+* Add REST Interceptors which support reading metadata ([87b5382](https://github.com/googleapis/google-cloud-python/commit/87b5382a05b7a0c9faeabaf3e2baa6f05c88bb8e))
+* Add support for reading selective GAPIC generation methods from service YAML ([87b5382](https://github.com/googleapis/google-cloud-python/commit/87b5382a05b7a0c9faeabaf3e2baa6f05c88bb8e))
+
 ## [1.36.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-securitycenter-v1.35.1...google-cloud-securitycenter-v1.36.0) (2024-12-12)
 
 

@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-videointelligence/#history
 
+## [2.16.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-videointelligence-v2.15.0...google-cloud-videointelligence-v2.16.0) (2025-02-12)
+
+
+### Features
+
+* Add REST Interceptors which support reading metadata ([5cdcc9d](https://github.com/googleapis/google-cloud-python/commit/5cdcc9d9d3e259c9a743895940552eb75b4554d3))
+* Add support for reading selective GAPIC generation methods from service YAML ([5cdcc9d](https://github.com/googleapis/google-cloud-python/commit/5cdcc9d9d3e259c9a743895940552eb75b4554d3))
+
 ## [2.15.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-videointelligence-v2.14.1...google-cloud-videointelligence-v2.15.0) (2024-12-12)
 
 

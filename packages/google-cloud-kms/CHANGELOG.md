@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-kms/#history
 
+## [3.3.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-kms-v3.2.2...google-cloud-kms-v3.3.0) (2025-02-12)
+
+
+### Features
+
+* Add REST Interceptors which support reading metadata ([908d742](https://github.com/googleapis/google-cloud-python/commit/908d7421a4adadd7407df7ec2a25e25688ff180f))
+* Add support for reading selective GAPIC generation methods from service YAML ([908d742](https://github.com/googleapis/google-cloud-python/commit/908d7421a4adadd7407df7ec2a25e25688ff180f))
+
 ## [3.2.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-kms-v3.2.1...google-cloud-kms-v3.2.2) (2025-01-13)
 
 

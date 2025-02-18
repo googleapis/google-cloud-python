@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.3.19](https://github.com/googleapis/google-cloud-python/compare/google-cloud-netapp-v0.3.18...google-cloud-netapp-v0.3.19) (2025-02-12)
+
+
+### Features
+
+* add ipAddress field to MountOption ([b266867](https://github.com/googleapis/google-cloud-python/commit/b2668671a5afa4164ff9be4a24888c63256e6b1b))
+* Add REST Interceptors which support reading metadata ([b266867](https://github.com/googleapis/google-cloud-python/commit/b2668671a5afa4164ff9be4a24888c63256e6b1b))
+
 ## [0.3.18](https://github.com/googleapis/google-cloud-python/compare/google-cloud-netapp-v0.3.17...google-cloud-netapp-v0.3.18) (2025-01-13)
 
 

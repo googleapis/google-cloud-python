@@ -207,11 +207,36 @@ class DataTransferServiceRestInterceptor:
     ) -> datatransfer.CheckValidCredsResponse:
         """Post-rpc interceptor for check_valid_creds
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_check_valid_creds_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the DataTransferService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_check_valid_creds` interceptor runs
+        before the `post_check_valid_creds_with_metadata` interceptor.
         """
         return response
+
+    def post_check_valid_creds_with_metadata(
+        self,
+        response: datatransfer.CheckValidCredsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        datatransfer.CheckValidCredsResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for check_valid_creds
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the DataTransferService server but before it is returned to user code.
+
+        We recommend only using this `post_check_valid_creds_with_metadata`
+        interceptor in new development instead of the `post_check_valid_creds` interceptor.
+        When both interceptors are used, this `post_check_valid_creds_with_metadata` interceptor runs after the
+        `post_check_valid_creds` interceptor. The (possibly modified) response returned by
+        `post_check_valid_creds` will be passed to
+        `post_check_valid_creds_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_transfer_config(
         self,
@@ -233,11 +258,34 @@ class DataTransferServiceRestInterceptor:
     ) -> transfer.TransferConfig:
         """Post-rpc interceptor for create_transfer_config
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_transfer_config_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the DataTransferService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_transfer_config` interceptor runs
+        before the `post_create_transfer_config_with_metadata` interceptor.
         """
         return response
+
+    def post_create_transfer_config_with_metadata(
+        self,
+        response: transfer.TransferConfig,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[transfer.TransferConfig, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_transfer_config
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the DataTransferService server but before it is returned to user code.
+
+        We recommend only using this `post_create_transfer_config_with_metadata`
+        interceptor in new development instead of the `post_create_transfer_config` interceptor.
+        When both interceptors are used, this `post_create_transfer_config_with_metadata` interceptor runs after the
+        `post_create_transfer_config` interceptor. The (possibly modified) response returned by
+        `post_create_transfer_config` will be passed to
+        `post_create_transfer_config_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_transfer_config(
         self,
@@ -301,11 +349,34 @@ class DataTransferServiceRestInterceptor:
     ) -> datatransfer.DataSource:
         """Post-rpc interceptor for get_data_source
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_data_source_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the DataTransferService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_data_source` interceptor runs
+        before the `post_get_data_source_with_metadata` interceptor.
         """
         return response
+
+    def post_get_data_source_with_metadata(
+        self,
+        response: datatransfer.DataSource,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[datatransfer.DataSource, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_data_source
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the DataTransferService server but before it is returned to user code.
+
+        We recommend only using this `post_get_data_source_with_metadata`
+        interceptor in new development instead of the `post_get_data_source` interceptor.
+        When both interceptors are used, this `post_get_data_source_with_metadata` interceptor runs after the
+        `post_get_data_source` interceptor. The (possibly modified) response returned by
+        `post_get_data_source` will be passed to
+        `post_get_data_source_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_transfer_config(
         self,
@@ -326,11 +397,34 @@ class DataTransferServiceRestInterceptor:
     ) -> transfer.TransferConfig:
         """Post-rpc interceptor for get_transfer_config
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_transfer_config_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the DataTransferService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_transfer_config` interceptor runs
+        before the `post_get_transfer_config_with_metadata` interceptor.
         """
         return response
+
+    def post_get_transfer_config_with_metadata(
+        self,
+        response: transfer.TransferConfig,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[transfer.TransferConfig, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_transfer_config
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the DataTransferService server but before it is returned to user code.
+
+        We recommend only using this `post_get_transfer_config_with_metadata`
+        interceptor in new development instead of the `post_get_transfer_config` interceptor.
+        When both interceptors are used, this `post_get_transfer_config_with_metadata` interceptor runs after the
+        `post_get_transfer_config` interceptor. The (possibly modified) response returned by
+        `post_get_transfer_config` will be passed to
+        `post_get_transfer_config_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_transfer_run(
         self,
@@ -351,11 +445,34 @@ class DataTransferServiceRestInterceptor:
     ) -> transfer.TransferRun:
         """Post-rpc interceptor for get_transfer_run
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_transfer_run_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the DataTransferService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_transfer_run` interceptor runs
+        before the `post_get_transfer_run_with_metadata` interceptor.
         """
         return response
+
+    def post_get_transfer_run_with_metadata(
+        self,
+        response: transfer.TransferRun,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[transfer.TransferRun, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_transfer_run
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the DataTransferService server but before it is returned to user code.
+
+        We recommend only using this `post_get_transfer_run_with_metadata`
+        interceptor in new development instead of the `post_get_transfer_run` interceptor.
+        When both interceptors are used, this `post_get_transfer_run_with_metadata` interceptor runs after the
+        `post_get_transfer_run` interceptor. The (possibly modified) response returned by
+        `post_get_transfer_run` will be passed to
+        `post_get_transfer_run_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_data_sources(
         self,
@@ -376,11 +493,36 @@ class DataTransferServiceRestInterceptor:
     ) -> datatransfer.ListDataSourcesResponse:
         """Post-rpc interceptor for list_data_sources
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_data_sources_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the DataTransferService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_data_sources` interceptor runs
+        before the `post_list_data_sources_with_metadata` interceptor.
         """
         return response
+
+    def post_list_data_sources_with_metadata(
+        self,
+        response: datatransfer.ListDataSourcesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        datatransfer.ListDataSourcesResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_data_sources
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the DataTransferService server but before it is returned to user code.
+
+        We recommend only using this `post_list_data_sources_with_metadata`
+        interceptor in new development instead of the `post_list_data_sources` interceptor.
+        When both interceptors are used, this `post_list_data_sources_with_metadata` interceptor runs after the
+        `post_list_data_sources` interceptor. The (possibly modified) response returned by
+        `post_list_data_sources` will be passed to
+        `post_list_data_sources_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_transfer_configs(
         self,
@@ -401,11 +543,37 @@ class DataTransferServiceRestInterceptor:
     ) -> datatransfer.ListTransferConfigsResponse:
         """Post-rpc interceptor for list_transfer_configs
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_transfer_configs_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the DataTransferService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_transfer_configs` interceptor runs
+        before the `post_list_transfer_configs_with_metadata` interceptor.
         """
         return response
+
+    def post_list_transfer_configs_with_metadata(
+        self,
+        response: datatransfer.ListTransferConfigsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        datatransfer.ListTransferConfigsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_transfer_configs
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the DataTransferService server but before it is returned to user code.
+
+        We recommend only using this `post_list_transfer_configs_with_metadata`
+        interceptor in new development instead of the `post_list_transfer_configs` interceptor.
+        When both interceptors are used, this `post_list_transfer_configs_with_metadata` interceptor runs after the
+        `post_list_transfer_configs` interceptor. The (possibly modified) response returned by
+        `post_list_transfer_configs` will be passed to
+        `post_list_transfer_configs_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_transfer_logs(
         self,
@@ -426,11 +594,36 @@ class DataTransferServiceRestInterceptor:
     ) -> datatransfer.ListTransferLogsResponse:
         """Post-rpc interceptor for list_transfer_logs
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_transfer_logs_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the DataTransferService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_transfer_logs` interceptor runs
+        before the `post_list_transfer_logs_with_metadata` interceptor.
         """
         return response
+
+    def post_list_transfer_logs_with_metadata(
+        self,
+        response: datatransfer.ListTransferLogsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        datatransfer.ListTransferLogsResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_transfer_logs
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the DataTransferService server but before it is returned to user code.
+
+        We recommend only using this `post_list_transfer_logs_with_metadata`
+        interceptor in new development instead of the `post_list_transfer_logs` interceptor.
+        When both interceptors are used, this `post_list_transfer_logs_with_metadata` interceptor runs after the
+        `post_list_transfer_logs` interceptor. The (possibly modified) response returned by
+        `post_list_transfer_logs` will be passed to
+        `post_list_transfer_logs_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_transfer_runs(
         self,
@@ -451,11 +644,36 @@ class DataTransferServiceRestInterceptor:
     ) -> datatransfer.ListTransferRunsResponse:
         """Post-rpc interceptor for list_transfer_runs
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_transfer_runs_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the DataTransferService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_transfer_runs` interceptor runs
+        before the `post_list_transfer_runs_with_metadata` interceptor.
         """
         return response
+
+    def post_list_transfer_runs_with_metadata(
+        self,
+        response: datatransfer.ListTransferRunsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        datatransfer.ListTransferRunsResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_transfer_runs
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the DataTransferService server but before it is returned to user code.
+
+        We recommend only using this `post_list_transfer_runs_with_metadata`
+        interceptor in new development instead of the `post_list_transfer_runs` interceptor.
+        When both interceptors are used, this `post_list_transfer_runs_with_metadata` interceptor runs after the
+        `post_list_transfer_runs` interceptor. The (possibly modified) response returned by
+        `post_list_transfer_runs` will be passed to
+        `post_list_transfer_runs_with_metadata`.
+        """
+        return response, metadata
 
     def pre_schedule_transfer_runs(
         self,
@@ -477,11 +695,37 @@ class DataTransferServiceRestInterceptor:
     ) -> datatransfer.ScheduleTransferRunsResponse:
         """Post-rpc interceptor for schedule_transfer_runs
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_schedule_transfer_runs_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the DataTransferService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_schedule_transfer_runs` interceptor runs
+        before the `post_schedule_transfer_runs_with_metadata` interceptor.
         """
         return response
+
+    def post_schedule_transfer_runs_with_metadata(
+        self,
+        response: datatransfer.ScheduleTransferRunsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        datatransfer.ScheduleTransferRunsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for schedule_transfer_runs
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the DataTransferService server but before it is returned to user code.
+
+        We recommend only using this `post_schedule_transfer_runs_with_metadata`
+        interceptor in new development instead of the `post_schedule_transfer_runs` interceptor.
+        When both interceptors are used, this `post_schedule_transfer_runs_with_metadata` interceptor runs after the
+        `post_schedule_transfer_runs` interceptor. The (possibly modified) response returned by
+        `post_schedule_transfer_runs` will be passed to
+        `post_schedule_transfer_runs_with_metadata`.
+        """
+        return response, metadata
 
     def pre_start_manual_transfer_runs(
         self,
@@ -503,11 +747,37 @@ class DataTransferServiceRestInterceptor:
     ) -> datatransfer.StartManualTransferRunsResponse:
         """Post-rpc interceptor for start_manual_transfer_runs
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_start_manual_transfer_runs_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the DataTransferService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_start_manual_transfer_runs` interceptor runs
+        before the `post_start_manual_transfer_runs_with_metadata` interceptor.
         """
         return response
+
+    def post_start_manual_transfer_runs_with_metadata(
+        self,
+        response: datatransfer.StartManualTransferRunsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        datatransfer.StartManualTransferRunsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for start_manual_transfer_runs
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the DataTransferService server but before it is returned to user code.
+
+        We recommend only using this `post_start_manual_transfer_runs_with_metadata`
+        interceptor in new development instead of the `post_start_manual_transfer_runs` interceptor.
+        When both interceptors are used, this `post_start_manual_transfer_runs_with_metadata` interceptor runs after the
+        `post_start_manual_transfer_runs` interceptor. The (possibly modified) response returned by
+        `post_start_manual_transfer_runs` will be passed to
+        `post_start_manual_transfer_runs_with_metadata`.
+        """
+        return response, metadata
 
     def pre_unenroll_data_sources(
         self,
@@ -543,11 +813,34 @@ class DataTransferServiceRestInterceptor:
     ) -> transfer.TransferConfig:
         """Post-rpc interceptor for update_transfer_config
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_transfer_config_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the DataTransferService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_transfer_config` interceptor runs
+        before the `post_update_transfer_config_with_metadata` interceptor.
         """
         return response
+
+    def post_update_transfer_config_with_metadata(
+        self,
+        response: transfer.TransferConfig,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[transfer.TransferConfig, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_transfer_config
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the DataTransferService server but before it is returned to user code.
+
+        We recommend only using this `post_update_transfer_config_with_metadata`
+        interceptor in new development instead of the `post_update_transfer_config` interceptor.
+        When both interceptors are used, this `post_update_transfer_config_with_metadata` interceptor runs after the
+        `post_update_transfer_config` interceptor. The (possibly modified) response returned by
+        `post_update_transfer_config` will be passed to
+        `post_update_transfer_config_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_location(
         self,
@@ -825,6 +1118,10 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_check_valid_creds(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_check_valid_creds_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -998,6 +1295,10 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_transfer_config(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_transfer_config_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1485,6 +1786,10 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_data_source(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_data_source_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1638,6 +1943,10 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_transfer_config(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_transfer_config_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1782,6 +2091,10 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_transfer_run(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_transfer_run_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1929,6 +2242,10 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_data_sources(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_data_sources_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2079,6 +2396,10 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_transfer_configs(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_transfer_configs_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2228,6 +2549,10 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_transfer_logs(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_transfer_logs_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2375,6 +2700,10 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_transfer_runs(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_transfer_runs_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2531,6 +2860,10 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_schedule_transfer_runs(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_schedule_transfer_runs_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2688,6 +3021,10 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_start_manual_transfer_runs(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_start_manual_transfer_runs_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2974,6 +3311,10 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_transfer_config(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_transfer_config_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

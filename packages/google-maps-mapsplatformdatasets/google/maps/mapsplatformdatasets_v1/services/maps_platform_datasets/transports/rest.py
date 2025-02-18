@@ -139,11 +139,34 @@ class MapsPlatformDatasetsRestInterceptor:
     def post_create_dataset(self, response: gmm_dataset.Dataset) -> gmm_dataset.Dataset:
         """Post-rpc interceptor for create_dataset
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_dataset_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the MapsPlatformDatasets server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_dataset` interceptor runs
+        before the `post_create_dataset_with_metadata` interceptor.
         """
         return response
+
+    def post_create_dataset_with_metadata(
+        self,
+        response: gmm_dataset.Dataset,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[gmm_dataset.Dataset, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_dataset
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the MapsPlatformDatasets server but before it is returned to user code.
+
+        We recommend only using this `post_create_dataset_with_metadata`
+        interceptor in new development instead of the `post_create_dataset` interceptor.
+        When both interceptors are used, this `post_create_dataset_with_metadata` interceptor runs after the
+        `post_create_dataset` interceptor. The (possibly modified) response returned by
+        `post_create_dataset` will be passed to
+        `post_create_dataset_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_dataset(
         self,
@@ -180,11 +203,37 @@ class MapsPlatformDatasetsRestInterceptor:
     ) -> maps_platform_datasets.FetchDatasetErrorsResponse:
         """Post-rpc interceptor for fetch_dataset_errors
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_fetch_dataset_errors_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the MapsPlatformDatasets server but before
-        it is returned to user code.
+        it is returned to user code. This `post_fetch_dataset_errors` interceptor runs
+        before the `post_fetch_dataset_errors_with_metadata` interceptor.
         """
         return response
+
+    def post_fetch_dataset_errors_with_metadata(
+        self,
+        response: maps_platform_datasets.FetchDatasetErrorsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        maps_platform_datasets.FetchDatasetErrorsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for fetch_dataset_errors
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the MapsPlatformDatasets server but before it is returned to user code.
+
+        We recommend only using this `post_fetch_dataset_errors_with_metadata`
+        interceptor in new development instead of the `post_fetch_dataset_errors` interceptor.
+        When both interceptors are used, this `post_fetch_dataset_errors_with_metadata` interceptor runs after the
+        `post_fetch_dataset_errors` interceptor. The (possibly modified) response returned by
+        `post_fetch_dataset_errors` will be passed to
+        `post_fetch_dataset_errors_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_dataset(
         self,
@@ -204,11 +253,34 @@ class MapsPlatformDatasetsRestInterceptor:
     def post_get_dataset(self, response: dataset.Dataset) -> dataset.Dataset:
         """Post-rpc interceptor for get_dataset
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_dataset_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the MapsPlatformDatasets server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_dataset` interceptor runs
+        before the `post_get_dataset_with_metadata` interceptor.
         """
         return response
+
+    def post_get_dataset_with_metadata(
+        self,
+        response: dataset.Dataset,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[dataset.Dataset, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_dataset
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the MapsPlatformDatasets server but before it is returned to user code.
+
+        We recommend only using this `post_get_dataset_with_metadata`
+        interceptor in new development instead of the `post_get_dataset` interceptor.
+        When both interceptors are used, this `post_get_dataset_with_metadata` interceptor runs after the
+        `post_get_dataset` interceptor. The (possibly modified) response returned by
+        `post_get_dataset` will be passed to
+        `post_get_dataset_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_datasets(
         self,
@@ -230,11 +302,37 @@ class MapsPlatformDatasetsRestInterceptor:
     ) -> maps_platform_datasets.ListDatasetsResponse:
         """Post-rpc interceptor for list_datasets
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_datasets_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the MapsPlatformDatasets server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_datasets` interceptor runs
+        before the `post_list_datasets_with_metadata` interceptor.
         """
         return response
+
+    def post_list_datasets_with_metadata(
+        self,
+        response: maps_platform_datasets.ListDatasetsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        maps_platform_datasets.ListDatasetsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_datasets
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the MapsPlatformDatasets server but before it is returned to user code.
+
+        We recommend only using this `post_list_datasets_with_metadata`
+        interceptor in new development instead of the `post_list_datasets` interceptor.
+        When both interceptors are used, this `post_list_datasets_with_metadata` interceptor runs after the
+        `post_list_datasets` interceptor. The (possibly modified) response returned by
+        `post_list_datasets` will be passed to
+        `post_list_datasets_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_dataset_metadata(
         self,
@@ -256,11 +354,34 @@ class MapsPlatformDatasetsRestInterceptor:
     ) -> gmm_dataset.Dataset:
         """Post-rpc interceptor for update_dataset_metadata
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_dataset_metadata_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the MapsPlatformDatasets server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_dataset_metadata` interceptor runs
+        before the `post_update_dataset_metadata_with_metadata` interceptor.
         """
         return response
+
+    def post_update_dataset_metadata_with_metadata(
+        self,
+        response: gmm_dataset.Dataset,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[gmm_dataset.Dataset, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_dataset_metadata
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the MapsPlatformDatasets server but before it is returned to user code.
+
+        We recommend only using this `post_update_dataset_metadata_with_metadata`
+        interceptor in new development instead of the `post_update_dataset_metadata` interceptor.
+        When both interceptors are used, this `post_update_dataset_metadata_with_metadata` interceptor runs after the
+        `post_update_dataset_metadata` interceptor. The (possibly modified) response returned by
+        `post_update_dataset_metadata` will be passed to
+        `post_update_dataset_metadata_with_metadata`.
+        """
+        return response, metadata
 
 
 @dataclasses.dataclass
@@ -475,6 +596,10 @@ class MapsPlatformDatasetsRestTransport(_BaseMapsPlatformDatasetsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_dataset(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_dataset_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -730,6 +855,10 @@ class MapsPlatformDatasetsRestTransport(_BaseMapsPlatformDatasetsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_fetch_dataset_errors(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_fetch_dataset_errors_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -877,6 +1006,10 @@ class MapsPlatformDatasetsRestTransport(_BaseMapsPlatformDatasetsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_dataset(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_dataset_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1019,6 +1152,10 @@ class MapsPlatformDatasetsRestTransport(_BaseMapsPlatformDatasetsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_datasets(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_datasets_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1175,6 +1312,10 @@ class MapsPlatformDatasetsRestTransport(_BaseMapsPlatformDatasetsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_dataset_metadata(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_dataset_metadata_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

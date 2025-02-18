@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.13.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-service-management-v1.12.0...google-cloud-service-management-v1.13.0) (2025-02-12)
+
+
+### Features
+
+* Add REST Interceptors which support reading metadata ([7a2f3e6](https://github.com/googleapis/google-cloud-python/commit/7a2f3e60244aac5e5037f442629ff84c58a3fbf0))
+* add support for field generate_omitted_as_internal in selective gapic generation ([7a2f3e6](https://github.com/googleapis/google-cloud-python/commit/7a2f3e60244aac5e5037f442629ff84c58a3fbf0))
+* Add support for reading selective GAPIC generation methods from service YAML ([7a2f3e6](https://github.com/googleapis/google-cloud-python/commit/7a2f3e60244aac5e5037f442629ff84c58a3fbf0))
+
 ## [1.12.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-service-management-v1.11.0...google-cloud-service-management-v1.12.0) (2024-12-12)
 
 

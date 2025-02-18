@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.2.8](https://github.com/googleapis/google-cloud-python/compare/google-maps-fleetengine-delivery-v0.2.7...google-maps-fleetengine-delivery-v0.2.8) (2025-02-12)
+
+
+### Features
+
+* Add REST Interceptors which support reading metadata ([5cdcc9d](https://github.com/googleapis/google-cloud-python/commit/5cdcc9d9d3e259c9a743895940552eb75b4554d3))
+* Add support for reading selective GAPIC generation methods from service YAML ([5cdcc9d](https://github.com/googleapis/google-cloud-python/commit/5cdcc9d9d3e259c9a743895940552eb75b4554d3))
+
 ## [0.2.7](https://github.com/googleapis/google-cloud-python/compare/google-maps-fleetengine-delivery-v0.2.6...google-maps-fleetengine-delivery-v0.2.7) (2024-12-12)
 
 

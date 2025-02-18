@@ -331,6 +331,9 @@ class AzureMetadata(proto.Message):
         resource_group (google.cloud.securitycenter_v2.types.AzureMetadata.AzureResourceGroup):
             The Azure resource group associated with the
             resource.
+        tenant (google.cloud.securitycenter_v2.types.AzureMetadata.AzureTenant):
+            The Azure Entra tenant associated with the
+            resource.
     """
 
     class AzureManagementGroup(proto.Message):
@@ -378,14 +381,40 @@ class AzureMetadata(proto.Message):
         r"""Represents an Azure resource group.
 
         Attributes:
+            id (str):
+                The ID of the Azure resource group.
             name (str):
                 The name of the Azure resource group. This is
                 not a UUID.
         """
 
+        id: str = proto.Field(
+            proto.STRING,
+            number=2,
+        )
         name: str = proto.Field(
             proto.STRING,
             number=1,
+        )
+
+    class AzureTenant(proto.Message):
+        r"""Represents a Microsoft Entra tenant.
+
+        Attributes:
+            id (str):
+                The ID of the Microsoft Entra tenant, for
+                example, "a11aaa11-aa11-1aa1-11aa-1aaa11a".
+            display_name (str):
+                The display name of the Azure tenant.
+        """
+
+        id: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        display_name: str = proto.Field(
+            proto.STRING,
+            number=2,
         )
 
     management_groups: MutableSequence[AzureManagementGroup] = proto.RepeatedField(
@@ -402,6 +431,11 @@ class AzureMetadata(proto.Message):
         proto.MESSAGE,
         number=3,
         message=AzureResourceGroup,
+    )
+    tenant: AzureTenant = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message=AzureTenant,
     )
 
 

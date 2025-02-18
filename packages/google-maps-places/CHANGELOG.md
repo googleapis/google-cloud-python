@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.1.23](https://github.com/googleapis/google-cloud-python/compare/google-maps-places-v0.1.22...google-maps-places-v0.1.23) (2025-02-12)
+
+
+### Features
+
+* Add REST Interceptors which support reading metadata ([24b5afe](https://github.com/googleapis/google-cloud-python/commit/24b5afe41f5b62be671301e19a1ddc6ee97a24f2))
+* Add support for reading selective GAPIC generation methods from service YAML ([24b5afe](https://github.com/googleapis/google-cloud-python/commit/24b5afe41f5b62be671301e19a1ddc6ee97a24f2))
+
+
+### Bug Fixes
+
+* add oauth scopes to Places proto ([24b5afe](https://github.com/googleapis/google-cloud-python/commit/24b5afe41f5b62be671301e19a1ddc6ee97a24f2))
+
 ## [0.1.22](https://github.com/googleapis/google-cloud-python/compare/google-maps-places-v0.1.21...google-maps-places-v0.1.22) (2025-01-27)
 
 

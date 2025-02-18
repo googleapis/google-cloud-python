@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.10.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-certificate-manager-v1.9.0...google-cloud-certificate-manager-v1.10.0) (2025-02-12)
+
+
+### Features
+
+* Add REST Interceptors which support reading metadata ([e22e2bd](https://github.com/googleapis/google-cloud-python/commit/e22e2bde55d11d2f85e9d2caf1d152a4027f88cf))
+* Add support for reading selective GAPIC generation methods from service YAML ([e22e2bd](https://github.com/googleapis/google-cloud-python/commit/e22e2bde55d11d2f85e9d2caf1d152a4027f88cf))
+
 ## [1.9.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-certificate-manager-v1.8.1...google-cloud-certificate-manager-v1.9.0) (2024-12-12)
 
 

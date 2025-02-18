@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.7.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-connectivity-v2.6.0...google-cloud-network-connectivity-v2.7.0) (2025-02-12)
+
+
+### Features
+
+* Add REST Interceptors which support reading metadata ([a0910dd](https://github.com/googleapis/google-cloud-python/commit/a0910dd51541d238bc5fcf10159066ddfd928579))
+* Add support for reading selective GAPIC generation methods from service YAML ([a0910dd](https://github.com/googleapis/google-cloud-python/commit/a0910dd51541d238bc5fcf10159066ddfd928579))
+
 ## [2.6.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-connectivity-v2.5.1...google-cloud-network-connectivity-v2.6.0) (2024-12-12)
 
 

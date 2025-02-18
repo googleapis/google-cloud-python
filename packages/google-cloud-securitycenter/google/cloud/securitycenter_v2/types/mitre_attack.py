@@ -111,7 +111,6 @@ class MitreAttack(proto.Message):
     class Technique(proto.Enum):
         r"""MITRE ATT&CK techniques that can be referenced by SCC
         findings. See: https://attack.mitre.org/techniques/enterprise/
-        Next ID: 65
 
         Values:
             TECHNIQUE_UNSPECIFIED (0):
@@ -206,6 +205,8 @@ class MitreAttack(proto.Message):
                 T1539
             CREATE_OR_MODIFY_SYSTEM_PROCESS (24):
                 T1543
+            EVENT_TRIGGERED_EXECUTION (65):
+                T1546
             ABUSE_ELEVATION_CONTROL_MECHANISM (34):
                 T1548
             UNSECURED_CREDENTIALS (13):
@@ -238,6 +239,8 @@ class MitreAttack(proto.Message):
                 T1595.001
             CONTAINER_ADMINISTRATION_COMMAND (60):
                 T1609
+            DEPLOY_CONTAINER (66):
+                T1610
             ESCAPE_TO_HOST (61):
                 T1611
             CONTAINER_AND_RESOURCE_DISCOVERY (57):
@@ -291,6 +294,7 @@ class MitreAttack(proto.Message):
         ACCOUNT_ACCESS_REMOVAL = 51
         STEAL_WEB_SESSION_COOKIE = 25
         CREATE_OR_MODIFY_SYSTEM_PROCESS = 24
+        EVENT_TRIGGERED_EXECUTION = 65
         ABUSE_ELEVATION_CONTROL_MECHANISM = 34
         UNSECURED_CREDENTIALS = 13
         MODIFY_AUTHENTICATION_PROCESS = 28
@@ -307,6 +311,7 @@ class MitreAttack(proto.Message):
         ACTIVE_SCANNING = 1
         SCANNING_IP_BLOCKS = 2
         CONTAINER_ADMINISTRATION_COMMAND = 60
+        DEPLOY_CONTAINER = 66
         ESCAPE_TO_HOST = 61
         CONTAINER_AND_RESOURCE_DISCOVERY = 57
         STEAL_OR_FORGE_AUTHENTICATION_CERTIFICATES = 62

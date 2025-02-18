@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-speech/#history
 
+## [2.31.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-speech-v2.30.0...google-cloud-speech-v2.31.0) (2025-02-12)
+
+
+### Features
+
+* Add REST Interceptors which support reading metadata ([87b5382](https://github.com/googleapis/google-cloud-python/commit/87b5382a05b7a0c9faeabaf3e2baa6f05c88bb8e))
+* Add support for reading selective GAPIC generation methods from service YAML ([87b5382](https://github.com/googleapis/google-cloud-python/commit/87b5382a05b7a0c9faeabaf3e2baa6f05c88bb8e))
+
 ## [2.30.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-speech-v2.29.0...google-cloud-speech-v2.30.0) (2025-01-02)
 
 

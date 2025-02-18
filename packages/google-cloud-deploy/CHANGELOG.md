@@ -1,5 +1,18 @@
 # Changelog
 
+## [2.6.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-deploy-v2.5.0...google-cloud-deploy-v2.6.0) (2025-02-12)
+
+
+### Features
+
+* Add REST Interceptors which support reading metadata ([e92d527](https://github.com/googleapis/google-cloud-python/commit/e92d52797ffbce45d033eb81af24e0cad32baa55))
+* Add support for reading selective GAPIC generation methods from service YAML ([e92d527](https://github.com/googleapis/google-cloud-python/commit/e92d52797ffbce45d033eb81af24e0cad32baa55))
+
+
+### Documentation
+
+* Minor documentation improvements ([3e64234](https://github.com/googleapis/google-cloud-python/commit/3e64234e201bbbaaceb39e8b0da0258c3d5be3b2))
+
 ## [2.5.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-deploy-v2.4.1...google-cloud-deploy-v2.5.0) (2024-12-12)
 
 

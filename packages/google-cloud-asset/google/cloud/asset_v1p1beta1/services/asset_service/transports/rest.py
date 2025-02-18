@@ -111,11 +111,37 @@ class AssetServiceRestInterceptor:
     ) -> asset_service.SearchAllIamPoliciesResponse:
         """Post-rpc interceptor for search_all_iam_policies
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_search_all_iam_policies_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AssetService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_search_all_iam_policies` interceptor runs
+        before the `post_search_all_iam_policies_with_metadata` interceptor.
         """
         return response
+
+    def post_search_all_iam_policies_with_metadata(
+        self,
+        response: asset_service.SearchAllIamPoliciesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        asset_service.SearchAllIamPoliciesResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for search_all_iam_policies
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AssetService server but before it is returned to user code.
+
+        We recommend only using this `post_search_all_iam_policies_with_metadata`
+        interceptor in new development instead of the `post_search_all_iam_policies` interceptor.
+        When both interceptors are used, this `post_search_all_iam_policies_with_metadata` interceptor runs after the
+        `post_search_all_iam_policies` interceptor. The (possibly modified) response returned by
+        `post_search_all_iam_policies` will be passed to
+        `post_search_all_iam_policies_with_metadata`.
+        """
+        return response, metadata
 
     def pre_search_all_resources(
         self,
@@ -136,11 +162,37 @@ class AssetServiceRestInterceptor:
     ) -> asset_service.SearchAllResourcesResponse:
         """Post-rpc interceptor for search_all_resources
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_search_all_resources_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AssetService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_search_all_resources` interceptor runs
+        before the `post_search_all_resources_with_metadata` interceptor.
         """
         return response
+
+    def post_search_all_resources_with_metadata(
+        self,
+        response: asset_service.SearchAllResourcesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        asset_service.SearchAllResourcesResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for search_all_resources
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AssetService server but before it is returned to user code.
+
+        We recommend only using this `post_search_all_resources_with_metadata`
+        interceptor in new development instead of the `post_search_all_resources` interceptor.
+        When both interceptors are used, this `post_search_all_resources_with_metadata` interceptor runs after the
+        `post_search_all_resources` interceptor. The (possibly modified) response returned by
+        `post_search_all_resources` will be passed to
+        `post_search_all_resources_with_metadata`.
+        """
+        return response, metadata
 
 
 @dataclasses.dataclass
@@ -348,6 +400,10 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_search_all_iam_policies(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_search_all_iam_policies_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -492,6 +548,10 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_search_all_resources(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_search_all_resources_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

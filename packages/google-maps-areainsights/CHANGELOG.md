@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.1.4](https://github.com/googleapis/google-cloud-python/compare/google-maps-areainsights-v0.1.3...google-maps-areainsights-v0.1.4) (2025-02-12)
+
+
+### Features
+
+* Add REST Interceptors which support reading metadata ([5cdcc9d](https://github.com/googleapis/google-cloud-python/commit/5cdcc9d9d3e259c9a743895940552eb75b4554d3))
+* Add support for reading selective GAPIC generation methods from service YAML ([5cdcc9d](https://github.com/googleapis/google-cloud-python/commit/5cdcc9d9d3e259c9a743895940552eb75b4554d3))
+
 ## [0.1.3](https://github.com/googleapis/google-cloud-python/compare/google-maps-areainsights-v0.1.2...google-maps-areainsights-v0.1.3) (2024-12-12)
 
 

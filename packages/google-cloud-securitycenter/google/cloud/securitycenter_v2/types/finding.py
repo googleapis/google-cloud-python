@@ -26,6 +26,9 @@ from google.cloud.securitycenter_v2.types import (
     connection,
     contact_details,
     container,
+    data_access_event,
+    data_flow_event,
+    data_retention_deletion_event,
 )
 from google.cloud.securitycenter_v2.types import (
     external_system,
@@ -58,6 +61,7 @@ from google.cloud.securitycenter_v2.types import access as gcs_access
 from google.cloud.securitycenter_v2.types import application as gcs_application
 from google.cloud.securitycenter_v2.types import cloud_armor as gcs_cloud_armor
 from google.cloud.securitycenter_v2.types import database as gcs_database
+from google.cloud.securitycenter_v2.types import disk as gcs_disk
 from google.cloud.securitycenter_v2.types import indicator as gcs_indicator
 from google.cloud.securitycenter_v2.types import kubernetes as gcs_kubernetes
 from google.cloud.securitycenter_v2.types import load_balancer, log_entry
@@ -333,6 +337,16 @@ class Finding(proto.Message):
             findings that are related in some way. This
             field cannot be updated. Its value is ignored in
             all update requests.
+        disk (google.cloud.securitycenter_v2.types.Disk):
+            Disk associated with the finding.
+        data_access_events (MutableSequence[google.cloud.securitycenter_v2.types.DataAccessEvent]):
+            Data access events associated with the
+            finding.
+        data_flow_events (MutableSequence[google.cloud.securitycenter_v2.types.DataFlowEvent]):
+            Data flow events associated with the finding.
+        data_retention_deletion_events (MutableSequence[google.cloud.securitycenter_v2.types.DataRetentionDeletionEvent]):
+            Data retention deletion events associated
+            with the finding.
     """
 
     class State(proto.Enum):
@@ -488,6 +502,9 @@ class Finding(proto.Message):
                 Describes a combination of security issues
                 that represent a more severe security problem
                 when taken together.
+            SENSITIVE_DATA_RISK (8):
+                Describes a potential security risk to data
+                assets that contain sensitive data.
         """
         FINDING_CLASS_UNSPECIFIED = 0
         THREAT = 1
@@ -497,6 +514,7 @@ class Finding(proto.Message):
         SCC_ERROR = 5
         POSTURE_VIOLATION = 6
         TOXIC_COMBINATION = 7
+        SENSITIVE_DATA_RISK = 8
 
     class MuteInfo(proto.Message):
         r"""Mute information about the finding, including whether the
@@ -824,6 +842,32 @@ class Finding(proto.Message):
         proto.MESSAGE,
         number=57,
         message=group_membership.GroupMembership,
+    )
+    disk: gcs_disk.Disk = proto.Field(
+        proto.MESSAGE,
+        number=58,
+        message=gcs_disk.Disk,
+    )
+    data_access_events: MutableSequence[
+        data_access_event.DataAccessEvent
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=61,
+        message=data_access_event.DataAccessEvent,
+    )
+    data_flow_events: MutableSequence[
+        data_flow_event.DataFlowEvent
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=62,
+        message=data_flow_event.DataFlowEvent,
+    )
+    data_retention_deletion_events: MutableSequence[
+        data_retention_deletion_event.DataRetentionDeletionEvent
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=64,
+        message=data_retention_deletion_event.DataRetentionDeletionEvent,
     )
 
 

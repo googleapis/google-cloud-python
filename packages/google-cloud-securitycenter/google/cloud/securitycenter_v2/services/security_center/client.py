@@ -83,7 +83,11 @@ from google.cloud.securitycenter_v2.types import (
     compliance,
     connection,
     container,
+    data_access_event,
+    data_flow_event,
+    data_retention_deletion_event,
     database,
+    disk,
     exfiltration,
 )
 from google.cloud.securitycenter_v2.types import (

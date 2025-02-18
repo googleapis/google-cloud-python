@@ -126,11 +126,34 @@ class RegionsServiceRestInterceptor:
     def post_create_region(self, response: regions.Region) -> regions.Region:
         """Post-rpc interceptor for create_region
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_region_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the RegionsService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_region` interceptor runs
+        before the `post_create_region_with_metadata` interceptor.
         """
         return response
+
+    def post_create_region_with_metadata(
+        self,
+        response: regions.Region,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[regions.Region, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_region
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the RegionsService server but before it is returned to user code.
+
+        We recommend only using this `post_create_region_with_metadata`
+        interceptor in new development instead of the `post_create_region` interceptor.
+        When both interceptors are used, this `post_create_region_with_metadata` interceptor runs after the
+        `post_create_region` interceptor. The (possibly modified) response returned by
+        `post_create_region` will be passed to
+        `post_create_region_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_region(
         self,
@@ -159,11 +182,34 @@ class RegionsServiceRestInterceptor:
     def post_get_region(self, response: regions.Region) -> regions.Region:
         """Post-rpc interceptor for get_region
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_region_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the RegionsService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_region` interceptor runs
+        before the `post_get_region_with_metadata` interceptor.
         """
         return response
+
+    def post_get_region_with_metadata(
+        self,
+        response: regions.Region,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[regions.Region, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_region
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the RegionsService server but before it is returned to user code.
+
+        We recommend only using this `post_get_region_with_metadata`
+        interceptor in new development instead of the `post_get_region` interceptor.
+        When both interceptors are used, this `post_get_region_with_metadata` interceptor runs after the
+        `post_get_region` interceptor. The (possibly modified) response returned by
+        `post_get_region` will be passed to
+        `post_get_region_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_regions(
         self,
@@ -182,11 +228,34 @@ class RegionsServiceRestInterceptor:
     ) -> regions.ListRegionsResponse:
         """Post-rpc interceptor for list_regions
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_regions_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the RegionsService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_regions` interceptor runs
+        before the `post_list_regions_with_metadata` interceptor.
         """
         return response
+
+    def post_list_regions_with_metadata(
+        self,
+        response: regions.ListRegionsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[regions.ListRegionsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for list_regions
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the RegionsService server but before it is returned to user code.
+
+        We recommend only using this `post_list_regions_with_metadata`
+        interceptor in new development instead of the `post_list_regions` interceptor.
+        When both interceptors are used, this `post_list_regions_with_metadata` interceptor runs after the
+        `post_list_regions` interceptor. The (possibly modified) response returned by
+        `post_list_regions` will be passed to
+        `post_list_regions_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_region(
         self,
@@ -203,11 +272,34 @@ class RegionsServiceRestInterceptor:
     def post_update_region(self, response: regions.Region) -> regions.Region:
         """Post-rpc interceptor for update_region
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_region_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the RegionsService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_region` interceptor runs
+        before the `post_update_region_with_metadata` interceptor.
         """
         return response
+
+    def post_update_region_with_metadata(
+        self,
+        response: regions.Region,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[regions.Region, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_region
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the RegionsService server but before it is returned to user code.
+
+        We recommend only using this `post_update_region_with_metadata`
+        interceptor in new development instead of the `post_update_region` interceptor.
+        When both interceptors are used, this `post_update_region_with_metadata` interceptor runs after the
+        `post_update_region` interceptor. The (possibly modified) response returned by
+        `post_update_region` will be passed to
+        `post_update_region_with_metadata`.
+        """
+        return response, metadata
 
 
 @dataclasses.dataclass
@@ -431,6 +523,10 @@ class RegionsServiceRestTransport(_BaseRegionsServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_region(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_region_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -689,6 +785,10 @@ class RegionsServiceRestTransport(_BaseRegionsServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_region(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_region_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -829,6 +929,10 @@ class RegionsServiceRestTransport(_BaseRegionsServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_regions(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_regions_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -983,6 +1087,10 @@ class RegionsServiceRestTransport(_BaseRegionsServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_region(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_region_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

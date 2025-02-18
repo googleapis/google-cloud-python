@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-build/#history
 
+## [3.30.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-build-v3.29.0...google-cloud-build-v3.30.0) (2025-02-12)
+
+
+### Features
+
+* Add REST Interceptors which support reading metadata ([e22e2bd](https://github.com/googleapis/google-cloud-python/commit/e22e2bde55d11d2f85e9d2caf1d152a4027f88cf))
+* Add support for reading selective GAPIC generation methods from service YAML ([e22e2bd](https://github.com/googleapis/google-cloud-python/commit/e22e2bde55d11d2f85e9d2caf1d152a4027f88cf))
+
 ## [3.29.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-build-v3.28.0...google-cloud-build-v3.29.0) (2025-01-13)
 
 

@@ -147,11 +147,34 @@ class AssuredWorkloadsServiceRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_workload
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_workload_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AssuredWorkloadsService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_workload` interceptor runs
+        before the `post_create_workload_with_metadata` interceptor.
         """
         return response
+
+    def post_create_workload_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_workload
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AssuredWorkloadsService server but before it is returned to user code.
+
+        We recommend only using this `post_create_workload_with_metadata`
+        interceptor in new development instead of the `post_create_workload` interceptor.
+        When both interceptors are used, this `post_create_workload_with_metadata` interceptor runs after the
+        `post_create_workload` interceptor. The (possibly modified) response returned by
+        `post_create_workload` will be passed to
+        `post_create_workload_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_workload(
         self,
@@ -187,11 +210,37 @@ class AssuredWorkloadsServiceRestInterceptor:
     ) -> assuredworkloads.RestrictAllowedResourcesResponse:
         """Post-rpc interceptor for restrict_allowed_resources
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_restrict_allowed_resources_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AssuredWorkloadsService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_restrict_allowed_resources` interceptor runs
+        before the `post_restrict_allowed_resources_with_metadata` interceptor.
         """
         return response
+
+    def post_restrict_allowed_resources_with_metadata(
+        self,
+        response: assuredworkloads.RestrictAllowedResourcesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        assuredworkloads.RestrictAllowedResourcesResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for restrict_allowed_resources
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AssuredWorkloadsService server but before it is returned to user code.
+
+        We recommend only using this `post_restrict_allowed_resources_with_metadata`
+        interceptor in new development instead of the `post_restrict_allowed_resources` interceptor.
+        When both interceptors are used, this `post_restrict_allowed_resources_with_metadata` interceptor runs after the
+        `post_restrict_allowed_resources` interceptor. The (possibly modified) response returned by
+        `post_restrict_allowed_resources` will be passed to
+        `post_restrict_allowed_resources_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_operation(
         self,
@@ -517,6 +566,10 @@ class AssuredWorkloadsServiceRestTransport(_BaseAssuredWorkloadsServiceRestTrans
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_workload(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_workload_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -818,6 +871,10 @@ class AssuredWorkloadsServiceRestTransport(_BaseAssuredWorkloadsServiceRestTrans
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_restrict_allowed_resources(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_restrict_allowed_resources_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

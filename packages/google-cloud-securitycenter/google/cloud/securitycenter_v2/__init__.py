@@ -38,7 +38,11 @@ from .types.compliance import Compliance
 from .types.connection import Connection
 from .types.contact_details import Contact, ContactDetails
 from .types.container import Container
+from .types.data_access_event import DataAccessEvent
+from .types.data_flow_event import DataFlowEvent
+from .types.data_retention_deletion_event import DataRetentionDeletionEvent
 from .types.database import Database
+from .types.disk import Disk
 from .types.exfiltration import ExfilResource, Exfiltration
 from .types.external_system import ExternalSystem
 from .types.file import File
@@ -169,11 +173,15 @@ __all__ = (
     "CreateSourceRequest",
     "Cve",
     "Cvssv3",
+    "DataAccessEvent",
+    "DataFlowEvent",
+    "DataRetentionDeletionEvent",
     "Database",
     "DeleteBigQueryExportRequest",
     "DeleteMuteConfigRequest",
     "DeleteNotificationConfigRequest",
     "DeleteResourceValueConfigRequest",
+    "Disk",
     "EnvironmentVariable",
     "ExfilResource",
     "Exfiltration",

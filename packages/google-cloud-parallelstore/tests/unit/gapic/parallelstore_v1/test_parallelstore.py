@@ -1679,6 +1679,7 @@ def test_get_instance(request_type, transport: str = "grpc"):
             effective_reserved_ip_range="effective_reserved_ip_range_value",
             file_stripe_level=parallelstore.FileStripeLevel.FILE_STRIPE_LEVEL_MIN,
             directory_stripe_level=parallelstore.DirectoryStripeLevel.DIRECTORY_STRIPE_LEVEL_MIN,
+            deployment_type=parallelstore.DeploymentType.SCRATCH,
         )
         response = client.get_instance(request)
 
@@ -1707,6 +1708,7 @@ def test_get_instance(request_type, transport: str = "grpc"):
         response.directory_stripe_level
         == parallelstore.DirectoryStripeLevel.DIRECTORY_STRIPE_LEVEL_MIN
     )
+    assert response.deployment_type == parallelstore.DeploymentType.SCRATCH
 
 
 def test_get_instance_non_empty_request_with_auto_populated_field():
@@ -1843,6 +1845,7 @@ async def test_get_instance_async(
                 effective_reserved_ip_range="effective_reserved_ip_range_value",
                 file_stripe_level=parallelstore.FileStripeLevel.FILE_STRIPE_LEVEL_MIN,
                 directory_stripe_level=parallelstore.DirectoryStripeLevel.DIRECTORY_STRIPE_LEVEL_MIN,
+                deployment_type=parallelstore.DeploymentType.SCRATCH,
             )
         )
         response = await client.get_instance(request)
@@ -1872,6 +1875,7 @@ async def test_get_instance_async(
         response.directory_stripe_level
         == parallelstore.DirectoryStripeLevel.DIRECTORY_STRIPE_LEVEL_MIN
     )
+    assert response.deployment_type == parallelstore.DeploymentType.SCRATCH
 
 
 @pytest.mark.asyncio
@@ -5123,6 +5127,7 @@ async def test_get_instance_empty_call_grpc_asyncio():
                 effective_reserved_ip_range="effective_reserved_ip_range_value",
                 file_stripe_level=parallelstore.FileStripeLevel.FILE_STRIPE_LEVEL_MIN,
                 directory_stripe_level=parallelstore.DirectoryStripeLevel.DIRECTORY_STRIPE_LEVEL_MIN,
+                deployment_type=parallelstore.DeploymentType.SCRATCH,
             )
         )
         await client.get_instance(request=None)
@@ -5455,6 +5460,7 @@ def test_get_instance_rest_call_success(request_type):
             effective_reserved_ip_range="effective_reserved_ip_range_value",
             file_stripe_level=parallelstore.FileStripeLevel.FILE_STRIPE_LEVEL_MIN,
             directory_stripe_level=parallelstore.DirectoryStripeLevel.DIRECTORY_STRIPE_LEVEL_MIN,
+            deployment_type=parallelstore.DeploymentType.SCRATCH,
         )
 
         # Wrap the value into a proper Response obj
@@ -5488,6 +5494,7 @@ def test_get_instance_rest_call_success(request_type):
         response.directory_stripe_level
         == parallelstore.DirectoryStripeLevel.DIRECTORY_STRIPE_LEVEL_MIN
     )
+    assert response.deployment_type == parallelstore.DeploymentType.SCRATCH
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -5606,6 +5613,7 @@ def test_create_instance_rest_call_success(request_type):
         "effective_reserved_ip_range": "effective_reserved_ip_range_value",
         "file_stripe_level": 1,
         "directory_stripe_level": 1,
+        "deployment_type": 1,
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -5816,6 +5824,7 @@ def test_update_instance_rest_call_success(request_type):
         "effective_reserved_ip_range": "effective_reserved_ip_range_value",
         "file_stripe_level": 1,
         "directory_stripe_level": 1,
+        "deployment_type": 1,
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
