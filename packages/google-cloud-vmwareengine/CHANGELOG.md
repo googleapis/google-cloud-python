@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.8.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-vmwareengine-v1.8.0...google-cloud-vmwareengine-v1.8.1) (2025-02-18)
+
+
+### Bug Fixes
+
+* **deps:** Require grpc-google-iam-v1&gt;=0.14.0 ([0c5f868](https://github.com/googleapis/google-cloud-python/commit/0c5f86820c42e5cd857c1a0eef25f5e6a65b2ad8))
+
 ## [1.8.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-vmwareengine-v1.7.0...google-cloud-vmwareengine-v1.8.0) (2025-02-12)
 
 

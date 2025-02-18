@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-tasks/#history
 
+## [2.19.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-tasks-v2.19.0...google-cloud-tasks-v2.19.1) (2025-02-18)
+
+
+### Bug Fixes
+
+* **deps:** Require grpc-google-iam-v1&gt;=0.14.0 ([770cf0f](https://github.com/googleapis/google-cloud-python/commit/770cf0f31125586a8622e9639f6d24c1bafa9b31))
+
 ## [2.19.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-tasks-v2.18.0...google-cloud-tasks-v2.19.0) (2025-02-12)
 
 

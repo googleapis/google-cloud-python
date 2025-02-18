@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.13](https://github.com/googleapis/google-cloud-python/compare/google-cloud-workstations-v0.5.12...google-cloud-workstations-v0.5.13) (2025-02-18)
+
+
+### Bug Fixes
+
+* **deps:** Require grpc-google-iam-v1&gt;=0.14.0 ([0c5f868](https://github.com/googleapis/google-cloud-python/commit/0c5f86820c42e5cd857c1a0eef25f5e6a65b2ad8))
+
 ## [0.5.12](https://github.com/googleapis/google-cloud-python/compare/google-cloud-workstations-v0.5.11...google-cloud-workstations-v0.5.12) (2025-02-12)
 
 

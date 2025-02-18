@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.4.6](https://github.com/googleapis/google-cloud-python/compare/google-maps-mapsplatformdatasets-v0.4.5...google-maps-mapsplatformdatasets-v0.4.6) (2025-02-18)
+
+
+### Features
+
+* Add REST Interceptors which support reading metadata ([30b675e](https://github.com/googleapis/google-cloud-python/commit/30b675e7e9eaee87f9e7bdf4dc910b01f6a3044f))
+* Add support for reading selective GAPIC generation methods from service YAML ([30b675e](https://github.com/googleapis/google-cloud-python/commit/30b675e7e9eaee87f9e7bdf4dc910b01f6a3044f))
+
 ## [0.4.5](https://github.com/googleapis/google-cloud-python/compare/google-maps-mapsplatformdatasets-v0.4.4...google-maps-mapsplatformdatasets-v0.4.5) (2024-12-12)
 
 
