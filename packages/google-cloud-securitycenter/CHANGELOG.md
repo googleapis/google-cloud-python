@@ -4,6 +4,24 @@
 
 [1]: https://pypi.org/project/google-cloud-securitycenter/#history
 
+## [1.38.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-securitycenter-v1.37.0...google-cloud-securitycenter-v1.38.0) (2025-02-18)
+
+
+### Features
+
+* added data access event fields to finding proto ([7fb3f49](https://github.com/googleapis/google-cloud-python/commit/7fb3f49a1531b4da24771c4ce8380be98980fe8b))
+* added more information about DDoS attack in cloud armor proto ([7fb3f49](https://github.com/googleapis/google-cloud-python/commit/7fb3f49a1531b4da24771c4ce8380be98980fe8b))
+
+
+### Bug Fixes
+
+* **deps:** Require grpc-google-iam-v1&gt;=0.14.0 ([770cf0f](https://github.com/googleapis/google-cloud-python/commit/770cf0f31125586a8622e9639f6d24c1bafa9b31))
+
+
+### Documentation
+
+* Clarified comments for tag_values field in resource_value_config to make it clear that field represents tag value ids, not tag values ([7fb3f49](https://github.com/googleapis/google-cloud-python/commit/7fb3f49a1531b4da24771c4ce8380be98980fe8b))
+
 ## [1.37.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-securitycenter-v1.36.0...google-cloud-securitycenter-v1.37.0) (2025-02-12)
 
 
