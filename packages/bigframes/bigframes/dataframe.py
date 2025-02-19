@@ -103,6 +103,8 @@ class DataFrame(vendored_pandas_frame.DataFrame):
     __doc__ = vendored_pandas_frame.DataFrame.__doc__
     # internal flag to disable cache at all
     _disable_cache_override: bool = False
+    # Must be above 5000 for pandas to delegate to bigframes for binops
+    __pandas_priority__ = 15000
 
     def __init__(
         self,

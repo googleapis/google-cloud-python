@@ -1656,6 +1656,27 @@ def test_series_binop_w_other_types(scalars_dfs, other):
     )
 
 
+@pytest.mark.parametrize(
+    ("other",),
+    [
+        ([-1.4, 2.3, None],),
+        (pd.Index([-1.4, 2.3, None]),),
+        (pd.Series([-1.4, 2.3, None], index=[44, 2, 1]),),
+    ],
+)
+@skip_legacy_pandas
+def test_series_reverse_binop_w_other_types(scalars_dfs, other):
+    scalars_df, scalars_pandas_df = scalars_dfs
+
+    bf_result = (other + scalars_df["int64_col"].head(3)).to_pandas()
+    pd_result = other + scalars_pandas_df["int64_col"].head(3)
+
+    assert_series_equal(
+        bf_result,
+        pd_result,
+    )
+
+
 @skip_legacy_pandas
 def test_series_combine_first(scalars_dfs):
     scalars_df, scalars_pandas_df = scalars_dfs

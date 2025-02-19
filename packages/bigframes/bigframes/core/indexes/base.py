@@ -48,6 +48,8 @@ class Index(vendored_pandas_index.Index):
     _linked_frame: Union[
         bigframes.dataframe.DataFrame, bigframes.series.Series, None
     ] = None
+    # Must be above 5000 for pandas to delegate to bigframes for binops
+    __pandas_priority__ = 12000
 
     # Overrided on __new__ to create subclasses like pandas does
     def __new__(

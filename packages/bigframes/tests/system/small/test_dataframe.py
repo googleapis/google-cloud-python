@@ -2471,6 +2471,20 @@ def test_listlike_binop_axis_1_in_memory_data(scalars_dfs, input):
     assert_pandas_df_equal(bf_result, pd_result, check_dtype=False)
 
 
+@skip_legacy_pandas
+def test_df_reverse_binop_pandas(scalars_dfs):
+    scalars_df, scalars_pandas_df = scalars_dfs
+
+    pd_series = pd.Series([100, 200, 300])
+
+    df_columns = ["int64_col", "float64_col", "int64_too"]
+
+    bf_result = pd_series + scalars_df[df_columns].to_pandas()
+    pd_result = pd_series + scalars_pandas_df[df_columns]
+
+    assert_pandas_df_equal(bf_result, pd_result, check_dtype=False)
+
+
 def test_listlike_binop_axis_1_bf_index(scalars_dfs):
     scalars_df, scalars_pandas_df = scalars_dfs
 
