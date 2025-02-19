@@ -470,7 +470,7 @@ class DlpServiceGrpcTransport(DlpServiceTransport):
         r"""Return a callable for the list info types method over gRPC.
 
         Returns a list of the sensitive information types
-        that DLP API supports. See
+        that the DLP API supports. See
         https://cloud.google.com/sensitive-data-protection/docs/infotypes-reference
         to learn more.
 

@@ -1477,9 +1477,9 @@ class BigQueryTable(proto.Message):
 
     Attributes:
         project_id (str):
-            The Google Cloud Platform project ID of the
-            project containing the table. If omitted,
-            project ID is inferred from the API call.
+            The Google Cloud project ID of the project
+            containing the table. If omitted, project ID is
+            inferred from the API call.
         dataset_id (str):
             Dataset ID of the table.
         table_id (str):

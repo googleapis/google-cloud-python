@@ -382,20 +382,29 @@ def docfx(session):
     ["python", "upb", "cpp"],
 )
 def prerelease_deps(session, protobuf_implementation):
-    """Run all tests with prerelease versions of dependencies installed."""
+    """
+    Run all tests with pre-release versions of dependencies installed
+    rather than the standard non pre-release versions.
+    Pre-releases versions can be installed using
+    `pip install --pre <package>`.
+    """
 
     if protobuf_implementation == "cpp" and session.python in ("3.11", "3.12", "3.13"):
         session.skip("cpp implementation is not supported in python 3.11+")
 
     # Install all dependencies
-    session.install("-e", ".[all, tests, tracing]")
+    session.install("-e", ".")
+
     unit_deps_all = UNIT_TEST_STANDARD_DEPENDENCIES + UNIT_TEST_EXTERNAL_DEPENDENCIES
+    # Install dependencies for the unit test environment
     session.install(*unit_deps_all)
+
     system_deps_all = (
         SYSTEM_TEST_STANDARD_DEPENDENCIES
         + SYSTEM_TEST_EXTERNAL_DEPENDENCIES
         + SYSTEM_TEST_EXTRAS
     )
+    # Install dependencies for the system test environment
     session.install(*system_deps_all)
 
     # Because we test minimum dependency versions on the minimum Python
@@ -417,6 +426,7 @@ def prerelease_deps(session, protobuf_implementation):
         )
     ]
 
+    # Install dependencies specified in `testing/constraints-X.txt`.
     session.install(*constraints_deps)
 
     prerel_deps = [
@@ -450,6 +460,73 @@ def prerelease_deps(session, protobuf_implementation):
     )
     session.run("python", "-c", "import grpc; print(grpc.__version__)")
     session.run("python", "-c", "import google.auth; print(google.auth.__version__)")
+
+    session.run(
+        "py.test",
+        "tests/unit",
+        env={
+            "PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION": protobuf_implementation,
+        },
+    )
+
+
+@nox.session(python="3.13")
+@nox.parametrize(
+    "protobuf_implementation",
+    ["python", "upb"],
+)
+def core_deps_from_source(session, protobuf_implementation):
+    """Run all tests with local versions of core dependencies installed,
+    rather than pulling core dependencies from PyPI.
+    """
+
+    # Install all dependencies
+    session.install(".")
+
+    # Install dependencies for the unit test environment
+    unit_deps_all = UNIT_TEST_STANDARD_DEPENDENCIES + UNIT_TEST_EXTERNAL_DEPENDENCIES
+    session.install(*unit_deps_all)
+
+    # Install dependencies for the system test environment
+    system_deps_all = (
+        SYSTEM_TEST_STANDARD_DEPENDENCIES
+        + SYSTEM_TEST_EXTERNAL_DEPENDENCIES
+        + SYSTEM_TEST_EXTRAS
+    )
+    session.install(*system_deps_all)
+
+    # Because we test minimum dependency versions on the minimum Python
+    # version, the first version we test with in the unit tests sessions has a
+    # constraints file containing all dependencies and extras that should be installed.
+    with open(
+        CURRENT_DIRECTORY
+        / "testing"
+        / f"constraints-{UNIT_TEST_PYTHON_VERSIONS[0]}.txt",
+        encoding="utf-8",
+    ) as constraints_file:
+        constraints_text = constraints_file.read()
+
+    # Ignore leading whitespace and comment lines.
+    constraints_deps = [
+        match.group(1)
+        for match in re.finditer(
+            r"^\s*(\S+)(?===\S+)", constraints_text, flags=re.MULTILINE
+        )
+    ]
+
+    # Install dependencies specified in `testing/constraints-X.txt`.
+    session.install(*constraints_deps)
+
+    core_dependencies_from_source = [
+        "google-api-core @ git+https://github.com/googleapis/python-api-core.git",
+        "google-auth @ git+https://github.com/googleapis/google-auth-library-python.git",
+        f"{CURRENT_DIRECTORY}/../googleapis-common-protos",
+        f"{CURRENT_DIRECTORY}/../grpc-google-iam-v1",
+        "proto-plus @ git+https://github.com/googleapis/proto-plus-python.git",
+    ]
+
+    for dep in core_dependencies_from_source:
+        session.install(dep, "--ignore-installed", "--no-deps")
 
     session.run(
         "py.test",

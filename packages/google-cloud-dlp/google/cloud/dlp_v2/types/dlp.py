@@ -222,6 +222,14 @@ __protobuf__ = proto.module(
         "DiscoveryStartingLocation",
         "OtherCloudDiscoveryStartingLocation",
         "AllOtherResources",
+        "VertexDatasetDiscoveryTarget",
+        "DiscoveryVertexDatasetFilter",
+        "VertexDatasetCollection",
+        "VertexDatasetRegexes",
+        "VertexDatasetRegex",
+        "VertexDatasetResourceReference",
+        "DiscoveryVertexDatasetConditions",
+        "DiscoveryVertexDatasetGenerationCadence",
         "DlpJob",
         "GetDlpJobRequest",
         "ListDlpJobsRequest",
@@ -267,6 +275,7 @@ __protobuf__ = proto.module(
         "OtherInfoTypeSummary",
         "ColumnDataProfile",
         "FileStoreDataProfile",
+        "RelatedResource",
         "FileStoreInfoTypeSummary",
         "FileExtensionInfo",
         "FileClusterSummary",
@@ -294,6 +303,7 @@ __protobuf__ = proto.module(
         "DeleteTableDataProfileRequest",
         "DataSourceType",
         "FileClusterType",
+        "ProcessingLocation",
     },
 )
 
@@ -792,9 +802,9 @@ class ConnectionState(proto.Enum):
         CONNECTION_STATE_UNSPECIFIED (0):
             Unused
         MISSING_CREDENTIALS (1):
-            DLP automatically created this connection
-            during an initial scan, and it is awaiting full
-            configuration by a user.
+            The DLP API automatically created this
+            connection during an initial scan, and it is
+            awaiting full configuration by a user.
         AVAILABLE (2):
             A configured connection that has not
             encountered any errors.
@@ -1285,6 +1295,8 @@ class ByteContentItem(proto.Message):
             EXECUTABLE (17):
                 Executable file types. Only used for
                 profiling.
+            AI_MODEL (18):
+                AI model file types. Only used for profiling.
         """
         BYTES_TYPE_UNSPECIFIED = 0
         IMAGE = 6
@@ -1303,6 +1315,7 @@ class ByteContentItem(proto.Message):
         AUDIO = 15
         VIDEO = 16
         EXECUTABLE = 17
+        AI_MODEL = 18
 
     type_: BytesType = proto.Field(
         proto.ENUM,
@@ -2828,6 +2841,9 @@ class InfoTypeDescription(proto.Message):
         description (str):
             Description of the infotype. Translated when
             language is provided in the request.
+        example (str):
+            A sample that is a true positive for this
+            infoType.
         versions (MutableSequence[google.cloud.dlp_v2.types.VersionDescription]):
             A list of available versions for the
             infotype.
@@ -2853,6 +2869,10 @@ class InfoTypeDescription(proto.Message):
     description: str = proto.Field(
         proto.STRING,
         number=4,
+    )
+    example: str = proto.Field(
+        proto.STRING,
+        number=8,
     )
     versions: MutableSequence["VersionDescription"] = proto.RepeatedField(
         proto.MESSAGE,
@@ -3121,6 +3141,8 @@ class InfoTypeCategory(proto.Message):
                 Information that is not sensitive on its own,
                 but provides details about the circumstances
                 surrounding an entity or an event.
+            CUSTOM (8):
+                Category for ``CustomInfoType`` types.
         """
         TYPE_UNSPECIFIED = 0
         PII = 1
@@ -3130,6 +3152,7 @@ class InfoTypeCategory(proto.Message):
         GOVERNMENT_ID = 5
         DOCUMENT = 6
         CONTEXTUAL_INFORMATION = 7
+        CUSTOM = 8
 
     location_category: LocationCategory = proto.Field(
         proto.ENUM,
@@ -4774,7 +4797,10 @@ class PrimitiveTransformation(proto.Message):
 
             This field is a member of `oneof`_ ``transformation``.
         crypto_replace_ffx_fpe_config (google.cloud.dlp_v2.types.CryptoReplaceFfxFpeConfig):
-            Ffx-Fpe
+            Ffx-Fpe. Strongly discouraged, consider using
+            CryptoDeterministicConfig instead. Fpe is
+            computationally expensive incurring latency
+            costs.
 
             This field is a member of `oneof`_ ``transformation``.
         fixed_size_bucketing_config (google.cloud.dlp_v2.types.FixedSizeBucketingConfig):
@@ -5356,7 +5382,8 @@ class CryptoReplaceFfxFpeConfig(proto.Message):
 
     Note: We recommend using CryptoDeterministicConfig for all use cases
     which do not require preserving the input alphabet space and size,
-    plus warrant referential integrity.
+    plus warrant referential integrity. FPE incurs significant latency
+    costs.
 
     This message has `oneof`_ fields (mutually exclusive fields).
     For each oneof, at most one member field can be set at the same time.
@@ -7853,8 +7880,8 @@ class DataProfileAction(proto.Message):
 
             This field is a member of `oneof`_ ``action``.
         publish_to_scc (google.cloud.dlp_v2.types.DataProfileAction.PublishToSecurityCommandCenter):
-            Publishes findings to SCC for each data
-            profile.
+            Publishes findings to Security Command Center
+            for each data profile.
 
             This field is a member of `oneof`_ ``action``.
         tag_resources (google.cloud.dlp_v2.types.DataProfileAction.TagResources):
@@ -7895,16 +7922,36 @@ class DataProfileAction(proto.Message):
 
         Attributes:
             profile_table (google.cloud.dlp_v2.types.BigQueryTable):
-                Store all table and column profiles in an existing table or
-                a new table in an existing dataset. Each re-generation will
-                result in new rows in BigQuery. Data is inserted using
-                `streaming
-                insert <https://cloud.google.com/blog/products/bigquery/life-of-a-bigquery-streaming-insert>`__
-                and so data may be in the buffer for a period of time after
-                the profile has finished. The Pub/Sub notification is sent
-                before the streaming buffer is guaranteed to be written, so
-                data may not be instantly visible to queries by the time
-                your topic receives the Pub/Sub notification.
+                Store all profiles to BigQuery.
+
+                -  The system will create a new dataset and table for you if
+                   none are are provided. The dataset will be named
+                   ``sensitive_data_protection_discovery`` and table will be
+                   named ``discovery_profiles``. This table will be placed
+                   in the same project as the container project running the
+                   scan. After the first profile is generated and the
+                   dataset and table are created, the discovery scan
+                   configuration will be updated with the dataset and table
+                   names.
+                -  See `Analyze data profiles stored in
+                   BigQuery <https://cloud.google.com/sensitive-data-protection/docs/analyze-data-profiles>`__.
+                -  See `Sample queries for your BigQuery
+                   table <https://cloud.google.com/sensitive-data-protection/docs/analyze-data-profiles#sample_sql_queries>`__.
+                -  Data is inserted using `streaming
+                   insert <https://cloud.google.com/blog/products/bigquery/life-of-a-bigquery-streaming-insert>`__
+                   and so data may be in the buffer for a period of time
+                   after the profile has finished.
+                -  The Pub/Sub notification is sent before the streaming
+                   buffer is guaranteed to be written, so data may not be
+                   instantly visible to queries by the time your topic
+                   receives the Pub/Sub notification.
+                -  The best practice is to use the same table for an entire
+                   organization so that you can take advantage of the
+                   `provided Looker
+                   reports <https://cloud.google.com/sensitive-data-protection/docs/analyze-data-profiles#use_a_premade_report>`__.
+                   If you use VPC Service Controls to define security
+                   perimeters, then you must use a separate table for each
+                   boundary.
         """
 
         profile_table: storage.BigQueryTable = proto.Field(
@@ -7983,8 +8030,8 @@ class DataProfileAction(proto.Message):
         """
 
     class PublishToSecurityCommandCenter(proto.Message):
-        r"""If set, a summary finding will be created/updated in SCC for
-        each profile.
+        r"""If set, a summary finding will be created or updated in
+        Security Command Center for each profile.
 
         """
 
@@ -8139,7 +8186,7 @@ class DataProfileJobConfig(proto.Message):
             The project that will run the scan. The DLP
             service account that exists within this project
             must have access to all resources that are
-            profiled, and the Cloud DLP API must be enabled.
+            profiled, and the DLP API must be enabled.
         other_cloud_starting_location (google.cloud.dlp_v2.types.OtherCloudDiscoveryStartingLocation):
             Must be set only when scanning other clouds.
         inspect_templates (MutableSequence[str]):
@@ -8355,6 +8402,11 @@ class DiscoveryConfig(proto.Message):
             this config was executed.
         status (google.cloud.dlp_v2.types.DiscoveryConfig.Status):
             Required. A status for this configuration.
+        processing_location (google.cloud.dlp_v2.types.ProcessingLocation):
+            Optional. Processing location configuration. Vertex AI
+            dataset scanning will set
+            processing_location.image_fallback_type to
+            MultiRegionProcessing by default.
     """
 
     class Status(proto.Enum):
@@ -8384,7 +8436,7 @@ class DiscoveryConfig(proto.Message):
                 The project that will run the scan. The DLP
                 service account that exists within this project
                 must have access to all resources that are
-                profiled, and the Cloud DLP API must be enabled.
+                profiled, and the DLP API must be enabled.
         """
 
         location: "DiscoveryStartingLocation" = proto.Field(
@@ -8454,6 +8506,11 @@ class DiscoveryConfig(proto.Message):
         number=10,
         enum=Status,
     )
+    processing_location: "ProcessingLocation" = proto.Field(
+        proto.MESSAGE,
+        number=13,
+        message="ProcessingLocation",
+    )
 
 
 class DiscoveryTarget(proto.Message):
@@ -8496,6 +8553,19 @@ class DiscoveryTarget(proto.Message):
             applied.
 
             This field is a member of `oneof`_ ``target``.
+        vertex_dataset_target (google.cloud.dlp_v2.types.VertexDatasetDiscoveryTarget):
+            Vertex AI dataset target for Discovery. The first target to
+            match a dataset will be the one applied. Note that discovery
+            for Vertex AI can incur Cloud Storage Class B operation
+            charges for storage.objects.get operations and retrieval
+            fees. For more information, see `Cloud Storage
+            pricing <https://cloud.google.com/storage/pricing#price-tables>`__.
+            Note that discovery for Vertex AI dataset will not be able
+            to scan images unless
+            DiscoveryConfig.processing_location.image_fallback_location
+            has multi_region_processing or global_processing configured.
+
+            This field is a member of `oneof`_ ``target``.
     """
 
     big_query_target: "BigQueryDiscoveryTarget" = proto.Field(
@@ -8527,6 +8597,12 @@ class DiscoveryTarget(proto.Message):
         number=5,
         oneof="target",
         message="OtherCloudDiscoveryTarget",
+    )
+    vertex_dataset_target: "VertexDatasetDiscoveryTarget" = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        oneof="target",
+        message="VertexDatasetDiscoveryTarget",
     )
 
 
@@ -9601,15 +9677,16 @@ class DiscoveryCloudStorageConditions(proto.Message):
             ALL_SUPPORTED_BUCKETS (1):
                 Scan buckets regardless of the attribute.
             AUTOCLASS_DISABLED (2):
-                Buckets with autoclass disabled
-                (https://cloud.google.com/storage/docs/autoclass). Only one
-                of AUTOCLASS_DISABLED or AUTOCLASS_ENABLED should be set.
+                Buckets with
+                `Autoclass <https://cloud.google.com/storage/docs/autoclass>`__
+                disabled. Only one of AUTOCLASS_DISABLED or
+                AUTOCLASS_ENABLED should be set.
             AUTOCLASS_ENABLED (3):
-                Buckets with autoclass enabled
-                (https://cloud.google.com/storage/docs/autoclass). Only one
-                of AUTOCLASS_DISABLED or AUTOCLASS_ENABLED should be set.
-                Scanning Autoclass-enabled buckets can affect object storage
-                classes.
+                Buckets with
+                `Autoclass <https://cloud.google.com/storage/docs/autoclass>`__
+                enabled. Only one of AUTOCLASS_DISABLED or AUTOCLASS_ENABLED
+                should be set. Scanning Autoclass-enabled buckets can affect
+                object storage classes.
         """
         CLOUD_STORAGE_BUCKET_ATTRIBUTE_UNSPECIFIED = 0
         ALL_SUPPORTED_BUCKETS = 1
@@ -10174,6 +10251,246 @@ class AllOtherResources(proto.Message):
     r"""Match discovery resources not covered by any other filter."""
 
 
+class VertexDatasetDiscoveryTarget(proto.Message):
+    r"""Target used to match against for discovery with Vertex AI
+    datasets.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        filter (google.cloud.dlp_v2.types.DiscoveryVertexDatasetFilter):
+            Required. The datasets the discovery cadence
+            applies to. The first target with a matching
+            filter will be the one to apply to a dataset.
+        conditions (google.cloud.dlp_v2.types.DiscoveryVertexDatasetConditions):
+            In addition to matching the filter, these
+            conditions must be true before a profile is
+            generated.
+        generation_cadence (google.cloud.dlp_v2.types.DiscoveryVertexDatasetGenerationCadence):
+            How often and when to update profiles. New
+            datasets that match both the filter and
+            conditions are scanned as quickly as possible
+            depending on system capacity.
+
+            This field is a member of `oneof`_ ``cadence``.
+        disabled (google.cloud.dlp_v2.types.Disabled):
+            Disable profiling for datasets that match
+            this filter.
+
+            This field is a member of `oneof`_ ``cadence``.
+    """
+
+    filter: "DiscoveryVertexDatasetFilter" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="DiscoveryVertexDatasetFilter",
+    )
+    conditions: "DiscoveryVertexDatasetConditions" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="DiscoveryVertexDatasetConditions",
+    )
+    generation_cadence: "DiscoveryVertexDatasetGenerationCadence" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        oneof="cadence",
+        message="DiscoveryVertexDatasetGenerationCadence",
+    )
+    disabled: "Disabled" = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        oneof="cadence",
+        message="Disabled",
+    )
+
+
+class DiscoveryVertexDatasetFilter(proto.Message):
+    r"""Determines what datasets will have profiles generated within
+    an organization or project. Includes the ability to filter by
+    regular expression patterns on project ID or dataset regex.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        collection (google.cloud.dlp_v2.types.VertexDatasetCollection):
+            A specific set of Vertex AI datasets for this
+            filter to apply to.
+
+            This field is a member of `oneof`_ ``filter``.
+        vertex_dataset_resource_reference (google.cloud.dlp_v2.types.VertexDatasetResourceReference):
+            The dataset resource to scan. Targets
+            including this can only include one target (the
+            target with this dataset resource reference).
+
+            This field is a member of `oneof`_ ``filter``.
+        others (google.cloud.dlp_v2.types.AllOtherResources):
+            Catch-all. This should always be the last
+            target in the list because anything above it
+            will apply first. Should only appear once in a
+            configuration. If none is specified, a default
+            one will be added automatically.
+
+            This field is a member of `oneof`_ ``filter``.
+    """
+
+    collection: "VertexDatasetCollection" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        oneof="filter",
+        message="VertexDatasetCollection",
+    )
+    vertex_dataset_resource_reference: "VertexDatasetResourceReference" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        oneof="filter",
+        message="VertexDatasetResourceReference",
+    )
+    others: "AllOtherResources" = proto.Field(
+        proto.MESSAGE,
+        number=100,
+        oneof="filter",
+        message="AllOtherResources",
+    )
+
+
+class VertexDatasetCollection(proto.Message):
+    r"""Match dataset resources using regex filters.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        vertex_dataset_regexes (google.cloud.dlp_v2.types.VertexDatasetRegexes):
+            The regex used to filter dataset resources.
+
+            This field is a member of `oneof`_ ``pattern``.
+    """
+
+    vertex_dataset_regexes: "VertexDatasetRegexes" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        oneof="pattern",
+        message="VertexDatasetRegexes",
+    )
+
+
+class VertexDatasetRegexes(proto.Message):
+    r"""A collection of regular expressions to determine what
+    datasets to match against.
+
+    Attributes:
+        patterns (MutableSequence[google.cloud.dlp_v2.types.VertexDatasetRegex]):
+            Required. The group of regular expression
+            patterns to match against one or more datasets.
+            Maximum of 100 entries. The sum of the lengths
+            of all regular expressions can't exceed 10 KiB.
+    """
+
+    patterns: MutableSequence["VertexDatasetRegex"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="VertexDatasetRegex",
+    )
+
+
+class VertexDatasetRegex(proto.Message):
+    r"""A pattern to match against one or more dataset resources.
+
+    Attributes:
+        project_id_regex (str):
+            For organizations, if unset, will match all
+            projects. Has no effect for configurations
+            created within a project.
+    """
+
+    project_id_regex: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class VertexDatasetResourceReference(proto.Message):
+    r"""Identifies a single Vertex AI dataset.
+
+    Attributes:
+        dataset_resource_name (str):
+            Required. The name of the dataset resource.
+            If set within a project-level configuration, the
+            specified resource must be within the project.
+    """
+
+    dataset_resource_name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class DiscoveryVertexDatasetConditions(proto.Message):
+    r"""Requirements that must be true before a dataset is profiled
+    for the first time.
+
+    Attributes:
+        created_after (google.protobuf.timestamp_pb2.Timestamp):
+            Vertex AI dataset must have been created
+            after this date. Used to avoid backfilling.
+        min_age (google.protobuf.duration_pb2.Duration):
+            Minimum age a Vertex AI dataset must have. If
+            set, the value must be 1 hour or greater.
+    """
+
+    created_after: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=timestamp_pb2.Timestamp,
+    )
+    min_age: duration_pb2.Duration = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=duration_pb2.Duration,
+    )
+
+
+class DiscoveryVertexDatasetGenerationCadence(proto.Message):
+    r"""How often existing datasets should have their profiles
+    refreshed. New datasets are scanned as quickly as possible
+    depending on system capacity.
+
+    Attributes:
+        refresh_frequency (google.cloud.dlp_v2.types.DataProfileUpdateFrequency):
+            If you set this field, profiles are refreshed
+            at this frequency regardless of whether the
+            underlying datasets have changed. Defaults to
+            never.
+        inspect_template_modified_cadence (google.cloud.dlp_v2.types.DiscoveryInspectTemplateModifiedCadence):
+            Governs when to update data profiles when the inspection
+            rules defined by the ``InspectTemplate`` change. If not set,
+            changing the template will not cause a data profile to be
+            updated.
+    """
+
+    refresh_frequency: "DataProfileUpdateFrequency" = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum="DataProfileUpdateFrequency",
+    )
+    inspect_template_modified_cadence: "DiscoveryInspectTemplateModifiedCadence" = (
+        proto.Field(
+            proto.MESSAGE,
+            number=2,
+            message="DiscoveryInspectTemplateModifiedCadence",
+        )
+    )
+
+
 class DlpJob(proto.Message):
     r"""Combines all of the information about a DLP job.
 
@@ -10316,7 +10633,8 @@ class DlpJob(proto.Message):
 
 
 class GetDlpJobRequest(proto.Message):
-    r"""The request message for [DlpJobs.GetDlpJob][].
+    r"""The request message for
+    [GetDlpJob][google.privacy.dlp.v2.DlpService.GetDlpJob].
 
     Attributes:
         name (str):
@@ -11983,6 +12301,8 @@ class TableDataProfile(proto.Message):
             time the profile was generated.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             The time at which the table was created.
+        related_resources (MutableSequence[google.cloud.dlp_v2.types.RelatedResource]):
+            Resources related to this profile.
     """
 
     class State(proto.Enum):
@@ -12121,6 +12441,11 @@ class TableDataProfile(proto.Message):
         proto.MESSAGE,
         number=23,
         message=timestamp_pb2.Timestamp,
+    )
+    related_resources: MutableSequence["RelatedResource"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=41,
+        message="RelatedResource",
     )
 
 
@@ -12492,7 +12817,7 @@ class FileStoreDataProfile(proto.Message):
             region is always picked as the processing and storage
             location for the data profile.
         location_type (str):
-            The location type of the bucket (region, dual-region,
+            The location type of the file store (region, dual-region,
             multi-region, etc). If dual-region, expect
             data_storage_locations to be populated.
         file_store_path (str):
@@ -12500,6 +12825,8 @@ class FileStoreDataProfile(proto.Message):
 
             -  Cloud Storage: ``gs://{bucket}``
             -  Amazon S3: ``s3://{bucket}``
+            -  Vertex AI dataset:
+               ``projects/{project_number}/locations/{location}/datasets/{dataset_id}``
         full_resource (str):
             The resource name of the resource profiled.
             https://cloud.google.com/apis/design/resource_names#full_resource_name
@@ -12546,6 +12873,8 @@ class FileStoreDataProfile(proto.Message):
             InfoTypes detected in this file store.
         file_store_is_empty (bool):
             The file store does not have any files.
+        related_resources (MutableSequence[google.cloud.dlp_v2.types.RelatedResource]):
+            Resources related to this profile.
     """
 
     class State(proto.Enum):
@@ -12675,6 +13004,29 @@ class FileStoreDataProfile(proto.Message):
         proto.BOOL,
         number=23,
     )
+    related_resources: MutableSequence["RelatedResource"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=26,
+        message="RelatedResource",
+    )
+
+
+class RelatedResource(proto.Message):
+    r"""A related resource. Examples:
+
+    -  The source BigQuery table for a Vertex AI dataset.
+    -  The source Cloud Storage bucket for a Vertex AI dataset.
+
+    Attributes:
+        full_resource (str):
+            The full resource name of the related
+            resource.
+    """
+
+    full_resource: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class FileStoreInfoTypeSummary(proto.Message):
@@ -12736,10 +13088,10 @@ class FileClusterSummary(proto.Message):
             be derived from the file name or the file
             content.
         no_files_exist (bool):
-            True if no files exist in this cluster. If the bucket had
-            more files than could be listed, this will be false even if
-            no files for this cluster were seen and file_extensions_seen
-            is empty.
+            True if no files exist in this cluster. If the file store
+            had more files than could be listed, this will be false even
+            if no files for this cluster were seen and
+            file_extensions_seen is empty.
     """
 
     file_cluster_type: "FileClusterType" = proto.Field(
@@ -13370,8 +13722,8 @@ class DeleteConnectionRequest(proto.Message):
 
 
 class Connection(proto.Message):
-    r"""A data connection to allow DLP to profile data in locations
-    that require additional configuration.
+    r"""A data connection to allow the DLP API to profile data in
+    locations that require additional configuration.
 
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
@@ -13484,8 +13836,8 @@ class CloudSqlProperties(proto.Message):
 
             This field is a member of `oneof`_ ``credential``.
         max_connections (int):
-            Required. DLP will limit its connections to max_connections.
-            Must be 2 or greater.
+            Required. The DLP API will limit its connections to
+            max_connections. Must be 2 or greater.
         database_engine (google.cloud.dlp_v2.types.CloudSqlProperties.DatabaseEngine):
             Required. The database engine used by the
             Cloud SQL instance that this connection
@@ -13609,6 +13961,8 @@ class FileClusterType(proto.Message):
                 Multimedia like .mp4, .avi etc.
             CLUSTER_EXECUTABLE (9):
                 Executable files like .exe, .class, .apk etc.
+            CLUSTER_AI_MODEL (10):
+                AI models like .tflite etc.
         """
         CLUSTER_UNSPECIFIED = 0
         CLUSTER_UNKNOWN = 1
@@ -13620,12 +13974,66 @@ class FileClusterType(proto.Message):
         CLUSTER_ARCHIVE = 7
         CLUSTER_MULTIMEDIA = 8
         CLUSTER_EXECUTABLE = 9
+        CLUSTER_AI_MODEL = 10
 
     cluster: Cluster = proto.Field(
         proto.ENUM,
         number=1,
         oneof="file_cluster_type",
         enum=Cluster,
+    )
+
+
+class ProcessingLocation(proto.Message):
+    r"""Configure processing location for discovery and inspection.
+    For example, image OCR is only provided in limited regions but
+    configuring ProcessingLocation will redirect OCR to a location
+    where OCR is provided.
+
+    Attributes:
+        image_fallback_location (google.cloud.dlp_v2.types.ProcessingLocation.ImageFallbackLocation):
+            Image processing will fall back using this
+            configuration.
+    """
+
+    class MultiRegionProcessing(proto.Message):
+        r"""Processing will happen in a multi-region that contains the
+        current region if available.
+
+        """
+
+    class GlobalProcessing(proto.Message):
+        r"""Processing will happen in the global region."""
+
+    class ImageFallbackLocation(proto.Message):
+        r"""Configure image processing to fall back to the configured
+        processing option below if unavailable in the request location.
+
+        Attributes:
+            multi_region_processing (google.cloud.dlp_v2.types.ProcessingLocation.MultiRegionProcessing):
+                Processing will happen in a multi-region that
+                contains the current region if available.
+            global_processing (google.cloud.dlp_v2.types.ProcessingLocation.GlobalProcessing):
+                Processing will happen in the global region.
+        """
+
+        multi_region_processing: "ProcessingLocation.MultiRegionProcessing" = (
+            proto.Field(
+                proto.MESSAGE,
+                number=100,
+                message="ProcessingLocation.MultiRegionProcessing",
+            )
+        )
+        global_processing: "ProcessingLocation.GlobalProcessing" = proto.Field(
+            proto.MESSAGE,
+            number=200,
+            message="ProcessingLocation.GlobalProcessing",
+        )
+
+    image_fallback_location: ImageFallbackLocation = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=ImageFallbackLocation,
     )
 
 

@@ -3090,9 +3090,9 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             Returns:
                 ~.dlp.Connection:
-                    A data connection to allow DLP to
-                profile data in locations that require
-                additional configuration.
+                    A data connection to allow the DLP
+                API to profile data in locations that
+                require additional configuration.
 
             """
 
@@ -5603,9 +5603,9 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             Returns:
                 ~.dlp.Connection:
-                    A data connection to allow DLP to
-                profile data in locations that require
-                additional configuration.
+                    A data connection to allow the DLP
+                API to profile data in locations that
+                require additional configuration.
 
             """
 
@@ -6047,7 +6047,8 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             Args:
                 request (~.dlp.GetDlpJobRequest):
-                    The request object. The request message for [DlpJobs.GetDlpJob][].
+                    The request object. The request message for
+                [GetDlpJob][google.privacy.dlp.v2.DlpService.GetDlpJob].
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -9845,9 +9846,9 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             Returns:
                 ~.dlp.Connection:
-                    A data connection to allow DLP to
-                profile data in locations that require
-                additional configuration.
+                    A data connection to allow the DLP
+                API to profile data in locations that
+                require additional configuration.
 
             """
 
