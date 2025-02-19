@@ -1329,7 +1329,7 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> dlp.ListInfoTypesResponse:
         r"""Returns a list of the sensitive information types
-        that DLP API supports. See
+        that the DLP API supports. See
         https://cloud.google.com/sensitive-data-protection/docs/infotypes-reference
         to learn more.
 
@@ -4461,7 +4461,8 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
 
         Args:
             request (Union[google.cloud.dlp_v2.types.GetDlpJobRequest, dict]):
-                The request object. The request message for [DlpJobs.GetDlpJob][].
+                The request object. The request message for
+                [GetDlpJob][google.privacy.dlp.v2.DlpService.GetDlpJob].
             name (str):
                 Required. The name of the DlpJob
                 resource.
@@ -6698,9 +6699,9 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
 
         Returns:
             google.cloud.dlp_v2.types.Connection:
-                A data connection to allow DLP to
-                profile data in locations that require
-                additional configuration.
+                A data connection to allow the DLP
+                API to profile data in locations that
+                require additional configuration.
 
         """
         # Create or coerce a protobuf request object.
@@ -6805,9 +6806,9 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
 
         Returns:
             google.cloud.dlp_v2.types.Connection:
-                A data connection to allow DLP to
-                profile data in locations that require
-                additional configuration.
+                A data connection to allow the DLP
+                API to profile data in locations that
+                require additional configuration.
 
         """
         # Create or coerce a protobuf request object.
@@ -7255,9 +7256,9 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
 
         Returns:
             google.cloud.dlp_v2.types.Connection:
-                A data connection to allow DLP to
-                profile data in locations that require
-                additional configuration.
+                A data connection to allow the DLP
+                API to profile data in locations that
+                require additional configuration.
 
         """
         # Create or coerce a protobuf request object.
