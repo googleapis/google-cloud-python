@@ -964,6 +964,9 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
         )
         self._set_block(result._get_block())
 
+    def __abs__(self) -> Series:
+        return self.abs()
+
     def abs(self) -> Series:
         return self._apply_unary_op(ops.abs_op)
 

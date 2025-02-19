@@ -26,7 +26,11 @@ class ToTimedeltaOp(base_ops.UnaryOp):
     unit: typing.Literal["us", "ms", "s", "m", "h", "d", "W"]
 
     def output_type(self, *input_types: dtypes.ExpressionType) -> dtypes.ExpressionType:
-        if input_types[0] in (dtypes.INT_DTYPE, dtypes.FLOAT_DTYPE):
+        if input_types[0] in (
+            dtypes.INT_DTYPE,
+            dtypes.FLOAT_DTYPE,
+            dtypes.TIMEDELTA_DTYPE,
+        ):
             return dtypes.TIMEDELTA_DTYPE
         raise TypeError("expected integer or float input")
 
@@ -56,7 +60,6 @@ class TimestampAdd(base_ops.BinaryOp):
 timestamp_add_op = TimestampAdd()
 
 
-@dataclasses.dataclass(frozen=True)
 class TimestampSub(base_ops.BinaryOp):
     name: typing.ClassVar[str] = "timestamp_sub"
 

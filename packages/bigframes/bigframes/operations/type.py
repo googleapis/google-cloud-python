@@ -224,6 +224,10 @@ class VectorMetric(BinaryTypeSignature):
 
 # Common type signatures
 UNARY_NUMERIC = TypePreserving(bigframes.dtypes.is_numeric, description="numeric")
+UNARY_NUMERIC_AND_TIMEDELTA = TypePreserving(
+    lambda x: bigframes.dtypes.is_numeric(x) or x is bigframes.dtypes.TIMEDELTA_DTYPE,
+    description="numeric_and_timedelta",
+)
 UNARY_REAL_NUMERIC = UnaryRealNumeric()
 BINARY_NUMERIC = BinaryNumeric()
 BINARY_REAL_NUMERIC = BinaryRealNumeric()

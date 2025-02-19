@@ -103,6 +103,17 @@ def _rewrite_op_expr(
     if isinstance(expr.op, ops.AddOp):
         return _rewrite_add_op(inputs[0], inputs[1])
 
+    if isinstance(expr.op, ops.MulOp):
+        return _rewrite_mul_op(inputs[0], inputs[1])
+
+    if isinstance(expr.op, ops.DivOp):
+        return _rewrite_div_op(inputs[0], inputs[1])
+
+    if isinstance(expr.op, ops.FloorDivOp):
+        # We need to re-write floor div because for numerics: int // float => float
+        # but for timedeltas: int(timedelta) // float => int(timedelta)
+        return _rewrite_floordiv_op(inputs[0], inputs[1])
+
     return _TypedExpr.create_op_expr(expr.op, *inputs)
 
 
@@ -126,3 +137,32 @@ def _rewrite_add_op(left: _TypedExpr, right: _TypedExpr) -> _TypedExpr:
         return _TypedExpr.create_op_expr(ops.timestamp_add_op, right, left)
 
     return _TypedExpr.create_op_expr(ops.add_op, left, right)
+
+
+def _rewrite_mul_op(left: _TypedExpr, right: _TypedExpr) -> _TypedExpr:
+    result = _TypedExpr.create_op_expr(ops.mul_op, left, right)
+
+    if left.dtype is dtypes.TIMEDELTA_DTYPE and dtypes.is_numeric(right.dtype):
+        return _TypedExpr.create_op_expr(ops.ToTimedeltaOp("us"), result)
+    if dtypes.is_numeric(left.dtype) and right.dtype is dtypes.TIMEDELTA_DTYPE:
+        return _TypedExpr.create_op_expr(ops.ToTimedeltaOp("us"), result)
+
+    return result
+
+
+def _rewrite_div_op(left: _TypedExpr, right: _TypedExpr) -> _TypedExpr:
+    result = _TypedExpr.create_op_expr(ops.div_op, left, right)
+
+    if left.dtype is dtypes.TIMEDELTA_DTYPE and dtypes.is_numeric(right.dtype):
+        return _TypedExpr.create_op_expr(ops.ToTimedeltaOp("us"), result)
+
+    return result
+
+
+def _rewrite_floordiv_op(left: _TypedExpr, right: _TypedExpr) -> _TypedExpr:
+    result = _TypedExpr.create_op_expr(ops.floordiv_op, left, right)
+
+    if left.dtype is dtypes.TIMEDELTA_DTYPE and dtypes.is_numeric(right.dtype):
+        return _TypedExpr.create_op_expr(ops.ToTimedeltaOp("us"), result)
+
+    return result

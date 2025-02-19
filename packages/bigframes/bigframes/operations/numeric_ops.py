@@ -75,11 +75,17 @@ ceil_op = base_ops.create_unary_op(
     name="ceil", type_signature=op_typing.UNARY_REAL_NUMERIC
 )
 
-abs_op = base_ops.create_unary_op(name="abs", type_signature=op_typing.UNARY_NUMERIC)
+abs_op = base_ops.create_unary_op(
+    name="abs", type_signature=op_typing.UNARY_NUMERIC_AND_TIMEDELTA
+)
 
-pos_op = base_ops.create_unary_op(name="pos", type_signature=op_typing.UNARY_NUMERIC)
+pos_op = base_ops.create_unary_op(
+    name="pos", type_signature=op_typing.UNARY_NUMERIC_AND_TIMEDELTA
+)
 
-neg_op = base_ops.create_unary_op(name="neg", type_signature=op_typing.UNARY_NUMERIC)
+neg_op = base_ops.create_unary_op(
+    name="neg", type_signature=op_typing.UNARY_NUMERIC_AND_TIMEDELTA
+)
 
 exp_op = base_ops.create_unary_op(
     name="exp", type_signature=op_typing.UNARY_REAL_NUMERIC
@@ -123,6 +129,9 @@ class AddOp(base_ops.BinaryOp):
         if left_type is dtypes.TIMEDELTA_DTYPE and dtypes.is_datetime_like(right_type):
             return right_type
 
+        if left_type is dtypes.TIMEDELTA_DTYPE and right_type is dtypes.TIMEDELTA_DTYPE:
+            return dtypes.TIMEDELTA_DTYPE
+
         if (left_type is None or dtypes.is_numeric(left_type)) and (
             right_type is None or dtypes.is_numeric(right_type)
         ):
@@ -142,11 +151,6 @@ class SubOp(base_ops.BinaryOp):
     def output_type(self, *input_types):
         left_type = input_types[0]
         right_type = input_types[1]
-        if (left_type is None or dtypes.is_numeric(left_type)) and (
-            right_type is None or dtypes.is_numeric(right_type)
-        ):
-            # Numeric subtraction
-            return dtypes.coerce_to_common(left_type, right_type)
 
         if dtypes.is_datetime_like(left_type) and dtypes.is_datetime_like(right_type):
             return dtypes.TIMEDELTA_DTYPE
@@ -154,20 +158,95 @@ class SubOp(base_ops.BinaryOp):
         if dtypes.is_datetime_like(left_type) and right_type is dtypes.TIMEDELTA_DTYPE:
             return left_type
 
+        if left_type is dtypes.TIMEDELTA_DTYPE and right_type is dtypes.TIMEDELTA_DTYPE:
+            return dtypes.TIMEDELTA_DTYPE
+
+        if (left_type is None or dtypes.is_numeric(left_type)) and (
+            right_type is None or dtypes.is_numeric(right_type)
+        ):
+            # Numeric subtraction
+            return dtypes.coerce_to_common(left_type, right_type)
+
         raise TypeError(f"Cannot subtract dtypes {left_type} and {right_type}")
 
 
 sub_op = SubOp()
 
-mul_op = base_ops.create_binary_op(name="mul", type_signature=op_typing.BINARY_NUMERIC)
 
-div_op = base_ops.create_binary_op(
-    name="div", type_signature=op_typing.BINARY_REAL_NUMERIC
-)
+@dataclasses.dataclass(frozen=True)
+class MulOp(base_ops.BinaryOp):
+    name: typing.ClassVar[str] = "mul"
 
-floordiv_op = base_ops.create_binary_op(
-    name="floordiv", type_signature=op_typing.BINARY_NUMERIC
-)
+    def output_type(self, *input_types: dtypes.ExpressionType) -> dtypes.ExpressionType:
+        left_type = input_types[0]
+        right_type = input_types[1]
+
+        if left_type is dtypes.TIMEDELTA_DTYPE and dtypes.is_numeric(right_type):
+            return dtypes.TIMEDELTA_DTYPE
+        if dtypes.is_numeric(left_type) and right_type is dtypes.TIMEDELTA_DTYPE:
+            return dtypes.TIMEDELTA_DTYPE
+
+        if (left_type is None or dtypes.is_numeric(left_type)) and (
+            right_type is None or dtypes.is_numeric(right_type)
+        ):
+            return dtypes.coerce_to_common(left_type, right_type)
+
+        raise TypeError(f"Cannot multiply dtypes {left_type} and {right_type}")
+
+
+mul_op = MulOp()
+
+
+@dataclasses.dataclass(frozen=True)
+class DivOp(base_ops.BinaryOp):
+    name: typing.ClassVar[str] = "div"
+
+    def output_type(self, *input_types: dtypes.ExpressionType) -> dtypes.ExpressionType:
+        left_type = input_types[0]
+        right_type = input_types[1]
+
+        if left_type is dtypes.TIMEDELTA_DTYPE and dtypes.is_numeric(right_type):
+            return dtypes.TIMEDELTA_DTYPE
+
+        if left_type is dtypes.TIMEDELTA_DTYPE and right_type is dtypes.TIMEDELTA_DTYPE:
+            return dtypes.FLOAT_DTYPE
+
+        if (left_type is None or dtypes.is_numeric(left_type)) and (
+            right_type is None or dtypes.is_numeric(right_type)
+        ):
+            lcd_type = dtypes.coerce_to_common(left_type, right_type)
+            # Real numeric ops produce floats on int input
+            return dtypes.FLOAT_DTYPE if lcd_type == dtypes.INT_DTYPE else lcd_type
+
+        raise TypeError(f"Cannot divide dtypes {left_type} and {right_type}")
+
+
+div_op = DivOp()
+
+
+@dataclasses.dataclass(frozen=True)
+class FloorDivOp(base_ops.BinaryOp):
+    name: typing.ClassVar[str] = "floordiv"
+
+    def output_type(self, *input_types: dtypes.ExpressionType) -> dtypes.ExpressionType:
+        left_type = input_types[0]
+        right_type = input_types[1]
+
+        if left_type is dtypes.TIMEDELTA_DTYPE and dtypes.is_numeric(right_type):
+            return dtypes.TIMEDELTA_DTYPE
+
+        if left_type is dtypes.TIMEDELTA_DTYPE and right_type is dtypes.TIMEDELTA_DTYPE:
+            return dtypes.INT_DTYPE
+
+        if (left_type is None or dtypes.is_numeric(left_type)) and (
+            right_type is None or dtypes.is_numeric(right_type)
+        ):
+            return dtypes.coerce_to_common(left_type, right_type)
+
+        raise TypeError(f"Cannot floor divide dtypes {left_type} and {right_type}")
+
+
+floordiv_op = FloorDivOp()
 
 pow_op = base_ops.create_binary_op(name="pow", type_signature=op_typing.BINARY_NUMERIC)
 
