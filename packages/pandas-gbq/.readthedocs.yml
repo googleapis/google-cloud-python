@@ -16,3 +16,9 @@ build:
 python:
   install:
   - requirements: docs/requirements-docs.txt
+
+# Explicit configuration path is required by ReadtheDocs starting Jan 20, 2025.
+# See: https://about.readthedocs.com/blog/2024/12/deprecate-config-files-without-sphinx-or-mkdocs-config/
+version: 2
+sphinx:
+  configuration: docs/conf.py
