@@ -23,6 +23,7 @@ from google.api_core import gapic_v1
 
 from tests._helpers import (
     HAS_OPENTELEMETRY_INSTALLED,
+    LIB_VERSION,
     OpenTelemetryBase,
     StatusCode,
     enrich_with_otel_scope,
@@ -62,6 +63,9 @@ class TestTransaction(OpenTelemetryBase):
         "db.url": "spanner.googleapis.com",
         "db.instance": "testing",
         "net.host.name": "spanner.googleapis.com",
+        "gcp.client.service": "spanner",
+        "gcp.client.version": LIB_VERSION,
+        "gcp.client.repo": "googleapis/python-spanner",
     }
     enrich_with_otel_scope(BASE_ATTRIBUTES)
 

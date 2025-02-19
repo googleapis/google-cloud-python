@@ -19,6 +19,7 @@ import mock
 from google.cloud.spanner_v1 import RequestOptions, DirectedReadOptions
 from tests._helpers import (
     OpenTelemetryBase,
+    LIB_VERSION,
     StatusCode,
     HAS_OPENTELEMETRY_INSTALLED,
     enrich_with_otel_scope,
@@ -46,6 +47,9 @@ BASE_ATTRIBUTES = {
     "db.url": "spanner.googleapis.com",
     "db.instance": "testing",
     "net.host.name": "spanner.googleapis.com",
+    "gcp.client.service": "spanner",
+    "gcp.client.version": LIB_VERSION,
+    "gcp.client.repo": "googleapis/python-spanner",
 }
 enrich_with_otel_scope(BASE_ATTRIBUTES)
 
@@ -533,14 +537,7 @@ class Test_restart_on_unavailable(OpenTelemetryBase):
                 self.assertEqual(span.name, name)
                 self.assertEqual(
                     dict(span.attributes),
-                    enrich_with_otel_scope(
-                        {
-                            "db.type": "spanner",
-                            "db.url": "spanner.googleapis.com",
-                            "db.instance": "testing",
-                            "net.host.name": "spanner.googleapis.com",
-                        }
-                    ),
+                    enrich_with_otel_scope(BASE_ATTRIBUTES),
                 )
 
 

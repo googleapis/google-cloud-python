@@ -93,6 +93,10 @@ def trace_call(name, session=None, extra_attributes=None, observability_options=
         "net.host.name": SpannerClient.DEFAULT_ENDPOINT,
         OTEL_SCOPE_NAME: TRACER_NAME,
         OTEL_SCOPE_VERSION: TRACER_VERSION,
+        # Standard GCP attributes for OTel, attributes are used for internal purpose and are subjected to change
+        "gcp.client.service": "spanner",
+        "gcp.client.version": TRACER_VERSION,
+        "gcp.client.repo": "googleapis/python-spanner",
     }
 
     if extra_attributes:

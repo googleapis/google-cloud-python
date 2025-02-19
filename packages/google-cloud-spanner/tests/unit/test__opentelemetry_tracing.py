@@ -14,6 +14,7 @@ from google.cloud.spanner_v1 import _opentelemetry_tracing
 
 from tests._helpers import (
     OpenTelemetryBase,
+    LIB_VERSION,
     HAS_OPENTELEMETRY_INSTALLED,
     enrich_with_otel_scope,
 )
@@ -64,6 +65,9 @@ if HAS_OPENTELEMETRY_INSTALLED:
                     "db.type": "spanner",
                     "db.url": "spanner.googleapis.com",
                     "net.host.name": "spanner.googleapis.com",
+                    "gcp.client.service": "spanner",
+                    "gcp.client.version": LIB_VERSION,
+                    "gcp.client.repo": "googleapis/python-spanner",
                 }
             )
             expected_attributes.update(extra_attributes)
@@ -91,6 +95,9 @@ if HAS_OPENTELEMETRY_INSTALLED:
                     "db.type": "spanner",
                     "db.url": "spanner.googleapis.com",
                     "net.host.name": "spanner.googleapis.com",
+                    "gcp.client.service": "spanner",
+                    "gcp.client.version": LIB_VERSION,
+                    "gcp.client.repo": "googleapis/python-spanner",
                 }
             )
             expected_attributes.update(extra_attributes)

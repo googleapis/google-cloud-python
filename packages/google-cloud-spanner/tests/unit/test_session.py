@@ -19,6 +19,7 @@ from google.cloud.spanner_v1._opentelemetry_tracing import trace_call
 import mock
 from tests._helpers import (
     OpenTelemetryBase,
+    LIB_VERSION,
     StatusCode,
     enrich_with_otel_scope,
 )
@@ -46,6 +47,9 @@ class TestSession(OpenTelemetryBase):
         "db.url": "spanner.googleapis.com",
         "db.instance": DATABASE_NAME,
         "net.host.name": "spanner.googleapis.com",
+        "gcp.client.service": "spanner",
+        "gcp.client.version": LIB_VERSION,
+        "gcp.client.repo": "googleapis/python-spanner",
     }
     enrich_with_otel_scope(BASE_ATTRIBUTES)
 
