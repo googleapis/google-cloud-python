@@ -4,6 +4,33 @@
 
 [1]: https://pypi.org/project/bigframes/#history
 
+## [1.37.0](https://github.com/googleapis/python-bigquery-dataframes/compare/v1.36.0...v1.37.0) (2025-02-19)
+
+
+### Features
+
+* JSON dtype support for read_pandas and Series constructor ([#1391](https://github.com/googleapis/python-bigquery-dataframes/issues/1391)) ([44f4137](https://github.com/googleapis/python-bigquery-dataframes/commit/44f4137adb02790e07c696f0641bc58390857210))
+* Support add, sub, mult, div, and more between timedeltas ([#1396](https://github.com/googleapis/python-bigquery-dataframes/issues/1396)) ([ffa63d4](https://github.com/googleapis/python-bigquery-dataframes/commit/ffa63d47ca1dd1a18617f44d9b3bc33419656a20))
+* Support comparison, ordering, and filtering for timedeltas ([#1387](https://github.com/googleapis/python-bigquery-dataframes/issues/1387)) ([34d01b2](https://github.com/googleapis/python-bigquery-dataframes/commit/34d01b27f867abf10bddffdf4f88fa7052cd237c))
+* Support subtraction in DATETIME/TIMESTAMP columns with timedelta columns ([#1390](https://github.com/googleapis/python-bigquery-dataframes/issues/1390)) ([50ad3a5](https://github.com/googleapis/python-bigquery-dataframes/commit/50ad3a56e9bd77bb77d60d7d5ec497e3335a7177))
+
+
+### Bug Fixes
+
+* Ensure binops with pandas objects returns bigquery dataframes ([#1404](https://github.com/googleapis/python-bigquery-dataframes/issues/1404)) ([3cee24b](https://github.com/googleapis/python-bigquery-dataframes/commit/3cee24bae1d352015a5b6a8c18d5c394293d08fd))
+
+
+### Performance Improvements
+
+* Prune projections more aggressively ([#1398](https://github.com/googleapis/python-bigquery-dataframes/issues/1398)) ([7990262](https://github.com/googleapis/python-bigquery-dataframes/commit/7990262cf09e97c0739be922ede151d616655726))
+* Simplify sum aggregate SQL text ([#1395](https://github.com/googleapis/python-bigquery-dataframes/issues/1395)) ([0145656](https://github.com/googleapis/python-bigquery-dataframes/commit/0145656e5e378442f2f38f9f04e87e33ddf345f5))
+* Use simple null constraints to simplify queries ([#1381](https://github.com/googleapis/python-bigquery-dataframes/issues/1381)) ([00611d4](https://github.com/googleapis/python-bigquery-dataframes/commit/00611d4d697a8b74451375f5a7700b92a4410295))
+
+
+### Documentation
+
+* Add DataFrame.struct docs ([#1348](https://github.com/googleapis/python-bigquery-dataframes/issues/1348)) ([7e9e93a](https://github.com/googleapis/python-bigquery-dataframes/commit/7e9e93aafd26cbfec9a1710caaf97937bcb6ee05))
+
 ## [1.36.0](https://github.com/googleapis/python-bigquery-dataframes/compare/v1.35.0...v1.36.0) (2025-02-11)
 
 
