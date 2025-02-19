@@ -12,22 +12,57 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import pandas as pd
+
 import bigframes
 import bigframes.pandas as bpd
 
 
-def test_blob_create_from_uri_str():
+def test_blob_create_from_uri_str(bq_connection: str, session: bigframes.Session):
     bigframes.options.experiments.blob = True
 
-    uri_series = bpd.Series(
-        [
-            "gs://bigframes_blob_test/images/img0.jpg",
-            "gs://bigframes_blob_test/images/img1.jpg",
-        ]
+    uris = [
+        "gs://bigframes_blob_test/images/img0.jpg",
+        "gs://bigframes_blob_test/images/img1.jpg",
+    ]
+
+    uri_series = bpd.Series(uris, session=session)
+    blob_series = uri_series.str.to_blob(connection=bq_connection)
+
+    pd_blob_df = blob_series.struct.explode().to_pandas()
+    expected_pd_df = pd.DataFrame(
+        {
+            "uri": uris,
+            "version": [None, None],
+            "authorizer": [bq_connection.casefold(), bq_connection.casefold()],
+            "details": [None, None],
+        }
     )
-    # TODO: use bq_connection fixture when MMD location capitalization fix is in prod
-    blob_series = uri_series.str.to_blob(connection="us.bigframes-default-connection")
 
-    pd_blob_series = blob_series.to_pandas()
+    pd.testing.assert_frame_equal(
+        pd_blob_df, expected_pd_df, check_dtype=False, check_index_type=False
+    )
 
-    assert len(pd_blob_series) == 2
+
+def test_blob_create_from_glob_path(bq_connection: str, session: bigframes.Session):
+    bigframes.options.experiments.blob = True
+
+    blob_df = session.from_glob_path(
+        "gs://bigframes_blob_test/images/*", connection=bq_connection, name="blob_col"
+    )
+    pd_blob_df = blob_df["blob_col"].struct.explode().to_pandas()
+    expected_df = pd.DataFrame(
+        {
+            "uri": [
+                "gs://bigframes_blob_test/images/img0.jpg",
+                "gs://bigframes_blob_test/images/img1.jpg",
+            ],
+            "version": [None, None],
+            "authorizer": [bq_connection.casefold(), bq_connection.casefold()],
+            "details": [None, None],
+        }
+    )
+
+    pd.testing.assert_frame_equal(
+        pd_blob_df, expected_df, check_dtype=False, check_index_type=False
+    )
