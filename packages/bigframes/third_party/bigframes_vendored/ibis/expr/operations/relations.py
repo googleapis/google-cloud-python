@@ -10,11 +10,7 @@ import typing
 from typing import Annotated, Any, Literal, Optional, TypeVar
 
 from bigframes_vendored.ibis.common.annotations import attribute
-from bigframes_vendored.ibis.common.collections import (
-    ConflictingValuesError,
-    FrozenDict,
-    FrozenOrderedDict,
-)
+from bigframes_vendored.ibis.common.collections import FrozenDict, FrozenOrderedDict
 from bigframes_vendored.ibis.common.exceptions import (
     IbisTypeError,
     IntegrityError,
@@ -342,20 +338,6 @@ class Set(Relation):
     values = FrozenOrderedDict()
 
     def __init__(self, left, right, **kwargs):
-        err_msg = "Table schemas must be equal for set operations."
-        try:
-            missing_from_left = right.schema - left.schema
-            missing_from_right = left.schema - right.schema
-        except ConflictingValuesError as e:
-            raise RelationError(err_msg + "\n" + str(e)) from e
-        if missing_from_left or missing_from_right:
-            msgs = [err_msg]
-            if missing_from_left:
-                msgs.append(f"Columns missing from the left:\n{missing_from_left}.")
-            if missing_from_right:
-                msgs.append(f"Columns missing from the right:\n{missing_from_right}.")
-            raise RelationError("\n".join(msgs))
-
         if left.schema.names != right.schema.names:
             # rewrite so that both sides have the columns in the same order making it
             # easier for the backends to implement set operations
@@ -365,7 +347,15 @@ class Set(Relation):
 
     @attribute
     def schema(self):
-        return self.left.schema
+        dtypes = (
+            dt.higher_precedence(ltype, rtype)
+            for ltype, rtype in zip(
+                self.left.schema.values(), self.right.schema.values()
+            )
+        )
+        return Schema.from_tuples(
+            (name, coltype) for name, coltype in zip(self.left.schema.names, dtypes)
+        )
 
 
 @public

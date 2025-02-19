@@ -113,7 +113,9 @@ def cast_ibis_value(
 
     Raises:
         TypeError: if the type cast cannot be executed"""
-    if value.type() == to_type:
+    # normalize to nullable, which doesn't impact compatibility
+    value_type = value.type().copy(nullable=True)
+    if value_type == to_type:
         return value
     # casts that just work
     # TODO(bmil): add to this as more casts are verified
@@ -189,50 +191,37 @@ def cast_ibis_value(
         ibis_dtypes.multipolygon: (IBIS_GEO_TYPE,),
     }
 
-    value = ibis_value_to_canonical_type(value)
-    if value.type() in good_casts:
-        if to_type in good_casts[value.type()]:
+    if value_type in good_casts:
+        if to_type in good_casts[value_type]:
             return value.try_cast(to_type) if safe else value.cast(to_type)
     else:
         # this should never happen
         raise TypeError(
-            f"Unexpected value type {value.type()}. {constants.FEEDBACK_LINK}"
+            f"Unexpected value type {value_type}. {constants.FEEDBACK_LINK}"
         )
 
     # casts that need some encouragement
 
     # BigQuery casts bools to lower case strings. Capitalize the result to match Pandas
     # TODO(bmil): remove this workaround after fixing Ibis
-    if value.type() == ibis_dtypes.bool and to_type == ibis_dtypes.string:
+    if value_type == ibis_dtypes.bool and to_type == ibis_dtypes.string:
         if safe:
             return cast(ibis_types.StringValue, value.try_cast(to_type)).capitalize()
         else:
             return cast(ibis_types.StringValue, value.cast(to_type)).capitalize()
 
-    if value.type() == ibis_dtypes.bool and to_type == ibis_dtypes.float64:
+    if value_type == ibis_dtypes.bool and to_type == ibis_dtypes.float64:
         if safe:
             return value.try_cast(ibis_dtypes.int64).try_cast(ibis_dtypes.float64)
         else:
             return value.cast(ibis_dtypes.int64).cast(ibis_dtypes.float64)
 
-    if value.type() == ibis_dtypes.float64 and to_type == ibis_dtypes.bool:
+    if value_type == ibis_dtypes.float64 and to_type == ibis_dtypes.bool:
         return value != ibis_types.literal(0)
 
     raise TypeError(
-        f"Unsupported cast {value.type()} to {to_type}. {constants.FEEDBACK_LINK}"
+        f"Unsupported cast {value_type} to {to_type}. {constants.FEEDBACK_LINK}"
     )
-
-
-def ibis_value_to_canonical_type(value: ibis_types.Value) -> ibis_types.Value:
-    """Converts an Ibis expression to canonical type.
-
-    This is useful in cases where multiple types correspond to the same BigFrames dtype.
-    """
-    ibis_type = value.type()
-    name = value.get_name()
-    # Allow REQUIRED fields to be joined with NULLABLE fields.
-    nullable_type = ibis_type.copy(nullable=True)
-    return value.cast(nullable_type).name(name)
 
 
 def bigframes_dtype_to_ibis_dtype(

@@ -240,9 +240,7 @@ class Compiler:
         return compiled.UnorderedIR(
             ibis_table,
             tuple(
-                bigframes.core.compile.ibis_types.ibis_value_to_canonical_type(
-                    ibis_table[scan_item.source_id].name(scan_item.id.sql)
-                )
+                ibis_table[scan_item.source_id].name(scan_item.id.sql)
                 for scan_item in scan.items
             ),
         )
