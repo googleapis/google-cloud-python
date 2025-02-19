@@ -448,3 +448,15 @@ def test_timestamp_diff_literal_sub_series(scalars_dfs, column, value):
 
     expected_result = value - pd_series
     assert_series_equal(actual_result, expected_result)
+
+
+@pytest.mark.parametrize("column", ["timestamp_col", "datetime_col"])
+def test_timestamp_series_diff_agg(scalars_dfs, column):
+    bf_df, pd_df = scalars_dfs
+    bf_series = bf_df[column]
+    pd_series = pd_df[column]
+
+    actual_result = bf_series.diff().to_pandas()
+
+    expected_result = pd_series.diff()
+    assert_series_equal(actual_result, expected_result)

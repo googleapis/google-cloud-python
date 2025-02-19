@@ -553,6 +553,24 @@ def _(
 
 @compile_unary_agg.register
 def _(
+    op: agg_ops.TimeSeriesDiffOp,
+    column: ibis_types.Column,
+    window=None,
+) -> ibis_types.Value:
+    if not column.type().is_timestamp():
+        raise TypeError(f"Cannot perform time series diff on type{column.type()}")
+
+    original_column = cast(ibis_types.TimestampColumn, column)
+    shifted_column = cast(
+        ibis_types.TimestampColumn,
+        compile_unary_agg(agg_ops.ShiftOp(op.periods), column, window),
+    )
+
+    return original_column.delta(shifted_column, part="microsecond")
+
+
+@compile_unary_agg.register
+def _(
     op: agg_ops.AllOp,
     column: ibis_types.Column,
     window=None,

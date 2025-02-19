@@ -484,6 +484,25 @@ class DiffOp(UnaryWindowOp):
     def skips_nulls(self):
         return False
 
+    def output_type(self, *input_types: dtypes.ExpressionType) -> dtypes.ExpressionType:
+        if dtypes.is_datetime_like(input_types[0]):
+            return dtypes.TIMEDELTA_DTYPE
+        return super().output_type(*input_types)
+
+
+@dataclasses.dataclass(frozen=True)
+class TimeSeriesDiffOp(UnaryWindowOp):
+    periods: int
+
+    @property
+    def skips_nulls(self):
+        return False
+
+    def output_type(self, *input_types: dtypes.ExpressionType) -> dtypes.ExpressionType:
+        if dtypes.is_datetime_like(input_types[0]):
+            return dtypes.TIMEDELTA_DTYPE
+        raise TypeError(f"expect datetime-like types, but got {input_types[0]}")
+
 
 @dataclasses.dataclass(frozen=True)
 class AllOp(UnaryAggregateOp):
