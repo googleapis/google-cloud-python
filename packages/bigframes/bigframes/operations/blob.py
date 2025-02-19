@@ -278,6 +278,7 @@ class BlobAccessor(base.SeriesMethods):
         *,
         dst: Optional[Union[str, bigframes.series.Series]] = None,
         connection: Optional[str] = None,
+        max_batching_rows: int = 10000,
     ) -> bigframes.series.Series:
         """Blurs images.
 
@@ -288,6 +289,7 @@ class BlobAccessor(base.SeriesMethods):
             ksize (tuple(int, int)): Kernel size.
             dst (str or bigframes.series.Series or None, default None): Destination GCS folder str or blob series. If None, output to BQ as bytes.
             connection (str or None, default None): BQ connection used for function internet transactions, and the output blob if "dst" is str. If None, uses default connection of the session.
+            max_batching_rows (int, default 10,000): Max number of rows per batch send to cloud run to execute the function.
 
         Returns:
             BigFrames Blob Series
@@ -302,6 +304,7 @@ class BlobAccessor(base.SeriesMethods):
                 blob_func.image_blur_to_bytes_def,
                 session=self._block.session,
                 connection=connection,
+                max_batching_rows=max_batching_rows,
             ).udf()
 
             df["ksize_x"], df["ksize_y"] = ksize
@@ -322,6 +325,7 @@ class BlobAccessor(base.SeriesMethods):
             blob_func.image_blur_def,
             session=self._block.session,
             connection=connection,
+            max_batching_rows=max_batching_rows,
         ).udf()
 
         dst_rt = dst.blob._get_runtime_json_str(mode="RW")
@@ -342,6 +346,7 @@ class BlobAccessor(base.SeriesMethods):
         fy: float = 0.0,
         dst: Optional[Union[str, bigframes.series.Series]] = None,
         connection: Optional[str] = None,
+        max_batching_rows: int = 10000,
     ):
         """Resize images.
 
@@ -354,6 +359,7 @@ class BlobAccessor(base.SeriesMethods):
             fy (float, defalut 0.0): scale factor along the vertical axis. If set to 0.0, dsize parameter determines the output size.
             dst (str or bigframes.series.Series or None, default None): Destination GCS folder str or blob series. If None, output to BQ as bytes.
             connection (str or None, default None): BQ connection used for function internet transactions, and the output blob if "dst" is str. If None, uses default connection of the session.
+            max_batching_rows (int, default 10,000): Max number of rows per batch send to cloud run to execute the function.
 
         Returns:
             BigFrames Blob Series
@@ -375,6 +381,7 @@ class BlobAccessor(base.SeriesMethods):
                 blob_func.image_resize_to_bytes_def,
                 session=self._block.session,
                 connection=connection,
+                max_batching_rows=max_batching_rows,
             ).udf()
 
             df["dsize_x"], df["dsizye_y"] = dsize
@@ -396,6 +403,7 @@ class BlobAccessor(base.SeriesMethods):
             blob_func.image_resize_def,
             session=self._block.session,
             connection=connection,
+            max_batching_rows=max_batching_rows,
         ).udf()
 
         dst_rt = dst.blob._get_runtime_json_str(mode="RW")
@@ -417,6 +425,7 @@ class BlobAccessor(base.SeriesMethods):
         norm_type: str = "l2",
         dst: Optional[Union[str, bigframes.series.Series]] = None,
         connection: Optional[str] = None,
+        max_batching_rows: int = 10000,
     ) -> bigframes.series.Series:
         """Normalize images.
 
@@ -429,6 +438,7 @@ class BlobAccessor(base.SeriesMethods):
             norm_type (str, default "l2"): Normalization type. Accepted values are "inf", "l1", "l2" and "minmax".
             dst (str or bigframes.series.Series or None, default None): Destination GCS folder str or blob series. If None, output to BQ as bytes.
             connection (str or None, default None): BQ connection used for function internet transactions, and the output blob if "dst" is str. If None, uses default connection of the session.
+            max_batching_rows (int, default 10,000): Max number of rows per batch send to cloud run to execute the function.
 
         Returns:
             BigFrames Blob Series
@@ -443,6 +453,7 @@ class BlobAccessor(base.SeriesMethods):
                 blob_func.image_normalize_to_bytes_def,
                 session=self._block.session,
                 connection=connection,
+                max_batching_rows=max_batching_rows,
             ).udf()
 
             df["alpha"] = alpha
@@ -465,6 +476,7 @@ class BlobAccessor(base.SeriesMethods):
             blob_func.image_normalize_def,
             session=self._block.session,
             connection=connection,
+            max_batching_rows=max_batching_rows,
         ).udf()
 
         dst_rt = dst.blob._get_runtime_json_str(mode="RW")
@@ -480,7 +492,10 @@ class BlobAccessor(base.SeriesMethods):
         return dst
 
     def pdf_extract(
-        self, *, connection: Optional[str] = None
+        self,
+        *,
+        connection: Optional[str] = None,
+        max_batching_rows: int = 10000,
     ) -> bigframes.series.Series:
         """Extracts and chunks text from PDF URLs and saves the text as
            arrays of string.
@@ -493,6 +508,8 @@ class BlobAccessor(base.SeriesMethods):
             connection (str or None, default None): BQ connection used for
                 function internet transactions, and the output blob if "dst"
                 is str. If None, uses default connection of the session.
+            max_batching_rows (int, default 10,000): Max number of rows per batch
+                send to cloud run to execute the function.
 
         Returns:
             bigframes.series.Series: conatins all text from a pdf file
@@ -502,14 +519,15 @@ class BlobAccessor(base.SeriesMethods):
 
         connection = self._resolve_connection(connection)
 
-        pdf_chunk_udf = blob_func.TransformFunction(
+        pdf_extract_udf = blob_func.TransformFunction(
             blob_func.pdf_extract_def,
             session=self._block.session,
             connection=connection,
+            max_batching_rows=max_batching_rows,
         ).udf()
 
         src_rt = self._get_runtime_json_str(mode="R")
-        res = src_rt.apply(pdf_chunk_udf)
+        res = src_rt.apply(pdf_extract_udf)
         return res
 
     def pdf_chunk(
@@ -518,6 +536,7 @@ class BlobAccessor(base.SeriesMethods):
         connection: Optional[str] = None,
         chunk_size: int = 1000,
         overlap_size: int = 200,
+        max_batching_rows: int = 10000,
     ) -> bigframes.series.Series:
         """Extracts and chunks text from PDF URLs and saves the text as
            arrays of strings.
@@ -535,6 +554,8 @@ class BlobAccessor(base.SeriesMethods):
             overlap_size (int, default 200): the number of overlapping characters
                 between consective chunks. The helps to ensure context is
                 perserved across chunk boundaries.
+            max_batching_rows (int, default 10,000): Max number of rows per batch
+                send to cloud run to execute the function.
 
         Returns:
             bigframe.series.Series of array[str], where each string is a
@@ -557,6 +578,7 @@ class BlobAccessor(base.SeriesMethods):
             blob_func.pdf_chunk_def,
             session=self._block.session,
             connection=connection,
+            max_batching_rows=max_batching_rows,
         ).udf()
 
         src_rt = self._get_runtime_json_str(mode="R")

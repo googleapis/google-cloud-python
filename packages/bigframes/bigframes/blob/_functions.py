@@ -37,12 +37,17 @@ class TransformFunction:
     """Simple transform function class to deal with Python UDF."""
 
     def __init__(
-        self, func_def: FunctionDef, session: bigframes.session.Session, connection: str
+        self,
+        func_def: FunctionDef,
+        session: bigframes.session.Session,
+        connection: str,
+        max_batching_rows: int,
     ):
         self._func = func_def.func
         self._requirements = func_def.requirements
         self._session = session
         self._connection = connection
+        self._max_batching_rows = max_batching_rows
 
     def _input_bq_signature(self):
         sig = inspect.signature(self._func)
@@ -67,7 +72,7 @@ class TransformFunction:
 CREATE OR REPLACE FUNCTION `{udf_name}`({self._input_bq_signature()})
 RETURNS {self._output_bq_type()} LANGUAGE python
 WITH CONNECTION `{self._connection}`
-OPTIONS (entry_point='{func_name}', runtime_version='python-3.11', packages={packages})
+OPTIONS (entry_point='{func_name}', runtime_version='python-3.11', packages={packages}, max_batching_rows={self._max_batching_rows})
 AS r\"\"\"
 
 
