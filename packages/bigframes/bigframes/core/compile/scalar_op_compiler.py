@@ -1186,6 +1186,11 @@ def to_timedelta_op_impl(x: ibis_types.Value, op: ops.ToTimedeltaOp):
     ).floor()
 
 
+@scalar_op_compiler.register_unary_op(ops.timedelta_floor_op)
+def timedelta_floor_op_impl(x: ibis_types.NumericValue):
+    return x.floor()
+
+
 @scalar_op_compiler.register_unary_op(ops.RemoteFunctionOp, pass_op=True)
 def remote_function_op_impl(x: ibis_types.Value, op: ops.RemoteFunctionOp):
     ibis_node = getattr(op.func, "ibis_node", None)

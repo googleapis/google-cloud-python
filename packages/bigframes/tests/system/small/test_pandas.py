@@ -829,3 +829,18 @@ def test_to_timedelta_with_bf_series_invalid_unit(session, unit):
 @pytest.mark.parametrize("input", [1, 1.2, "1s"])
 def test_to_timedelta_non_bf_series(input):
     assert bpd.to_timedelta(input) == pd.to_timedelta(input)
+
+
+def test_to_timedelta_on_timedelta_series__should_be_no_op(scalars_dfs):
+    bf_df, pd_df = scalars_dfs
+    bf_series = bpd.to_timedelta(bf_df["int64_too"], unit="us")
+    pd_series = pd.to_timedelta(pd_df["int64_too"], unit="us")
+
+    actual_result = (
+        bpd.to_timedelta(bf_series, unit="s").to_pandas().astype("timedelta64[ns]")
+    )
+
+    expected_result = pd.to_timedelta(pd_series, unit="s")
+    pd.testing.assert_series_equal(
+        actual_result, expected_result, check_index_type=False
+    )

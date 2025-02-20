@@ -184,6 +184,7 @@ from bigframes.operations.string_ops import (
 from bigframes.operations.struct_ops import StructFieldOp, StructOp
 from bigframes.operations.time_ops import hour_op, minute_op, normalize_op, second_op
 from bigframes.operations.timedelta_ops import (
+    timedelta_floor_op,
     timestamp_add_op,
     timestamp_sub_op,
     ToTimedeltaOp,
@@ -259,6 +260,7 @@ __all__ = [
     "second_op",
     "normalize_op",
     # Timedelta ops
+    "timedelta_floor_op",
     "timestamp_add_op",
     "timestamp_sub_op",
     "ToTimedeltaOp",

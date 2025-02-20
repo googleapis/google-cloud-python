@@ -125,6 +125,9 @@ def _rewrite_op_expr(
         # but for timedeltas: int(timedelta) // float => int(timedelta)
         return _rewrite_floordiv_op(inputs[0], inputs[1])
 
+    if isinstance(expr.op, ops.ToTimedeltaOp):
+        return _rewrite_to_timedelta_op(expr.op, inputs[0])
+
     return _TypedExpr.create_op_expr(expr.op, *inputs)
 
 
@@ -154,9 +157,9 @@ def _rewrite_mul_op(left: _TypedExpr, right: _TypedExpr) -> _TypedExpr:
     result = _TypedExpr.create_op_expr(ops.mul_op, left, right)
 
     if left.dtype is dtypes.TIMEDELTA_DTYPE and dtypes.is_numeric(right.dtype):
-        return _TypedExpr.create_op_expr(ops.ToTimedeltaOp("us"), result)
+        return _TypedExpr.create_op_expr(ops.timedelta_floor_op, result)
     if dtypes.is_numeric(left.dtype) and right.dtype is dtypes.TIMEDELTA_DTYPE:
-        return _TypedExpr.create_op_expr(ops.ToTimedeltaOp("us"), result)
+        return _TypedExpr.create_op_expr(ops.timedelta_floor_op, result)
 
     return result
 
@@ -165,7 +168,7 @@ def _rewrite_div_op(left: _TypedExpr, right: _TypedExpr) -> _TypedExpr:
     result = _TypedExpr.create_op_expr(ops.div_op, left, right)
 
     if left.dtype is dtypes.TIMEDELTA_DTYPE and dtypes.is_numeric(right.dtype):
-        return _TypedExpr.create_op_expr(ops.ToTimedeltaOp("us"), result)
+        return _TypedExpr.create_op_expr(ops.timedelta_floor_op, result)
 
     return result
 
@@ -174,9 +177,17 @@ def _rewrite_floordiv_op(left: _TypedExpr, right: _TypedExpr) -> _TypedExpr:
     result = _TypedExpr.create_op_expr(ops.floordiv_op, left, right)
 
     if left.dtype is dtypes.TIMEDELTA_DTYPE and dtypes.is_numeric(right.dtype):
-        return _TypedExpr.create_op_expr(ops.ToTimedeltaOp("us"), result)
+        return _TypedExpr.create_op_expr(ops.timedelta_floor_op, result)
 
     return result
+
+
+def _rewrite_to_timedelta_op(op: ops.ToTimedeltaOp, arg: _TypedExpr):
+    if arg.dtype is dtypes.TIMEDELTA_DTYPE:
+        # Do nothing for values that are already timedeltas
+        return arg
+
+    return _TypedExpr.create_op_expr(op, arg)
 
 
 @functools.cache
