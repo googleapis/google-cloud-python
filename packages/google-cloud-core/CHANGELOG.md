@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-core/#history
 
+## [2.4.2](https://github.com/googleapis/python-cloud-core/compare/v2.4.1...v2.4.2) (2025-02-20)
+
+
+### Features
+
+* Client should pass client_options.api_key to auth library ([#321](https://github.com/googleapis/python-cloud-core/issues/321)) ([dfac15b](https://github.com/googleapis/python-cloud-core/commit/dfac15b823a27a4c4ce68be9bb8aab6f81de5d83))
+
 ## [2.4.1](https://github.com/googleapis/python-cloud-core/compare/v2.4.0...v2.4.1) (2023-12-07)
 
 
