@@ -4,6 +4,27 @@
 
 [1]: https://pypi.org/project/google-cloud-spanner/#history
 
+## [3.52.0](https://github.com/googleapis/python-spanner/compare/v3.51.0...v3.52.0) (2025-02-19)
+
+
+### Features
+
+* Add additional opentelemetry span events for session pool ([a6811af](https://github.com/googleapis/python-spanner/commit/a6811afefa6739caa20203048635d94f9b85c4c8))
+* Add GCP standard otel attributes for python client ([#1308](https://github.com/googleapis/python-spanner/issues/1308)) ([0839f98](https://github.com/googleapis/python-spanner/commit/0839f982a3e7f5142825d10c440005a39cdb39cb))
+* Add updated span events + trace more methods ([#1259](https://github.com/googleapis/python-spanner/issues/1259)) ([ad69c48](https://github.com/googleapis/python-spanner/commit/ad69c48f01b09cbc5270b9cefde23715d5ac54b6))
+* MetricsTracer implementation ([#1291](https://github.com/googleapis/python-spanner/issues/1291)) ([8fbde6b](https://github.com/googleapis/python-spanner/commit/8fbde6b84d11db12ee4d536f0d5b8064619bdaa9))
+* Support GRAPH and pipe syntax in dbapi ([#1285](https://github.com/googleapis/python-spanner/issues/1285)) ([959bb9c](https://github.com/googleapis/python-spanner/commit/959bb9cda953eead89ffc271cb2a472e7139f81c))
+* Support transaction and request tags in dbapi ([#1262](https://github.com/googleapis/python-spanner/issues/1262)) ([ee9662f](https://github.com/googleapis/python-spanner/commit/ee9662f57dbb730afb08b9b9829e4e19bda5e69a))
+* **x-goog-spanner-request-id:** Introduce AtomicCounter ([#1275](https://github.com/googleapis/python-spanner/issues/1275)) ([f2483e1](https://github.com/googleapis/python-spanner/commit/f2483e11ba94f8bd1e142d1a85347d90104d1a19))
+
+
+### Bug Fixes
+
+* Retry UNAVAILABLE errors for streaming RPCs ([#1278](https://github.com/googleapis/python-spanner/issues/1278)) ([ab31078](https://github.com/googleapis/python-spanner/commit/ab310786baf09033a28c76e843b654e98a21613d)), closes [#1150](https://github.com/googleapis/python-spanner/issues/1150)
+* **tracing:** Ensure nesting of Transaction.begin under commit + fix suggestions from feature review ([#1287](https://github.com/googleapis/python-spanner/issues/1287)) ([d9ee75a](https://github.com/googleapis/python-spanner/commit/d9ee75ac9ecfbf37a95c95a56295bdd79da3006d))
+* **tracing:** Only set span.status=OK if UNSET ([#1248](https://github.com/googleapis/python-spanner/issues/1248)) ([1d393fe](https://github.com/googleapis/python-spanner/commit/1d393fedf3be8b36c91d0f52a5f23cfa5c05f835)), closes [#1246](https://github.com/googleapis/python-spanner/issues/1246)
+* Update retry strategy for mutation calls to handle aborted transactions ([#1279](https://github.com/googleapis/python-spanner/issues/1279)) ([0887eb4](https://github.com/googleapis/python-spanner/commit/0887eb43b6ea8bd9076ca81977d1446011335853))
+
 ## [3.51.0](https://github.com/googleapis/python-spanner/compare/v3.50.1...v3.51.0) (2024-12-05)
 
 
