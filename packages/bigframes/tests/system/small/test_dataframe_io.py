@@ -509,7 +509,7 @@ def test_to_gbq_index(scalars_dfs, dataset_id, index):
         df_out = df_out.sort_values("rowindex_2").reset_index(drop=True)
 
     utils.convert_pandas_dtypes(df_out, bytes_col=False)
-    # pd.read_gbq interpets bytes_col as object, reconvert to pyarrow binary
+    # pd.read_gbq interprets bytes_col as object, reconvert to pyarrow binary
     df_out["bytes_col"] = df_out["bytes_col"].astype(pd.ArrowDtype(pa.binary()))
     expected = scalars_pandas_df.copy()
     expected.index.name = index_col

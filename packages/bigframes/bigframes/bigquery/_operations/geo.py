@@ -24,7 +24,7 @@ https://cloud.google.com/bigquery/docs/reference/standard-sql/geography_function
 """
 
 
-def st_area(self) -> bigframes.series.Series:
+def st_area(series: bigframes.series.Series) -> bigframes.series.Series:
     """
     Returns the area in square meters covered by the polygons in the input
     GEOGRAPHY.
@@ -35,7 +35,7 @@ def st_area(self) -> bigframes.series.Series:
 
 
     ..note::
-        BigQuery's Geography functions, like `st_area`, interpet the geomtry
+        BigQuery's Geography functions, like `st_area`, interpret the geometry
         data type as a point set on the Earth's surface. A point set is a set
         of points, lines, and polygons on the WGS84 reference spheroid, with
         geodesic edges. See: https://cloud.google.com/bigquery/docs/geospatial-data
@@ -88,6 +88,6 @@ def st_area(self) -> bigframes.series.Series:
       bigframes.pandas.Series:
           Series of float representing the areas.
     """
-    series = self._apply_unary_op(ops.geo_area_op)
+    series = series._apply_unary_op(ops.geo_area_op)
     series.name = None
     return series

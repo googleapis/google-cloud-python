@@ -1013,6 +1013,18 @@ def geo_area_op_impl(x: ibis_types.Value):
     return typing.cast(ibis_types.GeoSpatialValue, x).area()
 
 
+@scalar_op_compiler.register_unary_op(ops.geo_st_astext_op)
+def geo_st_astext_op_impl(x: ibis_types.Value):
+    return typing.cast(ibis_types.GeoSpatialValue, x).as_text()
+
+
+@scalar_op_compiler.register_unary_op(ops.geo_st_geogfromtext_op)
+def geo_st_geogfromtext_op_impl(x: ibis_types.Value):
+    # Ibis doesn't seem to provide a dedicated method to cast from string to geography,
+    # so we use a BigQuery scalar function, st_geogfromtext(), directly.
+    return st_geogfromtext(x)
+
+
 @scalar_op_compiler.register_binary_op(ops.geo_st_geogpoint_op, pass_op=False)
 def geo_st_geogpoint_op_impl(x: ibis_types.Value, y: ibis_types.Value):
     return typing.cast(ibis_types.NumericValue, x).point(
@@ -1928,6 +1940,11 @@ def is_null(value) -> bool:
 
 def _ibis_num(number: float):
     return typing.cast(ibis_types.NumericValue, ibis_types.literal(number))
+
+
+@ibis_udf.scalar.builtin
+def st_geogfromtext(a: str) -> ibis_dtypes.geography:  # type: ignore
+    """Convert string to geography."""
 
 
 @ibis_udf.scalar.builtin

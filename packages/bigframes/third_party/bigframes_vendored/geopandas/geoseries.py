@@ -100,7 +100,7 @@ class GeoSeries:
         In case of geographic coordinates, it is assumed that longitude is
         captured by x coordinates and latitude by y.
 
-          **Examples:**
+        **Examples:**
 
             >>> import bigframes.pandas as bpd
             >>> import bigframes.geopandas
@@ -122,7 +122,7 @@ class GeoSeries:
 
             index (array-like or Index, optional):
                 The index for the GeoSeries. If not given and all coordinate
-                inputs are Series with an equal index, that index is used..
+                inputs are Series with an equal index, that index is used.
 
             **kwargs:
                 Additional arguments passed to the Series constructor, e.g. `name`.
@@ -130,5 +130,72 @@ class GeoSeries:
         Returns:
             bigframes.geopandas.GeoSeries:
                 A GeoSeries of Point geometries.
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
+    @classmethod
+    def from_wkt(cls, data, index=None) -> bigframes.geopandas.GeoSeries:
+        """
+        Alternate constructor to create a GeoSeries from a list or array of
+        WKT objects.
+
+        **Examples:**
+
+            >>> import bigframes as bpd
+            >>> import bigframes.geopandas
+            >>> bpd.options.display.progress_bar = None
+
+            >>> wkts = [
+            ... 'POINT (1 1)',
+            ... 'POINT (2 2)',
+            ... 'POINT (3 3)',
+            ... ]
+            >>> s = bigframes.geopandas.GeoSeries.from_wkt(wkts)
+            >>> s
+            0    POINT (1 1)
+            1    POINT (2 2)
+            2    POINT (3 3)
+            dtype: geometry
+
+        Args:
+            data (array-like):
+                Series, list, or array of WKT objects.
+
+            index (array-like or Index, optional):
+                The index for the GeoSeries.
+
+        Returns:
+            bigframes.geopandas.GeoSeries:
+                A GeoSeries of geometries.
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
+    def to_wkt(self) -> bigframes.series.Series:
+        """
+        Convert GeoSeries geometries to WKT
+
+        **Examples:**
+
+            >>> import bigframes as bpd
+            >>> import bigframes.geopandas
+            >>> from shapely.geometry import Point
+            >>> bpd.options.display.progress_bar = None
+
+            >>> s = bigframes.geopandas.GeoSeries([Point(1, 1), Point(2, 2), Point(3, 3)])
+            >>> s
+            0    POINT (1 1)
+            1    POINT (2 2)
+            2    POINT (3 3)
+            dtype: geometry
+
+            >>> s.to_wkt()
+            0    POINT(1 1)
+            1    POINT(2 2)
+            2    POINT(3 3)
+            dtype: string
+
+        Returns:
+            bigframes.series.Series:
+                WKT representations of the geometries.
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
