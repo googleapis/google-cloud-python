@@ -8,7 +8,7 @@
     ],
     "language": "PYTHON",
     "name": "google-cloud-compute",
-    "version": "1.25.0"
+    "version": "0.1.0"
   },
   "snippets": [
     {
@@ -28038,6 +28038,94 @@
           "fullName": "google.cloud.compute_v1.NetworkFirewallPoliciesClient",
           "shortName": "NetworkFirewallPoliciesClient"
         },
+        "fullName": "google.cloud.compute_v1.NetworkFirewallPoliciesClient.add_packet_mirroring_rule",
+        "method": {
+          "fullName": "google.cloud.compute.v1.NetworkFirewallPolicies.AddPacketMirroringRule",
+          "service": {
+            "fullName": "google.cloud.compute.v1.NetworkFirewallPolicies",
+            "shortName": "NetworkFirewallPolicies"
+          },
+          "shortName": "AddPacketMirroringRule"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.compute_v1.types.AddPacketMirroringRuleNetworkFirewallPolicyRequest"
+          },
+          {
+            "name": "project",
+            "type": "str"
+          },
+          {
+            "name": "firewall_policy",
+            "type": "str"
+          },
+          {
+            "name": "firewall_policy_rule_resource",
+            "type": "google.cloud.compute_v1.types.FirewallPolicyRule"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.extended_operation.ExtendedOperation",
+        "shortName": "add_packet_mirroring_rule"
+      },
+      "description": "Sample for AddPacketMirroringRule",
+      "file": "compute_v1_generated_network_firewall_policies_add_packet_mirroring_rule_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "compute_v1_generated_NetworkFirewallPolicies_AddPacketMirroringRule_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 46,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 49,
+          "start": 47,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 50,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "compute_v1_generated_network_firewall_policies_add_packet_mirroring_rule_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.compute_v1.NetworkFirewallPoliciesClient",
+          "shortName": "NetworkFirewallPoliciesClient"
+        },
         "fullName": "google.cloud.compute_v1.NetworkFirewallPoliciesClient.add_rule",
         "method": {
           "fullName": "google.cloud.compute.v1.NetworkFirewallPolicies.AddRule",
@@ -28542,6 +28630,90 @@
           "fullName": "google.cloud.compute_v1.NetworkFirewallPoliciesClient",
           "shortName": "NetworkFirewallPoliciesClient"
         },
+        "fullName": "google.cloud.compute_v1.NetworkFirewallPoliciesClient.get_packet_mirroring_rule",
+        "method": {
+          "fullName": "google.cloud.compute.v1.NetworkFirewallPolicies.GetPacketMirroringRule",
+          "service": {
+            "fullName": "google.cloud.compute.v1.NetworkFirewallPolicies",
+            "shortName": "NetworkFirewallPolicies"
+          },
+          "shortName": "GetPacketMirroringRule"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.compute_v1.types.GetPacketMirroringRuleNetworkFirewallPolicyRequest"
+          },
+          {
+            "name": "project",
+            "type": "str"
+          },
+          {
+            "name": "firewall_policy",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.compute_v1.types.FirewallPolicyRule",
+        "shortName": "get_packet_mirroring_rule"
+      },
+      "description": "Sample for GetPacketMirroringRule",
+      "file": "compute_v1_generated_network_firewall_policies_get_packet_mirroring_rule_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "compute_v1_generated_NetworkFirewallPolicies_GetPacketMirroringRule_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 46,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 49,
+          "start": 47,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 50,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "compute_v1_generated_network_firewall_policies_get_packet_mirroring_rule_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.compute_v1.NetworkFirewallPoliciesClient",
+          "shortName": "NetworkFirewallPoliciesClient"
+        },
         "fullName": "google.cloud.compute_v1.NetworkFirewallPoliciesClient.get_rule",
         "method": {
           "fullName": "google.cloud.compute.v1.NetworkFirewallPolicies.GetRule",
@@ -28874,6 +29046,94 @@
           "fullName": "google.cloud.compute_v1.NetworkFirewallPoliciesClient",
           "shortName": "NetworkFirewallPoliciesClient"
         },
+        "fullName": "google.cloud.compute_v1.NetworkFirewallPoliciesClient.patch_packet_mirroring_rule",
+        "method": {
+          "fullName": "google.cloud.compute.v1.NetworkFirewallPolicies.PatchPacketMirroringRule",
+          "service": {
+            "fullName": "google.cloud.compute.v1.NetworkFirewallPolicies",
+            "shortName": "NetworkFirewallPolicies"
+          },
+          "shortName": "PatchPacketMirroringRule"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.compute_v1.types.PatchPacketMirroringRuleNetworkFirewallPolicyRequest"
+          },
+          {
+            "name": "project",
+            "type": "str"
+          },
+          {
+            "name": "firewall_policy",
+            "type": "str"
+          },
+          {
+            "name": "firewall_policy_rule_resource",
+            "type": "google.cloud.compute_v1.types.FirewallPolicyRule"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.extended_operation.ExtendedOperation",
+        "shortName": "patch_packet_mirroring_rule"
+      },
+      "description": "Sample for PatchPacketMirroringRule",
+      "file": "compute_v1_generated_network_firewall_policies_patch_packet_mirroring_rule_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "compute_v1_generated_NetworkFirewallPolicies_PatchPacketMirroringRule_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 46,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 49,
+          "start": 47,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 50,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "compute_v1_generated_network_firewall_policies_patch_packet_mirroring_rule_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.compute_v1.NetworkFirewallPoliciesClient",
+          "shortName": "NetworkFirewallPoliciesClient"
+        },
         "fullName": "google.cloud.compute_v1.NetworkFirewallPoliciesClient.patch_rule",
         "method": {
           "fullName": "google.cloud.compute.v1.NetworkFirewallPolicies.PatchRule",
@@ -29126,6 +29386,90 @@
         }
       ],
       "title": "compute_v1_generated_network_firewall_policies_remove_association_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.compute_v1.NetworkFirewallPoliciesClient",
+          "shortName": "NetworkFirewallPoliciesClient"
+        },
+        "fullName": "google.cloud.compute_v1.NetworkFirewallPoliciesClient.remove_packet_mirroring_rule",
+        "method": {
+          "fullName": "google.cloud.compute.v1.NetworkFirewallPolicies.RemovePacketMirroringRule",
+          "service": {
+            "fullName": "google.cloud.compute.v1.NetworkFirewallPolicies",
+            "shortName": "NetworkFirewallPolicies"
+          },
+          "shortName": "RemovePacketMirroringRule"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.compute_v1.types.RemovePacketMirroringRuleNetworkFirewallPolicyRequest"
+          },
+          {
+            "name": "project",
+            "type": "str"
+          },
+          {
+            "name": "firewall_policy",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.extended_operation.ExtendedOperation",
+        "shortName": "remove_packet_mirroring_rule"
+      },
+      "description": "Sample for RemovePacketMirroringRule",
+      "file": "compute_v1_generated_network_firewall_policies_remove_packet_mirroring_rule_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "compute_v1_generated_NetworkFirewallPolicies_RemovePacketMirroringRule_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 46,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 49,
+          "start": 47,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 50,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "compute_v1_generated_network_firewall_policies_remove_packet_mirroring_rule_sync.py"
     },
     {
       "canonical": true,
@@ -52766,6 +53110,94 @@
           "fullName": "google.cloud.compute_v1.RoutersClient",
           "shortName": "RoutersClient"
         },
+        "fullName": "google.cloud.compute_v1.RoutersClient.delete_route_policy",
+        "method": {
+          "fullName": "google.cloud.compute.v1.Routers.DeleteRoutePolicy",
+          "service": {
+            "fullName": "google.cloud.compute.v1.Routers",
+            "shortName": "Routers"
+          },
+          "shortName": "DeleteRoutePolicy"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.compute_v1.types.DeleteRoutePolicyRouterRequest"
+          },
+          {
+            "name": "project",
+            "type": "str"
+          },
+          {
+            "name": "region",
+            "type": "str"
+          },
+          {
+            "name": "router",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.extended_operation.ExtendedOperation",
+        "shortName": "delete_route_policy"
+      },
+      "description": "Sample for DeleteRoutePolicy",
+      "file": "compute_v1_generated_routers_delete_route_policy_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "compute_v1_generated_Routers_DeleteRoutePolicy_sync",
+      "segments": [
+        {
+          "end": 53,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 53,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 47,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 50,
+          "start": 48,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 54,
+          "start": 51,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "compute_v1_generated_routers_delete_route_policy_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.compute_v1.RoutersClient",
+          "shortName": "RoutersClient"
+        },
         "fullName": "google.cloud.compute_v1.RoutersClient.delete",
         "method": {
           "fullName": "google.cloud.compute.v1.Routers.Delete",
@@ -53022,6 +53454,94 @@
         }
       ],
       "title": "compute_v1_generated_routers_get_nat_mapping_info_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.compute_v1.RoutersClient",
+          "shortName": "RoutersClient"
+        },
+        "fullName": "google.cloud.compute_v1.RoutersClient.get_route_policy",
+        "method": {
+          "fullName": "google.cloud.compute.v1.Routers.GetRoutePolicy",
+          "service": {
+            "fullName": "google.cloud.compute.v1.Routers",
+            "shortName": "Routers"
+          },
+          "shortName": "GetRoutePolicy"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.compute_v1.types.GetRoutePolicyRouterRequest"
+          },
+          {
+            "name": "project",
+            "type": "str"
+          },
+          {
+            "name": "region",
+            "type": "str"
+          },
+          {
+            "name": "router",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.compute_v1.types.RoutersGetRoutePolicyResponse",
+        "shortName": "get_route_policy"
+      },
+      "description": "Sample for GetRoutePolicy",
+      "file": "compute_v1_generated_routers_get_route_policy_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "compute_v1_generated_Routers_GetRoutePolicy_sync",
+      "segments": [
+        {
+          "end": 53,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 53,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 47,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 50,
+          "start": 48,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 54,
+          "start": 51,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "compute_v1_generated_routers_get_route_policy_sync.py"
     },
     {
       "canonical": true,
@@ -53294,6 +53814,182 @@
           "fullName": "google.cloud.compute_v1.RoutersClient",
           "shortName": "RoutersClient"
         },
+        "fullName": "google.cloud.compute_v1.RoutersClient.list_bgp_routes",
+        "method": {
+          "fullName": "google.cloud.compute.v1.Routers.ListBgpRoutes",
+          "service": {
+            "fullName": "google.cloud.compute.v1.Routers",
+            "shortName": "Routers"
+          },
+          "shortName": "ListBgpRoutes"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.compute_v1.types.ListBgpRoutesRoutersRequest"
+          },
+          {
+            "name": "project",
+            "type": "str"
+          },
+          {
+            "name": "region",
+            "type": "str"
+          },
+          {
+            "name": "router",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.compute_v1.services.routers.pagers.ListBgpRoutesPager",
+        "shortName": "list_bgp_routes"
+      },
+      "description": "Sample for ListBgpRoutes",
+      "file": "compute_v1_generated_routers_list_bgp_routes_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "compute_v1_generated_Routers_ListBgpRoutes_sync",
+      "segments": [
+        {
+          "end": 54,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 54,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 47,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 50,
+          "start": 48,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 55,
+          "start": 51,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "compute_v1_generated_routers_list_bgp_routes_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.compute_v1.RoutersClient",
+          "shortName": "RoutersClient"
+        },
+        "fullName": "google.cloud.compute_v1.RoutersClient.list_route_policies",
+        "method": {
+          "fullName": "google.cloud.compute.v1.Routers.ListRoutePolicies",
+          "service": {
+            "fullName": "google.cloud.compute.v1.Routers",
+            "shortName": "Routers"
+          },
+          "shortName": "ListRoutePolicies"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.compute_v1.types.ListRoutePoliciesRoutersRequest"
+          },
+          {
+            "name": "project",
+            "type": "str"
+          },
+          {
+            "name": "region",
+            "type": "str"
+          },
+          {
+            "name": "router",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.compute_v1.services.routers.pagers.ListRoutePoliciesPager",
+        "shortName": "list_route_policies"
+      },
+      "description": "Sample for ListRoutePolicies",
+      "file": "compute_v1_generated_routers_list_route_policies_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "compute_v1_generated_Routers_ListRoutePolicies_sync",
+      "segments": [
+        {
+          "end": 54,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 54,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 47,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 50,
+          "start": 48,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 55,
+          "start": 51,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "compute_v1_generated_routers_list_route_policies_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.compute_v1.RoutersClient",
+          "shortName": "RoutersClient"
+        },
         "fullName": "google.cloud.compute_v1.RoutersClient.list",
         "method": {
           "fullName": "google.cloud.compute.v1.Routers.List",
@@ -53370,6 +54066,98 @@
         }
       ],
       "title": "compute_v1_generated_routers_list_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.compute_v1.RoutersClient",
+          "shortName": "RoutersClient"
+        },
+        "fullName": "google.cloud.compute_v1.RoutersClient.patch_route_policy",
+        "method": {
+          "fullName": "google.cloud.compute.v1.Routers.PatchRoutePolicy",
+          "service": {
+            "fullName": "google.cloud.compute.v1.Routers",
+            "shortName": "Routers"
+          },
+          "shortName": "PatchRoutePolicy"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.compute_v1.types.PatchRoutePolicyRouterRequest"
+          },
+          {
+            "name": "project",
+            "type": "str"
+          },
+          {
+            "name": "region",
+            "type": "str"
+          },
+          {
+            "name": "router",
+            "type": "str"
+          },
+          {
+            "name": "route_policy_resource",
+            "type": "google.cloud.compute_v1.types.RoutePolicy"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.extended_operation.ExtendedOperation",
+        "shortName": "patch_route_policy"
+      },
+      "description": "Sample for PatchRoutePolicy",
+      "file": "compute_v1_generated_routers_patch_route_policy_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "compute_v1_generated_Routers_PatchRoutePolicy_sync",
+      "segments": [
+        {
+          "end": 53,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 53,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 47,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 50,
+          "start": 48,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 54,
+          "start": 51,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "compute_v1_generated_routers_patch_route_policy_sync.py"
     },
     {
       "canonical": true,
@@ -53554,6 +54342,98 @@
         }
       ],
       "title": "compute_v1_generated_routers_preview_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.compute_v1.RoutersClient",
+          "shortName": "RoutersClient"
+        },
+        "fullName": "google.cloud.compute_v1.RoutersClient.update_route_policy",
+        "method": {
+          "fullName": "google.cloud.compute.v1.Routers.UpdateRoutePolicy",
+          "service": {
+            "fullName": "google.cloud.compute.v1.Routers",
+            "shortName": "Routers"
+          },
+          "shortName": "UpdateRoutePolicy"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.compute_v1.types.UpdateRoutePolicyRouterRequest"
+          },
+          {
+            "name": "project",
+            "type": "str"
+          },
+          {
+            "name": "region",
+            "type": "str"
+          },
+          {
+            "name": "router",
+            "type": "str"
+          },
+          {
+            "name": "route_policy_resource",
+            "type": "google.cloud.compute_v1.types.RoutePolicy"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.extended_operation.ExtendedOperation",
+        "shortName": "update_route_policy"
+      },
+      "description": "Sample for UpdateRoutePolicy",
+      "file": "compute_v1_generated_routers_update_route_policy_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "compute_v1_generated_Routers_UpdateRoutePolicy_sync",
+      "segments": [
+        {
+          "end": 53,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 53,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 47,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 50,
+          "start": 48,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 54,
+          "start": 51,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "compute_v1_generated_routers_update_route_policy_sync.py"
     },
     {
       "canonical": true,

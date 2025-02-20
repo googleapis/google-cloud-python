@@ -143,6 +143,11 @@ class RoutersTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.delete_route_policy: gapic_v1.method.wrap_method(
+                self.delete_route_policy,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.get: gapic_v1.method.wrap_method(
                 self.get,
                 default_timeout=None,
@@ -155,6 +160,11 @@ class RoutersTransport(abc.ABC):
             ),
             self.get_nat_mapping_info: gapic_v1.method.wrap_method(
                 self.get_nat_mapping_info,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_route_policy: gapic_v1.method.wrap_method(
+                self.get_route_policy,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -173,8 +183,23 @@ class RoutersTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.list_bgp_routes: gapic_v1.method.wrap_method(
+                self.list_bgp_routes,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_route_policies: gapic_v1.method.wrap_method(
+                self.list_route_policies,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.patch: gapic_v1.method.wrap_method(
                 self.patch,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.patch_route_policy: gapic_v1.method.wrap_method(
+                self.patch_route_policy,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -185,6 +210,11 @@ class RoutersTransport(abc.ABC):
             ),
             self.update: gapic_v1.method.wrap_method(
                 self.update,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_route_policy: gapic_v1.method.wrap_method(
+                self.update_route_policy,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -213,6 +243,15 @@ class RoutersTransport(abc.ABC):
         self,
     ) -> Callable[
         [compute.DeleteRouterRequest],
+        Union[compute.Operation, Awaitable[compute.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_route_policy(
+        self,
+    ) -> Callable[
+        [compute.DeleteRoutePolicyRouterRequest],
         Union[compute.Operation, Awaitable[compute.Operation]],
     ]:
         raise NotImplementedError()
@@ -247,6 +286,18 @@ class RoutersTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
+    def get_route_policy(
+        self,
+    ) -> Callable[
+        [compute.GetRoutePolicyRouterRequest],
+        Union[
+            compute.RoutersGetRoutePolicyResponse,
+            Awaitable[compute.RoutersGetRoutePolicyResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
     def get_router_status(
         self,
     ) -> Callable[
@@ -274,10 +325,40 @@ class RoutersTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
+    def list_bgp_routes(
+        self,
+    ) -> Callable[
+        [compute.ListBgpRoutesRoutersRequest],
+        Union[compute.RoutersListBgpRoutes, Awaitable[compute.RoutersListBgpRoutes]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_route_policies(
+        self,
+    ) -> Callable[
+        [compute.ListRoutePoliciesRoutersRequest],
+        Union[
+            compute.RoutersListRoutePolicies,
+            Awaitable[compute.RoutersListRoutePolicies],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
     def patch(
         self,
     ) -> Callable[
         [compute.PatchRouterRequest],
+        Union[compute.Operation, Awaitable[compute.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def patch_route_policy(
+        self,
+    ) -> Callable[
+        [compute.PatchRoutePolicyRouterRequest],
         Union[compute.Operation, Awaitable[compute.Operation]],
     ]:
         raise NotImplementedError()
@@ -298,6 +379,15 @@ class RoutersTransport(abc.ABC):
         self,
     ) -> Callable[
         [compute.UpdateRouterRequest],
+        Union[compute.Operation, Awaitable[compute.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_route_policy(
+        self,
+    ) -> Callable[
+        [compute.UpdateRoutePolicyRouterRequest],
         Union[compute.Operation, Awaitable[compute.Operation]],
     ]:
         raise NotImplementedError()
