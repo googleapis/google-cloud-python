@@ -659,3 +659,14 @@ def test_dml_query(read_gbq, writable_table: str):
     """
     result = read_gbq(query)
     assert result is not None
+
+
+def test_read_gbq_with_bq_client(read_gbq_with_bq_client):
+    query = "SELECT * FROM UNNEST([1, 2, 3]) AS numbers"
+
+    actual_result = read_gbq_with_bq_client(query)
+
+    expected_result = pandas.DataFrame(
+        {"numbers": pandas.Series([1, 2, 3], dtype="Int64")}
+    )
+    pandas.testing.assert_frame_equal(actual_result, expected_result)

@@ -55,12 +55,26 @@ def to_gbq(credentials, project_id):
 
 
 @pytest.fixture
+def to_gbq_with_bq_client(bigquery_client):
+    import pandas_gbq
+
+    return functools.partial(pandas_gbq.to_gbq, bigquery_client=bigquery_client)
+
+
+@pytest.fixture
 def read_gbq(credentials, project_id):
     import pandas_gbq
 
     return functools.partial(
         pandas_gbq.read_gbq, project_id=project_id, credentials=credentials
     )
+
+
+@pytest.fixture
+def read_gbq_with_bq_client(bigquery_client):
+    import pandas_gbq
+
+    return functools.partial(pandas_gbq.read_gbq, bigquery_client=bigquery_client)
 
 
 @pytest.fixture()

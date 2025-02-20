@@ -269,6 +269,7 @@ class GbqConnector(object):
         client_secret=None,
         user_agent=None,
         rfc9110_delimiter=False,
+        bigquery_client=None,
     ):
         global context
         from google.api_core.exceptions import ClientError, GoogleAPIError
@@ -288,6 +289,14 @@ class GbqConnector(object):
         self.client_secret = client_secret
         self.user_agent = user_agent
         self.rfc9110_delimiter = rfc9110_delimiter
+        self.use_bqstorage_api = use_bqstorage_api
+
+        if bigquery_client is not None:
+            # If a bq client is already provided, use it to populate auth fields.
+            self.project_id = bigquery_client.project
+            self.credentials = bigquery_client._credentials
+            self.client = bigquery_client
+            return
 
         default_project = None
 
@@ -325,8 +334,9 @@ class GbqConnector(object):
         if context.project is None:
             context.project = self.project_id
 
-        self.client = self.get_client()
-        self.use_bqstorage_api = use_bqstorage_api
+        self.client = _get_client(
+            self.user_agent, self.rfc9110_delimiter, self.project_id, self.credentials
+        )
 
     def _start_timer(self):
         self.start = time.time()
@@ -702,6 +712,7 @@ def read_gbq(
     client_secret=None,
     *,
     col_order=None,
+    bigquery_client=None,
 ):
     r"""Read data from Google BigQuery to a pandas DataFrame.
 
@@ -849,6 +860,9 @@ def read_gbq(
         the user is attempting to connect to.
     col_order : list(str), optional
         Alias for columns, retained for backwards compatibility.
+    bigquery_client : google.cloud.bigquery.Client, optional
+        A Google Cloud BigQuery Python Client instance. If provided, it will be used for reading
+        data, while the project and credentials parameters will be ignored.
 
     Returns
     -------
@@ -900,6 +914,7 @@ def read_gbq(
         auth_redirect_uri=auth_redirect_uri,
         client_id=client_id,
         client_secret=client_secret,
+        bigquery_client=bigquery_client,
     )
 
     if _is_query(query_or_table):
@@ -971,6 +986,7 @@ def to_gbq(
     client_secret=None,
     user_agent=None,
     rfc9110_delimiter=False,
+    bigquery_client=None,
 ):
     """Write a DataFrame to a Google BigQuery table.
 
@@ -1087,6 +1103,9 @@ def to_gbq(
     rfc9110_delimiter : bool
         Sets user agent delimiter to a hyphen or a slash.
         Default is False, meaning a hyphen will be used.
+    bigquery_client : google.cloud.bigquery.Client, optional
+        A Google Cloud BigQuery Python Client instance. If provided, it will be used for reading
+        data, while the project, user_agent, and credentials parameters will be ignored.
 
         .. versionadded:: 0.23.3
     """
@@ -1157,6 +1176,7 @@ def to_gbq(
         client_secret=client_secret,
         user_agent=user_agent,
         rfc9110_delimiter=rfc9110_delimiter,
+        bigquery_client=bigquery_client,
     )
     bqclient = connector.client
 
@@ -1492,3 +1512,22 @@ def create_user_agent(
         user_agent = f"{user_agent} {identity}"
 
     return user_agent
+
+
+def _get_client(user_agent, rfc9110_delimiter, project_id, credentials):
+    import google.api_core.client_info
+
+    bigquery = FEATURES.bigquery_try_import()
+
+    user_agent = create_user_agent(
+        user_agent=user_agent, rfc9110_delimiter=rfc9110_delimiter
+    )
+
+    client_info = google.api_core.client_info.ClientInfo(
+        user_agent=user_agent,
+    )
+    return bigquery.Client(
+        project=project_id,
+        credentials=credentials,
+        client_info=client_info,
+    )

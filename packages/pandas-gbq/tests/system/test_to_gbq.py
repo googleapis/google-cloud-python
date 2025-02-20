@@ -615,3 +615,17 @@ def test_dataframe_round_trip_with_table_schema(
     pandas.testing.assert_frame_equal(
         expected_df.set_index("row_num").sort_index(), round_trip
     )
+
+
+def test_dataframe_round_trip_with_bq_client(
+    to_gbq_with_bq_client, read_gbq_with_bq_client, random_dataset_id
+):
+    table_id = (
+        f"{random_dataset_id}.round_trip_w_bq_client_{random.randrange(1_000_000)}"
+    )
+    df = pandas.DataFrame({"numbers": pandas.Series([1, 2, 3], dtype="Int64")})
+
+    to_gbq_with_bq_client(df, table_id)
+    result = read_gbq_with_bq_client(table_id)
+
+    pandas.testing.assert_frame_equal(result, df)

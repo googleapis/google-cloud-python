@@ -1398,3 +1398,13 @@ def test_to_gbq_does_not_override_mode(gbq_table, gbq_connector):
     )
 
     assert verify_schema(gbq_connector, gbq_table.dataset_id, table_id, table_schema)
+
+
+def test_gbqconnector_init_with_bq_client(bigquery_client):
+    gbq_connector = gbq.GbqConnector(
+        project_id="project_id", credentials=None, bigquery_client=bigquery_client
+    )
+
+    assert gbq_connector.project_id == bigquery_client.project
+    assert gbq_connector.credentials is bigquery_client._credentials
+    assert gbq_connector.client is bigquery_client
