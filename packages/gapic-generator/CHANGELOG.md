@@ -1,6 +1,13 @@
 # Changelog
 
 
+## [1.23.1](https://github.com/googleapis/gapic-generator-python/compare/v1.23.0...v1.23.1) (2025-02-14)
+
+
+### Documentation
+
+* Fix minor typos ([#2318](https://github.com/googleapis/gapic-generator-python/issues/2318)) ([7be3a55](https://github.com/googleapis/gapic-generator-python/commit/7be3a559d59b778c5733e21b4c0169b17bd05c4a))
+
 ## [1.23.0](https://github.com/googleapis/gapic-generator-python/compare/v1.22.1...v1.23.0) (2025-02-14)
 
 
