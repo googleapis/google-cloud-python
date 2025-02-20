@@ -304,9 +304,9 @@ markupsafe==3.0.2 \
     --hash=sha256:f8b3d067f2e40fe93e1ccdd6b2e1d16c43140e76f02fb1319a05cf2b79d99430 \
     --hash=sha256:fcabf5ff6eea076f859677f5f0b6b5c1a51e70a376b0579e0eadef8db48c6b50
     # via mako
-opentelemetry-api==1.29.0 \
-    --hash=sha256:5fcd94c4141cc49c736271f3e1efb777bebe9cc535759c54c936cca4f1b312b8 \
-    --hash=sha256:d04a6cf78aad09614f52964ecb38021e248f5714dc32c2e0d8fd99517b4d69cf
+opentelemetry-api==1.30.0 \
+    --hash=sha256:375893400c1435bf623f7dfb3bcd44825fe6b56c34d0667c542ea8257b1a1240 \
+    --hash=sha256:d5f5284890d73fdf47f843dda3210edf37a38d66f44f2b5aedc1e89ed455dc09
     # via
     #   -r requirements.in
     #   opentelemetry-instrumentation
@@ -316,9 +316,9 @@ opentelemetry-instrumentation==0.48b0 \
     --hash=sha256:94929685d906380743a71c3970f76b5f07476eea1834abd5dd9d17abfe23cc35 \
     --hash=sha256:a69750dc4ba6a5c3eb67986a337185a25b739966d80479befe37b546fc870b44
     # via -r requirements.in
-opentelemetry-sdk==1.29.0 \
-    --hash=sha256:173be3b5d3f8f7d671f20ea37056710217959e774e2749d984355d1f9391a30a \
-    --hash=sha256:b0787ce6aade6ab84315302e72bd7a7f2f014b0fb1b7c3295b88afe014ed0643
+opentelemetry-sdk==1.30.0 \
+    --hash=sha256:14fe7afc090caad881addb6926cec967129bd9260c4d33ae6a217359f6b61091 \
+    --hash=sha256:c9287a9e4a7614b9946e933a67168450b9ab35f08797eb9bc77d998fa480fa18
     # via -r requirements.in
 opentelemetry-semantic-conventions==0.48b0 \
     --hash=sha256:12d74983783b6878162208be57c9effcb89dc88691c64992d70bb89dc00daa1a \
