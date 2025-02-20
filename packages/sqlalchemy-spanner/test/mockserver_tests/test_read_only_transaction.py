@@ -22,10 +22,10 @@ from google.cloud.spanner_v1 import (
     BeginTransactionRequest,
     TransactionOptions,
 )
-from test.mockserver_tests.mock_server_test_base import MockServerTestBase
-from test.mockserver_tests.mock_server_test_base import add_result
-import google.cloud.spanner_v1.types.type as spanner_type
-import google.cloud.spanner_v1.types.result_set as result_set
+from test.mockserver_tests.mock_server_test_base import (
+    MockServerTestBase,
+    add_singer_query_result,
+)
 
 
 class TestReadOnlyTransaction(MockServerTestBase):
@@ -71,49 +71,3 @@ class TestReadOnlyTransaction(MockServerTestBase):
                 ),
                 begin_request.options,
             )
-
-
-def add_singer_query_result(sql: str):
-    result = result_set.ResultSet(
-        dict(
-            metadata=result_set.ResultSetMetadata(
-                dict(
-                    row_type=spanner_type.StructType(
-                        dict(
-                            fields=[
-                                spanner_type.StructType.Field(
-                                    dict(
-                                        name="singers_id",
-                                        type=spanner_type.Type(
-                                            dict(code=spanner_type.TypeCode.INT64)
-                                        ),
-                                    )
-                                ),
-                                spanner_type.StructType.Field(
-                                    dict(
-                                        name="singers_name",
-                                        type=spanner_type.Type(
-                                            dict(code=spanner_type.TypeCode.STRING)
-                                        ),
-                                    )
-                                ),
-                            ]
-                        )
-                    )
-                )
-            ),
-        )
-    )
-    result.rows.extend(
-        [
-            (
-                "1",
-                "Jane Doe",
-            ),
-            (
-                "2",
-                "John Doe",
-            ),
-        ]
-    )
-    add_result(sql, result)

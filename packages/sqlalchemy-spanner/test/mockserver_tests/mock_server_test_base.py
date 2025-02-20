@@ -11,6 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
 from google.cloud.spanner_dbapi.parsed_statement import AutocommitDmlMode
 from sqlalchemy import Engine, create_engine
 from sqlalchemy.testing.plugin.plugin_base import fixtures
@@ -77,6 +78,52 @@ def add_single_result(
     )
     result.rows.extend(row)
     MockServerTestBase.spanner_service.mock_spanner.add_result(sql, result)
+
+
+def add_singer_query_result(sql: str):
+    result = result_set.ResultSet(
+        dict(
+            metadata=result_set.ResultSetMetadata(
+                dict(
+                    row_type=spanner_type.StructType(
+                        dict(
+                            fields=[
+                                spanner_type.StructType.Field(
+                                    dict(
+                                        name="singers_id",
+                                        type=spanner_type.Type(
+                                            dict(code=spanner_type.TypeCode.INT64)
+                                        ),
+                                    )
+                                ),
+                                spanner_type.StructType.Field(
+                                    dict(
+                                        name="singers_name",
+                                        type=spanner_type.Type(
+                                            dict(code=spanner_type.TypeCode.STRING)
+                                        ),
+                                    )
+                                ),
+                            ]
+                        )
+                    )
+                )
+            ),
+        )
+    )
+    result.rows.extend(
+        [
+            (
+                "1",
+                "Jane Doe",
+            ),
+            (
+                "2",
+                "John Doe",
+            ),
+        ]
+    )
+    add_result(sql, result)
 
 
 class MockServerTestBase(fixtures.TestBase):

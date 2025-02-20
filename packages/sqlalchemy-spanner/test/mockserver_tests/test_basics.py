@@ -25,7 +25,9 @@ from sqlalchemy import (
     String,
     func,
     text,
+    BigInteger,
 )
+from sqlalchemy.orm import Session, DeclarativeBase, Mapped, mapped_column
 from sqlalchemy.testing import eq_, is_instance_of
 from google.cloud.spanner_v1 import (
     FixedSizePool,
@@ -41,6 +43,7 @@ from test.mockserver_tests.mock_server_test_base import (
     add_result,
     add_single_result,
     add_update_count,
+    add_singer_query_result,
 )
 
 
@@ -179,3 +182,35 @@ LIMIT 1
             )
             results = connection.execute(text(sql)).rowcount
             eq_(100, results)
+
+    def test_select_for_update(self):
+        class Base(DeclarativeBase):
+            pass
+
+        class Singer(Base):
+            __tablename__ = "singers"
+            id: Mapped[int] = mapped_column(BigInteger, primary_key=True)
+            name: Mapped[str] = mapped_column(String)
+
+        query = (
+            "SELECT singers.id AS singers_id, singers.name AS singers_name\n"
+            "FROM singers\n"
+            "WHERE singers.id = @a0\n"
+            " LIMIT @a1 FOR UPDATE"
+        )
+        add_singer_query_result(query)
+        update = "UPDATE singers SET name=@a0 WHERE singers.id = @a1"
+        add_update_count(update, 1)
+
+        engine = create_engine(
+            "spanner:///projects/p/instances/i/databases/d",
+            connect_args={"client": self.client, "pool": FixedSizePool(size=10)},
+        )
+
+        with Session(engine) as session:
+            singer = (
+                session.query(Singer).filter(Singer.id == 1).with_for_update().first()
+            )
+            singer.name = "New Name"
+            session.add(singer)
+            session.commit()
