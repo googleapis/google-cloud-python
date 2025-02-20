@@ -469,9 +469,9 @@ packaging==24.2 \
     #   gcp-releasetool
     #   nox
     #   twine
-pkginfo==1.12.0 \
-    --hash=sha256:8ad91a0445a036782b9366ef8b8c2c50291f83a553478ba8580c73d3215700cf \
-    --hash=sha256:dcd589c9be4da8973eceffa247733c144812759aa67eaf4bbf97016a02f39088
+pkginfo==1.12.1.2 \
+    --hash=sha256:5cd957824ac36f140260964eba3c6be6442a8359b8c48f4adf90210f33a04b7b \
+    --hash=sha256:c783ac885519cab2c34927ccfa6bf64b5a704d7c69afaea583dd9b7afe969343
     # via twine
 platformdirs==4.3.6 \
     --hash=sha256:357fb2acbc885b0419afd3ce3ed34564c13c9b95c89360cd9563f73aa5e2b907 \
