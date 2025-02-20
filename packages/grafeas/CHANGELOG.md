@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/grafeas/#history
 
+## [1.14.0](https://github.com/googleapis/google-cloud-python/compare/grafeas-v1.13.0...grafeas-v1.14.0) (2025-02-18)
+
+
+### Features
+
+* Add REST Interceptors which support reading metadata ([30b675e](https://github.com/googleapis/google-cloud-python/commit/30b675e7e9eaee87f9e7bdf4dc910b01f6a3044f))
+* Add support for reading selective GAPIC generation methods from service YAML ([30b675e](https://github.com/googleapis/google-cloud-python/commit/30b675e7e9eaee87f9e7bdf4dc910b01f6a3044f))
+
 ## [1.13.0](https://github.com/googleapis/google-cloud-python/compare/grafeas-v1.12.1...grafeas-v1.13.0) (2024-12-12)
 
 

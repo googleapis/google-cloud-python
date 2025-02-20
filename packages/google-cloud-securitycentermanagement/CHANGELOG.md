@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.20](https://github.com/googleapis/google-cloud-python/compare/google-cloud-securitycentermanagement-v0.1.19...google-cloud-securitycentermanagement-v0.1.20) (2025-02-18)
+
+
+### Bug Fixes
+
+* **deps:** Require grpc-google-iam-v1&gt;=0.14.0 ([770cf0f](https://github.com/googleapis/google-cloud-python/commit/770cf0f31125586a8622e9639f6d24c1bafa9b31))
+
 ## [0.1.19](https://github.com/googleapis/google-cloud-python/compare/google-cloud-securitycentermanagement-v0.1.18...google-cloud-securitycentermanagement-v0.1.19) (2025-02-12)
 
 

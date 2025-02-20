@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.25.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-retail-v1.24.0...google-cloud-retail-v1.25.0) (2025-02-18)
+
+
+### Features
+
+* Add REST Interceptors which support reading metadata ([c8e0760](https://github.com/googleapis/google-cloud-python/commit/c8e0760e8088950c62279335216ad1d17716ce59))
+* Add support for reading selective GAPIC generation methods from service YAML ([c8e0760](https://github.com/googleapis/google-cloud-python/commit/c8e0760e8088950c62279335216ad1d17716ce59))
+
 ## [1.24.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-retail-v1.23.1...google-cloud-retail-v1.24.0) (2024-12-12)
 
 

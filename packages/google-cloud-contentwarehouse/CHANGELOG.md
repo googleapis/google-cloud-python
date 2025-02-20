@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.7.14](https://github.com/googleapis/google-cloud-python/compare/google-cloud-contentwarehouse-v0.7.13...google-cloud-contentwarehouse-v0.7.14) (2025-02-18)
+
+
+### Bug Fixes
+
+* **deps:** Require grpc-google-iam-v1&gt;=0.14.0 ([16e14c8](https://github.com/googleapis/google-cloud-python/commit/16e14c8d547864360dcab45d90e9e55169204fc6))
+
 ## [0.7.13](https://github.com/googleapis/google-cloud-python/compare/google-cloud-contentwarehouse-v0.7.12...google-cloud-contentwarehouse-v0.7.13) (2025-02-12)
 
 
