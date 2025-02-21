@@ -13,10 +13,6 @@
 # limitations under the License.
 
 import pytest
-import sklearn.compose as sklearn_compose  # type: ignore
-import sklearn.linear_model as sklearn_linear_model  # type: ignore
-import sklearn.pipeline as sklearn_pipeline  # type: ignore
-import sklearn.preprocessing as sklearn_preprocessing  # type: ignore
 
 from bigframes.ml import compose, forecasting, linear_model, pipeline, preprocessing
 
@@ -57,8 +53,11 @@ def test_pipeline_repr():
     )
 
 
-@pytest.mark.skipif(sklearn_pipeline is None, reason="requires sklearn")
 def test_pipeline_repr_matches_sklearn():
+    sklearn_compose = pytest.importorskip("sklearn.compose")
+    sklearn_linear_model = pytest.importorskip("sklearn.linear_model")
+    sklearn_pipeline = pytest.importorskip("sklearn.pipeline")
+    sklearn_preprocessing = pytest.importorskip("sklearn.preprocessing")
     bf_pl = pipeline.Pipeline(
         [
             (

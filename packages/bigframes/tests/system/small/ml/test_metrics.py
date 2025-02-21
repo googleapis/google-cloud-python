@@ -17,7 +17,6 @@ import math
 import numpy as np
 import pandas as pd
 import pytest
-import sklearn.metrics as sklearn_metrics  # type: ignore
 
 import bigframes
 from bigframes.ml import metrics
@@ -66,6 +65,7 @@ def test_r2_score_force_finite(session):
 
 
 def test_r2_score_ok_fit_matches_sklearn(session):
+    sklearn_metrics = pytest.importorskip("sklearn.metrics")
     pd_df = pd.DataFrame({"y_true": [1, 2, 3, 4, 5], "y_pred": [2, 3, 4, 3, 6]})
 
     df = session.read_pandas(pd_df)
@@ -113,6 +113,7 @@ def test_accuracy_score_not_normailze(session):
 
 
 def test_accuracy_score_fit_matches_sklearn(session):
+    sklearn_metrics = pytest.importorskip("sklearn.metrics")
     pd_df = pd.DataFrame({"y_true": [1, 2, 3, 4, 5], "y_pred": [2, 3, 4, 3, 6]})
 
     df = session.read_pandas(pd_df)
@@ -203,6 +204,7 @@ def test_roc_curve_binary_classification_prediction_returns_expected(session):
 
 
 def test_roc_curve_binary_classification_prediction_matches_sklearn(session):
+    sklearn_metrics = pytest.importorskip("sklearn.metrics")
     pd_df = pd.DataFrame(
         {
             "y_true": [0, 0, 1, 1, 0, 1, 0, 1, 1, 1],
@@ -294,6 +296,7 @@ def test_roc_curve_binary_classification_decision_returns_expected(session):
 
 
 def test_roc_curve_binary_classification_decision_matches_sklearn(session):
+    sklearn_metrics = pytest.importorskip("sklearn.metrics")
     # Instead of operating on probabilities, assume a 70% decision threshold
     # has been applied, and operate on the final output
     y_score = [0.1, 0.4, 0.35, 0.8, 0.65, 0.9, 0.5, 0.3, 0.6, 0.45]
@@ -420,6 +423,7 @@ def test_roc_auc_score_returns_expected(session):
 
 
 def test_roc_auc_score_returns_matches_sklearn(session):
+    sklearn_metrics = pytest.importorskip("sklearn.metrics")
     pd_df = pd.DataFrame(
         {
             "y_true": [0, 0, 1, 1, 0, 1, 0, 1, 1, 1],
@@ -525,6 +529,7 @@ def test_confusion_matrix_column_index(session):
 
 
 def test_confusion_matrix_matches_sklearn(session):
+    sklearn_metrics = pytest.importorskip("sklearn.metrics")
     pd_df = pd.DataFrame(
         {
             "y_true": [2, 3, 3, 3, 4, 1],
@@ -543,6 +548,7 @@ def test_confusion_matrix_matches_sklearn(session):
 
 
 def test_confusion_matrix_str_matches_sklearn(session):
+    sklearn_metrics = pytest.importorskip("sklearn.metrics")
     pd_df = pd.DataFrame(
         {
             "y_true": ["cat", "ant", "cat", "cat", "ant", "bird"],
@@ -603,6 +609,7 @@ def test_recall_score(session):
 
 
 def test_recall_score_matches_sklearn(session):
+    sklearn_metrics = pytest.importorskip("sklearn.metrics")
     pd_df = pd.DataFrame(
         {
             "y_true": [2, 0, 2, 2, 0, 1],
@@ -620,6 +627,7 @@ def test_recall_score_matches_sklearn(session):
 
 
 def test_recall_score_str_matches_sklearn(session):
+    sklearn_metrics = pytest.importorskip("sklearn.metrics")
     pd_df = pd.DataFrame(
         {
             "y_true": ["cat", "ant", "cat", "cat", "ant", "bird"],
@@ -673,6 +681,7 @@ def test_precision_score(session):
 
 
 def test_precision_score_matches_sklearn(session):
+    sklearn_metrics = pytest.importorskip("sklearn.metrics")
     pd_df = pd.DataFrame(
         {
             "y_true": [2, 0, 2, 2, 0, 1],
@@ -695,6 +704,7 @@ def test_precision_score_matches_sklearn(session):
 
 
 def test_precision_score_str_matches_sklearn(session):
+    sklearn_metrics = pytest.importorskip("sklearn.metrics")
     pd_df = pd.DataFrame(
         {
             "y_true": ["cat", "ant", "cat", "cat", "ant", "bird"],
@@ -752,6 +762,7 @@ def test_f1_score(session):
 
 
 def test_f1_score_matches_sklearn(session):
+    sklearn_metrics = pytest.importorskip("sklearn.metrics")
     pd_df = pd.DataFrame(
         {
             "y_true": [2, 0, 2, 2, 0, 1],
@@ -769,6 +780,7 @@ def test_f1_score_matches_sklearn(session):
 
 
 def test_f1_score_str_matches_sklearn(session):
+    sklearn_metrics = pytest.importorskip("sklearn.metrics")
     pd_df = pd.DataFrame(
         {
             "y_true": ["cat", "ant", "cat", "cat", "ant", "bird"],

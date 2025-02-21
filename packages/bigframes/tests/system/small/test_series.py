@@ -641,6 +641,8 @@ def test_series_replace_dict(scalars_dfs, replacement_dict):
     ),
 )
 def test_series_interpolate(method):
+    pytest.importorskip("scipy")
+
     values = [None, 1, 2, None, None, 16, None]
     index = [-3.2, 11.4, 3.56, 4, 4.32, 5.55, 76.8]
     pd_series = pd.Series(values, index)

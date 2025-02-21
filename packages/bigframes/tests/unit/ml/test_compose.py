@@ -15,8 +15,6 @@ from unittest import mock
 
 from google.cloud import bigquery
 import pytest
-import sklearn.compose as sklearn_compose  # type: ignore
-import sklearn.preprocessing as sklearn_preprocessing  # type: ignore
 
 from bigframes.ml import compose, preprocessing
 from bigframes.ml.compose import ColumnTransformer, SQLScalarColumnTransformer
@@ -119,6 +117,8 @@ def test_columntransformer_repr():
 
 
 def test_columntransformer_repr_matches_sklearn():
+    sklearn_compose = pytest.importorskip("sklearn.compose")
+    sklearn_preprocessing = pytest.importorskip("sklearn.preprocessing")
     bf_column_transformer = compose.ColumnTransformer(
         [
             (

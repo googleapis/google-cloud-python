@@ -19,6 +19,8 @@ import pytest
 
 from . import publish_api_coverage
 
+pytest.importorskip("sklearn")
+
 
 @pytest.fixture
 def api_coverage_df():

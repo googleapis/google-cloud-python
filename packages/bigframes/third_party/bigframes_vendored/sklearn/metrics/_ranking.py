@@ -16,6 +16,8 @@ the lower the better.
 #          Michal Karbownik <michakarbownik@gmail.com>
 # License: BSD 3 clause
 
+import numpy as np
+
 from bigframes import constants
 
 
@@ -60,7 +62,23 @@ def auc(x, y) -> float:
     Returns:
         float: Area Under the Curve.
     """
-    raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+    if len(x) < 2:
+        raise ValueError(
+            f"At least 2 points are needed to compute area under curve, but x.shape = {len(x)}"
+        )
+
+    if x.is_monotonic_decreasing:
+        d = -1
+    elif x.is_monotonic_increasing:
+        d = 1
+    else:
+        raise ValueError(f"x is neither increasing nor decreasing : {x}.")
+
+    if hasattr(np, "trapezoid"):
+        # new in numpy 2.0
+        return d * np.trapezoid(y, x)
+    # np.trapz has been deprecated in 2.0
+    return d * np.trapz(y, x)  # type: ignore
 
 
 def roc_auc_score(y_true, y_score) -> float:

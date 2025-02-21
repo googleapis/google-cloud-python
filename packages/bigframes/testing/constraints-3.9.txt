@@ -20,7 +20,6 @@ pyarrow==10.0.1
 pydata-google-auth==1.8.2
 requests==2.27.1
 scikit-learn==1.2.2
-sqlalchemy==1.4
 sqlglot==23.6.3
 tabulate==0.9
 ipywidgets==7.7.1

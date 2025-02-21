@@ -72,7 +72,9 @@ UNIT_TEST_STANDARD_DEPENDENCIES = [
 UNIT_TEST_LOCAL_DEPENDENCIES: List[str] = []
 UNIT_TEST_DEPENDENCIES: List[str] = []
 UNIT_TEST_EXTRAS: List[str] = []
-UNIT_TEST_EXTRAS_BY_PYTHON: Dict[str, List[str]] = {"3.12": ["polars"]}
+UNIT_TEST_EXTRAS_BY_PYTHON: Dict[str, List[str]] = {
+    "3.12": ["polars", "scikit-learn"],
+}
 
 # 3.10 is needed for Windows tests as it is the only version installed in the
 # bigframes-windows container image. For more information, search
@@ -96,8 +98,13 @@ SYSTEM_TEST_EXTERNAL_DEPENDENCIES = [
 ]
 SYSTEM_TEST_LOCAL_DEPENDENCIES: List[str] = []
 SYSTEM_TEST_DEPENDENCIES: List[str] = []
-SYSTEM_TEST_EXTRAS: List[str] = ["tests"]
-SYSTEM_TEST_EXTRAS_BY_PYTHON: Dict[str, List[str]] = {}
+SYSTEM_TEST_EXTRAS: List[str] = []
+SYSTEM_TEST_EXTRAS_BY_PYTHON: Dict[str, List[str]] = {
+    "3.9": ["tests"],
+    "3.10": ["tests"],
+    "3.12": ["tests", "scikit-learn"],
+    "3.13": ["tests"],
+}
 
 LOGGING_NAME_ENV_VAR = "BIGFRAMES_PERFORMANCE_LOG_NAME"
 
@@ -468,8 +475,7 @@ def cover(session):
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 def docs(session):
     """Build the docs for this library."""
-
-    session.install("-e", ".")
+    session.install("-e", ".[scikit-learn]")
     session.install(
         # We need to pin to specific versions of the `sphinxcontrib-*` packages
         # which still support sphinx 4.x.
@@ -510,7 +516,7 @@ def docs(session):
 def docfx(session):
     """Build the docfx yaml files for this library."""
 
-    session.install("-e", ".")
+    session.install("-e", ".[scikit-learn]")
     session.install(
         # We need to pin to specific versions of the `sphinxcontrib-*` packages
         # which still support sphinx 4.x.
@@ -651,6 +657,8 @@ def prerelease(session: nox.sessions.Session, tests_path, extra_pytest_options=(
         )
         if match.group(1) not in already_installed
     ]
+
+    print(already_installed)
 
     # We use --no-deps to ensure that pre-release versions aren't overwritten
     # by the version ranges in setup.py.

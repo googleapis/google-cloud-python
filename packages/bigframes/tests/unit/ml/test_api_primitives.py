@@ -13,8 +13,6 @@
 # limitations under the License.
 
 import pytest
-import sklearn.decomposition as sklearn_decomposition  # type: ignore
-import sklearn.linear_model as sklearn_linear_model  # type: ignore
 
 import bigframes.ml.decomposition
 import bigframes.ml.linear_model
@@ -35,8 +33,9 @@ def test_base_estimator_repr():
     assert pca_estimator.__repr__() == "PCA(n_components=7)"
 
 
-@pytest.mark.skipif(sklearn_linear_model is None, reason="requires sklearn")
 def test_base_estimator_repr_matches_sklearn():
+    sklearn_decomposition = pytest.importorskip("sklearn.decomposition")
+    sklearn_linear_model = pytest.importorskip("sklearn.linear_model")
     estimator = bigframes.ml.linear_model.LinearRegression()
     sklearn_estimator = sklearn_linear_model.LinearRegression()
     assert estimator.__repr__() == sklearn_estimator.__repr__()
