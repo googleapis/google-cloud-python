@@ -33,13 +33,17 @@ def q(project_id: str, dataset_id: str, session: bigframes.Session):
     )
 
     q_final = (
-        part.merge(partsupp, left_on="P_PARTKEY", right_on="PS_PARTKEY")
-        .merge(supplier, left_on="PS_SUPPKEY", right_on="S_SUPPKEY")
-        .merge(
+        part.merge(
             lineitem,
-            left_on=["P_PARTKEY", "PS_SUPPKEY"],
-            right_on=["L_PARTKEY", "L_SUPPKEY"],
+            left_on="P_PARTKEY",
+            right_on="L_PARTKEY",
         )
+        .merge(
+            partsupp,
+            left_on=["L_SUPPKEY", "L_PARTKEY"],
+            right_on=["PS_SUPPKEY", "PS_PARTKEY"],
+        )
+        .merge(supplier, left_on="L_SUPPKEY", right_on="S_SUPPKEY")
         .merge(orders, left_on="L_ORDERKEY", right_on="O_ORDERKEY")
         .merge(nation, left_on="S_NATIONKEY", right_on="N_NATIONKEY")
     )
