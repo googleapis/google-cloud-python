@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-dlp/#history
 
+## [3.28.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dlp-v3.27.0...google-cloud-dlp-v3.28.0) (2025-02-21)
+
+
+### Features
+
+* [google-cloud-dlp] discovery of Vertex AI datasets ([#13540](https://github.com/googleapis/google-cloud-python/issues/13540)) ([2913199](https://github.com/googleapis/google-cloud-python/commit/291319932e87fdde66c7a1672a128352820306a9))
+
+
+### Documentation
+
+* documentation revisions for data profiles ([2913199](https://github.com/googleapis/google-cloud-python/commit/291319932e87fdde66c7a1672a128352820306a9))
+
 ## [3.27.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dlp-v3.26.0...google-cloud-dlp-v3.27.0) (2025-02-12)
 
 

@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-kms/#history
 
+## [3.4.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-kms-v3.3.1...google-cloud-kms-v3.4.0) (2025-02-21)
+
+
+### Features
+
+* [google-cloud-kms] Support PQC asymmetric signing algorithms ML_DSA_65 and SLH_DSA_SHA2_128s ([#13538](https://github.com/googleapis/google-cloud-python/issues/13538)) ([891365e](https://github.com/googleapis/google-cloud-python/commit/891365e3030506c1205a56919d1b1e25e0cd926e))
+* Add a PublicKeyFormat enum to allow specifying the format the ([891365e](https://github.com/googleapis/google-cloud-python/commit/891365e3030506c1205a56919d1b1e25e0cd926e))
+
 ## [3.3.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-kms-v3.3.0...google-cloud-kms-v3.3.1) (2025-02-18)
 
 
