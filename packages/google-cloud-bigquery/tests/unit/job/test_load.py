@@ -272,7 +272,7 @@ class TestLoadJob(_Base):
 
         config = LoadJobConfig()
         full_name = SchemaField("full_name", "STRING", mode="REQUIRED")
-        with self.assertRaises(ValueError):
+        with self.assertRaises(TypeError):
             config.schema = [full_name, object()]
 
     def test_schema_setter(self):

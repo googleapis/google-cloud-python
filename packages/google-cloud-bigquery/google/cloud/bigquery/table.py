@@ -21,7 +21,8 @@ import datetime
 import functools
 import operator
 import typing
-from typing import Any, Dict, Iterable, Iterator, List, Optional, Tuple, Union
+from typing import Any, Dict, Iterable, Iterator, List, Optional, Tuple, Union, Sequence
+
 import warnings
 
 try:
@@ -66,6 +67,7 @@ from google.cloud.bigquery._tqdm_helpers import get_progress_bar
 from google.cloud.bigquery.encryption_configuration import EncryptionConfiguration
 from google.cloud.bigquery.enums import DefaultPandasDTypes
 from google.cloud.bigquery.external_config import ExternalConfig
+from google.cloud.bigquery import schema as _schema
 from google.cloud.bigquery.schema import _build_schema_resource
 from google.cloud.bigquery.schema import _parse_schema_resource
 from google.cloud.bigquery.schema import _to_schema_fields
@@ -398,7 +400,7 @@ class Table(_TableBase):
         "partitioning_type": "timePartitioning",
         "range_partitioning": "rangePartitioning",
         "time_partitioning": "timePartitioning",
-        "schema": "schema",
+        "schema": ["schema", "fields"],
         "snapshot_definition": "snapshotDefinition",
         "clone_definition": "cloneDefinition",
         "streaming_buffer": "streamingBuffer",
@@ -411,6 +413,7 @@ class Table(_TableBase):
         "max_staleness": "maxStaleness",
         "resource_tags": "resourceTags",
         "external_catalog_table_options": "externalCatalogTableOptions",
+        "foreign_type_info": ["schema", "foreignTypeInfo"],
     }
 
     def __init__(self, table_ref, schema=None) -> None:
@@ -451,8 +454,20 @@ class Table(_TableBase):
                 If ``schema`` is not a sequence, or if any item in the sequence
                 is not a :class:`~google.cloud.bigquery.schema.SchemaField`
                 instance or a compatible mapping representation of the field.
+
+        .. Note::
+            If you are referencing a schema for an external catalog table such
+            as a Hive table, it will also be necessary to populate the foreign_type_info
+            attribute. This is not necessary if defining the schema for a BigQuery table.
+
+            For details, see:
+            https://cloud.google.com/bigquery/docs/external-tables
+            https://cloud.google.com/bigquery/docs/datasets-intro#external_datasets
+
         """
-        prop = self._properties.get(self._PROPERTY_TO_API_FIELD["schema"])
+        prop = _helpers._get_sub_prop(
+            self._properties, self._PROPERTY_TO_API_FIELD["schema"]
+        )
         if not prop:
             return []
         else:
@@ -463,10 +478,21 @@ class Table(_TableBase):
         api_field = self._PROPERTY_TO_API_FIELD["schema"]
 
         if value is None:
-            self._properties[api_field] = None
-        else:
+            _helpers._set_sub_prop(
+                self._properties,
+                api_field,
+                None,
+            )
+        elif isinstance(value, Sequence):
             value = _to_schema_fields(value)
-            self._properties[api_field] = {"fields": _build_schema_resource(value)}
+            value = _build_schema_resource(value)
+            _helpers._set_sub_prop(
+                self._properties,
+                api_field,
+                value,
+            )
+        else:
+            raise TypeError("Schema must be a Sequence (e.g. a list) or None.")
 
     @property
     def labels(self):
@@ -1074,6 +1100,43 @@ class Table(_TableBase):
             self._properties[
                 self._PROPERTY_TO_API_FIELD["external_catalog_table_options"]
             ] = value
+
+    @property
+    def foreign_type_info(self) -> Optional[_schema.ForeignTypeInfo]:
+        """Optional. Specifies metadata of the foreign data type definition in
+        field schema (TableFieldSchema.foreign_type_definition).
+
+        Returns:
+            Optional[schema.ForeignTypeInfo]:
+                Foreign type information, or :data:`None` if not set.
+
+        .. Note::
+            foreign_type_info is only required if you are referencing an
+            external catalog such as a Hive table.
+            For details, see:
+            https://cloud.google.com/bigquery/docs/external-tables
+            https://cloud.google.com/bigquery/docs/datasets-intro#external_datasets
+        """
+
+        prop = _helpers._get_sub_prop(
+            self._properties, self._PROPERTY_TO_API_FIELD["foreign_type_info"]
+        )
+        if prop is not None:
+            return _schema.ForeignTypeInfo.from_api_repr(prop)
+        return None
+
+    @foreign_type_info.setter
+    def foreign_type_info(self, value: Union[_schema.ForeignTypeInfo, dict, None]):
+        value = _helpers._isinstance_or_raise(
+            value,
+            (_schema.ForeignTypeInfo, dict),
+            none_allowed=True,
+        )
+        if isinstance(value, _schema.ForeignTypeInfo):
+            value = value.to_api_repr()
+        _helpers._set_sub_prop(
+            self._properties, self._PROPERTY_TO_API_FIELD["foreign_type_info"], value
+        )
 
     @classmethod
     def from_string(cls, full_table_id: str) -> "Table":

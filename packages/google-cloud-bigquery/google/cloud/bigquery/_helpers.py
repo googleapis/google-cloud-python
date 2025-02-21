@@ -978,11 +978,11 @@ def _build_resource_from_properties(obj, filter_fields):
     """
     partial = {}
     for filter_field in filter_fields:
-        api_field = obj._PROPERTY_TO_API_FIELD.get(filter_field)
+        api_field = _get_sub_prop(obj._PROPERTY_TO_API_FIELD, filter_field)
         if api_field is None and filter_field not in obj._properties:
             raise ValueError("No property %s" % filter_field)
         elif api_field is not None:
-            partial[api_field] = obj._properties.get(api_field)
+            _set_sub_prop(partial, api_field, _get_sub_prop(obj._properties, api_field))
         else:
             # allows properties that are not defined in the library
             # and properties that have the same name as API resource key

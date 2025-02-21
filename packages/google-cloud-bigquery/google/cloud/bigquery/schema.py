@@ -15,10 +15,9 @@
 """Schemas for BigQuery tables / queries."""
 
 from __future__ import annotations
-import collections
 import enum
 import typing
-from typing import Any, cast, Dict, Iterable, Optional, Union
+from typing import Any, cast, Dict, Iterable, Optional, Union, Sequence
 
 from google.cloud.bigquery import _helpers
 from google.cloud.bigquery import standard_sql
@@ -489,6 +488,8 @@ def _parse_schema_resource(info):
         Optional[Sequence[google.cloud.bigquery.schema.SchemaField`]:
             A list of parsed fields, or ``None`` if no "fields" key found.
     """
+    if isinstance(info, list):
+        return [SchemaField.from_api_repr(f) for f in info]
     return [SchemaField.from_api_repr(f) for f in info.get("fields", ())]
 
 
@@ -501,40 +502,46 @@ def _build_schema_resource(fields):
     Returns:
         Sequence[Dict]: Mappings describing the schema of the supplied fields.
     """
-    return [field.to_api_repr() for field in fields]
+    if isinstance(fields, Sequence):
+        # Input is a Sequence (e.g. a list): Process and return a list of SchemaFields
+        return [field.to_api_repr() for field in fields]
+
+    else:
+        raise TypeError("Schema must be a Sequence (e.g. a list) or None.")
 
 
 def _to_schema_fields(schema):
-    """Coerce `schema` to a list of schema field instances.
+    """Coerces schema to a list of SchemaField instances while
+    preserving the original structure as much as possible.
 
     Args:
-        schema(Sequence[Union[ \
-            :class:`~google.cloud.bigquery.schema.SchemaField`, \
-            Mapping[str, Any] \
-        ]]):
-            Table schema to convert. If some items are passed as mappings,
-            their content must be compatible with
-            :meth:`~google.cloud.bigquery.schema.SchemaField.from_api_repr`.
+        schema (Sequence[Union[ \
+                   :class:`~google.cloud.bigquery.schema.SchemaField`, \
+                   Mapping[str, Any] \
+                       ]
+                   ]
+               )::
+            Table schema to convert. Can be a list of SchemaField
+            objects or mappings.
 
     Returns:
-        Sequence[:class:`~google.cloud.bigquery.schema.SchemaField`]
+        A list of SchemaField objects.
 
     Raises:
-        Exception: If ``schema`` is not a sequence, or if any item in the
-        sequence is not a :class:`~google.cloud.bigquery.schema.SchemaField`
-        instance or a compatible mapping representation of the field.
+        TypeError: If schema is not a Sequence.
     """
-    for field in schema:
-        if not isinstance(field, (SchemaField, collections.abc.Mapping)):
-            raise ValueError(
-                "Schema items must either be fields or compatible "
-                "mapping representations."
-            )
 
-    return [
-        field if isinstance(field, SchemaField) else SchemaField.from_api_repr(field)
-        for field in schema
-    ]
+    if isinstance(schema, Sequence):
+        # Input is a Sequence (e.g. a list): Process and return a list of SchemaFields
+        return [
+            field
+            if isinstance(field, SchemaField)
+            else SchemaField.from_api_repr(field)
+            for field in schema
+        ]
+
+    else:
+        raise TypeError("Schema must be a Sequence (e.g. a list) or None.")
 
 
 class PolicyTagList(object):

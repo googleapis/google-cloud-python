@@ -31,6 +31,7 @@ from test_utils.imports import maybe_fail_import
 from google.cloud.bigquery import _versions_helpers
 from google.cloud.bigquery import exceptions
 from google.cloud.bigquery import external_config
+from google.cloud.bigquery import schema
 from google.cloud.bigquery.table import TableReference
 from google.cloud.bigquery.dataset import DatasetReference
 
@@ -699,7 +700,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         table_ref = dataset.table(self.TABLE_NAME)
         table = self._make_one(table_ref)
         full_name = SchemaField("full_name", "STRING", mode="REQUIRED")
-        with self.assertRaises(ValueError):
+        with self.assertRaises(TypeError):
             table.schema = [full_name, object()]
 
     def test_schema_setter_valid_fields(self):
@@ -1212,6 +1213,83 @@ class TestTable(unittest.TestCase, _SchemaBase):
             },
         }
         self.assertEqual(resource, exp_resource)
+
+    def test_to_api_repr_w_schema_and_foreign_type_info(self):
+        """Tests to ensure that to_api_repr works correctly with
+        both schema and foreign_type_info fields
+        """
+
+        PROJECT = "test-project"
+        DATASET_ID = "test_dataset"
+        TABLE_ID = "coffee_table"
+        FOREIGNTYPEINFO = {
+            "typeSystem": "TYPE_SYSTEM_UNSPECIFIED",
+        }
+        SCHEMA = {
+            "fields": [
+                {"name": "full_name", "type": "STRING", "mode": "REQUIRED"},
+                {"name": "age", "type": "INTEGER", "mode": "REQUIRED"},
+            ],
+            "foreignTypeInfo": FOREIGNTYPEINFO,
+        }
+
+        API_REPR = {
+            "tableReference": {
+                "projectId": PROJECT,
+                "datasetId": DATASET_ID,
+                "tableId": TABLE_ID,
+            },
+            "schema": SCHEMA,
+        }
+
+        table = self._get_target_class().from_api_repr(API_REPR)
+        assert table._properties == table.to_api_repr()
+
+        # update schema (i.e. the fields), ensure foreign_type_info is unchanged
+        table.schema = []
+        expected = {
+            "fields": [],
+            "foreignTypeInfo": {"typeSystem": "TYPE_SYSTEM_UNSPECIFIED"},
+        }
+        assert table.to_api_repr()["schema"] == expected
+
+        # update foreign_type_info, ensure schema (i.e. the fields), is unchanged
+        table.foreign_type_info = {"typeSystem": "SCHEMA_SHOULD_NOT_CHANGE"}
+        expected = {
+            "fields": [],
+            "foreignTypeInfo": {"typeSystem": "SCHEMA_SHOULD_NOT_CHANGE"},
+        }
+        assert table.to_api_repr()["schema"] == expected
+
+    def test_from_api_repr_w_schema_and_foreign_type_info(self):
+        """Tests to ensure that to_api_repr works correctly with
+        both schema and foreign_type_info fields
+        """
+
+        PROJECT = "test-project"
+        DATASET_ID = "test_dataset"
+        TABLE_ID = "coffee_table"
+        FOREIGNTYPEINFO = {
+            "typeSystem": "TYPE_SYSTEM_UNSPECIFIED",
+        }
+        SCHEMA = {
+            "fields": [
+                {"name": "full_name", "type": "STRING", "mode": "REQUIRED"},
+                {"name": "age", "type": "INTEGER", "mode": "REQUIRED"},
+            ],
+            "foreignTypeInfo": FOREIGNTYPEINFO,
+        }
+        API_REPR = {
+            "tableReference": {
+                "projectId": PROJECT,
+                "datasetId": DATASET_ID,
+                "tableId": TABLE_ID,
+            },
+            "schema": SCHEMA,
+        }
+
+        table = self._get_target_class().from_api_repr(API_REPR)
+        assert table._properties == API_REPR
 
     def test__build_resource_w_custom_field(self):
         dataset = DatasetReference(self.PROJECT, self.DS_ID)
@@ -5990,6 +6068,99 @@ class TestExternalCatalogTableOptions:
         )
         result = ecto.to_api_repr()
         expected = self.EXTERNALCATALOGTABLEOPTIONS
+        assert result == expected
+
+
+class TestForeignTypeInfo:
+    PROJECT = "test-project"
+    DATASET_ID = "test_dataset"
+    TABLE_ID = "coffee_table"
+    DATASET = DatasetReference(PROJECT, DATASET_ID)
+    TABLEREF = DATASET.table(TABLE_ID)
+    FOREIGNTYPEINFO = {
+        "typeSystem": "TYPE_SYSTEM_UNSPECIFIED",
+    }
+    API_REPR = {
+        "tableReference": {
+            "projectId": PROJECT,
+            "datasetId": DATASET_ID,
+            "tableId": TABLE_ID,
+        },
+        "schema": {
+            "fields": [
+                {"name": "full_name", "type": "STRING", "mode": "REQUIRED"},
+                {"name": "age", "type": "INTEGER", "mode": "REQUIRED"},
+            ],
+            "foreign_info_type": FOREIGNTYPEINFO,
+        },
+    }
+
+    from google.cloud.bigquery.schema import ForeignTypeInfo
+
+    @staticmethod
+    def _get_target_class(self):
+        from google.cloud.bigquery.table import Table
+
+        return Table
+
+    def _make_one(self, *args, **kw):
+        return self._get_target_class(self)(*args, **kw)
+
+    def test_foreign_type_info_default_initialization(self):
+        table = self._make_one(self.TABLEREF)
+        assert table.foreign_type_info is None
+
+    @pytest.mark.parametrize(
+        "foreign_type_info, expected",
+        [
+            (
+                {"typeSystem": "TYPE_SYSTEM_UNSPECIFIED"},
+                "TYPE_SYSTEM_UNSPECIFIED",
+            ),
+            (None, None),
+            (
+                ForeignTypeInfo(type_system="TYPE_SYSTEM_UNSPECIFIED"),
+                "TYPE_SYSTEM_UNSPECIFIED",
+            ),
+        ],
+    )
+    def test_foreign_type_info_valid_inputs(self, foreign_type_info, expected):
+        table = self._make_one(self.TABLEREF)
+
+        table.foreign_type_info = foreign_type_info
+
+        if foreign_type_info is None:
+            result = table.foreign_type_info
+        else:
+            result = table.foreign_type_info.type_system
+        assert result == expected
+
+    def test_foreign_type_info_invalid_inputs(self):
+        table = self._make_one(self.TABLEREF)
+
+        # invalid on the whole
+        with pytest.raises(TypeError, match="Pass .*"):
+            table.foreign_type_info = 123
+
+    def test_foreign_type_info_to_api_repr(self):
+        table = self._make_one(self.TABLEREF)
+
+        table.foreign_type_info = self.ForeignTypeInfo(
+            type_system="TYPE_SYSTEM_UNSPECIFIED",
+        )
+
+        result = table.to_api_repr()["schema"]["foreignTypeInfo"]
+        expected = self.FOREIGNTYPEINFO
+        assert result == expected
+
+    def test_foreign_type_info_from_api_repr(self):
+        table = self._make_one(self.TABLEREF)
+        table.foreign_type_info = self.FOREIGNTYPEINFO
+
+        fti = schema.ForeignTypeInfo.from_api_repr(self.FOREIGNTYPEINFO)
+
+        result = fti.to_api_repr()
+        expected = self.FOREIGNTYPEINFO
         assert result == expected
 
 

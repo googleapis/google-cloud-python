@@ -2051,7 +2051,7 @@ class TestClient(unittest.TestCase):
         ds.labels = LABELS
         ds.access_entries = [AccessEntry("OWNER", "userByEmail", "phred@example.com")]
         ds.resource_tags = RESOURCE_TAGS
-        fields = [
+        filter_fields = [
             "description",
             "friendly_name",
             "location",
@@ -2065,12 +2065,12 @@ class TestClient(unittest.TestCase):
         ) as final_attributes:
             ds2 = client.update_dataset(
                 ds,
-                fields=fields,
+                fields=filter_fields,
                 timeout=7.5,
             )
 
         final_attributes.assert_called_once_with(
-            {"path": "/%s" % PATH, "fields": fields}, client, None
+            {"path": "/%s" % PATH, "fields": filter_fields}, client, None
         )
 
         conn.api_request.assert_called_once_with(
@@ -2615,7 +2615,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(len(conn.api_request.call_args_list), 2)
         req = conn.api_request.call_args_list[1]
         self.assertEqual(req[1]["method"], "PATCH")
-        sent = {"schema": None}
+        sent = {"schema": {"fields": None}}
         self.assertEqual(req[1]["data"], sent)
         self.assertEqual(req[1]["path"], "/%s" % path)
         self.assertEqual(len(updated_table.schema), 0)
