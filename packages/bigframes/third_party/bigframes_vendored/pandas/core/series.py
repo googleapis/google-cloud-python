@@ -5941,7 +5941,7 @@ class Series(NDFrame):  # type: ignore[misc]
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
-    def __array__(self, dtype=None) -> numpy.ndarray:
+    def __array__(self, dtype=None, copy: Optional[bool] = None) -> numpy.ndarray:
         """
         Returns the values as NumPy array.
 
@@ -5965,6 +5965,8 @@ class Series(NDFrame):  # type: ignore[misc]
             dtype (str or numpy.dtype, optional):
                 The dtype to use for the resulting NumPy array. By default,
                 the dtype is inferred from the data.
+            copy (bool or None, optional):
+                Whether to copy the data, False is not supported.
 
         Returns:
             numpy.ndarray:

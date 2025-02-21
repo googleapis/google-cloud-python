@@ -7179,7 +7179,7 @@ class DataFrame(generic.NDFrame):
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
-    def __array__(self):
+    def __array__(self, dtype=None, copy: Optional[bool] = None):
         """
         Returns the rows as NumPy array.
 
@@ -7210,6 +7210,8 @@ class DataFrame(generic.NDFrame):
             dtype (str or numpy.dtype, optional):
                 The dtype to use for the resulting NumPy array. By default,
                 the dtype is inferred from the data.
+            copy (bool or None, optional):
+                Whether to copy the data, False is not supported.
 
         Returns:
             numpy.ndarray:
