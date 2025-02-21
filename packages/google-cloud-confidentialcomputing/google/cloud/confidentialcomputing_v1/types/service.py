@@ -161,7 +161,7 @@ class CreateChallengeRequest(proto.Message):
 
 class VerifyAttestationRequest(proto.Message):
     r"""A request for an OIDC token, providing all the necessary
-    information needed for this service to verify the plaform state
+    information needed for this service to verify the platform state
     of the requestor.
 
     This message has `oneof`_ fields (mutually exclusive fields).
@@ -200,6 +200,9 @@ class VerifyAttestationRequest(proto.Message):
             Optional. A collection of optional,
             workload-specified claims that modify the token
             output.
+        attester (str):
+            Optional. An optional indicator of the
+            attester, only applies to certain products.
     """
 
     td_ccel: "TdxCcelAttestation" = proto.Field(
@@ -237,6 +240,10 @@ class VerifyAttestationRequest(proto.Message):
         proto.MESSAGE,
         number=5,
         message="TokenOptions",
+    )
+    attester: str = proto.Field(
+        proto.STRING,
+        number=8,
     )
 
 

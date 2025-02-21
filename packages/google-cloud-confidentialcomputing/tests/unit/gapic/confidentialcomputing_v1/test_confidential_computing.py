@@ -1564,6 +1564,7 @@ def test_verify_attestation_non_empty_request_with_auto_populated_field():
     # if they meet the requirements of AIP 4235.
     request = service.VerifyAttestationRequest(
         challenge="challenge_value",
+        attester="attester_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1578,6 +1579,7 @@ def test_verify_attestation_non_empty_request_with_auto_populated_field():
         _, args, _ = call.mock_calls[0]
         assert args[0] == service.VerifyAttestationRequest(
             challenge="challenge_value",
+            attester="attester_value",
         )
 
 

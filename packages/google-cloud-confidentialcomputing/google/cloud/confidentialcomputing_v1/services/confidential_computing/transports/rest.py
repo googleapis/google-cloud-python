@@ -524,7 +524,7 @@ class ConfidentialComputingRestTransport(_BaseConfidentialComputingRestTransport
                     The request object. A request for an OIDC token,
                 providing all the necessary information
                 needed for this service to verify the
-                plaform state of the requestor.
+                platform state of the requestor.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
