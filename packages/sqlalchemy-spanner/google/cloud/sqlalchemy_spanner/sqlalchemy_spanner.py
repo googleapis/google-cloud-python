@@ -180,6 +180,14 @@ class SpannerExecutionContext(DefaultExecutionContext):
         if priority is not None:
             self._dbapi_connection.connection.request_priority = priority
 
+        transaction_tag = self.execution_options.get("transaction_tag")
+        if transaction_tag:
+            self._dbapi_connection.connection.transaction_tag = transaction_tag
+
+        request_tag = self.execution_options.get("request_tag")
+        if request_tag:
+            self.cursor.request_tag = request_tag
+
     def fire_sequence(self, seq, type_):
         """Builds a statement for fetching next value of the sequence."""
         return self._execute_scalar(

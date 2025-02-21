@@ -74,8 +74,12 @@ class TestBasics(MockServerTestBase):
         with engine.connect().execution_options(
             isolation_level="AUTOCOMMIT"
         ) as connection:
-            results = connection.execute(select(1)).fetchall()
+            results = connection.execute(
+                select(1).execution_options(request_tag="my-tag")
+            ).fetchall()
             self.verify_select1(results)
+            request: ExecuteSqlRequest = self.spanner_service.requests[1]
+            eq_("my-tag", request.request_options.request_tag)
 
     def test_sqlalchemy_select_now(self):
         now = datetime.datetime.now(datetime.UTC)
