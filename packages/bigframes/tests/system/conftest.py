@@ -251,6 +251,11 @@ def table_id_unique(dataset_id: str):
     return f"{dataset_id}.{prefixer.create_prefix()}"
 
 
+@pytest.fixture(scope="function")
+def routine_id_unique(dataset_id: str):
+    return f"{dataset_id}.{prefixer.create_prefix()}"
+
+
 @pytest.fixture(scope="session")
 def scalars_schema(bigquery_client: bigquery.Client):
     # TODO(swast): Add missing scalar data types such as BIGNUMERIC.

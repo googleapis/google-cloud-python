@@ -66,6 +66,12 @@ def test_supported_types_correspond():
     ibis_types_from_bigquery = {
         third_party_ibis_bqtypes.BigQueryType.to_ibis(tk)
         for tk in bigframes.dtypes.RF_SUPPORTED_IO_BIGQUERY_TYPEKINDS
+        # TODO(b/284515241): ARRAY is the only exception because it is supported
+        # as an output type of the BQ routine in the read_gbq_function path but
+        # not in the remote function path. Remove this handline once BQ remote
+        # functions supports ARRAY output and the bigframes remote functions
+        # utilizes that to support array output.
+        if tk != "ARRAY"
     }
 
     assert ibis_types_from_python == ibis_types_from_bigquery

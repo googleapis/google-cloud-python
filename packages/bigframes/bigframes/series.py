@@ -1545,9 +1545,12 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
             ops.RemoteFunctionOp(func=func, apply_on_null=True)
         )
 
-        # if the output is an array, reconstruct it from the json serialized
-        # string form
-        if bigframes.dtypes.is_array_like(func.output_dtype):
+        # If the result type is string but the function output is intended to
+        # be an array, reconstruct the array from the string assuming it is a
+        # json serialized form of the array.
+        if bigframes.dtypes.is_string_like(
+            result_series.dtype
+        ) and bigframes.dtypes.is_array_like(func.output_dtype):
             import bigframes.bigquery as bbq
 
             result_dtype = bigframes.dtypes.arrow_dtype_to_bigframes_dtype(
@@ -1585,9 +1588,12 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
             other, ops.BinaryRemoteFunctionOp(func=func)
         )
 
-        # if the output is an array, reconstruct it from the json serialized
-        # string form
-        if bigframes.dtypes.is_array_like(func.output_dtype):
+        # If the result type is string but the function output is intended to
+        # be an array, reconstruct the array from the string assuming it is a
+        # json serialized form of the array.
+        if bigframes.dtypes.is_string_like(
+            result_series.dtype
+        ) and bigframes.dtypes.is_array_like(func.output_dtype):
             import bigframes.bigquery as bbq
 
             result_dtype = bigframes.dtypes.arrow_dtype_to_bigframes_dtype(

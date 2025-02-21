@@ -463,10 +463,19 @@ def ibis_array_output_type_from_python_type(t: type) -> ibis_dtypes.DataType:
     return python_type_to_ibis_type(t)
 
 
-def ibis_type_from_type_kind(tk: bigquery.StandardSqlTypeNames) -> ibis_dtypes.DataType:
+def ibis_type_from_bigquery_type(
+    type_: bigquery.StandardSqlDataType,
+) -> ibis_dtypes.DataType:
     """Convert bq type to ibis. Only to be used for remote functions, does not handle all types."""
-    if tk not in bigframes.dtypes.RF_SUPPORTED_IO_BIGQUERY_TYPEKINDS:
+    if type_.type_kind not in bigframes.dtypes.RF_SUPPORTED_IO_BIGQUERY_TYPEKINDS:
         raise UnsupportedTypeError(
-            tk, bigframes.dtypes.RF_SUPPORTED_IO_BIGQUERY_TYPEKINDS
+            type_.type_kind, bigframes.dtypes.RF_SUPPORTED_IO_BIGQUERY_TYPEKINDS
         )
-    return third_party_ibis_bqtypes.BigQueryType.to_ibis(tk)
+    elif type_.type_kind == "ARRAY":
+        return ibis_dtypes.Array(
+            value_type=ibis_type_from_bigquery_type(
+                typing.cast(bigquery.StandardSqlDataType, type_.array_element_type)
+            )
+        )
+    else:
+        return third_party_ibis_bqtypes.BigQueryType.to_ibis(type_.type_kind)

@@ -14,6 +14,7 @@
 
 import inspect
 import re
+import textwrap
 
 import google.api_core.exceptions
 from google.cloud import bigquery
@@ -27,6 +28,7 @@ import bigframes.dtypes
 import bigframes.exceptions
 from bigframes.functions import _utils as bff_utils
 from bigframes.functions import function as bff
+import bigframes.session._io.bigquery
 from tests.system.utils import assert_pandas_df_equal
 
 _prefixer = test_utils.prefixer.Prefixer("bigframes", "")
@@ -632,7 +634,6 @@ def test_skip_bq_connection_check(dataset_id_permanent):
         )(add_one)
 
 
-@pytest.mark.flaky(retries=2, delay=120)
 def test_read_gbq_function_detects_invalid_function(session, dataset_id):
     dataset_ref = bigquery.DatasetReference.from_string(dataset_id)
     with pytest.raises(ValueError) as e:
@@ -705,21 +706,133 @@ def test_read_gbq_function_like_original(
     assert_pandas_df_equal(s1_result.to_pandas(), s2_result.to_pandas())
 
 
-@pytest.mark.flaky(retries=2, delay=120)
 def test_read_gbq_function_runs_existing_udf(session):
     func = session.read_gbq_function("bqutil.fn.cw_lower_case_ascii_only")
     got = func("AURÉLIE")
     assert got == "aurÉlie"
 
 
-@pytest.mark.flaky(retries=2, delay=120)
 def test_read_gbq_function_runs_existing_udf_4_params(session):
     func = session.read_gbq_function("bqutil.fn.cw_instr4")
     got = func("TestStr123456Str", "Str", 1, 2)
     assert got == 14
 
 
-@pytest.mark.flaky(retries=2, delay=120)
+def test_read_gbq_function_runs_existing_udf_array_output(session, routine_id_unique):
+    bigframes.session._io.bigquery.start_query_with_client(
+        session.bqclient,
+        textwrap.dedent(
+            f"""
+                CREATE OR REPLACE FUNCTION `{routine_id_unique}`(x STRING)
+                RETURNS ARRAY<STRING>
+                AS (
+                    [x, x]
+                )
+            """
+        ),
+        job_config=bigquery.QueryJobConfig(),
+    )
+    func = session.read_gbq_function(routine_id_unique)
+
+    # Test on scalar value
+    got = func("hello")
+    assert got == ["hello", "hello"]
+
+    # Test on a series, assert pandas parity
+    pd_s = pd.Series(["alpha", "beta", "gamma"])
+    bf_s = session.read_pandas(pd_s)
+    pd_result = pd_s.apply(func)
+    bf_result = bf_s.apply(func)
+    assert bigframes.dtypes.is_array_string_like(bf_result.dtype)
+    pd.testing.assert_series_equal(
+        pd_result, bf_result.to_pandas(), check_dtype=False, check_index_type=False
+    )
+
+
+def test_read_gbq_function_runs_existing_udf_2_params_array_output(
+    session, routine_id_unique
+):
+    bigframes.session._io.bigquery.start_query_with_client(
+        session.bqclient,
+        textwrap.dedent(
+            f"""
+                CREATE OR REPLACE FUNCTION `{routine_id_unique}`(x STRING, y STRING)
+                RETURNS ARRAY<STRING>
+                AS (
+                    [x, y]
+                )
+            """
+        ),
+        job_config=bigquery.QueryJobConfig(),
+    )
+    func = session.read_gbq_function(routine_id_unique)
+
+    # Test on scalar value
+    got = func("hello", "world")
+    assert got == ["hello", "world"]
+
+    # Test on series, assert pandas parity
+    pd_df = pd.DataFrame(
+        {"col0": ["alpha", "beta", "gamma"], "col1": ["delta", "theta", "phi"]}
+    )
+    bf_df = session.read_pandas(pd_df)
+    pd_result = pd_df["col0"].combine(pd_df["col1"], func)
+    bf_result = bf_df["col0"].combine(bf_df["col1"], func)
+    assert bigframes.dtypes.is_array_string_like(bf_result.dtype)
+    pd.testing.assert_series_equal(
+        pd_result, bf_result.to_pandas(), check_dtype=False, check_index_type=False
+    )
+
+
+def test_read_gbq_function_runs_existing_udf_4_params_array_output(
+    session, routine_id_unique
+):
+    bigframes.session._io.bigquery.start_query_with_client(
+        session.bqclient,
+        textwrap.dedent(
+            f"""
+                CREATE OR REPLACE FUNCTION `{routine_id_unique}`(x STRING, y BOOL, z INT64, w FLOAT64)
+                RETURNS ARRAY<STRING>
+                AS (
+                    [x, CAST(y AS STRING), CAST(z AS STRING), CAST(w AS STRING)]
+                )
+            """
+        ),
+        job_config=bigquery.QueryJobConfig(),
+    )
+    func = session.read_gbq_function(routine_id_unique)
+
+    # Test on scalar value
+    got = func("hello", True, 1, 2.3)
+    assert got == ["hello", "true", "1", "2.3"]
+
+    # Test on a dataframe, assert pandas parity
+    pd_df = pd.DataFrame(
+        {
+            "col0": ["alpha", "beta", "gamma"],
+            "col1": [True, False, True],
+            "col2": [1, 2, 3],
+            "col3": [4.5, 6, 7.75],
+        }
+    )
+    bf_df = session.read_pandas(pd_df)
+    # Simulate the result directly, since the function cannot be applied
+    # directly on a pandas dataframe with axis=1, as this is a special type of
+    # function with multiple params supported only on bigframes dataframe.
+    pd_result = pd.Series(
+        [
+            ["alpha", "true", "1", "4.5"],
+            ["beta", "false", "2", "6"],
+            ["gamma", "true", "3", "7.75"],
+        ]
+    )
+    bf_result = bf_df.apply(func, axis=1)
+    assert bigframes.dtypes.is_array_string_like(bf_result.dtype)
+    pd.testing.assert_series_equal(
+        pd_result, bf_result.to_pandas(), check_dtype=False, check_index_type=False
+    )
+
+
 def test_read_gbq_function_reads_udfs(session, bigquery_client, dataset_id):
     dataset_ref = bigquery.DatasetReference.from_string(dataset_id)
     arg = bigquery.RoutineArgument(
@@ -754,6 +867,10 @@ def test_read_gbq_function_reads_udfs(session, bigquery_client, dataset_id):
         assert square.bigframes_remote_function == str(routine.reference)
         assert square.input_dtypes == (bigframes.dtypes.INT_DTYPE,)
         assert square.output_dtype == bigframes.dtypes.INT_DTYPE
+        assert (
+            square.bigframes_bigquery_function_output_dtype
+            == bigframes.dtypes.INT_DTYPE
+        )
 
         src = {"x": [-5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5]}
 
@@ -772,7 +889,6 @@ def test_read_gbq_function_reads_udfs(session, bigquery_client, dataset_id):
         )
 
 
-@pytest.mark.flaky(retries=2, delay=120)
 def test_read_gbq_function_requires_explicit_types(
     session, bigquery_client, dataset_id
 ):
@@ -863,7 +979,6 @@ def test_read_gbq_function_requires_explicit_types(
         ),
     ],
 )
-@pytest.mark.flaky(retries=2, delay=120)
 def test_read_gbq_function_respects_python_output_type(
     request, session_fixture, bigquery_client, dataset_id, array_type, expected_data
 ):
@@ -906,7 +1021,6 @@ def test_read_gbq_function_respects_python_output_type(
         pytest.param(list[str], id="list-str"),
     ],
 )
-@pytest.mark.flaky(retries=2, delay=120)
 def test_read_gbq_function_supports_python_output_type_only_for_string_outputs(
     session, bigquery_client, dataset_id, array_type
 ):
@@ -945,7 +1059,6 @@ def test_read_gbq_function_supports_python_output_type_only_for_string_outputs(
         pytest.param(list[str], id="list-str"),
     ],
 )
-@pytest.mark.flaky(retries=2, delay=120)
 def test_read_gbq_function_supported_python_output_type(
     session, bigquery_client, dataset_id, array_type
 ):
@@ -992,7 +1105,6 @@ def test_df_apply_scalar_func(session, scalars_dfs):
     )
 
 
-@pytest.mark.flaky(retries=2, delay=120)
 def test_read_gbq_function_multiple_inputs_not_a_row_processor(session):
     with pytest.raises(ValueError) as context:
         # The remote function has two args, which cannot be row processed. Throw
@@ -1214,20 +1326,19 @@ def test_remote_function_application_repr(session, dataset_id_permanent):
     repr(s.mask(should_mask, "REDACTED"))
 
 
-@pytest.mark.flaky(retries=2, delay=120)
-def test_read_gbq_function_application_repr(session, dataset_id, scalars_df_index):
-    gbq_function = f"{dataset_id}.should_mask"
-
+def test_read_gbq_function_application_repr(
+    session, routine_id_unique, scalars_df_index
+):
     # This function deliberately has a param with name "name", this is to test
     # a specific ibis' internal handling of object names
     session.bqclient.query_and_wait(
-        f"CREATE OR REPLACE FUNCTION `{gbq_function}`(name STRING) RETURNS BOOL AS (MOD(LENGTH(name), 2) = 1)"
+        f"CREATE OR REPLACE FUNCTION `{routine_id_unique}`(name STRING) RETURNS BOOL AS (MOD(LENGTH(name), 2) = 1)"
     )
-    routine = session.bqclient.get_routine(gbq_function)
+    routine = session.bqclient.get_routine(routine_id_unique)
     assert "name" in [arg.name for arg in routine.arguments]
 
     # read the function and apply to dataframe
-    should_mask = session.read_gbq_function(gbq_function)
+    should_mask = session.read_gbq_function(routine_id_unique)
 
     s = scalars_df_index["string_col"]
 
