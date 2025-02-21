@@ -140,9 +140,9 @@ google-auth==2.38.0 \
     # via
     #   google-api-core
     #   google-cloud-core
-google-cloud-core==2.4.1 \
-    --hash=sha256:9b7749272a812bde58fff28868d0c5e2f585b82f37e09a1f6ed2d4d10f134073 \
-    --hash=sha256:a9e6a4422b9ac5c29f79a0ede9485473338e2ce78d91f2370c01e730eab22e61
+google-cloud-core==2.4.2 \
+    --hash=sha256:7459c3e83de7cb8b9ecfec9babc910efb4314030c56dd798eaad12c426f7d180 \
+    --hash=sha256:a4fcb0e2fcfd4bfe963837fad6d10943754fd79c1a50097d68540b6eb3d67f35
     # via google-cloud-spanner
 google-cloud-spanner==3.52.0 \
     --hash=sha256:b18cc9b8d97866c80297c878175fa86af9244cd0c13455970192f8318d646e8a \
