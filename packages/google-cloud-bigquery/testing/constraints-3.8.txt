@@ -1,2 +1,11 @@
 grpcio==1.47.0
 pandas==1.2.0
+
+# This constraints file is used to check that lower bounds
+# are correct in setup.py
+#
+# Pin the version to the lower bound.
+#
+# e.g., if setup.py has "foo >= 1.14.0, < 2.0.0dev",
+# Then this file should have foo==1.14.0
+pandas-gbq==0.26.1

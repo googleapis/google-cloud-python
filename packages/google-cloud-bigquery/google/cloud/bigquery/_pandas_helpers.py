@@ -12,7 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Shared helper functions for connecting BigQuery and pandas."""
+"""Shared helper functions for connecting BigQuery and pandas.
+
+NOTE: This module is DEPRECATED. Please make updates in the pandas-gbq package,
+instead. See: go/pandas-gbq-and-bigframes-redundancy and
+https://github.com/googleapis/python-bigquery-pandas/blob/main/pandas_gbq/schema/pandas_to_bigquery.py
+"""
 
 import concurrent.futures
 from datetime import datetime
@@ -39,6 +44,16 @@ except ImportError as exc:
     pandas_import_exception = exc
 else:
     import numpy
+
+
+try:
+    import pandas_gbq.schema.pandas_to_bigquery  # type: ignore
+
+    pandas_gbq_import_exception = None
+except ImportError as exc:
+    pandas_gbq = None
+    pandas_gbq_import_exception = exc
+
 
 try:
     import db_dtypes  # type: ignore
@@ -445,6 +460,10 @@ def _first_array_valid(series):
 def dataframe_to_bq_schema(dataframe, bq_schema):
     """Convert a pandas DataFrame schema to a BigQuery schema.
 
+    DEPRECATED: Use
+    pandas_gbq.schema.pandas_to_bigquery.dataframe_to_bigquery_fields(),
+    instead. See: go/pandas-gbq-and-bigframes-redundancy.
+
     Args:
         dataframe (pandas.DataFrame):
             DataFrame for which the client determines the BigQuery schema.
@@ -460,6 +479,20 @@ def dataframe_to_bq_schema(dataframe, bq_schema):
             The automatically determined schema. Returns None if the type of
             any column cannot be determined.
     """
+    if pandas_gbq is None:
+        warnings.warn(
+            "Loading pandas DataFrame into BigQuery will require pandas-gbq "
+            "package version 0.26.1 or greater in the future. "
+            f"Tried to import pandas-gbq and got: {pandas_gbq_import_exception}",
+            category=FutureWarning,
+        )
+    else:
+        return pandas_gbq.schema.pandas_to_bigquery.dataframe_to_bigquery_fields(
+            dataframe,
+            override_bigquery_fields=bq_schema,
+            index=True,
+        )
+
     if bq_schema:
         bq_schema = schema._to_schema_fields(bq_schema)
         bq_schema_index = {field.name: field for field in bq_schema}

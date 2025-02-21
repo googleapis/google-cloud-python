@@ -110,6 +110,14 @@ def default(session, install_extras=True):
     else:
         install_target = "."
     session.install("-e", install_target, "-c", constraints_path)
+
+    # Test with some broken "extras" in case the user didn't install the extra
+    # directly. For example, pandas-gbq is recommended for pandas features, but
+    # we want to test that we fallback to the previous behavior. For context,
+    # see internal document go/pandas-gbq-and-bigframes-redundancy.
+    if session.python == UNIT_TEST_PYTHON_VERSIONS[0]:
+        session.run("python", "-m", "pip", "uninstall", "pandas-gbq", "-y")
+
     session.run("python", "-m", "pip", "freeze")
 
     # Run py.test against the unit tests.
@@ -227,6 +235,13 @@ def system(session):
     else:
         extras = "[all]"
     session.install("-e", f".{extras}", "-c", constraints_path)
+
+    # Test with some broken "extras" in case the user didn't install the extra
+    # directly. For example, pandas-gbq is recommended for pandas features, but
+    # we want to test that we fallback to the previous behavior. For context,
+    # see internal document go/pandas-gbq-and-bigframes-redundancy.
+    if session.python == SYSTEM_TEST_PYTHON_VERSIONS[0]:
+        session.run("python", "-m", "pip", "uninstall", "pandas-gbq", "-y")
 
     # print versions of all dependencies
     session.run("python", "-m", "pip", "freeze")

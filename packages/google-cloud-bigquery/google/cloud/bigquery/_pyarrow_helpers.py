@@ -12,7 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Shared helper functions for connecting BigQuery and pyarrow."""
+"""Shared helper functions for connecting BigQuery and pyarrow.
+
+NOTE: This module is DEPRECATED. Please make updates in the pandas-gbq package,
+instead. See: go/pandas-gbq-and-bigframes-redundancy and
+https://github.com/googleapis/python-bigquery-pandas/blob/main/pandas_gbq/schema/pyarrow_to_bigquery.py
+"""
 
 from typing import Any
 

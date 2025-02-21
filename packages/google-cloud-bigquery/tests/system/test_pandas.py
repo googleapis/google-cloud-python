@@ -1259,7 +1259,7 @@ def test_upload_time_and_datetime_56(bigquery_client, dataset_id):
     df = pandas.DataFrame(
         dict(
             dt=[
-                datetime.datetime(2020, 1, 8, 8, 0, 0),
+                datetime.datetime(2020, 1, 8, 8, 0, 0, tzinfo=datetime.timezone.utc),
                 datetime.datetime(
                     2020,
                     1,
