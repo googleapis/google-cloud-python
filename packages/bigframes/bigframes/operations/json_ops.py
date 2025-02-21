@@ -31,7 +31,7 @@ class JSONExtract(base_ops.UnaryOp):
         input_type = input_types[0]
         if not dtypes.is_json_like(input_type):
             raise TypeError(
-                "Input type must be an valid JSON object or JSON-formatted string type."
+                "Input type must be a valid JSON object or JSON-formatted string type."
                 + f" Received type: {input_type}"
             )
         return input_type
@@ -46,7 +46,7 @@ class JSONExtractArray(base_ops.UnaryOp):
         input_type = input_types[0]
         if not dtypes.is_json_like(input_type):
             raise TypeError(
-                "Input type must be an valid JSON object or JSON-formatted string type."
+                "Input type must be a valid JSON object or JSON-formatted string type."
                 + f" Received type: {input_type}"
             )
         return pd.ArrowDtype(
@@ -63,7 +63,7 @@ class JSONExtractStringArray(base_ops.UnaryOp):
         input_type = input_types[0]
         if not dtypes.is_json_like(input_type):
             raise TypeError(
-                "Input type must be an valid JSON object or JSON-formatted string type."
+                "Input type must be a valid JSON object or JSON-formatted string type."
                 + f" Received type: {input_type}"
             )
         return pd.ArrowDtype(
@@ -79,7 +79,7 @@ class ParseJSON(base_ops.UnaryOp):
         input_type = input_types[0]
         if input_type != dtypes.STRING_DTYPE:
             raise TypeError(
-                "Input type must be an valid JSON-formatted string type."
+                "Input type must be a valid JSON-formatted string type."
                 + f" Received type: {input_type}"
             )
         return dtypes.JSON_DTYPE
@@ -93,7 +93,7 @@ class ToJSONString(base_ops.UnaryOp):
         input_type = input_types[0]
         if not dtypes.is_json_like(input_type):
             raise TypeError(
-                "Input type must be an valid JSON object or JSON-formatted string type."
+                "Input type must be a valid JSON object or JSON-formatted string type."
                 + f" Received type: {input_type}"
             )
         return dtypes.STRING_DTYPE
@@ -109,7 +109,7 @@ class JSONSet(base_ops.BinaryOp):
         right_type = input_types[1]
         if not dtypes.is_json_like(left_type):
             raise TypeError(
-                "Input type must be an valid JSON object or JSON-formatted string type."
+                "Input type must be a valid JSON object or JSON-formatted string type."
                 + f" Received type: {left_type}"
             )
         if not dtypes.is_json_encoding_type(right_type):
@@ -130,7 +130,7 @@ class JSONValue(base_ops.UnaryOp):
         input_type = input_types[0]
         if not dtypes.is_json_like(input_type):
             raise TypeError(
-                "Input type must be an valid JSON object or JSON-formatted string type."
+                "Input type must be a valid JSON object or JSON-formatted string type."
                 + f" Received type: {input_type}"
             )
         return dtypes.STRING_DTYPE
