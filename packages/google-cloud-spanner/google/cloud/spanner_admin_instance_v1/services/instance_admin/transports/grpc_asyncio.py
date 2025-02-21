@@ -14,6 +14,9 @@
 # limitations under the License.
 #
 import inspect
+import json
+import pickle
+import logging as std_logging
 import warnings
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 
@@ -24,8 +27,11 @@ from google.api_core import retry_async as retries
 from google.api_core import operations_v1
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
+from google.protobuf.json_format import MessageToJson
+import google.protobuf.message
 
 import grpc  # type: ignore
+import proto  # type: ignore
 from grpc.experimental import aio  # type: ignore
 
 from google.cloud.spanner_admin_instance_v1.types import spanner_instance_admin
@@ -35,6 +41,82 @@ from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 from .base import InstanceAdminTransport, DEFAULT_CLIENT_INFO
 from .grpc import InstanceAdminGrpcTransport
+
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = std_logging.getLogger(__name__)
+
+
+class _LoggingClientAIOInterceptor(
+    grpc.aio.UnaryUnaryClientInterceptor
+):  # pragma: NO COVER
+    async def intercept_unary_unary(self, continuation, client_call_details, request):
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+            std_logging.DEBUG
+        )
+        if logging_enabled:  # pragma: NO COVER
+            request_metadata = client_call_details.metadata
+            if isinstance(request, proto.Message):
+                request_payload = type(request).to_json(request)
+            elif isinstance(request, google.protobuf.message.Message):
+                request_payload = MessageToJson(request)
+            else:
+                request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
+
+            request_metadata = {
+                key: value.decode("utf-8") if isinstance(value, bytes) else value
+                for key, value in request_metadata
+            }
+            grpc_request = {
+                "payload": request_payload,
+                "requestMethod": "grpc",
+                "metadata": dict(request_metadata),
+            }
+            _LOGGER.debug(
+                f"Sending request for {client_call_details.method}",
+                extra={
+                    "serviceName": "google.spanner.admin.instance.v1.InstanceAdmin",
+                    "rpcName": str(client_call_details.method),
+                    "request": grpc_request,
+                    "metadata": grpc_request["metadata"],
+                },
+            )
+        response = await continuation(client_call_details, request)
+        if logging_enabled:  # pragma: NO COVER
+            response_metadata = await response.trailing_metadata()
+            # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
+            metadata = (
+                dict([(k, str(v)) for k, v in response_metadata])
+                if response_metadata
+                else None
+            )
+            result = await response
+            if isinstance(result, proto.Message):
+                response_payload = type(result).to_json(result)
+            elif isinstance(result, google.protobuf.message.Message):
+                response_payload = MessageToJson(result)
+            else:
+                response_payload = f"{type(result).__name__}: {pickle.dumps(result)}"
+            grpc_response = {
+                "payload": response_payload,
+                "metadata": metadata,
+                "status": "OK",
+            }
+            _LOGGER.debug(
+                f"Received response to rpc {client_call_details.method}.",
+                extra={
+                    "serviceName": "google.spanner.admin.instance.v1.InstanceAdmin",
+                    "rpcName": str(client_call_details.method),
+                    "response": grpc_response,
+                    "metadata": grpc_response["metadata"],
+                },
+            )
+        return response
 
 
 class InstanceAdminGrpcAsyncIOTransport(InstanceAdminTransport):
@@ -255,10 +337,13 @@ class InstanceAdminGrpcAsyncIOTransport(InstanceAdminTransport):
                 ],
             )
 
-        # Wrap messages. This must be done after self._grpc_channel exists
+        self._interceptor = _LoggingClientAIOInterceptor()
+        self._grpc_channel._unary_unary_interceptors.append(self._interceptor)
+        self._logged_channel = self._grpc_channel
         self._wrap_with_kind = (
             "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
         )
+        # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
     @property
@@ -281,7 +366,7 @@ class InstanceAdminGrpcAsyncIOTransport(InstanceAdminTransport):
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
             self._operations_client = operations_v1.OperationsAsyncClient(
-                self.grpc_channel
+                self._logged_channel
             )
 
         # Return the client from cache.
@@ -298,6 +383,8 @@ class InstanceAdminGrpcAsyncIOTransport(InstanceAdminTransport):
 
         Lists the supported instance configurations for a
         given project.
+        Returns both Google-managed configurations and
+        user-managed configurations.
 
         Returns:
             Callable[[~.ListInstanceConfigsRequest],
@@ -310,7 +397,7 @@ class InstanceAdminGrpcAsyncIOTransport(InstanceAdminTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_instance_configs" not in self._stubs:
-            self._stubs["list_instance_configs"] = self.grpc_channel.unary_unary(
+            self._stubs["list_instance_configs"] = self._logged_channel.unary_unary(
                 "/google.spanner.admin.instance.v1.InstanceAdmin/ListInstanceConfigs",
                 request_serializer=spanner_instance_admin.ListInstanceConfigsRequest.serialize,
                 response_deserializer=spanner_instance_admin.ListInstanceConfigsResponse.deserialize,
@@ -340,7 +427,7 @@ class InstanceAdminGrpcAsyncIOTransport(InstanceAdminTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_instance_config" not in self._stubs:
-            self._stubs["get_instance_config"] = self.grpc_channel.unary_unary(
+            self._stubs["get_instance_config"] = self._logged_channel.unary_unary(
                 "/google.spanner.admin.instance.v1.InstanceAdmin/GetInstanceConfig",
                 request_serializer=spanner_instance_admin.GetInstanceConfigRequest.serialize,
                 response_deserializer=spanner_instance_admin.InstanceConfig.deserialize,
@@ -357,8 +444,7 @@ class InstanceAdminGrpcAsyncIOTransport(InstanceAdminTransport):
         r"""Return a callable for the create instance config method over gRPC.
 
         Creates an instance configuration and begins preparing it to be
-        used. The returned [long-running
-        operation][google.longrunning.Operation] can be used to track
+        used. The returned long-running operation can be used to track
         the progress of preparing the new instance configuration. The
         instance configuration name is assigned by the caller. If the
         named instance configuration already exists,
@@ -385,14 +471,12 @@ class InstanceAdminGrpcAsyncIOTransport(InstanceAdminTransport):
            [reconciling][google.spanner.admin.instance.v1.InstanceConfig.reconciling]
            field becomes false. Its state becomes ``READY``.
 
-        The returned [long-running
-        operation][google.longrunning.Operation] will have a name of the
+        The returned long-running operation will have a name of the
         format ``<instance_config_name>/operations/<operation_id>`` and
         can be used to track creation of the instance configuration. The
-        [metadata][google.longrunning.Operation.metadata] field type is
+        metadata field type is
         [CreateInstanceConfigMetadata][google.spanner.admin.instance.v1.CreateInstanceConfigMetadata].
-        The [response][google.longrunning.Operation.response] field type
-        is
+        The response field type is
         [InstanceConfig][google.spanner.admin.instance.v1.InstanceConfig],
         if successful.
 
@@ -411,7 +495,7 @@ class InstanceAdminGrpcAsyncIOTransport(InstanceAdminTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_instance_config" not in self._stubs:
-            self._stubs["create_instance_config"] = self.grpc_channel.unary_unary(
+            self._stubs["create_instance_config"] = self._logged_channel.unary_unary(
                 "/google.spanner.admin.instance.v1.InstanceAdmin/CreateInstanceConfig",
                 request_serializer=spanner_instance_admin.CreateInstanceConfigRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -427,10 +511,10 @@ class InstanceAdminGrpcAsyncIOTransport(InstanceAdminTransport):
     ]:
         r"""Return a callable for the update instance config method over gRPC.
 
-        Updates an instance configuration. The returned [long-running
-        operation][google.longrunning.Operation] can be used to track
-        the progress of updating the instance. If the named instance
-        configuration does not exist, returns ``NOT_FOUND``.
+        Updates an instance configuration. The returned long-running
+        operation can be used to track the progress of updating the
+        instance. If the named instance configuration does not exist,
+        returns ``NOT_FOUND``.
 
         Only user-managed configurations can be updated.
 
@@ -462,15 +546,12 @@ class InstanceAdminGrpcAsyncIOTransport(InstanceAdminTransport):
            [reconciling][google.spanner.admin.instance.v1.InstanceConfig.reconciling]
            field becomes false.
 
-        The returned [long-running
-        operation][google.longrunning.Operation] will have a name of the
+        The returned long-running operation will have a name of the
         format ``<instance_config_name>/operations/<operation_id>`` and
         can be used to track the instance configuration modification.
-        The [metadata][google.longrunning.Operation.metadata] field type
-        is
+        The metadata field type is
         [UpdateInstanceConfigMetadata][google.spanner.admin.instance.v1.UpdateInstanceConfigMetadata].
-        The [response][google.longrunning.Operation.response] field type
-        is
+        The response field type is
         [InstanceConfig][google.spanner.admin.instance.v1.InstanceConfig],
         if successful.
 
@@ -489,7 +570,7 @@ class InstanceAdminGrpcAsyncIOTransport(InstanceAdminTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_instance_config" not in self._stubs:
-            self._stubs["update_instance_config"] = self.grpc_channel.unary_unary(
+            self._stubs["update_instance_config"] = self._logged_channel.unary_unary(
                 "/google.spanner.admin.instance.v1.InstanceAdmin/UpdateInstanceConfig",
                 request_serializer=spanner_instance_admin.UpdateInstanceConfigRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -525,7 +606,7 @@ class InstanceAdminGrpcAsyncIOTransport(InstanceAdminTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_instance_config" not in self._stubs:
-            self._stubs["delete_instance_config"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_instance_config"] = self._logged_channel.unary_unary(
                 "/google.spanner.admin.instance.v1.InstanceAdmin/DeleteInstanceConfig",
                 request_serializer=spanner_instance_admin.DeleteInstanceConfigRequest.serialize,
                 response_deserializer=empty_pb2.Empty.FromString,
@@ -542,12 +623,11 @@ class InstanceAdminGrpcAsyncIOTransport(InstanceAdminTransport):
         r"""Return a callable for the list instance config
         operations method over gRPC.
 
-        Lists the user-managed instance configuration [long-running
-        operations][google.longrunning.Operation] in the given project.
-        An instance configuration operation has a name of the form
+        Lists the user-managed instance configuration long-running
+        operations in the given project. An instance configuration
+        operation has a name of the form
         ``projects/<project>/instanceConfigs/<instance_config>/operations/<operation>``.
-        The long-running operation
-        [metadata][google.longrunning.Operation.metadata] field type
+        The long-running operation metadata field type
         ``metadata.type_url`` describes the type of the metadata.
         Operations returned include those that have
         completed/failed/canceled within the last 7 days, and pending
@@ -568,7 +648,7 @@ class InstanceAdminGrpcAsyncIOTransport(InstanceAdminTransport):
         if "list_instance_config_operations" not in self._stubs:
             self._stubs[
                 "list_instance_config_operations"
-            ] = self.grpc_channel.unary_unary(
+            ] = self._logged_channel.unary_unary(
                 "/google.spanner.admin.instance.v1.InstanceAdmin/ListInstanceConfigOperations",
                 request_serializer=spanner_instance_admin.ListInstanceConfigOperationsRequest.serialize,
                 response_deserializer=spanner_instance_admin.ListInstanceConfigOperationsResponse.deserialize,
@@ -597,7 +677,7 @@ class InstanceAdminGrpcAsyncIOTransport(InstanceAdminTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_instances" not in self._stubs:
-            self._stubs["list_instances"] = self.grpc_channel.unary_unary(
+            self._stubs["list_instances"] = self._logged_channel.unary_unary(
                 "/google.spanner.admin.instance.v1.InstanceAdmin/ListInstances",
                 request_serializer=spanner_instance_admin.ListInstancesRequest.serialize,
                 response_deserializer=spanner_instance_admin.ListInstancesResponse.deserialize,
@@ -626,7 +706,7 @@ class InstanceAdminGrpcAsyncIOTransport(InstanceAdminTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_instance_partitions" not in self._stubs:
-            self._stubs["list_instance_partitions"] = self.grpc_channel.unary_unary(
+            self._stubs["list_instance_partitions"] = self._logged_channel.unary_unary(
                 "/google.spanner.admin.instance.v1.InstanceAdmin/ListInstancePartitions",
                 request_serializer=spanner_instance_admin.ListInstancePartitionsRequest.serialize,
                 response_deserializer=spanner_instance_admin.ListInstancePartitionsResponse.deserialize,
@@ -655,7 +735,7 @@ class InstanceAdminGrpcAsyncIOTransport(InstanceAdminTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_instance" not in self._stubs:
-            self._stubs["get_instance"] = self.grpc_channel.unary_unary(
+            self._stubs["get_instance"] = self._logged_channel.unary_unary(
                 "/google.spanner.admin.instance.v1.InstanceAdmin/GetInstance",
                 request_serializer=spanner_instance_admin.GetInstanceRequest.serialize,
                 response_deserializer=spanner_instance_admin.Instance.deserialize,
@@ -672,9 +752,8 @@ class InstanceAdminGrpcAsyncIOTransport(InstanceAdminTransport):
         r"""Return a callable for the create instance method over gRPC.
 
         Creates an instance and begins preparing it to begin serving.
-        The returned [long-running
-        operation][google.longrunning.Operation] can be used to track
-        the progress of preparing the new instance. The instance name is
+        The returned long-running operation can be used to track the
+        progress of preparing the new instance. The instance name is
         assigned by the caller. If the named instance already exists,
         ``CreateInstance`` returns ``ALREADY_EXISTS``.
 
@@ -700,14 +779,13 @@ class InstanceAdminGrpcAsyncIOTransport(InstanceAdminTransport):
            API.
         -  The instance's state becomes ``READY``.
 
-        The returned [long-running
-        operation][google.longrunning.Operation] will have a name of the
+        The returned long-running operation will have a name of the
         format ``<instance_name>/operations/<operation_id>`` and can be
-        used to track creation of the instance. The
-        [metadata][google.longrunning.Operation.metadata] field type is
+        used to track creation of the instance. The metadata field type
+        is
         [CreateInstanceMetadata][google.spanner.admin.instance.v1.CreateInstanceMetadata].
-        The [response][google.longrunning.Operation.response] field type
-        is [Instance][google.spanner.admin.instance.v1.Instance], if
+        The response field type is
+        [Instance][google.spanner.admin.instance.v1.Instance], if
         successful.
 
         Returns:
@@ -721,7 +799,7 @@ class InstanceAdminGrpcAsyncIOTransport(InstanceAdminTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_instance" not in self._stubs:
-            self._stubs["create_instance"] = self.grpc_channel.unary_unary(
+            self._stubs["create_instance"] = self._logged_channel.unary_unary(
                 "/google.spanner.admin.instance.v1.InstanceAdmin/CreateInstance",
                 request_serializer=spanner_instance_admin.CreateInstanceRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -738,10 +816,9 @@ class InstanceAdminGrpcAsyncIOTransport(InstanceAdminTransport):
         r"""Return a callable for the update instance method over gRPC.
 
         Updates an instance, and begins allocating or releasing
-        resources as requested. The returned [long-running
-        operation][google.longrunning.Operation] can be used to track
-        the progress of updating the instance. If the named instance
-        does not exist, returns ``NOT_FOUND``.
+        resources as requested. The returned long-running operation can
+        be used to track the progress of updating the instance. If the
+        named instance does not exist, returns ``NOT_FOUND``.
 
         Immediately upon completion of this request:
 
@@ -769,14 +846,13 @@ class InstanceAdminGrpcAsyncIOTransport(InstanceAdminTransport):
            instance's tables.
         -  The instance's new resource levels are readable via the API.
 
-        The returned [long-running
-        operation][google.longrunning.Operation] will have a name of the
+        The returned long-running operation will have a name of the
         format ``<instance_name>/operations/<operation_id>`` and can be
-        used to track the instance modification. The
-        [metadata][google.longrunning.Operation.metadata] field type is
+        used to track the instance modification. The metadata field type
+        is
         [UpdateInstanceMetadata][google.spanner.admin.instance.v1.UpdateInstanceMetadata].
-        The [response][google.longrunning.Operation.response] field type
-        is [Instance][google.spanner.admin.instance.v1.Instance], if
+        The response field type is
+        [Instance][google.spanner.admin.instance.v1.Instance], if
         successful.
 
         Authorization requires ``spanner.instances.update`` permission
@@ -794,7 +870,7 @@ class InstanceAdminGrpcAsyncIOTransport(InstanceAdminTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_instance" not in self._stubs:
-            self._stubs["update_instance"] = self.grpc_channel.unary_unary(
+            self._stubs["update_instance"] = self._logged_channel.unary_unary(
                 "/google.spanner.admin.instance.v1.InstanceAdmin/UpdateInstance",
                 request_serializer=spanner_instance_admin.UpdateInstanceRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -832,7 +908,7 @@ class InstanceAdminGrpcAsyncIOTransport(InstanceAdminTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_instance" not in self._stubs:
-            self._stubs["delete_instance"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_instance"] = self._logged_channel.unary_unary(
                 "/google.spanner.admin.instance.v1.InstanceAdmin/DeleteInstance",
                 request_serializer=spanner_instance_admin.DeleteInstanceRequest.serialize,
                 response_deserializer=empty_pb2.Empty.FromString,
@@ -862,7 +938,7 @@ class InstanceAdminGrpcAsyncIOTransport(InstanceAdminTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "set_iam_policy" not in self._stubs:
-            self._stubs["set_iam_policy"] = self.grpc_channel.unary_unary(
+            self._stubs["set_iam_policy"] = self._logged_channel.unary_unary(
                 "/google.spanner.admin.instance.v1.InstanceAdmin/SetIamPolicy",
                 request_serializer=iam_policy_pb2.SetIamPolicyRequest.SerializeToString,
                 response_deserializer=policy_pb2.Policy.FromString,
@@ -893,7 +969,7 @@ class InstanceAdminGrpcAsyncIOTransport(InstanceAdminTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_iam_policy" not in self._stubs:
-            self._stubs["get_iam_policy"] = self.grpc_channel.unary_unary(
+            self._stubs["get_iam_policy"] = self._logged_channel.unary_unary(
                 "/google.spanner.admin.instance.v1.InstanceAdmin/GetIamPolicy",
                 request_serializer=iam_policy_pb2.GetIamPolicyRequest.SerializeToString,
                 response_deserializer=policy_pb2.Policy.FromString,
@@ -928,7 +1004,7 @@ class InstanceAdminGrpcAsyncIOTransport(InstanceAdminTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "test_iam_permissions" not in self._stubs:
-            self._stubs["test_iam_permissions"] = self.grpc_channel.unary_unary(
+            self._stubs["test_iam_permissions"] = self._logged_channel.unary_unary(
                 "/google.spanner.admin.instance.v1.InstanceAdmin/TestIamPermissions",
                 request_serializer=iam_policy_pb2.TestIamPermissionsRequest.SerializeToString,
                 response_deserializer=iam_policy_pb2.TestIamPermissionsResponse.FromString,
@@ -958,7 +1034,7 @@ class InstanceAdminGrpcAsyncIOTransport(InstanceAdminTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_instance_partition" not in self._stubs:
-            self._stubs["get_instance_partition"] = self.grpc_channel.unary_unary(
+            self._stubs["get_instance_partition"] = self._logged_channel.unary_unary(
                 "/google.spanner.admin.instance.v1.InstanceAdmin/GetInstancePartition",
                 request_serializer=spanner_instance_admin.GetInstancePartitionRequest.serialize,
                 response_deserializer=spanner_instance_admin.InstancePartition.deserialize,
@@ -975,8 +1051,7 @@ class InstanceAdminGrpcAsyncIOTransport(InstanceAdminTransport):
         r"""Return a callable for the create instance partition method over gRPC.
 
         Creates an instance partition and begins preparing it to be
-        used. The returned [long-running
-        operation][google.longrunning.Operation] can be used to track
+        used. The returned long-running operation can be used to track
         the progress of preparing the new instance partition. The
         instance partition name is assigned by the caller. If the named
         instance partition already exists, ``CreateInstancePartition``
@@ -1005,14 +1080,12 @@ class InstanceAdminGrpcAsyncIOTransport(InstanceAdminTransport):
            readable via the API.
         -  The instance partition's state becomes ``READY``.
 
-        The returned [long-running
-        operation][google.longrunning.Operation] will have a name of the
+        The returned long-running operation will have a name of the
         format ``<instance_partition_name>/operations/<operation_id>``
         and can be used to track creation of the instance partition. The
-        [metadata][google.longrunning.Operation.metadata] field type is
+        metadata field type is
         [CreateInstancePartitionMetadata][google.spanner.admin.instance.v1.CreateInstancePartitionMetadata].
-        The [response][google.longrunning.Operation.response] field type
-        is
+        The response field type is
         [InstancePartition][google.spanner.admin.instance.v1.InstancePartition],
         if successful.
 
@@ -1027,7 +1100,7 @@ class InstanceAdminGrpcAsyncIOTransport(InstanceAdminTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_instance_partition" not in self._stubs:
-            self._stubs["create_instance_partition"] = self.grpc_channel.unary_unary(
+            self._stubs["create_instance_partition"] = self._logged_channel.unary_unary(
                 "/google.spanner.admin.instance.v1.InstanceAdmin/CreateInstancePartition",
                 request_serializer=spanner_instance_admin.CreateInstancePartitionRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1062,7 +1135,7 @@ class InstanceAdminGrpcAsyncIOTransport(InstanceAdminTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_instance_partition" not in self._stubs:
-            self._stubs["delete_instance_partition"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_instance_partition"] = self._logged_channel.unary_unary(
                 "/google.spanner.admin.instance.v1.InstanceAdmin/DeleteInstancePartition",
                 request_serializer=spanner_instance_admin.DeleteInstancePartitionRequest.serialize,
                 response_deserializer=empty_pb2.Empty.FromString,
@@ -1079,10 +1152,10 @@ class InstanceAdminGrpcAsyncIOTransport(InstanceAdminTransport):
         r"""Return a callable for the update instance partition method over gRPC.
 
         Updates an instance partition, and begins allocating or
-        releasing resources as requested. The returned [long-running
-        operation][google.longrunning.Operation] can be used to track
-        the progress of updating the instance partition. If the named
-        instance partition does not exist, returns ``NOT_FOUND``.
+        releasing resources as requested. The returned long-running
+        operation can be used to track the progress of updating the
+        instance partition. If the named instance partition does not
+        exist, returns ``NOT_FOUND``.
 
         Immediately upon completion of this request:
 
@@ -1112,15 +1185,12 @@ class InstanceAdminGrpcAsyncIOTransport(InstanceAdminTransport):
         -  The instance partition's new resource levels are readable via
            the API.
 
-        The returned [long-running
-        operation][google.longrunning.Operation] will have a name of the
+        The returned long-running operation will have a name of the
         format ``<instance_partition_name>/operations/<operation_id>``
         and can be used to track the instance partition modification.
-        The [metadata][google.longrunning.Operation.metadata] field type
-        is
+        The metadata field type is
         [UpdateInstancePartitionMetadata][google.spanner.admin.instance.v1.UpdateInstancePartitionMetadata].
-        The [response][google.longrunning.Operation.response] field type
-        is
+        The response field type is
         [InstancePartition][google.spanner.admin.instance.v1.InstancePartition],
         if successful.
 
@@ -1139,7 +1209,7 @@ class InstanceAdminGrpcAsyncIOTransport(InstanceAdminTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_instance_partition" not in self._stubs:
-            self._stubs["update_instance_partition"] = self.grpc_channel.unary_unary(
+            self._stubs["update_instance_partition"] = self._logged_channel.unary_unary(
                 "/google.spanner.admin.instance.v1.InstanceAdmin/UpdateInstancePartition",
                 request_serializer=spanner_instance_admin.UpdateInstancePartitionRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1156,12 +1226,10 @@ class InstanceAdminGrpcAsyncIOTransport(InstanceAdminTransport):
         r"""Return a callable for the list instance partition
         operations method over gRPC.
 
-        Lists instance partition [long-running
-        operations][google.longrunning.Operation] in the given instance.
-        An instance partition operation has a name of the form
+        Lists instance partition long-running operations in the given
+        instance. An instance partition operation has a name of the form
         ``projects/<project>/instances/<instance>/instancePartitions/<instance_partition>/operations/<operation>``.
-        The long-running operation
-        [metadata][google.longrunning.Operation.metadata] field type
+        The long-running operation metadata field type
         ``metadata.type_url`` describes the type of the metadata.
         Operations returned include those that have
         completed/failed/canceled within the last 7 days, and pending
@@ -1187,7 +1255,7 @@ class InstanceAdminGrpcAsyncIOTransport(InstanceAdminTransport):
         if "list_instance_partition_operations" not in self._stubs:
             self._stubs[
                 "list_instance_partition_operations"
-            ] = self.grpc_channel.unary_unary(
+            ] = self._logged_channel.unary_unary(
                 "/google.spanner.admin.instance.v1.InstanceAdmin/ListInstancePartitionOperations",
                 request_serializer=spanner_instance_admin.ListInstancePartitionOperationsRequest.serialize,
                 response_deserializer=spanner_instance_admin.ListInstancePartitionOperationsResponse.deserialize,
@@ -1204,9 +1272,8 @@ class InstanceAdminGrpcAsyncIOTransport(InstanceAdminTransport):
         r"""Return a callable for the move instance method over gRPC.
 
         Moves an instance to the target instance configuration. You can
-        use the returned [long-running
-        operation][google.longrunning.Operation] to track the progress
-        of moving the instance.
+        use the returned long-running operation to track the progress of
+        moving the instance.
 
         ``MoveInstance`` returns ``FAILED_PRECONDITION`` if the instance
         meets any of the following criteria:
@@ -1239,14 +1306,12 @@ class InstanceAdminGrpcAsyncIOTransport(InstanceAdminTransport):
            a higher transaction abort rate. However, moving an instance
            doesn't cause any downtime.
 
-        The returned [long-running
-        operation][google.longrunning.Operation] has a name of the
-        format ``<instance_name>/operations/<operation_id>`` and can be
-        used to track the move instance operation. The
-        [metadata][google.longrunning.Operation.metadata] field type is
+        The returned long-running operation has a name of the format
+        ``<instance_name>/operations/<operation_id>`` and can be used to
+        track the move instance operation. The metadata field type is
         [MoveInstanceMetadata][google.spanner.admin.instance.v1.MoveInstanceMetadata].
-        The [response][google.longrunning.Operation.response] field type
-        is [Instance][google.spanner.admin.instance.v1.Instance], if
+        The response field type is
+        [Instance][google.spanner.admin.instance.v1.Instance], if
         successful. Cancelling the operation sets its metadata's
         [cancel_time][google.spanner.admin.instance.v1.MoveInstanceMetadata.cancel_time].
         Cancellation is not immediate because it involves moving any
@@ -1281,7 +1346,7 @@ class InstanceAdminGrpcAsyncIOTransport(InstanceAdminTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "move_instance" not in self._stubs:
-            self._stubs["move_instance"] = self.grpc_channel.unary_unary(
+            self._stubs["move_instance"] = self._logged_channel.unary_unary(
                 "/google.spanner.admin.instance.v1.InstanceAdmin/MoveInstance",
                 request_serializer=spanner_instance_admin.MoveInstanceRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1464,7 +1529,7 @@ class InstanceAdminGrpcAsyncIOTransport(InstanceAdminTransport):
         return gapic_v1.method_async.wrap_method(func, *args, **kwargs)
 
     def close(self):
-        return self.grpc_channel.close()
+        return self._logged_channel.close()
 
     @property
     def kind(self) -> str:

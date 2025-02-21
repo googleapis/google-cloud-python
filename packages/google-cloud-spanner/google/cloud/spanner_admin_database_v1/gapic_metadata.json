@@ -10,6 +10,11 @@
         "grpc": {
           "libraryClient": "DatabaseAdminClient",
           "rpcs": {
+            "AddSplitPoints": {
+              "methods": [
+                "add_split_points"
+              ]
+            },
             "CopyBackup": {
               "methods": [
                 "copy_backup"
@@ -140,6 +145,11 @@
         "grpc-async": {
           "libraryClient": "DatabaseAdminAsyncClient",
           "rpcs": {
+            "AddSplitPoints": {
+              "methods": [
+                "add_split_points"
+              ]
+            },
             "CopyBackup": {
               "methods": [
                 "copy_backup"
@@ -270,6 +280,11 @@
         "rest": {
           "libraryClient": "DatabaseAdminClient",
           "rpcs": {
+            "AddSplitPoints": {
+              "methods": [
+                "add_split_points"
+              ]
+            },
             "CopyBackup": {
               "methods": [
                 "copy_backup"

@@ -13,9 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import logging
+import json  # type: ignore
 
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
-import json  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import retry as retries
@@ -47,6 +48,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -235,8 +244,11 @@ class InstanceAdminRestInterceptor:
     def pre_create_instance(
         self,
         request: spanner_instance_admin.CreateInstanceRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[spanner_instance_admin.CreateInstanceRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        spanner_instance_admin.CreateInstanceRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for create_instance
 
         Override in a subclass to manipulate the request or metadata
@@ -249,18 +261,42 @@ class InstanceAdminRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_instance
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_instance_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the InstanceAdmin server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_instance` interceptor runs
+        before the `post_create_instance_with_metadata` interceptor.
         """
         return response
+
+    def post_create_instance_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_instance
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the InstanceAdmin server but before it is returned to user code.
+
+        We recommend only using this `post_create_instance_with_metadata`
+        interceptor in new development instead of the `post_create_instance` interceptor.
+        When both interceptors are used, this `post_create_instance_with_metadata` interceptor runs after the
+        `post_create_instance` interceptor. The (possibly modified) response returned by
+        `post_create_instance` will be passed to
+        `post_create_instance_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_instance_config(
         self,
         request: spanner_instance_admin.CreateInstanceConfigRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        spanner_instance_admin.CreateInstanceConfigRequest, Sequence[Tuple[str, str]]
+        spanner_instance_admin.CreateInstanceConfigRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for create_instance_config
 
@@ -274,18 +310,42 @@ class InstanceAdminRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_instance_config
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_instance_config_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the InstanceAdmin server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_instance_config` interceptor runs
+        before the `post_create_instance_config_with_metadata` interceptor.
         """
         return response
+
+    def post_create_instance_config_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_instance_config
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the InstanceAdmin server but before it is returned to user code.
+
+        We recommend only using this `post_create_instance_config_with_metadata`
+        interceptor in new development instead of the `post_create_instance_config` interceptor.
+        When both interceptors are used, this `post_create_instance_config_with_metadata` interceptor runs after the
+        `post_create_instance_config` interceptor. The (possibly modified) response returned by
+        `post_create_instance_config` will be passed to
+        `post_create_instance_config_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_instance_partition(
         self,
         request: spanner_instance_admin.CreateInstancePartitionRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        spanner_instance_admin.CreateInstancePartitionRequest, Sequence[Tuple[str, str]]
+        spanner_instance_admin.CreateInstancePartitionRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for create_instance_partition
 
@@ -299,17 +359,43 @@ class InstanceAdminRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_instance_partition
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_instance_partition_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the InstanceAdmin server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_instance_partition` interceptor runs
+        before the `post_create_instance_partition_with_metadata` interceptor.
         """
         return response
+
+    def post_create_instance_partition_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_instance_partition
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the InstanceAdmin server but before it is returned to user code.
+
+        We recommend only using this `post_create_instance_partition_with_metadata`
+        interceptor in new development instead of the `post_create_instance_partition` interceptor.
+        When both interceptors are used, this `post_create_instance_partition_with_metadata` interceptor runs after the
+        `post_create_instance_partition` interceptor. The (possibly modified) response returned by
+        `post_create_instance_partition` will be passed to
+        `post_create_instance_partition_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_instance(
         self,
         request: spanner_instance_admin.DeleteInstanceRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[spanner_instance_admin.DeleteInstanceRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        spanner_instance_admin.DeleteInstanceRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for delete_instance
 
         Override in a subclass to manipulate the request or metadata
@@ -320,9 +406,10 @@ class InstanceAdminRestInterceptor:
     def pre_delete_instance_config(
         self,
         request: spanner_instance_admin.DeleteInstanceConfigRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        spanner_instance_admin.DeleteInstanceConfigRequest, Sequence[Tuple[str, str]]
+        spanner_instance_admin.DeleteInstanceConfigRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for delete_instance_config
 
@@ -334,9 +421,10 @@ class InstanceAdminRestInterceptor:
     def pre_delete_instance_partition(
         self,
         request: spanner_instance_admin.DeleteInstancePartitionRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        spanner_instance_admin.DeleteInstancePartitionRequest, Sequence[Tuple[str, str]]
+        spanner_instance_admin.DeleteInstancePartitionRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for delete_instance_partition
 
@@ -348,8 +436,10 @@ class InstanceAdminRestInterceptor:
     def pre_get_iam_policy(
         self,
         request: iam_policy_pb2.GetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -360,17 +450,43 @@ class InstanceAdminRestInterceptor:
     def post_get_iam_policy(self, response: policy_pb2.Policy) -> policy_pb2.Policy:
         """Post-rpc interceptor for get_iam_policy
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_iam_policy_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the InstanceAdmin server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_iam_policy` interceptor runs
+        before the `post_get_iam_policy_with_metadata` interceptor.
         """
         return response
+
+    def post_get_iam_policy_with_metadata(
+        self,
+        response: policy_pb2.Policy,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[policy_pb2.Policy, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_iam_policy
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the InstanceAdmin server but before it is returned to user code.
+
+        We recommend only using this `post_get_iam_policy_with_metadata`
+        interceptor in new development instead of the `post_get_iam_policy` interceptor.
+        When both interceptors are used, this `post_get_iam_policy_with_metadata` interceptor runs after the
+        `post_get_iam_policy` interceptor. The (possibly modified) response returned by
+        `post_get_iam_policy` will be passed to
+        `post_get_iam_policy_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_instance(
         self,
         request: spanner_instance_admin.GetInstanceRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[spanner_instance_admin.GetInstanceRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        spanner_instance_admin.GetInstanceRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for get_instance
 
         Override in a subclass to manipulate the request or metadata
@@ -383,18 +499,44 @@ class InstanceAdminRestInterceptor:
     ) -> spanner_instance_admin.Instance:
         """Post-rpc interceptor for get_instance
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_instance_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the InstanceAdmin server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_instance` interceptor runs
+        before the `post_get_instance_with_metadata` interceptor.
         """
         return response
+
+    def post_get_instance_with_metadata(
+        self,
+        response: spanner_instance_admin.Instance,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        spanner_instance_admin.Instance, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for get_instance
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the InstanceAdmin server but before it is returned to user code.
+
+        We recommend only using this `post_get_instance_with_metadata`
+        interceptor in new development instead of the `post_get_instance` interceptor.
+        When both interceptors are used, this `post_get_instance_with_metadata` interceptor runs after the
+        `post_get_instance` interceptor. The (possibly modified) response returned by
+        `post_get_instance` will be passed to
+        `post_get_instance_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_instance_config(
         self,
         request: spanner_instance_admin.GetInstanceConfigRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        spanner_instance_admin.GetInstanceConfigRequest, Sequence[Tuple[str, str]]
+        spanner_instance_admin.GetInstanceConfigRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for get_instance_config
 
@@ -408,18 +550,44 @@ class InstanceAdminRestInterceptor:
     ) -> spanner_instance_admin.InstanceConfig:
         """Post-rpc interceptor for get_instance_config
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_instance_config_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the InstanceAdmin server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_instance_config` interceptor runs
+        before the `post_get_instance_config_with_metadata` interceptor.
         """
         return response
+
+    def post_get_instance_config_with_metadata(
+        self,
+        response: spanner_instance_admin.InstanceConfig,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        spanner_instance_admin.InstanceConfig, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for get_instance_config
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the InstanceAdmin server but before it is returned to user code.
+
+        We recommend only using this `post_get_instance_config_with_metadata`
+        interceptor in new development instead of the `post_get_instance_config` interceptor.
+        When both interceptors are used, this `post_get_instance_config_with_metadata` interceptor runs after the
+        `post_get_instance_config` interceptor. The (possibly modified) response returned by
+        `post_get_instance_config` will be passed to
+        `post_get_instance_config_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_instance_partition(
         self,
         request: spanner_instance_admin.GetInstancePartitionRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        spanner_instance_admin.GetInstancePartitionRequest, Sequence[Tuple[str, str]]
+        spanner_instance_admin.GetInstancePartitionRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for get_instance_partition
 
@@ -433,19 +601,45 @@ class InstanceAdminRestInterceptor:
     ) -> spanner_instance_admin.InstancePartition:
         """Post-rpc interceptor for get_instance_partition
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_instance_partition_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the InstanceAdmin server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_instance_partition` interceptor runs
+        before the `post_get_instance_partition_with_metadata` interceptor.
         """
         return response
+
+    def post_get_instance_partition_with_metadata(
+        self,
+        response: spanner_instance_admin.InstancePartition,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        spanner_instance_admin.InstancePartition,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for get_instance_partition
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the InstanceAdmin server but before it is returned to user code.
+
+        We recommend only using this `post_get_instance_partition_with_metadata`
+        interceptor in new development instead of the `post_get_instance_partition` interceptor.
+        When both interceptors are used, this `post_get_instance_partition_with_metadata` interceptor runs after the
+        `post_get_instance_partition` interceptor. The (possibly modified) response returned by
+        `post_get_instance_partition` will be passed to
+        `post_get_instance_partition_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_instance_config_operations(
         self,
         request: spanner_instance_admin.ListInstanceConfigOperationsRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
         spanner_instance_admin.ListInstanceConfigOperationsRequest,
-        Sequence[Tuple[str, str]],
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for list_instance_config_operations
 
@@ -459,18 +653,45 @@ class InstanceAdminRestInterceptor:
     ) -> spanner_instance_admin.ListInstanceConfigOperationsResponse:
         """Post-rpc interceptor for list_instance_config_operations
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_instance_config_operations_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the InstanceAdmin server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_instance_config_operations` interceptor runs
+        before the `post_list_instance_config_operations_with_metadata` interceptor.
         """
         return response
+
+    def post_list_instance_config_operations_with_metadata(
+        self,
+        response: spanner_instance_admin.ListInstanceConfigOperationsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        spanner_instance_admin.ListInstanceConfigOperationsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_instance_config_operations
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the InstanceAdmin server but before it is returned to user code.
+
+        We recommend only using this `post_list_instance_config_operations_with_metadata`
+        interceptor in new development instead of the `post_list_instance_config_operations` interceptor.
+        When both interceptors are used, this `post_list_instance_config_operations_with_metadata` interceptor runs after the
+        `post_list_instance_config_operations` interceptor. The (possibly modified) response returned by
+        `post_list_instance_config_operations` will be passed to
+        `post_list_instance_config_operations_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_instance_configs(
         self,
         request: spanner_instance_admin.ListInstanceConfigsRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        spanner_instance_admin.ListInstanceConfigsRequest, Sequence[Tuple[str, str]]
+        spanner_instance_admin.ListInstanceConfigsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for list_instance_configs
 
@@ -484,19 +705,45 @@ class InstanceAdminRestInterceptor:
     ) -> spanner_instance_admin.ListInstanceConfigsResponse:
         """Post-rpc interceptor for list_instance_configs
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_instance_configs_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the InstanceAdmin server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_instance_configs` interceptor runs
+        before the `post_list_instance_configs_with_metadata` interceptor.
         """
         return response
+
+    def post_list_instance_configs_with_metadata(
+        self,
+        response: spanner_instance_admin.ListInstanceConfigsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        spanner_instance_admin.ListInstanceConfigsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_instance_configs
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the InstanceAdmin server but before it is returned to user code.
+
+        We recommend only using this `post_list_instance_configs_with_metadata`
+        interceptor in new development instead of the `post_list_instance_configs` interceptor.
+        When both interceptors are used, this `post_list_instance_configs_with_metadata` interceptor runs after the
+        `post_list_instance_configs` interceptor. The (possibly modified) response returned by
+        `post_list_instance_configs` will be passed to
+        `post_list_instance_configs_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_instance_partition_operations(
         self,
         request: spanner_instance_admin.ListInstancePartitionOperationsRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
         spanner_instance_admin.ListInstancePartitionOperationsRequest,
-        Sequence[Tuple[str, str]],
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for list_instance_partition_operations
 
@@ -510,18 +757,45 @@ class InstanceAdminRestInterceptor:
     ) -> spanner_instance_admin.ListInstancePartitionOperationsResponse:
         """Post-rpc interceptor for list_instance_partition_operations
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_instance_partition_operations_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the InstanceAdmin server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_instance_partition_operations` interceptor runs
+        before the `post_list_instance_partition_operations_with_metadata` interceptor.
         """
         return response
+
+    def post_list_instance_partition_operations_with_metadata(
+        self,
+        response: spanner_instance_admin.ListInstancePartitionOperationsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        spanner_instance_admin.ListInstancePartitionOperationsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_instance_partition_operations
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the InstanceAdmin server but before it is returned to user code.
+
+        We recommend only using this `post_list_instance_partition_operations_with_metadata`
+        interceptor in new development instead of the `post_list_instance_partition_operations` interceptor.
+        When both interceptors are used, this `post_list_instance_partition_operations_with_metadata` interceptor runs after the
+        `post_list_instance_partition_operations` interceptor. The (possibly modified) response returned by
+        `post_list_instance_partition_operations` will be passed to
+        `post_list_instance_partition_operations_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_instance_partitions(
         self,
         request: spanner_instance_admin.ListInstancePartitionsRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        spanner_instance_admin.ListInstancePartitionsRequest, Sequence[Tuple[str, str]]
+        spanner_instance_admin.ListInstancePartitionsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for list_instance_partitions
 
@@ -535,17 +809,46 @@ class InstanceAdminRestInterceptor:
     ) -> spanner_instance_admin.ListInstancePartitionsResponse:
         """Post-rpc interceptor for list_instance_partitions
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_instance_partitions_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the InstanceAdmin server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_instance_partitions` interceptor runs
+        before the `post_list_instance_partitions_with_metadata` interceptor.
         """
         return response
+
+    def post_list_instance_partitions_with_metadata(
+        self,
+        response: spanner_instance_admin.ListInstancePartitionsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        spanner_instance_admin.ListInstancePartitionsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_instance_partitions
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the InstanceAdmin server but before it is returned to user code.
+
+        We recommend only using this `post_list_instance_partitions_with_metadata`
+        interceptor in new development instead of the `post_list_instance_partitions` interceptor.
+        When both interceptors are used, this `post_list_instance_partitions_with_metadata` interceptor runs after the
+        `post_list_instance_partitions` interceptor. The (possibly modified) response returned by
+        `post_list_instance_partitions` will be passed to
+        `post_list_instance_partitions_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_instances(
         self,
         request: spanner_instance_admin.ListInstancesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[spanner_instance_admin.ListInstancesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        spanner_instance_admin.ListInstancesRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for list_instances
 
         Override in a subclass to manipulate the request or metadata
@@ -558,17 +861,46 @@ class InstanceAdminRestInterceptor:
     ) -> spanner_instance_admin.ListInstancesResponse:
         """Post-rpc interceptor for list_instances
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_instances_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the InstanceAdmin server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_instances` interceptor runs
+        before the `post_list_instances_with_metadata` interceptor.
         """
         return response
+
+    def post_list_instances_with_metadata(
+        self,
+        response: spanner_instance_admin.ListInstancesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        spanner_instance_admin.ListInstancesResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_instances
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the InstanceAdmin server but before it is returned to user code.
+
+        We recommend only using this `post_list_instances_with_metadata`
+        interceptor in new development instead of the `post_list_instances` interceptor.
+        When both interceptors are used, this `post_list_instances_with_metadata` interceptor runs after the
+        `post_list_instances` interceptor. The (possibly modified) response returned by
+        `post_list_instances` will be passed to
+        `post_list_instances_with_metadata`.
+        """
+        return response, metadata
 
     def pre_move_instance(
         self,
         request: spanner_instance_admin.MoveInstanceRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[spanner_instance_admin.MoveInstanceRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        spanner_instance_admin.MoveInstanceRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for move_instance
 
         Override in a subclass to manipulate the request or metadata
@@ -581,17 +913,42 @@ class InstanceAdminRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for move_instance
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_move_instance_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the InstanceAdmin server but before
-        it is returned to user code.
+        it is returned to user code. This `post_move_instance` interceptor runs
+        before the `post_move_instance_with_metadata` interceptor.
         """
         return response
+
+    def post_move_instance_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for move_instance
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the InstanceAdmin server but before it is returned to user code.
+
+        We recommend only using this `post_move_instance_with_metadata`
+        interceptor in new development instead of the `post_move_instance` interceptor.
+        When both interceptors are used, this `post_move_instance_with_metadata` interceptor runs after the
+        `post_move_instance` interceptor. The (possibly modified) response returned by
+        `post_move_instance` will be passed to
+        `post_move_instance_with_metadata`.
+        """
+        return response, metadata
 
     def pre_set_iam_policy(
         self,
         request: iam_policy_pb2.SetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for set_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -602,17 +959,43 @@ class InstanceAdminRestInterceptor:
     def post_set_iam_policy(self, response: policy_pb2.Policy) -> policy_pb2.Policy:
         """Post-rpc interceptor for set_iam_policy
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_set_iam_policy_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the InstanceAdmin server but before
-        it is returned to user code.
+        it is returned to user code. This `post_set_iam_policy` interceptor runs
+        before the `post_set_iam_policy_with_metadata` interceptor.
         """
         return response
+
+    def post_set_iam_policy_with_metadata(
+        self,
+        response: policy_pb2.Policy,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[policy_pb2.Policy, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for set_iam_policy
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the InstanceAdmin server but before it is returned to user code.
+
+        We recommend only using this `post_set_iam_policy_with_metadata`
+        interceptor in new development instead of the `post_set_iam_policy` interceptor.
+        When both interceptors are used, this `post_set_iam_policy_with_metadata` interceptor runs after the
+        `post_set_iam_policy` interceptor. The (possibly modified) response returned by
+        `post_set_iam_policy` will be passed to
+        `post_set_iam_policy_with_metadata`.
+        """
+        return response, metadata
 
     def pre_test_iam_permissions(
         self,
         request: iam_policy_pb2.TestIamPermissionsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[iam_policy_pb2.TestIamPermissionsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        iam_policy_pb2.TestIamPermissionsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the request or metadata
@@ -625,17 +1008,46 @@ class InstanceAdminRestInterceptor:
     ) -> iam_policy_pb2.TestIamPermissionsResponse:
         """Post-rpc interceptor for test_iam_permissions
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_test_iam_permissions_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the InstanceAdmin server but before
-        it is returned to user code.
+        it is returned to user code. This `post_test_iam_permissions` interceptor runs
+        before the `post_test_iam_permissions_with_metadata` interceptor.
         """
         return response
+
+    def post_test_iam_permissions_with_metadata(
+        self,
+        response: iam_policy_pb2.TestIamPermissionsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        iam_policy_pb2.TestIamPermissionsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for test_iam_permissions
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the InstanceAdmin server but before it is returned to user code.
+
+        We recommend only using this `post_test_iam_permissions_with_metadata`
+        interceptor in new development instead of the `post_test_iam_permissions` interceptor.
+        When both interceptors are used, this `post_test_iam_permissions_with_metadata` interceptor runs after the
+        `post_test_iam_permissions` interceptor. The (possibly modified) response returned by
+        `post_test_iam_permissions` will be passed to
+        `post_test_iam_permissions_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_instance(
         self,
         request: spanner_instance_admin.UpdateInstanceRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[spanner_instance_admin.UpdateInstanceRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        spanner_instance_admin.UpdateInstanceRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for update_instance
 
         Override in a subclass to manipulate the request or metadata
@@ -648,18 +1060,42 @@ class InstanceAdminRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_instance
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_instance_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the InstanceAdmin server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_instance` interceptor runs
+        before the `post_update_instance_with_metadata` interceptor.
         """
         return response
+
+    def post_update_instance_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_instance
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the InstanceAdmin server but before it is returned to user code.
+
+        We recommend only using this `post_update_instance_with_metadata`
+        interceptor in new development instead of the `post_update_instance` interceptor.
+        When both interceptors are used, this `post_update_instance_with_metadata` interceptor runs after the
+        `post_update_instance` interceptor. The (possibly modified) response returned by
+        `post_update_instance` will be passed to
+        `post_update_instance_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_instance_config(
         self,
         request: spanner_instance_admin.UpdateInstanceConfigRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        spanner_instance_admin.UpdateInstanceConfigRequest, Sequence[Tuple[str, str]]
+        spanner_instance_admin.UpdateInstanceConfigRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for update_instance_config
 
@@ -673,18 +1109,42 @@ class InstanceAdminRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_instance_config
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_instance_config_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the InstanceAdmin server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_instance_config` interceptor runs
+        before the `post_update_instance_config_with_metadata` interceptor.
         """
         return response
+
+    def post_update_instance_config_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_instance_config
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the InstanceAdmin server but before it is returned to user code.
+
+        We recommend only using this `post_update_instance_config_with_metadata`
+        interceptor in new development instead of the `post_update_instance_config` interceptor.
+        When both interceptors are used, this `post_update_instance_config_with_metadata` interceptor runs after the
+        `post_update_instance_config` interceptor. The (possibly modified) response returned by
+        `post_update_instance_config` will be passed to
+        `post_update_instance_config_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_instance_partition(
         self,
         request: spanner_instance_admin.UpdateInstancePartitionRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        spanner_instance_admin.UpdateInstancePartitionRequest, Sequence[Tuple[str, str]]
+        spanner_instance_admin.UpdateInstancePartitionRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for update_instance_partition
 
@@ -698,11 +1158,34 @@ class InstanceAdminRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_instance_partition
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_instance_partition_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the InstanceAdmin server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_instance_partition` interceptor runs
+        before the `post_update_instance_partition_with_metadata` interceptor.
         """
         return response
+
+    def post_update_instance_partition_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_instance_partition
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the InstanceAdmin server but before it is returned to user code.
+
+        We recommend only using this `post_update_instance_partition_with_metadata`
+        interceptor in new development instead of the `post_update_instance_partition` interceptor.
+        When both interceptors are used, this `post_update_instance_partition_with_metadata` interceptor runs after the
+        `post_update_instance_partition` interceptor. The (possibly modified) response returned by
+        `post_update_instance_partition` will be passed to
+        `post_update_instance_partition_with_metadata`.
+        """
+        return response, metadata
 
 
 @dataclasses.dataclass
@@ -917,7 +1400,7 @@ class InstanceAdminRestTransport(_BaseInstanceAdminRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create instance method over HTTP.
 
@@ -928,8 +1411,10 @@ class InstanceAdminRestTransport(_BaseInstanceAdminRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -942,6 +1427,7 @@ class InstanceAdminRestTransport(_BaseInstanceAdminRestTransport):
             http_options = (
                 _BaseInstanceAdminRestTransport._BaseCreateInstance._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_instance(request, metadata)
             transcoded_request = _BaseInstanceAdminRestTransport._BaseCreateInstance._get_transcoded_request(
                 http_options, request
@@ -955,6 +1441,33 @@ class InstanceAdminRestTransport(_BaseInstanceAdminRestTransport):
             query_params = _BaseInstanceAdminRestTransport._BaseCreateInstance._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.spanner.admin.instance_v1.InstanceAdminClient.CreateInstance",
+                    extra={
+                        "serviceName": "google.spanner.admin.instance.v1.InstanceAdmin",
+                        "rpcName": "CreateInstance",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = InstanceAdminRestTransport._CreateInstance._get_response(
@@ -975,7 +1488,33 @@ class InstanceAdminRestTransport(_BaseInstanceAdminRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_instance(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_instance_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.spanner.admin.instance_v1.InstanceAdminClient.create_instance",
+                    extra={
+                        "serviceName": "google.spanner.admin.instance.v1.InstanceAdmin",
+                        "rpcName": "CreateInstance",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateInstanceConfig(
@@ -1013,19 +1552,21 @@ class InstanceAdminRestTransport(_BaseInstanceAdminRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create instance config method over HTTP.
 
             Args:
                 request (~.spanner_instance_admin.CreateInstanceConfigRequest):
                     The request object. The request for
-                [CreateInstanceConfigRequest][InstanceAdmin.CreateInstanceConfigRequest].
+                [CreateInstanceConfig][google.spanner.admin.instance.v1.InstanceAdmin.CreateInstanceConfig].
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1038,6 +1579,7 @@ class InstanceAdminRestTransport(_BaseInstanceAdminRestTransport):
             http_options = (
                 _BaseInstanceAdminRestTransport._BaseCreateInstanceConfig._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_instance_config(
                 request, metadata
             )
@@ -1053,6 +1595,33 @@ class InstanceAdminRestTransport(_BaseInstanceAdminRestTransport):
             query_params = _BaseInstanceAdminRestTransport._BaseCreateInstanceConfig._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.spanner.admin.instance_v1.InstanceAdminClient.CreateInstanceConfig",
+                    extra={
+                        "serviceName": "google.spanner.admin.instance.v1.InstanceAdmin",
+                        "rpcName": "CreateInstanceConfig",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = InstanceAdminRestTransport._CreateInstanceConfig._get_response(
@@ -1073,7 +1642,33 @@ class InstanceAdminRestTransport(_BaseInstanceAdminRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_instance_config(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_instance_config_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.spanner.admin.instance_v1.InstanceAdminClient.create_instance_config",
+                    extra={
+                        "serviceName": "google.spanner.admin.instance.v1.InstanceAdmin",
+                        "rpcName": "CreateInstanceConfig",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateInstancePartition(
@@ -1112,7 +1707,7 @@ class InstanceAdminRestTransport(_BaseInstanceAdminRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create instance partition method over HTTP.
 
@@ -1123,8 +1718,10 @@ class InstanceAdminRestTransport(_BaseInstanceAdminRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1137,6 +1734,7 @@ class InstanceAdminRestTransport(_BaseInstanceAdminRestTransport):
             http_options = (
                 _BaseInstanceAdminRestTransport._BaseCreateInstancePartition._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_instance_partition(
                 request, metadata
             )
@@ -1152,6 +1750,33 @@ class InstanceAdminRestTransport(_BaseInstanceAdminRestTransport):
             query_params = _BaseInstanceAdminRestTransport._BaseCreateInstancePartition._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.spanner.admin.instance_v1.InstanceAdminClient.CreateInstancePartition",
+                    extra={
+                        "serviceName": "google.spanner.admin.instance.v1.InstanceAdmin",
+                        "rpcName": "CreateInstancePartition",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -1174,7 +1799,33 @@ class InstanceAdminRestTransport(_BaseInstanceAdminRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_instance_partition(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_instance_partition_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.spanner.admin.instance_v1.InstanceAdminClient.create_instance_partition",
+                    extra={
+                        "serviceName": "google.spanner.admin.instance.v1.InstanceAdmin",
+                        "rpcName": "CreateInstancePartition",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteInstance(
@@ -1211,7 +1862,7 @@ class InstanceAdminRestTransport(_BaseInstanceAdminRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete instance method over HTTP.
 
@@ -1222,13 +1873,16 @@ class InstanceAdminRestTransport(_BaseInstanceAdminRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseInstanceAdminRestTransport._BaseDeleteInstance._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_instance(request, metadata)
             transcoded_request = _BaseInstanceAdminRestTransport._BaseDeleteInstance._get_transcoded_request(
                 http_options, request
@@ -1238,6 +1892,33 @@ class InstanceAdminRestTransport(_BaseInstanceAdminRestTransport):
             query_params = _BaseInstanceAdminRestTransport._BaseDeleteInstance._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.spanner.admin.instance_v1.InstanceAdminClient.DeleteInstance",
+                    extra={
+                        "serviceName": "google.spanner.admin.instance.v1.InstanceAdmin",
+                        "rpcName": "DeleteInstance",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = InstanceAdminRestTransport._DeleteInstance._get_response(
@@ -1288,24 +1969,27 @@ class InstanceAdminRestTransport(_BaseInstanceAdminRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete instance config method over HTTP.
 
             Args:
                 request (~.spanner_instance_admin.DeleteInstanceConfigRequest):
                     The request object. The request for
-                [DeleteInstanceConfigRequest][InstanceAdmin.DeleteInstanceConfigRequest].
+                [DeleteInstanceConfig][google.spanner.admin.instance.v1.InstanceAdmin.DeleteInstanceConfig].
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseInstanceAdminRestTransport._BaseDeleteInstanceConfig._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_instance_config(
                 request, metadata
             )
@@ -1317,6 +2001,33 @@ class InstanceAdminRestTransport(_BaseInstanceAdminRestTransport):
             query_params = _BaseInstanceAdminRestTransport._BaseDeleteInstanceConfig._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.spanner.admin.instance_v1.InstanceAdminClient.DeleteInstanceConfig",
+                    extra={
+                        "serviceName": "google.spanner.admin.instance.v1.InstanceAdmin",
+                        "rpcName": "DeleteInstanceConfig",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = InstanceAdminRestTransport._DeleteInstanceConfig._get_response(
@@ -1368,7 +2079,7 @@ class InstanceAdminRestTransport(_BaseInstanceAdminRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete instance partition method over HTTP.
 
@@ -1379,13 +2090,16 @@ class InstanceAdminRestTransport(_BaseInstanceAdminRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseInstanceAdminRestTransport._BaseDeleteInstancePartition._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_instance_partition(
                 request, metadata
             )
@@ -1397,6 +2111,33 @@ class InstanceAdminRestTransport(_BaseInstanceAdminRestTransport):
             query_params = _BaseInstanceAdminRestTransport._BaseDeleteInstancePartition._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.spanner.admin.instance_v1.InstanceAdminClient.DeleteInstancePartition",
+                    extra={
+                        "serviceName": "google.spanner.admin.instance.v1.InstanceAdmin",
+                        "rpcName": "DeleteInstancePartition",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -1450,7 +2191,7 @@ class InstanceAdminRestTransport(_BaseInstanceAdminRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> policy_pb2.Policy:
             r"""Call the get iam policy method over HTTP.
 
@@ -1460,8 +2201,10 @@ class InstanceAdminRestTransport(_BaseInstanceAdminRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.policy_pb2.Policy:
@@ -1546,6 +2289,7 @@ class InstanceAdminRestTransport(_BaseInstanceAdminRestTransport):
             http_options = (
                 _BaseInstanceAdminRestTransport._BaseGetIamPolicy._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
             transcoded_request = _BaseInstanceAdminRestTransport._BaseGetIamPolicy._get_transcoded_request(
                 http_options, request
@@ -1559,6 +2303,33 @@ class InstanceAdminRestTransport(_BaseInstanceAdminRestTransport):
             query_params = _BaseInstanceAdminRestTransport._BaseGetIamPolicy._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.spanner.admin.instance_v1.InstanceAdminClient.GetIamPolicy",
+                    extra={
+                        "serviceName": "google.spanner.admin.instance.v1.InstanceAdmin",
+                        "rpcName": "GetIamPolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = InstanceAdminRestTransport._GetIamPolicy._get_response(
@@ -1581,7 +2352,33 @@ class InstanceAdminRestTransport(_BaseInstanceAdminRestTransport):
             pb_resp = resp
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_iam_policy(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_iam_policy_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.spanner.admin.instance_v1.InstanceAdminClient.get_iam_policy",
+                    extra={
+                        "serviceName": "google.spanner.admin.instance.v1.InstanceAdmin",
+                        "rpcName": "GetIamPolicy",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetInstance(
@@ -1618,7 +2415,7 @@ class InstanceAdminRestTransport(_BaseInstanceAdminRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> spanner_instance_admin.Instance:
             r"""Call the get instance method over HTTP.
 
@@ -1629,8 +2426,10 @@ class InstanceAdminRestTransport(_BaseInstanceAdminRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.spanner_instance_admin.Instance:
@@ -1643,6 +2442,7 @@ class InstanceAdminRestTransport(_BaseInstanceAdminRestTransport):
             http_options = (
                 _BaseInstanceAdminRestTransport._BaseGetInstance._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_instance(request, metadata)
             transcoded_request = _BaseInstanceAdminRestTransport._BaseGetInstance._get_transcoded_request(
                 http_options, request
@@ -1654,6 +2454,33 @@ class InstanceAdminRestTransport(_BaseInstanceAdminRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.spanner.admin.instance_v1.InstanceAdminClient.GetInstance",
+                    extra={
+                        "serviceName": "google.spanner.admin.instance.v1.InstanceAdmin",
+                        "rpcName": "GetInstance",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = InstanceAdminRestTransport._GetInstance._get_response(
@@ -1675,7 +2502,33 @@ class InstanceAdminRestTransport(_BaseInstanceAdminRestTransport):
             pb_resp = spanner_instance_admin.Instance.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_instance(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_instance_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = spanner_instance_admin.Instance.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.spanner.admin.instance_v1.InstanceAdminClient.get_instance",
+                    extra={
+                        "serviceName": "google.spanner.admin.instance.v1.InstanceAdmin",
+                        "rpcName": "GetInstance",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetInstanceConfig(
@@ -1712,7 +2565,7 @@ class InstanceAdminRestTransport(_BaseInstanceAdminRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> spanner_instance_admin.InstanceConfig:
             r"""Call the get instance config method over HTTP.
 
@@ -1723,8 +2576,10 @@ class InstanceAdminRestTransport(_BaseInstanceAdminRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.spanner_instance_admin.InstanceConfig:
@@ -1738,6 +2593,7 @@ class InstanceAdminRestTransport(_BaseInstanceAdminRestTransport):
             http_options = (
                 _BaseInstanceAdminRestTransport._BaseGetInstanceConfig._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_instance_config(
                 request, metadata
             )
@@ -1749,6 +2605,33 @@ class InstanceAdminRestTransport(_BaseInstanceAdminRestTransport):
             query_params = _BaseInstanceAdminRestTransport._BaseGetInstanceConfig._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.spanner.admin.instance_v1.InstanceAdminClient.GetInstanceConfig",
+                    extra={
+                        "serviceName": "google.spanner.admin.instance.v1.InstanceAdmin",
+                        "rpcName": "GetInstanceConfig",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = InstanceAdminRestTransport._GetInstanceConfig._get_response(
@@ -1770,7 +2653,35 @@ class InstanceAdminRestTransport(_BaseInstanceAdminRestTransport):
             pb_resp = spanner_instance_admin.InstanceConfig.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_instance_config(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_instance_config_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = spanner_instance_admin.InstanceConfig.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.spanner.admin.instance_v1.InstanceAdminClient.get_instance_config",
+                    extra={
+                        "serviceName": "google.spanner.admin.instance.v1.InstanceAdmin",
+                        "rpcName": "GetInstanceConfig",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetInstancePartition(
@@ -1807,7 +2718,7 @@ class InstanceAdminRestTransport(_BaseInstanceAdminRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> spanner_instance_admin.InstancePartition:
             r"""Call the get instance partition method over HTTP.
 
@@ -1818,8 +2729,10 @@ class InstanceAdminRestTransport(_BaseInstanceAdminRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.spanner_instance_admin.InstancePartition:
@@ -1832,6 +2745,7 @@ class InstanceAdminRestTransport(_BaseInstanceAdminRestTransport):
             http_options = (
                 _BaseInstanceAdminRestTransport._BaseGetInstancePartition._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_instance_partition(
                 request, metadata
             )
@@ -1843,6 +2757,33 @@ class InstanceAdminRestTransport(_BaseInstanceAdminRestTransport):
             query_params = _BaseInstanceAdminRestTransport._BaseGetInstancePartition._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.spanner.admin.instance_v1.InstanceAdminClient.GetInstancePartition",
+                    extra={
+                        "serviceName": "google.spanner.admin.instance.v1.InstanceAdmin",
+                        "rpcName": "GetInstancePartition",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = InstanceAdminRestTransport._GetInstancePartition._get_response(
@@ -1864,7 +2805,35 @@ class InstanceAdminRestTransport(_BaseInstanceAdminRestTransport):
             pb_resp = spanner_instance_admin.InstancePartition.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_instance_partition(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_instance_partition_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = spanner_instance_admin.InstancePartition.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.spanner.admin.instance_v1.InstanceAdminClient.get_instance_partition",
+                    extra={
+                        "serviceName": "google.spanner.admin.instance.v1.InstanceAdmin",
+                        "rpcName": "GetInstancePartition",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListInstanceConfigOperations(
@@ -1902,7 +2871,7 @@ class InstanceAdminRestTransport(_BaseInstanceAdminRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> spanner_instance_admin.ListInstanceConfigOperationsResponse:
             r"""Call the list instance config
             operations method over HTTP.
@@ -1914,8 +2883,10 @@ class InstanceAdminRestTransport(_BaseInstanceAdminRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.spanner_instance_admin.ListInstanceConfigOperationsResponse:
@@ -1927,6 +2898,7 @@ class InstanceAdminRestTransport(_BaseInstanceAdminRestTransport):
             http_options = (
                 _BaseInstanceAdminRestTransport._BaseListInstanceConfigOperations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_instance_config_operations(
                 request, metadata
             )
@@ -1938,6 +2910,33 @@ class InstanceAdminRestTransport(_BaseInstanceAdminRestTransport):
             query_params = _BaseInstanceAdminRestTransport._BaseListInstanceConfigOperations._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.spanner.admin.instance_v1.InstanceAdminClient.ListInstanceConfigOperations",
+                    extra={
+                        "serviceName": "google.spanner.admin.instance.v1.InstanceAdmin",
+                        "rpcName": "ListInstanceConfigOperations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -1963,7 +2962,38 @@ class InstanceAdminRestTransport(_BaseInstanceAdminRestTransport):
             )
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_instance_config_operations(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_list_instance_config_operations_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = spanner_instance_admin.ListInstanceConfigOperationsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.spanner.admin.instance_v1.InstanceAdminClient.list_instance_config_operations",
+                    extra={
+                        "serviceName": "google.spanner.admin.instance.v1.InstanceAdmin",
+                        "rpcName": "ListInstanceConfigOperations",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListInstanceConfigs(
@@ -2000,7 +3030,7 @@ class InstanceAdminRestTransport(_BaseInstanceAdminRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> spanner_instance_admin.ListInstanceConfigsResponse:
             r"""Call the list instance configs method over HTTP.
 
@@ -2011,8 +3041,10 @@ class InstanceAdminRestTransport(_BaseInstanceAdminRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.spanner_instance_admin.ListInstanceConfigsResponse:
@@ -2024,6 +3056,7 @@ class InstanceAdminRestTransport(_BaseInstanceAdminRestTransport):
             http_options = (
                 _BaseInstanceAdminRestTransport._BaseListInstanceConfigs._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_instance_configs(
                 request, metadata
             )
@@ -2035,6 +3068,33 @@ class InstanceAdminRestTransport(_BaseInstanceAdminRestTransport):
             query_params = _BaseInstanceAdminRestTransport._BaseListInstanceConfigs._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.spanner.admin.instance_v1.InstanceAdminClient.ListInstanceConfigs",
+                    extra={
+                        "serviceName": "google.spanner.admin.instance.v1.InstanceAdmin",
+                        "rpcName": "ListInstanceConfigs",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = InstanceAdminRestTransport._ListInstanceConfigs._get_response(
@@ -2056,7 +3116,37 @@ class InstanceAdminRestTransport(_BaseInstanceAdminRestTransport):
             pb_resp = spanner_instance_admin.ListInstanceConfigsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_instance_configs(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_instance_configs_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        spanner_instance_admin.ListInstanceConfigsResponse.to_json(
+                            response
+                        )
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.spanner.admin.instance_v1.InstanceAdminClient.list_instance_configs",
+                    extra={
+                        "serviceName": "google.spanner.admin.instance.v1.InstanceAdmin",
+                        "rpcName": "ListInstanceConfigs",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListInstancePartitionOperations(
@@ -2094,7 +3184,7 @@ class InstanceAdminRestTransport(_BaseInstanceAdminRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> spanner_instance_admin.ListInstancePartitionOperationsResponse:
             r"""Call the list instance partition
             operations method over HTTP.
@@ -2106,8 +3196,10 @@ class InstanceAdminRestTransport(_BaseInstanceAdminRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.spanner_instance_admin.ListInstancePartitionOperationsResponse:
@@ -2119,6 +3211,7 @@ class InstanceAdminRestTransport(_BaseInstanceAdminRestTransport):
             http_options = (
                 _BaseInstanceAdminRestTransport._BaseListInstancePartitionOperations._get_http_options()
             )
+
             (
                 request,
                 metadata,
@@ -2133,6 +3226,33 @@ class InstanceAdminRestTransport(_BaseInstanceAdminRestTransport):
             query_params = _BaseInstanceAdminRestTransport._BaseListInstancePartitionOperations._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.spanner.admin.instance_v1.InstanceAdminClient.ListInstancePartitionOperations",
+                    extra={
+                        "serviceName": "google.spanner.admin.instance.v1.InstanceAdmin",
+                        "rpcName": "ListInstancePartitionOperations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = InstanceAdminRestTransport._ListInstancePartitionOperations._get_response(
@@ -2156,7 +3276,38 @@ class InstanceAdminRestTransport(_BaseInstanceAdminRestTransport):
             )
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_instance_partition_operations(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_list_instance_partition_operations_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = spanner_instance_admin.ListInstancePartitionOperationsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.spanner.admin.instance_v1.InstanceAdminClient.list_instance_partition_operations",
+                    extra={
+                        "serviceName": "google.spanner.admin.instance.v1.InstanceAdmin",
+                        "rpcName": "ListInstancePartitionOperations",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListInstancePartitions(
@@ -2194,7 +3345,7 @@ class InstanceAdminRestTransport(_BaseInstanceAdminRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> spanner_instance_admin.ListInstancePartitionsResponse:
             r"""Call the list instance partitions method over HTTP.
 
@@ -2205,8 +3356,10 @@ class InstanceAdminRestTransport(_BaseInstanceAdminRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.spanner_instance_admin.ListInstancePartitionsResponse:
@@ -2218,6 +3371,7 @@ class InstanceAdminRestTransport(_BaseInstanceAdminRestTransport):
             http_options = (
                 _BaseInstanceAdminRestTransport._BaseListInstancePartitions._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_instance_partitions(
                 request, metadata
             )
@@ -2229,6 +3383,33 @@ class InstanceAdminRestTransport(_BaseInstanceAdminRestTransport):
             query_params = _BaseInstanceAdminRestTransport._BaseListInstancePartitions._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.spanner.admin.instance_v1.InstanceAdminClient.ListInstancePartitions",
+                    extra={
+                        "serviceName": "google.spanner.admin.instance.v1.InstanceAdmin",
+                        "rpcName": "ListInstancePartitions",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = InstanceAdminRestTransport._ListInstancePartitions._get_response(
@@ -2250,7 +3431,37 @@ class InstanceAdminRestTransport(_BaseInstanceAdminRestTransport):
             pb_resp = spanner_instance_admin.ListInstancePartitionsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_instance_partitions(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_instance_partitions_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        spanner_instance_admin.ListInstancePartitionsResponse.to_json(
+                            response
+                        )
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.spanner.admin.instance_v1.InstanceAdminClient.list_instance_partitions",
+                    extra={
+                        "serviceName": "google.spanner.admin.instance.v1.InstanceAdmin",
+                        "rpcName": "ListInstancePartitions",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListInstances(
@@ -2287,7 +3498,7 @@ class InstanceAdminRestTransport(_BaseInstanceAdminRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> spanner_instance_admin.ListInstancesResponse:
             r"""Call the list instances method over HTTP.
 
@@ -2298,8 +3509,10 @@ class InstanceAdminRestTransport(_BaseInstanceAdminRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.spanner_instance_admin.ListInstancesResponse:
@@ -2311,6 +3524,7 @@ class InstanceAdminRestTransport(_BaseInstanceAdminRestTransport):
             http_options = (
                 _BaseInstanceAdminRestTransport._BaseListInstances._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_instances(request, metadata)
             transcoded_request = _BaseInstanceAdminRestTransport._BaseListInstances._get_transcoded_request(
                 http_options, request
@@ -2320,6 +3534,33 @@ class InstanceAdminRestTransport(_BaseInstanceAdminRestTransport):
             query_params = _BaseInstanceAdminRestTransport._BaseListInstances._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.spanner.admin.instance_v1.InstanceAdminClient.ListInstances",
+                    extra={
+                        "serviceName": "google.spanner.admin.instance.v1.InstanceAdmin",
+                        "rpcName": "ListInstances",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = InstanceAdminRestTransport._ListInstances._get_response(
@@ -2341,7 +3582,35 @@ class InstanceAdminRestTransport(_BaseInstanceAdminRestTransport):
             pb_resp = spanner_instance_admin.ListInstancesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_instances(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_instances_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        spanner_instance_admin.ListInstancesResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.spanner.admin.instance_v1.InstanceAdminClient.list_instances",
+                    extra={
+                        "serviceName": "google.spanner.admin.instance.v1.InstanceAdmin",
+                        "rpcName": "ListInstances",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _MoveInstance(
@@ -2379,7 +3648,7 @@ class InstanceAdminRestTransport(_BaseInstanceAdminRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the move instance method over HTTP.
 
@@ -2390,8 +3659,10 @@ class InstanceAdminRestTransport(_BaseInstanceAdminRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -2404,6 +3675,7 @@ class InstanceAdminRestTransport(_BaseInstanceAdminRestTransport):
             http_options = (
                 _BaseInstanceAdminRestTransport._BaseMoveInstance._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_move_instance(request, metadata)
             transcoded_request = _BaseInstanceAdminRestTransport._BaseMoveInstance._get_transcoded_request(
                 http_options, request
@@ -2417,6 +3689,33 @@ class InstanceAdminRestTransport(_BaseInstanceAdminRestTransport):
             query_params = _BaseInstanceAdminRestTransport._BaseMoveInstance._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.spanner.admin.instance_v1.InstanceAdminClient.MoveInstance",
+                    extra={
+                        "serviceName": "google.spanner.admin.instance.v1.InstanceAdmin",
+                        "rpcName": "MoveInstance",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = InstanceAdminRestTransport._MoveInstance._get_response(
@@ -2437,7 +3736,33 @@ class InstanceAdminRestTransport(_BaseInstanceAdminRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_move_instance(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_move_instance_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.spanner.admin.instance_v1.InstanceAdminClient.move_instance",
+                    extra={
+                        "serviceName": "google.spanner.admin.instance.v1.InstanceAdmin",
+                        "rpcName": "MoveInstance",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _SetIamPolicy(
@@ -2475,7 +3800,7 @@ class InstanceAdminRestTransport(_BaseInstanceAdminRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> policy_pb2.Policy:
             r"""Call the set iam policy method over HTTP.
 
@@ -2485,8 +3810,10 @@ class InstanceAdminRestTransport(_BaseInstanceAdminRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.policy_pb2.Policy:
@@ -2571,6 +3898,7 @@ class InstanceAdminRestTransport(_BaseInstanceAdminRestTransport):
             http_options = (
                 _BaseInstanceAdminRestTransport._BaseSetIamPolicy._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
             transcoded_request = _BaseInstanceAdminRestTransport._BaseSetIamPolicy._get_transcoded_request(
                 http_options, request
@@ -2584,6 +3912,33 @@ class InstanceAdminRestTransport(_BaseInstanceAdminRestTransport):
             query_params = _BaseInstanceAdminRestTransport._BaseSetIamPolicy._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.spanner.admin.instance_v1.InstanceAdminClient.SetIamPolicy",
+                    extra={
+                        "serviceName": "google.spanner.admin.instance.v1.InstanceAdmin",
+                        "rpcName": "SetIamPolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = InstanceAdminRestTransport._SetIamPolicy._get_response(
@@ -2606,7 +3961,33 @@ class InstanceAdminRestTransport(_BaseInstanceAdminRestTransport):
             pb_resp = resp
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_set_iam_policy(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_set_iam_policy_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.spanner.admin.instance_v1.InstanceAdminClient.set_iam_policy",
+                    extra={
+                        "serviceName": "google.spanner.admin.instance.v1.InstanceAdmin",
+                        "rpcName": "SetIamPolicy",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _TestIamPermissions(
@@ -2644,7 +4025,7 @@ class InstanceAdminRestTransport(_BaseInstanceAdminRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> iam_policy_pb2.TestIamPermissionsResponse:
             r"""Call the test iam permissions method over HTTP.
 
@@ -2654,8 +4035,10 @@ class InstanceAdminRestTransport(_BaseInstanceAdminRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.iam_policy_pb2.TestIamPermissionsResponse:
@@ -2665,6 +4048,7 @@ class InstanceAdminRestTransport(_BaseInstanceAdminRestTransport):
             http_options = (
                 _BaseInstanceAdminRestTransport._BaseTestIamPermissions._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_test_iam_permissions(
                 request, metadata
             )
@@ -2680,6 +4064,33 @@ class InstanceAdminRestTransport(_BaseInstanceAdminRestTransport):
             query_params = _BaseInstanceAdminRestTransport._BaseTestIamPermissions._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.spanner.admin.instance_v1.InstanceAdminClient.TestIamPermissions",
+                    extra={
+                        "serviceName": "google.spanner.admin.instance.v1.InstanceAdmin",
+                        "rpcName": "TestIamPermissions",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = InstanceAdminRestTransport._TestIamPermissions._get_response(
@@ -2702,7 +4113,33 @@ class InstanceAdminRestTransport(_BaseInstanceAdminRestTransport):
             pb_resp = resp
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_test_iam_permissions(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_test_iam_permissions_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.spanner.admin.instance_v1.InstanceAdminClient.test_iam_permissions",
+                    extra={
+                        "serviceName": "google.spanner.admin.instance.v1.InstanceAdmin",
+                        "rpcName": "TestIamPermissions",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateInstance(
@@ -2740,7 +4177,7 @@ class InstanceAdminRestTransport(_BaseInstanceAdminRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the update instance method over HTTP.
 
@@ -2751,8 +4188,10 @@ class InstanceAdminRestTransport(_BaseInstanceAdminRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -2765,6 +4204,7 @@ class InstanceAdminRestTransport(_BaseInstanceAdminRestTransport):
             http_options = (
                 _BaseInstanceAdminRestTransport._BaseUpdateInstance._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_instance(request, metadata)
             transcoded_request = _BaseInstanceAdminRestTransport._BaseUpdateInstance._get_transcoded_request(
                 http_options, request
@@ -2778,6 +4218,33 @@ class InstanceAdminRestTransport(_BaseInstanceAdminRestTransport):
             query_params = _BaseInstanceAdminRestTransport._BaseUpdateInstance._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.spanner.admin.instance_v1.InstanceAdminClient.UpdateInstance",
+                    extra={
+                        "serviceName": "google.spanner.admin.instance.v1.InstanceAdmin",
+                        "rpcName": "UpdateInstance",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = InstanceAdminRestTransport._UpdateInstance._get_response(
@@ -2798,7 +4265,33 @@ class InstanceAdminRestTransport(_BaseInstanceAdminRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_instance(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_instance_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.spanner.admin.instance_v1.InstanceAdminClient.update_instance",
+                    extra={
+                        "serviceName": "google.spanner.admin.instance.v1.InstanceAdmin",
+                        "rpcName": "UpdateInstance",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateInstanceConfig(
@@ -2836,19 +4329,21 @@ class InstanceAdminRestTransport(_BaseInstanceAdminRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the update instance config method over HTTP.
 
             Args:
                 request (~.spanner_instance_admin.UpdateInstanceConfigRequest):
                     The request object. The request for
-                [UpdateInstanceConfigRequest][InstanceAdmin.UpdateInstanceConfigRequest].
+                [UpdateInstanceConfig][google.spanner.admin.instance.v1.InstanceAdmin.UpdateInstanceConfig].
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -2861,6 +4356,7 @@ class InstanceAdminRestTransport(_BaseInstanceAdminRestTransport):
             http_options = (
                 _BaseInstanceAdminRestTransport._BaseUpdateInstanceConfig._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_instance_config(
                 request, metadata
             )
@@ -2876,6 +4372,33 @@ class InstanceAdminRestTransport(_BaseInstanceAdminRestTransport):
             query_params = _BaseInstanceAdminRestTransport._BaseUpdateInstanceConfig._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.spanner.admin.instance_v1.InstanceAdminClient.UpdateInstanceConfig",
+                    extra={
+                        "serviceName": "google.spanner.admin.instance.v1.InstanceAdmin",
+                        "rpcName": "UpdateInstanceConfig",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = InstanceAdminRestTransport._UpdateInstanceConfig._get_response(
@@ -2896,7 +4419,33 @@ class InstanceAdminRestTransport(_BaseInstanceAdminRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_instance_config(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_instance_config_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.spanner.admin.instance_v1.InstanceAdminClient.update_instance_config",
+                    extra={
+                        "serviceName": "google.spanner.admin.instance.v1.InstanceAdmin",
+                        "rpcName": "UpdateInstanceConfig",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateInstancePartition(
@@ -2935,7 +4484,7 @@ class InstanceAdminRestTransport(_BaseInstanceAdminRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the update instance partition method over HTTP.
 
@@ -2946,8 +4495,10 @@ class InstanceAdminRestTransport(_BaseInstanceAdminRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -2960,6 +4511,7 @@ class InstanceAdminRestTransport(_BaseInstanceAdminRestTransport):
             http_options = (
                 _BaseInstanceAdminRestTransport._BaseUpdateInstancePartition._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_instance_partition(
                 request, metadata
             )
@@ -2975,6 +4527,33 @@ class InstanceAdminRestTransport(_BaseInstanceAdminRestTransport):
             query_params = _BaseInstanceAdminRestTransport._BaseUpdateInstancePartition._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.spanner.admin.instance_v1.InstanceAdminClient.UpdateInstancePartition",
+                    extra={
+                        "serviceName": "google.spanner.admin.instance.v1.InstanceAdmin",
+                        "rpcName": "UpdateInstancePartition",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -2997,7 +4576,33 @@ class InstanceAdminRestTransport(_BaseInstanceAdminRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_instance_partition(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_instance_partition_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.spanner.admin.instance_v1.InstanceAdminClient.update_instance_partition",
+                    extra={
+                        "serviceName": "google.spanner.admin.instance.v1.InstanceAdmin",
+                        "rpcName": "UpdateInstancePartition",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property

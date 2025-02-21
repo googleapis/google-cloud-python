@@ -49,6 +49,7 @@ __protobuf__ = proto.module(
         "DeleteInstanceRequest",
         "CreateInstanceMetadata",
         "UpdateInstanceMetadata",
+        "FreeInstanceMetadata",
         "CreateInstanceConfigMetadata",
         "UpdateInstanceConfigMetadata",
         "InstancePartition",
@@ -74,7 +75,7 @@ class ReplicaInfo(proto.Message):
 
     Attributes:
         location (str):
-            The location of the serving resources, e.g.
+            The location of the serving resources, e.g.,
             "us-central1".
         type_ (google.cloud.spanner_admin_instance_v1.types.ReplicaInfo.ReplicaType):
             The type of replica.
@@ -161,20 +162,24 @@ class InstanceConfig(proto.Message):
             configuration is a Google-managed or
             user-managed configuration.
         replicas (MutableSequence[google.cloud.spanner_admin_instance_v1.types.ReplicaInfo]):
-            The geographic placement of nodes in this
-            instance configuration and their replication
-            properties.
+            The geographic placement of nodes in this instance
+            configuration and their replication properties.
+
+            To create user-managed configurations, input ``replicas``
+            must include all replicas in ``replicas`` of the
+            ``base_config`` and include one or more replicas in the
+            ``optional_replicas`` of the ``base_config``.
         optional_replicas (MutableSequence[google.cloud.spanner_admin_instance_v1.types.ReplicaInfo]):
             Output only. The available optional replicas
-            to choose from for user managed configurations.
-            Populated for Google managed configurations.
+            to choose from for user-managed configurations.
+            Populated for Google-managed configurations.
         base_config (str):
             Base configuration name, e.g.
             projects/<project_name>/instanceConfigs/nam3, based on which
-            this configuration is created. Only set for user managed
+            this configuration is created. Only set for user-managed
             configurations. ``base_config`` must refer to a
-            configuration of type GOOGLE_MANAGED in the same project as
-            this configuration.
+            configuration of type ``GOOGLE_MANAGED`` in the same project
+            as this configuration.
         labels (MutableMapping[str, str]):
             Cloud Labels are a flexible and lightweight mechanism for
             organizing cloud resources into groups that reflect a
@@ -233,6 +238,16 @@ class InstanceConfig(proto.Message):
         state (google.cloud.spanner_admin_instance_v1.types.InstanceConfig.State):
             Output only. The current instance configuration state.
             Applicable only for ``USER_MANAGED`` configurations.
+        free_instance_availability (google.cloud.spanner_admin_instance_v1.types.InstanceConfig.FreeInstanceAvailability):
+            Output only. Describes whether free instances
+            are available to be created in this instance
+            configuration.
+        quorum_type (google.cloud.spanner_admin_instance_v1.types.InstanceConfig.QuorumType):
+            Output only. The ``QuorumType`` of the instance
+            configuration.
+        storage_limit_per_processing_unit (int):
+            Output only. The storage limit in bytes per
+            processing unit.
     """
 
     class Type(proto.Enum):
@@ -242,9 +257,9 @@ class InstanceConfig(proto.Message):
             TYPE_UNSPECIFIED (0):
                 Unspecified.
             GOOGLE_MANAGED (1):
-                Google managed configuration.
+                Google-managed configuration.
             USER_MANAGED (2):
-                User managed configuration.
+                User-managed configuration.
         """
         TYPE_UNSPECIFIED = 0
         GOOGLE_MANAGED = 1
@@ -266,6 +281,62 @@ class InstanceConfig(proto.Message):
         STATE_UNSPECIFIED = 0
         CREATING = 1
         READY = 2
+
+    class FreeInstanceAvailability(proto.Enum):
+        r"""Describes the availability for free instances to be created
+        in an instance configuration.
+
+        Values:
+            FREE_INSTANCE_AVAILABILITY_UNSPECIFIED (0):
+                Not specified.
+            AVAILABLE (1):
+                Indicates that free instances are available
+                to be created in this instance configuration.
+            UNSUPPORTED (2):
+                Indicates that free instances are not
+                supported in this instance configuration.
+            DISABLED (3):
+                Indicates that free instances are currently
+                not available to be created in this instance
+                configuration.
+            QUOTA_EXCEEDED (4):
+                Indicates that additional free instances
+                cannot be created in this instance configuration
+                because the project has reached its limit of
+                free instances.
+        """
+        FREE_INSTANCE_AVAILABILITY_UNSPECIFIED = 0
+        AVAILABLE = 1
+        UNSUPPORTED = 2
+        DISABLED = 3
+        QUOTA_EXCEEDED = 4
+
+    class QuorumType(proto.Enum):
+        r"""Indicates the quorum type of this instance configuration.
+
+        Values:
+            QUORUM_TYPE_UNSPECIFIED (0):
+                Quorum type not specified.
+            REGION (1):
+                An instance configuration tagged with ``REGION`` quorum type
+                forms a write quorum in a single region.
+            DUAL_REGION (2):
+                An instance configuration tagged with the ``DUAL_REGION``
+                quorum type forms a write quorum with exactly two read-write
+                regions in a multi-region configuration.
+
+                This instance configuration requires failover in the event
+                of regional failures.
+            MULTI_REGION (3):
+                An instance configuration tagged with the ``MULTI_REGION``
+                quorum type forms a write quorum from replicas that are
+                spread across more than one region in a multi-region
+                configuration.
+        """
+        QUORUM_TYPE_UNSPECIFIED = 0
+        REGION = 1
+        DUAL_REGION = 2
+        MULTI_REGION = 3
 
     name: str = proto.Field(
         proto.STRING,
@@ -315,6 +386,20 @@ class InstanceConfig(proto.Message):
         proto.ENUM,
         number=11,
         enum=State,
+    )
+    free_instance_availability: FreeInstanceAvailability = proto.Field(
+        proto.ENUM,
+        number=12,
+        enum=FreeInstanceAvailability,
+    )
+    quorum_type: QuorumType = proto.Field(
+        proto.ENUM,
+        number=18,
+        enum=QuorumType,
+    )
+    storage_limit_per_processing_unit: int = proto.Field(
+        proto.INT64,
+        number=19,
     )
 
 
@@ -467,7 +552,7 @@ class AutoscalingConfig(proto.Message):
                 Required. The target storage utilization percentage that the
                 autoscaler should be trying to achieve for the instance.
                 This number is on a scale from 0 (no utilization) to 100
-                (full utilization). The valid range is [10, 100] inclusive.
+                (full utilization). The valid range is [10, 99] inclusive.
         """
 
         high_priority_cpu_utilization_percent: int = proto.Field(
@@ -591,11 +676,6 @@ class Instance(proto.Message):
             This might be zero in API responses for instances that are
             not yet in the ``READY`` state.
 
-            If the instance has varying node count across replicas
-            (achieved by setting asymmetric_autoscaling_options in
-            autoscaling config), the node_count here is the maximum node
-            count across all replicas.
-
             For more information, see `Compute capacity, nodes, and
             processing
             units <https://cloud.google.com/spanner/docs/compute-capacity>`__.
@@ -613,11 +693,6 @@ class Instance(proto.Message):
 
             This might be zero in API responses for instances that are
             not yet in the ``READY`` state.
-
-            If the instance has varying processing units per replica
-            (achieved by setting asymmetric_autoscaling_options in
-            autoscaling config), the processing_units here is the
-            maximum processing units across all replicas.
 
             For more information, see `Compute capacity, nodes and
             processing
@@ -669,6 +744,8 @@ class Instance(proto.Message):
             being disallowed. For example, representing labels as the
             string: name + "*" + value would prove problematic if we
             were to allow "*" in a future release.
+        instance_type (google.cloud.spanner_admin_instance_v1.types.Instance.InstanceType):
+            The ``InstanceType`` of the current instance.
         endpoint_uris (MutableSequence[str]):
             Deprecated. This field is not populated.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
@@ -677,20 +754,25 @@ class Instance(proto.Message):
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time at which the instance
             was most recently updated.
+        free_instance_metadata (google.cloud.spanner_admin_instance_v1.types.FreeInstanceMetadata):
+            Free instance metadata. Only populated for
+            free instances.
         edition (google.cloud.spanner_admin_instance_v1.types.Instance.Edition):
             Optional. The ``Edition`` of the current instance.
         default_backup_schedule_type (google.cloud.spanner_admin_instance_v1.types.Instance.DefaultBackupScheduleType):
-            Optional. Controls the default backup behavior for new
-            databases within the instance.
+            Optional. Controls the default backup schedule behavior for
+            new databases within the instance. By default, a backup
+            schedule is created automatically when a new database is
+            created in a new instance.
 
-            Note that ``AUTOMATIC`` is not permitted for free instances,
-            as backups and backup schedules are not allowed for free
-            instances.
+            Note that the ``AUTOMATIC`` value isn't permitted for free
+            instances, as backups and backup schedules aren't supported
+            for free instances.
 
             In the ``GetInstance`` or ``ListInstances`` response, if the
-            value of default_backup_schedule_type is unset or NONE, no
-            default backup schedule will be created for new databases
-            within the instance.
+            value of ``default_backup_schedule_type`` isn't set, or set
+            to ``NONE``, Spanner doesn't create a default backup
+            schedule for new databases in the instance.
     """
 
     class State(proto.Enum):
@@ -712,6 +794,27 @@ class Instance(proto.Message):
         CREATING = 1
         READY = 2
 
+    class InstanceType(proto.Enum):
+        r"""The type of this instance. The type can be used to distinguish
+        product variants, that can affect aspects like: usage restrictions,
+        quotas and billing. Currently this is used to distinguish
+        FREE_INSTANCE vs PROVISIONED instances.
+
+        Values:
+            INSTANCE_TYPE_UNSPECIFIED (0):
+                Not specified.
+            PROVISIONED (1):
+                Provisioned instances have dedicated
+                resources, standard usage limits and support.
+            FREE_INSTANCE (2):
+                Free instances provide no guarantee for dedicated resources,
+                [node_count, processing_units] should be 0. They come with
+                stricter usage limits and limited support.
+        """
+        INSTANCE_TYPE_UNSPECIFIED = 0
+        PROVISIONED = 1
+        FREE_INSTANCE = 2
+
     class Edition(proto.Enum):
         r"""The edition selected for this instance. Different editions
         provide different capabilities at different price points.
@@ -732,25 +835,25 @@ class Instance(proto.Message):
         ENTERPRISE_PLUS = 3
 
     class DefaultBackupScheduleType(proto.Enum):
-        r"""Indicates the default backup behavior for new databases
-        within the instance.
+        r"""Indicates the `default backup
+        schedule <https://cloud.google.com/spanner/docs/backup#default-backup-schedules>`__
+        behavior for new databases within the instance.
 
         Values:
             DEFAULT_BACKUP_SCHEDULE_TYPE_UNSPECIFIED (0):
                 Not specified.
             NONE (1):
-                No default backup schedule will be created
-                automatically on creation of a database within
+                A default backup schedule isn't created
+                automatically when a new database is created in
                 the instance.
             AUTOMATIC (2):
-                A default backup schedule will be created
-                automatically on creation of a database within
+                A default backup schedule is created
+                automatically when a new database is created in
                 the instance. The default backup schedule
-                creates a full backup every 24 hours and retains
-                the backup for a period of 7 days. Once created,
-                the default backup schedule can be
-                edited/deleted similar to any other backup
-                schedule.
+                creates a full backup every 24 hours. These full
+                backups are retained for 7 days. You can edit or
+                delete the default backup schedule once it's
+                created.
         """
         DEFAULT_BACKUP_SCHEDULE_TYPE_UNSPECIFIED = 0
         NONE = 1
@@ -798,6 +901,11 @@ class Instance(proto.Message):
         proto.STRING,
         number=7,
     )
+    instance_type: InstanceType = proto.Field(
+        proto.ENUM,
+        number=10,
+        enum=InstanceType,
+    )
     endpoint_uris: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=8,
@@ -811,6 +919,11 @@ class Instance(proto.Message):
         proto.MESSAGE,
         number=12,
         message=timestamp_pb2.Timestamp,
+    )
+    free_instance_metadata: "FreeInstanceMetadata" = proto.Field(
+        proto.MESSAGE,
+        number=13,
+        message="FreeInstanceMetadata",
     )
     edition: Edition = proto.Field(
         proto.ENUM,
@@ -906,7 +1019,7 @@ class GetInstanceConfigRequest(proto.Message):
 
 class CreateInstanceConfigRequest(proto.Message):
     r"""The request for
-    [CreateInstanceConfigRequest][InstanceAdmin.CreateInstanceConfigRequest].
+    [CreateInstanceConfig][google.spanner.admin.instance.v1.InstanceAdmin.CreateInstanceConfig].
 
     Attributes:
         parent (str):
@@ -920,10 +1033,10 @@ class CreateInstanceConfigRequest(proto.Message):
             characters in length. The ``custom-`` prefix is required to
             avoid name conflicts with Google-managed configurations.
         instance_config (google.cloud.spanner_admin_instance_v1.types.InstanceConfig):
-            Required. The InstanceConfig proto of the configuration to
-            create. instance_config.name must be
+            Required. The ``InstanceConfig`` proto of the configuration
+            to create. ``instance_config.name`` must be
             ``<parent>/instanceConfigs/<instance_config_id>``.
-            instance_config.base_config must be a Google managed
+            ``instance_config.base_config`` must be a Google-managed
             configuration name, e.g. /instanceConfigs/us-east1,
             /instanceConfigs/nam3.
         validate_only (bool):
@@ -953,7 +1066,7 @@ class CreateInstanceConfigRequest(proto.Message):
 
 class UpdateInstanceConfigRequest(proto.Message):
     r"""The request for
-    [UpdateInstanceConfigRequest][InstanceAdmin.UpdateInstanceConfigRequest].
+    [UpdateInstanceConfig][google.spanner.admin.instance.v1.InstanceAdmin.UpdateInstanceConfig].
 
     Attributes:
         instance_config (google.cloud.spanner_admin_instance_v1.types.InstanceConfig):
@@ -997,7 +1110,7 @@ class UpdateInstanceConfigRequest(proto.Message):
 
 class DeleteInstanceConfigRequest(proto.Message):
     r"""The request for
-    [DeleteInstanceConfigRequest][InstanceAdmin.DeleteInstanceConfigRequest].
+    [DeleteInstanceConfig][google.spanner.admin.instance.v1.InstanceAdmin.DeleteInstanceConfig].
 
     Attributes:
         name (str):
@@ -1053,8 +1166,7 @@ class ListInstanceConfigOperationsRequest(proto.Message):
             ``:``. Colon ``:`` is the contains operator. Filter rules
             are not case sensitive.
 
-            The following fields in the
-            [Operation][google.longrunning.Operation] are eligible for
+            The following fields in the Operation are eligible for
             filtering:
 
             -  ``name`` - The name of the long-running operation
@@ -1129,12 +1241,11 @@ class ListInstanceConfigOperationsResponse(proto.Message):
 
     Attributes:
         operations (MutableSequence[google.longrunning.operations_pb2.Operation]):
-            The list of matching instance configuration [long-running
-            operations][google.longrunning.Operation]. Each operation's
-            name will be prefixed by the name of the instance
-            configuration. The operation's
-            [metadata][google.longrunning.Operation.metadata] field type
-            ``metadata.type_url`` describes the type of the metadata.
+            The list of matching instance configuration long-running
+            operations. Each operation's name will be prefixed by the
+            name of the instance configuration. The operation's metadata
+            field type ``metadata.type_url`` describes the type of the
+            metadata.
         next_page_token (str):
             ``next_page_token`` can be sent in a subsequent
             [ListInstanceConfigOperations][google.spanner.admin.instance.v1.InstanceAdmin.ListInstanceConfigOperations]
@@ -1474,6 +1585,65 @@ class UpdateInstanceMetadata(proto.Message):
     )
 
 
+class FreeInstanceMetadata(proto.Message):
+    r"""Free instance specific metadata that is kept even after an
+    instance has been upgraded for tracking purposes.
+
+    Attributes:
+        expire_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. Timestamp after which the
+            instance will either be upgraded or scheduled
+            for deletion after a grace period.
+            ExpireBehavior is used to choose between
+            upgrading or scheduling the free instance for
+            deletion. This timestamp is set during the
+            creation of a free instance.
+        upgrade_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. If present, the timestamp at
+            which the free instance was upgraded to a
+            provisioned instance.
+        expire_behavior (google.cloud.spanner_admin_instance_v1.types.FreeInstanceMetadata.ExpireBehavior):
+            Specifies the expiration behavior of a free instance. The
+            default of ExpireBehavior is ``REMOVE_AFTER_GRACE_PERIOD``.
+            This can be modified during or after creation, and before
+            expiration.
+    """
+
+    class ExpireBehavior(proto.Enum):
+        r"""Allows users to change behavior when a free instance expires.
+
+        Values:
+            EXPIRE_BEHAVIOR_UNSPECIFIED (0):
+                Not specified.
+            FREE_TO_PROVISIONED (1):
+                When the free instance expires, upgrade the
+                instance to a provisioned instance.
+            REMOVE_AFTER_GRACE_PERIOD (2):
+                When the free instance expires, disable the
+                instance, and delete it after the grace period
+                passes if it has not been upgraded.
+        """
+        EXPIRE_BEHAVIOR_UNSPECIFIED = 0
+        FREE_TO_PROVISIONED = 1
+        REMOVE_AFTER_GRACE_PERIOD = 2
+
+    expire_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=timestamp_pb2.Timestamp,
+    )
+    upgrade_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    expire_behavior: ExpireBehavior = proto.Field(
+        proto.ENUM,
+        number=3,
+        enum=ExpireBehavior,
+    )
+
+
 class CreateInstanceConfigMetadata(proto.Message):
     r"""Metadata type for the operation returned by
     [CreateInstanceConfig][google.spanner.admin.instance.v1.InstanceAdmin.CreateInstanceConfig].
@@ -1576,7 +1746,7 @@ class InstancePartition(proto.Message):
         node_count (int):
             The number of nodes allocated to this instance partition.
 
-            Users can set the node_count field to specify the target
+            Users can set the ``node_count`` field to specify the target
             number of nodes allocated to the instance partition.
 
             This may be zero in API responses for instance partitions
@@ -1587,12 +1757,12 @@ class InstancePartition(proto.Message):
             The number of processing units allocated to this instance
             partition.
 
-            Users can set the processing_units field to specify the
+            Users can set the ``processing_units`` field to specify the
             target number of processing units allocated to the instance
             partition.
 
-            This may be zero in API responses for instance partitions
-            that are not yet in state ``READY``.
+            This might be zero in API responses for instance partitions
+            that are not yet in the ``READY`` state.
 
             This field is a member of `oneof`_ ``compute_capacity``.
         state (google.cloud.spanner_admin_instance_v1.types.InstancePartition.State):
@@ -1611,11 +1781,13 @@ class InstancePartition(proto.Message):
             existence of any referencing database prevents
             the instance partition from being deleted.
         referencing_backups (MutableSequence[str]):
-            Output only. The names of the backups that
-            reference this instance partition. Referencing
-            backups should share the parent instance. The
-            existence of any referencing backup prevents the
-            instance partition from being deleted.
+            Output only. Deprecated: This field is not
+            populated. Output only. The names of the backups
+            that reference this instance partition.
+            Referencing backups should share the parent
+            instance. The existence of any referencing
+            backup prevents the instance partition from
+            being deleted.
         etag (str):
             Used for optimistic concurrency control as a
             way to help prevent simultaneous updates of a
@@ -1912,7 +2084,10 @@ class ListInstancePartitionsRequest(proto.Message):
         parent (str):
             Required. The instance whose instance partitions should be
             listed. Values are of the form
-            ``projects/<project>/instances/<instance>``.
+            ``projects/<project>/instances/<instance>``. Use
+            ``{instance} = '-'`` to list instance partitions for all
+            Instances in a project, e.g.,
+            ``projects/myproject/instances/-``.
         page_size (int):
             Number of instance partitions to be returned
             in the response. If 0 or less, defaults to the
@@ -1962,9 +2137,9 @@ class ListInstancePartitionsResponse(proto.Message):
             [ListInstancePartitions][google.spanner.admin.instance.v1.InstanceAdmin.ListInstancePartitions]
             call to fetch more of the matching instance partitions.
         unreachable (MutableSequence[str]):
-            The list of unreachable instance partitions. It includes the
-            names of instance partitions whose metadata could not be
-            retrieved within
+            The list of unreachable instances or instance partitions. It
+            includes the names of instances or instance partitions whose
+            metadata could not be retrieved within
             [instance_partition_deadline][google.spanner.admin.instance.v1.ListInstancePartitionsRequest.instance_partition_deadline].
     """
 
@@ -2007,8 +2182,7 @@ class ListInstancePartitionOperationsRequest(proto.Message):
             ``:``. Colon ``:`` is the contains operator. Filter rules
             are not case sensitive.
 
-            The following fields in the
-            [Operation][google.longrunning.Operation] are eligible for
+            The following fields in the Operation are eligible for
             filtering:
 
             -  ``name`` - The name of the long-running operation
@@ -2062,7 +2236,7 @@ class ListInstancePartitionOperationsRequest(proto.Message):
             instance partition operations. Instance partitions whose
             operation metadata cannot be retrieved within this deadline
             will be added to
-            [unreachable][ListInstancePartitionOperationsResponse.unreachable]
+            [unreachable_instance_partitions][google.spanner.admin.instance.v1.ListInstancePartitionOperationsResponse.unreachable_instance_partitions]
             in
             [ListInstancePartitionOperationsResponse][google.spanner.admin.instance.v1.ListInstancePartitionOperationsResponse].
     """
@@ -2096,12 +2270,11 @@ class ListInstancePartitionOperationsResponse(proto.Message):
 
     Attributes:
         operations (MutableSequence[google.longrunning.operations_pb2.Operation]):
-            The list of matching instance partition [long-running
-            operations][google.longrunning.Operation]. Each operation's
-            name will be prefixed by the instance partition's name. The
-            operation's
-            [metadata][google.longrunning.Operation.metadata] field type
-            ``metadata.type_url`` describes the type of the metadata.
+            The list of matching instance partition long-running
+            operations. Each operation's name will be prefixed by the
+            instance partition's name. The operation's metadata field
+            type ``metadata.type_url`` describes the type of the
+            metadata.
         next_page_token (str):
             ``next_page_token`` can be sent in a subsequent
             [ListInstancePartitionOperations][google.spanner.admin.instance.v1.InstanceAdmin.ListInstancePartitionOperations]

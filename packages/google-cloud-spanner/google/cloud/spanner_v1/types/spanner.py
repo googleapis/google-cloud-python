@@ -651,6 +651,20 @@ class ExecuteSqlRequest(proto.Message):
             If the field is set to ``true`` but the request does not set
             ``partition_token``, the API returns an ``INVALID_ARGUMENT``
             error.
+        last_statement (bool):
+            Optional. If set to true, this statement
+            marks the end of the transaction. The
+            transaction should be committed or aborted after
+            this statement executes, and attempts to execute
+            any other requests against this transaction
+            (including reads and queries) will be rejected.
+
+            For DML statements, setting this option may
+            cause some error reporting to be deferred until
+            commit time (e.g. validation of unique
+            constraints). Given this, successful execution
+            of a DML statement should not be assumed until a
+            subsequent Commit call completes successfully.
     """
 
     class QueryMode(proto.Enum):
@@ -813,6 +827,10 @@ class ExecuteSqlRequest(proto.Message):
         proto.BOOL,
         number=16,
     )
+    last_statement: bool = proto.Field(
+        proto.BOOL,
+        number=17,
+    )
 
 
 class ExecuteBatchDmlRequest(proto.Message):
@@ -854,6 +872,20 @@ class ExecuteBatchDmlRequest(proto.Message):
             yield the same response as the first execution.
         request_options (google.cloud.spanner_v1.types.RequestOptions):
             Common options for this request.
+        last_statements (bool):
+            Optional. If set to true, this request marks
+            the end of the transaction. The transaction
+            should be committed or aborted after these
+            statements execute, and attempts to execute any
+            other requests against this transaction
+            (including reads and queries) will be rejected.
+
+            Setting this option may cause some error
+            reporting to be deferred until commit time (e.g.
+            validation of unique constraints). Given this,
+            successful execution of statements should not be
+            assumed until a subsequent Commit call completes
+            successfully.
     """
 
     class Statement(proto.Message):
@@ -931,6 +963,10 @@ class ExecuteBatchDmlRequest(proto.Message):
         proto.MESSAGE,
         number=5,
         message="RequestOptions",
+    )
+    last_statements: bool = proto.Field(
+        proto.BOOL,
+        number=6,
     )
 
 

@@ -23,6 +23,7 @@ from google.cloud.spanner_admin_database_v1.types import backup as gsad_backup
 from google.cloud.spanner_admin_database_v1.types import common
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
+from google.protobuf import struct_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 
 
@@ -54,6 +55,9 @@ __protobuf__ = proto.module(
         "DatabaseRole",
         "ListDatabaseRolesRequest",
         "ListDatabaseRolesResponse",
+        "AddSplitPointsRequest",
+        "AddSplitPointsResponse",
+        "SplitPoints",
     },
 )
 
@@ -1189,6 +1193,102 @@ class ListDatabaseRolesResponse(proto.Message):
     next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+
+
+class AddSplitPointsRequest(proto.Message):
+    r"""The request for
+    [AddSplitPoints][google.spanner.admin.database.v1.DatabaseAdmin.AddSplitPoints].
+
+    Attributes:
+        database (str):
+            Required. The database on whose tables/indexes split points
+            are to be added. Values are of the form
+            ``projects/<project>/instances/<instance>/databases/<database>``.
+        split_points (MutableSequence[google.cloud.spanner_admin_database_v1.types.SplitPoints]):
+            Required. The split points to add.
+        initiator (str):
+            Optional. A user-supplied tag associated with the split
+            points. For example, "intital_data_load", "special_event_1".
+            Defaults to "CloudAddSplitPointsAPI" if not specified. The
+            length of the tag must not exceed 50 characters,else will be
+            trimmed. Only valid UTF8 characters are allowed.
+    """
+
+    database: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    split_points: MutableSequence["SplitPoints"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message="SplitPoints",
+    )
+    initiator: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class AddSplitPointsResponse(proto.Message):
+    r"""The response for
+    [AddSplitPoints][google.spanner.admin.database.v1.DatabaseAdmin.AddSplitPoints].
+
+    """
+
+
+class SplitPoints(proto.Message):
+    r"""The split points of a table/index.
+
+    Attributes:
+        table (str):
+            The table to split.
+        index (str):
+            The index to split. If specified, the ``table`` field must
+            refer to the index's base table.
+        keys (MutableSequence[google.cloud.spanner_admin_database_v1.types.SplitPoints.Key]):
+            Required. The list of split keys, i.e., the
+            split boundaries.
+        expire_time (google.protobuf.timestamp_pb2.Timestamp):
+            Optional. The expiration timestamp of the
+            split points. A timestamp in the past means
+            immediate expiration. The maximum value can be
+            30 days in the future. Defaults to 10 days in
+            the future if not specified.
+    """
+
+    class Key(proto.Message):
+        r"""A split key.
+
+        Attributes:
+            key_parts (google.protobuf.struct_pb2.ListValue):
+                Required. The column values making up the
+                split key.
+        """
+
+        key_parts: struct_pb2.ListValue = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            message=struct_pb2.ListValue,
+        )
+
+    table: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    index: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    keys: MutableSequence[Key] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=3,
+        message=Key,
+    )
+    expire_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=timestamp_pb2.Timestamp,
     )
 
 

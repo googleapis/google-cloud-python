@@ -39,6 +39,7 @@ def partition(
 class spanner_admin_databaseCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
+        'add_split_points': ('database', 'split_points', 'initiator', ),
         'copy_backup': ('parent', 'backup_id', 'source_backup', 'expire_time', 'encryption_config', ),
         'create_backup': ('parent', 'backup_id', 'backup', 'encryption_config', ),
         'create_backup_schedule': ('parent', 'backup_schedule_id', 'backup_schedule', ),

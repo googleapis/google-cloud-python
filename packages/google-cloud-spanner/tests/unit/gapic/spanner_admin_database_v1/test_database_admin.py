@@ -83,10 +83,19 @@ from google.protobuf import any_pb2  # type: ignore
 from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
+from google.protobuf import struct_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.rpc import status_pb2  # type: ignore
 from google.type import expr_pb2  # type: ignore
 import google.auth
+
+
+CRED_INFO_JSON = {
+    "credential_source": "/path/to/file",
+    "credential_type": "service account credentials",
+    "principal": "service-account@example.com",
+}
+CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
 
 
 async def mock_async_gen(data, chunk_size=1):
@@ -343,83 +352,46 @@ def test__get_universe_domain():
 
 
 @pytest.mark.parametrize(
-    "client_class,transport_class,transport_name",
+    "error_code,cred_info_json,show_cred_info",
     [
-        (DatabaseAdminClient, transports.DatabaseAdminGrpcTransport, "grpc"),
-        (DatabaseAdminClient, transports.DatabaseAdminRestTransport, "rest"),
+        (401, CRED_INFO_JSON, True),
+        (403, CRED_INFO_JSON, True),
+        (404, CRED_INFO_JSON, True),
+        (500, CRED_INFO_JSON, False),
+        (401, None, False),
+        (403, None, False),
+        (404, None, False),
+        (500, None, False),
     ],
 )
-def test__validate_universe_domain(client_class, transport_class, transport_name):
-    client = client_class(
-        transport=transport_class(credentials=ga_credentials.AnonymousCredentials())
-    )
-    assert client._validate_universe_domain() == True
+def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
+    cred = mock.Mock(["get_cred_info"])
+    cred.get_cred_info = mock.Mock(return_value=cred_info_json)
+    client = DatabaseAdminClient(credentials=cred)
+    client._transport._credentials = cred
 
-    # Test the case when universe is already validated.
-    assert client._validate_universe_domain() == True
+    error = core_exceptions.GoogleAPICallError("message", details=["foo"])
+    error.code = error_code
 
-    if transport_name == "grpc":
-        # Test the case where credentials are provided by the
-        # `local_channel_credentials`. The default universes in both match.
-        channel = grpc.secure_channel(
-            "http://localhost/", grpc.local_channel_credentials()
-        )
-        client = client_class(transport=transport_class(channel=channel))
-        assert client._validate_universe_domain() == True
+    client._add_cred_info_for_auth_errors(error)
+    if show_cred_info:
+        assert error.details == ["foo", CRED_INFO_STRING]
+    else:
+        assert error.details == ["foo"]
 
-        # Test the case where credentials do not exist: e.g. a transport is provided
-        # with no credentials. Validation should still succeed because there is no
-        # mismatch with non-existent credentials.
-        channel = grpc.secure_channel(
-            "http://localhost/", grpc.local_channel_credentials()
-        )
-        transport = transport_class(channel=channel)
-        transport._credentials = None
-        client = client_class(transport=transport)
-        assert client._validate_universe_domain() == True
 
-    # TODO: This is needed to cater for older versions of google-auth
-    # Make this test unconditional once the minimum supported version of
-    # google-auth becomes 2.23.0 or higher.
-    google_auth_major, google_auth_minor = [
-        int(part) for part in google.auth.__version__.split(".")[0:2]
-    ]
-    if google_auth_major > 2 or (google_auth_major == 2 and google_auth_minor >= 23):
-        credentials = ga_credentials.AnonymousCredentials()
-        credentials._universe_domain = "foo.com"
-        # Test the case when there is a universe mismatch from the credentials.
-        client = client_class(transport=transport_class(credentials=credentials))
-        with pytest.raises(ValueError) as excinfo:
-            client._validate_universe_domain()
-        assert (
-            str(excinfo.value)
-            == "The configured universe domain (googleapis.com) does not match the universe domain found in the credentials (foo.com). If you haven't configured the universe domain explicitly, `googleapis.com` is the default."
-        )
+@pytest.mark.parametrize("error_code", [401, 403, 404, 500])
+def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
+    cred = mock.Mock([])
+    assert not hasattr(cred, "get_cred_info")
+    client = DatabaseAdminClient(credentials=cred)
+    client._transport._credentials = cred
 
-        # Test the case when there is a universe mismatch from the client.
-        #
-        # TODO: Make this test unconditional once the minimum supported version of
-        # google-api-core becomes 2.15.0 or higher.
-        api_core_major, api_core_minor = [
-            int(part) for part in api_core_version.__version__.split(".")[0:2]
-        ]
-        if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 15):
-            client = client_class(
-                client_options={"universe_domain": "bar.com"},
-                transport=transport_class(
-                    credentials=ga_credentials.AnonymousCredentials(),
-                ),
-            )
-            with pytest.raises(ValueError) as excinfo:
-                client._validate_universe_domain()
-            assert (
-                str(excinfo.value)
-                == "The configured universe domain (bar.com) does not match the universe domain found in the credentials (googleapis.com). If you haven't configured the universe domain explicitly, `googleapis.com` is the default."
-            )
+    error = core_exceptions.GoogleAPICallError("message", details=[])
+    error.code = error_code
 
-    # Test that ValueError is raised if universe_domain is provided via client options and credentials is None
-    with pytest.raises(ValueError):
-        client._compare_universes("foo.bar", None)
+    client._add_cred_info_for_auth_errors(error)
+    assert error.details == []
 
 
 @pytest.mark.parametrize(
@@ -9025,6 +8997,338 @@ async def test_list_database_roles_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
+        spanner_database_admin.AddSplitPointsRequest,
+        dict,
+    ],
+)
+def test_add_split_points(request_type, transport: str = "grpc"):
+    client = DatabaseAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.add_split_points), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = spanner_database_admin.AddSplitPointsResponse()
+        response = client.add_split_points(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = spanner_database_admin.AddSplitPointsRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, spanner_database_admin.AddSplitPointsResponse)
+
+
+def test_add_split_points_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DatabaseAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = spanner_database_admin.AddSplitPointsRequest(
+        database="database_value",
+        initiator="initiator_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.add_split_points), "__call__") as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.add_split_points(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == spanner_database_admin.AddSplitPointsRequest(
+            database="database_value",
+            initiator="initiator_value",
+        )
+
+
+def test_add_split_points_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = DatabaseAdminClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.add_split_points in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.add_split_points
+        ] = mock_rpc
+        request = {}
+        client.add_split_points(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.add_split_points(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_add_split_points_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = DatabaseAdminAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.add_split_points
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.add_split_points
+        ] = mock_rpc
+
+        request = {}
+        await client.add_split_points(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        await client.add_split_points(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_add_split_points_async(
+    transport: str = "grpc_asyncio",
+    request_type=spanner_database_admin.AddSplitPointsRequest,
+):
+    client = DatabaseAdminAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.add_split_points), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            spanner_database_admin.AddSplitPointsResponse()
+        )
+        response = await client.add_split_points(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = spanner_database_admin.AddSplitPointsRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, spanner_database_admin.AddSplitPointsResponse)
+
+
+@pytest.mark.asyncio
+async def test_add_split_points_async_from_dict():
+    await test_add_split_points_async(request_type=dict)
+
+
+def test_add_split_points_field_headers():
+    client = DatabaseAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = spanner_database_admin.AddSplitPointsRequest()
+
+    request.database = "database_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.add_split_points), "__call__") as call:
+        call.return_value = spanner_database_admin.AddSplitPointsResponse()
+        client.add_split_points(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "database=database_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_add_split_points_field_headers_async():
+    client = DatabaseAdminAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = spanner_database_admin.AddSplitPointsRequest()
+
+    request.database = "database_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.add_split_points), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            spanner_database_admin.AddSplitPointsResponse()
+        )
+        await client.add_split_points(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "database=database_value",
+    ) in kw["metadata"]
+
+
+def test_add_split_points_flattened():
+    client = DatabaseAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.add_split_points), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = spanner_database_admin.AddSplitPointsResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.add_split_points(
+            database="database_value",
+            split_points=[spanner_database_admin.SplitPoints(table="table_value")],
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].database
+        mock_val = "database_value"
+        assert arg == mock_val
+        arg = args[0].split_points
+        mock_val = [spanner_database_admin.SplitPoints(table="table_value")]
+        assert arg == mock_val
+
+
+def test_add_split_points_flattened_error():
+    client = DatabaseAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.add_split_points(
+            spanner_database_admin.AddSplitPointsRequest(),
+            database="database_value",
+            split_points=[spanner_database_admin.SplitPoints(table="table_value")],
+        )
+
+
+@pytest.mark.asyncio
+async def test_add_split_points_flattened_async():
+    client = DatabaseAdminAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.add_split_points), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = spanner_database_admin.AddSplitPointsResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            spanner_database_admin.AddSplitPointsResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.add_split_points(
+            database="database_value",
+            split_points=[spanner_database_admin.SplitPoints(table="table_value")],
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].database
+        mock_val = "database_value"
+        assert arg == mock_val
+        arg = args[0].split_points
+        mock_val = [spanner_database_admin.SplitPoints(table="table_value")]
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_add_split_points_flattened_error_async():
+    client = DatabaseAdminAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.add_split_points(
+            spanner_database_admin.AddSplitPointsRequest(),
+            database="database_value",
+            split_points=[spanner_database_admin.SplitPoints(table="table_value")],
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         gsad_backup_schedule.CreateBackupScheduleRequest,
         dict,
     ],
@@ -11065,6 +11369,7 @@ def test_list_databases_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_databases(request)
 
@@ -11118,6 +11423,7 @@ def test_list_databases_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_databases(**mock_args)
 
@@ -11317,6 +11623,7 @@ def test_create_database_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.create_database(request)
 
@@ -11369,6 +11676,7 @@ def test_create_database_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.create_database(**mock_args)
 
@@ -11500,6 +11808,7 @@ def test_get_database_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_database(request)
 
@@ -11547,6 +11856,7 @@ def test_get_database_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_database(**mock_args)
 
@@ -11676,6 +11986,7 @@ def test_update_database_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.update_database(request)
 
@@ -11730,6 +12041,7 @@ def test_update_database_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.update_database(**mock_args)
 
@@ -11872,6 +12184,7 @@ def test_update_database_ddl_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.update_database_ddl(request)
 
@@ -11926,6 +12239,7 @@ def test_update_database_ddl_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.update_database_ddl(**mock_args)
 
@@ -12055,6 +12369,7 @@ def test_drop_database_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.drop_database(request)
 
@@ -12100,6 +12415,7 @@ def test_drop_database_rest_flattened():
         json_return_value = ""
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.drop_database(**mock_args)
 
@@ -12235,6 +12551,7 @@ def test_get_database_ddl_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_database_ddl(request)
 
@@ -12282,6 +12599,7 @@ def test_get_database_ddl_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_database_ddl(**mock_args)
 
@@ -12412,6 +12730,7 @@ def test_set_iam_policy_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.set_iam_policy(request)
 
@@ -12465,6 +12784,7 @@ def test_set_iam_policy_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.set_iam_policy(**mock_args)
 
@@ -12595,6 +12915,7 @@ def test_get_iam_policy_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_iam_policy(request)
 
@@ -12640,6 +12961,7 @@ def test_get_iam_policy_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_iam_policy(**mock_args)
 
@@ -12778,6 +13100,7 @@ def test_test_iam_permissions_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.test_iam_permissions(request)
 
@@ -12832,6 +13155,7 @@ def test_test_iam_permissions_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.test_iam_permissions(**mock_args)
 
@@ -12980,6 +13304,7 @@ def test_create_backup_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.create_backup(request)
 
@@ -13045,6 +13370,7 @@ def test_create_backup_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.create_backup(**mock_args)
 
@@ -13185,6 +13511,7 @@ def test_copy_backup_rest_required_fields(request_type=backup.CopyBackupRequest)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.copy_backup(request)
 
@@ -13241,6 +13568,7 @@ def test_copy_backup_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.copy_backup(**mock_args)
 
@@ -13373,6 +13701,7 @@ def test_get_backup_rest_required_fields(request_type=backup.GetBackupRequest):
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_backup(request)
 
@@ -13418,6 +13747,7 @@ def test_get_backup_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_backup(**mock_args)
 
@@ -13546,6 +13876,7 @@ def test_update_backup_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.update_backup(request)
 
@@ -13602,6 +13933,7 @@ def test_update_backup_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.update_backup(**mock_args)
 
@@ -13729,6 +14061,7 @@ def test_delete_backup_rest_required_fields(request_type=backup.DeleteBackupRequ
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.delete_backup(request)
 
@@ -13772,6 +14105,7 @@ def test_delete_backup_rest_flattened():
         json_return_value = ""
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.delete_backup(**mock_args)
 
@@ -13908,6 +14242,7 @@ def test_list_backups_rest_required_fields(request_type=backup.ListBackupsReques
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_backups(request)
 
@@ -13962,6 +14297,7 @@ def test_list_backups_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_backups(**mock_args)
 
@@ -14161,6 +14497,7 @@ def test_restore_database_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.restore_database(request)
 
@@ -14213,6 +14550,7 @@ def test_restore_database_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.restore_database(**mock_args)
 
@@ -14361,6 +14699,7 @@ def test_list_database_operations_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_database_operations(request)
 
@@ -14417,6 +14756,7 @@ def test_list_database_operations_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_database_operations(**mock_args)
 
@@ -14625,6 +14965,7 @@ def test_list_backup_operations_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_backup_operations(request)
 
@@ -14679,6 +15020,7 @@ def test_list_backup_operations_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_backup_operations(**mock_args)
 
@@ -14886,6 +15228,7 @@ def test_list_database_roles_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_database_roles(request)
 
@@ -14941,6 +15284,7 @@ def test_list_database_roles_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_database_roles(**mock_args)
 
@@ -15034,6 +15378,201 @@ def test_list_database_roles_rest_pager(transport: str = "rest"):
         pages = list(client.list_database_roles(request=sample_request).pages)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
+
+
+def test_add_split_points_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = DatabaseAdminClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.add_split_points in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.add_split_points
+        ] = mock_rpc
+
+        request = {}
+        client.add_split_points(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.add_split_points(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_add_split_points_rest_required_fields(
+    request_type=spanner_database_admin.AddSplitPointsRequest,
+):
+    transport_class = transports.DatabaseAdminRestTransport
+
+    request_init = {}
+    request_init["database"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).add_split_points._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["database"] = "database_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).add_split_points._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "database" in jsonified_request
+    assert jsonified_request["database"] == "database_value"
+
+    client = DatabaseAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = spanner_database_admin.AddSplitPointsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = spanner_database_admin.AddSplitPointsResponse.pb(
+                return_value
+            )
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.add_split_points(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_add_split_points_rest_unset_required_fields():
+    transport = transports.DatabaseAdminRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.add_split_points._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "database",
+                "splitPoints",
+            )
+        )
+    )
+
+
+def test_add_split_points_rest_flattened():
+    client = DatabaseAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = spanner_database_admin.AddSplitPointsResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "database": "projects/sample1/instances/sample2/databases/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            database="database_value",
+            split_points=[spanner_database_admin.SplitPoints(table="table_value")],
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = spanner_database_admin.AddSplitPointsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        client.add_split_points(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{database=projects/*/instances/*/databases/*}:addSplitPoints"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_add_split_points_rest_flattened_error(transport: str = "rest"):
+    client = DatabaseAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.add_split_points(
+            spanner_database_admin.AddSplitPointsRequest(),
+            database="database_value",
+            split_points=[spanner_database_admin.SplitPoints(table="table_value")],
+        )
 
 
 def test_create_backup_schedule_rest_use_cached_wrapped_rpc():
@@ -15153,6 +15692,7 @@ def test_create_backup_schedule_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.create_backup_schedule(request)
 
@@ -15217,6 +15757,7 @@ def test_create_backup_schedule_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.create_backup_schedule(**mock_args)
 
@@ -15354,6 +15895,7 @@ def test_get_backup_schedule_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_backup_schedule(request)
 
@@ -15401,6 +15943,7 @@ def test_get_backup_schedule_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_backup_schedule(**mock_args)
 
@@ -15535,6 +16078,7 @@ def test_update_backup_schedule_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.update_backup_schedule(request)
 
@@ -15593,6 +16137,7 @@ def test_update_backup_schedule_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.update_backup_schedule(**mock_args)
 
@@ -15727,6 +16272,7 @@ def test_delete_backup_schedule_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.delete_backup_schedule(request)
 
@@ -15772,6 +16318,7 @@ def test_delete_backup_schedule_rest_flattened():
         json_return_value = ""
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.delete_backup_schedule(**mock_args)
 
@@ -15915,6 +16462,7 @@ def test_list_backup_schedules_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_backup_schedules(request)
 
@@ -15970,6 +16518,7 @@ def test_list_backup_schedules_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_backup_schedules(**mock_args)
 
@@ -16596,6 +17145,27 @@ def test_list_database_roles_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner_database_admin.ListDatabaseRolesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_add_split_points_empty_call_grpc():
+    client = DatabaseAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.add_split_points), "__call__") as call:
+        call.return_value = spanner_database_admin.AddSplitPointsResponse()
+        client.add_split_points(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = spanner_database_admin.AddSplitPointsRequest()
 
         assert args[0] == request_msg
 
@@ -17291,6 +17861,31 @@ async def test_list_database_roles_empty_call_grpc_asyncio():
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
+async def test_add_split_points_empty_call_grpc_asyncio():
+    client = DatabaseAdminAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.add_split_points), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            spanner_database_admin.AddSplitPointsResponse()
+        )
+        await client.add_split_points(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = spanner_database_admin.AddSplitPointsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
 async def test_create_backup_schedule_empty_call_grpc_asyncio():
     client = DatabaseAdminAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -17457,6 +18052,7 @@ def test_list_databases_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_databases(request)
 
 
@@ -17492,6 +18088,7 @@ def test_list_databases_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_databases(request)
 
     # Establish that the response is the type that we expect.
@@ -17516,10 +18113,13 @@ def test_list_databases_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DatabaseAdminRestInterceptor, "post_list_databases"
     ) as post, mock.patch.object(
+        transports.DatabaseAdminRestInterceptor, "post_list_databases_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.DatabaseAdminRestInterceptor, "pre_list_databases"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = spanner_database_admin.ListDatabasesRequest.pb(
             spanner_database_admin.ListDatabasesRequest()
         )
@@ -17532,6 +18132,7 @@ def test_list_databases_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = spanner_database_admin.ListDatabasesResponse.to_json(
             spanner_database_admin.ListDatabasesResponse()
         )
@@ -17544,6 +18145,10 @@ def test_list_databases_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = spanner_database_admin.ListDatabasesResponse()
+        post_with_metadata.return_value = (
+            spanner_database_admin.ListDatabasesResponse(),
+            metadata,
+        )
 
         client.list_databases(
             request,
@@ -17555,6 +18160,7 @@ def test_list_databases_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_database_rest_bad_request(
@@ -17578,6 +18184,7 @@ def test_create_database_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_database(request)
 
 
@@ -17608,6 +18215,7 @@ def test_create_database_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_database(request)
 
     # Establish that the response is the type that we expect.
@@ -17633,10 +18241,13 @@ def test_create_database_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.DatabaseAdminRestInterceptor, "post_create_database"
     ) as post, mock.patch.object(
+        transports.DatabaseAdminRestInterceptor, "post_create_database_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.DatabaseAdminRestInterceptor, "pre_create_database"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = spanner_database_admin.CreateDatabaseRequest.pb(
             spanner_database_admin.CreateDatabaseRequest()
         )
@@ -17649,6 +18260,7 @@ def test_create_database_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -17659,6 +18271,7 @@ def test_create_database_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_database(
             request,
@@ -17670,6 +18283,7 @@ def test_create_database_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_database_rest_bad_request(
@@ -17693,6 +18307,7 @@ def test_get_database_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_database(request)
 
 
@@ -17734,6 +18349,7 @@ def test_get_database_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_database(request)
 
     # Establish that the response is the type that we expect.
@@ -17764,10 +18380,13 @@ def test_get_database_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DatabaseAdminRestInterceptor, "post_get_database"
     ) as post, mock.patch.object(
+        transports.DatabaseAdminRestInterceptor, "post_get_database_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.DatabaseAdminRestInterceptor, "pre_get_database"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = spanner_database_admin.GetDatabaseRequest.pb(
             spanner_database_admin.GetDatabaseRequest()
         )
@@ -17780,6 +18399,7 @@ def test_get_database_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = spanner_database_admin.Database.to_json(
             spanner_database_admin.Database()
         )
@@ -17792,6 +18412,7 @@ def test_get_database_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = spanner_database_admin.Database()
+        post_with_metadata.return_value = spanner_database_admin.Database(), metadata
 
         client.get_database(
             request,
@@ -17803,6 +18424,7 @@ def test_get_database_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_database_rest_bad_request(
@@ -17828,6 +18450,7 @@ def test_update_database_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.update_database(request)
 
 
@@ -17967,6 +18590,7 @@ def test_update_database_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.update_database(request)
 
     # Establish that the response is the type that we expect.
@@ -17992,10 +18616,13 @@ def test_update_database_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.DatabaseAdminRestInterceptor, "post_update_database"
     ) as post, mock.patch.object(
+        transports.DatabaseAdminRestInterceptor, "post_update_database_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.DatabaseAdminRestInterceptor, "pre_update_database"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = spanner_database_admin.UpdateDatabaseRequest.pb(
             spanner_database_admin.UpdateDatabaseRequest()
         )
@@ -18008,6 +18635,7 @@ def test_update_database_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -18018,6 +18646,7 @@ def test_update_database_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.update_database(
             request,
@@ -18029,6 +18658,7 @@ def test_update_database_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_database_ddl_rest_bad_request(
@@ -18052,6 +18682,7 @@ def test_update_database_ddl_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.update_database_ddl(request)
 
 
@@ -18082,6 +18713,7 @@ def test_update_database_ddl_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.update_database_ddl(request)
 
     # Establish that the response is the type that we expect.
@@ -18107,10 +18739,14 @@ def test_update_database_ddl_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.DatabaseAdminRestInterceptor, "post_update_database_ddl"
     ) as post, mock.patch.object(
+        transports.DatabaseAdminRestInterceptor,
+        "post_update_database_ddl_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.DatabaseAdminRestInterceptor, "pre_update_database_ddl"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = spanner_database_admin.UpdateDatabaseDdlRequest.pb(
             spanner_database_admin.UpdateDatabaseDdlRequest()
         )
@@ -18123,6 +18759,7 @@ def test_update_database_ddl_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -18133,6 +18770,7 @@ def test_update_database_ddl_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.update_database_ddl(
             request,
@@ -18144,6 +18782,7 @@ def test_update_database_ddl_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_drop_database_rest_bad_request(
@@ -18167,6 +18806,7 @@ def test_drop_database_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.drop_database(request)
 
 
@@ -18197,6 +18837,7 @@ def test_drop_database_rest_call_success(request_type):
         json_return_value = ""
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.drop_database(request)
 
     # Establish that the response is the type that we expect.
@@ -18233,6 +18874,7 @@ def test_drop_database_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         request = spanner_database_admin.DropDatabaseRequest()
         metadata = [
@@ -18273,6 +18915,7 @@ def test_get_database_ddl_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_database_ddl(request)
 
 
@@ -18309,6 +18952,7 @@ def test_get_database_ddl_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_database_ddl(request)
 
     # Establish that the response is the type that we expect.
@@ -18334,10 +18978,13 @@ def test_get_database_ddl_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DatabaseAdminRestInterceptor, "post_get_database_ddl"
     ) as post, mock.patch.object(
+        transports.DatabaseAdminRestInterceptor, "post_get_database_ddl_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.DatabaseAdminRestInterceptor, "pre_get_database_ddl"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = spanner_database_admin.GetDatabaseDdlRequest.pb(
             spanner_database_admin.GetDatabaseDdlRequest()
         )
@@ -18350,6 +18997,7 @@ def test_get_database_ddl_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = spanner_database_admin.GetDatabaseDdlResponse.to_json(
             spanner_database_admin.GetDatabaseDdlResponse()
         )
@@ -18362,6 +19010,10 @@ def test_get_database_ddl_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = spanner_database_admin.GetDatabaseDdlResponse()
+        post_with_metadata.return_value = (
+            spanner_database_admin.GetDatabaseDdlResponse(),
+            metadata,
+        )
 
         client.get_database_ddl(
             request,
@@ -18373,6 +19025,7 @@ def test_get_database_ddl_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_set_iam_policy_rest_bad_request(
@@ -18396,6 +19049,7 @@ def test_set_iam_policy_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.set_iam_policy(request)
 
 
@@ -18429,6 +19083,7 @@ def test_set_iam_policy_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.set_iam_policy(request)
 
     # Establish that the response is the type that we expect.
@@ -18454,10 +19109,13 @@ def test_set_iam_policy_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DatabaseAdminRestInterceptor, "post_set_iam_policy"
     ) as post, mock.patch.object(
+        transports.DatabaseAdminRestInterceptor, "post_set_iam_policy_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.DatabaseAdminRestInterceptor, "pre_set_iam_policy"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = iam_policy_pb2.SetIamPolicyRequest()
         transcode.return_value = {
             "method": "post",
@@ -18468,6 +19126,7 @@ def test_set_iam_policy_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(policy_pb2.Policy())
         req.return_value.content = return_value
 
@@ -18478,6 +19137,7 @@ def test_set_iam_policy_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = policy_pb2.Policy()
+        post_with_metadata.return_value = policy_pb2.Policy(), metadata
 
         client.set_iam_policy(
             request,
@@ -18489,6 +19149,7 @@ def test_set_iam_policy_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_iam_policy_rest_bad_request(
@@ -18512,6 +19173,7 @@ def test_get_iam_policy_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_iam_policy(request)
 
 
@@ -18545,6 +19207,7 @@ def test_get_iam_policy_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_iam_policy(request)
 
     # Establish that the response is the type that we expect.
@@ -18570,10 +19233,13 @@ def test_get_iam_policy_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DatabaseAdminRestInterceptor, "post_get_iam_policy"
     ) as post, mock.patch.object(
+        transports.DatabaseAdminRestInterceptor, "post_get_iam_policy_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.DatabaseAdminRestInterceptor, "pre_get_iam_policy"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = iam_policy_pb2.GetIamPolicyRequest()
         transcode.return_value = {
             "method": "post",
@@ -18584,6 +19250,7 @@ def test_get_iam_policy_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(policy_pb2.Policy())
         req.return_value.content = return_value
 
@@ -18594,6 +19261,7 @@ def test_get_iam_policy_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = policy_pb2.Policy()
+        post_with_metadata.return_value = policy_pb2.Policy(), metadata
 
         client.get_iam_policy(
             request,
@@ -18605,6 +19273,7 @@ def test_get_iam_policy_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_test_iam_permissions_rest_bad_request(
@@ -18628,6 +19297,7 @@ def test_test_iam_permissions_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.test_iam_permissions(request)
 
 
@@ -18660,6 +19330,7 @@ def test_test_iam_permissions_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.test_iam_permissions(request)
 
     # Establish that the response is the type that we expect.
@@ -18684,10 +19355,14 @@ def test_test_iam_permissions_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DatabaseAdminRestInterceptor, "post_test_iam_permissions"
     ) as post, mock.patch.object(
+        transports.DatabaseAdminRestInterceptor,
+        "post_test_iam_permissions_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.DatabaseAdminRestInterceptor, "pre_test_iam_permissions"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = iam_policy_pb2.TestIamPermissionsRequest()
         transcode.return_value = {
             "method": "post",
@@ -18698,6 +19373,7 @@ def test_test_iam_permissions_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(
             iam_policy_pb2.TestIamPermissionsResponse()
         )
@@ -18710,6 +19386,10 @@ def test_test_iam_permissions_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = iam_policy_pb2.TestIamPermissionsResponse()
+        post_with_metadata.return_value = (
+            iam_policy_pb2.TestIamPermissionsResponse(),
+            metadata,
+        )
 
         client.test_iam_permissions(
             request,
@@ -18721,6 +19401,7 @@ def test_test_iam_permissions_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_backup_rest_bad_request(request_type=gsad_backup.CreateBackupRequest):
@@ -18742,6 +19423,7 @@ def test_create_backup_rest_bad_request(request_type=gsad_backup.CreateBackupReq
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_backup(request)
 
 
@@ -18797,6 +19479,7 @@ def test_create_backup_rest_call_success(request_type):
         "backup_schedules": ["backup_schedules_value1", "backup_schedules_value2"],
         "incremental_backup_chain_id": "incremental_backup_chain_id_value",
         "oldest_version_time": {},
+        "instance_partitions": [{"instance_partition": "instance_partition_value"}],
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -18878,6 +19561,7 @@ def test_create_backup_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_backup(request)
 
     # Establish that the response is the type that we expect.
@@ -18903,10 +19587,13 @@ def test_create_backup_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.DatabaseAdminRestInterceptor, "post_create_backup"
     ) as post, mock.patch.object(
+        transports.DatabaseAdminRestInterceptor, "post_create_backup_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.DatabaseAdminRestInterceptor, "pre_create_backup"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = gsad_backup.CreateBackupRequest.pb(
             gsad_backup.CreateBackupRequest()
         )
@@ -18919,6 +19606,7 @@ def test_create_backup_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -18929,6 +19617,7 @@ def test_create_backup_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_backup(
             request,
@@ -18940,6 +19629,7 @@ def test_create_backup_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_copy_backup_rest_bad_request(request_type=backup.CopyBackupRequest):
@@ -18961,6 +19651,7 @@ def test_copy_backup_rest_bad_request(request_type=backup.CopyBackupRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.copy_backup(request)
 
 
@@ -18991,6 +19682,7 @@ def test_copy_backup_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.copy_backup(request)
 
     # Establish that the response is the type that we expect.
@@ -19016,10 +19708,13 @@ def test_copy_backup_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.DatabaseAdminRestInterceptor, "post_copy_backup"
     ) as post, mock.patch.object(
+        transports.DatabaseAdminRestInterceptor, "post_copy_backup_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.DatabaseAdminRestInterceptor, "pre_copy_backup"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = backup.CopyBackupRequest.pb(backup.CopyBackupRequest())
         transcode.return_value = {
             "method": "post",
@@ -19030,6 +19725,7 @@ def test_copy_backup_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -19040,6 +19736,7 @@ def test_copy_backup_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.copy_backup(
             request,
@@ -19051,6 +19748,7 @@ def test_copy_backup_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_backup_rest_bad_request(request_type=backup.GetBackupRequest):
@@ -19072,6 +19770,7 @@ def test_get_backup_rest_bad_request(request_type=backup.GetBackupRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_backup(request)
 
 
@@ -19117,6 +19816,7 @@ def test_get_backup_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_backup(request)
 
     # Establish that the response is the type that we expect.
@@ -19151,10 +19851,13 @@ def test_get_backup_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DatabaseAdminRestInterceptor, "post_get_backup"
     ) as post, mock.patch.object(
+        transports.DatabaseAdminRestInterceptor, "post_get_backup_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.DatabaseAdminRestInterceptor, "pre_get_backup"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = backup.GetBackupRequest.pb(backup.GetBackupRequest())
         transcode.return_value = {
             "method": "post",
@@ -19165,6 +19868,7 @@ def test_get_backup_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = backup.Backup.to_json(backup.Backup())
         req.return_value.content = return_value
 
@@ -19175,6 +19879,7 @@ def test_get_backup_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = backup.Backup()
+        post_with_metadata.return_value = backup.Backup(), metadata
 
         client.get_backup(
             request,
@@ -19186,6 +19891,7 @@ def test_get_backup_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_backup_rest_bad_request(request_type=gsad_backup.UpdateBackupRequest):
@@ -19209,6 +19915,7 @@ def test_update_backup_rest_bad_request(request_type=gsad_backup.UpdateBackupReq
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.update_backup(request)
 
 
@@ -19266,6 +19973,7 @@ def test_update_backup_rest_call_success(request_type):
         "backup_schedules": ["backup_schedules_value1", "backup_schedules_value2"],
         "incremental_backup_chain_id": "incremental_backup_chain_id_value",
         "oldest_version_time": {},
+        "instance_partitions": [{"instance_partition": "instance_partition_value"}],
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -19362,6 +20070,7 @@ def test_update_backup_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.update_backup(request)
 
     # Establish that the response is the type that we expect.
@@ -19396,10 +20105,13 @@ def test_update_backup_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DatabaseAdminRestInterceptor, "post_update_backup"
     ) as post, mock.patch.object(
+        transports.DatabaseAdminRestInterceptor, "post_update_backup_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.DatabaseAdminRestInterceptor, "pre_update_backup"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = gsad_backup.UpdateBackupRequest.pb(
             gsad_backup.UpdateBackupRequest()
         )
@@ -19412,6 +20124,7 @@ def test_update_backup_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = gsad_backup.Backup.to_json(gsad_backup.Backup())
         req.return_value.content = return_value
 
@@ -19422,6 +20135,7 @@ def test_update_backup_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = gsad_backup.Backup()
+        post_with_metadata.return_value = gsad_backup.Backup(), metadata
 
         client.update_backup(
             request,
@@ -19433,6 +20147,7 @@ def test_update_backup_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_backup_rest_bad_request(request_type=backup.DeleteBackupRequest):
@@ -19454,6 +20169,7 @@ def test_delete_backup_rest_bad_request(request_type=backup.DeleteBackupRequest)
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_backup(request)
 
 
@@ -19484,6 +20200,7 @@ def test_delete_backup_rest_call_success(request_type):
         json_return_value = ""
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.delete_backup(request)
 
     # Establish that the response is the type that we expect.
@@ -19518,6 +20235,7 @@ def test_delete_backup_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         request = backup.DeleteBackupRequest()
         metadata = [
@@ -19556,6 +20274,7 @@ def test_list_backups_rest_bad_request(request_type=backup.ListBackupsRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_backups(request)
 
 
@@ -19591,6 +20310,7 @@ def test_list_backups_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_backups(request)
 
     # Establish that the response is the type that we expect.
@@ -19615,10 +20335,13 @@ def test_list_backups_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DatabaseAdminRestInterceptor, "post_list_backups"
     ) as post, mock.patch.object(
+        transports.DatabaseAdminRestInterceptor, "post_list_backups_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.DatabaseAdminRestInterceptor, "pre_list_backups"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = backup.ListBackupsRequest.pb(backup.ListBackupsRequest())
         transcode.return_value = {
             "method": "post",
@@ -19629,6 +20352,7 @@ def test_list_backups_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = backup.ListBackupsResponse.to_json(backup.ListBackupsResponse())
         req.return_value.content = return_value
 
@@ -19639,6 +20363,7 @@ def test_list_backups_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = backup.ListBackupsResponse()
+        post_with_metadata.return_value = backup.ListBackupsResponse(), metadata
 
         client.list_backups(
             request,
@@ -19650,6 +20375,7 @@ def test_list_backups_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_restore_database_rest_bad_request(
@@ -19673,6 +20399,7 @@ def test_restore_database_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.restore_database(request)
 
 
@@ -19703,6 +20430,7 @@ def test_restore_database_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.restore_database(request)
 
     # Establish that the response is the type that we expect.
@@ -19728,10 +20456,13 @@ def test_restore_database_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.DatabaseAdminRestInterceptor, "post_restore_database"
     ) as post, mock.patch.object(
+        transports.DatabaseAdminRestInterceptor, "post_restore_database_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.DatabaseAdminRestInterceptor, "pre_restore_database"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = spanner_database_admin.RestoreDatabaseRequest.pb(
             spanner_database_admin.RestoreDatabaseRequest()
         )
@@ -19744,6 +20475,7 @@ def test_restore_database_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -19754,6 +20486,7 @@ def test_restore_database_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.restore_database(
             request,
@@ -19765,6 +20498,7 @@ def test_restore_database_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_database_operations_rest_bad_request(
@@ -19788,6 +20522,7 @@ def test_list_database_operations_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_database_operations(request)
 
 
@@ -19825,6 +20560,7 @@ def test_list_database_operations_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_database_operations(request)
 
     # Establish that the response is the type that we expect.
@@ -19849,10 +20585,14 @@ def test_list_database_operations_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DatabaseAdminRestInterceptor, "post_list_database_operations"
     ) as post, mock.patch.object(
+        transports.DatabaseAdminRestInterceptor,
+        "post_list_database_operations_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.DatabaseAdminRestInterceptor, "pre_list_database_operations"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = spanner_database_admin.ListDatabaseOperationsRequest.pb(
             spanner_database_admin.ListDatabaseOperationsRequest()
         )
@@ -19865,6 +20605,7 @@ def test_list_database_operations_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = spanner_database_admin.ListDatabaseOperationsResponse.to_json(
             spanner_database_admin.ListDatabaseOperationsResponse()
         )
@@ -19877,6 +20618,10 @@ def test_list_database_operations_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = spanner_database_admin.ListDatabaseOperationsResponse()
+        post_with_metadata.return_value = (
+            spanner_database_admin.ListDatabaseOperationsResponse(),
+            metadata,
+        )
 
         client.list_database_operations(
             request,
@@ -19888,6 +20633,7 @@ def test_list_database_operations_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_backup_operations_rest_bad_request(
@@ -19911,6 +20657,7 @@ def test_list_backup_operations_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_backup_operations(request)
 
 
@@ -19946,6 +20693,7 @@ def test_list_backup_operations_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_backup_operations(request)
 
     # Establish that the response is the type that we expect.
@@ -19970,10 +20718,14 @@ def test_list_backup_operations_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DatabaseAdminRestInterceptor, "post_list_backup_operations"
     ) as post, mock.patch.object(
+        transports.DatabaseAdminRestInterceptor,
+        "post_list_backup_operations_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.DatabaseAdminRestInterceptor, "pre_list_backup_operations"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = backup.ListBackupOperationsRequest.pb(
             backup.ListBackupOperationsRequest()
         )
@@ -19986,6 +20738,7 @@ def test_list_backup_operations_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = backup.ListBackupOperationsResponse.to_json(
             backup.ListBackupOperationsResponse()
         )
@@ -19998,6 +20751,10 @@ def test_list_backup_operations_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = backup.ListBackupOperationsResponse()
+        post_with_metadata.return_value = (
+            backup.ListBackupOperationsResponse(),
+            metadata,
+        )
 
         client.list_backup_operations(
             request,
@@ -20009,6 +20766,7 @@ def test_list_backup_operations_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_database_roles_rest_bad_request(
@@ -20032,6 +20790,7 @@ def test_list_database_roles_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_database_roles(request)
 
 
@@ -20067,6 +20826,7 @@ def test_list_database_roles_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_database_roles(request)
 
     # Establish that the response is the type that we expect.
@@ -20091,10 +20851,14 @@ def test_list_database_roles_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DatabaseAdminRestInterceptor, "post_list_database_roles"
     ) as post, mock.patch.object(
+        transports.DatabaseAdminRestInterceptor,
+        "post_list_database_roles_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.DatabaseAdminRestInterceptor, "pre_list_database_roles"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = spanner_database_admin.ListDatabaseRolesRequest.pb(
             spanner_database_admin.ListDatabaseRolesRequest()
         )
@@ -20107,6 +20871,7 @@ def test_list_database_roles_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = spanner_database_admin.ListDatabaseRolesResponse.to_json(
             spanner_database_admin.ListDatabaseRolesResponse()
         )
@@ -20119,6 +20884,10 @@ def test_list_database_roles_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = spanner_database_admin.ListDatabaseRolesResponse()
+        post_with_metadata.return_value = (
+            spanner_database_admin.ListDatabaseRolesResponse(),
+            metadata,
+        )
 
         client.list_database_roles(
             request,
@@ -20130,6 +20899,136 @@ def test_list_database_roles_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
+
+
+def test_add_split_points_rest_bad_request(
+    request_type=spanner_database_admin.AddSplitPointsRequest,
+):
+    client = DatabaseAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"database": "projects/sample1/instances/sample2/databases/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.add_split_points(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        spanner_database_admin.AddSplitPointsRequest,
+        dict,
+    ],
+)
+def test_add_split_points_rest_call_success(request_type):
+    client = DatabaseAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"database": "projects/sample1/instances/sample2/databases/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = spanner_database_admin.AddSplitPointsResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = spanner_database_admin.AddSplitPointsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.add_split_points(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, spanner_database_admin.AddSplitPointsResponse)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_add_split_points_rest_interceptors(null_interceptor):
+    transport = transports.DatabaseAdminRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DatabaseAdminRestInterceptor(),
+    )
+    client = DatabaseAdminClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DatabaseAdminRestInterceptor, "post_add_split_points"
+    ) as post, mock.patch.object(
+        transports.DatabaseAdminRestInterceptor, "post_add_split_points_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
+        transports.DatabaseAdminRestInterceptor, "pre_add_split_points"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        post_with_metadata.assert_not_called()
+        pb_message = spanner_database_admin.AddSplitPointsRequest.pb(
+            spanner_database_admin.AddSplitPointsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = spanner_database_admin.AddSplitPointsResponse.to_json(
+            spanner_database_admin.AddSplitPointsResponse()
+        )
+        req.return_value.content = return_value
+
+        request = spanner_database_admin.AddSplitPointsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = spanner_database_admin.AddSplitPointsResponse()
+        post_with_metadata.return_value = (
+            spanner_database_admin.AddSplitPointsResponse(),
+            metadata,
+        )
+
+        client.add_split_points(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_backup_schedule_rest_bad_request(
@@ -20153,6 +21052,7 @@ def test_create_backup_schedule_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_backup_schedule(request)
 
 
@@ -20276,6 +21176,7 @@ def test_create_backup_schedule_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_backup_schedule(request)
 
     # Establish that the response is the type that we expect.
@@ -20300,10 +21201,14 @@ def test_create_backup_schedule_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DatabaseAdminRestInterceptor, "post_create_backup_schedule"
     ) as post, mock.patch.object(
+        transports.DatabaseAdminRestInterceptor,
+        "post_create_backup_schedule_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.DatabaseAdminRestInterceptor, "pre_create_backup_schedule"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = gsad_backup_schedule.CreateBackupScheduleRequest.pb(
             gsad_backup_schedule.CreateBackupScheduleRequest()
         )
@@ -20316,6 +21221,7 @@ def test_create_backup_schedule_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = gsad_backup_schedule.BackupSchedule.to_json(
             gsad_backup_schedule.BackupSchedule()
         )
@@ -20328,6 +21234,10 @@ def test_create_backup_schedule_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = gsad_backup_schedule.BackupSchedule()
+        post_with_metadata.return_value = (
+            gsad_backup_schedule.BackupSchedule(),
+            metadata,
+        )
 
         client.create_backup_schedule(
             request,
@@ -20339,6 +21249,7 @@ def test_create_backup_schedule_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_backup_schedule_rest_bad_request(
@@ -20364,6 +21275,7 @@ def test_get_backup_schedule_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_backup_schedule(request)
 
 
@@ -20401,6 +21313,7 @@ def test_get_backup_schedule_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_backup_schedule(request)
 
     # Establish that the response is the type that we expect.
@@ -20425,10 +21338,14 @@ def test_get_backup_schedule_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DatabaseAdminRestInterceptor, "post_get_backup_schedule"
     ) as post, mock.patch.object(
+        transports.DatabaseAdminRestInterceptor,
+        "post_get_backup_schedule_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.DatabaseAdminRestInterceptor, "pre_get_backup_schedule"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = backup_schedule.GetBackupScheduleRequest.pb(
             backup_schedule.GetBackupScheduleRequest()
         )
@@ -20441,6 +21358,7 @@ def test_get_backup_schedule_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = backup_schedule.BackupSchedule.to_json(
             backup_schedule.BackupSchedule()
         )
@@ -20453,6 +21371,7 @@ def test_get_backup_schedule_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = backup_schedule.BackupSchedule()
+        post_with_metadata.return_value = backup_schedule.BackupSchedule(), metadata
 
         client.get_backup_schedule(
             request,
@@ -20464,6 +21383,7 @@ def test_get_backup_schedule_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_backup_schedule_rest_bad_request(
@@ -20491,6 +21411,7 @@ def test_update_backup_schedule_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.update_backup_schedule(request)
 
 
@@ -20618,6 +21539,7 @@ def test_update_backup_schedule_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.update_backup_schedule(request)
 
     # Establish that the response is the type that we expect.
@@ -20642,10 +21564,14 @@ def test_update_backup_schedule_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DatabaseAdminRestInterceptor, "post_update_backup_schedule"
     ) as post, mock.patch.object(
+        transports.DatabaseAdminRestInterceptor,
+        "post_update_backup_schedule_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.DatabaseAdminRestInterceptor, "pre_update_backup_schedule"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = gsad_backup_schedule.UpdateBackupScheduleRequest.pb(
             gsad_backup_schedule.UpdateBackupScheduleRequest()
         )
@@ -20658,6 +21584,7 @@ def test_update_backup_schedule_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = gsad_backup_schedule.BackupSchedule.to_json(
             gsad_backup_schedule.BackupSchedule()
         )
@@ -20670,6 +21597,10 @@ def test_update_backup_schedule_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = gsad_backup_schedule.BackupSchedule()
+        post_with_metadata.return_value = (
+            gsad_backup_schedule.BackupSchedule(),
+            metadata,
+        )
 
         client.update_backup_schedule(
             request,
@@ -20681,6 +21612,7 @@ def test_update_backup_schedule_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_backup_schedule_rest_bad_request(
@@ -20706,6 +21638,7 @@ def test_delete_backup_schedule_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_backup_schedule(request)
 
 
@@ -20738,6 +21671,7 @@ def test_delete_backup_schedule_rest_call_success(request_type):
         json_return_value = ""
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.delete_backup_schedule(request)
 
     # Establish that the response is the type that we expect.
@@ -20774,6 +21708,7 @@ def test_delete_backup_schedule_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         request = backup_schedule.DeleteBackupScheduleRequest()
         metadata = [
@@ -20814,6 +21749,7 @@ def test_list_backup_schedules_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_backup_schedules(request)
 
 
@@ -20849,6 +21785,7 @@ def test_list_backup_schedules_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_backup_schedules(request)
 
     # Establish that the response is the type that we expect.
@@ -20873,10 +21810,14 @@ def test_list_backup_schedules_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DatabaseAdminRestInterceptor, "post_list_backup_schedules"
     ) as post, mock.patch.object(
+        transports.DatabaseAdminRestInterceptor,
+        "post_list_backup_schedules_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.DatabaseAdminRestInterceptor, "pre_list_backup_schedules"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = backup_schedule.ListBackupSchedulesRequest.pb(
             backup_schedule.ListBackupSchedulesRequest()
         )
@@ -20889,6 +21830,7 @@ def test_list_backup_schedules_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = backup_schedule.ListBackupSchedulesResponse.to_json(
             backup_schedule.ListBackupSchedulesResponse()
         )
@@ -20901,6 +21843,10 @@ def test_list_backup_schedules_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = backup_schedule.ListBackupSchedulesResponse()
+        post_with_metadata.return_value = (
+            backup_schedule.ListBackupSchedulesResponse(),
+            metadata,
+        )
 
         client.list_backup_schedules(
             request,
@@ -20912,6 +21858,7 @@ def test_list_backup_schedules_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_cancel_operation_rest_bad_request(
@@ -20940,6 +21887,7 @@ def test_cancel_operation_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.cancel_operation(request)
 
 
@@ -20972,6 +21920,7 @@ def test_cancel_operation_rest(request_type):
         response_value.content = json_return_value.encode("UTF-8")
 
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         response = client.cancel_operation(request)
 
@@ -21005,6 +21954,7 @@ def test_delete_operation_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_operation(request)
 
 
@@ -21037,6 +21987,7 @@ def test_delete_operation_rest(request_type):
         response_value.content = json_return_value.encode("UTF-8")
 
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         response = client.delete_operation(request)
 
@@ -21070,6 +22021,7 @@ def test_get_operation_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_operation(request)
 
 
@@ -21102,6 +22054,7 @@ def test_get_operation_rest(request_type):
         response_value.content = json_return_value.encode("UTF-8")
 
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         response = client.get_operation(request)
 
@@ -21133,6 +22086,7 @@ def test_list_operations_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_operations(request)
 
 
@@ -21165,6 +22119,7 @@ def test_list_operations_rest(request_type):
         response_value.content = json_return_value.encode("UTF-8")
 
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         response = client.list_operations(request)
 
@@ -21591,6 +22546,26 @@ def test_list_database_roles_empty_call_rest():
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
+def test_add_split_points_empty_call_rest():
+    client = DatabaseAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.add_split_points), "__call__") as call:
+        client.add_split_points(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = spanner_database_admin.AddSplitPointsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
 def test_create_backup_schedule_empty_call_rest():
     client = DatabaseAdminClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -21769,6 +22744,7 @@ def test_database_admin_base_transport():
         "list_database_operations",
         "list_backup_operations",
         "list_database_roles",
+        "add_split_points",
         "create_backup_schedule",
         "get_backup_schedule",
         "update_backup_schedule",
@@ -22112,6 +23088,9 @@ def test_database_admin_client_transport_session_collision(transport_name):
     assert session1 != session2
     session1 = client1.transport.list_database_roles._session
     session2 = client2.transport.list_database_roles._session
+    assert session1 != session2
+    session1 = client1.transport.add_split_points._session
+    session2 = client2.transport.add_split_points._session
     assert session1 != session2
     session1 = client1.transport.create_backup_schedule._session
     session2 = client2.transport.create_backup_schedule._session
@@ -22488,8 +23467,36 @@ def test_parse_instance_path():
     assert expected == actual
 
 
+def test_instance_partition_path():
+    project = "whelk"
+    instance = "octopus"
+    instance_partition = "oyster"
+    expected = "projects/{project}/instances/{instance}/instancePartitions/{instance_partition}".format(
+        project=project,
+        instance=instance,
+        instance_partition=instance_partition,
+    )
+    actual = DatabaseAdminClient.instance_partition_path(
+        project, instance, instance_partition
+    )
+    assert expected == actual
+
+
+def test_parse_instance_partition_path():
+    expected = {
+        "project": "nudibranch",
+        "instance": "cuttlefish",
+        "instance_partition": "mussel",
+    }
+    path = DatabaseAdminClient.instance_partition_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = DatabaseAdminClient.parse_instance_partition_path(path)
+    assert expected == actual
+
+
 def test_common_billing_account_path():
-    billing_account = "whelk"
+    billing_account = "winkle"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -22499,7 +23506,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "octopus",
+        "billing_account": "nautilus",
     }
     path = DatabaseAdminClient.common_billing_account_path(**expected)
 
@@ -22509,7 +23516,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "oyster"
+    folder = "scallop"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -22519,7 +23526,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "nudibranch",
+        "folder": "abalone",
     }
     path = DatabaseAdminClient.common_folder_path(**expected)
 
@@ -22529,7 +23536,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "cuttlefish"
+    organization = "squid"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -22539,7 +23546,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "mussel",
+        "organization": "clam",
     }
     path = DatabaseAdminClient.common_organization_path(**expected)
 
@@ -22549,7 +23556,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "winkle"
+    project = "whelk"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -22559,7 +23566,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "nautilus",
+        "project": "octopus",
     }
     path = DatabaseAdminClient.common_project_path(**expected)
 
@@ -22569,8 +23576,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "scallop"
-    location = "abalone"
+    project = "oyster"
+    location = "nudibranch"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -22581,8 +23588,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "squid",
-        "location": "clam",
+        "project": "cuttlefish",
+        "location": "mussel",
     }
     path = DatabaseAdminClient.common_location_path(**expected)
 

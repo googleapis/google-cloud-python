@@ -13,9 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import logging
+import json  # type: ignore
 
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
-import json  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import retry as retries
@@ -46,6 +47,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -198,8 +207,10 @@ class SpannerRestInterceptor:
     def pre_batch_create_sessions(
         self,
         request: spanner.BatchCreateSessionsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[spanner.BatchCreateSessionsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        spanner.BatchCreateSessionsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for batch_create_sessions
 
         Override in a subclass to manipulate the request or metadata
@@ -212,15 +223,42 @@ class SpannerRestInterceptor:
     ) -> spanner.BatchCreateSessionsResponse:
         """Post-rpc interceptor for batch_create_sessions
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_batch_create_sessions_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Spanner server but before
-        it is returned to user code.
+        it is returned to user code. This `post_batch_create_sessions` interceptor runs
+        before the `post_batch_create_sessions_with_metadata` interceptor.
         """
         return response
 
+    def post_batch_create_sessions_with_metadata(
+        self,
+        response: spanner.BatchCreateSessionsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        spanner.BatchCreateSessionsResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for batch_create_sessions
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Spanner server but before it is returned to user code.
+
+        We recommend only using this `post_batch_create_sessions_with_metadata`
+        interceptor in new development instead of the `post_batch_create_sessions` interceptor.
+        When both interceptors are used, this `post_batch_create_sessions_with_metadata` interceptor runs after the
+        `post_batch_create_sessions` interceptor. The (possibly modified) response returned by
+        `post_batch_create_sessions` will be passed to
+        `post_batch_create_sessions_with_metadata`.
+        """
+        return response, metadata
+
     def pre_batch_write(
-        self, request: spanner.BatchWriteRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[spanner.BatchWriteRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: spanner.BatchWriteRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[spanner.BatchWriteRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for batch_write
 
         Override in a subclass to manipulate the request or metadata
@@ -233,17 +271,44 @@ class SpannerRestInterceptor:
     ) -> rest_streaming.ResponseIterator:
         """Post-rpc interceptor for batch_write
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_batch_write_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Spanner server but before
-        it is returned to user code.
+        it is returned to user code. This `post_batch_write` interceptor runs
+        before the `post_batch_write_with_metadata` interceptor.
         """
         return response
+
+    def post_batch_write_with_metadata(
+        self,
+        response: rest_streaming.ResponseIterator,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        rest_streaming.ResponseIterator, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for batch_write
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Spanner server but before it is returned to user code.
+
+        We recommend only using this `post_batch_write_with_metadata`
+        interceptor in new development instead of the `post_batch_write` interceptor.
+        When both interceptors are used, this `post_batch_write_with_metadata` interceptor runs after the
+        `post_batch_write` interceptor. The (possibly modified) response returned by
+        `post_batch_write` will be passed to
+        `post_batch_write_with_metadata`.
+        """
+        return response, metadata
 
     def pre_begin_transaction(
         self,
         request: spanner.BeginTransactionRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[spanner.BeginTransactionRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        spanner.BeginTransactionRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for begin_transaction
 
         Override in a subclass to manipulate the request or metadata
@@ -256,15 +321,40 @@ class SpannerRestInterceptor:
     ) -> transaction.Transaction:
         """Post-rpc interceptor for begin_transaction
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_begin_transaction_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Spanner server but before
-        it is returned to user code.
+        it is returned to user code. This `post_begin_transaction` interceptor runs
+        before the `post_begin_transaction_with_metadata` interceptor.
         """
         return response
 
+    def post_begin_transaction_with_metadata(
+        self,
+        response: transaction.Transaction,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[transaction.Transaction, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for begin_transaction
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Spanner server but before it is returned to user code.
+
+        We recommend only using this `post_begin_transaction_with_metadata`
+        interceptor in new development instead of the `post_begin_transaction` interceptor.
+        When both interceptors are used, this `post_begin_transaction_with_metadata` interceptor runs after the
+        `post_begin_transaction` interceptor. The (possibly modified) response returned by
+        `post_begin_transaction` will be passed to
+        `post_begin_transaction_with_metadata`.
+        """
+        return response, metadata
+
     def pre_commit(
-        self, request: spanner.CommitRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[spanner.CommitRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: spanner.CommitRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[spanner.CommitRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for commit
 
         Override in a subclass to manipulate the request or metadata
@@ -277,15 +367,40 @@ class SpannerRestInterceptor:
     ) -> commit_response.CommitResponse:
         """Post-rpc interceptor for commit
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_commit_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Spanner server but before
-        it is returned to user code.
+        it is returned to user code. This `post_commit` interceptor runs
+        before the `post_commit_with_metadata` interceptor.
         """
         return response
 
+    def post_commit_with_metadata(
+        self,
+        response: commit_response.CommitResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[commit_response.CommitResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for commit
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Spanner server but before it is returned to user code.
+
+        We recommend only using this `post_commit_with_metadata`
+        interceptor in new development instead of the `post_commit` interceptor.
+        When both interceptors are used, this `post_commit_with_metadata` interceptor runs after the
+        `post_commit` interceptor. The (possibly modified) response returned by
+        `post_commit` will be passed to
+        `post_commit_with_metadata`.
+        """
+        return response, metadata
+
     def pre_create_session(
-        self, request: spanner.CreateSessionRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[spanner.CreateSessionRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: spanner.CreateSessionRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[spanner.CreateSessionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_session
 
         Override in a subclass to manipulate the request or metadata
@@ -296,15 +411,40 @@ class SpannerRestInterceptor:
     def post_create_session(self, response: spanner.Session) -> spanner.Session:
         """Post-rpc interceptor for create_session
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_session_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Spanner server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_session` interceptor runs
+        before the `post_create_session_with_metadata` interceptor.
         """
         return response
 
+    def post_create_session_with_metadata(
+        self,
+        response: spanner.Session,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[spanner.Session, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_session
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Spanner server but before it is returned to user code.
+
+        We recommend only using this `post_create_session_with_metadata`
+        interceptor in new development instead of the `post_create_session` interceptor.
+        When both interceptors are used, this `post_create_session_with_metadata` interceptor runs after the
+        `post_create_session` interceptor. The (possibly modified) response returned by
+        `post_create_session` will be passed to
+        `post_create_session_with_metadata`.
+        """
+        return response, metadata
+
     def pre_delete_session(
-        self, request: spanner.DeleteSessionRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[spanner.DeleteSessionRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: spanner.DeleteSessionRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[spanner.DeleteSessionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_session
 
         Override in a subclass to manipulate the request or metadata
@@ -315,8 +455,8 @@ class SpannerRestInterceptor:
     def pre_execute_batch_dml(
         self,
         request: spanner.ExecuteBatchDmlRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[spanner.ExecuteBatchDmlRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[spanner.ExecuteBatchDmlRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for execute_batch_dml
 
         Override in a subclass to manipulate the request or metadata
@@ -329,15 +469,42 @@ class SpannerRestInterceptor:
     ) -> spanner.ExecuteBatchDmlResponse:
         """Post-rpc interceptor for execute_batch_dml
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_execute_batch_dml_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Spanner server but before
-        it is returned to user code.
+        it is returned to user code. This `post_execute_batch_dml` interceptor runs
+        before the `post_execute_batch_dml_with_metadata` interceptor.
         """
         return response
 
+    def post_execute_batch_dml_with_metadata(
+        self,
+        response: spanner.ExecuteBatchDmlResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        spanner.ExecuteBatchDmlResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for execute_batch_dml
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Spanner server but before it is returned to user code.
+
+        We recommend only using this `post_execute_batch_dml_with_metadata`
+        interceptor in new development instead of the `post_execute_batch_dml` interceptor.
+        When both interceptors are used, this `post_execute_batch_dml_with_metadata` interceptor runs after the
+        `post_execute_batch_dml` interceptor. The (possibly modified) response returned by
+        `post_execute_batch_dml` will be passed to
+        `post_execute_batch_dml_with_metadata`.
+        """
+        return response, metadata
+
     def pre_execute_sql(
-        self, request: spanner.ExecuteSqlRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[spanner.ExecuteSqlRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: spanner.ExecuteSqlRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[spanner.ExecuteSqlRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for execute_sql
 
         Override in a subclass to manipulate the request or metadata
@@ -348,15 +515,40 @@ class SpannerRestInterceptor:
     def post_execute_sql(self, response: result_set.ResultSet) -> result_set.ResultSet:
         """Post-rpc interceptor for execute_sql
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_execute_sql_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Spanner server but before
-        it is returned to user code.
+        it is returned to user code. This `post_execute_sql` interceptor runs
+        before the `post_execute_sql_with_metadata` interceptor.
         """
         return response
 
+    def post_execute_sql_with_metadata(
+        self,
+        response: result_set.ResultSet,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[result_set.ResultSet, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for execute_sql
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Spanner server but before it is returned to user code.
+
+        We recommend only using this `post_execute_sql_with_metadata`
+        interceptor in new development instead of the `post_execute_sql` interceptor.
+        When both interceptors are used, this `post_execute_sql_with_metadata` interceptor runs after the
+        `post_execute_sql` interceptor. The (possibly modified) response returned by
+        `post_execute_sql` will be passed to
+        `post_execute_sql_with_metadata`.
+        """
+        return response, metadata
+
     def pre_execute_streaming_sql(
-        self, request: spanner.ExecuteSqlRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[spanner.ExecuteSqlRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: spanner.ExecuteSqlRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[spanner.ExecuteSqlRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for execute_streaming_sql
 
         Override in a subclass to manipulate the request or metadata
@@ -369,15 +561,42 @@ class SpannerRestInterceptor:
     ) -> rest_streaming.ResponseIterator:
         """Post-rpc interceptor for execute_streaming_sql
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_execute_streaming_sql_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Spanner server but before
-        it is returned to user code.
+        it is returned to user code. This `post_execute_streaming_sql` interceptor runs
+        before the `post_execute_streaming_sql_with_metadata` interceptor.
         """
         return response
 
+    def post_execute_streaming_sql_with_metadata(
+        self,
+        response: rest_streaming.ResponseIterator,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        rest_streaming.ResponseIterator, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for execute_streaming_sql
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Spanner server but before it is returned to user code.
+
+        We recommend only using this `post_execute_streaming_sql_with_metadata`
+        interceptor in new development instead of the `post_execute_streaming_sql` interceptor.
+        When both interceptors are used, this `post_execute_streaming_sql_with_metadata` interceptor runs after the
+        `post_execute_streaming_sql` interceptor. The (possibly modified) response returned by
+        `post_execute_streaming_sql` will be passed to
+        `post_execute_streaming_sql_with_metadata`.
+        """
+        return response, metadata
+
     def pre_get_session(
-        self, request: spanner.GetSessionRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[spanner.GetSessionRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: spanner.GetSessionRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[spanner.GetSessionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_session
 
         Override in a subclass to manipulate the request or metadata
@@ -388,15 +607,40 @@ class SpannerRestInterceptor:
     def post_get_session(self, response: spanner.Session) -> spanner.Session:
         """Post-rpc interceptor for get_session
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_session_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Spanner server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_session` interceptor runs
+        before the `post_get_session_with_metadata` interceptor.
         """
         return response
 
+    def post_get_session_with_metadata(
+        self,
+        response: spanner.Session,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[spanner.Session, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_session
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Spanner server but before it is returned to user code.
+
+        We recommend only using this `post_get_session_with_metadata`
+        interceptor in new development instead of the `post_get_session` interceptor.
+        When both interceptors are used, this `post_get_session_with_metadata` interceptor runs after the
+        `post_get_session` interceptor. The (possibly modified) response returned by
+        `post_get_session` will be passed to
+        `post_get_session_with_metadata`.
+        """
+        return response, metadata
+
     def pre_list_sessions(
-        self, request: spanner.ListSessionsRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[spanner.ListSessionsRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: spanner.ListSessionsRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[spanner.ListSessionsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_sessions
 
         Override in a subclass to manipulate the request or metadata
@@ -409,17 +653,40 @@ class SpannerRestInterceptor:
     ) -> spanner.ListSessionsResponse:
         """Post-rpc interceptor for list_sessions
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_sessions_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Spanner server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_sessions` interceptor runs
+        before the `post_list_sessions_with_metadata` interceptor.
         """
         return response
+
+    def post_list_sessions_with_metadata(
+        self,
+        response: spanner.ListSessionsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[spanner.ListSessionsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for list_sessions
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Spanner server but before it is returned to user code.
+
+        We recommend only using this `post_list_sessions_with_metadata`
+        interceptor in new development instead of the `post_list_sessions` interceptor.
+        When both interceptors are used, this `post_list_sessions_with_metadata` interceptor runs after the
+        `post_list_sessions` interceptor. The (possibly modified) response returned by
+        `post_list_sessions` will be passed to
+        `post_list_sessions_with_metadata`.
+        """
+        return response, metadata
 
     def pre_partition_query(
         self,
         request: spanner.PartitionQueryRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[spanner.PartitionQueryRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[spanner.PartitionQueryRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for partition_query
 
         Override in a subclass to manipulate the request or metadata
@@ -432,15 +699,40 @@ class SpannerRestInterceptor:
     ) -> spanner.PartitionResponse:
         """Post-rpc interceptor for partition_query
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_partition_query_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Spanner server but before
-        it is returned to user code.
+        it is returned to user code. This `post_partition_query` interceptor runs
+        before the `post_partition_query_with_metadata` interceptor.
         """
         return response
 
+    def post_partition_query_with_metadata(
+        self,
+        response: spanner.PartitionResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[spanner.PartitionResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for partition_query
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Spanner server but before it is returned to user code.
+
+        We recommend only using this `post_partition_query_with_metadata`
+        interceptor in new development instead of the `post_partition_query` interceptor.
+        When both interceptors are used, this `post_partition_query_with_metadata` interceptor runs after the
+        `post_partition_query` interceptor. The (possibly modified) response returned by
+        `post_partition_query` will be passed to
+        `post_partition_query_with_metadata`.
+        """
+        return response, metadata
+
     def pre_partition_read(
-        self, request: spanner.PartitionReadRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[spanner.PartitionReadRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: spanner.PartitionReadRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[spanner.PartitionReadRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for partition_read
 
         Override in a subclass to manipulate the request or metadata
@@ -453,15 +745,40 @@ class SpannerRestInterceptor:
     ) -> spanner.PartitionResponse:
         """Post-rpc interceptor for partition_read
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_partition_read_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Spanner server but before
-        it is returned to user code.
+        it is returned to user code. This `post_partition_read` interceptor runs
+        before the `post_partition_read_with_metadata` interceptor.
         """
         return response
 
+    def post_partition_read_with_metadata(
+        self,
+        response: spanner.PartitionResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[spanner.PartitionResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for partition_read
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Spanner server but before it is returned to user code.
+
+        We recommend only using this `post_partition_read_with_metadata`
+        interceptor in new development instead of the `post_partition_read` interceptor.
+        When both interceptors are used, this `post_partition_read_with_metadata` interceptor runs after the
+        `post_partition_read` interceptor. The (possibly modified) response returned by
+        `post_partition_read` will be passed to
+        `post_partition_read_with_metadata`.
+        """
+        return response, metadata
+
     def pre_read(
-        self, request: spanner.ReadRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[spanner.ReadRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: spanner.ReadRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[spanner.ReadRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for read
 
         Override in a subclass to manipulate the request or metadata
@@ -472,15 +789,40 @@ class SpannerRestInterceptor:
     def post_read(self, response: result_set.ResultSet) -> result_set.ResultSet:
         """Post-rpc interceptor for read
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_read_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Spanner server but before
-        it is returned to user code.
+        it is returned to user code. This `post_read` interceptor runs
+        before the `post_read_with_metadata` interceptor.
         """
         return response
 
+    def post_read_with_metadata(
+        self,
+        response: result_set.ResultSet,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[result_set.ResultSet, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for read
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Spanner server but before it is returned to user code.
+
+        We recommend only using this `post_read_with_metadata`
+        interceptor in new development instead of the `post_read` interceptor.
+        When both interceptors are used, this `post_read_with_metadata` interceptor runs after the
+        `post_read` interceptor. The (possibly modified) response returned by
+        `post_read` will be passed to
+        `post_read_with_metadata`.
+        """
+        return response, metadata
+
     def pre_rollback(
-        self, request: spanner.RollbackRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[spanner.RollbackRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: spanner.RollbackRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[spanner.RollbackRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for rollback
 
         Override in a subclass to manipulate the request or metadata
@@ -489,8 +831,10 @@ class SpannerRestInterceptor:
         return request, metadata
 
     def pre_streaming_read(
-        self, request: spanner.ReadRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[spanner.ReadRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: spanner.ReadRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[spanner.ReadRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for streaming_read
 
         Override in a subclass to manipulate the request or metadata
@@ -503,11 +847,36 @@ class SpannerRestInterceptor:
     ) -> rest_streaming.ResponseIterator:
         """Post-rpc interceptor for streaming_read
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_streaming_read_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Spanner server but before
-        it is returned to user code.
+        it is returned to user code. This `post_streaming_read` interceptor runs
+        before the `post_streaming_read_with_metadata` interceptor.
         """
         return response
+
+    def post_streaming_read_with_metadata(
+        self,
+        response: rest_streaming.ResponseIterator,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        rest_streaming.ResponseIterator, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for streaming_read
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Spanner server but before it is returned to user code.
+
+        We recommend only using this `post_streaming_read_with_metadata`
+        interceptor in new development instead of the `post_streaming_read` interceptor.
+        When both interceptors are used, this `post_streaming_read_with_metadata` interceptor runs after the
+        `post_streaming_read` interceptor. The (possibly modified) response returned by
+        `post_streaming_read` will be passed to
+        `post_streaming_read_with_metadata`.
+        """
+        return response, metadata
 
 
 @dataclasses.dataclass
@@ -634,7 +1003,7 @@ class SpannerRestTransport(_BaseSpannerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> spanner.BatchCreateSessionsResponse:
             r"""Call the batch create sessions method over HTTP.
 
@@ -645,8 +1014,10 @@ class SpannerRestTransport(_BaseSpannerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.spanner.BatchCreateSessionsResponse:
@@ -658,6 +1029,7 @@ class SpannerRestTransport(_BaseSpannerRestTransport):
             http_options = (
                 _BaseSpannerRestTransport._BaseBatchCreateSessions._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_batch_create_sessions(
                 request, metadata
             )
@@ -673,6 +1045,33 @@ class SpannerRestTransport(_BaseSpannerRestTransport):
             query_params = _BaseSpannerRestTransport._BaseBatchCreateSessions._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.spanner_v1.SpannerClient.BatchCreateSessions",
+                    extra={
+                        "serviceName": "google.spanner.v1.Spanner",
+                        "rpcName": "BatchCreateSessions",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SpannerRestTransport._BatchCreateSessions._get_response(
@@ -695,7 +1094,35 @@ class SpannerRestTransport(_BaseSpannerRestTransport):
             pb_resp = spanner.BatchCreateSessionsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_batch_create_sessions(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_batch_create_sessions_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = spanner.BatchCreateSessionsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.spanner_v1.SpannerClient.batch_create_sessions",
+                    extra={
+                        "serviceName": "google.spanner.v1.Spanner",
+                        "rpcName": "BatchCreateSessions",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _BatchWrite(_BaseSpannerRestTransport._BaseBatchWrite, SpannerRestStub):
@@ -732,7 +1159,7 @@ class SpannerRestTransport(_BaseSpannerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> rest_streaming.ResponseIterator:
             r"""Call the batch write method over HTTP.
 
@@ -743,8 +1170,10 @@ class SpannerRestTransport(_BaseSpannerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.spanner.BatchWriteResponse:
@@ -754,6 +1183,7 @@ class SpannerRestTransport(_BaseSpannerRestTransport):
             """
 
             http_options = _BaseSpannerRestTransport._BaseBatchWrite._get_http_options()
+
             request, metadata = self._interceptor.pre_batch_write(request, metadata)
             transcoded_request = (
                 _BaseSpannerRestTransport._BaseBatchWrite._get_transcoded_request(
@@ -771,6 +1201,33 @@ class SpannerRestTransport(_BaseSpannerRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.spanner_v1.SpannerClient.BatchWrite",
+                    extra={
+                        "serviceName": "google.spanner.v1.Spanner",
+                        "rpcName": "BatchWrite",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SpannerRestTransport._BatchWrite._get_response(
@@ -790,7 +1247,12 @@ class SpannerRestTransport(_BaseSpannerRestTransport):
 
             # Return the response
             resp = rest_streaming.ResponseIterator(response, spanner.BatchWriteResponse)
+
             resp = self._interceptor.post_batch_write(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_batch_write_with_metadata(
+                resp, response_metadata
+            )
             return resp
 
     class _BeginTransaction(
@@ -828,7 +1290,7 @@ class SpannerRestTransport(_BaseSpannerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> transaction.Transaction:
             r"""Call the begin transaction method over HTTP.
 
@@ -839,8 +1301,10 @@ class SpannerRestTransport(_BaseSpannerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.transaction.Transaction:
@@ -850,6 +1314,7 @@ class SpannerRestTransport(_BaseSpannerRestTransport):
             http_options = (
                 _BaseSpannerRestTransport._BaseBeginTransaction._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_begin_transaction(
                 request, metadata
             )
@@ -872,6 +1337,33 @@ class SpannerRestTransport(_BaseSpannerRestTransport):
                 )
             )
 
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.spanner_v1.SpannerClient.BeginTransaction",
+                    extra={
+                        "serviceName": "google.spanner.v1.Spanner",
+                        "rpcName": "BeginTransaction",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
             # Send the request
             response = SpannerRestTransport._BeginTransaction._get_response(
                 self._host,
@@ -893,7 +1385,33 @@ class SpannerRestTransport(_BaseSpannerRestTransport):
             pb_resp = transaction.Transaction.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_begin_transaction(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_begin_transaction_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = transaction.Transaction.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.spanner_v1.SpannerClient.begin_transaction",
+                    extra={
+                        "serviceName": "google.spanner.v1.Spanner",
+                        "rpcName": "BeginTransaction",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _Commit(_BaseSpannerRestTransport._BaseCommit, SpannerRestStub):
@@ -929,7 +1447,7 @@ class SpannerRestTransport(_BaseSpannerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> commit_response.CommitResponse:
             r"""Call the commit method over HTTP.
 
@@ -940,8 +1458,10 @@ class SpannerRestTransport(_BaseSpannerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.commit_response.CommitResponse:
@@ -951,6 +1471,7 @@ class SpannerRestTransport(_BaseSpannerRestTransport):
             """
 
             http_options = _BaseSpannerRestTransport._BaseCommit._get_http_options()
+
             request, metadata = self._interceptor.pre_commit(request, metadata)
             transcoded_request = (
                 _BaseSpannerRestTransport._BaseCommit._get_transcoded_request(
@@ -966,6 +1487,33 @@ class SpannerRestTransport(_BaseSpannerRestTransport):
             query_params = _BaseSpannerRestTransport._BaseCommit._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.spanner_v1.SpannerClient.Commit",
+                    extra={
+                        "serviceName": "google.spanner.v1.Spanner",
+                        "rpcName": "Commit",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SpannerRestTransport._Commit._get_response(
@@ -988,7 +1536,33 @@ class SpannerRestTransport(_BaseSpannerRestTransport):
             pb_resp = commit_response.CommitResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_commit(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_commit_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = commit_response.CommitResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.spanner_v1.SpannerClient.commit",
+                    extra={
+                        "serviceName": "google.spanner.v1.Spanner",
+                        "rpcName": "Commit",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateSession(_BaseSpannerRestTransport._BaseCreateSession, SpannerRestStub):
@@ -1024,7 +1598,7 @@ class SpannerRestTransport(_BaseSpannerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> spanner.Session:
             r"""Call the create session method over HTTP.
 
@@ -1035,8 +1609,10 @@ class SpannerRestTransport(_BaseSpannerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.spanner.Session:
@@ -1046,6 +1622,7 @@ class SpannerRestTransport(_BaseSpannerRestTransport):
             http_options = (
                 _BaseSpannerRestTransport._BaseCreateSession._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_session(request, metadata)
             transcoded_request = (
                 _BaseSpannerRestTransport._BaseCreateSession._get_transcoded_request(
@@ -1063,6 +1640,33 @@ class SpannerRestTransport(_BaseSpannerRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.spanner_v1.SpannerClient.CreateSession",
+                    extra={
+                        "serviceName": "google.spanner.v1.Spanner",
+                        "rpcName": "CreateSession",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SpannerRestTransport._CreateSession._get_response(
@@ -1085,7 +1689,33 @@ class SpannerRestTransport(_BaseSpannerRestTransport):
             pb_resp = spanner.Session.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_session(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_session_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = spanner.Session.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.spanner_v1.SpannerClient.create_session",
+                    extra={
+                        "serviceName": "google.spanner.v1.Spanner",
+                        "rpcName": "CreateSession",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteSession(_BaseSpannerRestTransport._BaseDeleteSession, SpannerRestStub):
@@ -1120,7 +1750,7 @@ class SpannerRestTransport(_BaseSpannerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete session method over HTTP.
 
@@ -1131,13 +1761,16 @@ class SpannerRestTransport(_BaseSpannerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseSpannerRestTransport._BaseDeleteSession._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_session(request, metadata)
             transcoded_request = (
                 _BaseSpannerRestTransport._BaseDeleteSession._get_transcoded_request(
@@ -1151,6 +1784,33 @@ class SpannerRestTransport(_BaseSpannerRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.spanner_v1.SpannerClient.DeleteSession",
+                    extra={
+                        "serviceName": "google.spanner.v1.Spanner",
+                        "rpcName": "DeleteSession",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SpannerRestTransport._DeleteSession._get_response(
@@ -1202,7 +1862,7 @@ class SpannerRestTransport(_BaseSpannerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> spanner.ExecuteBatchDmlResponse:
             r"""Call the execute batch dml method over HTTP.
 
@@ -1213,8 +1873,10 @@ class SpannerRestTransport(_BaseSpannerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.spanner.ExecuteBatchDmlResponse:
@@ -1262,6 +1924,7 @@ class SpannerRestTransport(_BaseSpannerRestTransport):
             http_options = (
                 _BaseSpannerRestTransport._BaseExecuteBatchDml._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_execute_batch_dml(
                 request, metadata
             )
@@ -1284,6 +1947,33 @@ class SpannerRestTransport(_BaseSpannerRestTransport):
                 )
             )
 
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.spanner_v1.SpannerClient.ExecuteBatchDml",
+                    extra={
+                        "serviceName": "google.spanner.v1.Spanner",
+                        "rpcName": "ExecuteBatchDml",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
             # Send the request
             response = SpannerRestTransport._ExecuteBatchDml._get_response(
                 self._host,
@@ -1305,7 +1995,33 @@ class SpannerRestTransport(_BaseSpannerRestTransport):
             pb_resp = spanner.ExecuteBatchDmlResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_execute_batch_dml(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_execute_batch_dml_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = spanner.ExecuteBatchDmlResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.spanner_v1.SpannerClient.execute_batch_dml",
+                    extra={
+                        "serviceName": "google.spanner.v1.Spanner",
+                        "rpcName": "ExecuteBatchDml",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ExecuteSql(_BaseSpannerRestTransport._BaseExecuteSql, SpannerRestStub):
@@ -1341,7 +2057,7 @@ class SpannerRestTransport(_BaseSpannerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> result_set.ResultSet:
             r"""Call the execute sql method over HTTP.
 
@@ -1353,8 +2069,10 @@ class SpannerRestTransport(_BaseSpannerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.result_set.ResultSet:
@@ -1364,6 +2082,7 @@ class SpannerRestTransport(_BaseSpannerRestTransport):
             """
 
             http_options = _BaseSpannerRestTransport._BaseExecuteSql._get_http_options()
+
             request, metadata = self._interceptor.pre_execute_sql(request, metadata)
             transcoded_request = (
                 _BaseSpannerRestTransport._BaseExecuteSql._get_transcoded_request(
@@ -1381,6 +2100,33 @@ class SpannerRestTransport(_BaseSpannerRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.spanner_v1.SpannerClient.ExecuteSql",
+                    extra={
+                        "serviceName": "google.spanner.v1.Spanner",
+                        "rpcName": "ExecuteSql",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SpannerRestTransport._ExecuteSql._get_response(
@@ -1403,7 +2149,33 @@ class SpannerRestTransport(_BaseSpannerRestTransport):
             pb_resp = result_set.ResultSet.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_execute_sql(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_execute_sql_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = result_set.ResultSet.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.spanner_v1.SpannerClient.execute_sql",
+                    extra={
+                        "serviceName": "google.spanner.v1.Spanner",
+                        "rpcName": "ExecuteSql",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ExecuteStreamingSql(
@@ -1442,7 +2214,7 @@ class SpannerRestTransport(_BaseSpannerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> rest_streaming.ResponseIterator:
             r"""Call the execute streaming sql method over HTTP.
 
@@ -1454,8 +2226,10 @@ class SpannerRestTransport(_BaseSpannerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.result_set.PartialResultSet:
@@ -1470,6 +2244,7 @@ class SpannerRestTransport(_BaseSpannerRestTransport):
             http_options = (
                 _BaseSpannerRestTransport._BaseExecuteStreamingSql._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_execute_streaming_sql(
                 request, metadata
             )
@@ -1485,6 +2260,33 @@ class SpannerRestTransport(_BaseSpannerRestTransport):
             query_params = _BaseSpannerRestTransport._BaseExecuteStreamingSql._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.spanner_v1.SpannerClient.ExecuteStreamingSql",
+                    extra={
+                        "serviceName": "google.spanner.v1.Spanner",
+                        "rpcName": "ExecuteStreamingSql",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SpannerRestTransport._ExecuteStreamingSql._get_response(
@@ -1506,7 +2308,12 @@ class SpannerRestTransport(_BaseSpannerRestTransport):
             resp = rest_streaming.ResponseIterator(
                 response, result_set.PartialResultSet
             )
+
             resp = self._interceptor.post_execute_streaming_sql(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_execute_streaming_sql_with_metadata(
+                resp, response_metadata
+            )
             return resp
 
     class _GetSession(_BaseSpannerRestTransport._BaseGetSession, SpannerRestStub):
@@ -1541,7 +2348,7 @@ class SpannerRestTransport(_BaseSpannerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> spanner.Session:
             r"""Call the get session method over HTTP.
 
@@ -1552,8 +2359,10 @@ class SpannerRestTransport(_BaseSpannerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.spanner.Session:
@@ -1561,6 +2370,7 @@ class SpannerRestTransport(_BaseSpannerRestTransport):
             """
 
             http_options = _BaseSpannerRestTransport._BaseGetSession._get_http_options()
+
             request, metadata = self._interceptor.pre_get_session(request, metadata)
             transcoded_request = (
                 _BaseSpannerRestTransport._BaseGetSession._get_transcoded_request(
@@ -1574,6 +2384,33 @@ class SpannerRestTransport(_BaseSpannerRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.spanner_v1.SpannerClient.GetSession",
+                    extra={
+                        "serviceName": "google.spanner.v1.Spanner",
+                        "rpcName": "GetSession",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SpannerRestTransport._GetSession._get_response(
@@ -1595,7 +2432,33 @@ class SpannerRestTransport(_BaseSpannerRestTransport):
             pb_resp = spanner.Session.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_session(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_session_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = spanner.Session.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.spanner_v1.SpannerClient.get_session",
+                    extra={
+                        "serviceName": "google.spanner.v1.Spanner",
+                        "rpcName": "GetSession",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListSessions(_BaseSpannerRestTransport._BaseListSessions, SpannerRestStub):
@@ -1630,7 +2493,7 @@ class SpannerRestTransport(_BaseSpannerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> spanner.ListSessionsResponse:
             r"""Call the list sessions method over HTTP.
 
@@ -1641,8 +2504,10 @@ class SpannerRestTransport(_BaseSpannerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.spanner.ListSessionsResponse:
@@ -1654,6 +2519,7 @@ class SpannerRestTransport(_BaseSpannerRestTransport):
             http_options = (
                 _BaseSpannerRestTransport._BaseListSessions._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_sessions(request, metadata)
             transcoded_request = (
                 _BaseSpannerRestTransport._BaseListSessions._get_transcoded_request(
@@ -1667,6 +2533,33 @@ class SpannerRestTransport(_BaseSpannerRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.spanner_v1.SpannerClient.ListSessions",
+                    extra={
+                        "serviceName": "google.spanner.v1.Spanner",
+                        "rpcName": "ListSessions",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SpannerRestTransport._ListSessions._get_response(
@@ -1688,7 +2581,33 @@ class SpannerRestTransport(_BaseSpannerRestTransport):
             pb_resp = spanner.ListSessionsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_sessions(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_sessions_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = spanner.ListSessionsResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.spanner_v1.SpannerClient.list_sessions",
+                    extra={
+                        "serviceName": "google.spanner.v1.Spanner",
+                        "rpcName": "ListSessions",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _PartitionQuery(
@@ -1726,7 +2645,7 @@ class SpannerRestTransport(_BaseSpannerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> spanner.PartitionResponse:
             r"""Call the partition query method over HTTP.
 
@@ -1737,8 +2656,10 @@ class SpannerRestTransport(_BaseSpannerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.spanner.PartitionResponse:
@@ -1752,6 +2673,7 @@ class SpannerRestTransport(_BaseSpannerRestTransport):
             http_options = (
                 _BaseSpannerRestTransport._BasePartitionQuery._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_partition_query(request, metadata)
             transcoded_request = (
                 _BaseSpannerRestTransport._BasePartitionQuery._get_transcoded_request(
@@ -1769,6 +2691,33 @@ class SpannerRestTransport(_BaseSpannerRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.spanner_v1.SpannerClient.PartitionQuery",
+                    extra={
+                        "serviceName": "google.spanner.v1.Spanner",
+                        "rpcName": "PartitionQuery",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SpannerRestTransport._PartitionQuery._get_response(
@@ -1791,7 +2740,33 @@ class SpannerRestTransport(_BaseSpannerRestTransport):
             pb_resp = spanner.PartitionResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_partition_query(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_partition_query_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = spanner.PartitionResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.spanner_v1.SpannerClient.partition_query",
+                    extra={
+                        "serviceName": "google.spanner.v1.Spanner",
+                        "rpcName": "PartitionQuery",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _PartitionRead(_BaseSpannerRestTransport._BasePartitionRead, SpannerRestStub):
@@ -1827,7 +2802,7 @@ class SpannerRestTransport(_BaseSpannerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> spanner.PartitionResponse:
             r"""Call the partition read method over HTTP.
 
@@ -1838,8 +2813,10 @@ class SpannerRestTransport(_BaseSpannerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.spanner.PartitionResponse:
@@ -1853,6 +2830,7 @@ class SpannerRestTransport(_BaseSpannerRestTransport):
             http_options = (
                 _BaseSpannerRestTransport._BasePartitionRead._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_partition_read(request, metadata)
             transcoded_request = (
                 _BaseSpannerRestTransport._BasePartitionRead._get_transcoded_request(
@@ -1870,6 +2848,33 @@ class SpannerRestTransport(_BaseSpannerRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.spanner_v1.SpannerClient.PartitionRead",
+                    extra={
+                        "serviceName": "google.spanner.v1.Spanner",
+                        "rpcName": "PartitionRead",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SpannerRestTransport._PartitionRead._get_response(
@@ -1892,7 +2897,33 @@ class SpannerRestTransport(_BaseSpannerRestTransport):
             pb_resp = spanner.PartitionResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_partition_read(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_partition_read_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = spanner.PartitionResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.spanner_v1.SpannerClient.partition_read",
+                    extra={
+                        "serviceName": "google.spanner.v1.Spanner",
+                        "rpcName": "PartitionRead",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _Read(_BaseSpannerRestTransport._BaseRead, SpannerRestStub):
@@ -1928,7 +2959,7 @@ class SpannerRestTransport(_BaseSpannerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> result_set.ResultSet:
             r"""Call the read method over HTTP.
 
@@ -1940,8 +2971,10 @@ class SpannerRestTransport(_BaseSpannerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.result_set.ResultSet:
@@ -1951,6 +2984,7 @@ class SpannerRestTransport(_BaseSpannerRestTransport):
             """
 
             http_options = _BaseSpannerRestTransport._BaseRead._get_http_options()
+
             request, metadata = self._interceptor.pre_read(request, metadata)
             transcoded_request = (
                 _BaseSpannerRestTransport._BaseRead._get_transcoded_request(
@@ -1966,6 +3000,33 @@ class SpannerRestTransport(_BaseSpannerRestTransport):
             query_params = _BaseSpannerRestTransport._BaseRead._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.spanner_v1.SpannerClient.Read",
+                    extra={
+                        "serviceName": "google.spanner.v1.Spanner",
+                        "rpcName": "Read",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SpannerRestTransport._Read._get_response(
@@ -1988,7 +3049,31 @@ class SpannerRestTransport(_BaseSpannerRestTransport):
             pb_resp = result_set.ResultSet.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_read(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_read_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = result_set.ResultSet.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.spanner_v1.SpannerClient.read",
+                    extra={
+                        "serviceName": "google.spanner.v1.Spanner",
+                        "rpcName": "Read",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _Rollback(_BaseSpannerRestTransport._BaseRollback, SpannerRestStub):
@@ -2024,7 +3109,7 @@ class SpannerRestTransport(_BaseSpannerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the rollback method over HTTP.
 
@@ -2035,11 +3120,14 @@ class SpannerRestTransport(_BaseSpannerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = _BaseSpannerRestTransport._BaseRollback._get_http_options()
+
             request, metadata = self._interceptor.pre_rollback(request, metadata)
             transcoded_request = (
                 _BaseSpannerRestTransport._BaseRollback._get_transcoded_request(
@@ -2057,6 +3145,33 @@ class SpannerRestTransport(_BaseSpannerRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.spanner_v1.SpannerClient.Rollback",
+                    extra={
+                        "serviceName": "google.spanner.v1.Spanner",
+                        "rpcName": "Rollback",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SpannerRestTransport._Rollback._get_response(
@@ -2108,7 +3223,7 @@ class SpannerRestTransport(_BaseSpannerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> rest_streaming.ResponseIterator:
             r"""Call the streaming read method over HTTP.
 
@@ -2120,8 +3235,10 @@ class SpannerRestTransport(_BaseSpannerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.result_set.PartialResultSet:
@@ -2136,6 +3253,7 @@ class SpannerRestTransport(_BaseSpannerRestTransport):
             http_options = (
                 _BaseSpannerRestTransport._BaseStreamingRead._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_streaming_read(request, metadata)
             transcoded_request = (
                 _BaseSpannerRestTransport._BaseStreamingRead._get_transcoded_request(
@@ -2153,6 +3271,33 @@ class SpannerRestTransport(_BaseSpannerRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.spanner_v1.SpannerClient.StreamingRead",
+                    extra={
+                        "serviceName": "google.spanner.v1.Spanner",
+                        "rpcName": "StreamingRead",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SpannerRestTransport._StreamingRead._get_response(
@@ -2174,7 +3319,12 @@ class SpannerRestTransport(_BaseSpannerRestTransport):
             resp = rest_streaming.ResponseIterator(
                 response, result_set.PartialResultSet
             )
+
             resp = self._interceptor.post_streaming_read(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_streaming_read_with_metadata(
+                resp, response_metadata
+            )
             return resp
 
     @property

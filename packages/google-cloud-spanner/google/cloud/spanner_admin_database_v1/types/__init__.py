@@ -16,6 +16,7 @@
 from .backup import (
     Backup,
     BackupInfo,
+    BackupInstancePartition,
     CopyBackupEncryptionConfig,
     CopyBackupMetadata,
     CopyBackupRequest,
@@ -50,6 +51,8 @@ from .common import (
     DatabaseDialect,
 )
 from .spanner_database_admin import (
+    AddSplitPointsRequest,
+    AddSplitPointsResponse,
     CreateDatabaseMetadata,
     CreateDatabaseRequest,
     Database,
@@ -70,6 +73,7 @@ from .spanner_database_admin import (
     RestoreDatabaseMetadata,
     RestoreDatabaseRequest,
     RestoreInfo,
+    SplitPoints,
     UpdateDatabaseDdlMetadata,
     UpdateDatabaseDdlRequest,
     UpdateDatabaseMetadata,
@@ -80,6 +84,7 @@ from .spanner_database_admin import (
 __all__ = (
     "Backup",
     "BackupInfo",
+    "BackupInstancePartition",
     "CopyBackupEncryptionConfig",
     "CopyBackupMetadata",
     "CopyBackupRequest",
@@ -108,6 +113,8 @@ __all__ = (
     "EncryptionInfo",
     "OperationProgress",
     "DatabaseDialect",
+    "AddSplitPointsRequest",
+    "AddSplitPointsResponse",
     "CreateDatabaseMetadata",
     "CreateDatabaseRequest",
     "Database",
@@ -128,6 +135,7 @@ __all__ = (
     "RestoreDatabaseMetadata",
     "RestoreDatabaseRequest",
     "RestoreInfo",
+    "SplitPoints",
     "UpdateDatabaseDdlMetadata",
     "UpdateDatabaseDdlRequest",
     "UpdateDatabaseMetadata",

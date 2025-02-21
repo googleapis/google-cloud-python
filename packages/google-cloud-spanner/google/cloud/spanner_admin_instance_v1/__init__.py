@@ -34,6 +34,7 @@ from .types.spanner_instance_admin import CreateInstanceRequest
 from .types.spanner_instance_admin import DeleteInstanceConfigRequest
 from .types.spanner_instance_admin import DeleteInstancePartitionRequest
 from .types.spanner_instance_admin import DeleteInstanceRequest
+from .types.spanner_instance_admin import FreeInstanceMetadata
 from .types.spanner_instance_admin import GetInstanceConfigRequest
 from .types.spanner_instance_admin import GetInstancePartitionRequest
 from .types.spanner_instance_admin import GetInstanceRequest
@@ -74,6 +75,7 @@ __all__ = (
     "DeleteInstanceConfigRequest",
     "DeleteInstancePartitionRequest",
     "DeleteInstanceRequest",
+    "FreeInstanceMetadata",
     "FulfillmentPeriod",
     "GetInstanceConfigRequest",
     "GetInstancePartitionRequest",

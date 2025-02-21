@@ -108,6 +108,9 @@ class TypeCode(proto.Enum):
             integer. For example, ``P1Y2M3DT4H5M6.5S`` represents time
             duration of 1 year, 2 months, 3 days, 4 hours, 5 minutes,
             and 6.5 seconds.
+        UUID (17):
+            Encoded as ``string``, in lower-case hexa-decimal format, as
+            described in RFC 9562, section 4.
     """
     TYPE_CODE_UNSPECIFIED = 0
     BOOL = 1
@@ -125,6 +128,7 @@ class TypeCode(proto.Enum):
     PROTO = 13
     ENUM = 14
     INTERVAL = 16
+    UUID = 17
 
 
 class TypeAnnotationCode(proto.Enum):

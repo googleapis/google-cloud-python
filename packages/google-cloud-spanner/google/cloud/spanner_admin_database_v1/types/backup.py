@@ -45,6 +45,7 @@ __protobuf__ = proto.module(
         "CopyBackupEncryptionConfig",
         "FullBackupSpec",
         "IncrementalBackupSpec",
+        "BackupInstancePartition",
     },
 )
 
@@ -199,6 +200,12 @@ class Backup(proto.Message):
             this is the version time of the backup. This
             field can be used to understand what data is
             being retained by the backup system.
+        instance_partitions (MutableSequence[google.cloud.spanner_admin_database_v1.types.BackupInstancePartition]):
+            Output only. The instance partition(s) storing the backup.
+
+            This is the same as the list of the instance partition(s)
+            that the database had footprint in at the backup's
+            ``version_time``.
     """
 
     class State(proto.Enum):
@@ -299,6 +306,13 @@ class Backup(proto.Message):
         proto.MESSAGE,
         number=18,
         message=timestamp_pb2.Timestamp,
+    )
+    instance_partitions: MutableSequence[
+        "BackupInstancePartition"
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=19,
+        message="BackupInstancePartition",
     )
 
 
@@ -1071,6 +1085,22 @@ class IncrementalBackupSpec(proto.Message):
     created for an incremental backup chain is always a full backup.
 
     """
+
+
+class BackupInstancePartition(proto.Message):
+    r"""Instance partition information for the backup.
+
+    Attributes:
+        instance_partition (str):
+            A unique identifier for the instance partition. Values are
+            of the form
+            ``projects/<project>/instances/<instance>/instancePartitions/<instance_partition_id>``
+    """
+
+    instance_partition: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

@@ -13,9 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import logging
+import json  # type: ignore
 
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
-import json  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import retry as retries
@@ -53,6 +54,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -76,6 +85,14 @@ class DatabaseAdminRestInterceptor:
 
     .. code-block:: python
         class MyCustomDatabaseAdminInterceptor(DatabaseAdminRestInterceptor):
+            def pre_add_split_points(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_add_split_points(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_copy_backup(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -270,9 +287,63 @@ class DatabaseAdminRestInterceptor:
 
     """
 
+    def pre_add_split_points(
+        self,
+        request: spanner_database_admin.AddSplitPointsRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        spanner_database_admin.AddSplitPointsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for add_split_points
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the DatabaseAdmin server.
+        """
+        return request, metadata
+
+    def post_add_split_points(
+        self, response: spanner_database_admin.AddSplitPointsResponse
+    ) -> spanner_database_admin.AddSplitPointsResponse:
+        """Post-rpc interceptor for add_split_points
+
+        DEPRECATED. Please use the `post_add_split_points_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the DatabaseAdmin server but before
+        it is returned to user code. This `post_add_split_points` interceptor runs
+        before the `post_add_split_points_with_metadata` interceptor.
+        """
+        return response
+
+    def post_add_split_points_with_metadata(
+        self,
+        response: spanner_database_admin.AddSplitPointsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        spanner_database_admin.AddSplitPointsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for add_split_points
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the DatabaseAdmin server but before it is returned to user code.
+
+        We recommend only using this `post_add_split_points_with_metadata`
+        interceptor in new development instead of the `post_add_split_points` interceptor.
+        When both interceptors are used, this `post_add_split_points_with_metadata` interceptor runs after the
+        `post_add_split_points` interceptor. The (possibly modified) response returned by
+        `post_add_split_points` will be passed to
+        `post_add_split_points_with_metadata`.
+        """
+        return response, metadata
+
     def pre_copy_backup(
-        self, request: backup.CopyBackupRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[backup.CopyBackupRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: backup.CopyBackupRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[backup.CopyBackupRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for copy_backup
 
         Override in a subclass to manipulate the request or metadata
@@ -285,17 +356,42 @@ class DatabaseAdminRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for copy_backup
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_copy_backup_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the DatabaseAdmin server but before
-        it is returned to user code.
+        it is returned to user code. This `post_copy_backup` interceptor runs
+        before the `post_copy_backup_with_metadata` interceptor.
         """
         return response
+
+    def post_copy_backup_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for copy_backup
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the DatabaseAdmin server but before it is returned to user code.
+
+        We recommend only using this `post_copy_backup_with_metadata`
+        interceptor in new development instead of the `post_copy_backup` interceptor.
+        When both interceptors are used, this `post_copy_backup_with_metadata` interceptor runs after the
+        `post_copy_backup` interceptor. The (possibly modified) response returned by
+        `post_copy_backup` will be passed to
+        `post_copy_backup_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_backup(
         self,
         request: gsad_backup.CreateBackupRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[gsad_backup.CreateBackupRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        gsad_backup.CreateBackupRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for create_backup
 
         Override in a subclass to manipulate the request or metadata
@@ -308,18 +404,42 @@ class DatabaseAdminRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_backup
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_backup_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the DatabaseAdmin server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_backup` interceptor runs
+        before the `post_create_backup_with_metadata` interceptor.
         """
         return response
+
+    def post_create_backup_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_backup
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the DatabaseAdmin server but before it is returned to user code.
+
+        We recommend only using this `post_create_backup_with_metadata`
+        interceptor in new development instead of the `post_create_backup` interceptor.
+        When both interceptors are used, this `post_create_backup_with_metadata` interceptor runs after the
+        `post_create_backup` interceptor. The (possibly modified) response returned by
+        `post_create_backup` will be passed to
+        `post_create_backup_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_backup_schedule(
         self,
         request: gsad_backup_schedule.CreateBackupScheduleRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        gsad_backup_schedule.CreateBackupScheduleRequest, Sequence[Tuple[str, str]]
+        gsad_backup_schedule.CreateBackupScheduleRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for create_backup_schedule
 
@@ -333,17 +453,45 @@ class DatabaseAdminRestInterceptor:
     ) -> gsad_backup_schedule.BackupSchedule:
         """Post-rpc interceptor for create_backup_schedule
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_backup_schedule_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the DatabaseAdmin server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_backup_schedule` interceptor runs
+        before the `post_create_backup_schedule_with_metadata` interceptor.
         """
         return response
+
+    def post_create_backup_schedule_with_metadata(
+        self,
+        response: gsad_backup_schedule.BackupSchedule,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        gsad_backup_schedule.BackupSchedule, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for create_backup_schedule
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the DatabaseAdmin server but before it is returned to user code.
+
+        We recommend only using this `post_create_backup_schedule_with_metadata`
+        interceptor in new development instead of the `post_create_backup_schedule` interceptor.
+        When both interceptors are used, this `post_create_backup_schedule_with_metadata` interceptor runs after the
+        `post_create_backup_schedule` interceptor. The (possibly modified) response returned by
+        `post_create_backup_schedule` will be passed to
+        `post_create_backup_schedule_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_database(
         self,
         request: spanner_database_admin.CreateDatabaseRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[spanner_database_admin.CreateDatabaseRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        spanner_database_admin.CreateDatabaseRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for create_database
 
         Override in a subclass to manipulate the request or metadata
@@ -356,15 +504,40 @@ class DatabaseAdminRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_database
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_database_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the DatabaseAdmin server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_database` interceptor runs
+        before the `post_create_database_with_metadata` interceptor.
         """
         return response
 
+    def post_create_database_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_database
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the DatabaseAdmin server but before it is returned to user code.
+
+        We recommend only using this `post_create_database_with_metadata`
+        interceptor in new development instead of the `post_create_database` interceptor.
+        When both interceptors are used, this `post_create_database_with_metadata` interceptor runs after the
+        `post_create_database` interceptor. The (possibly modified) response returned by
+        `post_create_database` will be passed to
+        `post_create_database_with_metadata`.
+        """
+        return response, metadata
+
     def pre_delete_backup(
-        self, request: backup.DeleteBackupRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[backup.DeleteBackupRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: backup.DeleteBackupRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[backup.DeleteBackupRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_backup
 
         Override in a subclass to manipulate the request or metadata
@@ -375,8 +548,11 @@ class DatabaseAdminRestInterceptor:
     def pre_delete_backup_schedule(
         self,
         request: backup_schedule.DeleteBackupScheduleRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[backup_schedule.DeleteBackupScheduleRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        backup_schedule.DeleteBackupScheduleRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for delete_backup_schedule
 
         Override in a subclass to manipulate the request or metadata
@@ -387,8 +563,11 @@ class DatabaseAdminRestInterceptor:
     def pre_drop_database(
         self,
         request: spanner_database_admin.DropDatabaseRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[spanner_database_admin.DropDatabaseRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        spanner_database_admin.DropDatabaseRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for drop_database
 
         Override in a subclass to manipulate the request or metadata
@@ -397,8 +576,10 @@ class DatabaseAdminRestInterceptor:
         return request, metadata
 
     def pre_get_backup(
-        self, request: backup.GetBackupRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[backup.GetBackupRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: backup.GetBackupRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[backup.GetBackupRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_backup
 
         Override in a subclass to manipulate the request or metadata
@@ -409,17 +590,41 @@ class DatabaseAdminRestInterceptor:
     def post_get_backup(self, response: backup.Backup) -> backup.Backup:
         """Post-rpc interceptor for get_backup
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_backup_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the DatabaseAdmin server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_backup` interceptor runs
+        before the `post_get_backup_with_metadata` interceptor.
         """
         return response
+
+    def post_get_backup_with_metadata(
+        self, response: backup.Backup, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[backup.Backup, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_backup
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the DatabaseAdmin server but before it is returned to user code.
+
+        We recommend only using this `post_get_backup_with_metadata`
+        interceptor in new development instead of the `post_get_backup` interceptor.
+        When both interceptors are used, this `post_get_backup_with_metadata` interceptor runs after the
+        `post_get_backup` interceptor. The (possibly modified) response returned by
+        `post_get_backup` will be passed to
+        `post_get_backup_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_backup_schedule(
         self,
         request: backup_schedule.GetBackupScheduleRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[backup_schedule.GetBackupScheduleRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        backup_schedule.GetBackupScheduleRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for get_backup_schedule
 
         Override in a subclass to manipulate the request or metadata
@@ -432,17 +637,43 @@ class DatabaseAdminRestInterceptor:
     ) -> backup_schedule.BackupSchedule:
         """Post-rpc interceptor for get_backup_schedule
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_backup_schedule_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the DatabaseAdmin server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_backup_schedule` interceptor runs
+        before the `post_get_backup_schedule_with_metadata` interceptor.
         """
         return response
+
+    def post_get_backup_schedule_with_metadata(
+        self,
+        response: backup_schedule.BackupSchedule,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[backup_schedule.BackupSchedule, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_backup_schedule
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the DatabaseAdmin server but before it is returned to user code.
+
+        We recommend only using this `post_get_backup_schedule_with_metadata`
+        interceptor in new development instead of the `post_get_backup_schedule` interceptor.
+        When both interceptors are used, this `post_get_backup_schedule_with_metadata` interceptor runs after the
+        `post_get_backup_schedule` interceptor. The (possibly modified) response returned by
+        `post_get_backup_schedule` will be passed to
+        `post_get_backup_schedule_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_database(
         self,
         request: spanner_database_admin.GetDatabaseRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[spanner_database_admin.GetDatabaseRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        spanner_database_admin.GetDatabaseRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for get_database
 
         Override in a subclass to manipulate the request or metadata
@@ -455,17 +686,45 @@ class DatabaseAdminRestInterceptor:
     ) -> spanner_database_admin.Database:
         """Post-rpc interceptor for get_database
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_database_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the DatabaseAdmin server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_database` interceptor runs
+        before the `post_get_database_with_metadata` interceptor.
         """
         return response
+
+    def post_get_database_with_metadata(
+        self,
+        response: spanner_database_admin.Database,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        spanner_database_admin.Database, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for get_database
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the DatabaseAdmin server but before it is returned to user code.
+
+        We recommend only using this `post_get_database_with_metadata`
+        interceptor in new development instead of the `post_get_database` interceptor.
+        When both interceptors are used, this `post_get_database_with_metadata` interceptor runs after the
+        `post_get_database` interceptor. The (possibly modified) response returned by
+        `post_get_database` will be passed to
+        `post_get_database_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_database_ddl(
         self,
         request: spanner_database_admin.GetDatabaseDdlRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[spanner_database_admin.GetDatabaseDdlRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        spanner_database_admin.GetDatabaseDdlRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for get_database_ddl
 
         Override in a subclass to manipulate the request or metadata
@@ -478,17 +737,45 @@ class DatabaseAdminRestInterceptor:
     ) -> spanner_database_admin.GetDatabaseDdlResponse:
         """Post-rpc interceptor for get_database_ddl
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_database_ddl_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the DatabaseAdmin server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_database_ddl` interceptor runs
+        before the `post_get_database_ddl_with_metadata` interceptor.
         """
         return response
+
+    def post_get_database_ddl_with_metadata(
+        self,
+        response: spanner_database_admin.GetDatabaseDdlResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        spanner_database_admin.GetDatabaseDdlResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for get_database_ddl
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the DatabaseAdmin server but before it is returned to user code.
+
+        We recommend only using this `post_get_database_ddl_with_metadata`
+        interceptor in new development instead of the `post_get_database_ddl` interceptor.
+        When both interceptors are used, this `post_get_database_ddl_with_metadata` interceptor runs after the
+        `post_get_database_ddl` interceptor. The (possibly modified) response returned by
+        `post_get_database_ddl` will be passed to
+        `post_get_database_ddl_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_iam_policy(
         self,
         request: iam_policy_pb2.GetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -499,17 +786,42 @@ class DatabaseAdminRestInterceptor:
     def post_get_iam_policy(self, response: policy_pb2.Policy) -> policy_pb2.Policy:
         """Post-rpc interceptor for get_iam_policy
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_iam_policy_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the DatabaseAdmin server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_iam_policy` interceptor runs
+        before the `post_get_iam_policy_with_metadata` interceptor.
         """
         return response
+
+    def post_get_iam_policy_with_metadata(
+        self,
+        response: policy_pb2.Policy,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[policy_pb2.Policy, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_iam_policy
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the DatabaseAdmin server but before it is returned to user code.
+
+        We recommend only using this `post_get_iam_policy_with_metadata`
+        interceptor in new development instead of the `post_get_iam_policy` interceptor.
+        When both interceptors are used, this `post_get_iam_policy_with_metadata` interceptor runs after the
+        `post_get_iam_policy` interceptor. The (possibly modified) response returned by
+        `post_get_iam_policy` will be passed to
+        `post_get_iam_policy_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_backup_operations(
         self,
         request: backup.ListBackupOperationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[backup.ListBackupOperationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        backup.ListBackupOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_backup_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -522,15 +834,42 @@ class DatabaseAdminRestInterceptor:
     ) -> backup.ListBackupOperationsResponse:
         """Post-rpc interceptor for list_backup_operations
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_backup_operations_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the DatabaseAdmin server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_backup_operations` interceptor runs
+        before the `post_list_backup_operations_with_metadata` interceptor.
         """
         return response
 
+    def post_list_backup_operations_with_metadata(
+        self,
+        response: backup.ListBackupOperationsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        backup.ListBackupOperationsResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_backup_operations
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the DatabaseAdmin server but before it is returned to user code.
+
+        We recommend only using this `post_list_backup_operations_with_metadata`
+        interceptor in new development instead of the `post_list_backup_operations` interceptor.
+        When both interceptors are used, this `post_list_backup_operations_with_metadata` interceptor runs after the
+        `post_list_backup_operations` interceptor. The (possibly modified) response returned by
+        `post_list_backup_operations` will be passed to
+        `post_list_backup_operations_with_metadata`.
+        """
+        return response, metadata
+
     def pre_list_backups(
-        self, request: backup.ListBackupsRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[backup.ListBackupsRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: backup.ListBackupsRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[backup.ListBackupsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_backups
 
         Override in a subclass to manipulate the request or metadata
@@ -543,17 +882,43 @@ class DatabaseAdminRestInterceptor:
     ) -> backup.ListBackupsResponse:
         """Post-rpc interceptor for list_backups
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_backups_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the DatabaseAdmin server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_backups` interceptor runs
+        before the `post_list_backups_with_metadata` interceptor.
         """
         return response
+
+    def post_list_backups_with_metadata(
+        self,
+        response: backup.ListBackupsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[backup.ListBackupsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for list_backups
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the DatabaseAdmin server but before it is returned to user code.
+
+        We recommend only using this `post_list_backups_with_metadata`
+        interceptor in new development instead of the `post_list_backups` interceptor.
+        When both interceptors are used, this `post_list_backups_with_metadata` interceptor runs after the
+        `post_list_backups` interceptor. The (possibly modified) response returned by
+        `post_list_backups` will be passed to
+        `post_list_backups_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_backup_schedules(
         self,
         request: backup_schedule.ListBackupSchedulesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[backup_schedule.ListBackupSchedulesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        backup_schedule.ListBackupSchedulesRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for list_backup_schedules
 
         Override in a subclass to manipulate the request or metadata
@@ -566,18 +931,45 @@ class DatabaseAdminRestInterceptor:
     ) -> backup_schedule.ListBackupSchedulesResponse:
         """Post-rpc interceptor for list_backup_schedules
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_backup_schedules_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the DatabaseAdmin server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_backup_schedules` interceptor runs
+        before the `post_list_backup_schedules_with_metadata` interceptor.
         """
         return response
+
+    def post_list_backup_schedules_with_metadata(
+        self,
+        response: backup_schedule.ListBackupSchedulesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        backup_schedule.ListBackupSchedulesResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_backup_schedules
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the DatabaseAdmin server but before it is returned to user code.
+
+        We recommend only using this `post_list_backup_schedules_with_metadata`
+        interceptor in new development instead of the `post_list_backup_schedules` interceptor.
+        When both interceptors are used, this `post_list_backup_schedules_with_metadata` interceptor runs after the
+        `post_list_backup_schedules` interceptor. The (possibly modified) response returned by
+        `post_list_backup_schedules` will be passed to
+        `post_list_backup_schedules_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_database_operations(
         self,
         request: spanner_database_admin.ListDatabaseOperationsRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        spanner_database_admin.ListDatabaseOperationsRequest, Sequence[Tuple[str, str]]
+        spanner_database_admin.ListDatabaseOperationsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for list_database_operations
 
@@ -591,18 +983,45 @@ class DatabaseAdminRestInterceptor:
     ) -> spanner_database_admin.ListDatabaseOperationsResponse:
         """Post-rpc interceptor for list_database_operations
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_database_operations_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the DatabaseAdmin server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_database_operations` interceptor runs
+        before the `post_list_database_operations_with_metadata` interceptor.
         """
         return response
+
+    def post_list_database_operations_with_metadata(
+        self,
+        response: spanner_database_admin.ListDatabaseOperationsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        spanner_database_admin.ListDatabaseOperationsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_database_operations
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the DatabaseAdmin server but before it is returned to user code.
+
+        We recommend only using this `post_list_database_operations_with_metadata`
+        interceptor in new development instead of the `post_list_database_operations` interceptor.
+        When both interceptors are used, this `post_list_database_operations_with_metadata` interceptor runs after the
+        `post_list_database_operations` interceptor. The (possibly modified) response returned by
+        `post_list_database_operations` will be passed to
+        `post_list_database_operations_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_database_roles(
         self,
         request: spanner_database_admin.ListDatabaseRolesRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        spanner_database_admin.ListDatabaseRolesRequest, Sequence[Tuple[str, str]]
+        spanner_database_admin.ListDatabaseRolesRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for list_database_roles
 
@@ -616,17 +1035,46 @@ class DatabaseAdminRestInterceptor:
     ) -> spanner_database_admin.ListDatabaseRolesResponse:
         """Post-rpc interceptor for list_database_roles
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_database_roles_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the DatabaseAdmin server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_database_roles` interceptor runs
+        before the `post_list_database_roles_with_metadata` interceptor.
         """
         return response
+
+    def post_list_database_roles_with_metadata(
+        self,
+        response: spanner_database_admin.ListDatabaseRolesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        spanner_database_admin.ListDatabaseRolesResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_database_roles
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the DatabaseAdmin server but before it is returned to user code.
+
+        We recommend only using this `post_list_database_roles_with_metadata`
+        interceptor in new development instead of the `post_list_database_roles` interceptor.
+        When both interceptors are used, this `post_list_database_roles_with_metadata` interceptor runs after the
+        `post_list_database_roles` interceptor. The (possibly modified) response returned by
+        `post_list_database_roles` will be passed to
+        `post_list_database_roles_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_databases(
         self,
         request: spanner_database_admin.ListDatabasesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[spanner_database_admin.ListDatabasesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        spanner_database_admin.ListDatabasesRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for list_databases
 
         Override in a subclass to manipulate the request or metadata
@@ -639,18 +1087,45 @@ class DatabaseAdminRestInterceptor:
     ) -> spanner_database_admin.ListDatabasesResponse:
         """Post-rpc interceptor for list_databases
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_databases_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the DatabaseAdmin server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_databases` interceptor runs
+        before the `post_list_databases_with_metadata` interceptor.
         """
         return response
+
+    def post_list_databases_with_metadata(
+        self,
+        response: spanner_database_admin.ListDatabasesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        spanner_database_admin.ListDatabasesResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_databases
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the DatabaseAdmin server but before it is returned to user code.
+
+        We recommend only using this `post_list_databases_with_metadata`
+        interceptor in new development instead of the `post_list_databases` interceptor.
+        When both interceptors are used, this `post_list_databases_with_metadata` interceptor runs after the
+        `post_list_databases` interceptor. The (possibly modified) response returned by
+        `post_list_databases` will be passed to
+        `post_list_databases_with_metadata`.
+        """
+        return response, metadata
 
     def pre_restore_database(
         self,
         request: spanner_database_admin.RestoreDatabaseRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        spanner_database_admin.RestoreDatabaseRequest, Sequence[Tuple[str, str]]
+        spanner_database_admin.RestoreDatabaseRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for restore_database
 
@@ -664,17 +1139,42 @@ class DatabaseAdminRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for restore_database
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_restore_database_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the DatabaseAdmin server but before
-        it is returned to user code.
+        it is returned to user code. This `post_restore_database` interceptor runs
+        before the `post_restore_database_with_metadata` interceptor.
         """
         return response
+
+    def post_restore_database_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for restore_database
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the DatabaseAdmin server but before it is returned to user code.
+
+        We recommend only using this `post_restore_database_with_metadata`
+        interceptor in new development instead of the `post_restore_database` interceptor.
+        When both interceptors are used, this `post_restore_database_with_metadata` interceptor runs after the
+        `post_restore_database` interceptor. The (possibly modified) response returned by
+        `post_restore_database` will be passed to
+        `post_restore_database_with_metadata`.
+        """
+        return response, metadata
 
     def pre_set_iam_policy(
         self,
         request: iam_policy_pb2.SetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for set_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -685,17 +1185,43 @@ class DatabaseAdminRestInterceptor:
     def post_set_iam_policy(self, response: policy_pb2.Policy) -> policy_pb2.Policy:
         """Post-rpc interceptor for set_iam_policy
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_set_iam_policy_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the DatabaseAdmin server but before
-        it is returned to user code.
+        it is returned to user code. This `post_set_iam_policy` interceptor runs
+        before the `post_set_iam_policy_with_metadata` interceptor.
         """
         return response
+
+    def post_set_iam_policy_with_metadata(
+        self,
+        response: policy_pb2.Policy,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[policy_pb2.Policy, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for set_iam_policy
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the DatabaseAdmin server but before it is returned to user code.
+
+        We recommend only using this `post_set_iam_policy_with_metadata`
+        interceptor in new development instead of the `post_set_iam_policy` interceptor.
+        When both interceptors are used, this `post_set_iam_policy_with_metadata` interceptor runs after the
+        `post_set_iam_policy` interceptor. The (possibly modified) response returned by
+        `post_set_iam_policy` will be passed to
+        `post_set_iam_policy_with_metadata`.
+        """
+        return response, metadata
 
     def pre_test_iam_permissions(
         self,
         request: iam_policy_pb2.TestIamPermissionsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[iam_policy_pb2.TestIamPermissionsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        iam_policy_pb2.TestIamPermissionsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the request or metadata
@@ -708,17 +1234,45 @@ class DatabaseAdminRestInterceptor:
     ) -> iam_policy_pb2.TestIamPermissionsResponse:
         """Post-rpc interceptor for test_iam_permissions
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_test_iam_permissions_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the DatabaseAdmin server but before
-        it is returned to user code.
+        it is returned to user code. This `post_test_iam_permissions` interceptor runs
+        before the `post_test_iam_permissions_with_metadata` interceptor.
         """
         return response
+
+    def post_test_iam_permissions_with_metadata(
+        self,
+        response: iam_policy_pb2.TestIamPermissionsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        iam_policy_pb2.TestIamPermissionsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for test_iam_permissions
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the DatabaseAdmin server but before it is returned to user code.
+
+        We recommend only using this `post_test_iam_permissions_with_metadata`
+        interceptor in new development instead of the `post_test_iam_permissions` interceptor.
+        When both interceptors are used, this `post_test_iam_permissions_with_metadata` interceptor runs after the
+        `post_test_iam_permissions` interceptor. The (possibly modified) response returned by
+        `post_test_iam_permissions` will be passed to
+        `post_test_iam_permissions_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_backup(
         self,
         request: gsad_backup.UpdateBackupRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[gsad_backup.UpdateBackupRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        gsad_backup.UpdateBackupRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for update_backup
 
         Override in a subclass to manipulate the request or metadata
@@ -729,18 +1283,42 @@ class DatabaseAdminRestInterceptor:
     def post_update_backup(self, response: gsad_backup.Backup) -> gsad_backup.Backup:
         """Post-rpc interceptor for update_backup
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_backup_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the DatabaseAdmin server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_backup` interceptor runs
+        before the `post_update_backup_with_metadata` interceptor.
         """
         return response
+
+    def post_update_backup_with_metadata(
+        self,
+        response: gsad_backup.Backup,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[gsad_backup.Backup, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_backup
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the DatabaseAdmin server but before it is returned to user code.
+
+        We recommend only using this `post_update_backup_with_metadata`
+        interceptor in new development instead of the `post_update_backup` interceptor.
+        When both interceptors are used, this `post_update_backup_with_metadata` interceptor runs after the
+        `post_update_backup` interceptor. The (possibly modified) response returned by
+        `post_update_backup` will be passed to
+        `post_update_backup_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_backup_schedule(
         self,
         request: gsad_backup_schedule.UpdateBackupScheduleRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        gsad_backup_schedule.UpdateBackupScheduleRequest, Sequence[Tuple[str, str]]
+        gsad_backup_schedule.UpdateBackupScheduleRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for update_backup_schedule
 
@@ -754,17 +1332,45 @@ class DatabaseAdminRestInterceptor:
     ) -> gsad_backup_schedule.BackupSchedule:
         """Post-rpc interceptor for update_backup_schedule
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_backup_schedule_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the DatabaseAdmin server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_backup_schedule` interceptor runs
+        before the `post_update_backup_schedule_with_metadata` interceptor.
         """
         return response
+
+    def post_update_backup_schedule_with_metadata(
+        self,
+        response: gsad_backup_schedule.BackupSchedule,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        gsad_backup_schedule.BackupSchedule, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for update_backup_schedule
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the DatabaseAdmin server but before it is returned to user code.
+
+        We recommend only using this `post_update_backup_schedule_with_metadata`
+        interceptor in new development instead of the `post_update_backup_schedule` interceptor.
+        When both interceptors are used, this `post_update_backup_schedule_with_metadata` interceptor runs after the
+        `post_update_backup_schedule` interceptor. The (possibly modified) response returned by
+        `post_update_backup_schedule` will be passed to
+        `post_update_backup_schedule_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_database(
         self,
         request: spanner_database_admin.UpdateDatabaseRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[spanner_database_admin.UpdateDatabaseRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        spanner_database_admin.UpdateDatabaseRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for update_database
 
         Override in a subclass to manipulate the request or metadata
@@ -777,18 +1383,42 @@ class DatabaseAdminRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_database
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_database_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the DatabaseAdmin server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_database` interceptor runs
+        before the `post_update_database_with_metadata` interceptor.
         """
         return response
+
+    def post_update_database_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_database
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the DatabaseAdmin server but before it is returned to user code.
+
+        We recommend only using this `post_update_database_with_metadata`
+        interceptor in new development instead of the `post_update_database` interceptor.
+        When both interceptors are used, this `post_update_database_with_metadata` interceptor runs after the
+        `post_update_database` interceptor. The (possibly modified) response returned by
+        `post_update_database` will be passed to
+        `post_update_database_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_database_ddl(
         self,
         request: spanner_database_admin.UpdateDatabaseDdlRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        spanner_database_admin.UpdateDatabaseDdlRequest, Sequence[Tuple[str, str]]
+        spanner_database_admin.UpdateDatabaseDdlRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for update_database_ddl
 
@@ -802,17 +1432,42 @@ class DatabaseAdminRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_database_ddl
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_database_ddl_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the DatabaseAdmin server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_database_ddl` interceptor runs
+        before the `post_update_database_ddl_with_metadata` interceptor.
         """
         return response
+
+    def post_update_database_ddl_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_database_ddl
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the DatabaseAdmin server but before it is returned to user code.
+
+        We recommend only using this `post_update_database_ddl_with_metadata`
+        interceptor in new development instead of the `post_update_database_ddl` interceptor.
+        When both interceptors are used, this `post_update_database_ddl_with_metadata` interceptor runs after the
+        `post_update_database_ddl` interceptor. The (possibly modified) response returned by
+        `post_update_database_ddl` will be passed to
+        `post_update_database_ddl_with_metadata`.
+        """
+        return response, metadata
 
     def pre_cancel_operation(
         self,
         request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -832,8 +1487,10 @@ class DatabaseAdminRestInterceptor:
     def pre_delete_operation(
         self,
         request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -853,8 +1510,10 @@ class DatabaseAdminRestInterceptor:
     def pre_get_operation(
         self,
         request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -876,8 +1535,10 @@ class DatabaseAdminRestInterceptor:
     def pre_list_operations(
         self,
         request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -1091,6 +1752,163 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
         # Return the client from cache.
         return self._operations_client
 
+    class _AddSplitPoints(
+        _BaseDatabaseAdminRestTransport._BaseAddSplitPoints, DatabaseAdminRestStub
+    ):
+        def __hash__(self):
+            return hash("DatabaseAdminRestTransport.AddSplitPoints")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: spanner_database_admin.AddSplitPointsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> spanner_database_admin.AddSplitPointsResponse:
+            r"""Call the add split points method over HTTP.
+
+            Args:
+                request (~.spanner_database_admin.AddSplitPointsRequest):
+                    The request object. The request for
+                [AddSplitPoints][google.spanner.admin.database.v1.DatabaseAdmin.AddSplitPoints].
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.spanner_database_admin.AddSplitPointsResponse:
+                    The response for
+                [AddSplitPoints][google.spanner.admin.database.v1.DatabaseAdmin.AddSplitPoints].
+
+            """
+
+            http_options = (
+                _BaseDatabaseAdminRestTransport._BaseAddSplitPoints._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_add_split_points(
+                request, metadata
+            )
+            transcoded_request = _BaseDatabaseAdminRestTransport._BaseAddSplitPoints._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseDatabaseAdminRestTransport._BaseAddSplitPoints._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseDatabaseAdminRestTransport._BaseAddSplitPoints._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.spanner.admin.database_v1.DatabaseAdminClient.AddSplitPoints",
+                    extra={
+                        "serviceName": "google.spanner.admin.database.v1.DatabaseAdmin",
+                        "rpcName": "AddSplitPoints",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = DatabaseAdminRestTransport._AddSplitPoints._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = spanner_database_admin.AddSplitPointsResponse()
+            pb_resp = spanner_database_admin.AddSplitPointsResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_add_split_points(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_add_split_points_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        spanner_database_admin.AddSplitPointsResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.spanner.admin.database_v1.DatabaseAdminClient.add_split_points",
+                    extra={
+                        "serviceName": "google.spanner.admin.database.v1.DatabaseAdmin",
+                        "rpcName": "AddSplitPoints",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     class _CopyBackup(
         _BaseDatabaseAdminRestTransport._BaseCopyBackup, DatabaseAdminRestStub
     ):
@@ -1126,7 +1944,7 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the copy backup method over HTTP.
 
@@ -1137,8 +1955,10 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1151,6 +1971,7 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
             http_options = (
                 _BaseDatabaseAdminRestTransport._BaseCopyBackup._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_copy_backup(request, metadata)
             transcoded_request = (
                 _BaseDatabaseAdminRestTransport._BaseCopyBackup._get_transcoded_request(
@@ -1171,6 +1992,33 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
                 )
             )
 
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.spanner.admin.database_v1.DatabaseAdminClient.CopyBackup",
+                    extra={
+                        "serviceName": "google.spanner.admin.database.v1.DatabaseAdmin",
+                        "rpcName": "CopyBackup",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
             # Send the request
             response = DatabaseAdminRestTransport._CopyBackup._get_response(
                 self._host,
@@ -1190,7 +2038,33 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_copy_backup(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_copy_backup_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.spanner.admin.database_v1.DatabaseAdminClient.copy_backup",
+                    extra={
+                        "serviceName": "google.spanner.admin.database.v1.DatabaseAdmin",
+                        "rpcName": "CopyBackup",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateBackup(
@@ -1228,7 +2102,7 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create backup method over HTTP.
 
@@ -1239,8 +2113,10 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1253,6 +2129,7 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
             http_options = (
                 _BaseDatabaseAdminRestTransport._BaseCreateBackup._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_backup(request, metadata)
             transcoded_request = _BaseDatabaseAdminRestTransport._BaseCreateBackup._get_transcoded_request(
                 http_options, request
@@ -1266,6 +2143,33 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
             query_params = _BaseDatabaseAdminRestTransport._BaseCreateBackup._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.spanner.admin.database_v1.DatabaseAdminClient.CreateBackup",
+                    extra={
+                        "serviceName": "google.spanner.admin.database.v1.DatabaseAdmin",
+                        "rpcName": "CreateBackup",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DatabaseAdminRestTransport._CreateBackup._get_response(
@@ -1286,7 +2190,33 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_backup(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_backup_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.spanner.admin.database_v1.DatabaseAdminClient.create_backup",
+                    extra={
+                        "serviceName": "google.spanner.admin.database.v1.DatabaseAdmin",
+                        "rpcName": "CreateBackup",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateBackupSchedule(
@@ -1324,7 +2254,7 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> gsad_backup_schedule.BackupSchedule:
             r"""Call the create backup schedule method over HTTP.
 
@@ -1335,8 +2265,10 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.gsad_backup_schedule.BackupSchedule:
@@ -1349,6 +2281,7 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
             http_options = (
                 _BaseDatabaseAdminRestTransport._BaseCreateBackupSchedule._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_backup_schedule(
                 request, metadata
             )
@@ -1364,6 +2297,33 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
             query_params = _BaseDatabaseAdminRestTransport._BaseCreateBackupSchedule._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.spanner.admin.database_v1.DatabaseAdminClient.CreateBackupSchedule",
+                    extra={
+                        "serviceName": "google.spanner.admin.database.v1.DatabaseAdmin",
+                        "rpcName": "CreateBackupSchedule",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DatabaseAdminRestTransport._CreateBackupSchedule._get_response(
@@ -1386,7 +2346,35 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
             pb_resp = gsad_backup_schedule.BackupSchedule.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_backup_schedule(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_backup_schedule_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = gsad_backup_schedule.BackupSchedule.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.spanner.admin.database_v1.DatabaseAdminClient.create_backup_schedule",
+                    extra={
+                        "serviceName": "google.spanner.admin.database.v1.DatabaseAdmin",
+                        "rpcName": "CreateBackupSchedule",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateDatabase(
@@ -1424,7 +2412,7 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create database method over HTTP.
 
@@ -1435,8 +2423,10 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1449,6 +2439,7 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
             http_options = (
                 _BaseDatabaseAdminRestTransport._BaseCreateDatabase._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_database(request, metadata)
             transcoded_request = _BaseDatabaseAdminRestTransport._BaseCreateDatabase._get_transcoded_request(
                 http_options, request
@@ -1462,6 +2453,33 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
             query_params = _BaseDatabaseAdminRestTransport._BaseCreateDatabase._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.spanner.admin.database_v1.DatabaseAdminClient.CreateDatabase",
+                    extra={
+                        "serviceName": "google.spanner.admin.database.v1.DatabaseAdmin",
+                        "rpcName": "CreateDatabase",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DatabaseAdminRestTransport._CreateDatabase._get_response(
@@ -1482,7 +2500,33 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_database(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_database_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.spanner.admin.database_v1.DatabaseAdminClient.create_database",
+                    extra={
+                        "serviceName": "google.spanner.admin.database.v1.DatabaseAdmin",
+                        "rpcName": "CreateDatabase",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteBackup(
@@ -1519,7 +2563,7 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete backup method over HTTP.
 
@@ -1530,13 +2574,16 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseDatabaseAdminRestTransport._BaseDeleteBackup._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_backup(request, metadata)
             transcoded_request = _BaseDatabaseAdminRestTransport._BaseDeleteBackup._get_transcoded_request(
                 http_options, request
@@ -1546,6 +2593,33 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
             query_params = _BaseDatabaseAdminRestTransport._BaseDeleteBackup._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.spanner.admin.database_v1.DatabaseAdminClient.DeleteBackup",
+                    extra={
+                        "serviceName": "google.spanner.admin.database.v1.DatabaseAdmin",
+                        "rpcName": "DeleteBackup",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DatabaseAdminRestTransport._DeleteBackup._get_response(
@@ -1596,7 +2670,7 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete backup schedule method over HTTP.
 
@@ -1607,13 +2681,16 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseDatabaseAdminRestTransport._BaseDeleteBackupSchedule._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_backup_schedule(
                 request, metadata
             )
@@ -1625,6 +2702,33 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
             query_params = _BaseDatabaseAdminRestTransport._BaseDeleteBackupSchedule._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.spanner.admin.database_v1.DatabaseAdminClient.DeleteBackupSchedule",
+                    extra={
+                        "serviceName": "google.spanner.admin.database.v1.DatabaseAdmin",
+                        "rpcName": "DeleteBackupSchedule",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DatabaseAdminRestTransport._DeleteBackupSchedule._get_response(
@@ -1675,7 +2779,7 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the drop database method over HTTP.
 
@@ -1686,13 +2790,16 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseDatabaseAdminRestTransport._BaseDropDatabase._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_drop_database(request, metadata)
             transcoded_request = _BaseDatabaseAdminRestTransport._BaseDropDatabase._get_transcoded_request(
                 http_options, request
@@ -1702,6 +2809,33 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
             query_params = _BaseDatabaseAdminRestTransport._BaseDropDatabase._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.spanner.admin.database_v1.DatabaseAdminClient.DropDatabase",
+                    extra={
+                        "serviceName": "google.spanner.admin.database.v1.DatabaseAdmin",
+                        "rpcName": "DropDatabase",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DatabaseAdminRestTransport._DropDatabase._get_response(
@@ -1752,7 +2886,7 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> backup.Backup:
             r"""Call the get backup method over HTTP.
 
@@ -1763,8 +2897,10 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.backup.Backup:
@@ -1774,6 +2910,7 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
             http_options = (
                 _BaseDatabaseAdminRestTransport._BaseGetBackup._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_backup(request, metadata)
             transcoded_request = (
                 _BaseDatabaseAdminRestTransport._BaseGetBackup._get_transcoded_request(
@@ -1787,6 +2924,33 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.spanner.admin.database_v1.DatabaseAdminClient.GetBackup",
+                    extra={
+                        "serviceName": "google.spanner.admin.database.v1.DatabaseAdmin",
+                        "rpcName": "GetBackup",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DatabaseAdminRestTransport._GetBackup._get_response(
@@ -1808,7 +2972,33 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
             pb_resp = backup.Backup.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_backup(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_backup_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = backup.Backup.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.spanner.admin.database_v1.DatabaseAdminClient.get_backup",
+                    extra={
+                        "serviceName": "google.spanner.admin.database.v1.DatabaseAdmin",
+                        "rpcName": "GetBackup",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetBackupSchedule(
@@ -1845,7 +3035,7 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> backup_schedule.BackupSchedule:
             r"""Call the get backup schedule method over HTTP.
 
@@ -1856,8 +3046,10 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.backup_schedule.BackupSchedule:
@@ -1870,6 +3062,7 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
             http_options = (
                 _BaseDatabaseAdminRestTransport._BaseGetBackupSchedule._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_backup_schedule(
                 request, metadata
             )
@@ -1881,6 +3074,33 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
             query_params = _BaseDatabaseAdminRestTransport._BaseGetBackupSchedule._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.spanner.admin.database_v1.DatabaseAdminClient.GetBackupSchedule",
+                    extra={
+                        "serviceName": "google.spanner.admin.database.v1.DatabaseAdmin",
+                        "rpcName": "GetBackupSchedule",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DatabaseAdminRestTransport._GetBackupSchedule._get_response(
@@ -1902,7 +3122,33 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
             pb_resp = backup_schedule.BackupSchedule.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_backup_schedule(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_backup_schedule_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = backup_schedule.BackupSchedule.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.spanner.admin.database_v1.DatabaseAdminClient.get_backup_schedule",
+                    extra={
+                        "serviceName": "google.spanner.admin.database.v1.DatabaseAdmin",
+                        "rpcName": "GetBackupSchedule",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetDatabase(
@@ -1939,7 +3185,7 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> spanner_database_admin.Database:
             r"""Call the get database method over HTTP.
 
@@ -1950,8 +3196,10 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.spanner_database_admin.Database:
@@ -1961,6 +3209,7 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
             http_options = (
                 _BaseDatabaseAdminRestTransport._BaseGetDatabase._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_database(request, metadata)
             transcoded_request = _BaseDatabaseAdminRestTransport._BaseGetDatabase._get_transcoded_request(
                 http_options, request
@@ -1972,6 +3221,33 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.spanner.admin.database_v1.DatabaseAdminClient.GetDatabase",
+                    extra={
+                        "serviceName": "google.spanner.admin.database.v1.DatabaseAdmin",
+                        "rpcName": "GetDatabase",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DatabaseAdminRestTransport._GetDatabase._get_response(
@@ -1993,7 +3269,33 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
             pb_resp = spanner_database_admin.Database.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_database(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_database_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = spanner_database_admin.Database.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.spanner.admin.database_v1.DatabaseAdminClient.get_database",
+                    extra={
+                        "serviceName": "google.spanner.admin.database.v1.DatabaseAdmin",
+                        "rpcName": "GetDatabase",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetDatabaseDdl(
@@ -2030,7 +3332,7 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> spanner_database_admin.GetDatabaseDdlResponse:
             r"""Call the get database ddl method over HTTP.
 
@@ -2041,8 +3343,10 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.spanner_database_admin.GetDatabaseDdlResponse:
@@ -2054,6 +3358,7 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
             http_options = (
                 _BaseDatabaseAdminRestTransport._BaseGetDatabaseDdl._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_database_ddl(
                 request, metadata
             )
@@ -2065,6 +3370,33 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
             query_params = _BaseDatabaseAdminRestTransport._BaseGetDatabaseDdl._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.spanner.admin.database_v1.DatabaseAdminClient.GetDatabaseDdl",
+                    extra={
+                        "serviceName": "google.spanner.admin.database.v1.DatabaseAdmin",
+                        "rpcName": "GetDatabaseDdl",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DatabaseAdminRestTransport._GetDatabaseDdl._get_response(
@@ -2086,7 +3418,35 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
             pb_resp = spanner_database_admin.GetDatabaseDdlResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_database_ddl(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_database_ddl_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        spanner_database_admin.GetDatabaseDdlResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.spanner.admin.database_v1.DatabaseAdminClient.get_database_ddl",
+                    extra={
+                        "serviceName": "google.spanner.admin.database.v1.DatabaseAdmin",
+                        "rpcName": "GetDatabaseDdl",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetIamPolicy(
@@ -2124,7 +3484,7 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> policy_pb2.Policy:
             r"""Call the get iam policy method over HTTP.
 
@@ -2134,8 +3494,10 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.policy_pb2.Policy:
@@ -2220,6 +3582,7 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
             http_options = (
                 _BaseDatabaseAdminRestTransport._BaseGetIamPolicy._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
             transcoded_request = _BaseDatabaseAdminRestTransport._BaseGetIamPolicy._get_transcoded_request(
                 http_options, request
@@ -2233,6 +3596,33 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
             query_params = _BaseDatabaseAdminRestTransport._BaseGetIamPolicy._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.spanner.admin.database_v1.DatabaseAdminClient.GetIamPolicy",
+                    extra={
+                        "serviceName": "google.spanner.admin.database.v1.DatabaseAdmin",
+                        "rpcName": "GetIamPolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DatabaseAdminRestTransport._GetIamPolicy._get_response(
@@ -2255,7 +3645,33 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
             pb_resp = resp
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_iam_policy(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_iam_policy_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.spanner.admin.database_v1.DatabaseAdminClient.get_iam_policy",
+                    extra={
+                        "serviceName": "google.spanner.admin.database.v1.DatabaseAdmin",
+                        "rpcName": "GetIamPolicy",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListBackupOperations(
@@ -2292,7 +3708,7 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> backup.ListBackupOperationsResponse:
             r"""Call the list backup operations method over HTTP.
 
@@ -2303,8 +3719,10 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.backup.ListBackupOperationsResponse:
@@ -2316,6 +3734,7 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
             http_options = (
                 _BaseDatabaseAdminRestTransport._BaseListBackupOperations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_backup_operations(
                 request, metadata
             )
@@ -2327,6 +3746,33 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
             query_params = _BaseDatabaseAdminRestTransport._BaseListBackupOperations._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.spanner.admin.database_v1.DatabaseAdminClient.ListBackupOperations",
+                    extra={
+                        "serviceName": "google.spanner.admin.database.v1.DatabaseAdmin",
+                        "rpcName": "ListBackupOperations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DatabaseAdminRestTransport._ListBackupOperations._get_response(
@@ -2348,7 +3794,35 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
             pb_resp = backup.ListBackupOperationsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_backup_operations(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_backup_operations_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = backup.ListBackupOperationsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.spanner.admin.database_v1.DatabaseAdminClient.list_backup_operations",
+                    extra={
+                        "serviceName": "google.spanner.admin.database.v1.DatabaseAdmin",
+                        "rpcName": "ListBackupOperations",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListBackups(
@@ -2385,7 +3859,7 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> backup.ListBackupsResponse:
             r"""Call the list backups method over HTTP.
 
@@ -2396,8 +3870,10 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.backup.ListBackupsResponse:
@@ -2409,6 +3885,7 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
             http_options = (
                 _BaseDatabaseAdminRestTransport._BaseListBackups._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_backups(request, metadata)
             transcoded_request = _BaseDatabaseAdminRestTransport._BaseListBackups._get_transcoded_request(
                 http_options, request
@@ -2420,6 +3897,33 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.spanner.admin.database_v1.DatabaseAdminClient.ListBackups",
+                    extra={
+                        "serviceName": "google.spanner.admin.database.v1.DatabaseAdmin",
+                        "rpcName": "ListBackups",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DatabaseAdminRestTransport._ListBackups._get_response(
@@ -2441,7 +3945,33 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
             pb_resp = backup.ListBackupsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_backups(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_backups_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = backup.ListBackupsResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.spanner.admin.database_v1.DatabaseAdminClient.list_backups",
+                    extra={
+                        "serviceName": "google.spanner.admin.database.v1.DatabaseAdmin",
+                        "rpcName": "ListBackups",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListBackupSchedules(
@@ -2478,7 +4008,7 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> backup_schedule.ListBackupSchedulesResponse:
             r"""Call the list backup schedules method over HTTP.
 
@@ -2489,8 +4019,10 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.backup_schedule.ListBackupSchedulesResponse:
@@ -2502,6 +4034,7 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
             http_options = (
                 _BaseDatabaseAdminRestTransport._BaseListBackupSchedules._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_backup_schedules(
                 request, metadata
             )
@@ -2513,6 +4046,33 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
             query_params = _BaseDatabaseAdminRestTransport._BaseListBackupSchedules._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.spanner.admin.database_v1.DatabaseAdminClient.ListBackupSchedules",
+                    extra={
+                        "serviceName": "google.spanner.admin.database.v1.DatabaseAdmin",
+                        "rpcName": "ListBackupSchedules",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DatabaseAdminRestTransport._ListBackupSchedules._get_response(
@@ -2534,7 +4094,35 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
             pb_resp = backup_schedule.ListBackupSchedulesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_backup_schedules(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_backup_schedules_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        backup_schedule.ListBackupSchedulesResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.spanner.admin.database_v1.DatabaseAdminClient.list_backup_schedules",
+                    extra={
+                        "serviceName": "google.spanner.admin.database.v1.DatabaseAdmin",
+                        "rpcName": "ListBackupSchedules",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListDatabaseOperations(
@@ -2572,7 +4160,7 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> spanner_database_admin.ListDatabaseOperationsResponse:
             r"""Call the list database operations method over HTTP.
 
@@ -2583,8 +4171,10 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.spanner_database_admin.ListDatabaseOperationsResponse:
@@ -2596,6 +4186,7 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
             http_options = (
                 _BaseDatabaseAdminRestTransport._BaseListDatabaseOperations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_database_operations(
                 request, metadata
             )
@@ -2607,6 +4198,33 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
             query_params = _BaseDatabaseAdminRestTransport._BaseListDatabaseOperations._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.spanner.admin.database_v1.DatabaseAdminClient.ListDatabaseOperations",
+                    extra={
+                        "serviceName": "google.spanner.admin.database.v1.DatabaseAdmin",
+                        "rpcName": "ListDatabaseOperations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DatabaseAdminRestTransport._ListDatabaseOperations._get_response(
@@ -2628,7 +4246,37 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
             pb_resp = spanner_database_admin.ListDatabaseOperationsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_database_operations(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_database_operations_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        spanner_database_admin.ListDatabaseOperationsResponse.to_json(
+                            response
+                        )
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.spanner.admin.database_v1.DatabaseAdminClient.list_database_operations",
+                    extra={
+                        "serviceName": "google.spanner.admin.database.v1.DatabaseAdmin",
+                        "rpcName": "ListDatabaseOperations",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListDatabaseRoles(
@@ -2665,7 +4313,7 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> spanner_database_admin.ListDatabaseRolesResponse:
             r"""Call the list database roles method over HTTP.
 
@@ -2676,8 +4324,10 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.spanner_database_admin.ListDatabaseRolesResponse:
@@ -2689,6 +4339,7 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
             http_options = (
                 _BaseDatabaseAdminRestTransport._BaseListDatabaseRoles._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_database_roles(
                 request, metadata
             )
@@ -2700,6 +4351,33 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
             query_params = _BaseDatabaseAdminRestTransport._BaseListDatabaseRoles._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.spanner.admin.database_v1.DatabaseAdminClient.ListDatabaseRoles",
+                    extra={
+                        "serviceName": "google.spanner.admin.database.v1.DatabaseAdmin",
+                        "rpcName": "ListDatabaseRoles",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DatabaseAdminRestTransport._ListDatabaseRoles._get_response(
@@ -2721,7 +4399,37 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
             pb_resp = spanner_database_admin.ListDatabaseRolesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_database_roles(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_database_roles_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        spanner_database_admin.ListDatabaseRolesResponse.to_json(
+                            response
+                        )
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.spanner.admin.database_v1.DatabaseAdminClient.list_database_roles",
+                    extra={
+                        "serviceName": "google.spanner.admin.database.v1.DatabaseAdmin",
+                        "rpcName": "ListDatabaseRoles",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListDatabases(
@@ -2758,7 +4466,7 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> spanner_database_admin.ListDatabasesResponse:
             r"""Call the list databases method over HTTP.
 
@@ -2769,8 +4477,10 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.spanner_database_admin.ListDatabasesResponse:
@@ -2782,6 +4492,7 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
             http_options = (
                 _BaseDatabaseAdminRestTransport._BaseListDatabases._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_databases(request, metadata)
             transcoded_request = _BaseDatabaseAdminRestTransport._BaseListDatabases._get_transcoded_request(
                 http_options, request
@@ -2791,6 +4502,33 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
             query_params = _BaseDatabaseAdminRestTransport._BaseListDatabases._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.spanner.admin.database_v1.DatabaseAdminClient.ListDatabases",
+                    extra={
+                        "serviceName": "google.spanner.admin.database.v1.DatabaseAdmin",
+                        "rpcName": "ListDatabases",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DatabaseAdminRestTransport._ListDatabases._get_response(
@@ -2812,7 +4550,35 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
             pb_resp = spanner_database_admin.ListDatabasesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_databases(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_databases_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        spanner_database_admin.ListDatabasesResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.spanner.admin.database_v1.DatabaseAdminClient.list_databases",
+                    extra={
+                        "serviceName": "google.spanner.admin.database.v1.DatabaseAdmin",
+                        "rpcName": "ListDatabases",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _RestoreDatabase(
@@ -2850,7 +4616,7 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the restore database method over HTTP.
 
@@ -2861,8 +4627,10 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -2875,6 +4643,7 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
             http_options = (
                 _BaseDatabaseAdminRestTransport._BaseRestoreDatabase._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_restore_database(
                 request, metadata
             )
@@ -2890,6 +4659,33 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
             query_params = _BaseDatabaseAdminRestTransport._BaseRestoreDatabase._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.spanner.admin.database_v1.DatabaseAdminClient.RestoreDatabase",
+                    extra={
+                        "serviceName": "google.spanner.admin.database.v1.DatabaseAdmin",
+                        "rpcName": "RestoreDatabase",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DatabaseAdminRestTransport._RestoreDatabase._get_response(
@@ -2910,7 +4706,33 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_restore_database(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_restore_database_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.spanner.admin.database_v1.DatabaseAdminClient.restore_database",
+                    extra={
+                        "serviceName": "google.spanner.admin.database.v1.DatabaseAdmin",
+                        "rpcName": "RestoreDatabase",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _SetIamPolicy(
@@ -2948,7 +4770,7 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> policy_pb2.Policy:
             r"""Call the set iam policy method over HTTP.
 
@@ -2958,8 +4780,10 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.policy_pb2.Policy:
@@ -3044,6 +4868,7 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
             http_options = (
                 _BaseDatabaseAdminRestTransport._BaseSetIamPolicy._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
             transcoded_request = _BaseDatabaseAdminRestTransport._BaseSetIamPolicy._get_transcoded_request(
                 http_options, request
@@ -3057,6 +4882,33 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
             query_params = _BaseDatabaseAdminRestTransport._BaseSetIamPolicy._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.spanner.admin.database_v1.DatabaseAdminClient.SetIamPolicy",
+                    extra={
+                        "serviceName": "google.spanner.admin.database.v1.DatabaseAdmin",
+                        "rpcName": "SetIamPolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DatabaseAdminRestTransport._SetIamPolicy._get_response(
@@ -3079,7 +4931,33 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
             pb_resp = resp
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_set_iam_policy(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_set_iam_policy_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.spanner.admin.database_v1.DatabaseAdminClient.set_iam_policy",
+                    extra={
+                        "serviceName": "google.spanner.admin.database.v1.DatabaseAdmin",
+                        "rpcName": "SetIamPolicy",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _TestIamPermissions(
@@ -3117,7 +4995,7 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> iam_policy_pb2.TestIamPermissionsResponse:
             r"""Call the test iam permissions method over HTTP.
 
@@ -3127,8 +5005,10 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.iam_policy_pb2.TestIamPermissionsResponse:
@@ -3138,6 +5018,7 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
             http_options = (
                 _BaseDatabaseAdminRestTransport._BaseTestIamPermissions._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_test_iam_permissions(
                 request, metadata
             )
@@ -3153,6 +5034,33 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
             query_params = _BaseDatabaseAdminRestTransport._BaseTestIamPermissions._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.spanner.admin.database_v1.DatabaseAdminClient.TestIamPermissions",
+                    extra={
+                        "serviceName": "google.spanner.admin.database.v1.DatabaseAdmin",
+                        "rpcName": "TestIamPermissions",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DatabaseAdminRestTransport._TestIamPermissions._get_response(
@@ -3175,7 +5083,33 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
             pb_resp = resp
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_test_iam_permissions(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_test_iam_permissions_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.spanner.admin.database_v1.DatabaseAdminClient.test_iam_permissions",
+                    extra={
+                        "serviceName": "google.spanner.admin.database.v1.DatabaseAdmin",
+                        "rpcName": "TestIamPermissions",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateBackup(
@@ -3213,7 +5147,7 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> gsad_backup.Backup:
             r"""Call the update backup method over HTTP.
 
@@ -3224,8 +5158,10 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.gsad_backup.Backup:
@@ -3235,6 +5171,7 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
             http_options = (
                 _BaseDatabaseAdminRestTransport._BaseUpdateBackup._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_backup(request, metadata)
             transcoded_request = _BaseDatabaseAdminRestTransport._BaseUpdateBackup._get_transcoded_request(
                 http_options, request
@@ -3248,6 +5185,33 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
             query_params = _BaseDatabaseAdminRestTransport._BaseUpdateBackup._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.spanner.admin.database_v1.DatabaseAdminClient.UpdateBackup",
+                    extra={
+                        "serviceName": "google.spanner.admin.database.v1.DatabaseAdmin",
+                        "rpcName": "UpdateBackup",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DatabaseAdminRestTransport._UpdateBackup._get_response(
@@ -3270,7 +5234,33 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
             pb_resp = gsad_backup.Backup.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_backup(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_backup_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = gsad_backup.Backup.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.spanner.admin.database_v1.DatabaseAdminClient.update_backup",
+                    extra={
+                        "serviceName": "google.spanner.admin.database.v1.DatabaseAdmin",
+                        "rpcName": "UpdateBackup",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateBackupSchedule(
@@ -3308,7 +5298,7 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> gsad_backup_schedule.BackupSchedule:
             r"""Call the update backup schedule method over HTTP.
 
@@ -3319,8 +5309,10 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.gsad_backup_schedule.BackupSchedule:
@@ -3333,6 +5325,7 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
             http_options = (
                 _BaseDatabaseAdminRestTransport._BaseUpdateBackupSchedule._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_backup_schedule(
                 request, metadata
             )
@@ -3348,6 +5341,33 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
             query_params = _BaseDatabaseAdminRestTransport._BaseUpdateBackupSchedule._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.spanner.admin.database_v1.DatabaseAdminClient.UpdateBackupSchedule",
+                    extra={
+                        "serviceName": "google.spanner.admin.database.v1.DatabaseAdmin",
+                        "rpcName": "UpdateBackupSchedule",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DatabaseAdminRestTransport._UpdateBackupSchedule._get_response(
@@ -3370,7 +5390,35 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
             pb_resp = gsad_backup_schedule.BackupSchedule.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_backup_schedule(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_backup_schedule_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = gsad_backup_schedule.BackupSchedule.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.spanner.admin.database_v1.DatabaseAdminClient.update_backup_schedule",
+                    extra={
+                        "serviceName": "google.spanner.admin.database.v1.DatabaseAdmin",
+                        "rpcName": "UpdateBackupSchedule",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateDatabase(
@@ -3408,7 +5456,7 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the update database method over HTTP.
 
@@ -3419,8 +5467,10 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -3433,6 +5483,7 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
             http_options = (
                 _BaseDatabaseAdminRestTransport._BaseUpdateDatabase._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_database(request, metadata)
             transcoded_request = _BaseDatabaseAdminRestTransport._BaseUpdateDatabase._get_transcoded_request(
                 http_options, request
@@ -3446,6 +5497,33 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
             query_params = _BaseDatabaseAdminRestTransport._BaseUpdateDatabase._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.spanner.admin.database_v1.DatabaseAdminClient.UpdateDatabase",
+                    extra={
+                        "serviceName": "google.spanner.admin.database.v1.DatabaseAdmin",
+                        "rpcName": "UpdateDatabase",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DatabaseAdminRestTransport._UpdateDatabase._get_response(
@@ -3466,7 +5544,33 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_database(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_database_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.spanner.admin.database_v1.DatabaseAdminClient.update_database",
+                    extra={
+                        "serviceName": "google.spanner.admin.database.v1.DatabaseAdmin",
+                        "rpcName": "UpdateDatabase",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateDatabaseDdl(
@@ -3504,7 +5608,7 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the update database ddl method over HTTP.
 
@@ -3532,8 +5636,10 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -3546,6 +5652,7 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
             http_options = (
                 _BaseDatabaseAdminRestTransport._BaseUpdateDatabaseDdl._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_database_ddl(
                 request, metadata
             )
@@ -3561,6 +5668,33 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
             query_params = _BaseDatabaseAdminRestTransport._BaseUpdateDatabaseDdl._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.spanner.admin.database_v1.DatabaseAdminClient.UpdateDatabaseDdl",
+                    extra={
+                        "serviceName": "google.spanner.admin.database.v1.DatabaseAdmin",
+                        "rpcName": "UpdateDatabaseDdl",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DatabaseAdminRestTransport._UpdateDatabaseDdl._get_response(
@@ -3581,8 +5715,45 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_database_ddl(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_database_ddl_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.spanner.admin.database_v1.DatabaseAdminClient.update_database_ddl",
+                    extra={
+                        "serviceName": "google.spanner.admin.database.v1.DatabaseAdmin",
+                        "rpcName": "UpdateDatabaseDdl",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
+
+    @property
+    def add_split_points(
+        self,
+    ) -> Callable[
+        [spanner_database_admin.AddSplitPointsRequest],
+        spanner_database_admin.AddSplitPointsResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._AddSplitPoints(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def copy_backup(
@@ -3856,7 +6027,7 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> None:
             r"""Call the cancel operation method over HTTP.
 
@@ -3866,13 +6037,16 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseDatabaseAdminRestTransport._BaseCancelOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
             )
@@ -3884,6 +6058,33 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
             query_params = _BaseDatabaseAdminRestTransport._BaseCancelOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.spanner.admin.database_v1.DatabaseAdminClient.CancelOperation",
+                    extra={
+                        "serviceName": "google.spanner.admin.database.v1.DatabaseAdmin",
+                        "rpcName": "CancelOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DatabaseAdminRestTransport._CancelOperation._get_response(
@@ -3940,7 +6141,7 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> None:
             r"""Call the delete operation method over HTTP.
 
@@ -3950,13 +6151,16 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseDatabaseAdminRestTransport._BaseDeleteOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_operation(
                 request, metadata
             )
@@ -3968,6 +6172,33 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
             query_params = _BaseDatabaseAdminRestTransport._BaseDeleteOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.spanner.admin.database_v1.DatabaseAdminClient.DeleteOperation",
+                    extra={
+                        "serviceName": "google.spanner.admin.database.v1.DatabaseAdmin",
+                        "rpcName": "DeleteOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DatabaseAdminRestTransport._DeleteOperation._get_response(
@@ -4024,7 +6255,7 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the get operation method over HTTP.
 
@@ -4034,8 +6265,10 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.Operation: Response from GetOperation method.
@@ -4044,6 +6277,7 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
             http_options = (
                 _BaseDatabaseAdminRestTransport._BaseGetOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = _BaseDatabaseAdminRestTransport._BaseGetOperation._get_transcoded_request(
                 http_options, request
@@ -4053,6 +6287,33 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
             query_params = _BaseDatabaseAdminRestTransport._BaseGetOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.spanner.admin.database_v1.DatabaseAdminClient.GetOperation",
+                    extra={
+                        "serviceName": "google.spanner.admin.database.v1.DatabaseAdmin",
+                        "rpcName": "GetOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DatabaseAdminRestTransport._GetOperation._get_response(
@@ -4073,6 +6334,27 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.spanner.admin.database_v1.DatabaseAdminAsyncClient.GetOperation",
+                    extra={
+                        "serviceName": "google.spanner.admin.database.v1.DatabaseAdmin",
+                        "rpcName": "GetOperation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -4113,7 +6395,7 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.ListOperationsResponse:
             r"""Call the list operations method over HTTP.
 
@@ -4123,8 +6405,10 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
@@ -4133,6 +6417,7 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
             http_options = (
                 _BaseDatabaseAdminRestTransport._BaseListOperations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
             transcoded_request = _BaseDatabaseAdminRestTransport._BaseListOperations._get_transcoded_request(
                 http_options, request
@@ -4142,6 +6427,33 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
             query_params = _BaseDatabaseAdminRestTransport._BaseListOperations._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.spanner.admin.database_v1.DatabaseAdminClient.ListOperations",
+                    extra={
+                        "serviceName": "google.spanner.admin.database.v1.DatabaseAdmin",
+                        "rpcName": "ListOperations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DatabaseAdminRestTransport._ListOperations._get_response(
@@ -4162,6 +6474,27 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.spanner.admin.database_v1.DatabaseAdminAsyncClient.ListOperations",
+                    extra={
+                        "serviceName": "google.spanner.admin.database.v1.DatabaseAdmin",
+                        "rpcName": "ListOperations",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property

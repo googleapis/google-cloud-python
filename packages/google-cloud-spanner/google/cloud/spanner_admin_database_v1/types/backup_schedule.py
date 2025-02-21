@@ -160,7 +160,7 @@ class CrontabSpec(proto.Message):
             Required. Textual representation of the crontab. User can
             customize the backup frequency and the backup version time
             using the cron expression. The version time must be in UTC
-            timzeone.
+            timezone.
 
             The backup will contain an externally consistent copy of the
             database at the version time. Allowed frequencies are 12
