@@ -142,6 +142,7 @@ from .sessions import (
     TerminateSessionRequest,
 )
 from .shared import (
+    AuthenticationConfig,
     AutotuningConfig,
     Component,
     EnvironmentConfig,
@@ -298,6 +299,7 @@ __all__ = (
     "Session",
     "SparkConnectConfig",
     "TerminateSessionRequest",
+    "AuthenticationConfig",
     "AutotuningConfig",
     "EnvironmentConfig",
     "ExecutionConfig",

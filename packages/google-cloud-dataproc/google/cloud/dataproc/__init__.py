@@ -193,6 +193,7 @@ from google.cloud.dataproc_v1.types.sessions import (
     TerminateSessionRequest,
 )
 from google.cloud.dataproc_v1.types.shared import (
+    AuthenticationConfig,
     AutotuningConfig,
     Component,
     EnvironmentConfig,
@@ -365,6 +366,7 @@ __all__ = (
     "Session",
     "SparkConnectConfig",
     "TerminateSessionRequest",
+    "AuthenticationConfig",
     "AutotuningConfig",
     "EnvironmentConfig",
     "ExecutionConfig",

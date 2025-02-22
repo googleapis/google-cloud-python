@@ -39,6 +39,7 @@ __protobuf__ = proto.module(
         "KubernetesSoftwareConfig",
         "GkeNodePoolTarget",
         "GkeNodePoolConfig",
+        "AuthenticationConfig",
         "AutotuningConfig",
         "RepositoryConfig",
         "PyPiRepositoryConfig",
@@ -270,6 +271,13 @@ class ExecutionConfig(proto.Message):
             project-level, per-location staging and temporary buckets.
             **This field requires a Cloud Storage bucket name, not a
             ``gs://...`` URI to a Cloud Storage bucket.**
+        authentication_config (google.cloud.dataproc_v1.types.AuthenticationConfig):
+            Optional. Authentication configuration used
+            to set the default identity for the workload
+            execution. The config specifies the type of
+            identity (service account or user) that will be
+            used by workloads to access resources on the
+            project(s).
     """
 
     service_account: str = proto.Field(
@@ -307,6 +315,11 @@ class ExecutionConfig(proto.Message):
     staging_bucket: str = proto.Field(
         proto.STRING,
         number=10,
+    )
+    authentication_config: "AuthenticationConfig" = proto.Field(
+        proto.MESSAGE,
+        number=11,
+        message="AuthenticationConfig",
     )
 
 
@@ -885,6 +898,46 @@ class GkeNodePoolConfig(proto.Message):
         proto.MESSAGE,
         number=4,
         message=GkeNodePoolAutoscalingConfig,
+    )
+
+
+class AuthenticationConfig(proto.Message):
+    r"""Authentication configuration for a workload is used to set
+    the default identity for the workload execution.
+    The config specifies the type of identity (service account or
+    user) that will be used by workloads to access resources on the
+    project(s).
+
+    Attributes:
+        user_workload_authentication_type (google.cloud.dataproc_v1.types.AuthenticationConfig.AuthenticationType):
+            Optional. Authentication type for the user
+            workload running in containers.
+    """
+
+    class AuthenticationType(proto.Enum):
+        r"""Authentication types for workload execution.
+
+        Values:
+            AUTHENTICATION_TYPE_UNSPECIFIED (0):
+                If AuthenticationType is unspecified then
+                END_USER_CREDENTIALS is used for 3.0 and newer runtimes, and
+                SERVICE_ACCOUNT is used for older runtimes.
+            SERVICE_ACCOUNT (1):
+                Use service account credentials for
+                authenticating to other services.
+            END_USER_CREDENTIALS (2):
+                Use OAuth credentials associated with the
+                workload creator/user for authenticating to
+                other services.
+        """
+        AUTHENTICATION_TYPE_UNSPECIFIED = 0
+        SERVICE_ACCOUNT = 1
+        END_USER_CREDENTIALS = 2
+
+    user_workload_authentication_type: AuthenticationType = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=AuthenticationType,
     )
 
 
