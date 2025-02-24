@@ -1,0 +1,88 @@
+ {
+  "comment": "This file maps proto services/RPCs to the corresponding library clients/methods",
+  "language": "python",
+  "libraryPackage": "google.maps.weather_v1",
+  "protoPackage": "google.maps.weather.v1",
+  "schema": "1.0",
+  "services": {
+    "Weather": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "WeatherClient",
+          "rpcs": {
+            "LookupCurrentConditions": {
+              "methods": [
+                "lookup_current_conditions"
+              ]
+            },
+            "LookupForecastDays": {
+              "methods": [
+                "lookup_forecast_days"
+              ]
+            },
+            "LookupForecastHours": {
+              "methods": [
+                "lookup_forecast_hours"
+              ]
+            },
+            "LookupHistoryHours": {
+              "methods": [
+                "lookup_history_hours"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "WeatherAsyncClient",
+          "rpcs": {
+            "LookupCurrentConditions": {
+              "methods": [
+                "lookup_current_conditions"
+              ]
+            },
+            "LookupForecastDays": {
+              "methods": [
+                "lookup_forecast_days"
+              ]
+            },
+            "LookupForecastHours": {
+              "methods": [
+                "lookup_forecast_hours"
+              ]
+            },
+            "LookupHistoryHours": {
+              "methods": [
+                "lookup_history_hours"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "WeatherClient",
+          "rpcs": {
+            "LookupCurrentConditions": {
+              "methods": [
+                "lookup_current_conditions"
+              ]
+            },
+            "LookupForecastDays": {
+              "methods": [
+                "lookup_forecast_days"
+              ]
+            },
+            "LookupForecastHours": {
+              "methods": [
+                "lookup_forecast_hours"
+              ]
+            },
+            "LookupHistoryHours": {
+              "methods": [
+                "lookup_history_hours"
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}
