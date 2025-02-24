@@ -1,2 +1,0 @@
-recursive-include google/maps/weather *.py
-recursive-include google/maps/weather_v1 *.py
