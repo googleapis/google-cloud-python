@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.3](https://github.com/googleapis/google-cloud-python/compare/google-apps-chat-v0.2.2...google-apps-chat-v0.2.3) (2025-02-24)
+
+
+### Features
+
+* [google-apps-chat] Add DeletionType.SPACE_MEMBER. This is returned when a message sent by an app is deleted by a human in a space ([#13539](https://github.com/googleapis/google-cloud-python/issues/13539)) ([8366123](https://github.com/googleapis/google-cloud-python/commit/8366123ecefb47efa33b3f7ead81dfd64225ae25))
+
 ## [0.2.2](https://github.com/googleapis/google-cloud-python/compare/google-apps-chat-v0.2.1...google-apps-chat-v0.2.2) (2025-02-12)
 
 

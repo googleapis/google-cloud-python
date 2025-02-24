@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.4.16](https://github.com/googleapis/google-cloud-python/compare/google-cloud-confidentialcomputing-v0.4.15...google-cloud-confidentialcomputing-v0.4.16) (2025-02-24)
+
+
+### Features
+
+* [google-cloud-confidentialcomputing] A new field `attester` is added to message `.google.cloud.confidentialcomputing.v1.VerifyAttestationRequest` ([#13543](https://github.com/googleapis/google-cloud-python/issues/13543)) ([6e892e0](https://github.com/googleapis/google-cloud-python/commit/6e892e0aeac1975a3fd592bca1087c5c7e043ccc))
+
+
+### Documentation
+
+* Fixed a typo in `VerifyAttestationRequest` comment ([6e892e0](https://github.com/googleapis/google-cloud-python/commit/6e892e0aeac1975a3fd592bca1087c5c7e043ccc))
+
 ## [0.4.15](https://github.com/googleapis/google-cloud-python/compare/google-cloud-confidentialcomputing-v0.4.14...google-cloud-confidentialcomputing-v0.4.15) (2025-02-12)
 
 
