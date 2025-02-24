@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.28.0](https://github.com/googleapis/python-bigquery-pandas/compare/v0.27.0...v0.28.0) (2025-02-24)
+
+
+### Features
+
+* Add bigquery_client as a parameter for read_gbq and to_gbq ([#878](https://github.com/googleapis/python-bigquery-pandas/issues/878)) ([d42a562](https://github.com/googleapis/python-bigquery-pandas/commit/d42a56200fe2f356240c7956da4c201e872be4d5))
+
 ## [0.27.0](https://github.com/googleapis/python-bigquery-pandas/compare/v0.26.1...v0.27.0) (2025-02-05)
 
 
