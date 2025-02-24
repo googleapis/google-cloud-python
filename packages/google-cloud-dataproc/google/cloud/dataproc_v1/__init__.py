@@ -173,6 +173,7 @@ from .types.sessions import (
     TerminateSessionRequest,
 )
 from .types.shared import (
+    AuthenticationConfig,
     AutotuningConfig,
     Component,
     EnvironmentConfig,
@@ -226,6 +227,7 @@ __all__ = (
     "SessionTemplateControllerAsyncClient",
     "WorkflowTemplateServiceAsyncClient",
     "AcceleratorConfig",
+    "AuthenticationConfig",
     "AutoscalingConfig",
     "AutoscalingPolicy",
     "AutoscalingPolicyServiceClient",

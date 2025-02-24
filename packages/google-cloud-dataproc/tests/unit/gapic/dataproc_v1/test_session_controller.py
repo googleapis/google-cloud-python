@@ -4512,6 +4512,7 @@ def test_create_session_rest_call_success(request_type):
                 "idle_ttl": {"seconds": 751, "nanos": 543},
                 "ttl": {},
                 "staging_bucket": "staging_bucket_value",
+                "authentication_config": {"user_workload_authentication_type": 1},
             },
             "peripherals_config": {
                 "metastore_service": "metastore_service_value",
