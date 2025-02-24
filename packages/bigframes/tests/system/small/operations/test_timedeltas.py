@@ -465,3 +465,49 @@ def test_timedelta_ordering(session):
     pandas.testing.assert_series_equal(
         actual_result, expected_result, check_index_type=False
     )
+
+
+def test_timedelta_cumsum(temporal_dfs):
+    bf_df, pd_df = temporal_dfs
+
+    actual_result = bf_df["timedelta_col_1"].cumsum().to_pandas()
+
+    expected_result = pd_df["timedelta_col_1"].cumsum()
+    _assert_series_equal(actual_result, expected_result)
+
+
+@pytest.mark.parametrize(
+    "agg_func",
+    [
+        pytest.param(lambda x: x.min(), id="min"),
+        pytest.param(lambda x: x.max(), id="max"),
+        pytest.param(lambda x: x.sum(), id="sum"),
+        pytest.param(lambda x: x.mean(), id="mean"),
+        pytest.param(lambda x: x.median(), id="median"),
+        pytest.param(lambda x: x.quantile(0.5), id="quantile"),
+        pytest.param(lambda x: x.std(), id="std"),
+    ],
+)
+def test_timedelta_agg__timedelta_result(temporal_dfs, agg_func):
+    bf_df, pd_df = temporal_dfs
+
+    actual_result = agg_func(bf_df["timedelta_col_1"])
+
+    expected_result = agg_func(pd_df["timedelta_col_1"]).floor("us")
+    assert actual_result == expected_result
+
+
+@pytest.mark.parametrize(
+    "agg_func",
+    [
+        pytest.param(lambda x: x.count(), id="count"),
+        pytest.param(lambda x: x.nunique(), id="nunique"),
+    ],
+)
+def test_timedelta_agg__int_result(temporal_dfs, agg_func):
+    bf_df, pd_df = temporal_dfs
+
+    actual_result = agg_func(bf_df["timedelta_col_1"])
+
+    expected_result = agg_func(pd_df["timedelta_col_1"])
+    assert actual_result == expected_result

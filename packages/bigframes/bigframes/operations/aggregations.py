@@ -142,12 +142,15 @@ class SumOp(UnaryAggregateOp):
     name: ClassVar[str] = "sum"
 
     def output_type(self, *input_types: dtypes.ExpressionType) -> dtypes.ExpressionType:
-        if not dtypes.is_numeric(input_types[0]):
-            raise TypeError(f"Type {input_types[0]} is not numeric")
-        if pd.api.types.is_bool_dtype(input_types[0]):
-            return dtypes.INT_DTYPE
-        else:
+        if input_types[0] is dtypes.TIMEDELTA_DTYPE:
+            return dtypes.TIMEDELTA_DTYPE
+
+        if dtypes.is_numeric(input_types[0]):
+            if pd.api.types.is_bool_dtype(input_types[0]):
+                return dtypes.INT_DTYPE
             return input_types[0]
+
+        raise TypeError(f"Type {input_types[0]} is not numeric or timedelta")
 
 
 @dataclasses.dataclass(frozen=True)
@@ -171,6 +174,7 @@ class MedianOp(UnaryAggregateOp):
 @dataclasses.dataclass(frozen=True)
 class QuantileOp(UnaryAggregateOp):
     q: float
+    should_floor_result: bool = False
 
     @property
     def name(self):
@@ -181,6 +185,8 @@ class QuantileOp(UnaryAggregateOp):
         return True
 
     def output_type(self, *input_types: dtypes.ExpressionType) -> dtypes.ExpressionType:
+        if input_types[0] is dtypes.TIMEDELTA_DTYPE:
+            return dtypes.TIMEDELTA_DTYPE
         return signatures.UNARY_REAL_NUMERIC.output_type(input_types[0])
 
 
@@ -224,7 +230,11 @@ class ApproxTopCountOp(UnaryAggregateOp):
 class MeanOp(UnaryAggregateOp):
     name: ClassVar[str] = "mean"
 
+    should_floor_result: bool = False
+
     def output_type(self, *input_types: dtypes.ExpressionType) -> dtypes.ExpressionType:
+        if input_types[0] is dtypes.TIMEDELTA_DTYPE:
+            return dtypes.TIMEDELTA_DTYPE
         return signatures.UNARY_REAL_NUMERIC.output_type(input_types[0])
 
 
@@ -262,7 +272,12 @@ class MinOp(UnaryAggregateOp):
 class StdOp(UnaryAggregateOp):
     name: ClassVar[str] = "std"
 
+    should_floor_result: bool = False
+
     def output_type(self, *input_types: dtypes.ExpressionType) -> dtypes.ExpressionType:
+        if input_types[0] is dtypes.TIMEDELTA_DTYPE:
+            return dtypes.TIMEDELTA_DTYPE
+
         return signatures.FixedOutputType(
             dtypes.is_numeric, dtypes.FLOAT_DTYPE, "numeric"
         ).output_type(input_types[0])

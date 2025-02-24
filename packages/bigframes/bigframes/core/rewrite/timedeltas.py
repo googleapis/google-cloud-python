@@ -70,6 +70,19 @@ def rewrite_timedelta_expressions(root: nodes.BigFrameNode) -> nodes.BigFrameNod
             root.skip_reproject_unsafe,
         )
 
+    if isinstance(root, nodes.AggregateNode):
+        updated_aggregations = tuple(
+            (_rewrite_aggregation(agg, root.child.schema), col_id)
+            for agg, col_id in root.aggregations
+        )
+        return nodes.AggregateNode(
+            root.child,
+            updated_aggregations,
+            root.by_column_ids,
+            root.order_by,
+            root.dropna,
+        )
+
     return root
 
 
@@ -196,17 +209,34 @@ def _rewrite_aggregation(
 ) -> ex.Aggregation:
     if not isinstance(aggregation, ex.UnaryAggregation):
         return aggregation
-    if not isinstance(aggregation.op, aggs.DiffOp):
-        return aggregation
 
     if isinstance(aggregation.arg, ex.DerefOp):
         input_type = schema.get_type(aggregation.arg.id.sql)
     else:
         input_type = aggregation.arg.dtype
 
-    if dtypes.is_datetime_like(input_type):
+    if isinstance(aggregation.op, aggs.DiffOp) and dtypes.is_datetime_like(input_type):
         return ex.UnaryAggregation(
             aggs.TimeSeriesDiffOp(aggregation.op.periods), aggregation.arg
+        )
+
+    if isinstance(aggregation.op, aggs.StdOp) and input_type is dtypes.TIMEDELTA_DTYPE:
+        return ex.UnaryAggregation(
+            aggs.StdOp(should_floor_result=True), aggregation.arg
+        )
+
+    if isinstance(aggregation.op, aggs.MeanOp) and input_type is dtypes.TIMEDELTA_DTYPE:
+        return ex.UnaryAggregation(
+            aggs.MeanOp(should_floor_result=True), aggregation.arg
+        )
+
+    if (
+        isinstance(aggregation.op, aggs.QuantileOp)
+        and input_type is dtypes.TIMEDELTA_DTYPE
+    ):
+        return ex.UnaryAggregation(
+            aggs.QuantileOp(q=aggregation.op.q, should_floor_result=True),
+            aggregation.arg,
         )
 
     return aggregation

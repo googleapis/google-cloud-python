@@ -231,7 +231,11 @@ def _(
     column: ibis_types.NumericColumn,
     window=None,
 ) -> ibis_types.NumericValue:
-    return _apply_window_if_present(column.quantile(op.q), window)
+    result = column.quantile(op.q)
+    if op.should_floor_result:
+        result = result.floor()  # type:ignore
+
+    return _apply_window_if_present(result, window)
 
 
 @compile_unary_agg.register
@@ -242,7 +246,8 @@ def _(
     window=None,
     # order_by: typing.Sequence[ibis_types.Value] = [],
 ) -> ibis_types.NumericValue:
-    return _apply_window_if_present(column.mean(), window)
+    result = column.mean().floor() if op.should_floor_result else column.mean()
+    return _apply_window_if_present(result, window)
 
 
 @compile_unary_agg.register
@@ -306,10 +311,11 @@ def _(
 @numeric_op
 def _(
     op: agg_ops.StdOp,
-    x: ibis_types.Column,
+    x: ibis_types.NumericColumn,
     window=None,
 ) -> ibis_types.Value:
-    return _apply_window_if_present(cast(ibis_types.NumericColumn, x).std(), window)
+    result = x.std().floor() if op.should_floor_result else x.std()
+    return _apply_window_if_present(result, window)
 
 
 @compile_unary_agg.register
