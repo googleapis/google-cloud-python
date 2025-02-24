@@ -31,7 +31,7 @@ _BACKTICK = "`"
 _ESCAPED_BACKTICK = _BACKSLASH + _BACKTICK
 
 _SIMPLE_FIELD_NAME = re.compile("^[_a-zA-Z][_a-zA-Z0-9]*$")
-_LEADING_ALPHA_INVALID = re.compile("^[_a-zA-Z][_a-zA-Z0-9]*[^_a-zA-Z0-9]")
+_LEADING_ALPHA_INVALID = re.compile(r"^[_a-zA-Z][_a-zA-Z0-9]*[~*/\[\]]")
 PATH_ELEMENT_TOKENS = [
     ("SIMPLE", r"[_a-zA-Z][_a-zA-Z0-9]*"),  # unquoted elements
     ("QUOTED", r"`(?:\\`|[^`])*?`"),  # quoted elements, unquoted
@@ -311,9 +311,7 @@ class FieldPath(object):
                     raise ValueError("Empty element")
                 if _LEADING_ALPHA_INVALID.match(element):
                     raise ValueError(
-                        "Non-alphanum char in element with leading alpha: {}".format(
-                            element
-                        )
+                        "Invalid char in element with leading alpha: {}".format(element)
                     )
             return FieldPath(*elements)
 
