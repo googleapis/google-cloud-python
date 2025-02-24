@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-dataproc/#history
 
+## [5.18.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataproc-v5.17.1...google-cloud-dataproc-v5.18.0) (2025-02-24)
+
+
+### Features
+
+* Added support for the AuthenticationConfig field to Dataproc serverless workload configurations ([4c96416](https://github.com/googleapis/google-cloud-python/commit/4c964163885d43e5683e3416fe7af605a14b2b9b))
+
 ## [5.17.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataproc-v5.17.0...google-cloud-dataproc-v5.17.1) (2025-02-18)
 
 
