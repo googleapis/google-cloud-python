@@ -26,6 +26,7 @@ import bigframes_vendored.ibis.expr.types as ibis_types
 import numpy as np
 import pandas as pd
 
+from bigframes.core.compile.constants import UNIT_TO_US_CONVERSION_FACTORS
 import bigframes.core.compile.default_ordering
 import bigframes.core.compile.ibis_types
 import bigframes.core.expression as ex
@@ -49,19 +50,6 @@ _OBJ_REF_STRUCT_SCHEMA = (
     ("details", ibis_dtypes.JSON),
 )
 _OBJ_REF_IBIS_DTYPE = ibis_dtypes.Struct.from_tuples(_OBJ_REF_STRUCT_SCHEMA)  # type: ignore
-
-# Datetime constants
-UNIT_TO_US_CONVERSION_FACTORS = {
-    "W": 7 * 24 * 60 * 60 * 1000 * 1000,
-    "d": 24 * 60 * 60 * 1000 * 1000,
-    "D": 24 * 60 * 60 * 1000 * 1000,
-    "h": 60 * 60 * 1000 * 1000,
-    "m": 60 * 1000 * 1000,
-    "s": 1000 * 1000,
-    "ms": 1000,
-    "us": 1,
-    "ns": 1e-3,
-}
 
 
 class ScalarOpCompiler:

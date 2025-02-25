@@ -215,10 +215,15 @@ def _rewrite_aggregation(
     else:
         input_type = aggregation.arg.dtype
 
-    if isinstance(aggregation.op, aggs.DiffOp) and dtypes.is_datetime_like(input_type):
-        return ex.UnaryAggregation(
-            aggs.TimeSeriesDiffOp(aggregation.op.periods), aggregation.arg
-        )
+    if isinstance(aggregation.op, aggs.DiffOp):
+        if dtypes.is_datetime_like(input_type):
+            return ex.UnaryAggregation(
+                aggs.TimeSeriesDiffOp(aggregation.op.periods), aggregation.arg
+            )
+        elif input_type == dtypes.DATE_DTYPE:
+            return ex.UnaryAggregation(
+                aggs.DateSeriesDiffOp(aggregation.op.periods), aggregation.arg
+            )
 
     if isinstance(aggregation.op, aggs.StdOp) and input_type is dtypes.TIMEDELTA_DTYPE:
         return ex.UnaryAggregation(
