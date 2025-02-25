@@ -440,6 +440,9 @@ class Watch(object):
             proto(`google.cloud.firestore_v1.types.ListenResponse`):
                 Callback method that receives a object to
         """
+        if self._closing.locked():
+            # don't process on_snapshot responses while spinning down, to prevent deadlock
+            return
         if proto is None:
             self.close()
             return

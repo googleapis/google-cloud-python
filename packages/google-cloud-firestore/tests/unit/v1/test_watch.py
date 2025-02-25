@@ -400,6 +400,15 @@ def test_watch_on_snapshot_target_w_none():
     assert inst._rpc is None
 
 
+def test_watch_on_snapshot_while_closing():
+    inst = _make_watch()
+    inst.close = mock.Mock()
+    with inst._closing:
+        inst.on_snapshot(mock.Mock())
+        # close should not be called again when already closing
+        inst.close.assert_not_called()
+
+
 def test_watch_on_snapshot_target_no_change_no_target_ids_not_current():
     inst = _make_watch()
     proto = _make_listen_response()
