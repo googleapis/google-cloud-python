@@ -67,6 +67,7 @@ from google.protobuf import timestamp_pb2  # type: ignore
 
 from google.cloud.dialogflowcx_v3beta1.services.playbooks import pagers
 from google.cloud.dialogflowcx_v3beta1.types import (
+    advanced_settings,
     example,
     generative_settings,
     parameter_definition,

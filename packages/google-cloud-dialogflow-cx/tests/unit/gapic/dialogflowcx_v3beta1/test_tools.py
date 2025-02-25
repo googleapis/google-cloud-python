@@ -4728,7 +4728,11 @@ def test_create_tool_rest_call_success(request_type):
         },
         "data_store_spec": {
             "data_store_connections": [
-                {"data_store_type": 1, "data_store": "data_store_value"}
+                {
+                    "data_store_type": 1,
+                    "data_store": "data_store_value",
+                    "document_processing_mode": 1,
+                }
             ],
             "fallback_prompt": {},
         },
@@ -5338,7 +5342,11 @@ def test_update_tool_rest_call_success(request_type):
         },
         "data_store_spec": {
             "data_store_connections": [
-                {"data_store_type": 1, "data_store": "data_store_value"}
+                {
+                    "data_store_type": 1,
+                    "data_store": "data_store_value",
+                    "document_processing_mode": 1,
+                }
             ],
             "fallback_prompt": {},
         },

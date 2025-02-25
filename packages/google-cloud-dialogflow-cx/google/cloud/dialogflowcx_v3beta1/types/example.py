@@ -476,6 +476,8 @@ class ToolUse(proto.Message):
             [tool][google.cloud.dialogflow.cx.v3beta1.Tool] that should
             be used. Format:
             ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/tools/<ToolID>``.
+        display_name (str):
+            Output only. The display name of the tool.
         action (str):
             Optional. Name of the action to be called
             during the tool use.
@@ -490,6 +492,10 @@ class ToolUse(proto.Message):
     tool: str = proto.Field(
         proto.STRING,
         number=1,
+    )
+    display_name: str = proto.Field(
+        proto.STRING,
+        number=8,
     )
     action: str = proto.Field(
         proto.STRING,
@@ -514,6 +520,9 @@ class PlaybookInvocation(proto.Message):
         playbook (str):
             Required. The unique identifier of the playbook. Format:
             ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/playbooks/<PlaybookID>``.
+        display_name (str):
+            Output only. The display name of the
+            playbook.
         playbook_input (google.cloud.dialogflowcx_v3beta1.types.PlaybookInput):
             Optional. Input of the child playbook
             invocation.
@@ -527,6 +536,10 @@ class PlaybookInvocation(proto.Message):
     playbook: str = proto.Field(
         proto.STRING,
         number=1,
+    )
+    display_name: str = proto.Field(
+        proto.STRING,
+        number=5,
     )
     playbook_input: "PlaybookInput" = proto.Field(
         proto.MESSAGE,
@@ -552,6 +565,8 @@ class FlowInvocation(proto.Message):
         flow (str):
             Required. The unique identifier of the flow. Format:
             ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>``.
+        display_name (str):
+            Output only. The display name of the flow.
         input_action_parameters (google.protobuf.struct_pb2.Struct):
             Optional. A list of input parameters for the
             flow.
@@ -565,6 +580,10 @@ class FlowInvocation(proto.Message):
     flow: str = proto.Field(
         proto.STRING,
         number=1,
+    )
+    display_name: str = proto.Field(
+        proto.STRING,
+        number=7,
     )
     input_action_parameters: struct_pb2.Struct = proto.Field(
         proto.MESSAGE,

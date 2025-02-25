@@ -431,10 +431,16 @@ class Conversation(proto.Message):
                 concatenated into one.
             create_time (google.protobuf.timestamp_pb2.Timestamp):
                 The time that the interaction was created.
+            answer_feedback (google.cloud.dialogflowcx_v3beta1.types.AnswerFeedback):
+                Answer feedback for the final response.
             missing_transition (google.cloud.dialogflowcx_v3beta1.types.Conversation.Interaction.MissingTransition):
                 Missing transition predicted for the
                 interaction. This field is set only if the
                 interaction match type was no-match.
+            step_metrics (MutableSequence[google.cloud.dialogflowcx_v3beta1.types.Conversation.Interaction.StepMetrics]):
+                Metrics associated with different processing
+                steps. Names and number of steps depend on the
+                request and can change without a notice.
         """
 
         class MissingTransition(proto.Message):
@@ -458,6 +464,26 @@ class Conversation(proto.Message):
             score: float = proto.Field(
                 proto.FLOAT,
                 number=2,
+            )
+
+        class StepMetrics(proto.Message):
+            r"""Metrics of each processing step.
+
+            Attributes:
+                name (str):
+                    Name of the request processing step.
+                latency (google.protobuf.duration_pb2.Duration):
+                    Processing latency of the step.
+            """
+
+            name: str = proto.Field(
+                proto.STRING,
+                number=1,
+            )
+            latency: duration_pb2.Duration = proto.Field(
+                proto.MESSAGE,
+                number=2,
+                message=duration_pb2.Duration,
             )
 
         request: session.DetectIntentRequest = proto.Field(
@@ -490,10 +516,22 @@ class Conversation(proto.Message):
             number=6,
             message=timestamp_pb2.Timestamp,
         )
+        answer_feedback: session.AnswerFeedback = proto.Field(
+            proto.MESSAGE,
+            number=7,
+            message=session.AnswerFeedback,
+        )
         missing_transition: "Conversation.Interaction.MissingTransition" = proto.Field(
             proto.MESSAGE,
             number=8,
             message="Conversation.Interaction.MissingTransition",
+        )
+        step_metrics: MutableSequence[
+            "Conversation.Interaction.StepMetrics"
+        ] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=9,
+            message="Conversation.Interaction.StepMetrics",
         )
 
     name: str = proto.Field(

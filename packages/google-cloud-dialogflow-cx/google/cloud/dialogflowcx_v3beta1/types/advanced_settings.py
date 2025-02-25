@@ -89,7 +89,7 @@ class AdvancedSettings(proto.Message):
                 Timeout before detecting no speech.
             use_timeout_based_endpointing (bool):
                 Use timeout based endpointing, interpreting
-                endpointer sensitivy as seconds of timeout
+                endpointer sensitivity as seconds of timeout
                 value.
             models (MutableMapping[str, str]):
                 Mapping from language to Speech-to-Text model. The mapped

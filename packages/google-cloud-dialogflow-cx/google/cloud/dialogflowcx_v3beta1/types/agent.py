@@ -197,6 +197,18 @@ class Agent(proto.Message):
         client_certificate_settings (google.cloud.dialogflowcx_v3beta1.types.Agent.ClientCertificateSettings):
             Optional. Settings for custom client
             certificates.
+        satisfies_pzs (bool):
+            Optional. Output only. A read only boolean
+            field reflecting Zone Separation status of the
+            agent.
+
+            This field is a member of `oneof`_ ``_satisfies_pzs``.
+        satisfies_pzi (bool):
+            Optional. Output only. A read only boolean
+            field reflecting Zone Isolation status of the
+            agent.
+
+            This field is a member of `oneof`_ ``_satisfies_pzi``.
     """
 
     class GitIntegrationSettings(proto.Message):
@@ -449,6 +461,16 @@ class Agent(proto.Message):
         proto.MESSAGE,
         number=43,
         message=ClientCertificateSettings,
+    )
+    satisfies_pzs: bool = proto.Field(
+        proto.BOOL,
+        number=45,
+        optional=True,
+    )
+    satisfies_pzi: bool = proto.Field(
+        proto.BOOL,
+        number=46,
+        optional=True,
     )
 
 

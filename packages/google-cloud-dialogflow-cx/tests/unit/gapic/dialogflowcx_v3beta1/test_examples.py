@@ -4355,18 +4355,21 @@ def test_create_example_rest_call_success(request_type):
                 "agent_utterance": {"text": "text_value"},
                 "tool_use": {
                     "tool": "tool_value",
+                    "display_name": "display_name_value",
                     "action": "action_value",
                     "input_action_parameters": {},
                     "output_action_parameters": {},
                 },
                 "playbook_invocation": {
                     "playbook": "playbook_value",
+                    "display_name": "display_name_value",
                     "playbook_input": {},
                     "playbook_output": {},
                     "playbook_state": 1,
                 },
                 "flow_invocation": {
                     "flow": "flow_value",
+                    "display_name": "display_name_value",
                     "input_action_parameters": {},
                     "output_action_parameters": {},
                     "flow_state": 1,
@@ -4976,18 +4979,21 @@ def test_update_example_rest_call_success(request_type):
                 "agent_utterance": {"text": "text_value"},
                 "tool_use": {
                     "tool": "tool_value",
+                    "display_name": "display_name_value",
                     "action": "action_value",
                     "input_action_parameters": {},
                     "output_action_parameters": {},
                 },
                 "playbook_invocation": {
                     "playbook": "playbook_value",
+                    "display_name": "display_name_value",
                     "playbook_input": {},
                     "playbook_output": {},
                     "playbook_state": 1,
                 },
                 "flow_invocation": {
                     "flow": "flow_value",
+                    "display_name": "display_name_value",
                     "input_action_parameters": {},
                     "output_action_parameters": {},
                     "flow_state": 1,
