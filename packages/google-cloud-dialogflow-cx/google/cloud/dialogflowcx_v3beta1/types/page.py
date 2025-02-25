@@ -113,7 +113,7 @@ class Page(proto.Message):
             flow, or another flow.
 
             When we are in a certain page, the TransitionRoutes are
-            evalauted in the following order:
+            evaluated in the following order:
 
             -  TransitionRoutes defined in the page with intent
                specified.

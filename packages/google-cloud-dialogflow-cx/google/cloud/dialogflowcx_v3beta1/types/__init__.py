@@ -63,6 +63,7 @@ from .data_store_connection import (
     DataStoreConnection,
     DataStoreConnectionSignals,
     DataStoreType,
+    DocumentProcessingMode,
 )
 from .deployment import (
     Deployment,
@@ -395,6 +396,7 @@ __all__ = (
     "DataStoreConnection",
     "DataStoreConnectionSignals",
     "DataStoreType",
+    "DocumentProcessingMode",
     "Deployment",
     "GetDeploymentRequest",
     "ListDeploymentsRequest",

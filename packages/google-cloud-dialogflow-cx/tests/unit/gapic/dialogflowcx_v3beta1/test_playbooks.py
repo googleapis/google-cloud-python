@@ -53,6 +53,7 @@ from google.auth.exceptions import MutualTLSChannelError
 from google.cloud.location import locations_pb2
 from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account
+from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import struct_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
@@ -64,6 +65,7 @@ from google.cloud.dialogflowcx_v3beta1.services.playbooks import (
     transports,
 )
 from google.cloud.dialogflowcx_v3beta1.types import (
+    advanced_settings,
     example,
     generative_settings,
     parameter_definition,
@@ -6976,7 +6978,10 @@ def test_create_playbook_rest_call_success(request_type):
             {"name": "name_value", "type_": 1, "description": "description_value"}
         ],
         "output_parameter_definitions": {},
-        "instruction": {"steps": [{"text": "text_value", "steps": {}}]},
+        "instruction": {
+            "guidelines": "guidelines_value",
+            "steps": [{"text": "text_value", "steps": {}}],
+        },
         "token_count": 1193,
         "create_time": {"seconds": 751, "nanos": 543},
         "update_time": {},
@@ -6989,6 +6994,12 @@ def test_create_playbook_rest_call_success(request_type):
         "llm_model_settings": {
             "model": "model_value",
             "prompt_text": "prompt_text_value",
+        },
+        "speech_settings": {
+            "endpointer_sensitivity": 2402,
+            "no_speech_timeout": {"seconds": 751, "nanos": 543},
+            "use_timeout_based_endpointing": True,
+            "models": {},
         },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
@@ -7578,7 +7589,10 @@ def test_update_playbook_rest_call_success(request_type):
             {"name": "name_value", "type_": 1, "description": "description_value"}
         ],
         "output_parameter_definitions": {},
-        "instruction": {"steps": [{"text": "text_value", "steps": {}}]},
+        "instruction": {
+            "guidelines": "guidelines_value",
+            "steps": [{"text": "text_value", "steps": {}}],
+        },
         "token_count": 1193,
         "create_time": {"seconds": 751, "nanos": 543},
         "update_time": {},
@@ -7591,6 +7605,12 @@ def test_update_playbook_rest_call_success(request_type):
         "llm_model_settings": {
             "model": "model_value",
             "prompt_text": "prompt_text_value",
+        },
+        "speech_settings": {
+            "endpointer_sensitivity": 2402,
+            "no_speech_timeout": {"seconds": 751, "nanos": 543},
+            "use_timeout_based_endpointing": True,
+            "models": {},
         },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
@@ -7812,7 +7832,10 @@ def test_create_playbook_version_rest_call_success(request_type):
                 {"name": "name_value", "type_": 1, "description": "description_value"}
             ],
             "output_parameter_definitions": {},
-            "instruction": {"steps": [{"text": "text_value", "steps": {}}]},
+            "instruction": {
+                "guidelines": "guidelines_value",
+                "steps": [{"text": "text_value", "steps": {}}],
+            },
             "token_count": 1193,
             "create_time": {"seconds": 751, "nanos": 543},
             "update_time": {},
@@ -7825,6 +7848,12 @@ def test_create_playbook_version_rest_call_success(request_type):
             "llm_model_settings": {
                 "model": "model_value",
                 "prompt_text": "prompt_text_value",
+            },
+            "speech_settings": {
+                "endpointer_sensitivity": 2402,
+                "no_speech_timeout": {"seconds": 751, "nanos": 543},
+                "use_timeout_based_endpointing": True,
+                "models": {},
             },
         },
         "examples": [
@@ -7844,18 +7873,21 @@ def test_create_playbook_version_rest_call_success(request_type):
                         "agent_utterance": {"text": "text_value"},
                         "tool_use": {
                             "tool": "tool_value",
+                            "display_name": "display_name_value",
                             "action": "action_value",
                             "input_action_parameters": {},
                             "output_action_parameters": {},
                         },
                         "playbook_invocation": {
                             "playbook": "playbook_value",
+                            "display_name": "display_name_value",
                             "playbook_input": {},
                             "playbook_output": {},
                             "playbook_state": 1,
                         },
                         "flow_invocation": {
                             "flow": "flow_value",
+                            "display_name": "display_name_value",
                             "input_action_parameters": {},
                             "output_action_parameters": {},
                             "flow_state": 1,
