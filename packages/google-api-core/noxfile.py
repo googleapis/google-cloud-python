@@ -28,7 +28,7 @@ BLACK_PATHS = ["docs", "google", "tests", "noxfile.py", "setup.py"]
 # Black and flake8 clash on the syntax for ignoring flake8's F401 in this file.
 BLACK_EXCLUDES = ["--exclude", "^/google/api_core/operations_v1/__init__.py"]
 
-PYTHON_VERSIONS = ["3.7", "3.8", "3.9", "3.10", "3.11", "3.12", "3.13"]
+PYTHON_VERSIONS = ["3.7", "3.8", "3.9", "3.10", "3.11", "3.12", "3.13", "3.14"]
 
 DEFAULT_PYTHON_VERSION = "3.10"
 CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
@@ -95,8 +95,7 @@ def install_prerelease_dependencies(session, constraints_path):
         prerel_deps = [
             "google-auth",
             "googleapis-common-protos",
-            # Exclude grpcio!=1.67.0rc1 which does not support python 3.13
-            "grpcio!=1.67.0rc1",
+            "grpcio",
             "grpcio-status",
             "proto-plus",
             "protobuf",
