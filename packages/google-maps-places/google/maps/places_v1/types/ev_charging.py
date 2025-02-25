@@ -65,6 +65,9 @@ class EVConnectorType(proto.Enum):
             type covers all GB_T types.
         EV_CONNECTOR_TYPE_UNSPECIFIED_WALL_OUTLET (9):
             Unspecified wall outlet.
+        EV_CONNECTOR_TYPE_NACS (10):
+            The North American Charging System (NACS),
+            standardized as SAE J3400.
     """
     EV_CONNECTOR_TYPE_UNSPECIFIED = 0
     EV_CONNECTOR_TYPE_OTHER = 1
@@ -76,6 +79,7 @@ class EVConnectorType(proto.Enum):
     EV_CONNECTOR_TYPE_TESLA = 7
     EV_CONNECTOR_TYPE_UNSPECIFIED_GB_T = 8
     EV_CONNECTOR_TYPE_UNSPECIFIED_WALL_OUTLET = 9
+    EV_CONNECTOR_TYPE_NACS = 10
 
 
 class EVChargeOptions(proto.Message):
