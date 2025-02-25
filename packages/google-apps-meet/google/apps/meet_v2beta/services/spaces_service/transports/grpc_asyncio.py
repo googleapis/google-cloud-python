@@ -413,6 +413,46 @@ class SpacesServiceGrpcAsyncIOTransport(SpacesServiceTransport):
         return self._stubs["update_space"]
 
     @property
+    def connect_active_conference(
+        self,
+    ) -> Callable[
+        [service.ConnectActiveConferenceRequest],
+        Awaitable[service.ConnectActiveConferenceResponse],
+    ]:
+        r"""Return a callable for the connect active conference method over gRPC.
+
+        `Developer
+        Preview <https://developers.google.com/workspace/preview>`__:
+        Broker a WebRTC connection to the active conference of a space.
+
+        On success, clients must use the resulting SDP (Session
+        Description Protocol) answer to establish a WebRTC connection.
+        Once connected, additional functionality is available across
+        WebRTC data channels.
+
+        See `Meet Media API
+        overview <https://developers.google.com/meet/media-api/guides/overview>`__
+        for more details about this connection.
+
+        Returns:
+            Callable[[~.ConnectActiveConferenceRequest],
+                    Awaitable[~.ConnectActiveConferenceResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "connect_active_conference" not in self._stubs:
+            self._stubs["connect_active_conference"] = self._logged_channel.unary_unary(
+                "/google.apps.meet.v2beta.SpacesService/ConnectActiveConference",
+                request_serializer=service.ConnectActiveConferenceRequest.serialize,
+                response_deserializer=service.ConnectActiveConferenceResponse.deserialize,
+            )
+        return self._stubs["connect_active_conference"]
+
+    @property
     def end_active_conference(
         self,
     ) -> Callable[[service.EndActiveConferenceRequest], Awaitable[empty_pb2.Empty]]:
@@ -594,6 +634,11 @@ class SpacesServiceGrpcAsyncIOTransport(SpacesServiceTransport):
             self.update_space: self._wrap_method(
                 self.update_space,
                 default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.connect_active_conference: self._wrap_method(
+                self.connect_active_conference,
+                default_timeout=None,
                 client_info=client_info,
             ),
             self.end_active_conference: self._wrap_method(

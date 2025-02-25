@@ -209,6 +209,11 @@
         "grpc": {
           "libraryClient": "SpacesServiceClient",
           "rpcs": {
+            "ConnectActiveConference": {
+              "methods": [
+                "connect_active_conference"
+              ]
+            },
             "CreateMember": {
               "methods": [
                 "create_member"
@@ -254,6 +259,11 @@
         "grpc-async": {
           "libraryClient": "SpacesServiceAsyncClient",
           "rpcs": {
+            "ConnectActiveConference": {
+              "methods": [
+                "connect_active_conference"
+              ]
+            },
             "CreateMember": {
               "methods": [
                 "create_member"
@@ -299,6 +309,11 @@
         "rest": {
           "libraryClient": "SpacesServiceClient",
           "rpcs": {
+            "ConnectActiveConference": {
+              "methods": [
+                "connect_active_conference"
+              ]
+            },
             "CreateMember": {
               "methods": [
                 "create_member"

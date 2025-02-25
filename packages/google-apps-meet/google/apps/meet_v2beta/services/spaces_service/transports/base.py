@@ -37,6 +37,9 @@ class SpacesServiceTransport(abc.ABC):
     """Abstract transport class for SpacesService."""
 
     AUTH_SCOPES = (
+        "https://www.googleapis.com/auth/meetings.conference.media.audio.readonly",
+        "https://www.googleapis.com/auth/meetings.conference.media.readonly",
+        "https://www.googleapis.com/auth/meetings.conference.media.video.readonly",
         "https://www.googleapis.com/auth/meetings.space.created",
         "https://www.googleapis.com/auth/meetings.space.readonly",
         "https://www.googleapis.com/auth/meetings.space.settings",
@@ -157,6 +160,11 @@ class SpacesServiceTransport(abc.ABC):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
+            self.connect_active_conference: gapic_v1.method.wrap_method(
+                self.connect_active_conference,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.end_active_conference: gapic_v1.method.wrap_method(
                 self.end_active_conference,
                 default_timeout=60.0,
@@ -214,6 +222,18 @@ class SpacesServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [service.UpdateSpaceRequest], Union[resource.Space, Awaitable[resource.Space]]
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def connect_active_conference(
+        self,
+    ) -> Callable[
+        [service.ConnectActiveConferenceRequest],
+        Union[
+            service.ConnectActiveConferenceResponse,
+            Awaitable[service.ConnectActiveConferenceResponse],
+        ],
     ]:
         raise NotImplementedError()
 

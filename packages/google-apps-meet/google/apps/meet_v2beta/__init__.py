@@ -41,6 +41,8 @@ from .types.resource import (
     TranscriptEntry,
 )
 from .types.service import (
+    ConnectActiveConferenceRequest,
+    ConnectActiveConferenceResponse,
     CreateMemberRequest,
     CreateSpaceRequest,
     DeleteMemberRequest,
@@ -77,6 +79,8 @@ __all__ = (
     "AnonymousUser",
     "ConferenceRecord",
     "ConferenceRecordsServiceClient",
+    "ConnectActiveConferenceRequest",
+    "ConnectActiveConferenceResponse",
     "CreateMemberRequest",
     "CreateSpaceRequest",
     "DeleteMemberRequest",

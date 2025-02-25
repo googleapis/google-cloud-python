@@ -31,6 +31,8 @@ from .resource import (
     TranscriptEntry,
 )
 from .service import (
+    ConnectActiveConferenceRequest,
+    ConnectActiveConferenceResponse,
     CreateMemberRequest,
     CreateSpaceRequest,
     DeleteMemberRequest,
@@ -76,6 +78,8 @@ __all__ = (
     "SpaceConfig",
     "Transcript",
     "TranscriptEntry",
+    "ConnectActiveConferenceRequest",
+    "ConnectActiveConferenceResponse",
     "CreateMemberRequest",
     "CreateSpaceRequest",
     "DeleteMemberRequest",

@@ -39,6 +39,7 @@ def partition(
 class meetCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
+        'connect_active_conference': ('name', 'offer', ),
         'create_member': ('parent', 'member', ),
         'create_space': ('space', ),
         'delete_member': ('name', ),
