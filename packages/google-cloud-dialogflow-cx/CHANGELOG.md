@@ -1,6 +1,15 @@
 # Changelog
 
 
+## [1.40.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dialogflow-cx-v1.39.0...google-cloud-dialogflow-cx-v1.40.0) (2025-02-25)
+
+
+### Features
+
+* **v3beta1:** added DocumentProcessingMode & BoostSpec for data stores ([8a86dba](https://github.com/googleapis/google-cloud-python/commit/8a86dba51968c017e4576da3a1058d374bc2ebf4))
+* **v3beta1:** added support for answer feedback & latency metrics in conversation history ([8a86dba](https://github.com/googleapis/google-cloud-python/commit/8a86dba51968c017e4576da3a1058d374bc2ebf4))
+* **v3beta1:** added support for playbook level speech settings ([8a86dba](https://github.com/googleapis/google-cloud-python/commit/8a86dba51968c017e4576da3a1058d374bc2ebf4))
+
 ## [1.39.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dialogflow-cx-v1.38.0...google-cloud-dialogflow-cx-v1.39.0) (2025-02-12)
 
 
