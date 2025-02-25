@@ -66,3 +66,31 @@ def test_blob_create_from_glob_path(bq_connection: str, session: bigframes.Sessi
     pd.testing.assert_frame_equal(
         pd_blob_df, expected_df, check_dtype=False, check_index_type=False
     )
+
+
+def test_blob_create_read_gbq_object_table(
+    bq_connection: str, session: bigframes.Session
+):
+    bigframes.options.experiments.blob = True
+
+    obj_table = session._create_object_table(
+        "gs://bigframes_blob_test/images/*", bq_connection
+    )
+
+    blob_df = session.read_gbq_object_table(obj_table, name="blob_col")
+    pd_blob_df = blob_df["blob_col"].struct.explode().to_pandas()
+    expected_df = pd.DataFrame(
+        {
+            "uri": [
+                "gs://bigframes_blob_test/images/img0.jpg",
+                "gs://bigframes_blob_test/images/img1.jpg",
+            ],
+            "version": [None, None],
+            "authorizer": [bq_connection.casefold(), bq_connection.casefold()],
+            "details": [None, None],
+        }
+    )
+
+    pd.testing.assert_frame_equal(
+        pd_blob_df, expected_df, check_dtype=False, check_index_type=False
+    )
