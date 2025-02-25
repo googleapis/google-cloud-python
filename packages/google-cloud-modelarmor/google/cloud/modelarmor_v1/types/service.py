@@ -310,6 +310,8 @@ class Template(proto.Message):
 class FloorSetting(proto.Message):
     r"""Message describing FloorSetting resource
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         name (str):
             Identifier. The resource name.
@@ -321,6 +323,8 @@ class FloorSetting(proto.Message):
             Required. ModelArmor filter configuration.
         enable_floor_setting_enforcement (bool):
             Optional. Floor Settings enforcement status.
+
+            This field is a member of `oneof`_ ``_enable_floor_setting_enforcement``.
     """
 
     name: str = proto.Field(
@@ -345,6 +349,7 @@ class FloorSetting(proto.Message):
     enable_floor_setting_enforcement: bool = proto.Field(
         proto.BOOL,
         number=5,
+        optional=True,
     )
 
 
@@ -866,10 +871,9 @@ class SdpAdvancedConfig(proto.Message):
             not provided), then Sensitive Data Protection InspectContent
             action is performed during Sanitization. All Sensitive Data
             Protection findings identified during inspection will be
-            returned as SdpFinding in SdpInsepctionResult e.g.
-            ``organizations/{organization}/inspectTemplates/{inspect_template}``,
-            ``projects/{project}/inspectTemplates/{inspect_template}``
-            ``organizations/{organization}/locations/{location}/inspectTemplates/{inspect_template}``
+            returned as SdpFinding in SdpInsepctionResult.
+
+            e.g.
             ``projects/{project}/locations/{location}/inspectTemplates/{inspect_template}``
         deidentify_template (str):
             Optional. Optional Sensitive Data Protection Deidentify
@@ -882,9 +886,6 @@ class SdpAdvancedConfig(proto.Message):
             deidentify template must be present in inspect template.
 
             e.g.
-            ``organizations/{organization}/deidentifyTemplates/{deidentify_template}``,
-            ``projects/{project}/deidentifyTemplates/{deidentify_template}``
-            ``organizations/{organization}/locations/{location}/deidentifyTemplates/{deidentify_template}``
             ``projects/{project}/locations/{location}/deidentifyTemplates/{deidentify_template}``
     """
 
@@ -1084,7 +1085,7 @@ class FilterResult(proto.Message):
             Malicious URI filter results.
 
             This field is a member of `oneof`_ ``filter_result``.
-        csam_filter_filter_result (google.cloud.modelarmor_v1.types.CsamFilterResult):
+        csam_filter_result (google.cloud.modelarmor_v1.types.CsamFilterResult):
             CSAM filter results.
 
             This field is a member of `oneof`_ ``filter_result``.
@@ -1118,7 +1119,7 @@ class FilterResult(proto.Message):
         oneof="filter_result",
         message="MaliciousUriFilterResult",
     )
-    csam_filter_filter_result: "CsamFilterResult" = proto.Field(
+    csam_filter_result: "CsamFilterResult" = proto.Field(
         proto.MESSAGE,
         number=5,
         oneof="filter_result",
@@ -1395,6 +1396,9 @@ class SdpDeidentifyResult(proto.Message):
         transformed_bytes (int):
             Total size in bytes that were transformed
             during deidentification.
+        info_types (MutableSequence[str]):
+            List of Sensitive Data Protection info-types
+            that were de-identified.
     """
 
     execution_state: "FilterExecutionState" = proto.Field(
@@ -1420,6 +1424,10 @@ class SdpDeidentifyResult(proto.Message):
     transformed_bytes: int = proto.Field(
         proto.INT64,
         number=5,
+    )
+    info_types: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=6,
     )
 
 
