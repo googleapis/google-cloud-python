@@ -79,6 +79,7 @@ class TimestampAddOp(base_ops.BinaryOp):
 timestamp_add_op = TimestampAddOp()
 
 
+@dataclasses.dataclass(frozen=True)
 class TimestampSubOp(base_ops.BinaryOp):
     name: typing.ClassVar[str] = "timestamp_sub"
 
@@ -96,3 +97,49 @@ class TimestampSubOp(base_ops.BinaryOp):
 
 
 timestamp_sub_op = TimestampSubOp()
+
+
+@dataclasses.dataclass(frozen=True)
+class DateAddOp(base_ops.BinaryOp):
+    name: typing.ClassVar[str] = "date_add"
+
+    def output_type(self, *input_types: dtypes.ExpressionType) -> dtypes.ExpressionType:
+        # date + timedelta => timestamp without timezone
+        if (
+            input_types[0] == dtypes.DATE_DTYPE
+            and input_types[1] == dtypes.TIMEDELTA_DTYPE
+        ):
+            return dtypes.DATETIME_DTYPE
+        # timedelta + date => timestamp without timezone
+        if (
+            input_types[0] == dtypes.TIMEDELTA_DTYPE
+            and input_types[1] == dtypes.DATE_DTYPE
+        ):
+            return dtypes.DATETIME_DTYPE
+
+        raise TypeError(
+            f"unsupported types for date_add. left: {input_types[0]} right: {input_types[1]}"
+        )
+
+
+date_add_op = DateAddOp()
+
+
+@dataclasses.dataclass(frozen=True)
+class DateSubOp(base_ops.BinaryOp):
+    name: typing.ClassVar[str] = "date_sub"
+
+    def output_type(self, *input_types: dtypes.ExpressionType) -> dtypes.ExpressionType:
+        # date - timedelta => timestamp without timezone
+        if (
+            input_types[0] == dtypes.DATE_DTYPE
+            and input_types[1] == dtypes.TIMEDELTA_DTYPE
+        ):
+            return dtypes.DATETIME_DTYPE
+
+        raise TypeError(
+            f"unsupported types for date_sub. left: {input_types[0]} right: {input_types[1]}"
+        )
+
+
+date_sub_op = DateSubOp()

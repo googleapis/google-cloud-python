@@ -740,6 +740,21 @@ def timestamp_sub_op_impl(x: ibis_types.TimestampValue, y: ibis_types.IntegerVal
     return x - y.to_interval("us")
 
 
+@scalar_op_compiler.register_binary_op(ops.date_diff_op)
+def date_diff_op_impl(x: ibis_types.DateValue, y: ibis_types.DateValue):
+    return x.delta(y, "day") * int(UNIT_TO_US_CONVERSION_FACTORS["d"])  # type: ignore
+
+
+@scalar_op_compiler.register_binary_op(ops.date_add_op)
+def date_add_op_impl(x: ibis_types.DateValue, y: ibis_types.IntegerValue):
+    return x.cast("timestamp") + y.to_interval("us")  # type: ignore
+
+
+@scalar_op_compiler.register_binary_op(ops.date_sub_op)
+def date_sub_op_impl(x: ibis_types.DateValue, y: ibis_types.IntegerValue):
+    return x.cast("timestamp") - y.to_interval("us")  # type: ignore
+
+
 @scalar_op_compiler.register_unary_op(ops.FloorDtOp, pass_op=True)
 def floor_dt_op_impl(x: ibis_types.Value, op: ops.FloorDtOp):
     supported_freqs = ["Y", "Q", "M", "W", "D", "h", "min", "s", "ms", "us", "ns"]

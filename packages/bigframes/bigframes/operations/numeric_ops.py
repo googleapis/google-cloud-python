@@ -123,11 +123,17 @@ class AddOp(base_ops.BinaryOp):
             # String addition
             return input_types[0]
 
-        # Timestamp addition.
+        # Temporal addition.
         if dtypes.is_datetime_like(left_type) and right_type is dtypes.TIMEDELTA_DTYPE:
             return left_type
         if left_type is dtypes.TIMEDELTA_DTYPE and dtypes.is_datetime_like(right_type):
             return right_type
+
+        if left_type == dtypes.DATE_DTYPE and right_type == dtypes.TIMEDELTA_DTYPE:
+            return dtypes.DATETIME_DTYPE
+
+        if left_type == dtypes.TIMEDELTA_DTYPE and right_type == dtypes.DATE_DTYPE:
+            return dtypes.DATETIME_DTYPE
 
         if left_type is dtypes.TIMEDELTA_DTYPE and right_type is dtypes.TIMEDELTA_DTYPE:
             return dtypes.TIMEDELTA_DTYPE
@@ -155,8 +161,14 @@ class SubOp(base_ops.BinaryOp):
         if dtypes.is_datetime_like(left_type) and dtypes.is_datetime_like(right_type):
             return dtypes.TIMEDELTA_DTYPE
 
+        if left_type == dtypes.DATE_DTYPE and right_type == dtypes.DATE_DTYPE:
+            return dtypes.TIMEDELTA_DTYPE
+
         if dtypes.is_datetime_like(left_type) and right_type is dtypes.TIMEDELTA_DTYPE:
             return left_type
+
+        if left_type == dtypes.DATE_DTYPE and right_type == dtypes.TIMEDELTA_DTYPE:
+            return dtypes.DATETIME_DTYPE
 
         if left_type is dtypes.TIMEDELTA_DTYPE and right_type is dtypes.TIMEDELTA_DTYPE:
             return dtypes.TIMEDELTA_DTYPE

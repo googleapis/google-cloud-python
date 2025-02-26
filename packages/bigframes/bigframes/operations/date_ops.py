@@ -12,6 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import dataclasses
+import typing
+
+from bigframes import dtypes
 from bigframes.operations import base_ops
 import bigframes.operations.type as op_typing
 
@@ -39,3 +43,22 @@ quarter_op = base_ops.create_unary_op(
     name="quarter",
     type_signature=op_typing.DATELIKE_ACCESSOR,
 )
+
+
+@dataclasses.dataclass(frozen=True)
+class DateDiffOp(base_ops.BinaryOp):
+    name: typing.ClassVar[str] = "date_diff"
+
+    def output_type(self, *input_types: dtypes.ExpressionType) -> dtypes.ExpressionType:
+        if input_types[0] is not input_types[1]:
+            raise TypeError(
+                f"two inputs have different types. left: {input_types[0]}, right: {input_types[1]}"
+            )
+
+        if input_types[0] != dtypes.DATE_DTYPE:
+            raise TypeError("expected date input")
+
+        return dtypes.TIMEDELTA_DTYPE
+
+
+date_diff_op = DateDiffOp()

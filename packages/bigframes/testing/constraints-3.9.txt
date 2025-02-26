@@ -16,7 +16,7 @@ jellyfish==0.8.9
 numpy==1.24.0
 pandas==1.5.3
 pandas-gbq==0.26.0
-pyarrow==10.0.1
+pyarrow==15.0.2
 pydata-google-auth==1.8.2
 requests==2.27.1
 scikit-learn==1.2.2
