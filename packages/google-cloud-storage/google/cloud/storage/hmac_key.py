@@ -188,7 +188,6 @@ class HMACKeyMetadata(object):
         """
         return self._user_project
 
-    @create_trace_span(name="Storage.HmacKey.exists")
     def exists(self, timeout=_DEFAULT_TIMEOUT, retry=DEFAULT_RETRY):
         """Determine whether or not the key for this metadata exists.
 
@@ -204,24 +203,24 @@ class HMACKeyMetadata(object):
         :rtype: bool
         :returns: True if the key exists in Cloud Storage.
         """
-        try:
-            qs_params = {}
+        with create_trace_span(name="Storage.HmacKey.exists"):
+            try:
+                qs_params = {}
 
-            if self.user_project is not None:
-                qs_params["userProject"] = self.user_project
+                if self.user_project is not None:
+                    qs_params["userProject"] = self.user_project
 
-            self._client._get_resource(
-                self.path,
-                query_params=qs_params,
-                timeout=timeout,
-                retry=retry,
-            )
-        except NotFound:
-            return False
-        else:
-            return True
+                self._client._get_resource(
+                    self.path,
+                    query_params=qs_params,
+                    timeout=timeout,
+                    retry=retry,
+                )
+            except NotFound:
+                return False
+            else:
+                return True
 
-    @create_trace_span(name="Storage.HmacKey.reload")
     def reload(self, timeout=_DEFAULT_TIMEOUT, retry=DEFAULT_RETRY):
         """Reload properties from Cloud Storage.
 
@@ -237,19 +236,19 @@ class HMACKeyMetadata(object):
         :raises :class:`~google.api_core.exceptions.NotFound`:
             if the key does not exist on the back-end.
         """
-        qs_params = {}
+        with create_trace_span(name="Storage.HmacKey.reload"):
+            qs_params = {}
 
-        if self.user_project is not None:
-            qs_params["userProject"] = self.user_project
+            if self.user_project is not None:
+                qs_params["userProject"] = self.user_project
 
-        self._properties = self._client._get_resource(
-            self.path,
-            query_params=qs_params,
-            timeout=timeout,
-            retry=retry,
-        )
+            self._properties = self._client._get_resource(
+                self.path,
+                query_params=qs_params,
+                timeout=timeout,
+                retry=retry,
+            )
 
-    @create_trace_span(name="Storage.HmacKey.update")
     def update(self, timeout=_DEFAULT_TIMEOUT, retry=DEFAULT_RETRY_IF_ETAG_IN_JSON):
         """Save writable properties to Cloud Storage.
 
@@ -265,20 +264,20 @@ class HMACKeyMetadata(object):
         :raises :class:`~google.api_core.exceptions.NotFound`:
             if the key does not exist on the back-end.
         """
-        qs_params = {}
-        if self.user_project is not None:
-            qs_params["userProject"] = self.user_project
+        with create_trace_span(name="Storage.HmacKey.update"):
+            qs_params = {}
+            if self.user_project is not None:
+                qs_params["userProject"] = self.user_project
 
-        payload = {"state": self.state}
-        self._properties = self._client._put_resource(
-            self.path,
-            payload,
-            query_params=qs_params,
-            timeout=timeout,
-            retry=retry,
-        )
+            payload = {"state": self.state}
+            self._properties = self._client._put_resource(
+                self.path,
+                payload,
+                query_params=qs_params,
+                timeout=timeout,
+                retry=retry,
+            )
 
-    @create_trace_span(name="Storage.HmacKey.delete")
     def delete(self, timeout=_DEFAULT_TIMEOUT, retry=DEFAULT_RETRY):
         """Delete the key from Cloud Storage.
 
@@ -294,13 +293,14 @@ class HMACKeyMetadata(object):
         :raises :class:`~google.api_core.exceptions.NotFound`:
             if the key does not exist on the back-end.
         """
-        qs_params = {}
-        if self.user_project is not None:
-            qs_params["userProject"] = self.user_project
+        with create_trace_span(name="Storage.HmacKey.delete"):
+            qs_params = {}
+            if self.user_project is not None:
+                qs_params["userProject"] = self.user_project
 
-        self._client._delete_resource(
-            self.path,
-            query_params=qs_params,
-            timeout=timeout,
-            retry=retry,
-        )
+            self._client._delete_resource(
+                self.path,
+                query_params=qs_params,
+                timeout=timeout,
+                retry=retry,
+            )

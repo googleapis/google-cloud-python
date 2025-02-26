@@ -360,7 +360,6 @@ class ACL(object):
             client = self.client
         return client
 
-    @create_trace_span(name="Storage.ACL.reload")
     def reload(self, client=None, timeout=_DEFAULT_TIMEOUT, retry=DEFAULT_RETRY):
         """Reload the ACL data from Cloud Storage.
 
@@ -379,25 +378,26 @@ class ACL(object):
         :param retry:
             (Optional) How to retry the RPC. See: :ref:`configuring_retries`
         """
-        path = self.reload_path
-        client = self._require_client(client)
-        query_params = {}
+        with create_trace_span(name="Storage.ACL.reload"):
+            path = self.reload_path
+            client = self._require_client(client)
+            query_params = {}
 
-        if self.user_project is not None:
-            query_params["userProject"] = self.user_project
+            if self.user_project is not None:
+                query_params["userProject"] = self.user_project
 
-        self.entities.clear()
+            self.entities.clear()
 
-        found = client._get_resource(
-            path,
-            query_params=query_params,
-            timeout=timeout,
-            retry=retry,
-        )
-        self.loaded = True
+            found = client._get_resource(
+                path,
+                query_params=query_params,
+                timeout=timeout,
+                retry=retry,
+            )
+            self.loaded = True
 
-        for entry in found.get("items", ()):
-            self.add_entity(self.entity_from_dict(entry))
+            for entry in found.get("items", ()):
+                self.add_entity(self.entity_from_dict(entry))
 
     def _save(
         self,
@@ -486,7 +486,6 @@ class ACL(object):
 
         self.loaded = True
 
-    @create_trace_span(name="Storage.ACL.save")
     def save(
         self,
         acl=None,
@@ -536,26 +535,26 @@ class ACL(object):
         :param retry:
             (Optional) How to retry the RPC. See: :ref:`configuring_retries`
         """
-        if acl is None:
-            acl = self
-            save_to_backend = acl.loaded
-        else:
-            save_to_backend = True
+        with create_trace_span(name="Storage.ACL.save"):
+            if acl is None:
+                acl = self
+                save_to_backend = acl.loaded
+            else:
+                save_to_backend = True
 
-        if save_to_backend:
-            self._save(
-                acl,
-                None,
-                client,
-                if_generation_match=if_generation_match,
-                if_generation_not_match=if_generation_not_match,
-                if_metageneration_match=if_metageneration_match,
-                if_metageneration_not_match=if_metageneration_not_match,
-                timeout=timeout,
-                retry=retry,
-            )
+            if save_to_backend:
+                self._save(
+                    acl,
+                    None,
+                    client,
+                    if_generation_match=if_generation_match,
+                    if_generation_not_match=if_generation_not_match,
+                    if_metageneration_match=if_metageneration_match,
+                    if_metageneration_not_match=if_metageneration_not_match,
+                    timeout=timeout,
+                    retry=retry,
+                )
 
-    @create_trace_span(name="Storage.ACL.savePredefined")
     def save_predefined(
         self,
         predefined,
@@ -608,20 +607,20 @@ class ACL(object):
         :param retry:
             (Optional) How to retry the RPC. See: :ref:`configuring_retries`
         """
-        predefined = self.validate_predefined(predefined)
-        self._save(
-            None,
-            predefined,
-            client,
-            if_generation_match=if_generation_match,
-            if_generation_not_match=if_generation_not_match,
-            if_metageneration_match=if_metageneration_match,
-            if_metageneration_not_match=if_metageneration_not_match,
-            timeout=timeout,
-            retry=retry,
-        )
+        with create_trace_span(name="Storage.ACL.savePredefined"):
+            predefined = self.validate_predefined(predefined)
+            self._save(
+                None,
+                predefined,
+                client,
+                if_generation_match=if_generation_match,
+                if_generation_not_match=if_generation_not_match,
+                if_metageneration_match=if_metageneration_match,
+                if_metageneration_not_match=if_metageneration_not_match,
+                timeout=timeout,
+                retry=retry,
+            )
 
-    @create_trace_span(name="Storage.ACL.clear")
     def clear(
         self,
         client=None,
@@ -671,16 +670,17 @@ class ACL(object):
         :param retry:
             (Optional) How to retry the RPC. See: :ref:`configuring_retries`
         """
-        self.save(
-            [],
-            client=client,
-            if_generation_match=if_generation_match,
-            if_generation_not_match=if_generation_not_match,
-            if_metageneration_match=if_metageneration_match,
-            if_metageneration_not_match=if_metageneration_not_match,
-            timeout=timeout,
-            retry=retry,
-        )
+        with create_trace_span(name="Storage.ACL.clear"):
+            self.save(
+                [],
+                client=client,
+                if_generation_match=if_generation_match,
+                if_generation_not_match=if_generation_not_match,
+                if_metageneration_match=if_metageneration_match,
+                if_metageneration_not_match=if_metageneration_not_match,
+                timeout=timeout,
+                retry=retry,
+            )
 
 
 class BucketACL(ACL):
