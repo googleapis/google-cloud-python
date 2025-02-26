@@ -106,22 +106,15 @@ class Reservation(proto.Message):
             runtime if ignore_idle_slots is set to false, or autoscaling
             is enabled.
 
-            If edition is EDITION_UNSPECIFIED and total slot_capacity of
-            the reservation and its siblings exceeds the total
-            slot_count of all capacity commitments, the request will
-            fail with ``google.rpc.Code.RESOURCE_EXHAUSTED``.
-
-            If edition is any value but EDITION_UNSPECIFIED, then the
-            above requirement is not needed. The total slot_capacity of
-            the reservation and its siblings may exceed the total
-            slot_count of capacity commitments. In that case, the
-            exceeding slots will be charged with the autoscale SKU. You
-            can increase the number of baseline slots in a reservation
-            every few minutes. If you want to decrease your baseline
-            slots, you are limited to once an hour if you have recently
-            changed your baseline slot capacity and your baseline slots
-            exceed your committed slots. Otherwise, you can decrease
-            your baseline slots every few minutes.
+            The total slot_capacity of the reservation and its siblings
+            may exceed the total slot_count of capacity commitments. In
+            that case, the exceeding slots will be charged with the
+            autoscale SKU. You can increase the number of baseline slots
+            in a reservation every few minutes. If you want to decrease
+            your baseline slots, you are limited to once an hour if you
+            have recently changed your baseline slot capacity and your
+            baseline slots exceed your committed slots. Otherwise, you
+            can decrease your baseline slots every few minutes.
         ignore_idle_slots (bool):
             If false, any query or pipeline job using this reservation
             will use idle slots from other reservations within the same
@@ -165,7 +158,7 @@ class Reservation(proto.Message):
         edition (google.cloud.bigquery_reservation_v1.types.Edition):
             Edition of the reservation.
         primary_location (str):
-            Optional. The current location of the
+            Output only. The current location of the
             reservation's primary replica. This field is
             only set for reservations using the managed
             disaster recovery feature.
@@ -179,11 +172,24 @@ class Reservation(proto.Message):
             convert a non-failover reservation to a failover
             reservation(or vice versa).
         original_primary_location (str):
-            Optional. The location where the reservation
-            was originally created. This is set only during
-            the failover reservation's creation. All billing
-            charges for the failover reservation will be
-            applied to this location.
+            Output only. The location where the
+            reservation was originally created. This is set
+            only during the failover reservation's creation.
+            All billing charges for the failover reservation
+            will be applied to this location.
+        replication_status (google.cloud.bigquery_reservation_v1.types.Reservation.ReplicationStatus):
+            Output only. The Disaster Recovery(DR)
+            replication status of the reservation. This is
+            only available for the primary replicas of
+            DR/failover reservations and provides
+            information about the both the staleness of the
+            secondary and the last error encountered while
+            trying to replicate changes from the primary to
+            the secondary. If this field is blank, it means
+            that the reservation is either not a DR
+            reservation or the reservation is a DR secondary
+            or that any replication operations on the
+            reservation have succeeded.
     """
 
     class Autoscale(proto.Message):
@@ -208,6 +214,43 @@ class Reservation(proto.Message):
         max_slots: int = proto.Field(
             proto.INT64,
             number=2,
+        )
+
+    class ReplicationStatus(proto.Message):
+        r"""Disaster Recovery(DR) replication status of the reservation.
+
+        Attributes:
+            error (google.rpc.status_pb2.Status):
+                Output only. The last error encountered while
+                trying to replicate changes from the primary to
+                the secondary. This field is only available if
+                the replication has not succeeded since.
+            last_error_time (google.protobuf.timestamp_pb2.Timestamp):
+                Output only. The time at which the last error
+                was encountered while trying to replicate
+                changes from the primary to the secondary. This
+                field is only available if the replication has
+                not succeeded since.
+            last_replication_time (google.protobuf.timestamp_pb2.Timestamp):
+                Output only. A timestamp corresponding to the
+                last change on the primary that was successfully
+                replicated to the secondary.
+        """
+
+        error: status_pb2.Status = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            message=status_pb2.Status,
+        )
+        last_error_time: timestamp_pb2.Timestamp = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            message=timestamp_pb2.Timestamp,
+        )
+        last_replication_time: timestamp_pb2.Timestamp = proto.Field(
+            proto.MESSAGE,
+            number=3,
+            message=timestamp_pb2.Timestamp,
         )
 
     name: str = proto.Field(
@@ -261,6 +304,11 @@ class Reservation(proto.Message):
     original_primary_location: str = proto.Field(
         proto.STRING,
         number=20,
+    )
+    replication_status: ReplicationStatus = proto.Field(
+        proto.MESSAGE,
+        number=24,
+        message=ReplicationStatus,
     )
 
 
@@ -897,6 +945,16 @@ class Assignment(proto.Message):
             Which type of jobs will use the reservation.
         state (google.cloud.bigquery_reservation_v1.types.Assignment.State):
             Output only. State of the assignment.
+        enable_gemini_in_bigquery (bool):
+            Optional. This field controls if "Gemini in BigQuery"
+            (https://cloud.google.com/gemini/docs/bigquery/overview)
+            features should be enabled for this reservation assignment,
+            which is not on by default. "Gemini in BigQuery" has a
+            distinct compliance posture from BigQuery. If this field is
+            set to true, the assignment job type is QUERY, and the
+            parent reservation edition is ENTERPRISE_PLUS, then the
+            assignment will give the grantee project/organization access
+            to "Gemini in BigQuery" features.
     """
 
     class JobType(proto.Enum):
@@ -920,12 +978,18 @@ class Assignment(proto.Message):
             BACKGROUND (4):
                 Background jobs that BigQuery runs for the
                 customers in the background.
+            CONTINUOUS (6):
+                Continuous SQL jobs will use this
+                reservation. Reservations with continuous
+                assignments cannot be mixed with non-continuous
+                assignments.
         """
         JOB_TYPE_UNSPECIFIED = 0
         PIPELINE = 1
         QUERY = 2
         ML_EXTERNAL = 3
         BACKGROUND = 4
+        CONTINUOUS = 6
 
     class State(proto.Enum):
         r"""Assignment will remain in PENDING state if no active capacity
@@ -962,6 +1026,10 @@ class Assignment(proto.Message):
         proto.ENUM,
         number=6,
         enum=State,
+    )
+    enable_gemini_in_bigquery: bool = proto.Field(
+        proto.BOOL,
+        number=10,
     )
 
 

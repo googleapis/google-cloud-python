@@ -190,7 +190,7 @@ class ReservationServiceTransport(abc.ABC):
             ),
             self.failover_reservation: gapic_v1.method.wrap_method(
                 self.failover_reservation,
-                default_timeout=None,
+                default_timeout=300.0,
                 client_info=client_info,
             ),
             self.create_capacity_commitment: gapic_v1.method.wrap_method(

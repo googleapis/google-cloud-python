@@ -1204,7 +1204,7 @@ class ReservationServiceGrpcAsyncIOTransport(ReservationServiceTransport):
             ),
             self.failover_reservation: self._wrap_method(
                 self.failover_reservation,
-                default_timeout=None,
+                default_timeout=300.0,
                 client_info=client_info,
             ),
             self.create_capacity_commitment: self._wrap_method(
