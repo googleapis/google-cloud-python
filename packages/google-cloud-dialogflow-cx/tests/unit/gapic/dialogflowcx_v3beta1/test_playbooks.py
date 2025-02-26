@@ -67,11 +67,14 @@ from google.cloud.dialogflowcx_v3beta1.services.playbooks import (
 from google.cloud.dialogflowcx_v3beta1.types import (
     advanced_settings,
     example,
+    fulfillment,
+    gcs,
     generative_settings,
     parameter_definition,
 )
 from google.cloud.dialogflowcx_v3beta1.types import playbook
 from google.cloud.dialogflowcx_v3beta1.types import playbook as gcdc_playbook
+from google.cloud.dialogflowcx_v3beta1.types import response_message, tool_call
 
 CRED_INFO_JSON = {
     "credential_source": "/path/to/file",
@@ -7001,6 +7004,106 @@ def test_create_playbook_rest_call_success(request_type):
             "use_timeout_based_endpointing": True,
             "models": {},
         },
+        "handlers": [
+            {
+                "event_handler": {
+                    "event": "event_value",
+                    "condition": "condition_value",
+                    "fulfillment": {
+                        "messages": [
+                            {
+                                "text": {
+                                    "text": ["text_value1", "text_value2"],
+                                    "allow_playback_interruption": True,
+                                },
+                                "payload": {"fields": {}},
+                                "conversation_success": {"metadata": {}},
+                                "output_audio_text": {
+                                    "text": "text_value",
+                                    "ssml": "ssml_value",
+                                    "allow_playback_interruption": True,
+                                },
+                                "live_agent_handoff": {"metadata": {}},
+                                "end_interaction": {},
+                                "play_audio": {
+                                    "audio_uri": "audio_uri_value",
+                                    "allow_playback_interruption": True,
+                                },
+                                "mixed_audio": {
+                                    "segments": [
+                                        {
+                                            "audio": b"audio_blob",
+                                            "uri": "uri_value",
+                                            "allow_playback_interruption": True,
+                                        }
+                                    ]
+                                },
+                                "telephony_transfer_call": {
+                                    "phone_number": "phone_number_value"
+                                },
+                                "knowledge_info_card": {},
+                                "tool_call": {
+                                    "tool": "tool_value",
+                                    "action": "action_value",
+                                    "input_parameters": {},
+                                },
+                                "channel": "channel_value",
+                            }
+                        ],
+                        "webhook": "webhook_value",
+                        "return_partial_responses": True,
+                        "tag": "tag_value",
+                        "set_parameter_actions": [
+                            {
+                                "parameter": "parameter_value",
+                                "value": {
+                                    "null_value": 0,
+                                    "number_value": 0.1285,
+                                    "string_value": "string_value_value",
+                                    "bool_value": True,
+                                    "struct_value": {},
+                                    "list_value": {"values": {}},
+                                },
+                            }
+                        ],
+                        "conditional_cases": [
+                            {
+                                "cases": [
+                                    {
+                                        "condition": "condition_value",
+                                        "case_content": [
+                                            {"message": {}, "additional_cases": {}}
+                                        ],
+                                    }
+                                ]
+                            }
+                        ],
+                        "advanced_settings": {
+                            "audio_export_gcs_destination": {"uri": "uri_value"},
+                            "speech_settings": {},
+                            "dtmf_settings": {
+                                "enabled": True,
+                                "max_digits": 1065,
+                                "finish_digit": "finish_digit_value",
+                                "interdigit_timeout_duration": {},
+                                "endpointing_timeout_duration": {},
+                            },
+                            "logging_settings": {
+                                "enable_stackdriver_logging": True,
+                                "enable_interaction_logging": True,
+                                "enable_consent_based_redaction": True,
+                            },
+                        },
+                        "enable_generative_fallback": True,
+                    },
+                },
+                "lifecycle_handler": {
+                    "lifecycle_stage": "lifecycle_stage_value",
+                    "condition": "condition_value",
+                    "fulfillment": {},
+                },
+            }
+        ],
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -7612,6 +7715,106 @@ def test_update_playbook_rest_call_success(request_type):
             "use_timeout_based_endpointing": True,
             "models": {},
         },
+        "handlers": [
+            {
+                "event_handler": {
+                    "event": "event_value",
+                    "condition": "condition_value",
+                    "fulfillment": {
+                        "messages": [
+                            {
+                                "text": {
+                                    "text": ["text_value1", "text_value2"],
+                                    "allow_playback_interruption": True,
+                                },
+                                "payload": {"fields": {}},
+                                "conversation_success": {"metadata": {}},
+                                "output_audio_text": {
+                                    "text": "text_value",
+                                    "ssml": "ssml_value",
+                                    "allow_playback_interruption": True,
+                                },
+                                "live_agent_handoff": {"metadata": {}},
+                                "end_interaction": {},
+                                "play_audio": {
+                                    "audio_uri": "audio_uri_value",
+                                    "allow_playback_interruption": True,
+                                },
+                                "mixed_audio": {
+                                    "segments": [
+                                        {
+                                            "audio": b"audio_blob",
+                                            "uri": "uri_value",
+                                            "allow_playback_interruption": True,
+                                        }
+                                    ]
+                                },
+                                "telephony_transfer_call": {
+                                    "phone_number": "phone_number_value"
+                                },
+                                "knowledge_info_card": {},
+                                "tool_call": {
+                                    "tool": "tool_value",
+                                    "action": "action_value",
+                                    "input_parameters": {},
+                                },
+                                "channel": "channel_value",
+                            }
+                        ],
+                        "webhook": "webhook_value",
+                        "return_partial_responses": True,
+                        "tag": "tag_value",
+                        "set_parameter_actions": [
+                            {
+                                "parameter": "parameter_value",
+                                "value": {
+                                    "null_value": 0,
+                                    "number_value": 0.1285,
+                                    "string_value": "string_value_value",
+                                    "bool_value": True,
+                                    "struct_value": {},
+                                    "list_value": {"values": {}},
+                                },
+                            }
+                        ],
+                        "conditional_cases": [
+                            {
+                                "cases": [
+                                    {
+                                        "condition": "condition_value",
+                                        "case_content": [
+                                            {"message": {}, "additional_cases": {}}
+                                        ],
+                                    }
+                                ]
+                            }
+                        ],
+                        "advanced_settings": {
+                            "audio_export_gcs_destination": {"uri": "uri_value"},
+                            "speech_settings": {},
+                            "dtmf_settings": {
+                                "enabled": True,
+                                "max_digits": 1065,
+                                "finish_digit": "finish_digit_value",
+                                "interdigit_timeout_duration": {},
+                                "endpointing_timeout_duration": {},
+                            },
+                            "logging_settings": {
+                                "enable_stackdriver_logging": True,
+                                "enable_interaction_logging": True,
+                                "enable_consent_based_redaction": True,
+                            },
+                        },
+                        "enable_generative_fallback": True,
+                    },
+                },
+                "lifecycle_handler": {
+                    "lifecycle_stage": "lifecycle_stage_value",
+                    "condition": "condition_value",
+                    "fulfillment": {},
+                },
+            }
+        ],
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -7855,13 +8058,113 @@ def test_create_playbook_version_rest_call_success(request_type):
                 "use_timeout_based_endpointing": True,
                 "models": {},
             },
+            "handlers": [
+                {
+                    "event_handler": {
+                        "event": "event_value",
+                        "condition": "condition_value",
+                        "fulfillment": {
+                            "messages": [
+                                {
+                                    "text": {
+                                        "text": ["text_value1", "text_value2"],
+                                        "allow_playback_interruption": True,
+                                    },
+                                    "payload": {"fields": {}},
+                                    "conversation_success": {"metadata": {}},
+                                    "output_audio_text": {
+                                        "text": "text_value",
+                                        "ssml": "ssml_value",
+                                        "allow_playback_interruption": True,
+                                    },
+                                    "live_agent_handoff": {"metadata": {}},
+                                    "end_interaction": {},
+                                    "play_audio": {
+                                        "audio_uri": "audio_uri_value",
+                                        "allow_playback_interruption": True,
+                                    },
+                                    "mixed_audio": {
+                                        "segments": [
+                                            {
+                                                "audio": b"audio_blob",
+                                                "uri": "uri_value",
+                                                "allow_playback_interruption": True,
+                                            }
+                                        ]
+                                    },
+                                    "telephony_transfer_call": {
+                                        "phone_number": "phone_number_value"
+                                    },
+                                    "knowledge_info_card": {},
+                                    "tool_call": {
+                                        "tool": "tool_value",
+                                        "action": "action_value",
+                                        "input_parameters": {},
+                                    },
+                                    "channel": "channel_value",
+                                }
+                            ],
+                            "webhook": "webhook_value",
+                            "return_partial_responses": True,
+                            "tag": "tag_value",
+                            "set_parameter_actions": [
+                                {
+                                    "parameter": "parameter_value",
+                                    "value": {
+                                        "null_value": 0,
+                                        "number_value": 0.1285,
+                                        "string_value": "string_value_value",
+                                        "bool_value": True,
+                                        "struct_value": {},
+                                        "list_value": {"values": {}},
+                                    },
+                                }
+                            ],
+                            "conditional_cases": [
+                                {
+                                    "cases": [
+                                        {
+                                            "condition": "condition_value",
+                                            "case_content": [
+                                                {"message": {}, "additional_cases": {}}
+                                            ],
+                                        }
+                                    ]
+                                }
+                            ],
+                            "advanced_settings": {
+                                "audio_export_gcs_destination": {"uri": "uri_value"},
+                                "speech_settings": {},
+                                "dtmf_settings": {
+                                    "enabled": True,
+                                    "max_digits": 1065,
+                                    "finish_digit": "finish_digit_value",
+                                    "interdigit_timeout_duration": {},
+                                    "endpointing_timeout_duration": {},
+                                },
+                                "logging_settings": {
+                                    "enable_stackdriver_logging": True,
+                                    "enable_interaction_logging": True,
+                                    "enable_consent_based_redaction": True,
+                                },
+                            },
+                            "enable_generative_fallback": True,
+                        },
+                    },
+                    "lifecycle_handler": {
+                        "lifecycle_stage": "lifecycle_stage_value",
+                        "condition": "condition_value",
+                        "fulfillment": {},
+                    },
+                }
+            ],
         },
         "examples": [
             {
                 "name": "name_value",
                 "playbook_input": {
                     "preceding_conversation_summary": "preceding_conversation_summary_value",
-                    "action_parameters": {"fields": {}},
+                    "action_parameters": {},
                 },
                 "playbook_output": {
                     "execution_summary": "execution_summary_value",
@@ -9554,8 +9857,37 @@ def test_parse_tool_path():
     assert expected == actual
 
 
+def test_webhook_path():
+    project = "winkle"
+    location = "nautilus"
+    agent = "scallop"
+    webhook = "abalone"
+    expected = "projects/{project}/locations/{location}/agents/{agent}/webhooks/{webhook}".format(
+        project=project,
+        location=location,
+        agent=agent,
+        webhook=webhook,
+    )
+    actual = PlaybooksClient.webhook_path(project, location, agent, webhook)
+    assert expected == actual
+
+
+def test_parse_webhook_path():
+    expected = {
+        "project": "squid",
+        "location": "clam",
+        "agent": "whelk",
+        "webhook": "octopus",
+    }
+    path = PlaybooksClient.webhook_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = PlaybooksClient.parse_webhook_path(path)
+    assert expected == actual
+
+
 def test_common_billing_account_path():
-    billing_account = "winkle"
+    billing_account = "oyster"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -9565,7 +9897,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "nautilus",
+        "billing_account": "nudibranch",
     }
     path = PlaybooksClient.common_billing_account_path(**expected)
 
@@ -9575,7 +9907,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "scallop"
+    folder = "cuttlefish"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -9585,7 +9917,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "abalone",
+        "folder": "mussel",
     }
     path = PlaybooksClient.common_folder_path(**expected)
 
@@ -9595,7 +9927,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "squid"
+    organization = "winkle"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -9605,7 +9937,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "clam",
+        "organization": "nautilus",
     }
     path = PlaybooksClient.common_organization_path(**expected)
 
@@ -9615,7 +9947,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "whelk"
+    project = "scallop"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -9625,7 +9957,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "octopus",
+        "project": "abalone",
     }
     path = PlaybooksClient.common_project_path(**expected)
 
@@ -9635,8 +9967,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "oyster"
-    location = "nudibranch"
+    project = "squid"
+    location = "clam"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -9647,8 +9979,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "cuttlefish",
-        "location": "mussel",
+        "project": "whelk",
+        "location": "octopus",
     }
     path = PlaybooksClient.common_location_path(**expected)
 
