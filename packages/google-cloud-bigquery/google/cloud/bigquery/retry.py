@@ -82,6 +82,32 @@ on ``DEFAULT_RETRY``. For example, to change the deadline to 30 seconds,
 pass ``retry=bigquery.DEFAULT_RETRY.with_deadline(30)``.
 """
 
+
+def _should_retry_get_job_conflict(exc):
+    """Predicate for determining when to retry a jobs.get call after a conflict error.
+
+    Sometimes we get a 404 after a Conflict. In this case, we
+    have pretty high confidence that by retrying the 404, we'll
+    (hopefully) eventually recover the job.
+    https://github.com/googleapis/python-bigquery/issues/2134
+
+    Note: we may be able to extend this to user-specified predicates
+    after https://github.com/googleapis/python-api-core/issues/796
+    to tweak existing Retry object predicates.
+    """
+    return isinstance(exc, exceptions.NotFound) or _should_retry(exc)
+
+
+# Pick a deadline smaller than our other deadlines since we want to timeout
+# before those expire.
+_DEFAULT_GET_JOB_CONFLICT_DEADLINE = _DEFAULT_RETRY_DEADLINE / 3.0
+_DEFAULT_GET_JOB_CONFLICT_RETRY = retry.Retry(
+    predicate=_should_retry_get_job_conflict,
+    deadline=_DEFAULT_GET_JOB_CONFLICT_DEADLINE,
+)
+"""Private, may be removed in future."""
+
+
 # Note: Take care when updating DEFAULT_TIMEOUT to anything but None. We
 # briefly had a default timeout, but even setting it at more than twice the
 # theoretical server-side default timeout of 2 minutes was not enough for
@@ -141,6 +167,34 @@ DEFAULT_JOB_RETRY = retry.Retry(
 """
 The default job retry object.
 """
+
+
+def _query_job_insert_should_retry(exc):
+    # Per https://github.com/googleapis/python-bigquery/issues/2134, sometimes
+    # we get a 404 error. In this case, if we get this far, assume that the job
+    # doesn't actually exist and try again. We can't add 404 to the default
+    # job_retry because that happens for errors like "this table does not
+    # exist", which probably won't resolve with a retry.
+    if isinstance(exc, exceptions.RetryError):
+        exc = exc.cause
+
+    if isinstance(exc, exceptions.NotFound):
+        message = exc.message
+        # Don't try to retry table/dataset not found, just job not found.
+        # The URL contains jobs, so use whitespace to disambiguate.
+        return message is not None and " job" in message.lower()
+
+    return _job_should_retry(exc)
+
+
+_DEFAULT_QUERY_JOB_INSERT_RETRY = retry.Retry(
+    predicate=_query_job_insert_should_retry,
+    # jobs.insert doesn't wait for the job to complete, so we don't need the
+    # long _DEFAULT_JOB_DEADLINE for this part.
+    deadline=_DEFAULT_RETRY_DEADLINE,
+)
+"""Private, may be removed in future."""
+
 
 DEFAULT_GET_JOB_TIMEOUT = 128
 """

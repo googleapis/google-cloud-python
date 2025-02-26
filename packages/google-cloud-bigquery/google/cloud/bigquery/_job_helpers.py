@@ -47,6 +47,7 @@ from google.api_core import retry as retries
 from google.cloud.bigquery import job
 import google.cloud.bigquery.query
 from google.cloud.bigquery import table
+import google.cloud.bigquery.retry
 from google.cloud.bigquery.retry import POLLING_DEFAULT_VALUE
 
 # Avoid circular imports
@@ -142,12 +143,28 @@ def query_jobs_insert(
                 raise create_exc
 
             try:
+                # Sometimes we get a 404 after a Conflict. In this case, we
+                # have pretty high confidence that by retrying the 404, we'll
+                # (hopefully) eventually recover the job.
+                # https://github.com/googleapis/python-bigquery/issues/2134
+                #
+                # Allow users who want to completely disable retries to
+                # continue to do so by setting retry to None.
+                get_job_retry = retry
+                if retry is not None:
+                    # TODO(tswast): Amend the user's retry object with allowing
+                    # 404 to retry when there's a public way to do so.
+                    # https://github.com/googleapis/python-api-core/issues/796
+                    get_job_retry = (
+                        google.cloud.bigquery.retry._DEFAULT_GET_JOB_CONFLICT_RETRY
+                    )
+
                 query_job = client.get_job(
                     job_id,
                     project=project,
                     location=location,
-                    retry=retry,
-                    timeout=timeout,
+                    retry=get_job_retry,
+                    timeout=google.cloud.bigquery.retry.DEFAULT_GET_JOB_TIMEOUT,
                 )
             except core_exceptions.GoogleAPIError:  # (includes RetryError)
                 raise
@@ -156,7 +173,13 @@ def query_jobs_insert(
         else:
             return query_job
 
+    # Allow users who want to completely disable retries to
+    # continue to do so by setting job_retry to None.
+    if job_retry is not None:
+        do_query = google.cloud.bigquery.retry._DEFAULT_QUERY_JOB_INSERT_RETRY(do_query)
+
     future = do_query()
+
     # The future might be in a failed state now, but if it's
     # unrecoverable, we'll find out when we ask for it's result, at which
     # point, we may retry.
