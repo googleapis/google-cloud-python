@@ -234,10 +234,6 @@ class Session(
         # Whether this session treats objects as totally ordered.
         # Will expose as feature later, only False for internal testing
         self._strictly_ordered: bool = context.ordering_mode != "partial"
-        if not self._strictly_ordered:
-            msg = "Partial ordering mode is a preview feature and is subject to change."
-            warnings.warn(msg, bfe.OrderingModePartialPreviewWarning)
-
         self._allow_ambiguity = not self._strictly_ordered
         self._default_index_type = (
             bigframes.enums.DefaultIndexKind.SEQUENTIAL_INT64

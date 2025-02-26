@@ -40,7 +40,10 @@ class PreviewWarning(Warning):
 
 
 class NullIndexPreviewWarning(PreviewWarning):
-    """Null index feature is in preview."""
+    """Unused. Kept for backwards compatibility.
+
+    Was used when null index feature was in preview.
+    """
 
 
 class NullIndexError(ValueError):
@@ -48,7 +51,10 @@ class NullIndexError(ValueError):
 
 
 class OrderingModePartialPreviewWarning(PreviewWarning):
-    """Ordering mode 'partial' is in preview."""
+    """Unused. Kept for backwards compatibility.
+
+    Was used when ordering mode 'partial' was in preview.
+    """
 
 
 class OrderRequiredError(ValueError):
