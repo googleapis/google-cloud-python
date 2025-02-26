@@ -114,8 +114,8 @@ class BigtableDataClient(ClientWithProject):
         """
         if "pool_size" in kwargs:
             warnings.warn("pool_size no longer supported")
-        client_info = DEFAULT_CLIENT_INFO
-        client_info.client_library_version = self._client_version()
+        self.client_info = DEFAULT_CLIENT_INFO
+        self.client_info.client_library_version = self._client_version()
         if type(client_options) is dict:
             client_options = client_options_lib.from_dict(client_options)
         client_options = cast(
@@ -143,7 +143,7 @@ class BigtableDataClient(ClientWithProject):
         self._gapic_client = CrossSync._Sync_Impl.GapicClient(
             credentials=credentials,
             client_options=client_options,
-            client_info=client_info,
+            client_info=self.client_info,
             transport=lambda *args, **kwargs: TransportType(
                 *args, **kwargs, channel=custom_channel
             ),
@@ -284,6 +284,8 @@ class BigtableDataClient(ClientWithProject):
             new_channel = self.transport.create_channel()
             self._ping_and_warm_instances(channel=new_channel)
             self.transport._grpc_channel = new_channel
+            self.transport._stubs = {}
+            self.transport._prep_wrapped_messages(self.client_info)
             if grace_period:
                 self._is_closed.wait(grace_period)
             old_channel.close()

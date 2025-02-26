@@ -164,8 +164,8 @@ class BigtableDataClientAsync(ClientWithProject):
         if "pool_size" in kwargs:
             warnings.warn("pool_size no longer supported")
         # set up client info headers for veneer library
-        client_info = DEFAULT_CLIENT_INFO
-        client_info.client_library_version = self._client_version()
+        self.client_info = DEFAULT_CLIENT_INFO
+        self.client_info.client_library_version = self._client_version()
         # parse client options
         if type(client_options) is dict:
             client_options = client_options_lib.from_dict(client_options)
@@ -196,7 +196,7 @@ class BigtableDataClientAsync(ClientWithProject):
         self._gapic_client = CrossSync.GapicClient(
             credentials=credentials,
             client_options=client_options,
-            client_info=client_info,
+            client_info=self.client_info,
             transport=lambda *args, **kwargs: TransportType(
                 *args, **kwargs, channel=custom_channel
             ),
@@ -371,6 +371,9 @@ class BigtableDataClientAsync(ClientWithProject):
             await self._ping_and_warm_instances(channel=new_channel)
             # cycle channel out of use, with long grace window before closure
             self.transport._grpc_channel = new_channel
+            # invalidate caches
+            self.transport._stubs = {}
+            self.transport._prep_wrapped_messages(self.client_info)
             # give old_channel a chance to complete existing rpcs
             if CrossSync.is_async:
                 await old_channel.close(grace_period)
