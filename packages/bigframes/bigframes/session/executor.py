@@ -40,6 +40,7 @@ import google.cloud.bigquery_storage_v1
 import pyarrow
 
 import bigframes.core
+from bigframes.core import expression
 import bigframes.core.compile
 import bigframes.core.guid
 import bigframes.core.identifiers
@@ -231,11 +232,9 @@ class BigQueryCachingExecutor(Executor):
             if enable_cache
             else array_value.node
         )
-        if ordered:
-            return self.compiler.compile_ordered(
-                node, col_id_overrides=col_id_overrides
-            )
-        return self.compiler.compile_unordered(node, col_id_overrides=col_id_overrides)
+        if col_id_overrides:
+            node = override_ids(node, col_id_overrides)
+        return self.compiler.compile(node, ordered=ordered)
 
     def execute(
         self,
@@ -377,7 +376,7 @@ class BigQueryCachingExecutor(Executor):
             msg = "Peeking this value cannot be done efficiently."
             warnings.warn(msg)
 
-        sql = self.compiler.compile_peek(plan, n_rows)
+        sql = self.compiler.compile(plan, ordered=False, limit=n_rows)
 
         # TODO(swast): plumb through the api_name of the user-facing api that
         # caused this query.
@@ -416,7 +415,7 @@ class BigQueryCachingExecutor(Executor):
             assert tree_properties.can_fast_head(plan)
 
         head_plan = generate_head_plan(plan, n_rows)
-        sql = self.compiler.compile_ordered(head_plan)
+        sql = self.compiler.compile(head_plan)
 
         # TODO(swast): plumb through the api_name of the user-facing api that
         # caused this query.
@@ -439,7 +438,7 @@ class BigQueryCachingExecutor(Executor):
             row_count_plan = self.replace_cached_subtrees(
                 generate_row_count_plan(array_value.node)
             )
-            sql = self.compiler.compile_unordered(row_count_plan)
+            sql = self.compiler.compile(row_count_plan, ordered=False)
             iter, _ = self._run_execute_query(sql)
             return next(iter)[0]
 
@@ -549,8 +548,8 @@ class BigQueryCachingExecutor(Executor):
         """Executes the query and uses the resulting table to rewrite future executions."""
         offset_column = bigframes.core.guid.generate_guid("bigframes_offsets")
         w_offsets, offset_column = array_value.promote_offsets()
-        sql = self.compiler.compile_unordered(
-            self.replace_cached_subtrees(w_offsets.node)
+        sql = self.compiler.compile(
+            self.replace_cached_subtrees(w_offsets.node), ordered=False
         )
 
         tmp_table = self._sql_as_cached_temp_table(
@@ -666,3 +665,18 @@ def generate_head_plan(node: nodes.BigFrameNode, n: int):
 
 def generate_row_count_plan(node: nodes.BigFrameNode):
     return nodes.RowCountNode(node)
+
+
+def override_ids(
+    node: nodes.BigFrameNode, col_id_overrides: Mapping[str, str]
+) -> nodes.SelectionNode:
+    output_ids = [col_id_overrides.get(id, id) for id in node.schema.names]
+    return nodes.SelectionNode(
+        node,
+        tuple(
+            nodes.AliasedRef(
+                expression.DerefOp(old_id), bigframes.core.identifiers.ColumnId(out_id)
+            )
+            for old_id, out_id in zip(node.ids, output_ids)
+        ),
+    )

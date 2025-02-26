@@ -198,12 +198,6 @@ class ArrayValue:
         )
         return ArrayValue(node)
 
-    def _try_evaluate_local(self):
-        """Use only for unit testing paths - not fully featured. Will throw exception if fails."""
-        import bigframes.core.compile
-
-        return bigframes.core.compile.test_only_try_evaluate(self.node)
-
     def get_column_type(self, key: str) -> bigframes.dtypes.Dtype:
         return self.schema.get_type(key)
 

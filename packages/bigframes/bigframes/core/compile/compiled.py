@@ -72,7 +72,11 @@ class UnorderedIR:
     ) -> str:
         ibis_table = self._to_ibis_expr()
         # This set of output transforms maybe should be its own output node??
-        if order_by or limit:
+        if (
+            order_by
+            or limit
+            or (selections and (tuple(selections) != tuple(self.column_ids)))
+        ):
             sql = ibis_bigquery.Backend().compile(ibis_table)
             sql = (
                 bigframes.core.compile.googlesql.Select()

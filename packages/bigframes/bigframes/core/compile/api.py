@@ -13,11 +13,12 @@
 # limitations under the License.
 from __future__ import annotations
 
-from typing import Mapping, Sequence, Tuple, TYPE_CHECKING
+from typing import Optional, Sequence, Tuple, TYPE_CHECKING
 
 import google.cloud.bigquery as bigquery
 
-import bigframes.core.compile.compiler as compiler
+from bigframes.core import rewrite
+from bigframes.core.compile import compiler
 
 if TYPE_CHECKING:
     import bigframes.core.nodes
@@ -31,31 +32,16 @@ class SQLCompiler:
     def __init__(self, strict: bool = True):
         self._compiler = compiler.Compiler(strict=strict)
 
-    def compile_peek(self, node: bigframes.core.nodes.BigFrameNode, n_rows: int) -> str:
-        """Compile node into sql that selects N arbitrary rows, may not execute deterministically."""
-        return self._compiler.compile_peek_sql(node, n_rows)
-
-    def compile_unordered(
+    def compile(
         self,
         node: bigframes.core.nodes.BigFrameNode,
         *,
-        col_id_overrides: Mapping[str, str] = {},
-    ) -> str:
-        """Compile node into sql where rows are unsorted, and no ordering information is preserved."""
-        # TODO: Enable limit pullup, but only if not being used to write to clustered table.
-        output_ids = [col_id_overrides.get(id, id) for id in node.schema.names]
-        return self._compiler.compile_sql(node, ordered=False, output_ids=output_ids)
-
-    def compile_ordered(
-        self,
-        node: bigframes.core.nodes.BigFrameNode,
-        *,
-        col_id_overrides: Mapping[str, str] = {},
+        ordered: bool = True,
+        limit: Optional[int] = None,
     ) -> str:
         """Compile node into sql where rows are sorted with ORDER BY."""
         # If we are ordering the query anyways, compiling the slice as a limit is probably a good idea.
-        output_ids = [col_id_overrides.get(id, id) for id in node.schema.names]
-        return self._compiler.compile_sql(node, ordered=True, output_ids=output_ids)
+        return self._compiler.compile_sql(node, ordered=ordered, limit=limit)
 
     def compile_raw(
         self,
@@ -67,21 +53,15 @@ class SQLCompiler:
         return self._compiler.compile_raw(node)
 
 
-def test_only_try_evaluate(node: bigframes.core.nodes.BigFrameNode):
-    """Use only for unit testing paths - not fully featured. Will throw exception if fails."""
-    node = _STRICT_COMPILER._preprocess(node)
-    ibis = _STRICT_COMPILER.compile_node(node)._to_ibis_expr()
-    return ibis.pandas.connect({}).execute(ibis)
-
-
 def test_only_ibis_inferred_schema(node: bigframes.core.nodes.BigFrameNode):
     """Use only for testing paths to ensure ibis inferred schema does not diverge from bigframes inferred schema."""
     import bigframes.core.schema
 
-    node = _STRICT_COMPILER._preprocess(node)
-    compiled = _STRICT_COMPILER.compile_node(node)
+    node = _STRICT_COMPILER._replace_unsupported_ops(node)
+    node, _ = rewrite.pull_up_order(node, order_root=False)
+    ir = _STRICT_COMPILER.compile_node(node)
     items = tuple(
-        bigframes.core.schema.SchemaItem(name, compiled.get_column_type(ibis_id))
-        for name, ibis_id in zip(node.schema.names, compiled.column_ids)
+        bigframes.core.schema.SchemaItem(name, ir.get_column_type(ibis_id))
+        for name, ibis_id in zip(node.schema.names, ir.column_ids)
     )
     return bigframes.core.schema.ArraySchema(items)

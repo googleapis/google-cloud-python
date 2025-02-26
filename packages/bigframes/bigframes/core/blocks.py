@@ -213,14 +213,10 @@ class Block:
     @functools.cached_property
     def shape(self) -> typing.Tuple[int, int]:
         """Returns dimensions as (length, width) tuple."""
-
-        row_count_expr = self.expr.row_count()
-
-        # Support in-memory engines for hermetic unit tests.
-        if self.expr.session is None:
+        # Support zero-query for hermetic unit tests.
+        if self.expr.session is None and self.expr.node.row_count:
             try:
-                row_count = row_count_expr._try_evaluate_local().squeeze()
-                return (row_count, len(self.value_columns))
+                return self.expr.node.row_count
             except Exception:
                 pass
 

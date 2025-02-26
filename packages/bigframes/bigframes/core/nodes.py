@@ -1555,6 +1555,14 @@ class ExplodeNode(UnaryNode):
         return dataclasses.replace(self, column_ids=new_ids)  # type: ignore
 
 
+# Introduced during planing/compilation
+@dataclasses.dataclass(frozen=True, eq=False)
+class ResultNode(UnaryNode):
+    output_names: tuple[str, ...]
+    order_by: Tuple[OrderingExpression, ...] = ()
+    limit: Optional[int] = None
+
+
 # Tree operators
 def top_down(
     root: BigFrameNode,

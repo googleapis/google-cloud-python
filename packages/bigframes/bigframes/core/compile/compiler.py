@@ -33,8 +33,6 @@ import bigframes.core.compile.explode
 import bigframes.core.compile.ibis_types
 import bigframes.core.compile.scalar_op_compiler as compile_scalar
 import bigframes.core.compile.schema_translator
-import bigframes.core.expression as ex
-import bigframes.core.identifiers as ids
 import bigframes.core.nodes as nodes
 import bigframes.core.ordering as bf_ordering
 import bigframes.core.rewrite as rewrites
@@ -52,65 +50,54 @@ class Compiler:
     scalar_op_compiler = compile_scalar.ScalarOpCompiler()
 
     def compile_sql(
-        self, node: nodes.BigFrameNode, ordered: bool, output_ids: typing.Sequence[str]
+        self,
+        node: nodes.BigFrameNode,
+        ordered: bool,
+        limit: typing.Optional[int] = None,
     ) -> str:
-        # TODO: get rid of output_ids arg
-        assert len(output_ids) == len(list(node.fields))
-        node = set_output_names(node, output_ids)
-        node = nodes.top_down(node, rewrites.rewrite_timedelta_expressions)
+        # later steps might add ids, so snapshot before those steps.
+        output_ids = node.schema.names
         if ordered:
-            node, limit = rewrites.pullup_limit_from_slice(node)
-            node = nodes.bottom_up(node, rewrites.rewrite_slice)
-            # TODO: Extract out CTEs
-            node, ordering = rewrites.pull_up_order(
-                node, order_root=True, ordered_joins=self.strict
-            )
-            node = rewrites.column_pruning(node)
-            ir = self.compile_node(node)
-            return ir.to_sql(
-                order_by=ordering.all_ordering_columns,
-                limit=limit,
-                selections=output_ids,
-            )
-        else:
-            node = nodes.bottom_up(node, rewrites.rewrite_slice)
-            node, _ = rewrites.pull_up_order(
-                node, order_root=False, ordered_joins=self.strict
-            )
-            node = rewrites.column_pruning(node)
-            ir = self.compile_node(node)
-            return ir.to_sql(selections=output_ids)
+            # Need to do this before replacing unsupported ops, as that will rewrite slice ops
+            node, pulled_up_limit = rewrites.pullup_limit_from_slice(node)
+            if (pulled_up_limit is not None) and (
+                (limit is None) or limit > pulled_up_limit
+            ):
+                limit = pulled_up_limit
 
-    def compile_peek_sql(self, node: nodes.BigFrameNode, n_rows: int) -> str:
-        ids = [id.sql for id in node.ids]
-        node = nodes.bottom_up(node, rewrites.rewrite_slice)
-        node = nodes.top_down(node, rewrites.rewrite_timedelta_expressions)
-        node, _ = rewrites.pull_up_order(
-            node, order_root=False, ordered_joins=self.strict
-        )
+        node = self._replace_unsupported_ops(node)
+        # prune before pulling up order to avoid unnnecessary row_number() ops
         node = rewrites.column_pruning(node)
-        return self.compile_node(node).to_sql(limit=n_rows, selections=ids)
+        node, ordering = rewrites.pull_up_order(
+            node, order_root=ordered, ordered_joins=self.strict
+        )
+        # final pruning to cleanup up any leftovers unused values
+        node = rewrites.column_pruning(node)
+        return self.compile_node(node).to_sql(
+            order_by=ordering.all_ordering_columns if ordered else (),
+            limit=limit,
+            selections=output_ids,
+        )
 
     def compile_raw(
         self,
-        node: bigframes.core.nodes.BigFrameNode,
+        node: nodes.BigFrameNode,
     ) -> typing.Tuple[
         str, typing.Sequence[google.cloud.bigquery.SchemaField], bf_ordering.RowOrdering
     ]:
-        node = nodes.bottom_up(node, rewrites.rewrite_slice)
-        node = nodes.top_down(node, rewrites.rewrite_timedelta_expressions)
-        node, ordering = rewrites.pull_up_order(node, ordered_joins=self.strict)
+        node = self._replace_unsupported_ops(node)
         node = rewrites.column_pruning(node)
-        ir = self.compile_node(node)
-        sql = ir.to_sql()
+        node, ordering = rewrites.pull_up_order(
+            node, order_root=True, ordered_joins=self.strict
+        )
+        node = rewrites.column_pruning(node)
+        sql = self.compile_node(node).to_sql()
         return sql, node.schema.to_bigquery(), ordering
 
-    def _preprocess(self, node: nodes.BigFrameNode):
+    def _replace_unsupported_ops(self, node: nodes.BigFrameNode):
+        # TODO: Run all replacement rules as single bottom-up pass
         node = nodes.bottom_up(node, rewrites.rewrite_slice)
-        node = nodes.top_down(node, rewrites.rewrite_timedelta_expressions)
-        node, _ = rewrites.pull_up_order(
-            node, order_root=False, ordered_joins=self.strict
-        )
+        node = nodes.bottom_up(node, rewrites.rewrite_timedelta_expressions)
         return node
 
     # TODO: Remove cache when schema no longer requires compilation to derive schema (and therefor only compiles for execution)
@@ -305,16 +292,3 @@ class Compiler:
     @_compile_node.register
     def compile_random_sample(self, node: nodes.RandomSampleNode):
         return self.compile_node(node.child)._uniform_sampling(node.fraction)
-
-
-def set_output_names(
-    node: bigframes.core.nodes.BigFrameNode, output_ids: typing.Sequence[str]
-):
-    # TODO: Create specialized output operators that will handle final names
-    return nodes.SelectionNode(
-        node,
-        tuple(
-            bigframes.core.nodes.AliasedRef(ex.DerefOp(old_id), ids.ColumnId(out_id))
-            for old_id, out_id in zip(node.ids, output_ids)
-        ),
-    )
