@@ -5,6 +5,15 @@
 [1]: https://pypi.org/project/google-cloud-firestore/#history
 
 
+## [2.20.1](https://github.com/googleapis/python-firestore/compare/v2.20.0...v2.20.1) (2025-02-26)
+
+
+### Bug Fixes
+
+* Bump default deadline on CreateDatabase and RestoreDatabase to 2 minutes ([#975](https://github.com/googleapis/python-firestore/issues/975)) ([995fad6](https://github.com/googleapis/python-firestore/commit/995fad68d7e0da84cc67219d8990397d8329421b))
+* Client-side path validation for batch.update ([#1021](https://github.com/googleapis/python-firestore/issues/1021)) ([3b7595b](https://github.com/googleapis/python-firestore/commit/3b7595b9e3ba4eab1c5a68dd6be3c330247ee18d))
+* Watch thread deadlock on exit ([#1014](https://github.com/googleapis/python-firestore/issues/1014)) ([c47677a](https://github.com/googleapis/python-firestore/commit/c47677a190fcbca88e8c14c81ffb0c40d806f511))
+
 ## [2.20.0](https://github.com/googleapis/python-firestore/compare/v2.19.0...v2.20.0) (2025-01-13)
 
 
