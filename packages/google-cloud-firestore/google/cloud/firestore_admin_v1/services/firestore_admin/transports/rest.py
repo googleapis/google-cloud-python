@@ -289,11 +289,34 @@ class FirestoreAdminRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for bulk_delete_documents
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_bulk_delete_documents_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the FirestoreAdmin server but before
-        it is returned to user code.
+        it is returned to user code. This `post_bulk_delete_documents` interceptor runs
+        before the `post_bulk_delete_documents_with_metadata` interceptor.
         """
         return response
+
+    def post_bulk_delete_documents_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for bulk_delete_documents
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the FirestoreAdmin server but before it is returned to user code.
+
+        We recommend only using this `post_bulk_delete_documents_with_metadata`
+        interceptor in new development instead of the `post_bulk_delete_documents` interceptor.
+        When both interceptors are used, this `post_bulk_delete_documents_with_metadata` interceptor runs after the
+        `post_bulk_delete_documents` interceptor. The (possibly modified) response returned by
+        `post_bulk_delete_documents` will be passed to
+        `post_bulk_delete_documents_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_backup_schedule(
         self,
@@ -315,11 +338,34 @@ class FirestoreAdminRestInterceptor:
     ) -> schedule.BackupSchedule:
         """Post-rpc interceptor for create_backup_schedule
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_backup_schedule_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the FirestoreAdmin server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_backup_schedule` interceptor runs
+        before the `post_create_backup_schedule_with_metadata` interceptor.
         """
         return response
+
+    def post_create_backup_schedule_with_metadata(
+        self,
+        response: schedule.BackupSchedule,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[schedule.BackupSchedule, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_backup_schedule
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the FirestoreAdmin server but before it is returned to user code.
+
+        We recommend only using this `post_create_backup_schedule_with_metadata`
+        interceptor in new development instead of the `post_create_backup_schedule` interceptor.
+        When both interceptors are used, this `post_create_backup_schedule_with_metadata` interceptor runs after the
+        `post_create_backup_schedule` interceptor. The (possibly modified) response returned by
+        `post_create_backup_schedule` will be passed to
+        `post_create_backup_schedule_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_database(
         self,
@@ -340,11 +386,34 @@ class FirestoreAdminRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_database
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_database_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the FirestoreAdmin server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_database` interceptor runs
+        before the `post_create_database_with_metadata` interceptor.
         """
         return response
+
+    def post_create_database_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_database
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the FirestoreAdmin server but before it is returned to user code.
+
+        We recommend only using this `post_create_database_with_metadata`
+        interceptor in new development instead of the `post_create_database` interceptor.
+        When both interceptors are used, this `post_create_database_with_metadata` interceptor runs after the
+        `post_create_database` interceptor. The (possibly modified) response returned by
+        `post_create_database` will be passed to
+        `post_create_database_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_index(
         self,
@@ -365,11 +434,34 @@ class FirestoreAdminRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_index
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_index_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the FirestoreAdmin server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_index` interceptor runs
+        before the `post_create_index_with_metadata` interceptor.
         """
         return response
+
+    def post_create_index_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_index
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the FirestoreAdmin server but before it is returned to user code.
+
+        We recommend only using this `post_create_index_with_metadata`
+        interceptor in new development instead of the `post_create_index` interceptor.
+        When both interceptors are used, this `post_create_index_with_metadata` interceptor runs after the
+        `post_create_index` interceptor. The (possibly modified) response returned by
+        `post_create_index` will be passed to
+        `post_create_index_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_backup(
         self,
@@ -419,11 +511,34 @@ class FirestoreAdminRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_database
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_database_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the FirestoreAdmin server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_database` interceptor runs
+        before the `post_delete_database_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_database_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_database
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the FirestoreAdmin server but before it is returned to user code.
+
+        We recommend only using this `post_delete_database_with_metadata`
+        interceptor in new development instead of the `post_delete_database` interceptor.
+        When both interceptors are used, this `post_delete_database_with_metadata` interceptor runs after the
+        `post_delete_database` interceptor. The (possibly modified) response returned by
+        `post_delete_database` will be passed to
+        `post_delete_database_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_index(
         self,
@@ -458,11 +573,34 @@ class FirestoreAdminRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for export_documents
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_export_documents_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the FirestoreAdmin server but before
-        it is returned to user code.
+        it is returned to user code. This `post_export_documents` interceptor runs
+        before the `post_export_documents_with_metadata` interceptor.
         """
         return response
+
+    def post_export_documents_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for export_documents
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the FirestoreAdmin server but before it is returned to user code.
+
+        We recommend only using this `post_export_documents_with_metadata`
+        interceptor in new development instead of the `post_export_documents` interceptor.
+        When both interceptors are used, this `post_export_documents_with_metadata` interceptor runs after the
+        `post_export_documents` interceptor. The (possibly modified) response returned by
+        `post_export_documents` will be passed to
+        `post_export_documents_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_backup(
         self,
@@ -481,11 +619,32 @@ class FirestoreAdminRestInterceptor:
     def post_get_backup(self, response: backup.Backup) -> backup.Backup:
         """Post-rpc interceptor for get_backup
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_backup_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the FirestoreAdmin server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_backup` interceptor runs
+        before the `post_get_backup_with_metadata` interceptor.
         """
         return response
+
+    def post_get_backup_with_metadata(
+        self, response: backup.Backup, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[backup.Backup, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_backup
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the FirestoreAdmin server but before it is returned to user code.
+
+        We recommend only using this `post_get_backup_with_metadata`
+        interceptor in new development instead of the `post_get_backup` interceptor.
+        When both interceptors are used, this `post_get_backup_with_metadata` interceptor runs after the
+        `post_get_backup` interceptor. The (possibly modified) response returned by
+        `post_get_backup` will be passed to
+        `post_get_backup_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_backup_schedule(
         self,
@@ -507,11 +666,34 @@ class FirestoreAdminRestInterceptor:
     ) -> schedule.BackupSchedule:
         """Post-rpc interceptor for get_backup_schedule
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_backup_schedule_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the FirestoreAdmin server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_backup_schedule` interceptor runs
+        before the `post_get_backup_schedule_with_metadata` interceptor.
         """
         return response
+
+    def post_get_backup_schedule_with_metadata(
+        self,
+        response: schedule.BackupSchedule,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[schedule.BackupSchedule, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_backup_schedule
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the FirestoreAdmin server but before it is returned to user code.
+
+        We recommend only using this `post_get_backup_schedule_with_metadata`
+        interceptor in new development instead of the `post_get_backup_schedule` interceptor.
+        When both interceptors are used, this `post_get_backup_schedule_with_metadata` interceptor runs after the
+        `post_get_backup_schedule` interceptor. The (possibly modified) response returned by
+        `post_get_backup_schedule` will be passed to
+        `post_get_backup_schedule_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_database(
         self,
@@ -530,11 +712,34 @@ class FirestoreAdminRestInterceptor:
     def post_get_database(self, response: database.Database) -> database.Database:
         """Post-rpc interceptor for get_database
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_database_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the FirestoreAdmin server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_database` interceptor runs
+        before the `post_get_database_with_metadata` interceptor.
         """
         return response
+
+    def post_get_database_with_metadata(
+        self,
+        response: database.Database,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[database.Database, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_database
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the FirestoreAdmin server but before it is returned to user code.
+
+        We recommend only using this `post_get_database_with_metadata`
+        interceptor in new development instead of the `post_get_database` interceptor.
+        When both interceptors are used, this `post_get_database_with_metadata` interceptor runs after the
+        `post_get_database` interceptor. The (possibly modified) response returned by
+        `post_get_database` will be passed to
+        `post_get_database_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_field(
         self,
@@ -553,11 +758,32 @@ class FirestoreAdminRestInterceptor:
     def post_get_field(self, response: field.Field) -> field.Field:
         """Post-rpc interceptor for get_field
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_field_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the FirestoreAdmin server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_field` interceptor runs
+        before the `post_get_field_with_metadata` interceptor.
         """
         return response
+
+    def post_get_field_with_metadata(
+        self, response: field.Field, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[field.Field, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_field
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the FirestoreAdmin server but before it is returned to user code.
+
+        We recommend only using this `post_get_field_with_metadata`
+        interceptor in new development instead of the `post_get_field` interceptor.
+        When both interceptors are used, this `post_get_field_with_metadata` interceptor runs after the
+        `post_get_field` interceptor. The (possibly modified) response returned by
+        `post_get_field` will be passed to
+        `post_get_field_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_index(
         self,
@@ -576,11 +802,32 @@ class FirestoreAdminRestInterceptor:
     def post_get_index(self, response: index.Index) -> index.Index:
         """Post-rpc interceptor for get_index
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_index_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the FirestoreAdmin server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_index` interceptor runs
+        before the `post_get_index_with_metadata` interceptor.
         """
         return response
+
+    def post_get_index_with_metadata(
+        self, response: index.Index, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[index.Index, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_index
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the FirestoreAdmin server but before it is returned to user code.
+
+        We recommend only using this `post_get_index_with_metadata`
+        interceptor in new development instead of the `post_get_index` interceptor.
+        When both interceptors are used, this `post_get_index_with_metadata` interceptor runs after the
+        `post_get_index` interceptor. The (possibly modified) response returned by
+        `post_get_index` will be passed to
+        `post_get_index_with_metadata`.
+        """
+        return response, metadata
 
     def pre_import_documents(
         self,
@@ -601,11 +848,34 @@ class FirestoreAdminRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for import_documents
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_import_documents_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the FirestoreAdmin server but before
-        it is returned to user code.
+        it is returned to user code. This `post_import_documents` interceptor runs
+        before the `post_import_documents_with_metadata` interceptor.
         """
         return response
+
+    def post_import_documents_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for import_documents
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the FirestoreAdmin server but before it is returned to user code.
+
+        We recommend only using this `post_import_documents_with_metadata`
+        interceptor in new development instead of the `post_import_documents` interceptor.
+        When both interceptors are used, this `post_import_documents_with_metadata` interceptor runs after the
+        `post_import_documents` interceptor. The (possibly modified) response returned by
+        `post_import_documents` will be passed to
+        `post_import_documents_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_backups(
         self,
@@ -626,11 +896,36 @@ class FirestoreAdminRestInterceptor:
     ) -> firestore_admin.ListBackupsResponse:
         """Post-rpc interceptor for list_backups
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_backups_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the FirestoreAdmin server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_backups` interceptor runs
+        before the `post_list_backups_with_metadata` interceptor.
         """
         return response
+
+    def post_list_backups_with_metadata(
+        self,
+        response: firestore_admin.ListBackupsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        firestore_admin.ListBackupsResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_backups
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the FirestoreAdmin server but before it is returned to user code.
+
+        We recommend only using this `post_list_backups_with_metadata`
+        interceptor in new development instead of the `post_list_backups` interceptor.
+        When both interceptors are used, this `post_list_backups_with_metadata` interceptor runs after the
+        `post_list_backups` interceptor. The (possibly modified) response returned by
+        `post_list_backups` will be passed to
+        `post_list_backups_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_backup_schedules(
         self,
@@ -652,11 +947,37 @@ class FirestoreAdminRestInterceptor:
     ) -> firestore_admin.ListBackupSchedulesResponse:
         """Post-rpc interceptor for list_backup_schedules
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_backup_schedules_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the FirestoreAdmin server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_backup_schedules` interceptor runs
+        before the `post_list_backup_schedules_with_metadata` interceptor.
         """
         return response
+
+    def post_list_backup_schedules_with_metadata(
+        self,
+        response: firestore_admin.ListBackupSchedulesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        firestore_admin.ListBackupSchedulesResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_backup_schedules
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the FirestoreAdmin server but before it is returned to user code.
+
+        We recommend only using this `post_list_backup_schedules_with_metadata`
+        interceptor in new development instead of the `post_list_backup_schedules` interceptor.
+        When both interceptors are used, this `post_list_backup_schedules_with_metadata` interceptor runs after the
+        `post_list_backup_schedules` interceptor. The (possibly modified) response returned by
+        `post_list_backup_schedules` will be passed to
+        `post_list_backup_schedules_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_databases(
         self,
@@ -677,11 +998,36 @@ class FirestoreAdminRestInterceptor:
     ) -> firestore_admin.ListDatabasesResponse:
         """Post-rpc interceptor for list_databases
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_databases_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the FirestoreAdmin server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_databases` interceptor runs
+        before the `post_list_databases_with_metadata` interceptor.
         """
         return response
+
+    def post_list_databases_with_metadata(
+        self,
+        response: firestore_admin.ListDatabasesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        firestore_admin.ListDatabasesResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_databases
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the FirestoreAdmin server but before it is returned to user code.
+
+        We recommend only using this `post_list_databases_with_metadata`
+        interceptor in new development instead of the `post_list_databases` interceptor.
+        When both interceptors are used, this `post_list_databases_with_metadata` interceptor runs after the
+        `post_list_databases` interceptor. The (possibly modified) response returned by
+        `post_list_databases` will be passed to
+        `post_list_databases_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_fields(
         self,
@@ -702,11 +1048,36 @@ class FirestoreAdminRestInterceptor:
     ) -> firestore_admin.ListFieldsResponse:
         """Post-rpc interceptor for list_fields
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_fields_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the FirestoreAdmin server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_fields` interceptor runs
+        before the `post_list_fields_with_metadata` interceptor.
         """
         return response
+
+    def post_list_fields_with_metadata(
+        self,
+        response: firestore_admin.ListFieldsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        firestore_admin.ListFieldsResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_fields
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the FirestoreAdmin server but before it is returned to user code.
+
+        We recommend only using this `post_list_fields_with_metadata`
+        interceptor in new development instead of the `post_list_fields` interceptor.
+        When both interceptors are used, this `post_list_fields_with_metadata` interceptor runs after the
+        `post_list_fields` interceptor. The (possibly modified) response returned by
+        `post_list_fields` will be passed to
+        `post_list_fields_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_indexes(
         self,
@@ -727,11 +1098,36 @@ class FirestoreAdminRestInterceptor:
     ) -> firestore_admin.ListIndexesResponse:
         """Post-rpc interceptor for list_indexes
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_indexes_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the FirestoreAdmin server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_indexes` interceptor runs
+        before the `post_list_indexes_with_metadata` interceptor.
         """
         return response
+
+    def post_list_indexes_with_metadata(
+        self,
+        response: firestore_admin.ListIndexesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        firestore_admin.ListIndexesResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_indexes
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the FirestoreAdmin server but before it is returned to user code.
+
+        We recommend only using this `post_list_indexes_with_metadata`
+        interceptor in new development instead of the `post_list_indexes` interceptor.
+        When both interceptors are used, this `post_list_indexes_with_metadata` interceptor runs after the
+        `post_list_indexes` interceptor. The (possibly modified) response returned by
+        `post_list_indexes` will be passed to
+        `post_list_indexes_with_metadata`.
+        """
+        return response, metadata
 
     def pre_restore_database(
         self,
@@ -752,11 +1148,34 @@ class FirestoreAdminRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for restore_database
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_restore_database_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the FirestoreAdmin server but before
-        it is returned to user code.
+        it is returned to user code. This `post_restore_database` interceptor runs
+        before the `post_restore_database_with_metadata` interceptor.
         """
         return response
+
+    def post_restore_database_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for restore_database
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the FirestoreAdmin server but before it is returned to user code.
+
+        We recommend only using this `post_restore_database_with_metadata`
+        interceptor in new development instead of the `post_restore_database` interceptor.
+        When both interceptors are used, this `post_restore_database_with_metadata` interceptor runs after the
+        `post_restore_database` interceptor. The (possibly modified) response returned by
+        `post_restore_database` will be passed to
+        `post_restore_database_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_backup_schedule(
         self,
@@ -778,11 +1197,34 @@ class FirestoreAdminRestInterceptor:
     ) -> schedule.BackupSchedule:
         """Post-rpc interceptor for update_backup_schedule
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_backup_schedule_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the FirestoreAdmin server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_backup_schedule` interceptor runs
+        before the `post_update_backup_schedule_with_metadata` interceptor.
         """
         return response
+
+    def post_update_backup_schedule_with_metadata(
+        self,
+        response: schedule.BackupSchedule,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[schedule.BackupSchedule, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_backup_schedule
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the FirestoreAdmin server but before it is returned to user code.
+
+        We recommend only using this `post_update_backup_schedule_with_metadata`
+        interceptor in new development instead of the `post_update_backup_schedule` interceptor.
+        When both interceptors are used, this `post_update_backup_schedule_with_metadata` interceptor runs after the
+        `post_update_backup_schedule` interceptor. The (possibly modified) response returned by
+        `post_update_backup_schedule` will be passed to
+        `post_update_backup_schedule_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_database(
         self,
@@ -803,11 +1245,34 @@ class FirestoreAdminRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_database
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_database_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the FirestoreAdmin server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_database` interceptor runs
+        before the `post_update_database_with_metadata` interceptor.
         """
         return response
+
+    def post_update_database_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_database
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the FirestoreAdmin server but before it is returned to user code.
+
+        We recommend only using this `post_update_database_with_metadata`
+        interceptor in new development instead of the `post_update_database` interceptor.
+        When both interceptors are used, this `post_update_database_with_metadata` interceptor runs after the
+        `post_update_database` interceptor. The (possibly modified) response returned by
+        `post_update_database` will be passed to
+        `post_update_database_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_field(
         self,
@@ -828,11 +1293,34 @@ class FirestoreAdminRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_field
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_field_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the FirestoreAdmin server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_field` interceptor runs
+        before the `post_update_field_with_metadata` interceptor.
         """
         return response
+
+    def post_update_field_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_field
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the FirestoreAdmin server but before it is returned to user code.
+
+        We recommend only using this `post_update_field_with_metadata`
+        interceptor in new development instead of the `post_update_field` interceptor.
+        When both interceptors are used, this `post_update_field_with_metadata` interceptor runs after the
+        `post_update_field` interceptor. The (possibly modified) response returned by
+        `post_update_field` will be passed to
+        `post_update_field_with_metadata`.
+        """
+        return response, metadata
 
     def pre_cancel_operation(
         self,
@@ -1237,6 +1725,10 @@ class FirestoreAdminRestTransport(_BaseFirestoreAdminRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_bulk_delete_documents(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_bulk_delete_documents_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1393,6 +1885,10 @@ class FirestoreAdminRestTransport(_BaseFirestoreAdminRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_backup_schedule(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_backup_schedule_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1541,6 +2037,10 @@ class FirestoreAdminRestTransport(_BaseFirestoreAdminRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_database(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_database_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1689,6 +2189,10 @@ class FirestoreAdminRestTransport(_BaseFirestoreAdminRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_index(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_index_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2048,6 +2552,10 @@ class FirestoreAdminRestTransport(_BaseFirestoreAdminRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_database(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_database_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2305,6 +2813,10 @@ class FirestoreAdminRestTransport(_BaseFirestoreAdminRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_export_documents(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_export_documents_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2455,6 +2967,10 @@ class FirestoreAdminRestTransport(_BaseFirestoreAdminRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_backup(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_backup_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2604,6 +3120,10 @@ class FirestoreAdminRestTransport(_BaseFirestoreAdminRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_backup_schedule(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_backup_schedule_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2745,6 +3265,10 @@ class FirestoreAdminRestTransport(_BaseFirestoreAdminRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_database(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_database_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2895,6 +3419,10 @@ class FirestoreAdminRestTransport(_BaseFirestoreAdminRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_field(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_field_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3043,6 +3571,10 @@ class FirestoreAdminRestTransport(_BaseFirestoreAdminRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_index(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_index_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3193,6 +3725,10 @@ class FirestoreAdminRestTransport(_BaseFirestoreAdminRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_import_documents(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_import_documents_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3336,6 +3872,10 @@ class FirestoreAdminRestTransport(_BaseFirestoreAdminRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_backups(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_backups_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3484,6 +4024,10 @@ class FirestoreAdminRestTransport(_BaseFirestoreAdminRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_backup_schedules(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_backup_schedules_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3628,6 +4172,10 @@ class FirestoreAdminRestTransport(_BaseFirestoreAdminRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_databases(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_databases_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3775,6 +4323,10 @@ class FirestoreAdminRestTransport(_BaseFirestoreAdminRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_fields(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_fields_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3920,6 +4472,10 @@ class FirestoreAdminRestTransport(_BaseFirestoreAdminRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_indexes(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_indexes_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4072,6 +4628,10 @@ class FirestoreAdminRestTransport(_BaseFirestoreAdminRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_restore_database(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_restore_database_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4228,6 +4788,10 @@ class FirestoreAdminRestTransport(_BaseFirestoreAdminRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_backup_schedule(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_backup_schedule_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4376,6 +4940,10 @@ class FirestoreAdminRestTransport(_BaseFirestoreAdminRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_database(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_database_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4524,6 +5092,10 @@ class FirestoreAdminRestTransport(_BaseFirestoreAdminRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_field(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_field_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

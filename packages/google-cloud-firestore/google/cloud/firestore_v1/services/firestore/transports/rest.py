@@ -208,11 +208,36 @@ class FirestoreRestInterceptor:
     ) -> rest_streaming.ResponseIterator:
         """Post-rpc interceptor for batch_get_documents
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_batch_get_documents_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Firestore server but before
-        it is returned to user code.
+        it is returned to user code. This `post_batch_get_documents` interceptor runs
+        before the `post_batch_get_documents_with_metadata` interceptor.
         """
         return response
+
+    def post_batch_get_documents_with_metadata(
+        self,
+        response: rest_streaming.ResponseIterator,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        rest_streaming.ResponseIterator, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for batch_get_documents
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Firestore server but before it is returned to user code.
+
+        We recommend only using this `post_batch_get_documents_with_metadata`
+        interceptor in new development instead of the `post_batch_get_documents` interceptor.
+        When both interceptors are used, this `post_batch_get_documents_with_metadata` interceptor runs after the
+        `post_batch_get_documents` interceptor. The (possibly modified) response returned by
+        `post_batch_get_documents` will be passed to
+        `post_batch_get_documents_with_metadata`.
+        """
+        return response, metadata
 
     def pre_batch_write(
         self,
@@ -231,11 +256,34 @@ class FirestoreRestInterceptor:
     ) -> firestore.BatchWriteResponse:
         """Post-rpc interceptor for batch_write
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_batch_write_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Firestore server but before
-        it is returned to user code.
+        it is returned to user code. This `post_batch_write` interceptor runs
+        before the `post_batch_write_with_metadata` interceptor.
         """
         return response
+
+    def post_batch_write_with_metadata(
+        self,
+        response: firestore.BatchWriteResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[firestore.BatchWriteResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for batch_write
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Firestore server but before it is returned to user code.
+
+        We recommend only using this `post_batch_write_with_metadata`
+        interceptor in new development instead of the `post_batch_write` interceptor.
+        When both interceptors are used, this `post_batch_write_with_metadata` interceptor runs after the
+        `post_batch_write` interceptor. The (possibly modified) response returned by
+        `post_batch_write` will be passed to
+        `post_batch_write_with_metadata`.
+        """
+        return response, metadata
 
     def pre_begin_transaction(
         self,
@@ -256,11 +304,36 @@ class FirestoreRestInterceptor:
     ) -> firestore.BeginTransactionResponse:
         """Post-rpc interceptor for begin_transaction
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_begin_transaction_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Firestore server but before
-        it is returned to user code.
+        it is returned to user code. This `post_begin_transaction` interceptor runs
+        before the `post_begin_transaction_with_metadata` interceptor.
         """
         return response
+
+    def post_begin_transaction_with_metadata(
+        self,
+        response: firestore.BeginTransactionResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        firestore.BeginTransactionResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for begin_transaction
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Firestore server but before it is returned to user code.
+
+        We recommend only using this `post_begin_transaction_with_metadata`
+        interceptor in new development instead of the `post_begin_transaction` interceptor.
+        When both interceptors are used, this `post_begin_transaction_with_metadata` interceptor runs after the
+        `post_begin_transaction` interceptor. The (possibly modified) response returned by
+        `post_begin_transaction` will be passed to
+        `post_begin_transaction_with_metadata`.
+        """
+        return response, metadata
 
     def pre_commit(
         self,
@@ -279,11 +352,34 @@ class FirestoreRestInterceptor:
     ) -> firestore.CommitResponse:
         """Post-rpc interceptor for commit
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_commit_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Firestore server but before
-        it is returned to user code.
+        it is returned to user code. This `post_commit` interceptor runs
+        before the `post_commit_with_metadata` interceptor.
         """
         return response
+
+    def post_commit_with_metadata(
+        self,
+        response: firestore.CommitResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[firestore.CommitResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for commit
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Firestore server but before it is returned to user code.
+
+        We recommend only using this `post_commit_with_metadata`
+        interceptor in new development instead of the `post_commit` interceptor.
+        When both interceptors are used, this `post_commit_with_metadata` interceptor runs after the
+        `post_commit` interceptor. The (possibly modified) response returned by
+        `post_commit` will be passed to
+        `post_commit_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_document(
         self,
@@ -302,11 +398,34 @@ class FirestoreRestInterceptor:
     def post_create_document(self, response: document.Document) -> document.Document:
         """Post-rpc interceptor for create_document
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_document_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Firestore server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_document` interceptor runs
+        before the `post_create_document_with_metadata` interceptor.
         """
         return response
+
+    def post_create_document_with_metadata(
+        self,
+        response: document.Document,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[document.Document, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_document
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Firestore server but before it is returned to user code.
+
+        We recommend only using this `post_create_document_with_metadata`
+        interceptor in new development instead of the `post_create_document` interceptor.
+        When both interceptors are used, this `post_create_document_with_metadata` interceptor runs after the
+        `post_create_document` interceptor. The (possibly modified) response returned by
+        `post_create_document` will be passed to
+        `post_create_document_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_document(
         self,
@@ -337,11 +456,34 @@ class FirestoreRestInterceptor:
     def post_get_document(self, response: document.Document) -> document.Document:
         """Post-rpc interceptor for get_document
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_document_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Firestore server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_document` interceptor runs
+        before the `post_get_document_with_metadata` interceptor.
         """
         return response
+
+    def post_get_document_with_metadata(
+        self,
+        response: document.Document,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[document.Document, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_document
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Firestore server but before it is returned to user code.
+
+        We recommend only using this `post_get_document_with_metadata`
+        interceptor in new development instead of the `post_get_document` interceptor.
+        When both interceptors are used, this `post_get_document_with_metadata` interceptor runs after the
+        `post_get_document` interceptor. The (possibly modified) response returned by
+        `post_get_document` will be passed to
+        `post_get_document_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_collection_ids(
         self,
@@ -362,11 +504,36 @@ class FirestoreRestInterceptor:
     ) -> firestore.ListCollectionIdsResponse:
         """Post-rpc interceptor for list_collection_ids
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_collection_ids_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Firestore server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_collection_ids` interceptor runs
+        before the `post_list_collection_ids_with_metadata` interceptor.
         """
         return response
+
+    def post_list_collection_ids_with_metadata(
+        self,
+        response: firestore.ListCollectionIdsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        firestore.ListCollectionIdsResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_collection_ids
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Firestore server but before it is returned to user code.
+
+        We recommend only using this `post_list_collection_ids_with_metadata`
+        interceptor in new development instead of the `post_list_collection_ids` interceptor.
+        When both interceptors are used, this `post_list_collection_ids_with_metadata` interceptor runs after the
+        `post_list_collection_ids` interceptor. The (possibly modified) response returned by
+        `post_list_collection_ids` will be passed to
+        `post_list_collection_ids_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_documents(
         self,
@@ -385,11 +552,36 @@ class FirestoreRestInterceptor:
     ) -> firestore.ListDocumentsResponse:
         """Post-rpc interceptor for list_documents
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_documents_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Firestore server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_documents` interceptor runs
+        before the `post_list_documents_with_metadata` interceptor.
         """
         return response
+
+    def post_list_documents_with_metadata(
+        self,
+        response: firestore.ListDocumentsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        firestore.ListDocumentsResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_documents
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Firestore server but before it is returned to user code.
+
+        We recommend only using this `post_list_documents_with_metadata`
+        interceptor in new development instead of the `post_list_documents` interceptor.
+        When both interceptors are used, this `post_list_documents_with_metadata` interceptor runs after the
+        `post_list_documents` interceptor. The (possibly modified) response returned by
+        `post_list_documents` will be passed to
+        `post_list_documents_with_metadata`.
+        """
+        return response, metadata
 
     def pre_partition_query(
         self,
@@ -410,11 +602,36 @@ class FirestoreRestInterceptor:
     ) -> firestore.PartitionQueryResponse:
         """Post-rpc interceptor for partition_query
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_partition_query_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Firestore server but before
-        it is returned to user code.
+        it is returned to user code. This `post_partition_query` interceptor runs
+        before the `post_partition_query_with_metadata` interceptor.
         """
         return response
+
+    def post_partition_query_with_metadata(
+        self,
+        response: firestore.PartitionQueryResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        firestore.PartitionQueryResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for partition_query
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Firestore server but before it is returned to user code.
+
+        We recommend only using this `post_partition_query_with_metadata`
+        interceptor in new development instead of the `post_partition_query` interceptor.
+        When both interceptors are used, this `post_partition_query_with_metadata` interceptor runs after the
+        `post_partition_query` interceptor. The (possibly modified) response returned by
+        `post_partition_query` will be passed to
+        `post_partition_query_with_metadata`.
+        """
+        return response, metadata
 
     def pre_rollback(
         self,
@@ -447,11 +664,36 @@ class FirestoreRestInterceptor:
     ) -> rest_streaming.ResponseIterator:
         """Post-rpc interceptor for run_aggregation_query
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_run_aggregation_query_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Firestore server but before
-        it is returned to user code.
+        it is returned to user code. This `post_run_aggregation_query` interceptor runs
+        before the `post_run_aggregation_query_with_metadata` interceptor.
         """
         return response
+
+    def post_run_aggregation_query_with_metadata(
+        self,
+        response: rest_streaming.ResponseIterator,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        rest_streaming.ResponseIterator, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for run_aggregation_query
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Firestore server but before it is returned to user code.
+
+        We recommend only using this `post_run_aggregation_query_with_metadata`
+        interceptor in new development instead of the `post_run_aggregation_query` interceptor.
+        When both interceptors are used, this `post_run_aggregation_query_with_metadata` interceptor runs after the
+        `post_run_aggregation_query` interceptor. The (possibly modified) response returned by
+        `post_run_aggregation_query` will be passed to
+        `post_run_aggregation_query_with_metadata`.
+        """
+        return response, metadata
 
     def pre_run_query(
         self,
@@ -470,11 +712,36 @@ class FirestoreRestInterceptor:
     ) -> rest_streaming.ResponseIterator:
         """Post-rpc interceptor for run_query
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_run_query_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Firestore server but before
-        it is returned to user code.
+        it is returned to user code. This `post_run_query` interceptor runs
+        before the `post_run_query_with_metadata` interceptor.
         """
         return response
+
+    def post_run_query_with_metadata(
+        self,
+        response: rest_streaming.ResponseIterator,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        rest_streaming.ResponseIterator, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for run_query
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Firestore server but before it is returned to user code.
+
+        We recommend only using this `post_run_query_with_metadata`
+        interceptor in new development instead of the `post_run_query` interceptor.
+        When both interceptors are used, this `post_run_query_with_metadata` interceptor runs after the
+        `post_run_query` interceptor. The (possibly modified) response returned by
+        `post_run_query` will be passed to
+        `post_run_query_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_document(
         self,
@@ -495,11 +762,34 @@ class FirestoreRestInterceptor:
     ) -> gf_document.Document:
         """Post-rpc interceptor for update_document
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_document_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Firestore server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_document` interceptor runs
+        before the `post_update_document_with_metadata` interceptor.
         """
         return response
+
+    def post_update_document_with_metadata(
+        self,
+        response: gf_document.Document,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[gf_document.Document, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_document
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Firestore server but before it is returned to user code.
+
+        We recommend only using this `post_update_document_with_metadata`
+        interceptor in new development instead of the `post_update_document` interceptor.
+        When both interceptors are used, this `post_update_document_with_metadata` interceptor runs after the
+        `post_update_document` interceptor. The (possibly modified) response returned by
+        `post_update_document` will be passed to
+        `post_update_document_with_metadata`.
+        """
+        return response, metadata
 
     def pre_cancel_operation(
         self,
@@ -820,6 +1110,10 @@ class FirestoreRestTransport(_BaseFirestoreRestTransport):
             )
 
             resp = self._interceptor.post_batch_get_documents(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_batch_get_documents_with_metadata(
+                resp, response_metadata
+            )
             return resp
 
     class _BatchWrite(_BaseFirestoreRestTransport._BaseBatchWrite, FirestoreRestStub):
@@ -950,6 +1244,10 @@ class FirestoreRestTransport(_BaseFirestoreRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_batch_write(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_batch_write_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1101,6 +1399,10 @@ class FirestoreRestTransport(_BaseFirestoreRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_begin_transaction(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_begin_transaction_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1252,6 +1554,10 @@ class FirestoreRestTransport(_BaseFirestoreRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_commit(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_commit_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1408,6 +1714,10 @@ class FirestoreRestTransport(_BaseFirestoreRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_document(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_document_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1665,6 +1975,10 @@ class FirestoreRestTransport(_BaseFirestoreRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_document(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_document_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1816,6 +2130,10 @@ class FirestoreRestTransport(_BaseFirestoreRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_collection_ids(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_collection_ids_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1965,6 +2283,10 @@ class FirestoreRestTransport(_BaseFirestoreRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_documents(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_documents_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2136,6 +2458,10 @@ class FirestoreRestTransport(_BaseFirestoreRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_partition_query(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_partition_query_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2402,6 +2728,10 @@ class FirestoreRestTransport(_BaseFirestoreRestTransport):
             )
 
             resp = self._interceptor.post_run_aggregation_query(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_run_aggregation_query_with_metadata(
+                resp, response_metadata
+            )
             return resp
 
     class _RunQuery(_BaseFirestoreRestTransport._BaseRunQuery, FirestoreRestStub):
@@ -2528,6 +2858,10 @@ class FirestoreRestTransport(_BaseFirestoreRestTransport):
             resp = rest_streaming.ResponseIterator(response, firestore.RunQueryResponse)
 
             resp = self._interceptor.post_run_query(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_run_query_with_metadata(
+                resp, response_metadata
+            )
             return resp
 
     class _UpdateDocument(
@@ -2663,6 +2997,10 @@ class FirestoreRestTransport(_BaseFirestoreRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_document(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_document_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

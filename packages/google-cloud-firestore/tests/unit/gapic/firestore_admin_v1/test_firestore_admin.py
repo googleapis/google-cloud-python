@@ -86,6 +86,14 @@ from google.type import dayofweek_pb2  # type: ignore
 import google.auth
 
 
+CRED_INFO_JSON = {
+    "credential_source": "/path/to/file",
+    "credential_type": "service account credentials",
+    "principal": "service-account@example.com",
+}
+CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
+
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
         chunk = data[i : i + chunk_size]
@@ -341,6 +349,49 @@ def test__get_universe_domain():
     with pytest.raises(ValueError) as excinfo:
         FirestoreAdminClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+
+@pytest.mark.parametrize(
+    "error_code,cred_info_json,show_cred_info",
+    [
+        (401, CRED_INFO_JSON, True),
+        (403, CRED_INFO_JSON, True),
+        (404, CRED_INFO_JSON, True),
+        (500, CRED_INFO_JSON, False),
+        (401, None, False),
+        (403, None, False),
+        (404, None, False),
+        (500, None, False),
+    ],
+)
+def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
+    cred = mock.Mock(["get_cred_info"])
+    cred.get_cred_info = mock.Mock(return_value=cred_info_json)
+    client = FirestoreAdminClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=["foo"])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    if show_cred_info:
+        assert error.details == ["foo", CRED_INFO_STRING]
+    else:
+        assert error.details == ["foo"]
+
+
+@pytest.mark.parametrize("error_code", [401, 403, 404, 500])
+def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
+    cred = mock.Mock([])
+    assert not hasattr(cred, "get_cred_info")
+    client = FirestoreAdminClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=[])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    assert error.details == []
 
 
 @pytest.mark.parametrize(
@@ -15316,10 +15367,13 @@ def test_create_index_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.FirestoreAdminRestInterceptor, "post_create_index"
     ) as post, mock.patch.object(
+        transports.FirestoreAdminRestInterceptor, "post_create_index_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.FirestoreAdminRestInterceptor, "pre_create_index"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = firestore_admin.CreateIndexRequest.pb(
             firestore_admin.CreateIndexRequest()
         )
@@ -15343,6 +15397,7 @@ def test_create_index_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_index(
             request,
@@ -15354,6 +15409,7 @@ def test_create_index_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_indexes_rest_bad_request(request_type=firestore_admin.ListIndexesRequest):
@@ -15440,10 +15496,13 @@ def test_list_indexes_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.FirestoreAdminRestInterceptor, "post_list_indexes"
     ) as post, mock.patch.object(
+        transports.FirestoreAdminRestInterceptor, "post_list_indexes_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.FirestoreAdminRestInterceptor, "pre_list_indexes"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = firestore_admin.ListIndexesRequest.pb(
             firestore_admin.ListIndexesRequest()
         )
@@ -15469,6 +15528,10 @@ def test_list_indexes_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = firestore_admin.ListIndexesResponse()
+        post_with_metadata.return_value = (
+            firestore_admin.ListIndexesResponse(),
+            metadata,
+        )
 
         client.list_indexes(
             request,
@@ -15480,6 +15543,7 @@ def test_list_indexes_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_index_rest_bad_request(request_type=firestore_admin.GetIndexRequest):
@@ -15572,10 +15636,13 @@ def test_get_index_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.FirestoreAdminRestInterceptor, "post_get_index"
     ) as post, mock.patch.object(
+        transports.FirestoreAdminRestInterceptor, "post_get_index_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.FirestoreAdminRestInterceptor, "pre_get_index"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = firestore_admin.GetIndexRequest.pb(
             firestore_admin.GetIndexRequest()
         )
@@ -15599,6 +15666,7 @@ def test_get_index_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = index.Index()
+        post_with_metadata.return_value = index.Index(), metadata
 
         client.get_index(
             request,
@@ -15610,6 +15678,7 @@ def test_get_index_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_index_rest_bad_request(request_type=firestore_admin.DeleteIndexRequest):
@@ -15807,10 +15876,13 @@ def test_get_field_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.FirestoreAdminRestInterceptor, "post_get_field"
     ) as post, mock.patch.object(
+        transports.FirestoreAdminRestInterceptor, "post_get_field_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.FirestoreAdminRestInterceptor, "pre_get_field"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = firestore_admin.GetFieldRequest.pb(
             firestore_admin.GetFieldRequest()
         )
@@ -15834,6 +15906,7 @@ def test_get_field_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = field.Field()
+        post_with_metadata.return_value = field.Field(), metadata
 
         client.get_field(
             request,
@@ -15845,6 +15918,7 @@ def test_get_field_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_field_rest_bad_request(request_type=firestore_admin.UpdateFieldRequest):
@@ -16023,10 +16097,13 @@ def test_update_field_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.FirestoreAdminRestInterceptor, "post_update_field"
     ) as post, mock.patch.object(
+        transports.FirestoreAdminRestInterceptor, "post_update_field_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.FirestoreAdminRestInterceptor, "pre_update_field"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = firestore_admin.UpdateFieldRequest.pb(
             firestore_admin.UpdateFieldRequest()
         )
@@ -16050,6 +16127,7 @@ def test_update_field_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.update_field(
             request,
@@ -16061,6 +16139,7 @@ def test_update_field_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_fields_rest_bad_request(request_type=firestore_admin.ListFieldsRequest):
@@ -16147,10 +16226,13 @@ def test_list_fields_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.FirestoreAdminRestInterceptor, "post_list_fields"
     ) as post, mock.patch.object(
+        transports.FirestoreAdminRestInterceptor, "post_list_fields_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.FirestoreAdminRestInterceptor, "pre_list_fields"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = firestore_admin.ListFieldsRequest.pb(
             firestore_admin.ListFieldsRequest()
         )
@@ -16176,6 +16258,7 @@ def test_list_fields_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = firestore_admin.ListFieldsResponse()
+        post_with_metadata.return_value = firestore_admin.ListFieldsResponse(), metadata
 
         client.list_fields(
             request,
@@ -16187,6 +16270,7 @@ def test_list_fields_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_export_documents_rest_bad_request(
@@ -16267,10 +16351,13 @@ def test_export_documents_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.FirestoreAdminRestInterceptor, "post_export_documents"
     ) as post, mock.patch.object(
+        transports.FirestoreAdminRestInterceptor, "post_export_documents_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.FirestoreAdminRestInterceptor, "pre_export_documents"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = firestore_admin.ExportDocumentsRequest.pb(
             firestore_admin.ExportDocumentsRequest()
         )
@@ -16294,6 +16381,7 @@ def test_export_documents_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.export_documents(
             request,
@@ -16305,6 +16393,7 @@ def test_export_documents_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_import_documents_rest_bad_request(
@@ -16385,10 +16474,13 @@ def test_import_documents_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.FirestoreAdminRestInterceptor, "post_import_documents"
     ) as post, mock.patch.object(
+        transports.FirestoreAdminRestInterceptor, "post_import_documents_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.FirestoreAdminRestInterceptor, "pre_import_documents"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = firestore_admin.ImportDocumentsRequest.pb(
             firestore_admin.ImportDocumentsRequest()
         )
@@ -16412,6 +16504,7 @@ def test_import_documents_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.import_documents(
             request,
@@ -16423,6 +16516,7 @@ def test_import_documents_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_bulk_delete_documents_rest_bad_request(
@@ -16503,10 +16597,14 @@ def test_bulk_delete_documents_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.FirestoreAdminRestInterceptor, "post_bulk_delete_documents"
     ) as post, mock.patch.object(
+        transports.FirestoreAdminRestInterceptor,
+        "post_bulk_delete_documents_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.FirestoreAdminRestInterceptor, "pre_bulk_delete_documents"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = firestore_admin.BulkDeleteDocumentsRequest.pb(
             firestore_admin.BulkDeleteDocumentsRequest()
         )
@@ -16530,6 +16628,7 @@ def test_bulk_delete_documents_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.bulk_delete_documents(
             request,
@@ -16541,6 +16640,7 @@ def test_bulk_delete_documents_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_database_rest_bad_request(
@@ -16717,10 +16817,13 @@ def test_create_database_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.FirestoreAdminRestInterceptor, "post_create_database"
     ) as post, mock.patch.object(
+        transports.FirestoreAdminRestInterceptor, "post_create_database_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.FirestoreAdminRestInterceptor, "pre_create_database"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = firestore_admin.CreateDatabaseRequest.pb(
             firestore_admin.CreateDatabaseRequest()
         )
@@ -16744,6 +16847,7 @@ def test_create_database_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_database(
             request,
@@ -16755,6 +16859,7 @@ def test_create_database_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_database_rest_bad_request(request_type=firestore_admin.GetDatabaseRequest):
@@ -16866,10 +16971,13 @@ def test_get_database_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.FirestoreAdminRestInterceptor, "post_get_database"
     ) as post, mock.patch.object(
+        transports.FirestoreAdminRestInterceptor, "post_get_database_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.FirestoreAdminRestInterceptor, "pre_get_database"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = firestore_admin.GetDatabaseRequest.pb(
             firestore_admin.GetDatabaseRequest()
         )
@@ -16893,6 +17001,7 @@ def test_get_database_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = database.Database()
+        post_with_metadata.return_value = database.Database(), metadata
 
         client.get_database(
             request,
@@ -16904,6 +17013,7 @@ def test_get_database_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_databases_rest_bad_request(
@@ -16988,10 +17098,13 @@ def test_list_databases_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.FirestoreAdminRestInterceptor, "post_list_databases"
     ) as post, mock.patch.object(
+        transports.FirestoreAdminRestInterceptor, "post_list_databases_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.FirestoreAdminRestInterceptor, "pre_list_databases"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = firestore_admin.ListDatabasesRequest.pb(
             firestore_admin.ListDatabasesRequest()
         )
@@ -17017,6 +17130,10 @@ def test_list_databases_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = firestore_admin.ListDatabasesResponse()
+        post_with_metadata.return_value = (
+            firestore_admin.ListDatabasesResponse(),
+            metadata,
+        )
 
         client.list_databases(
             request,
@@ -17028,6 +17145,7 @@ def test_list_databases_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_database_rest_bad_request(
@@ -17204,10 +17322,13 @@ def test_update_database_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.FirestoreAdminRestInterceptor, "post_update_database"
     ) as post, mock.patch.object(
+        transports.FirestoreAdminRestInterceptor, "post_update_database_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.FirestoreAdminRestInterceptor, "pre_update_database"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = firestore_admin.UpdateDatabaseRequest.pb(
             firestore_admin.UpdateDatabaseRequest()
         )
@@ -17231,6 +17352,7 @@ def test_update_database_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.update_database(
             request,
@@ -17242,6 +17364,7 @@ def test_update_database_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_database_rest_bad_request(
@@ -17322,10 +17445,13 @@ def test_delete_database_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.FirestoreAdminRestInterceptor, "post_delete_database"
     ) as post, mock.patch.object(
+        transports.FirestoreAdminRestInterceptor, "post_delete_database_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.FirestoreAdminRestInterceptor, "pre_delete_database"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = firestore_admin.DeleteDatabaseRequest.pb(
             firestore_admin.DeleteDatabaseRequest()
         )
@@ -17349,6 +17475,7 @@ def test_delete_database_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_database(
             request,
@@ -17360,6 +17487,7 @@ def test_delete_database_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_backup_rest_bad_request(request_type=firestore_admin.GetBackupRequest):
@@ -17448,10 +17576,13 @@ def test_get_backup_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.FirestoreAdminRestInterceptor, "post_get_backup"
     ) as post, mock.patch.object(
+        transports.FirestoreAdminRestInterceptor, "post_get_backup_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.FirestoreAdminRestInterceptor, "pre_get_backup"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = firestore_admin.GetBackupRequest.pb(
             firestore_admin.GetBackupRequest()
         )
@@ -17475,6 +17606,7 @@ def test_get_backup_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = backup.Backup()
+        post_with_metadata.return_value = backup.Backup(), metadata
 
         client.get_backup(
             request,
@@ -17486,6 +17618,7 @@ def test_get_backup_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_backups_rest_bad_request(request_type=firestore_admin.ListBackupsRequest):
@@ -17568,10 +17701,13 @@ def test_list_backups_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.FirestoreAdminRestInterceptor, "post_list_backups"
     ) as post, mock.patch.object(
+        transports.FirestoreAdminRestInterceptor, "post_list_backups_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.FirestoreAdminRestInterceptor, "pre_list_backups"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = firestore_admin.ListBackupsRequest.pb(
             firestore_admin.ListBackupsRequest()
         )
@@ -17597,6 +17733,10 @@ def test_list_backups_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = firestore_admin.ListBackupsResponse()
+        post_with_metadata.return_value = (
+            firestore_admin.ListBackupsResponse(),
+            metadata,
+        )
 
         client.list_backups(
             request,
@@ -17608,6 +17748,7 @@ def test_list_backups_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_backup_rest_bad_request(
@@ -17797,10 +17938,13 @@ def test_restore_database_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.FirestoreAdminRestInterceptor, "post_restore_database"
     ) as post, mock.patch.object(
+        transports.FirestoreAdminRestInterceptor, "post_restore_database_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.FirestoreAdminRestInterceptor, "pre_restore_database"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = firestore_admin.RestoreDatabaseRequest.pb(
             firestore_admin.RestoreDatabaseRequest()
         )
@@ -17824,6 +17968,7 @@ def test_restore_database_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.restore_database(
             request,
@@ -17835,6 +17980,7 @@ def test_restore_database_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_backup_schedule_rest_bad_request(
@@ -17996,10 +18142,14 @@ def test_create_backup_schedule_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.FirestoreAdminRestInterceptor, "post_create_backup_schedule"
     ) as post, mock.patch.object(
+        transports.FirestoreAdminRestInterceptor,
+        "post_create_backup_schedule_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.FirestoreAdminRestInterceptor, "pre_create_backup_schedule"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = firestore_admin.CreateBackupScheduleRequest.pb(
             firestore_admin.CreateBackupScheduleRequest()
         )
@@ -18023,6 +18173,7 @@ def test_create_backup_schedule_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = schedule.BackupSchedule()
+        post_with_metadata.return_value = schedule.BackupSchedule(), metadata
 
         client.create_backup_schedule(
             request,
@@ -18034,6 +18185,7 @@ def test_create_backup_schedule_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_backup_schedule_rest_bad_request(
@@ -18122,10 +18274,14 @@ def test_get_backup_schedule_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.FirestoreAdminRestInterceptor, "post_get_backup_schedule"
     ) as post, mock.patch.object(
+        transports.FirestoreAdminRestInterceptor,
+        "post_get_backup_schedule_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.FirestoreAdminRestInterceptor, "pre_get_backup_schedule"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = firestore_admin.GetBackupScheduleRequest.pb(
             firestore_admin.GetBackupScheduleRequest()
         )
@@ -18149,6 +18305,7 @@ def test_get_backup_schedule_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = schedule.BackupSchedule()
+        post_with_metadata.return_value = schedule.BackupSchedule(), metadata
 
         client.get_backup_schedule(
             request,
@@ -18160,6 +18317,7 @@ def test_get_backup_schedule_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_backup_schedules_rest_bad_request(
@@ -18241,10 +18399,14 @@ def test_list_backup_schedules_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.FirestoreAdminRestInterceptor, "post_list_backup_schedules"
     ) as post, mock.patch.object(
+        transports.FirestoreAdminRestInterceptor,
+        "post_list_backup_schedules_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.FirestoreAdminRestInterceptor, "pre_list_backup_schedules"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = firestore_admin.ListBackupSchedulesRequest.pb(
             firestore_admin.ListBackupSchedulesRequest()
         )
@@ -18270,6 +18432,10 @@ def test_list_backup_schedules_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = firestore_admin.ListBackupSchedulesResponse()
+        post_with_metadata.return_value = (
+            firestore_admin.ListBackupSchedulesResponse(),
+            metadata,
+        )
 
         client.list_backup_schedules(
             request,
@@ -18281,6 +18447,7 @@ def test_list_backup_schedules_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_backup_schedule_rest_bad_request(
@@ -18450,10 +18617,14 @@ def test_update_backup_schedule_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.FirestoreAdminRestInterceptor, "post_update_backup_schedule"
     ) as post, mock.patch.object(
+        transports.FirestoreAdminRestInterceptor,
+        "post_update_backup_schedule_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.FirestoreAdminRestInterceptor, "pre_update_backup_schedule"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = firestore_admin.UpdateBackupScheduleRequest.pb(
             firestore_admin.UpdateBackupScheduleRequest()
         )
@@ -18477,6 +18648,7 @@ def test_update_backup_schedule_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = schedule.BackupSchedule()
+        post_with_metadata.return_value = schedule.BackupSchedule(), metadata
 
         client.update_backup_schedule(
             request,
@@ -18488,6 +18660,7 @@ def test_update_backup_schedule_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_backup_schedule_rest_bad_request(

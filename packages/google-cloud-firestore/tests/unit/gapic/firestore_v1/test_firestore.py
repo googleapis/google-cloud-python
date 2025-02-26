@@ -76,6 +76,14 @@ from google.type import latlng_pb2  # type: ignore
 import google.auth
 
 
+CRED_INFO_JSON = {
+    "credential_source": "/path/to/file",
+    "credential_type": "service account credentials",
+    "principal": "service-account@example.com",
+}
+CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
+
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
         chunk = data[i : i + chunk_size]
@@ -306,6 +314,49 @@ def test__get_universe_domain():
     with pytest.raises(ValueError) as excinfo:
         FirestoreClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+
+@pytest.mark.parametrize(
+    "error_code,cred_info_json,show_cred_info",
+    [
+        (401, CRED_INFO_JSON, True),
+        (403, CRED_INFO_JSON, True),
+        (404, CRED_INFO_JSON, True),
+        (500, CRED_INFO_JSON, False),
+        (401, None, False),
+        (403, None, False),
+        (404, None, False),
+        (500, None, False),
+    ],
+)
+def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
+    cred = mock.Mock(["get_cred_info"])
+    cred.get_cred_info = mock.Mock(return_value=cred_info_json)
+    client = FirestoreClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=["foo"])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    if show_cred_info:
+        assert error.details == ["foo", CRED_INFO_STRING]
+    else:
+        assert error.details == ["foo"]
+
+
+@pytest.mark.parametrize("error_code", [401, 403, 404, 500])
+def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
+    cred = mock.Mock([])
+    assert not hasattr(cred, "get_cred_info")
+    client = FirestoreClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=[])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    assert error.details == []
 
 
 @pytest.mark.parametrize(
@@ -9086,10 +9137,13 @@ def test_get_document_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.FirestoreRestInterceptor, "post_get_document"
     ) as post, mock.patch.object(
+        transports.FirestoreRestInterceptor, "post_get_document_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.FirestoreRestInterceptor, "pre_get_document"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = firestore.GetDocumentRequest.pb(firestore.GetDocumentRequest())
         transcode.return_value = {
             "method": "post",
@@ -9111,6 +9165,7 @@ def test_get_document_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = document.Document()
+        post_with_metadata.return_value = document.Document(), metadata
 
         client.get_document(
             request,
@@ -9122,6 +9177,7 @@ def test_get_document_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_documents_rest_bad_request(request_type=firestore.ListDocumentsRequest):
@@ -9208,10 +9264,13 @@ def test_list_documents_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.FirestoreRestInterceptor, "post_list_documents"
     ) as post, mock.patch.object(
+        transports.FirestoreRestInterceptor, "post_list_documents_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.FirestoreRestInterceptor, "pre_list_documents"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = firestore.ListDocumentsRequest.pb(firestore.ListDocumentsRequest())
         transcode.return_value = {
             "method": "post",
@@ -9235,6 +9294,7 @@ def test_list_documents_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = firestore.ListDocumentsResponse()
+        post_with_metadata.return_value = firestore.ListDocumentsResponse(), metadata
 
         client.list_documents(
             request,
@@ -9246,6 +9306,7 @@ def test_list_documents_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_document_rest_bad_request(request_type=firestore.UpdateDocumentRequest):
@@ -9407,10 +9468,13 @@ def test_update_document_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.FirestoreRestInterceptor, "post_update_document"
     ) as post, mock.patch.object(
+        transports.FirestoreRestInterceptor, "post_update_document_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.FirestoreRestInterceptor, "pre_update_document"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = firestore.UpdateDocumentRequest.pb(
             firestore.UpdateDocumentRequest()
         )
@@ -9434,6 +9498,7 @@ def test_update_document_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = gf_document.Document()
+        post_with_metadata.return_value = gf_document.Document(), metadata
 
         client.update_document(
             request,
@@ -9445,6 +9510,7 @@ def test_update_document_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_document_rest_bad_request(request_type=firestore.DeleteDocumentRequest):
@@ -9641,10 +9707,13 @@ def test_batch_get_documents_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.FirestoreRestInterceptor, "post_batch_get_documents"
     ) as post, mock.patch.object(
+        transports.FirestoreRestInterceptor, "post_batch_get_documents_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.FirestoreRestInterceptor, "pre_batch_get_documents"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = firestore.BatchGetDocumentsRequest.pb(
             firestore.BatchGetDocumentsRequest()
         )
@@ -9670,6 +9739,10 @@ def test_batch_get_documents_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = firestore.BatchGetDocumentsResponse()
+        post_with_metadata.return_value = (
+            firestore.BatchGetDocumentsResponse(),
+            metadata,
+        )
 
         client.batch_get_documents(
             request,
@@ -9681,6 +9754,7 @@ def test_batch_get_documents_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_begin_transaction_rest_bad_request(
@@ -9763,10 +9837,13 @@ def test_begin_transaction_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.FirestoreRestInterceptor, "post_begin_transaction"
     ) as post, mock.patch.object(
+        transports.FirestoreRestInterceptor, "post_begin_transaction_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.FirestoreRestInterceptor, "pre_begin_transaction"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = firestore.BeginTransactionRequest.pb(
             firestore.BeginTransactionRequest()
         )
@@ -9792,6 +9869,7 @@ def test_begin_transaction_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = firestore.BeginTransactionResponse()
+        post_with_metadata.return_value = firestore.BeginTransactionResponse(), metadata
 
         client.begin_transaction(
             request,
@@ -9803,6 +9881,7 @@ def test_begin_transaction_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_commit_rest_bad_request(request_type=firestore.CommitRequest):
@@ -9880,10 +9959,13 @@ def test_commit_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.FirestoreRestInterceptor, "post_commit"
     ) as post, mock.patch.object(
+        transports.FirestoreRestInterceptor, "post_commit_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.FirestoreRestInterceptor, "pre_commit"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = firestore.CommitRequest.pb(firestore.CommitRequest())
         transcode.return_value = {
             "method": "post",
@@ -9905,6 +9987,7 @@ def test_commit_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = firestore.CommitResponse()
+        post_with_metadata.return_value = firestore.CommitResponse(), metadata
 
         client.commit(
             request,
@@ -9916,6 +9999,7 @@ def test_commit_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_rollback_rest_bad_request(request_type=firestore.RollbackRequest):
@@ -10106,10 +10190,13 @@ def test_run_query_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.FirestoreRestInterceptor, "post_run_query"
     ) as post, mock.patch.object(
+        transports.FirestoreRestInterceptor, "post_run_query_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.FirestoreRestInterceptor, "pre_run_query"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = firestore.RunQueryRequest.pb(firestore.RunQueryRequest())
         transcode.return_value = {
             "method": "post",
@@ -10131,6 +10218,7 @@ def test_run_query_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = firestore.RunQueryResponse()
+        post_with_metadata.return_value = firestore.RunQueryResponse(), metadata
 
         client.run_query(
             request,
@@ -10142,6 +10230,7 @@ def test_run_query_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_run_aggregation_query_rest_bad_request(
@@ -10228,10 +10317,13 @@ def test_run_aggregation_query_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.FirestoreRestInterceptor, "post_run_aggregation_query"
     ) as post, mock.patch.object(
+        transports.FirestoreRestInterceptor, "post_run_aggregation_query_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.FirestoreRestInterceptor, "pre_run_aggregation_query"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = firestore.RunAggregationQueryRequest.pb(
             firestore.RunAggregationQueryRequest()
         )
@@ -10257,6 +10349,10 @@ def test_run_aggregation_query_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = firestore.RunAggregationQueryResponse()
+        post_with_metadata.return_value = (
+            firestore.RunAggregationQueryResponse(),
+            metadata,
+        )
 
         client.run_aggregation_query(
             request,
@@ -10268,6 +10364,7 @@ def test_run_aggregation_query_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_partition_query_rest_bad_request(request_type=firestore.PartitionQueryRequest):
@@ -10348,10 +10445,13 @@ def test_partition_query_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.FirestoreRestInterceptor, "post_partition_query"
     ) as post, mock.patch.object(
+        transports.FirestoreRestInterceptor, "post_partition_query_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.FirestoreRestInterceptor, "pre_partition_query"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = firestore.PartitionQueryRequest.pb(
             firestore.PartitionQueryRequest()
         )
@@ -10377,6 +10477,7 @@ def test_partition_query_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = firestore.PartitionQueryResponse()
+        post_with_metadata.return_value = firestore.PartitionQueryResponse(), metadata
 
         client.partition_query(
             request,
@@ -10388,6 +10489,7 @@ def test_partition_query_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_write_rest_error():
@@ -10496,10 +10598,13 @@ def test_list_collection_ids_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.FirestoreRestInterceptor, "post_list_collection_ids"
     ) as post, mock.patch.object(
+        transports.FirestoreRestInterceptor, "post_list_collection_ids_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.FirestoreRestInterceptor, "pre_list_collection_ids"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = firestore.ListCollectionIdsRequest.pb(
             firestore.ListCollectionIdsRequest()
         )
@@ -10525,6 +10630,10 @@ def test_list_collection_ids_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = firestore.ListCollectionIdsResponse()
+        post_with_metadata.return_value = (
+            firestore.ListCollectionIdsResponse(),
+            metadata,
+        )
 
         client.list_collection_ids(
             request,
@@ -10536,6 +10645,7 @@ def test_list_collection_ids_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_batch_write_rest_bad_request(request_type=firestore.BatchWriteRequest):
@@ -10613,10 +10723,13 @@ def test_batch_write_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.FirestoreRestInterceptor, "post_batch_write"
     ) as post, mock.patch.object(
+        transports.FirestoreRestInterceptor, "post_batch_write_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.FirestoreRestInterceptor, "pre_batch_write"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = firestore.BatchWriteRequest.pb(firestore.BatchWriteRequest())
         transcode.return_value = {
             "method": "post",
@@ -10640,6 +10753,7 @@ def test_batch_write_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = firestore.BatchWriteResponse()
+        post_with_metadata.return_value = firestore.BatchWriteResponse(), metadata
 
         client.batch_write(
             request,
@@ -10651,6 +10765,7 @@ def test_batch_write_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_document_rest_bad_request(request_type=firestore.CreateDocumentRequest):
@@ -10810,10 +10925,13 @@ def test_create_document_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.FirestoreRestInterceptor, "post_create_document"
     ) as post, mock.patch.object(
+        transports.FirestoreRestInterceptor, "post_create_document_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.FirestoreRestInterceptor, "pre_create_document"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = firestore.CreateDocumentRequest.pb(
             firestore.CreateDocumentRequest()
         )
@@ -10837,6 +10955,7 @@ def test_create_document_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = document.Document()
+        post_with_metadata.return_value = document.Document(), metadata
 
         client.create_document(
             request,
@@ -10848,6 +10967,7 @@ def test_create_document_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_cancel_operation_rest_bad_request(
