@@ -9,7 +9,7 @@ import pytest
     # See: https://github.com/python/cpython/issues/112282
     reason="setrecursionlimit has no effect on the Python C stack since Python 3.12.",
 )
-def test_corr_w_numeric_only(scalars_df_numeric_150_columns_maybe_ordered):
+def test_corr_150_columns(scalars_df_numeric_150_columns_maybe_ordered):
     scalars_df, scalars_pandas_df = scalars_df_numeric_150_columns_maybe_ordered
     bf_result = scalars_df.corr(numeric_only=True).to_pandas()
     pd_result = scalars_pandas_df.corr(numeric_only=True)
@@ -28,7 +28,7 @@ def test_corr_w_numeric_only(scalars_df_numeric_150_columns_maybe_ordered):
     # See: https://github.com/python/cpython/issues/112282
     reason="setrecursionlimit has no effect on the Python C stack since Python 3.12.",
 )
-def test_cov_w_numeric_only(scalars_df_numeric_150_columns_maybe_ordered):
+def test_cov_150_columns(scalars_df_numeric_150_columns_maybe_ordered):
     scalars_df, scalars_pandas_df = scalars_df_numeric_150_columns_maybe_ordered
     bf_result = scalars_df.cov(numeric_only=True).to_pandas()
     pd_result = scalars_pandas_df.cov(numeric_only=True)

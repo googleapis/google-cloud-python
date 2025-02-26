@@ -2214,7 +2214,7 @@ def test_combine_first(
         ),
     ],
 )
-def test_corr_w_numeric_only(scalars_dfs_maybe_ordered, columns, numeric_only):
+def test_df_corr_w_numeric_only(scalars_dfs_maybe_ordered, columns, numeric_only):
     scalars_df, scalars_pandas_df = scalars_dfs_maybe_ordered
 
     bf_result = scalars_df[columns].corr(numeric_only=numeric_only).to_pandas()
@@ -2228,7 +2228,7 @@ def test_corr_w_numeric_only(scalars_dfs_maybe_ordered, columns, numeric_only):
     )
 
 
-def test_corr_w_invalid_parameters(scalars_dfs):
+def test_df_corr_w_invalid_parameters(scalars_dfs):
     columns = ["int64_too", "int64_col", "float64_col"]
     scalars_df, _ = scalars_dfs
 

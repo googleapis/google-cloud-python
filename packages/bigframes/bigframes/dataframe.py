@@ -1270,6 +1270,35 @@ class DataFrame(vendored_pandas_frame.DataFrame):
     def combine_first(self, other: DataFrame):
         return self._apply_dataframe_binop(other, ops.fillna_op)
 
+    def _fast_stat_matrix(self, op: agg_ops.BinaryAggregateOp) -> DataFrame:
+        """Faster corr, cov calculations, but creates more sql text, so cannot scale to many columns"""
+        assert len(self.columns) * len(self.columns) < bigframes.constants.MAX_COLUMNS
+        orig_columns = self.columns
+        frame = self.copy()
+        # Replace column names with 0 to n - 1 to keep order
+        # and avoid the influence of duplicated column name
+        frame.columns = pandas.Index(range(len(orig_columns)))
+        frame = frame.astype(bigframes.dtypes.FLOAT_DTYPE)
+        block = frame._block
+
+        aggregations = [
+            ex.BinaryAggregation(op, ex.deref(left_col), ex.deref(right_col))
+            for left_col in block.value_columns
+            for right_col in block.value_columns
+        ]
+        # unique columns stops
+        uniq_orig_columns = utils.combine_indices(
+            orig_columns, pandas.Index(range(len(orig_columns)))
+        )
+        labels = utils.cross_indices(uniq_orig_columns, uniq_orig_columns)
+
+        block, _ = block.aggregate(aggregations=aggregations, column_labels=labels)
+
+        block = block.stack(levels=orig_columns.nlevels + 1)
+        # The aggregate operation crated a index level with just 0, need to drop it
+        # Also, drop the last level of each index, which was created to guarantee uniqueness
+        return DataFrame(block).droplevel(0).droplevel(-1, axis=0).droplevel(-1, axis=1)
+
     def corr(self, method="pearson", min_periods=None, numeric_only=False) -> DataFrame:
         if method != "pearson":
             raise NotImplementedError(
@@ -1285,6 +1314,10 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         else:
             frame = self._drop_non_numeric()
 
+        if len(frame.columns) <= 30:
+            return frame._fast_stat_matrix(agg_ops.CorrOp())
+
+        frame = frame.copy()
         orig_columns = frame.columns
         # Replace column names with 0 to n - 1 to keep order
         # and avoid the influence of duplicated column name
@@ -1393,6 +1426,10 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         else:
             frame = self._drop_non_numeric()
 
+        if len(frame.columns) <= 30:
+            return frame._fast_stat_matrix(agg_ops.CovOp())
+
+        frame = frame.copy()
         orig_columns = frame.columns
         # Replace column names with 0 to n - 1 to keep order
         # and avoid the influence of duplicated column name
