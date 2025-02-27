@@ -159,6 +159,13 @@ class Vehicle(proto.Message):
             assigned to this vehicle.
         last_location (google.maps.fleetengine_v1.types.VehicleLocation):
             Last reported location of the vehicle.
+        past_locations (MutableSequence[google.maps.fleetengine_v1.types.VehicleLocation]):
+            Input only. Locations where this vehicle has been in the
+            past that haven't yet been reported to Fleet Engine. This is
+            used in ``UpdateVehicleRequest`` to record locations which
+            were previously unable to be sent to the server. Typically
+            this happens when the vehicle does not have internet
+            connectivity.
         maximum_capacity (int):
             The total numbers of riders this vehicle can
             carry.  The driver is not considered in this
@@ -315,6 +322,11 @@ class Vehicle(proto.Message):
     last_location: fleetengine.VehicleLocation = proto.Field(
         proto.MESSAGE,
         number=5,
+        message=fleetengine.VehicleLocation,
+    )
+    past_locations: MutableSequence[fleetengine.VehicleLocation] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=30,
         message=fleetengine.VehicleLocation,
     )
     maximum_capacity: int = proto.Field(
