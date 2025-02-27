@@ -54,6 +54,13 @@ class DeliveryVehicle(proto.Message):
         last_location (google.maps.fleetengine_delivery_v1.types.DeliveryVehicleLocation):
             The last reported location of the Delivery
             Vehicle.
+        past_locations (MutableSequence[google.maps.fleetengine_delivery_v1.types.DeliveryVehicleLocation]):
+            Input only. Locations where this Delivery Vehicle has been
+            in the past that haven't yet been reported to Fleet Engine.
+            This is used in ``UpdateDeliveryVehicleRequest`` to record
+            locations which were previously unable to be sent to the
+            server. Typically this happens when the Delivery Vehicle
+            does not have internet connectivity.
         navigation_status (google.maps.fleetengine_delivery_v1.types.DeliveryVehicleNavigationStatus):
             The Delivery Vehicle's navigation status.
         current_route_segment (bytes):
@@ -183,6 +190,13 @@ class DeliveryVehicle(proto.Message):
     last_location: common.DeliveryVehicleLocation = proto.Field(
         proto.MESSAGE,
         number=2,
+        message=common.DeliveryVehicleLocation,
+    )
+    past_locations: MutableSequence[
+        common.DeliveryVehicleLocation
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=12,
         message=common.DeliveryVehicleLocation,
     )
     navigation_status: common.DeliveryVehicleNavigationStatus = proto.Field(
