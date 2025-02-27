@@ -1621,6 +1621,8 @@ def test_get_agent(request_type, transport: str = "grpc"):
             enable_spell_correction=True,
             enable_multi_language_training=True,
             locked=True,
+            satisfies_pzs=True,
+            satisfies_pzi=True,
         )
         response = client.get_agent(request)
 
@@ -1645,6 +1647,8 @@ def test_get_agent(request_type, transport: str = "grpc"):
     assert response.enable_spell_correction is True
     assert response.enable_multi_language_training is True
     assert response.locked is True
+    assert response.satisfies_pzs is True
+    assert response.satisfies_pzi is True
 
 
 def test_get_agent_non_empty_request_with_auto_populated_field():
@@ -1781,6 +1785,8 @@ async def test_get_agent_async(
                 enable_spell_correction=True,
                 enable_multi_language_training=True,
                 locked=True,
+                satisfies_pzs=True,
+                satisfies_pzi=True,
             )
         )
         response = await client.get_agent(request)
@@ -1806,6 +1812,8 @@ async def test_get_agent_async(
     assert response.enable_spell_correction is True
     assert response.enable_multi_language_training is True
     assert response.locked is True
+    assert response.satisfies_pzs is True
+    assert response.satisfies_pzi is True
 
 
 @pytest.mark.asyncio
@@ -1986,6 +1994,8 @@ def test_create_agent(request_type, transport: str = "grpc"):
             enable_spell_correction=True,
             enable_multi_language_training=True,
             locked=True,
+            satisfies_pzs=True,
+            satisfies_pzi=True,
         )
         response = client.create_agent(request)
 
@@ -2010,6 +2020,8 @@ def test_create_agent(request_type, transport: str = "grpc"):
     assert response.enable_spell_correction is True
     assert response.enable_multi_language_training is True
     assert response.locked is True
+    assert response.satisfies_pzs is True
+    assert response.satisfies_pzi is True
 
 
 def test_create_agent_non_empty_request_with_auto_populated_field():
@@ -2148,6 +2160,8 @@ async def test_create_agent_async(
                 enable_spell_correction=True,
                 enable_multi_language_training=True,
                 locked=True,
+                satisfies_pzs=True,
+                satisfies_pzi=True,
             )
         )
         response = await client.create_agent(request)
@@ -2173,6 +2187,8 @@ async def test_create_agent_async(
     assert response.enable_spell_correction is True
     assert response.enable_multi_language_training is True
     assert response.locked is True
+    assert response.satisfies_pzs is True
+    assert response.satisfies_pzi is True
 
 
 @pytest.mark.asyncio
@@ -2363,6 +2379,8 @@ def test_update_agent(request_type, transport: str = "grpc"):
             enable_spell_correction=True,
             enable_multi_language_training=True,
             locked=True,
+            satisfies_pzs=True,
+            satisfies_pzi=True,
         )
         response = client.update_agent(request)
 
@@ -2387,6 +2405,8 @@ def test_update_agent(request_type, transport: str = "grpc"):
     assert response.enable_spell_correction is True
     assert response.enable_multi_language_training is True
     assert response.locked is True
+    assert response.satisfies_pzs is True
+    assert response.satisfies_pzi is True
 
 
 def test_update_agent_non_empty_request_with_auto_populated_field():
@@ -2521,6 +2541,8 @@ async def test_update_agent_async(
                 enable_spell_correction=True,
                 enable_multi_language_training=True,
                 locked=True,
+                satisfies_pzs=True,
+                satisfies_pzi=True,
             )
         )
         response = await client.update_agent(request)
@@ -2546,6 +2568,8 @@ async def test_update_agent_async(
     assert response.enable_spell_correction is True
     assert response.enable_multi_language_training is True
     assert response.locked is True
+    assert response.satisfies_pzs is True
+    assert response.satisfies_pzi is True
 
 
 @pytest.mark.asyncio
@@ -7132,6 +7156,8 @@ async def test_get_agent_empty_call_grpc_asyncio():
                 enable_spell_correction=True,
                 enable_multi_language_training=True,
                 locked=True,
+                satisfies_pzs=True,
+                satisfies_pzi=True,
             )
         )
         await client.get_agent(request=None)
@@ -7171,6 +7197,8 @@ async def test_create_agent_empty_call_grpc_asyncio():
                 enable_spell_correction=True,
                 enable_multi_language_training=True,
                 locked=True,
+                satisfies_pzs=True,
+                satisfies_pzi=True,
             )
         )
         await client.create_agent(request=None)
@@ -7210,6 +7238,8 @@ async def test_update_agent_empty_call_grpc_asyncio():
                 enable_spell_correction=True,
                 enable_multi_language_training=True,
                 locked=True,
+                satisfies_pzs=True,
+                satisfies_pzi=True,
             )
         )
         await client.update_agent(request=None)
@@ -7595,6 +7625,8 @@ def test_get_agent_rest_call_success(request_type):
             enable_spell_correction=True,
             enable_multi_language_training=True,
             locked=True,
+            satisfies_pzs=True,
+            satisfies_pzi=True,
         )
 
         # Wrap the value into a proper Response obj
@@ -7624,6 +7656,8 @@ def test_get_agent_rest_call_success(request_type):
     assert response.enable_spell_correction is True
     assert response.enable_multi_language_training is True
     assert response.locked is True
+    assert response.satisfies_pzs is True
+    assert response.satisfies_pzi is True
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -7778,6 +7812,8 @@ def test_create_agent_rest_call_success(request_type):
             "private_key": "private_key_value",
             "passphrase": "passphrase_value",
         },
+        "satisfies_pzs": True,
+        "satisfies_pzi": True,
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -7865,6 +7901,8 @@ def test_create_agent_rest_call_success(request_type):
             enable_spell_correction=True,
             enable_multi_language_training=True,
             locked=True,
+            satisfies_pzs=True,
+            satisfies_pzi=True,
         )
 
         # Wrap the value into a proper Response obj
@@ -7894,6 +7932,8 @@ def test_create_agent_rest_call_success(request_type):
     assert response.enable_spell_correction is True
     assert response.enable_multi_language_training is True
     assert response.locked is True
+    assert response.satisfies_pzs is True
+    assert response.satisfies_pzi is True
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -8052,6 +8092,8 @@ def test_update_agent_rest_call_success(request_type):
             "private_key": "private_key_value",
             "passphrase": "passphrase_value",
         },
+        "satisfies_pzs": True,
+        "satisfies_pzi": True,
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -8139,6 +8181,8 @@ def test_update_agent_rest_call_success(request_type):
             enable_spell_correction=True,
             enable_multi_language_training=True,
             locked=True,
+            satisfies_pzs=True,
+            satisfies_pzi=True,
         )
 
         # Wrap the value into a proper Response obj
@@ -8168,6 +8212,8 @@ def test_update_agent_rest_call_success(request_type):
     assert response.enable_spell_correction is True
     assert response.enable_multi_language_training is True
     assert response.locked is True
+    assert response.satisfies_pzs is True
+    assert response.satisfies_pzi is True
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])

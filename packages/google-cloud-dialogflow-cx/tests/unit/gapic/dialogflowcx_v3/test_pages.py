@@ -4701,7 +4701,11 @@ def test_create_page_rest_call_success(request_type):
             "target_page": "target_page_value",
             "target_flow": "target_flow_value",
             "data_store_connections": [
-                {"data_store_type": 1, "data_store": "data_store_value"}
+                {
+                    "data_store_type": 1,
+                    "data_store": "data_store_value",
+                    "document_processing_mode": 1,
+                }
             ],
         },
     }
@@ -5043,7 +5047,11 @@ def test_update_page_rest_call_success(request_type):
             "target_page": "target_page_value",
             "target_flow": "target_flow_value",
             "data_store_connections": [
-                {"data_store_type": 1, "data_store": "data_store_value"}
+                {
+                    "data_store_type": 1,
+                    "data_store": "data_store_value",
+                    "document_processing_mode": 1,
+                }
             ],
         },
     }

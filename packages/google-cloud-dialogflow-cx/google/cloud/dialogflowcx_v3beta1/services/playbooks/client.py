@@ -332,6 +332,30 @@ class PlaybooksClient(metaclass=PlaybooksClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
+    def webhook_path(
+        project: str,
+        location: str,
+        agent: str,
+        webhook: str,
+    ) -> str:
+        """Returns a fully-qualified webhook string."""
+        return "projects/{project}/locations/{location}/agents/{agent}/webhooks/{webhook}".format(
+            project=project,
+            location=location,
+            agent=agent,
+            webhook=webhook,
+        )
+
+    @staticmethod
+    def parse_webhook_path(path: str) -> Dict[str, str]:
+        """Parses a webhook path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/agents/(?P<agent>.+?)/webhooks/(?P<webhook>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def common_billing_account_path(
         billing_account: str,
     ) -> str:

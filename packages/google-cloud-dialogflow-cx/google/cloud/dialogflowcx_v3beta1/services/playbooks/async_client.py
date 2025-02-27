@@ -98,6 +98,8 @@ class PlaybooksAsyncClient:
     )
     tool_path = staticmethod(PlaybooksClient.tool_path)
     parse_tool_path = staticmethod(PlaybooksClient.parse_tool_path)
+    webhook_path = staticmethod(PlaybooksClient.webhook_path)
+    parse_webhook_path = staticmethod(PlaybooksClient.parse_webhook_path)
     common_billing_account_path = staticmethod(
         PlaybooksClient.common_billing_account_path
     )
