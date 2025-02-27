@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.9.0](https://github.com/googleapis/python-spanner-sqlalchemy/compare/v1.8.0...v1.9.0) (2025-02-21)
+
+
+### Features
+
+* Support request and transaction tags ([#558](https://github.com/googleapis/python-spanner-sqlalchemy/issues/558)) ([c4496fd](https://github.com/googleapis/python-spanner-sqlalchemy/commit/c4496fd73c2afe0f519fed0264abe2abb9d022b9))
+
+
+### Documentation
+
+* Add test for using FOR UPDATE ([#575](https://github.com/googleapis/python-spanner-sqlalchemy/issues/575)) ([8419ae4](https://github.com/googleapis/python-spanner-sqlalchemy/commit/8419ae4ef07ba5b5e3134586c475cfcaeda240b5))
+
 ## [1.8.0](https://github.com/googleapis/python-spanner-sqlalchemy/compare/v1.7.0...v1.8.0) (2024-12-09)
 
 
