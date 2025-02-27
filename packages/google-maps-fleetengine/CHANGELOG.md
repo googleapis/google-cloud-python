@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.7](https://github.com/googleapis/google-cloud-python/compare/google-maps-fleetengine-v0.2.6...google-maps-fleetengine-v0.2.7) (2025-02-27)
+
+
+### Features
+
+* A new field `past_locations` is added to message `.maps.fleetengine.v1.Vehicle` ([#13563](https://github.com/googleapis/google-cloud-python/issues/13563)) ([2b74b97](https://github.com/googleapis/google-cloud-python/commit/2b74b97e66d046bae5d8d7c345bf5111ce44f2c2))
+
 ## [0.2.6](https://github.com/googleapis/google-cloud-python/compare/google-maps-fleetengine-v0.2.5...google-maps-fleetengine-v0.2.6) (2025-02-12)
 
 

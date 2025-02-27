@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.24](https://github.com/googleapis/google-cloud-python/compare/google-maps-places-v0.1.23...google-maps-places-v0.1.24) (2025-02-27)
+
+
+### Features
+
+* [google-maps-places] add NACS EVCS connector type support ([#13555](https://github.com/googleapis/google-cloud-python/issues/13555)) ([fdff960](https://github.com/googleapis/google-cloud-python/commit/fdff960cd7bf521e2c19e2e7ad1d17bf01fefefb))
+
 ## [0.1.23](https://github.com/googleapis/google-cloud-python/compare/google-maps-places-v0.1.22...google-maps-places-v0.1.23) (2025-02-12)
 
 

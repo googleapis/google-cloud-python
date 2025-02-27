@@ -1,5 +1,20 @@
 # Changelog
 
+## [1.17.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-reservation-v1.16.0...google-cloud-bigquery-reservation-v1.17.0) (2025-02-27)
+
+
+### Features
+
+* Add a new field `enable_gemini_in_bigquery` to `.google.cloud.bigquery.reservation.v1.Assignment` that indicates if [Gemini in Bigquery](https://cloud.google.com/gemini/docs/bigquery/overview) features are enabled for the reservation assignment ([ff7c472](https://github.com/googleapis/google-cloud-python/commit/ff7c472ca3ada09a699bcf85d9a2d2880f9834f4))
+* Add a new field `replication_status` to `.google.cloud.bigquery.reservation.v1.Reservation` to provide visibility into errors that could arise during Disaster Recovery(DR) replication ([ff7c472](https://github.com/googleapis/google-cloud-python/commit/ff7c472ca3ada09a699bcf85d9a2d2880f9834f4))
+* Add the CONTINUOUS Job type to `.google.cloud.bigquery.reservation.v1.Assignment.JobType` for continuous SQL jobs ([ff7c472](https://github.com/googleapis/google-cloud-python/commit/ff7c472ca3ada09a699bcf85d9a2d2880f9834f4))
+
+
+### Documentation
+
+* Remove the section about `EDITION_UNSPECIFIED` in the comment for `slot_capacity` in `.google.cloud.bigquery.reservation.v1.Reservation` ([ff7c472](https://github.com/googleapis/google-cloud-python/commit/ff7c472ca3ada09a699bcf85d9a2d2880f9834f4))
+* Update the `google.api.field_behavior` for the `.google.cloud.bigquery.reservation.v1.Reservation.primary_location` and `.google.cloud.bigquery.reservation.v1.Reservation.original_primary_location` fields to clarify that they are `OUTPUT_ONLY` ([ff7c472](https://github.com/googleapis/google-cloud-python/commit/ff7c472ca3ada09a699bcf85d9a2d2880f9834f4))
+
 ## [1.16.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-reservation-v1.15.0...google-cloud-bigquery-reservation-v1.16.0) (2025-02-12)
 
 
