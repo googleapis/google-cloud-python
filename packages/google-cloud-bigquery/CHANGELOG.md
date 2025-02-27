@@ -5,6 +5,32 @@
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
 
+## [3.30.0](https://github.com/googleapis/python-bigquery/compare/v3.29.0...v3.30.0) (2025-02-26)
+
+
+### Features
+
+* Add roundingmode enum, wiring, and tests ([#2121](https://github.com/googleapis/python-bigquery/issues/2121)) ([3a48948](https://github.com/googleapis/python-bigquery/commit/3a4894827f6e73a4a88cb22933c2004697dabcc7))
+* Adds foreign_type_info attribute to table class and adds unit tests. ([#2126](https://github.com/googleapis/python-bigquery/issues/2126)) ([2c19681](https://github.com/googleapis/python-bigquery/commit/2c1968115bef8e1dc84e0125615f551b9b011a4b))
+* Support resource_tags for table ([#2093](https://github.com/googleapis/python-bigquery/issues/2093)) ([d4070ca](https://github.com/googleapis/python-bigquery/commit/d4070ca21b5797e900a9e87b966837ee1c278217))
+
+
+### Bug Fixes
+
+* Avoid blocking in download thread when using BQ Storage API ([#2034](https://github.com/googleapis/python-bigquery/issues/2034)) ([54c8d07](https://github.com/googleapis/python-bigquery/commit/54c8d07f06a8ae460c9e0fb1614e1fbc21efb5df))
+* Retry 404 errors in `Client.query(...)` ([#2135](https://github.com/googleapis/python-bigquery/issues/2135)) ([c6d5f8a](https://github.com/googleapis/python-bigquery/commit/c6d5f8aaec21ab8f17436407aded4bc2316323fd))
+
+
+### Dependencies
+
+* Updates required checks list in github ([#2136](https://github.com/googleapis/python-bigquery/issues/2136)) ([fea49ff](https://github.com/googleapis/python-bigquery/commit/fea49ffbf8aa1d53451864ceb7fd73189b6661cb))
+* Use pandas-gbq to determine schema in `load_table_from_dataframe` ([#2095](https://github.com/googleapis/python-bigquery/issues/2095)) ([7603bd7](https://github.com/googleapis/python-bigquery/commit/7603bd71d60592ef2a551d9eea09987b218edc73))
+
+
+### Documentation
+
+* Update magics.rst ([#2125](https://github.com/googleapis/python-bigquery/issues/2125)) ([b5bcfb3](https://github.com/googleapis/python-bigquery/commit/b5bcfb303d27015b747a3b0747ecd7f7ed0ed557))
+
 ## [3.29.0](https://github.com/googleapis/python-bigquery/compare/v3.28.0...v3.29.0) (2025-01-21)
 
 
