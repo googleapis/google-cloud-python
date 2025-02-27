@@ -199,10 +199,7 @@ def prerelease(session, tests_path):
         "--prefer-binary",
         "--pre",
         "--upgrade",
-        # Limit pyarrow to versions prior to 20.0.0.dev19 to prevent a RuntimeWarning
-        # during import.  This workaround can be removed once the underlying issue
-        # in pyarrow is resolved (see: https://github.com/apache/arrow/issues/45380).
-        "pyarrow<=20.0.0.dev18",
+        "pyarrow",
     )
     # Avoid pandas==2.2.0rc0 as this version causes PyArrow to fail. Once newer
     # prerelease comes out, this constraint can be removed. See

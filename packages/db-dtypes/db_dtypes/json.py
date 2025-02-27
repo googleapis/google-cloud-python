@@ -257,8 +257,10 @@ class JSONArray(arrays.ArrowExtensionArray):
 
 
 class JSONArrowScalar(pa.ExtensionScalar):
-    def as_py(self):
-        return JSONArray._deserialize_json(self.value.as_py() if self.value else None)
+    def as_py(self, **kwargs):
+        return JSONArray._deserialize_json(
+            self.value.as_py(**kwargs) if self.value else None
+        )
 
 
 class JSONArrowType(pa.ExtensionType):
