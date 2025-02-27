@@ -577,28 +577,23 @@ class StreamingDetectIntentResponse(proto.Message):
     [StreamingDetectIntent][google.cloud.dialogflow.cx.v3.Sessions.StreamingDetectIntent]
     method.
 
-    Multiple response messages (N) can be returned in order.
-
-    The first (N-1) responses set either the ``recognition_result`` or
-    ``detect_intent_response`` field, depending on the request:
+    Multiple response messages can be returned in order:
 
     -  If the ``StreamingDetectIntentRequest.query_input.audio`` field
-       was set, and the
-       ``StreamingDetectIntentRequest.enable_partial_response`` field
-       was false, the ``recognition_result`` field is populated for each
-       of the (N-1) responses. See the
-       [StreamingRecognitionResult][google.cloud.dialogflow.cx.v3.StreamingRecognitionResult]
-       message for details about the result message sequence.
+       was set, the first M messages contain ``recognition_result``.
+       Each ``recognition_result`` represents a more complete transcript
+       of what the user said. The last ``recognition_result`` has
+       ``is_final`` set to ``true``.
 
     -  If the ``StreamingDetectIntentRequest.enable_partial_response``
        field was true, the ``detect_intent_response`` field is populated
-       for each of the (N-1) responses, where 1 <= N <= 4. These
+       for each of the following N responses, where 0 <= N <= 5. These
        responses set the
        [DetectIntentResponse.response_type][google.cloud.dialogflow.cx.v3.DetectIntentResponse.response_type]
        field to ``PARTIAL``.
 
-    For the final Nth response message, the ``detect_intent_response``
-    is fully populated, and
+    For the last response message, the ``detect_intent_response`` is
+    fully populated, and
     [DetectIntentResponse.response_type][google.cloud.dialogflow.cx.v3.DetectIntentResponse.response_type]
     is set to ``FINAL``.
 
@@ -1025,9 +1020,20 @@ class SearchConfig(proto.Message):
         boost_specs (MutableSequence[google.cloud.dialogflowcx_v3.types.BoostSpecs]):
             Optional. Boosting configuration for the
             datastores.
+            Maps from datastore name to their boost
+            configuration. Do not specify more than one
+            BoostSpecs for each datastore name. If multiple
+            BoostSpecs are provided for the same datastore
+            name, the behavior is undefined.
         filter_specs (MutableSequence[google.cloud.dialogflowcx_v3.types.FilterSpecs]):
             Optional. Filter configuration for the
             datastores.
+            Maps from datastore name to the filter
+            expression for that datastore. Do not specify
+            more than one FilterSpecs for each datastore
+            name. If multiple FilterSpecs are provided for
+            the same datastore name, the behavior is
+            undefined.
     """
 
     boost_specs: MutableSequence["BoostSpecs"] = proto.RepeatedField(
@@ -1052,7 +1058,7 @@ class BoostSpec(proto.Message):
         condition_boost_specs (MutableSequence[google.cloud.dialogflowcx_v3.types.BoostSpec.ConditionBoostSpec]):
             Optional. Condition boost specifications. If
             a document matches multiple conditions in the
-            specifictions, boost scores from these
+            specifications, boost scores from these
             specifications are all applied and combined in a
             non-linear way. Maximum number of specifications
             is 20.
@@ -1540,11 +1546,9 @@ class QueryResult(proto.Message):
             rating controls are need to be shown for the
             response in the Dialogflow Messenger widget.
         data_store_connection_signals (google.cloud.dialogflowcx_v3.types.DataStoreConnectionSignals):
-            Optional. Data store connection feature output signals.
-            Filled only when data stores are involved in serving the
-            query and
-            DetectIntentRequest.populate_data_store_connection_signals
-            is set to true in the request.
+            Optional. Data store connection feature
+            output signals. Filled only when data stores are
+            involved in serving the query.
     """
 
     text: str = proto.Field(

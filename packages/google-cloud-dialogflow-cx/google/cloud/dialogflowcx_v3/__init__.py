@@ -86,6 +86,7 @@ from .types.data_store_connection import (
     DataStoreConnection,
     DataStoreConnectionSignals,
     DataStoreType,
+    DocumentProcessingMode,
 )
 from .types.deployment import (
     Deployment,
@@ -407,6 +408,7 @@ __all__ = (
     "DeploymentsClient",
     "DetectIntentRequest",
     "DetectIntentResponse",
+    "DocumentProcessingMode",
     "DtmfInput",
     "EntityType",
     "EntityTypesClient",

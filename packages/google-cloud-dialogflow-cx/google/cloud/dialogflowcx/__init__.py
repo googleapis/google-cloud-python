@@ -128,6 +128,7 @@ from google.cloud.dialogflowcx_v3.types.data_store_connection import (
     DataStoreConnection,
     DataStoreConnectionSignals,
     DataStoreType,
+    DocumentProcessingMode,
 )
 from google.cloud.dialogflowcx_v3.types.deployment import (
     Deployment,
@@ -443,6 +444,7 @@ __all__ = (
     "DataStoreConnection",
     "DataStoreConnectionSignals",
     "DataStoreType",
+    "DocumentProcessingMode",
     "Deployment",
     "GetDeploymentRequest",
     "ListDeploymentsRequest",

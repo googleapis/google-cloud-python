@@ -23,6 +23,7 @@ __protobuf__ = proto.module(
     package="google.cloud.dialogflow.cx.v3",
     manifest={
         "DataStoreType",
+        "DocumentProcessingMode",
         "DataStoreConnection",
         "DataStoreConnectionSignals",
     },
@@ -54,6 +55,24 @@ class DataStoreType(proto.Enum):
     STRUCTURED = 3
 
 
+class DocumentProcessingMode(proto.Enum):
+    r"""The document processing mode of the data store.
+
+    Values:
+        DOCUMENT_PROCESSING_MODE_UNSPECIFIED (0):
+            Not specified. This should be set for STRUCTURED type data
+            stores. Due to legacy reasons this is considered as
+            DOCUMENTS for STRUCTURED and PUBLIC_WEB data stores.
+        DOCUMENTS (1):
+            Documents are processed as documents.
+        CHUNKS (2):
+            Documents are converted to chunks.
+    """
+    DOCUMENT_PROCESSING_MODE_UNSPECIFIED = 0
+    DOCUMENTS = 1
+    CHUNKS = 2
+
+
 class DataStoreConnection(proto.Message):
     r"""A data store connection. It represents a data store in
     Discovery Engine and the type of the contents it contains.
@@ -65,6 +84,11 @@ class DataStoreConnection(proto.Message):
             The full name of the referenced data store. Formats:
             ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}``
             ``projects/{project}/locations/{location}/dataStores/{data_store}``
+        document_processing_mode (google.cloud.dialogflowcx_v3.types.DocumentProcessingMode):
+            The document processing mode for the data store connection.
+            Should only be set for PUBLIC_WEB and UNSTRUCTURED data
+            stores. If not set it is considered as DOCUMENTS, as this is
+            the legacy mode.
     """
 
     data_store_type: "DataStoreType" = proto.Field(
@@ -75,6 +99,11 @@ class DataStoreConnection(proto.Message):
     data_store: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+    document_processing_mode: "DocumentProcessingMode" = proto.Field(
+        proto.ENUM,
+        number=4,
+        enum="DocumentProcessingMode",
     )
 
 
