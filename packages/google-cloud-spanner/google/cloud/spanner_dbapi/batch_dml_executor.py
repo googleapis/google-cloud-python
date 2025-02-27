@@ -87,7 +87,9 @@ def run_batch_dml(cursor: "Cursor", statements: List[Statement]):
     for statement in statements:
         statements_tuple.append(statement.get_tuple())
     if not connection._client_transaction_started:
-        res = connection.database.run_in_transaction(_do_batch_update, statements_tuple)
+        res = connection.database.run_in_transaction(
+            _do_batch_update_autocommit, statements_tuple
+        )
         many_result_set.add_iter(res)
         cursor._row_count = sum([max(val, 0) for val in res])
     else:
@@ -113,10 +115,10 @@ def run_batch_dml(cursor: "Cursor", statements: List[Statement]):
                     connection._transaction_helper.retry_transaction()
 
 
-def _do_batch_update(transaction, statements):
+def _do_batch_update_autocommit(transaction, statements):
     from google.cloud.spanner_dbapi import OperationalError
 
-    status, res = transaction.batch_update(statements)
+    status, res = transaction.batch_update(statements, last_statement=True)
     if status.code == ABORTED:
         raise Aborted(status.message)
     elif status.code != OK:

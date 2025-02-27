@@ -229,7 +229,10 @@ class Cursor(object):
         self.connection._transaction = transaction
         self.connection._snapshot = None
         self._result_set = transaction.execute_sql(
-            sql, params=params, param_types=get_param_types(params)
+            sql,
+            params=params,
+            param_types=get_param_types(params),
+            last_statement=True,
         )
         self._itr = PeekIterator(self._result_set)
         self._row_count = None

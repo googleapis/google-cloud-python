@@ -389,6 +389,7 @@ class _SnapshotBase(_SessionWrapper):
         query_mode=None,
         query_options=None,
         request_options=None,
+        last_statement=False,
         partition=None,
         retry=gapic_v1.method.DEFAULT,
         timeout=gapic_v1.method.DEFAULT,
@@ -431,6 +432,19 @@ class _SnapshotBase(_SessionWrapper):
                 (Optional) Common options for this request.
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.spanner_v1.types.RequestOptions`.
+
+        :type last_statement: bool
+        :param last_statement:
+                If set to true, this option marks the end of the transaction. The
+                transaction should be committed or aborted after this statement
+                executes, and attempts to execute any other requests against this
+                transaction (including reads and queries) will be rejected. Mixing
+                mutations with statements that are marked as the last statement is
+                not allowed.
+                For DML statements, setting this option may cause some error
+                reporting to be deferred until commit time (e.g. validation of
+                unique constraints). Given this, successful execution of a DML
+                statement should not be assumed until the transaction commits.
 
         :type partition: bytes
         :param partition: (Optional) one of the partition tokens returned
@@ -536,6 +550,7 @@ class _SnapshotBase(_SessionWrapper):
             seqno=self._execute_sql_count,
             query_options=query_options,
             request_options=request_options,
+            last_statement=last_statement,
             data_boost_enabled=data_boost_enabled,
             directed_read_options=directed_read_options,
         )

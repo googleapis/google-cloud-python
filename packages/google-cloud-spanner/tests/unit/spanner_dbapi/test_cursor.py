@@ -148,7 +148,8 @@ class TestCursor(unittest.TestCase):
                 ("DELETE FROM table WHERE col1 = @a0", {"a0": 1}, {"a0": INT64}),
                 ("DELETE FROM table WHERE col1 = @a0", {"a0": 2}, {"a0": INT64}),
                 ("DELETE FROM table WHERE col1 = @a0", {"a0": 3}, {"a0": INT64}),
-            ]
+            ],
+            last_statement=True,
         )
         self.assertEqual(cursor._row_count, 3)
 
@@ -539,7 +540,8 @@ class TestCursor(unittest.TestCase):
                 ("DELETE FROM table WHERE col1 = @a0", {"a0": 1}, {"a0": INT64}),
                 ("DELETE FROM table WHERE col1 = @a0", {"a0": 2}, {"a0": INT64}),
                 ("DELETE FROM table WHERE col1 = @a0", {"a0": 3}, {"a0": INT64}),
-            ]
+            ],
+            last_statement=True,
         )
 
     def test_executemany_update_batch_autocommit(self):
@@ -582,7 +584,8 @@ class TestCursor(unittest.TestCase):
                     {"a0": 3, "a1": "c"},
                     {"a0": INT64, "a1": STRING},
                 ),
-            ]
+            ],
+            last_statement=True,
         )
 
     def test_executemany_insert_batch_non_autocommit(self):
@@ -659,7 +662,8 @@ class TestCursor(unittest.TestCase):
                     {"a0": 5, "a1": 6, "a2": 7, "a3": 8},
                     {"a0": INT64, "a1": INT64, "a2": INT64, "a3": INT64},
                 ),
-            ]
+            ],
+            last_statement=True,
         )
         transaction.commit.assert_called_once()
 

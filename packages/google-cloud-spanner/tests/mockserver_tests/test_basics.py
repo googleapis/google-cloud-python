@@ -20,7 +20,10 @@ from google.cloud.spanner_v1 import (
     ExecuteSqlRequest,
     BeginTransactionRequest,
     TransactionOptions,
+    ExecuteBatchDmlRequest,
+    TypeCode,
 )
+from google.cloud.spanner_v1.transaction import Transaction
 from google.cloud.spanner_v1.testing.mock_spanner import SpannerServicer
 
 from tests.mockserver_tests.mock_server_test_base import (
@@ -29,6 +32,7 @@ from tests.mockserver_tests.mock_server_test_base import (
     add_update_count,
     add_error,
     unavailable_status,
+    add_single_result,
 )
 
 
@@ -107,3 +111,56 @@ class TestBasics(MockServerTestBase):
         # The ExecuteStreamingSql call should be retried.
         self.assertTrue(isinstance(requests[1], ExecuteSqlRequest))
         self.assertTrue(isinstance(requests[2], ExecuteSqlRequest))
+
+    def test_last_statement_update(self):
+        sql = "update my_table set my_col=1 where id=2"
+        add_update_count(sql, 1)
+        self.database.run_in_transaction(
+            lambda transaction: transaction.execute_update(sql, last_statement=True)
+        )
+        requests = list(
+            filter(
+                lambda msg: isinstance(msg, ExecuteSqlRequest),
+                self.spanner_service.requests,
+            )
+        )
+        self.assertEqual(1, len(requests), msg=requests)
+        self.assertTrue(requests[0].last_statement, requests[0])
+
+    def test_last_statement_batch_update(self):
+        sql = "update my_table set my_col=1 where id=2"
+        add_update_count(sql, 1)
+        self.database.run_in_transaction(
+            lambda transaction: transaction.batch_update(
+                [sql, sql], last_statement=True
+            )
+        )
+        requests = list(
+            filter(
+                lambda msg: isinstance(msg, ExecuteBatchDmlRequest),
+                self.spanner_service.requests,
+            )
+        )
+        self.assertEqual(1, len(requests), msg=requests)
+        self.assertTrue(requests[0].last_statements, requests[0])
+
+    def test_last_statement_query(self):
+        sql = "insert into my_table (value) values ('One') then return id"
+        add_single_result(sql, "c", TypeCode.INT64, [("1",)])
+        self.database.run_in_transaction(
+            lambda transaction: _execute_query(transaction, sql)
+        )
+        requests = list(
+            filter(
+                lambda msg: isinstance(msg, ExecuteSqlRequest),
+                self.spanner_service.requests,
+            )
+        )
+        self.assertEqual(1, len(requests), msg=requests)
+        self.assertTrue(requests[0].last_statement, requests[0])
+
+
+def _execute_query(transaction: Transaction, sql: str):
+    rows = transaction.execute_sql(sql, last_statement=True)
+    for _ in rows:
+        pass
