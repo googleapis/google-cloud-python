@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import typing
+import warnings
 
 from google.cloud import bigquery
 import pytest
@@ -118,12 +119,22 @@ def test_bq_location_non_canonical(set_location, resolved_location):
     sorted(bigframes.constants.REP_ENABLED_BIGQUERY_LOCATIONS),
 )
 def test_bq_rep_endpoints(bigquery_location):
-    session = bigframes.Session(
-        context=bigframes.BigQueryOptions(
-            location=bigquery_location, use_regional_endpoints=True
+    with warnings.catch_warnings(record=True) as record:
+        warnings.simplefilter("always")
+        session = bigframes.Session(
+            context=bigframes.BigQueryOptions(
+                location=bigquery_location, use_regional_endpoints=True
+            )
         )
-    )
+        assert (
+            len([warn for warn in record if isinstance(warn.message, FutureWarning)])
+            == 0
+        )
 
+    # Verify that location and endpoints are correctly set for the BigQuery API
+    # client
+    # TODO(shobs): Figure out if the same can be verified for the other API
+    # clients.
     assert session.bqclient.location == bigquery_location
     assert (
         session.bqclient._connection.API_BASE_URL
@@ -147,10 +158,21 @@ def test_bq_lep_endpoints(bigquery_location):
     # allowlisted for LEP access. We could hardcode one project which is
     # allowlisted but then not every open source developer will have access to
     # that. Let's rely on just creating the clients for LEP.
-    clients_provider = bigframes.session.clients.ClientsProvider(
-        location=bigquery_location, use_regional_endpoints=True
-    )
+    with pytest.warns(FutureWarning) as record:
+        clients_provider = bigframes.session.clients.ClientsProvider(
+            location=bigquery_location, use_regional_endpoints=True
+        )
+        assert len(record) == 1
+        assert typing.cast(Warning, record[0].message).args[
+            0
+        ] == bigframes.constants.LEP_DEPRECATION_WARNING_MESSAGE.format(
+            location=bigquery_location
+        )
 
+    # Verify that location and endpoints are correctly set for the BigQuery API
+    # client
+    # TODO(shobs): Figure out if the same can be verified for the other API
+    # clients.
     assert clients_provider.bqclient.location == bigquery_location
     assert (
         clients_provider.bqclient._connection.API_BASE_URL

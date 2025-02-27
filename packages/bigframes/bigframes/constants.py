@@ -18,6 +18,7 @@ This module should not depend on any others in the package.
 """
 
 import datetime
+import textwrap
 
 DEFAULT_EXPIRATION = datetime.timedelta(days=7)
 
@@ -99,6 +100,25 @@ REP_ENABLED_BIGQUERY_LOCATIONS = frozenset(
 LEP_ENABLED_BIGQUERY_LOCATIONS = frozenset(
     ALL_BIGQUERY_LOCATIONS - REP_ENABLED_BIGQUERY_LOCATIONS
 )
+
+LEP_DEPRECATION_WARNING_MESSAGE = textwrap.dedent(
+    """
+    Support for regional endpoints is not yet available in the location
+    {location} for BigQuery and BigQuery Storage APIs. For the supported
+    locations and APIs see https://cloud.google.com/bigquery/docs/regional-endpoints.
+    For other locations and APIs, currently an older, now deprecated locational
+    endpoints are being used, which requires your project to be allowlisted. In
+    future version 2.0 onwards the locational endpoints will no longer be
+    supported automatically when you enable regional endpoints. However, if you
+    still need them, you will be able to override the endpoints directly by
+    doing the following:
+        bigframes.pandas.options.bigquery.client_endpoints_override = {{
+            "bqclient": "https://{location}-bigquery.googleapis.com",
+            "bqconnectionclient": "{location}-bigqueryconnection.googleapis.com",
+            "bqstoragereadclient": "{location}-bigquerystorage.googleapis.com"
+        }}
+    """
+).strip()
 
 # BigQuery default is 10000, leave 100 for overhead
 MAX_COLUMNS = 9900
