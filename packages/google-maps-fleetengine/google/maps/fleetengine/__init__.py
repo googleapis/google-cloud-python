@@ -47,6 +47,7 @@ from google.maps.fleetengine_v1.types.traffic import (
 )
 from google.maps.fleetengine_v1.types.trip_api import (
     CreateTripRequest,
+    DeleteTripRequest,
     GetTripRequest,
     ReportBillableTripRequest,
     SearchTripsRequest,
@@ -62,6 +63,7 @@ from google.maps.fleetengine_v1.types.trips import (
 )
 from google.maps.fleetengine_v1.types.vehicle_api import (
     CreateVehicleRequest,
+    DeleteVehicleRequest,
     GetVehicleRequest,
     ListVehiclesRequest,
     ListVehiclesResponse,
@@ -106,6 +108,7 @@ __all__ = (
     "ConsumableTrafficPolyline",
     "SpeedReadingInterval",
     "CreateTripRequest",
+    "DeleteTripRequest",
     "GetTripRequest",
     "ReportBillableTripRequest",
     "SearchTripsRequest",
@@ -117,6 +120,7 @@ __all__ = (
     "TripStatus",
     "TripView",
     "CreateVehicleRequest",
+    "DeleteVehicleRequest",
     "GetVehicleRequest",
     "ListVehiclesRequest",
     "ListVehiclesResponse",
