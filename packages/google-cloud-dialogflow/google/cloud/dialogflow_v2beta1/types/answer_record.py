@@ -256,7 +256,8 @@ class AgentAssistantFeedback(proto.Message):
             -  Suggested document says: "Items must be
                returned/exchanged within 60 days of the purchase date."
             -  Ground truth: "No return or exchange is allowed."
-            -
+            -  [document_correctness][google.cloud.dialogflow.v2beta1.AgentAssistantFeedback.document_correctness]:
+               [INCORRECT][google.cloud.dialogflow.v2beta1.AgentAssistantFeedback.DocumentCorrectness.INCORRECT]
         document_efficiency (google.cloud.dialogflow_v2beta1.types.AgentAssistantFeedback.DocumentEfficiency):
             Optional. Whether or not the suggested document is
             efficient. For example, if the document is poorly written,
