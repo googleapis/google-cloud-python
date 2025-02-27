@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.2.9](https://github.com/googleapis/google-cloud-python/compare/google-maps-fleetengine-delivery-v0.2.8...google-maps-fleetengine-delivery-v0.2.9) (2025-02-27)
+
+
+### Features
+
+* A new field `past_locations` is added to message `.maps.fleetengine.delivery.v1.DeliveryVehicle` ([bc69299](https://github.com/googleapis/google-cloud-python/commit/bc69299c381dbae1f24315af8b46f70ddc6b9269))
+
+
+### Documentation
+
+* Updated documentation for field `task` in message `.maps.fleetengine.delivery.v1.CreateTaskRequest` to clarify certain fields can be optionally set. ([bc69299](https://github.com/googleapis/google-cloud-python/commit/bc69299c381dbae1f24315af8b46f70ddc6b9269))
+
 ## [0.2.8](https://github.com/googleapis/google-cloud-python/compare/google-maps-fleetengine-delivery-v0.2.7...google-maps-fleetengine-delivery-v0.2.8) (2025-02-12)
 
 

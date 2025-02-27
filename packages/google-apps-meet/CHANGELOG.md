@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.14](https://github.com/googleapis/google-cloud-python/compare/google-apps-meet-v0.1.13...google-apps-meet-v0.1.14) (2025-02-27)
+
+
+### Features
+
+* [google-apps-meet] Add `ConnectActiveConference` method to `SpacesService` ([#13554](https://github.com/googleapis/google-cloud-python/issues/13554)) ([576bb98](https://github.com/googleapis/google-cloud-python/commit/576bb9843cc1a046de17ac483b9e7d7161d2ae24))
+
 ## [0.1.13](https://github.com/googleapis/google-cloud-python/compare/google-apps-meet-v0.1.12...google-apps-meet-v0.1.13) (2025-02-12)
 
 

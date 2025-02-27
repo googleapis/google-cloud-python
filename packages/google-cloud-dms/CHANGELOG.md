@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.12.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dms-v1.12.1...google-cloud-dms-v1.12.2) (2025-02-27)
+
+
+### Documentation
+
+* [google-cloud-dms] fix broken link in comment for field `OperationMetadata.requested_cancellation` ([#13553](https://github.com/googleapis/google-cloud-python/issues/13553)) ([2c83cbc](https://github.com/googleapis/google-cloud-python/commit/2c83cbc1a2ea7da5985425918efa3c125d75fd7e))
+
 ## [1.12.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dms-v1.12.0...google-cloud-dms-v1.12.1) (2025-02-18)
 
 
