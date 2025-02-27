@@ -41,6 +41,8 @@ class fleetengineCallTransformer(cst.CSTTransformer):
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
         'create_trip': ('parent', 'trip_id', 'trip', 'header', ),
         'create_vehicle': ('parent', 'vehicle_id', 'vehicle', 'header', ),
+        'delete_trip': ('name', 'header', ),
+        'delete_vehicle': ('name', 'header', ),
         'get_trip': ('name', 'header', 'view', 'current_route_segment_version', 'remaining_waypoints_version', 'route_format_type', 'current_route_segment_traffic_version', 'remaining_waypoints_route_version', ),
         'get_vehicle': ('name', 'header', 'current_route_segment_version', 'waypoints_version', ),
         'list_vehicles': ('parent', 'vehicle_type_categories', 'header', 'page_size', 'page_token', 'minimum_capacity', 'trip_types', 'maximum_staleness', 'required_attributes', 'required_one_of_attributes', 'required_one_of_attribute_sets', 'vehicle_state', 'on_trip_only', 'filter', 'viewport', ),

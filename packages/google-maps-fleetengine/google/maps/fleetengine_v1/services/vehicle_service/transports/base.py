@@ -23,6 +23,7 @@ from google.api_core import retry as retries
 import google.auth  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+from google.protobuf import empty_pb2  # type: ignore
 
 from google.maps.fleetengine_v1 import gapic_version as package_version
 from google.maps.fleetengine_v1.types import vehicle_api, vehicles
@@ -156,6 +157,11 @@ class VehicleServiceTransport(abc.ABC):
                 default_timeout=15.0,
                 client_info=client_info,
             ),
+            self.delete_vehicle: gapic_v1.method.wrap_method(
+                self.delete_vehicle,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.update_vehicle: gapic_v1.method.wrap_method(
                 self.update_vehicle,
                 default_retry=retries.Retry(
@@ -229,6 +235,15 @@ class VehicleServiceTransport(abc.ABC):
     ) -> Callable[
         [vehicle_api.GetVehicleRequest],
         Union[vehicles.Vehicle, Awaitable[vehicles.Vehicle]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_vehicle(
+        self,
+    ) -> Callable[
+        [vehicle_api.DeleteVehicleRequest],
+        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
     ]:
         raise NotImplementedError()
 

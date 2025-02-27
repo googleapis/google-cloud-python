@@ -15,6 +15,11 @@
                 "create_trip"
               ]
             },
+            "DeleteTrip": {
+              "methods": [
+                "delete_trip"
+              ]
+            },
             "GetTrip": {
               "methods": [
                 "get_trip"
@@ -43,6 +48,11 @@
             "CreateTrip": {
               "methods": [
                 "create_trip"
+              ]
+            },
+            "DeleteTrip": {
+              "methods": [
+                "delete_trip"
               ]
             },
             "GetTrip": {
@@ -79,6 +89,11 @@
                 "create_vehicle"
               ]
             },
+            "DeleteVehicle": {
+              "methods": [
+                "delete_vehicle"
+              ]
+            },
             "GetVehicle": {
               "methods": [
                 "get_vehicle"
@@ -112,6 +127,11 @@
             "CreateVehicle": {
               "methods": [
                 "create_vehicle"
+              ]
+            },
+            "DeleteVehicle": {
+              "methods": [
+                "delete_vehicle"
               ]
             },
             "GetVehicle": {
