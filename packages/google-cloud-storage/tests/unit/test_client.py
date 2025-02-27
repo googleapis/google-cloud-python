@@ -191,6 +191,53 @@ class TestClient(unittest.TestCase):
         self.assertEqual(client._connection.API_BASE_URL, api_endpoint)
         self.assertEqual(client.api_endpoint, api_endpoint)
 
+    def test_ctor_w_api_key(self):
+        from google.auth.api_key import Credentials
+
+        PROJECT = "PROJECT"
+        api_key = "my_api_key"
+
+        client = self._make_one(project=PROJECT, api_key=api_key)
+
+        self.assertEqual(
+            client._connection.API_BASE_URL, client._connection.DEFAULT_API_ENDPOINT
+        )
+        self.assertIsInstance(client._credentials, Credentials)
+        self.assertEqual(client._credentials.token, api_key)
+
+    def test_ctor_w_api_key_and_client_options(self):
+        from google.auth.api_key import Credentials
+        from google.api_core.client_options import ClientOptions
+
+        PROJECT = "PROJECT"
+        api_key = "my_api_key"
+        api_endpoint = "https://www.foo-googleapis.com"
+        client_options = ClientOptions(api_endpoint=api_endpoint)
+
+        client = self._make_one(
+            project=PROJECT, client_options=client_options, api_key=api_key
+        )
+
+        self.assertEqual(client._connection.API_BASE_URL, api_endpoint)
+        self.assertIsInstance(client._credentials, Credentials)
+        self.assertEqual(client._credentials.token, api_key)
+
+    def test_ctor_w_api_key_and_client_dict(self):
+        from google.auth.api_key import Credentials
+
+        PROJECT = "PROJECT"
+        api_key = "my_api_key"
+        api_endpoint = "https://www.foo-googleapis.com"
+        client_options = {"api_endpoint": api_endpoint}
+
+        client = self._make_one(
+            project=PROJECT, client_options=client_options, api_key=api_key
+        )
+
+        self.assertEqual(client._connection.API_BASE_URL, api_endpoint)
+        self.assertIsInstance(client._credentials, Credentials)
+        self.assertEqual(client._credentials.token, api_key)
+
     def test_ctor_w_universe_domain_and_matched_credentials(self):
         PROJECT = "PROJECT"
         universe_domain = "example.com"

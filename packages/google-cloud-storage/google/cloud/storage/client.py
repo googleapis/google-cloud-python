@@ -108,6 +108,12 @@ class Client(ClientWithProject):
     :param extra_headers:
         (Optional) Custom headers to be sent with the requests attached to the client.
         For example, you can add custom audit logging headers.
+
+    :type api_key: string
+    :param api_key:
+        (Optional) An API key. Mutually exclusive with any other credentials.
+        This parameter is an alias for setting `client_options.api_key` and
+        will supercede any api key set in the `client_options` parameter.
     """
 
     SCOPE = (
@@ -126,6 +132,8 @@ class Client(ClientWithProject):
         client_options=None,
         use_auth_w_custom_endpoint=True,
         extra_headers={},
+        *,
+        api_key=None,
     ):
         self._base_connection = None
 
@@ -145,6 +153,17 @@ class Client(ClientWithProject):
         self._extra_headers = extra_headers
 
         connection_kw_args = {"client_info": client_info}
+
+        # api_key should set client_options.api_key. Set it here whether
+        # client_options was specified as a dict, as a ClientOptions object, or
+        # None.
+        if api_key:
+            if client_options and not isinstance(client_options, dict):
+                client_options.api_key = api_key
+            else:
+                if not client_options:
+                    client_options = {}
+                client_options["api_key"] = api_key
 
         if client_options:
             if isinstance(client_options, dict):
