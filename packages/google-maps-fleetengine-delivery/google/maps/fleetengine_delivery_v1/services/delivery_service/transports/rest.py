@@ -24,6 +24,7 @@ from google.api_core import gapic_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
+from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
@@ -96,6 +97,14 @@ class DeliveryServiceRestInterceptor:
             def post_create_task(self, response):
                 logging.log(f"Received response: {response}")
                 return response
+
+            def pre_delete_delivery_vehicle(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def pre_delete_task(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
 
             def pre_get_delivery_vehicle(self, request, metadata):
                 logging.log(f"Received request: {request}")
@@ -301,6 +310,33 @@ class DeliveryServiceRestInterceptor:
         `post_create_task_with_metadata`.
         """
         return response, metadata
+
+    def pre_delete_delivery_vehicle(
+        self,
+        request: delivery_api.DeleteDeliveryVehicleRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        delivery_api.DeleteDeliveryVehicleRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for delete_delivery_vehicle
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the DeliveryService server.
+        """
+        return request, metadata
+
+    def pre_delete_task(
+        self,
+        request: delivery_api.DeleteTaskRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[delivery_api.DeleteTaskRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Pre-rpc interceptor for delete_task
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the DeliveryService server.
+        """
+        return request, metadata
 
     def pre_get_delivery_vehicle(
         self,
@@ -1210,6 +1246,224 @@ class DeliveryServiceRestTransport(_BaseDeliveryServiceRestTransport):
                     },
                 )
             return resp
+
+    class _DeleteDeliveryVehicle(
+        _BaseDeliveryServiceRestTransport._BaseDeleteDeliveryVehicle,
+        DeliveryServiceRestStub,
+    ):
+        def __hash__(self):
+            return hash("DeliveryServiceRestTransport.DeleteDeliveryVehicle")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: delivery_api.DeleteDeliveryVehicleRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ):
+            r"""Call the delete delivery vehicle method over HTTP.
+
+            Args:
+                request (~.delivery_api.DeleteDeliveryVehicleRequest):
+                    The request object. DeleteDeliveryVehicle request
+                message.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+            """
+
+            http_options = (
+                _BaseDeliveryServiceRestTransport._BaseDeleteDeliveryVehicle._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_delete_delivery_vehicle(
+                request, metadata
+            )
+            transcoded_request = _BaseDeliveryServiceRestTransport._BaseDeleteDeliveryVehicle._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseDeliveryServiceRestTransport._BaseDeleteDeliveryVehicle._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for maps.fleetengine.delivery_v1.DeliveryServiceClient.DeleteDeliveryVehicle",
+                    extra={
+                        "serviceName": "maps.fleetengine.delivery.v1.DeliveryService",
+                        "rpcName": "DeleteDeliveryVehicle",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = (
+                DeliveryServiceRestTransport._DeleteDeliveryVehicle._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+    class _DeleteTask(
+        _BaseDeliveryServiceRestTransport._BaseDeleteTask, DeliveryServiceRestStub
+    ):
+        def __hash__(self):
+            return hash("DeliveryServiceRestTransport.DeleteTask")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: delivery_api.DeleteTaskRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ):
+            r"""Call the delete task method over HTTP.
+
+            Args:
+                request (~.delivery_api.DeleteTaskRequest):
+                    The request object. DeleteTask request message.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+            """
+
+            http_options = (
+                _BaseDeliveryServiceRestTransport._BaseDeleteTask._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_delete_task(request, metadata)
+            transcoded_request = _BaseDeliveryServiceRestTransport._BaseDeleteTask._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseDeliveryServiceRestTransport._BaseDeleteTask._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for maps.fleetengine.delivery_v1.DeliveryServiceClient.DeleteTask",
+                    extra={
+                        "serviceName": "maps.fleetengine.delivery.v1.DeliveryService",
+                        "rpcName": "DeleteTask",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = DeliveryServiceRestTransport._DeleteTask._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
 
     class _GetDeliveryVehicle(
         _BaseDeliveryServiceRestTransport._BaseGetDeliveryVehicle,
@@ -2348,6 +2602,22 @@ class DeliveryServiceRestTransport(_BaseDeliveryServiceRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateTask(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def delete_delivery_vehicle(
+        self,
+    ) -> Callable[[delivery_api.DeleteDeliveryVehicleRequest], empty_pb2.Empty]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._DeleteDeliveryVehicle(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def delete_task(
+        self,
+    ) -> Callable[[delivery_api.DeleteTaskRequest], empty_pb2.Empty]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._DeleteTask(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_delivery_vehicle(
