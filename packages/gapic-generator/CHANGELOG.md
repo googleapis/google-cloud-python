@@ -1,6 +1,13 @@
 # Changelog
 
 
+## [1.23.2](https://github.com/googleapis/gapic-generator-python/compare/v1.23.1...v1.23.2) (2025-02-28)
+
+
+### Bug Fixes
+
+* Resolve rare issue where ValueError is not raised when both request and flattened param are set ([#2258](https://github.com/googleapis/gapic-generator-python/issues/2258)) ([4ecfbeb](https://github.com/googleapis/gapic-generator-python/commit/4ecfbeb7028dc1856692f5cda95a8767e4cb69e4))
+
 ## [1.23.1](https://github.com/googleapis/gapic-generator-python/compare/v1.23.0...v1.23.1) (2025-02-14)
 
 
