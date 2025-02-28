@@ -44,7 +44,9 @@ async def sample_cancel_workflow_invocation():
     )
 
     # Make the request
-    await client.cancel_workflow_invocation(request=request)
+    response = await client.cancel_workflow_invocation(request=request)
 
+    # Handle the response
+    print(response)
 
 # [END dataform_v1beta1_generated_Dataform_CancelWorkflowInvocation_async]

@@ -47,6 +47,7 @@ from google.cloud.location import locations_pb2  # type: ignore
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
 from google.type import interval_pb2  # type: ignore
 
 from google.cloud.dataform_v1beta1.services.dataform import pagers
@@ -83,6 +84,14 @@ class DataformAsyncClient:
     compilation_result_path = staticmethod(DataformClient.compilation_result_path)
     parse_compilation_result_path = staticmethod(
         DataformClient.parse_compilation_result_path
+    )
+    config_path = staticmethod(DataformClient.config_path)
+    parse_config_path = staticmethod(DataformClient.parse_config_path)
+    crypto_key_path = staticmethod(DataformClient.crypto_key_path)
+    parse_crypto_key_path = staticmethod(DataformClient.parse_crypto_key_path)
+    crypto_key_version_path = staticmethod(DataformClient.crypto_key_version_path)
+    parse_crypto_key_version_path = staticmethod(
+        DataformClient.parse_crypto_key_version_path
     )
     release_config_path = staticmethod(DataformClient.release_config_path)
     parse_release_config_path = staticmethod(DataformClient.parse_release_config_path)
@@ -666,6 +675,14 @@ class DataformAsyncClient:
     ) -> dataform.Repository:
         r"""Updates a single Repository.
 
+        **Note:** This method does not fully implement
+        `AIP-134 <https://google.aip.dev/134>`__; in particular:
+
+        -  The wildcard entry (**\***) is treated as a bad request
+        -  When the **field_mask** is omitted, instead of only updating
+           the set fields, the request is treated as a full update on
+           all modifiable fields
+
         .. code-block:: python
 
             # This snippet has been automatically generated and should be regarded as a
@@ -869,7 +886,7 @@ class DataformAsyncClient:
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> None:
+    ) -> dataform.CommitRepositoryChangesResponse:
         r"""Applies a Git commit to a Repository. The Repository must not
         have a value for ``git_remote_settings.url``.
 
@@ -899,7 +916,10 @@ class DataformAsyncClient:
                 )
 
                 # Make the request
-                await client.commit_repository_changes(request=request)
+                response = await client.commit_repository_changes(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Optional[Union[google.cloud.dataform_v1beta1.types.CommitRepositoryChangesRequest, dict]]):
@@ -911,6 +931,10 @@ class DataformAsyncClient:
                 sent along with the request as metadata. Normally, each value must be of type `str`,
                 but for metadata keys ending with the suffix `-bin`, the corresponding values must
                 be of type `bytes`.
+
+        Returns:
+            google.cloud.dataform_v1beta1.types.CommitRepositoryChangesResponse:
+                CommitRepositoryChanges response message.
         """
         # Create or coerce a protobuf request object.
         # - Use the request object if provided (there's no risk of modifying the input as
@@ -934,12 +958,15 @@ class DataformAsyncClient:
         self._client._validate_universe_domain()
 
         # Send the request.
-        await rpc(
+        response = await rpc(
             request,
             retry=retry,
             timeout=timeout,
             metadata=metadata,
         )
+
+        # Done; return the response.
+        return response
 
     async def read_repository_file(
         self,
@@ -1938,7 +1965,7 @@ class DataformAsyncClient:
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> None:
+    ) -> dataform.PullGitCommitsResponse:
         r"""Pulls Git commits from the Repository's remote into a
         Workspace.
 
@@ -1968,7 +1995,10 @@ class DataformAsyncClient:
                 )
 
                 # Make the request
-                await client.pull_git_commits(request=request)
+                response = await client.pull_git_commits(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Optional[Union[google.cloud.dataform_v1beta1.types.PullGitCommitsRequest, dict]]):
@@ -1980,6 +2010,10 @@ class DataformAsyncClient:
                 sent along with the request as metadata. Normally, each value must be of type `str`,
                 but for metadata keys ending with the suffix `-bin`, the corresponding values must
                 be of type `bytes`.
+
+        Returns:
+            google.cloud.dataform_v1beta1.types.PullGitCommitsResponse:
+                PullGitCommits response message.
         """
         # Create or coerce a protobuf request object.
         # - Use the request object if provided (there's no risk of modifying the input as
@@ -2003,12 +2037,15 @@ class DataformAsyncClient:
         self._client._validate_universe_domain()
 
         # Send the request.
-        await rpc(
+        response = await rpc(
             request,
             retry=retry,
             timeout=timeout,
             metadata=metadata,
         )
+
+        # Done; return the response.
+        return response
 
     async def push_git_commits(
         self,
@@ -2017,7 +2054,7 @@ class DataformAsyncClient:
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> None:
+    ) -> dataform.PushGitCommitsResponse:
         r"""Pushes Git commits from a Workspace to the
         Repository's remote.
 
@@ -2042,7 +2079,10 @@ class DataformAsyncClient:
                 )
 
                 # Make the request
-                await client.push_git_commits(request=request)
+                response = await client.push_git_commits(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Optional[Union[google.cloud.dataform_v1beta1.types.PushGitCommitsRequest, dict]]):
@@ -2054,6 +2094,10 @@ class DataformAsyncClient:
                 sent along with the request as metadata. Normally, each value must be of type `str`,
                 but for metadata keys ending with the suffix `-bin`, the corresponding values must
                 be of type `bytes`.
+
+        Returns:
+            google.cloud.dataform_v1beta1.types.PushGitCommitsResponse:
+                PushGitCommits response message.
         """
         # Create or coerce a protobuf request object.
         # - Use the request object if provided (there's no risk of modifying the input as
@@ -2077,12 +2121,15 @@ class DataformAsyncClient:
         self._client._validate_universe_domain()
 
         # Send the request.
-        await rpc(
+        response = await rpc(
             request,
             retry=retry,
             timeout=timeout,
             metadata=metadata,
         )
+
+        # Done; return the response.
+        return response
 
     async def fetch_file_git_statuses(
         self,
@@ -2257,7 +2304,7 @@ class DataformAsyncClient:
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> None:
+    ) -> dataform.CommitWorkspaceChangesResponse:
         r"""Applies a Git commit for uncommitted files in a
         Workspace.
 
@@ -2287,7 +2334,10 @@ class DataformAsyncClient:
                 )
 
                 # Make the request
-                await client.commit_workspace_changes(request=request)
+                response = await client.commit_workspace_changes(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Optional[Union[google.cloud.dataform_v1beta1.types.CommitWorkspaceChangesRequest, dict]]):
@@ -2299,6 +2349,10 @@ class DataformAsyncClient:
                 sent along with the request as metadata. Normally, each value must be of type `str`,
                 but for metadata keys ending with the suffix `-bin`, the corresponding values must
                 be of type `bytes`.
+
+        Returns:
+            google.cloud.dataform_v1beta1.types.CommitWorkspaceChangesResponse:
+                CommitWorkspaceChanges response message.
         """
         # Create or coerce a protobuf request object.
         # - Use the request object if provided (there's no risk of modifying the input as
@@ -2322,12 +2376,15 @@ class DataformAsyncClient:
         self._client._validate_universe_domain()
 
         # Send the request.
-        await rpc(
+        response = await rpc(
             request,
             retry=retry,
             timeout=timeout,
             metadata=metadata,
         )
+
+        # Done; return the response.
+        return response
 
     async def reset_workspace_changes(
         self,
@@ -2336,7 +2393,7 @@ class DataformAsyncClient:
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> None:
+    ) -> dataform.ResetWorkspaceChangesResponse:
         r"""Performs a Git reset for uncommitted files in a
         Workspace.
 
@@ -2361,7 +2418,10 @@ class DataformAsyncClient:
                 )
 
                 # Make the request
-                await client.reset_workspace_changes(request=request)
+                response = await client.reset_workspace_changes(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Optional[Union[google.cloud.dataform_v1beta1.types.ResetWorkspaceChangesRequest, dict]]):
@@ -2373,6 +2433,10 @@ class DataformAsyncClient:
                 sent along with the request as metadata. Normally, each value must be of type `str`,
                 but for metadata keys ending with the suffix `-bin`, the corresponding values must
                 be of type `bytes`.
+
+        Returns:
+            google.cloud.dataform_v1beta1.types.ResetWorkspaceChangesResponse:
+                ResetWorkspaceChanges response message.
         """
         # Create or coerce a protobuf request object.
         # - Use the request object if provided (there's no risk of modifying the input as
@@ -2396,12 +2460,15 @@ class DataformAsyncClient:
         self._client._validate_universe_domain()
 
         # Send the request.
-        await rpc(
+        response = await rpc(
             request,
             retry=retry,
             timeout=timeout,
             metadata=metadata,
         )
+
+        # Done; return the response.
+        return response
 
     async def fetch_file_diff(
         self,
@@ -2591,6 +2658,110 @@ class DataformAsyncClient:
         # Done; return the response.
         return response
 
+    async def search_files(
+        self,
+        request: Optional[Union[dataform.SearchFilesRequest, dict]] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> pagers.SearchFilesAsyncPager:
+        r"""Finds the contents of a given Workspace directory by
+        filter.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import dataform_v1beta1
+
+            async def sample_search_files():
+                # Create a client
+                client = dataform_v1beta1.DataformAsyncClient()
+
+                # Initialize request argument(s)
+                request = dataform_v1beta1.SearchFilesRequest(
+                    workspace="workspace_value",
+                )
+
+                # Make the request
+                page_result = client.search_files(request=request)
+
+                # Handle the response
+                async for response in page_result:
+                    print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.dataform_v1beta1.types.SearchFilesRequest, dict]]):
+                The request object. Configuration containing file search
+                request parameters.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.dataform_v1beta1.services.dataform.pagers.SearchFilesAsyncPager:
+                Client-facing representation of a
+                file search response.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dataform.SearchFilesRequest):
+            request = dataform.SearchFilesRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.search_files
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("workspace", request.workspace),)
+            ),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__aiter__` convenience method.
+        response = pagers.SearchFilesAsyncPager(
+            method=rpc,
+            request=request,
+            response=response,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
     async def make_directory(
         self,
         request: Optional[Union[dataform.MakeDirectoryRequest, dict]] = None,
@@ -2684,7 +2855,7 @@ class DataformAsyncClient:
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> None:
+    ) -> dataform.RemoveDirectoryResponse:
         r"""Deletes a directory (inside a Workspace) and all of
         its contents.
 
@@ -2710,7 +2881,10 @@ class DataformAsyncClient:
                 )
 
                 # Make the request
-                await client.remove_directory(request=request)
+                response = await client.remove_directory(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Optional[Union[google.cloud.dataform_v1beta1.types.RemoveDirectoryRequest, dict]]):
@@ -2722,6 +2896,10 @@ class DataformAsyncClient:
                 sent along with the request as metadata. Normally, each value must be of type `str`,
                 but for metadata keys ending with the suffix `-bin`, the corresponding values must
                 be of type `bytes`.
+
+        Returns:
+            google.cloud.dataform_v1beta1.types.RemoveDirectoryResponse:
+                RemoveDirectory response message.
         """
         # Create or coerce a protobuf request object.
         # - Use the request object if provided (there's no risk of modifying the input as
@@ -2747,12 +2925,15 @@ class DataformAsyncClient:
         self._client._validate_universe_domain()
 
         # Send the request.
-        await rpc(
+        response = await rpc(
             request,
             retry=retry,
             timeout=timeout,
             metadata=metadata,
         )
+
+        # Done; return the response.
+        return response
 
     async def move_directory(
         self,
@@ -2935,7 +3116,7 @@ class DataformAsyncClient:
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> None:
+    ) -> dataform.RemoveFileResponse:
         r"""Deletes a file (inside a Workspace).
 
         .. code-block:: python
@@ -2960,7 +3141,10 @@ class DataformAsyncClient:
                 )
 
                 # Make the request
-                await client.remove_file(request=request)
+                response = await client.remove_file(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Optional[Union[google.cloud.dataform_v1beta1.types.RemoveFileRequest, dict]]):
@@ -2972,6 +3156,10 @@ class DataformAsyncClient:
                 sent along with the request as metadata. Normally, each value must be of type `str`,
                 but for metadata keys ending with the suffix `-bin`, the corresponding values must
                 be of type `bytes`.
+
+        Returns:
+            google.cloud.dataform_v1beta1.types.RemoveFileResponse:
+                RemoveFile response message.
         """
         # Create or coerce a protobuf request object.
         # - Use the request object if provided (there's no risk of modifying the input as
@@ -2997,12 +3185,15 @@ class DataformAsyncClient:
         self._client._validate_universe_domain()
 
         # Send the request.
-        await rpc(
+        response = await rpc(
             request,
             retry=retry,
             timeout=timeout,
             metadata=metadata,
         )
+
+        # Done; return the response.
+        return response
 
     async def move_file(
         self,
@@ -3551,6 +3742,14 @@ class DataformAsyncClient:
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> dataform.ReleaseConfig:
         r"""Updates a single ReleaseConfig.
+
+        **Note:** This method does not fully implement
+        `AIP-134 <https://google.aip.dev/134>`__; in particular:
+
+        -  The wildcard entry (**\***) is treated as a bad request
+        -  When the **field_mask** is omitted, instead of only updating
+           the set fields, the request is treated as a full update on
+           all modifiable fields
 
         .. code-block:: python
 
@@ -4584,6 +4783,14 @@ class DataformAsyncClient:
     ) -> dataform.WorkflowConfig:
         r"""Updates a single WorkflowConfig.
 
+        **Note:** This method does not fully implement
+        `AIP-134 <https://google.aip.dev/134>`__; in particular:
+
+        -  The wildcard entry (**\***) is treated as a bad request
+        -  When the **field_mask** is omitted, instead of only updating
+           the set fields, the request is treated as a full update on
+           all modifiable fields
+
         .. code-block:: python
 
             # This snippet has been automatically generated and should be regarded as a
@@ -5242,7 +5449,7 @@ class DataformAsyncClient:
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> None:
+    ) -> dataform.CancelWorkflowInvocationResponse:
         r"""Requests cancellation of a running
         WorkflowInvocation.
 
@@ -5267,7 +5474,10 @@ class DataformAsyncClient:
                 )
 
                 # Make the request
-                await client.cancel_workflow_invocation(request=request)
+                response = await client.cancel_workflow_invocation(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Optional[Union[google.cloud.dataform_v1beta1.types.CancelWorkflowInvocationRequest, dict]]):
@@ -5279,6 +5489,10 @@ class DataformAsyncClient:
                 sent along with the request as metadata. Normally, each value must be of type `str`,
                 but for metadata keys ending with the suffix `-bin`, the corresponding values must
                 be of type `bytes`.
+
+        Returns:
+            google.cloud.dataform_v1beta1.types.CancelWorkflowInvocationResponse:
+                CancelWorkflowInvocation response message.
         """
         # Create or coerce a protobuf request object.
         # - Use the request object if provided (there's no risk of modifying the input as
@@ -5302,12 +5516,15 @@ class DataformAsyncClient:
         self._client._validate_universe_domain()
 
         # Send the request.
-        await rpc(
+        response = await rpc(
             request,
             retry=retry,
             timeout=timeout,
             metadata=metadata,
         )
+
+        # Done; return the response.
+        return response
 
     async def query_workflow_invocation_actions(
         self,
@@ -5403,6 +5620,235 @@ class DataformAsyncClient:
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def get_config(
+        self,
+        request: Optional[Union[dataform.GetConfigRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> dataform.Config:
+        r"""Get default config for a given project and location.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import dataform_v1beta1
+
+            async def sample_get_config():
+                # Create a client
+                client = dataform_v1beta1.DataformAsyncClient()
+
+                # Initialize request argument(s)
+                request = dataform_v1beta1.GetConfigRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = await client.get_config(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.dataform_v1beta1.types.GetConfigRequest, dict]]):
+                The request object. ``GetConfig`` request message.
+            name (:class:`str`):
+                Required. The config name.
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.dataform_v1beta1.types.Config:
+                Config for all repositories in a
+                given project and location.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dataform.GetConfigRequest):
+            request = dataform.GetConfigRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_config
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def update_config(
+        self,
+        request: Optional[Union[dataform.UpdateConfigRequest, dict]] = None,
+        *,
+        config: Optional[dataform.Config] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> dataform.Config:
+        r"""Update default config for a given project and location.
+
+        **Note:** This method does not fully implement
+        `AIP-134 <https://google.aip.dev/134>`__; in particular:
+
+        -  The wildcard entry (**\***) is treated as a bad request
+        -  When the **field_mask** is omitted, instead of only updating
+           the set fields, the request is treated as a full update on
+           all modifiable fields
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import dataform_v1beta1
+
+            async def sample_update_config():
+                # Create a client
+                client = dataform_v1beta1.DataformAsyncClient()
+
+                # Initialize request argument(s)
+                request = dataform_v1beta1.UpdateConfigRequest(
+                )
+
+                # Make the request
+                response = await client.update_config(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.dataform_v1beta1.types.UpdateConfigRequest, dict]]):
+                The request object. ``UpdateConfig`` request message.
+            config (:class:`google.cloud.dataform_v1beta1.types.Config`):
+                Required. The config to update.
+                This corresponds to the ``config`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
+                Optional. Specifies the fields to be
+                updated in the config.
+
+                This corresponds to the ``update_mask`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.dataform_v1beta1.types.Config:
+                Config for all repositories in a
+                given project and location.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([config, update_mask])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dataform.UpdateConfigRequest):
+            request = dataform.UpdateConfigRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if config is not None:
+            request.config = config
+        if update_mask is not None:
+            request.update_mask = update_mask
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_config
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("config.name", request.config.name),)
+            ),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
             retry=retry,
             timeout=timeout,
             metadata=metadata,

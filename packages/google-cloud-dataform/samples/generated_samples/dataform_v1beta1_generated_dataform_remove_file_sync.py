@@ -45,7 +45,9 @@ def sample_remove_file():
     )
 
     # Make the request
-    client.remove_file(request=request)
+    response = client.remove_file(request=request)
 
+    # Handle the response
+    print(response)
 
 # [END dataform_v1beta1_generated_Dataform_RemoveFile_sync]

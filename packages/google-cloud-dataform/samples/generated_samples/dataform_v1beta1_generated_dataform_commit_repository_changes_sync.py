@@ -49,7 +49,9 @@ def sample_commit_repository_changes():
     )
 
     # Make the request
-    client.commit_repository_changes(request=request)
+    response = client.commit_repository_changes(request=request)
 
+    # Handle the response
+    print(response)
 
 # [END dataform_v1beta1_generated_Dataform_CommitRepositoryChanges_sync]

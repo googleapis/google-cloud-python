@@ -49,7 +49,9 @@ async def sample_commit_workspace_changes():
     )
 
     # Make the request
-    await client.commit_workspace_changes(request=request)
+    response = await client.commit_workspace_changes(request=request)
 
+    # Handle the response
+    print(response)
 
 # [END dataform_v1beta1_generated_Dataform_CommitWorkspaceChanges_async]
