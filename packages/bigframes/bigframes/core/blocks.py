@@ -2431,7 +2431,7 @@ class Block:
         # implementaton. It will reference cached tables instead of original data sources.
         # Maybe should just compile raw BFET? Depends on user intent.
         sql = self.session._executor.to_sql(
-            array_value, col_id_overrides=substitutions, enable_cache=enable_cache
+            array_value.rename_columns(substitutions), enable_cache=enable_cache
         )
         return (
             sql,

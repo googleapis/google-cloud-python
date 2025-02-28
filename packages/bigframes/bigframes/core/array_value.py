@@ -18,7 +18,7 @@ import datetime
 import functools
 import io
 import typing
-from typing import Iterable, List, Optional, Sequence, Tuple
+from typing import Iterable, List, Mapping, Optional, Sequence, Tuple
 import warnings
 
 import google.cloud.bigquery
@@ -346,6 +346,20 @@ class ArrayValue:
             nodes.SelectionNode(
                 child=self.node,
                 input_output_pairs=tuple(selections),
+            )
+        )
+
+    def rename_columns(self, col_id_overrides: Mapping[str, str]) -> ArrayValue:
+        if not col_id_overrides:
+            return self
+        output_ids = [col_id_overrides.get(id, id) for id in self.node.schema.names]
+        return ArrayValue(
+            nodes.SelectionNode(
+                self.node,
+                tuple(
+                    nodes.AliasedRef(ex.DerefOp(old_id), ids.ColumnId(out_id))
+                    for old_id, out_id in zip(self.node.ids, output_ids)
+                ),
             )
         )
 
