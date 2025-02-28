@@ -40,7 +40,7 @@ class TestExecutor(bigframes.session.executor.Executor):
         *,
         ordered: bool = True,
         col_id_overrides: Mapping[str, str] = {},
-        use_explicit_destination: bool = False,
+        use_explicit_destination: Optional[bool] = False,
         get_size_bytes: bool = False,
         page_size: Optional[int] = None,
         max_results: Optional[int] = None,

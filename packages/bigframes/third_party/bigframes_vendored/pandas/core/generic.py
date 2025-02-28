@@ -223,6 +223,7 @@ class NDFrame(indexing.IndexingMixin):
         *,
         index: bool = True,
         lines: bool = False,
+        allow_large_results: Optional[bool] = None,
     ) -> Optional[str]:
         """Convert the object to a JSON string, written to Cloud Storage.
 
@@ -278,6 +279,11 @@ class NDFrame(indexing.IndexingMixin):
                 throw ValueError if incorrect 'orient' since others are not
                 list-like.
 
+            allow_large_results (bool, default None):
+                If not None, overrides the global setting to allow or disallow large
+                query results over the default size limit of 10 GB. This parameter has
+                no effect when results are saved to Google Cloud Storage (GCS).
+
         Returns:
             None or str:
                 If path_or_buf is None, returns the resulting json format as a
@@ -289,7 +295,13 @@ class NDFrame(indexing.IndexingMixin):
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
-    def to_csv(self, path_or_buf, *, index: bool = True) -> Optional[str]:
+    def to_csv(
+        self,
+        path_or_buf,
+        *,
+        index: bool = True,
+        allow_large_results: Optional[bool] = None,
+    ) -> Optional[str]:
         """Write object to a comma-separated values (csv) file on Cloud Storage.
 
         Args:
@@ -312,6 +324,11 @@ class NDFrame(indexing.IndexingMixin):
 
             index (bool, default True):
                 If True, write row names (index).
+
+            allow_large_results (bool, default None):
+                If not None, overrides the global setting to allow or disallow large
+                query results over the default size limit of 10 GB. This parameter has
+                no effect when results are saved to Google Cloud Storage (GCS).
 
         Returns:
             None or str: If path_or_buf is None, returns the resulting json format as a

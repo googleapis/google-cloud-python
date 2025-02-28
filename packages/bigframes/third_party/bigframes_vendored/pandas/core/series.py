@@ -458,6 +458,8 @@ class Series(NDFrame):  # type: ignore[misc]
         name: bool = False,
         max_rows: int | None = None,
         min_rows: int | None = None,
+        *,
+        allow_large_results: Optional[bool] = None,
     ) -> str | None:
         """
         Render a string representation of the Series.
@@ -486,6 +488,9 @@ class Series(NDFrame):  # type: ignore[misc]
             min_rows (int, optional):
                 The number of rows to display in a truncated repr (when number
                 of rows is above `max_rows`).
+            allow_large_results (bool, default None):
+                If not None, overrides the global setting to allow or disallow large
+                query results over the default size limit of 10 GB.
 
         Returns:
             str or None:
@@ -498,6 +503,8 @@ class Series(NDFrame):  # type: ignore[misc]
         buf: IO[str] | None = None,
         mode: str = "wt",
         index: bool = True,
+        *,
+        allow_large_results: Optional[bool] = None,
         **kwargs,
     ) -> str | None:
         """
@@ -537,6 +544,9 @@ class Series(NDFrame):  # type: ignore[misc]
                 Buffer to write to. If None, the output is returned as a string.
             mode (str, optional):
                 Mode in which file is opened, "wt" by default.
+            allow_large_results (bool, default None):
+                If not None, overrides the global setting to allow or disallow
+                large query results over the default size limit of 10 GB.
             index (bool, optional, default True):
                 Add index (row) labels.
 
@@ -546,7 +556,12 @@ class Series(NDFrame):  # type: ignore[misc]
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
-    def to_dict(self, into: type[dict] = dict) -> Mapping:
+    def to_dict(
+        self,
+        into: type[dict] = dict,
+        *,
+        allow_large_results: Optional[bool] = None,
+    ) -> Mapping:
         """
         Convert Series to {label -> value} dict or dict-like object.
 
@@ -573,6 +588,9 @@ class Series(NDFrame):  # type: ignore[misc]
                 object. Can be the actual class or an empty
                 instance of the mapping type you want.  If you want a
                 collections.defaultdict, you must pass it initialized.
+            allow_large_results (bool, default None):
+                If not None, overrides the global setting to allow or disallow large
+                query results over the default size limit of 10 GB.
 
         Returns:
             collections.abc.Mapping:
@@ -611,7 +629,13 @@ class Series(NDFrame):  # type: ignore[misc]
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
-    def to_excel(self, excel_writer, sheet_name):
+    def to_excel(
+        self,
+        excel_writer,
+        sheet_name,
+        *,
+        allow_large_results=None,
+    ):
         """
         Write Series to an Excel sheet.
 
@@ -630,10 +654,22 @@ class Series(NDFrame):  # type: ignore[misc]
                 File path or existing ExcelWriter.
             sheet_name (str, default 'Sheet1'):
                 Name of sheet to contain Series.
+            allow_large_results (bool, default None):
+                If not None, overrides the global setting to allow or disallow large
+                query results over the default size limit of 10 GB.
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
-    def to_latex(self, buf=None, columns=None, header=True, index=True, **kwargs):
+    def to_latex(
+        self,
+        buf=None,
+        columns=None,
+        header=True,
+        index=True,
+        *,
+        allow_large_results=None,
+        **kwargs,
+    ):
         """
         Render object to a LaTeX tabular, longtable, or nested table.
 
@@ -647,6 +683,9 @@ class Series(NDFrame):  # type: ignore[misc]
                 it is assumed to be aliases for the column names.
             index (bool, default True):
                 Write row names (index).
+            allow_large_results (bool, default None):
+                If not None, overrides the global setting to allow or disallow large
+                query results over the default size limit of 10 GB.
 
         Returns:
             str or None:
@@ -655,7 +694,7 @@ class Series(NDFrame):  # type: ignore[misc]
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
-    def tolist(self) -> list:
+    def tolist(self, *, allow_large_results: Optional[bool] = None) -> list:
         """
         Return a list of the values.
 
@@ -678,6 +717,11 @@ class Series(NDFrame):  # type: ignore[misc]
             >>> s.to_list()
             [1, 2, 3]
 
+        Args:
+            allow_large_results (bool, default None):
+                If not None, overrides the global setting to allow or disallow
+                large query results over the default size limit of 10 GB.
+
         Returns:
             list:
                 list of the values.
@@ -686,7 +730,7 @@ class Series(NDFrame):  # type: ignore[misc]
 
     to_list = tolist
 
-    def to_numpy(self, dtype, copy=False, na_value=None):
+    def to_numpy(self, dtype, copy=False, na_value=None, *, allow_large_results=None):
         """
         A NumPy ndarray representing the values in this Series or Index.
 
@@ -727,6 +771,9 @@ class Series(NDFrame):  # type: ignore[misc]
             na_value (Any, optional):
                 The value to use for missing values. The default value depends
                 on `dtype` and the type of the array.
+            allow_large_results (bool, default None):
+                If not None, overrides the global setting to allow or disallow
+                large query results over the default size limit of 10 GB.
             ``**kwargs``:
                 Additional keywords passed through to the ``to_numpy`` method
                 of the underlying array (for extension arrays).
@@ -738,7 +785,7 @@ class Series(NDFrame):  # type: ignore[misc]
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
-    def to_pickle(self, path, **kwargs):
+    def to_pickle(self, path, *, allow_large_results=None, **kwargs):
         """
         Pickle (serialize) object to file.
 
@@ -776,13 +823,16 @@ class Series(NDFrame):  # type: ignore[misc]
                 String, path object (implementing ``os.PathLike[str]``), or file-like
                 object implementing a binary ``write()`` function. File path where
                 the pickled object will be stored.
+            allow_large_results (bool, default None):
+                If not None, overrides the global setting to allow or disallow
+                large query results over the default size limit of 10 GB.
 
         Returns:
             None
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
-    def to_xarray(self):
+    def to_xarray(self, *, allow_large_results=None):
         """
         Return an xarray object from the pandas object.
 
@@ -791,6 +841,9 @@ class Series(NDFrame):  # type: ignore[misc]
                 Data in the pandas structure
                 converted to Dataset if the object is a DataFrame, or a DataArray if
                 the object is a Series.
+            allow_large_results (bool, default None):
+                If not None, overrides the global setting to allow or disallow large
+                query results over the default size limit of 10 GB.
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 

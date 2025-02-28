@@ -1566,6 +1566,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         self,
         *,
         ordered: bool = True,
+        allow_large_results: Optional[bool] = None,
     ) -> pyarrow.Table:
         """Write DataFrame to an Arrow table / record batch.
 
@@ -1573,6 +1574,9 @@ class DataFrame(vendored_pandas_frame.DataFrame):
             ordered (bool, default True):
                 Determines whether the resulting Arrow table will be ordered.
                 In some cases, unordered may result in a faster-executing query.
+            allow_large_results (bool, default None):
+                If not None, overrides the global setting to allow or disallow large query results
+                over the default size limit of 10 GB.
 
         Returns:
             pyarrow.Table: A pyarrow Table with all rows and columns of this DataFrame.
@@ -1580,7 +1584,9 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         msg = "to_arrow is in preview. Types and unnamed / duplicate name columns may change in future."
         warnings.warn(msg, category=bfe.PreviewWarning)
 
-        pa_table, query_job = self._block.to_arrow(ordered=ordered)
+        pa_table, query_job = self._block.to_arrow(
+            ordered=ordered, allow_large_results=allow_large_results
+        )
         self._set_internal_query_job(query_job)
         return pa_table
 
@@ -1591,6 +1597,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         random_state: Optional[int] = None,
         *,
         ordered: bool = True,
+        allow_large_results: Optional[bool] = None,
     ) -> pandas.DataFrame:
         """Write DataFrame to pandas DataFrame.
 
@@ -1613,6 +1620,9 @@ class DataFrame(vendored_pandas_frame.DataFrame):
             ordered (bool, default True):
                 Determines whether the resulting pandas dataframe will be ordered.
                 In some cases, unordered may result in a faster-executing query.
+            allow_large_results (bool, default None):
+                If not None, overrides the global setting to allow or disallow large query results
+                over the default size limit of 10 GB.
 
         Returns:
             pandas.DataFrame: A pandas DataFrame with all rows and columns of this DataFrame if the
@@ -1625,12 +1635,17 @@ class DataFrame(vendored_pandas_frame.DataFrame):
             sampling_method=sampling_method,
             random_state=random_state,
             ordered=ordered,
+            allow_large_results=allow_large_results,
         )
         self._set_internal_query_job(query_job)
         return df.set_axis(self._block.column_labels, axis=1, copy=False)
 
     def to_pandas_batches(
-        self, page_size: Optional[int] = None, max_results: Optional[int] = None
+        self,
+        page_size: Optional[int] = None,
+        max_results: Optional[int] = None,
+        *,
+        allow_large_results: Optional[bool] = None,
     ) -> Iterable[pandas.DataFrame]:
         """Stream DataFrame results to an iterable of pandas DataFrame.
 
@@ -1642,6 +1657,9 @@ class DataFrame(vendored_pandas_frame.DataFrame):
                 The size of each batch.
             max_results (int, default None):
                 If given, only download this many rows at maximum.
+            allow_large_results (bool, default None):
+                If not None, overrides the global setting to allow or disallow large query results
+                over the default size limit of 10 GB.
 
         Returns:
             Iterable[pandas.DataFrame]:
@@ -1650,7 +1668,9 @@ class DataFrame(vendored_pandas_frame.DataFrame):
                 see https://cloud.google.com/python/docs/reference/bigquery/latest/google.cloud.bigquery.table.RowIterator#google_cloud_bigquery_table_RowIterator_to_arrow_iterable
         """
         return self._block.to_pandas_batches(
-            page_size=page_size, max_results=max_results
+            page_size=page_size,
+            max_results=max_results,
+            allow_large_results=allow_large_results,
         )
 
     def _compute_dry_run(self) -> bigquery.QueryJob:
@@ -3564,6 +3584,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         *,
         header: bool = True,
         index: bool = True,
+        allow_large_results: Optional[bool] = None,
     ) -> Optional[str]:
         # TODO(swast): Can we support partition columns argument?
         # TODO(chelsealin): Support local file paths.
@@ -3571,7 +3592,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         # query results? See:
         # https://cloud.google.com/bigquery/docs/exporting-data#limit_the_exported_file_size
         if not utils.is_gcs_path(path_or_buf):
-            pd_df = self.to_pandas()
+            pd_df = self.to_pandas(allow_large_results=allow_large_results)
             return pd_df.to_csv(path_or_buf, sep=sep, header=header, index=index)
         if "*" not in path_or_buf:
             raise NotImplementedError(ERROR_IO_REQUIRES_WILDCARD)
@@ -3603,10 +3624,11 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         *,
         lines: bool = False,
         index: bool = True,
+        allow_large_results: Optional[bool] = None,
     ) -> Optional[str]:
         # TODO(swast): Can we support partition columns argument?
         if not utils.is_gcs_path(path_or_buf):
-            pd_df = self.to_pandas()
+            pd_df = self.to_pandas(allow_large_results=allow_large_results)
             return pd_df.to_json(
                 path_or_buf,
                 orient=orient,
@@ -3634,7 +3656,11 @@ class DataFrame(vendored_pandas_frame.DataFrame):
             ordering_id=bigframes.session._io.bigquery.IO_ORDERING_ID,
         )
         query_job = self._session._executor.export_gcs(
-            export_array, id_overrides, path_or_buf, format="json", export_options={}
+            export_array,
+            id_overrides,
+            path_or_buf,
+            format="json",
+            export_options={},
         )
         self._set_internal_query_job(query_job)
         return None
@@ -3738,9 +3764,17 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         return destination_table
 
     def to_numpy(
-        self, dtype=None, copy=False, na_value=None, **kwargs
+        self,
+        dtype=None,
+        copy=False,
+        na_value=None,
+        *,
+        allow_large_results=None,
+        **kwargs,
     ) -> numpy.ndarray:
-        return self.to_pandas().to_numpy(dtype, copy, na_value, **kwargs)
+        return self.to_pandas(allow_large_results=allow_large_results).to_numpy(
+            dtype, copy, na_value, **kwargs
+        )
 
     def __array__(self, dtype=None, copy: Optional[bool] = None) -> numpy.ndarray:
         if copy is False:
@@ -3755,6 +3789,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         *,
         compression: Optional[Literal["snappy", "gzip"]] = "snappy",
         index: bool = True,
+        allow_large_results: Optional[bool] = None,
     ) -> Optional[bytes]:
         # TODO(swast): Can we support partition columns argument?
         # TODO(chelsealin): Support local file paths.
@@ -3762,7 +3797,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         # query results? See:
         # https://cloud.google.com/bigquery/docs/exporting-data#limit_the_exported_file_size
         if not utils.is_gcs_path(path):
-            pd_df = self.to_pandas()
+            pd_df = self.to_pandas(allow_large_results=allow_large_results)
             return pd_df.to_parquet(path, compression=compression, index=index)
         if "*" not in path:
             raise NotImplementedError(ERROR_IO_REQUIRES_WILDCARD)
@@ -3794,12 +3829,23 @@ class DataFrame(vendored_pandas_frame.DataFrame):
             "dict", "list", "series", "split", "tight", "records", "index"
         ] = "dict",
         into: type[dict] = dict,
+        *,
+        allow_large_results: Optional[bool] = None,
         **kwargs,
     ) -> dict | list[dict]:
-        return self.to_pandas().to_dict(orient, into, **kwargs)  # type: ignore
+        return self.to_pandas(allow_large_results=allow_large_results).to_dict(orient, into, **kwargs)  # type: ignore
 
-    def to_excel(self, excel_writer, sheet_name: str = "Sheet1", **kwargs) -> None:
-        return self.to_pandas().to_excel(excel_writer, sheet_name, **kwargs)
+    def to_excel(
+        self,
+        excel_writer,
+        sheet_name: str = "Sheet1",
+        *,
+        allow_large_results: Optional[bool] = None,
+        **kwargs,
+    ) -> None:
+        return self.to_pandas(allow_large_results=allow_large_results).to_excel(
+            excel_writer, sheet_name, **kwargs
+        )
 
     def to_latex(
         self,
@@ -3807,16 +3853,25 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         columns: Sequence | None = None,
         header: bool | Sequence[str] = True,
         index: bool = True,
+        *,
+        allow_large_results: Optional[bool] = None,
         **kwargs,
     ) -> str | None:
-        return self.to_pandas().to_latex(
+        return self.to_pandas(allow_large_results=allow_large_results).to_latex(
             buf, columns=columns, header=header, index=index, **kwargs  # type: ignore
         )
 
     def to_records(
-        self, index: bool = True, column_dtypes=None, index_dtypes=None
+        self,
+        index: bool = True,
+        column_dtypes=None,
+        index_dtypes=None,
+        *,
+        allow_large_results=None,
     ) -> numpy.recarray:
-        return self.to_pandas().to_records(index, column_dtypes, index_dtypes)
+        return self.to_pandas(allow_large_results=allow_large_results).to_records(
+            index, column_dtypes, index_dtypes
+        )
 
     def to_string(
         self,
@@ -3839,8 +3894,10 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         min_rows: int | None = None,
         max_colwidth: int | None = None,
         encoding: str | None = None,
+        *,
+        allow_large_results: Optional[bool] = None,
     ) -> str | None:
-        return self.to_pandas().to_string(
+        return self.to_pandas(allow_large_results=allow_large_results).to_string(
             buf,
             columns,  # type: ignore
             col_space,
@@ -3887,8 +3944,10 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         table_id: str | None = None,
         render_links: bool = False,
         encoding: str | None = None,
+        *,
+        allow_large_results: bool | None = None,
     ) -> str:
-        return self.to_pandas().to_html(
+        return self.to_pandas(allow_large_results=allow_large_results).to_html(
             buf,
             columns,  # type: ignore
             col_space,
@@ -3919,15 +3978,19 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         buf=None,
         mode: str = "wt",
         index: bool = True,
+        *,
+        allow_large_results: Optional[bool] = None,
         **kwargs,
     ) -> str | None:
-        return self.to_pandas().to_markdown(buf, mode, index, **kwargs)  # type: ignore
+        return self.to_pandas(allow_large_results=allow_large_results).to_markdown(buf, mode, index, **kwargs)  # type: ignore
 
-    def to_pickle(self, path, **kwargs) -> None:
-        return self.to_pandas().to_pickle(path, **kwargs)
+    def to_pickle(self, path, *, allow_large_results=None, **kwargs) -> None:
+        return self.to_pandas(allow_large_results=allow_large_results).to_pickle(
+            path, **kwargs
+        )
 
-    def to_orc(self, path=None, **kwargs) -> bytes | None:
-        as_pandas = self.to_pandas()
+    def to_orc(self, path=None, *, allow_large_results=None, **kwargs) -> bytes | None:
+        as_pandas = self.to_pandas(allow_large_results=allow_large_results)
         # to_orc only works with default index
         as_pandas_default_index = as_pandas.reset_index()
         return as_pandas_default_index.to_orc(path, **kwargs)

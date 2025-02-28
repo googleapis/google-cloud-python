@@ -381,6 +381,7 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
         random_state: Optional[int] = None,
         *,
         ordered: bool = True,
+        allow_large_results: Optional[bool] = None,
     ) -> pandas.Series:
         """Writes Series to pandas Series.
 
@@ -403,6 +404,9 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
             ordered (bool, default True):
                 Determines whether the resulting pandas series will be  ordered.
                 In some cases, unordered may result in a faster-executing query.
+            allow_large_results (bool, default None):
+                If not None, overrides the global setting to allow or disallow large query results
+                over the default size limit of 10 GB.
 
 
         Returns:
@@ -414,6 +418,7 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
             sampling_method=sampling_method,
             random_state=random_state,
             ordered=ordered,
+            allow_large_results=allow_large_results,
         )
         self._set_internal_query_job(query_job)
         series = df.squeeze(axis=1)
@@ -1754,22 +1759,36 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
         *,
         header: bool = True,
         index: bool = True,
+        allow_large_results: Optional[bool] = None,
     ) -> Optional[str]:
         if utils.is_gcs_path(path_or_buf):
             return self.to_frame().to_csv(
-                path_or_buf, sep=sep, header=header, index=index
+                path_or_buf,
+                sep=sep,
+                header=header,
+                index=index,
+                allow_large_results=allow_large_results,
             )
         else:
-            pd_series = self.to_pandas()
+            pd_series = self.to_pandas(allow_large_results=allow_large_results)
             return pd_series.to_csv(
                 path_or_buf=path_or_buf, sep=sep, header=header, index=index
             )
 
-    def to_dict(self, into: type[dict] = dict) -> typing.Mapping:
-        return typing.cast(dict, self.to_pandas().to_dict(into))  # type: ignore
+    def to_dict(
+        self,
+        into: type[dict] = dict,
+        *,
+        allow_large_results: Optional[bool] = None,
+    ) -> typing.Mapping:
+        return typing.cast(dict, self.to_pandas(allow_large_results=allow_large_results).to_dict(into))  # type: ignore
 
-    def to_excel(self, excel_writer, sheet_name="Sheet1", **kwargs) -> None:
-        return self.to_pandas().to_excel(excel_writer, sheet_name, **kwargs)
+    def to_excel(
+        self, excel_writer, sheet_name="Sheet1", *, allow_large_results=None, **kwargs
+    ) -> None:
+        return self.to_pandas(allow_large_results=allow_large_results).to_excel(
+            excel_writer, sheet_name, **kwargs
+        )
 
     def to_json(
         self,
@@ -1780,26 +1799,42 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
         *,
         lines: bool = False,
         index: bool = True,
+        allow_large_results: Optional[bool] = None,
     ) -> Optional[str]:
         if utils.is_gcs_path(path_or_buf):
             return self.to_frame().to_json(
-                path_or_buf=path_or_buf, orient=orient, lines=lines, index=index
+                path_or_buf=path_or_buf,
+                orient=orient,
+                lines=lines,
+                index=index,
+                allow_large_results=allow_large_results,
             )
         else:
-            pd_series = self.to_pandas()
+            pd_series = self.to_pandas(allow_large_results=allow_large_results)
             return pd_series.to_json(
                 path_or_buf=path_or_buf, orient=orient, lines=lines, index=index  # type: ignore
             )
 
     def to_latex(
-        self, buf=None, columns=None, header=True, index=True, **kwargs
+        self,
+        buf=None,
+        columns=None,
+        header=True,
+        index=True,
+        *,
+        allow_large_results=None,
+        **kwargs,
     ) -> typing.Optional[str]:
-        return self.to_pandas().to_latex(
+        return self.to_pandas(allow_large_results=allow_large_results).to_latex(
             buf, columns=columns, header=header, index=index, **kwargs
         )
 
-    def tolist(self) -> _list:
-        return self.to_pandas().to_list()
+    def tolist(
+        self,
+        *,
+        allow_large_results: Optional[bool] = None,
+    ) -> _list:
+        return self.to_pandas(allow_large_results=allow_large_results).to_list()
 
     to_list = tolist
     to_list.__doc__ = inspect.getdoc(vendored_pandas_series.Series.tolist)
@@ -1809,14 +1844,24 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
         buf: typing.IO[str] | None = None,
         mode: str = "wt",
         index: bool = True,
+        *,
+        allow_large_results: Optional[bool] = None,
         **kwargs,
     ) -> typing.Optional[str]:
-        return self.to_pandas().to_markdown(buf, mode=mode, index=index, **kwargs)  # type: ignore
+        return self.to_pandas(allow_large_results=allow_large_results).to_markdown(buf, mode=mode, index=index, **kwargs)  # type: ignore
 
     def to_numpy(
-        self, dtype=None, copy=False, na_value=None, **kwargs
+        self,
+        dtype=None,
+        copy=False,
+        na_value=None,
+        *,
+        allow_large_results=None,
+        **kwargs,
     ) -> numpy.ndarray:
-        return self.to_pandas().to_numpy(dtype, copy, na_value, **kwargs)
+        return self.to_pandas(allow_large_results=allow_large_results).to_numpy(
+            dtype, copy, na_value, **kwargs
+        )
 
     def __array__(self, dtype=None, copy: Optional[bool] = None) -> numpy.ndarray:
         if copy is False:
@@ -1825,8 +1870,10 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
 
     __array__.__doc__ = inspect.getdoc(vendored_pandas_series.Series.__array__)
 
-    def to_pickle(self, path, **kwargs) -> None:
-        return self.to_pandas().to_pickle(path, **kwargs)
+    def to_pickle(self, path, *, allow_large_results=None, **kwargs) -> None:
+        return self.to_pandas(allow_large_results=allow_large_results).to_pickle(
+            path, **kwargs
+        )
 
     def to_string(
         self,
@@ -1840,8 +1887,10 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
         name=False,
         max_rows=None,
         min_rows=None,
+        *,
+        allow_large_results=None,
     ) -> typing.Optional[str]:
-        return self.to_pandas().to_string(
+        return self.to_pandas(allow_large_results=allow_large_results).to_string(
             buf,
             na_rep,
             float_format,
@@ -1854,8 +1903,12 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
             min_rows,
         )
 
-    def to_xarray(self):
-        return self.to_pandas().to_xarray()
+    def to_xarray(
+        self,
+        *,
+        allow_large_results: Optional[bool] = None,
+    ):
+        return self.to_pandas(allow_large_results=allow_large_results).to_xarray()
 
     def _throw_if_index_contains_duplicates(
         self, error_message: typing.Optional[str] = None

@@ -61,6 +61,7 @@ MAX_SUBTREE_FACTORINGS = 5
 _MAX_CLUSTER_COLUMNS = 4
 # TODO: b/338258028 Enable pruning to reduce text size.
 ENABLE_PRUNING = False
+MAX_SMALL_RESULT_BYTES = 10 * 1024 * 1024 * 1024  # 10G
 
 
 @dataclasses.dataclass(frozen=True)
@@ -105,7 +106,7 @@ class Executor(abc.ABC):
         *,
         ordered: bool = True,
         col_id_overrides: Mapping[str, str] = {},
-        use_explicit_destination: bool = False,
+        use_explicit_destination: Optional[bool] = False,
         get_size_bytes: bool = False,
         page_size: Optional[int] = None,
         max_results: Optional[int] = None,
@@ -242,11 +243,14 @@ class BigQueryCachingExecutor(Executor):
         *,
         ordered: bool = True,
         col_id_overrides: Mapping[str, str] = {},
-        use_explicit_destination: bool = False,
+        use_explicit_destination: Optional[bool] = False,
         get_size_bytes: bool = False,
         page_size: Optional[int] = None,
         max_results: Optional[int] = None,
     ):
+        if use_explicit_destination is None:
+            use_explicit_destination = bigframes.options.bigquery.allow_large_results
+
         if bigframes.options.compute.enable_multi_query_execution:
             self._simplify_with_caching(array_value)
 
@@ -274,11 +278,19 @@ class BigQueryCachingExecutor(Executor):
         def iterator_supplier():
             return iterator.to_arrow_iterable(bqstorage_client=self.bqstoragereadclient)
 
-        if get_size_bytes is True:
+        if get_size_bytes is True or use_explicit_destination:
             size_bytes = self.bqclient.get_table(query_job.destination).num_bytes
         else:
             size_bytes = None
 
+        if size_bytes is not None and size_bytes >= MAX_SMALL_RESULT_BYTES:
+            warnings.warn(
+                "The query result size has exceeded 10 GB. In BigFrames 2.0 and "
+                "later, you might need to manually set `allow_large_results=True` in "
+                "the IO method or adjust the BigFrames option: "
+                "`bigframes.options.bigquery.allow_large_results=True`.",
+                FutureWarning,
+            )
         # Runs strict validations to ensure internal type predictions and ibis are completely in sync
         # Do not execute these validations outside of testing suite.
         if "PYTEST_CURRENT_TEST" in os.environ and len(col_id_overrides) == 0:
@@ -337,6 +349,7 @@ class BigQueryCachingExecutor(Executor):
             array_value,
             ordered=False,
             col_id_overrides=col_id_overrides,
+            use_explicit_destination=True,
         ).query_job
         result_table = query_job.destination
         export_data_statement = bq_io.create_export_data_statement(

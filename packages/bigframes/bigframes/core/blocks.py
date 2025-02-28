@@ -112,6 +112,7 @@ class MaterializationOptions:
     downsampling: sampling_options.SamplingOptions = dataclasses.field(
         default_factory=sampling_options.SamplingOptions
     )
+    allow_large_results: Optional[bool] = None
     ordered: bool = True
 
 
@@ -479,9 +480,12 @@ class Block:
         self,
         *,
         ordered: bool = True,
+        allow_large_results: Optional[bool] = None,
     ) -> Tuple[pa.Table, bigquery.QueryJob]:
         """Run query and download results as a pyarrow Table."""
-        execute_result = self.session._executor.execute(self.expr, ordered=ordered)
+        execute_result = self.session._executor.execute(
+            self.expr, ordered=ordered, use_explicit_destination=allow_large_results
+        )
         pa_table = execute_result.to_arrow_table()
 
         pa_index_labels = []
@@ -503,6 +507,7 @@ class Block:
         random_state: Optional[int] = None,
         *,
         ordered: bool = True,
+        allow_large_results: Optional[bool] = None,
     ) -> Tuple[pd.DataFrame, Optional[bigquery.QueryJob]]:
         """Run query and download results as a pandas DataFrame.
 
@@ -545,7 +550,9 @@ class Block:
 
         df, query_job = self._materialize_local(
             materialize_options=MaterializationOptions(
-                downsampling=sampling, ordered=ordered
+                downsampling=sampling,
+                allow_large_results=allow_large_results,
+                ordered=ordered,
             )
         )
         df.set_axis(self.column_labels, axis=1, copy=False)
@@ -563,7 +570,10 @@ class Block:
             return None
 
     def to_pandas_batches(
-        self, page_size: Optional[int] = None, max_results: Optional[int] = None
+        self,
+        page_size: Optional[int] = None,
+        max_results: Optional[int] = None,
+        allow_large_results: Optional[bool] = None,
     ):
         """Download results one message at a time.
 
@@ -572,7 +582,7 @@ class Block:
         execute_result = self.session._executor.execute(
             self.expr,
             ordered=True,
-            use_explicit_destination=True,
+            use_explicit_destination=allow_large_results,
             page_size=page_size,
             max_results=max_results,
         )
@@ -601,7 +611,10 @@ class Block:
         """Run query and download results as a pandas DataFrame. Return the total number of results as well."""
         # TODO(swast): Allow for dry run and timeout.
         execute_result = self.session._executor.execute(
-            self.expr, ordered=materialize_options.ordered, get_size_bytes=True
+            self.expr,
+            ordered=materialize_options.ordered,
+            use_explicit_destination=materialize_options.allow_large_results,
+            get_size_bytes=True,
         )
         assert execute_result.total_bytes is not None
         table_mb = execute_result.total_bytes / _BYTES_TO_MEGABYTES
@@ -1698,7 +1711,7 @@ class Block:
         original_row_index = (
             original_row_index
             if original_row_index is not None
-            else self.index.to_pandas(ordered=True)
+            else self.index.to_pandas(ordered=True)[0]
         )
         original_row_count = len(original_row_index)
         if original_row_count > bigframes.constants.MAX_COLUMNS:
@@ -2657,14 +2670,22 @@ class BlockIndexProperties:
     def is_null(self) -> bool:
         return len(self._block._index_columns) == 0
 
-    def to_pandas(self, *, ordered: Optional[bool] = None) -> pd.Index:
+    def to_pandas(
+        self,
+        *,
+        ordered: Optional[bool] = None,
+        allow_large_results: Optional[bool] = None,
+    ) -> Tuple[pd.Index, Optional[bigquery.QueryJob]]:
         """Executes deferred operations and downloads the results."""
         if len(self.column_ids) == 0:
             raise bigframes.exceptions.NullIndexError(
                 "Cannot materialize index, as this object does not have an index. Set index column(s) using set_index."
             )
         ordered = ordered if ordered is not None else True
-        return self._block.select_columns([]).to_pandas(ordered=ordered)[0].index
+        df, query_job = self._block.select_columns([]).to_pandas(
+            ordered=ordered, allow_large_results=allow_large_results
+        )
+        return df.index, query_job
 
     def resolve_level(self, level: LevelsType) -> typing.Sequence[str]:
         if utils.is_list_like(level):

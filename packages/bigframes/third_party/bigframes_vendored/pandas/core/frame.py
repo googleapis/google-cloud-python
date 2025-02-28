@@ -365,7 +365,15 @@ class DataFrame(generic.NDFrame):
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
-    def to_numpy(self, dtype=None, copy=False, na_value=None, **kwargs) -> np.ndarray:
+    def to_numpy(
+        self,
+        dtype=None,
+        copy=False,
+        na_value=None,
+        *,
+        allow_large_results=None,
+        **kwargs,
+    ) -> np.ndarray:
         """
         Convert the DataFrame to a NumPy array.
 
@@ -388,7 +396,9 @@ class DataFrame(generic.NDFrame):
             na_value (Any, default None):
                 The value to use for missing values. The default value
                 depends on dtype and the dtypes of the DataFrame columns.
-
+            allow_large_results (bool, default None):
+                If not None, overrides the global setting to allow or disallow
+                large query results over the default size limit of 10 GB.
         Returns:
             numpy.ndarray: The converted NumPy array.
         """
@@ -509,6 +519,7 @@ class DataFrame(generic.NDFrame):
         *,
         compression: Optional[Literal["snappy", "gzip"]] = "snappy",
         index: bool = True,
+        allow_large_results: Optional[bool] = None,
     ) -> Optional[bytes]:
         """Write a DataFrame to the binary Parquet format.
 
@@ -534,14 +545,16 @@ class DataFrame(generic.NDFrame):
                 should be formatted ``gs://<bucket_name>/<object_name_or_glob>``.
                 If the data size is more than 1GB, you must use a wildcard to export
                 the data into multiple files and the size of the files varies.
-
             compression (str, default 'snappy'):
                 Name of the compression to use. Use ``None`` for no compression.
                 Supported options: ``'gzip'``, ``'snappy'``.
-
             index (bool, default True):
                 If ``True``, include the dataframe's index(es) in the file output.
                 If ``False``, they will not be written to the file.
+            allow_large_results (bool, default None):
+                If not None, overrides the global setting to allow or disallow large
+                query results over the default size limit of 10 GB. This parameter has
+                no effect when results are saved to Google Cloud Storage (GCS).
 
         Returns:
             None or bytes:
@@ -560,6 +573,8 @@ class DataFrame(generic.NDFrame):
             "dict", "list", "series", "split", "tight", "records", "index"
         ] = "dict",
         into: type[dict] = dict,
+        *,
+        allow_large_results: Optional[bool] = None,
         **kwargs,
     ) -> dict | list[dict]:
         """
@@ -613,11 +628,13 @@ class DataFrame(generic.NDFrame):
                 in the return value.  Can be the actual class or an empty
                 instance of the mapping type you want.  If you want a
                 collections.defaultdict, you must pass it initialized.
-
             index (bool, default True):
                 Whether to include the index item (and index_names item if `orient`
                 is 'tight') in the returned dictionary. Can only be ``False``
                 when `orient` is 'split' or 'tight'.
+            allow_large_results (bool, default None):
+                If not None, overrides the global setting to allow or disallow large
+                query results over the default size limit of 10 GB.
 
         Returns:
             dict or list of dict: Return a collections.abc.Mapping object representing the DataFrame.
@@ -625,7 +642,14 @@ class DataFrame(generic.NDFrame):
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
-    def to_excel(self, excel_writer, sheet_name: str = "Sheet1", **kwargs) -> None:
+    def to_excel(
+        self,
+        excel_writer,
+        sheet_name: str = "Sheet1",
+        *,
+        allow_large_results: Optional[bool] = None,
+        **kwargs,
+    ) -> None:
         """
         Write DataFrame to an Excel sheet.
 
@@ -653,11 +677,21 @@ class DataFrame(generic.NDFrame):
                 File path or existing ExcelWriter.
             sheet_name (str, default 'Sheet1'):
                 Name of sheet which will contain DataFrame.
+            allow_large_results (bool, default None):
+                If not None, overrides the global setting to allow or disallow large
+                query results over the default size limit of 10 GB.
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def to_latex(
-        self, buf=None, columns=None, header=True, index=True, **kwargs
+        self,
+        buf=None,
+        columns=None,
+        header=True,
+        index=True,
+        *,
+        allow_large_results=None,
+        **kwargs,
     ) -> str | None:
         r"""
         Render object to a LaTeX tabular, longtable, or nested table.
@@ -693,6 +727,9 @@ class DataFrame(generic.NDFrame):
                 it is assumed to be aliases for the column names.
             index (bool, default True):
                 Write row names (index).
+            allow_large_results (bool, default None):
+                If not None, overrides the global setting to allow or disallow large
+                query results over the default size limit of 10 GB.
 
         Returns:
             str or None: If buf is None, returns the result as a string. Otherwise returns
@@ -701,7 +738,12 @@ class DataFrame(generic.NDFrame):
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def to_records(
-        self, index: bool = True, column_dtypes=None, index_dtypes=None
+        self,
+        index: bool = True,
+        column_dtypes=None,
+        index_dtypes=None,
+        *,
+        allow_large_results=None,
     ) -> np.recarray:
         """
         Convert DataFrame to a NumPy record array.
@@ -731,6 +773,9 @@ class DataFrame(generic.NDFrame):
                 If a string or type, the data type to store all index levels. If
                 a dictionary, a mapping of index level names and indices
                 (zero-indexed) to specific data types.
+            allow_large_results (bool, default None):
+                If not None, overrides the global setting to allow or disallow large
+                query results over the default size limit of 10 GB.
 
                 This mapping is applied only if `index=True`.
 
@@ -761,6 +806,8 @@ class DataFrame(generic.NDFrame):
         min_rows: int | None = None,
         max_colwidth: int | None = None,
         encoding: str | None = None,
+        *,
+        allow_large_results: Optional[bool] = None,
     ):
         """Render a DataFrame to a console-friendly tabular output.
 
@@ -824,6 +871,9 @@ class DataFrame(generic.NDFrame):
                 Max width to truncate each column in characters. By default, no limit.
             encoding (str, default "utf-8"):
                 Set character encoding.
+            allow_large_results (bool, default None):
+                If not None, overrides the global setting to allow or disallow large
+                query results over the default size limit of 10 GB.
 
         Returns:
             str or None: If buf is None, returns the result as a string. Otherwise returns
@@ -856,6 +906,8 @@ class DataFrame(generic.NDFrame):
         table_id: str | None = None,
         render_links: bool = False,
         encoding: str | None = None,
+        *,
+        allow_large_results: bool | None = None,
     ):
         """Render a DataFrame as an HTML table.
 
@@ -948,6 +1000,9 @@ class DataFrame(generic.NDFrame):
                 Convert URLs to HTML links.
             encoding (str, default "utf-8"):
                 Set character encoding.
+            allow_large_results (bool, default None):
+                If not None, overrides the global setting to allow or disallow
+                large query results over the default size limit of 10 GB.
 
         Returns:
             str or None: If buf is None, returns the result as a string. Otherwise
@@ -960,6 +1015,8 @@ class DataFrame(generic.NDFrame):
         buf=None,
         mode: str = "wt",
         index: bool = True,
+        *,
+        allow_large_results: Optional[bool] = None,
         **kwargs,
     ):
         """Print DataFrame in Markdown-friendly format.
@@ -983,6 +1040,9 @@ class DataFrame(generic.NDFrame):
                 Mode in which file is opened.
             index (bool, optional, default True):
                 Add index (row) labels.
+            allow_large_results (bool, default None):
+                If not None, overrides the global setting to allow or disallow
+                large query results over the default size limit of 10 GB.
             **kwargs
                 These parameters will be passed to `tabulate <https://pypi.org/project/tabulate>`_.
 
@@ -992,7 +1052,7 @@ class DataFrame(generic.NDFrame):
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
-    def to_pickle(self, path, **kwargs) -> None:
+    def to_pickle(self, path, *, allow_large_results, **kwargs) -> None:
         """Pickle (serialize) object to file.
 
         **Examples:**
@@ -1007,10 +1067,13 @@ class DataFrame(generic.NDFrame):
         Args:
             path (str):
                 File path where the pickled object will be stored.
+            allow_large_results (bool, default None):
+                If not None, overrides the global setting to allow or disallow
+                large query results over the default size limit of 10 GB.
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
-    def to_orc(self, path=None, **kwargs) -> bytes | None:
+    def to_orc(self, path=None, *, allow_large_results=None, **kwargs) -> bytes | None:
         """
         Write a DataFrame to the ORC format.
 
@@ -1030,6 +1093,9 @@ class DataFrame(generic.NDFrame):
                 we refer to objects with a write() method, such as a file handle
                 (e.g. via builtin open function). If path is None,
                 a bytes object is returned.
+            allow_large_results (bool, default None):
+                If not None, overrides the global setting to allow or disallow
+                large query results over the default size limit of 10 GB.
 
         Returns:
             bytes or None:

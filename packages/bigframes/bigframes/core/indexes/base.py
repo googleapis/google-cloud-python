@@ -490,17 +490,28 @@ class Index(vendored_pandas_index.Index):
         else:
             raise NotImplementedError(f"Index key not supported {key}")
 
-    def to_pandas(self) -> pandas.Index:
+    def to_pandas(self, *, allow_large_results: Optional[bool] = None) -> pandas.Index:
         """Gets the Index as a pandas Index.
+
+        Args:
+            allow_large_results (bool, default None):
+                If not None, overrides the global setting to allow or disallow large query results
+                over the default size limit of 10 GB.
 
         Returns:
             pandas.Index:
                 A pandas Index with all of the labels from this Index.
         """
-        return self._block.index.to_pandas(ordered=True)
+        df, query_job = self._block.index.to_pandas(
+            ordered=True, allow_large_results=allow_large_results
+        )
+        self._query_job = query_job
+        return df
 
-    def to_numpy(self, dtype=None, **kwargs) -> np.ndarray:
-        return self.to_pandas().to_numpy(dtype, **kwargs)
+    def to_numpy(self, dtype=None, *, allow_large_results=None, **kwargs) -> np.ndarray:
+        return self.to_pandas(allow_large_results=allow_large_results).to_numpy(
+            dtype, **kwargs
+        )
 
     __array__ = to_numpy
 

@@ -87,6 +87,7 @@ class BigQueryOptions:
         kms_key_name: Optional[str] = None,
         skip_bq_connection_check: bool = False,
         *,
+        allow_large_results: bool = True,
         ordering_mode: Literal["strict", "partial"] = "strict",
         client_endpoints_override: Optional[dict] = None,
     ):
@@ -98,6 +99,7 @@ class BigQueryOptions:
         self._application_name = application_name
         self._kms_key_name = kms_key_name
         self._skip_bq_connection_check = skip_bq_connection_check
+        self._allow_large_results = allow_large_results
         self._session_started = False
         # Determines the ordering strictness for the session.
         self._ordering_mode = _validate_ordering_mode(ordering_mode)
@@ -231,6 +233,26 @@ class BigQueryOptions:
                 SESSION_STARTED_MESSAGE.format(attribute="skip_bq_connection_check")
             )
         self._skip_bq_connection_check = value
+
+    @property
+    def allow_large_results(self) -> bool:
+        """
+        Sets the flag to allow or disallow query results larger than 10 GB.
+
+        The default setting for this flag is True, which allows queries to return results
+        exceeding 10 GB by creating an explicit destination table. If set to False, it
+        restricts the result size to 10 GB, and BigQuery will raise an error if this limit
+        is exceeded.
+
+        Returns:
+            bool: True if large results are allowed with an explicit destination table,
+            False if results are limited to 10 GB and errors are raised when exceeded.
+        """
+        return self._allow_large_results
+
+    @allow_large_results.setter
+    def allow_large_results(self, value: bool):
+        self._allow_large_results = value
 
     @property
     def use_regional_endpoints(self) -> bool:

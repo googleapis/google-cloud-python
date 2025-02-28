@@ -24,6 +24,7 @@ import bigframes
 import bigframes.clients
 import bigframes.core.ordering
 import bigframes.dataframe
+import bigframes.series
 import bigframes.session.clients
 import bigframes.session.executor
 import bigframes.session.metrics
