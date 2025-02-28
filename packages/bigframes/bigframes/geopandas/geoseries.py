@@ -68,6 +68,12 @@ class GeoSeries(vendored_geoseries.GeoSeries, bigframes.series.Series):
             f"GeoSeries.area is not supported. Use bigframes.bigquery.st_area(series), instead. {constants.FEEDBACK_LINK}"
         )
 
+    @property
+    def boundary(self) -> bigframes.series.Series:  # type: ignore
+        series = self._apply_unary_op(ops.geo_st_boundary_op)
+        series.name = None
+        return series
+
     @classmethod
     def from_wkt(cls, data, index=None) -> GeoSeries:
         series = bigframes.series.Series(data, index=index)

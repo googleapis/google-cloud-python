@@ -91,6 +91,46 @@ class GeoSeries:
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
+    @property
+    def boundary(self) -> bigframes.geopandas.GeoSeries:
+        """
+        Returns a GeoSeries of lower dimensional objects representing each
+        geometry's set-theoretic boundary.
+
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> import geopandas.array
+            >>> import shapely
+            >>> bpd.options.display.progress_bar = None
+
+            >>> from shapely.geometry import Polygon, LineString, Point
+            >>> s = geopandas.GeoSeries(
+            ...     [
+            ...         Polygon([(0, 0), (1, 1), (0, 1)]),
+            ...         LineString([(0, 0), (1, 1), (1, 0)]),
+            ...         Point(0, 0),
+            ...     ]
+            ... )
+            >>> s
+            0    POLYGON ((0 0, 1 1, 0 1, 0 0))
+            1        LINESTRING (0 0, 1 1, 1 0)
+            2                       POINT (0 0)
+            dtype: geometry
+
+            >>> s.boundary
+            0    LINESTRING (0 0, 1 1, 0 1, 0 0)
+            1              MULTIPOINT (0 0, 1 0)
+            2           GEOMETRYCOLLECTION EMPTY
+            dtype: geometry
+
+        Returns:
+            bigframes.geopandas.GeoSeries:
+                A GeoSeries of lower dimensional objects representing each
+                geometry's set-theoretic boundary
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
     @classmethod
     def from_xy(cls, x, y, index=None, **kwargs) -> bigframes.geopandas.GeoSeries:
         """

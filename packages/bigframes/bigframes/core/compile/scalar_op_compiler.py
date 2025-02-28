@@ -1001,14 +1001,9 @@ def normalize_op_impl(x: ibis_types.Value):
 
 
 # Geo Ops
-@scalar_op_compiler.register_unary_op(ops.geo_x_op)
-def geo_x_op_impl(x: ibis_types.Value):
-    return typing.cast(ibis_types.GeoSpatialValue, x).x()
-
-
-@scalar_op_compiler.register_unary_op(ops.geo_y_op)
-def geo_y_op_impl(x: ibis_types.Value):
-    return typing.cast(ibis_types.GeoSpatialValue, x).y()
+@scalar_op_compiler.register_unary_op(ops.geo_st_boundary_op, pass_op=False)
+def geo_st_boundary_op_impl(x: ibis_types.Value):
+    return st_boundary(x)
 
 
 @scalar_op_compiler.register_unary_op(ops.geo_area_op)
@@ -1033,6 +1028,16 @@ def geo_st_geogpoint_op_impl(x: ibis_types.Value, y: ibis_types.Value):
     return typing.cast(ibis_types.NumericValue, x).point(
         typing.cast(ibis_types.NumericValue, y)
     )
+
+
+@scalar_op_compiler.register_unary_op(ops.geo_x_op)
+def geo_x_op_impl(x: ibis_types.Value):
+    return typing.cast(ibis_types.GeoSpatialValue, x).x()
+
+
+@scalar_op_compiler.register_unary_op(ops.geo_y_op)
+def geo_y_op_impl(x: ibis_types.Value):
+    return typing.cast(ibis_types.GeoSpatialValue, x).y()
 
 
 # Parameterized ops
@@ -1963,6 +1968,11 @@ def timestamp(a: str) -> ibis_dtypes.timestamp:  # type: ignore
 @ibis_udf.scalar.builtin
 def unix_millis(a: ibis_dtypes.timestamp) -> int:  # type: ignore
     """Convert a timestamp to milliseconds"""
+
+
+@ibis_udf.scalar.builtin
+def st_boundary(a: ibis_dtypes.geography) -> ibis_dtypes.geography:  # type: ignore
+    """Find the boundary of a geography."""
 
 
 @ibis_udf.scalar.builtin

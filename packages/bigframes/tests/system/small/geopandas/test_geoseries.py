@@ -162,3 +162,35 @@ def test_geo_to_wkt():
         pd_result,
         check_index=False,
     )
+
+
+def test_geo_boundary():
+    bf_s = bigframes.pandas.Series(
+        [
+            Polygon([(0, 0), (1, 1), (0, 1)]),
+            Polygon([(10, 0), (10, 5), (0, 0)]),
+            Polygon([(0, 0), (2, 2), (2, 0)]),
+            LineString([(0, 0), (1, 1), (0, 1)]),
+            Point(0, 1),
+        ],
+    )
+
+    pd_s = geopandas.GeoSeries(
+        [
+            Polygon([(0, 0), (1, 1), (0, 1)]),
+            Polygon([(10, 0), (10, 5), (0, 0)]),
+            Polygon([(0, 0), (2, 2), (2, 0)]),
+            LineString([(0, 0), (1, 1), (0, 1)]),
+            Point(0, 1),
+        ],
+    )
+
+    bf_result = bf_s.geo.boundary.to_pandas()
+    pd_result = pd_s.boundary
+
+    pd.testing.assert_series_equal(
+        bf_result,
+        pd_result,
+        check_series_type=False,
+        check_index=False,
+    )
