@@ -26,6 +26,7 @@ import bigframes.core.blocks as blocks
 import bigframes.core.expression as ex
 import bigframes.core.ordering as ordering
 import bigframes.core.window_spec as windows
+import bigframes.dtypes
 import bigframes.dtypes as dtypes
 import bigframes.operations as ops
 import bigframes.operations.aggregations as agg_ops
@@ -409,6 +410,8 @@ def rank(
     method: str = "average",
     na_option: str = "keep",
     ascending: bool = True,
+    grouping_cols: tuple[str, ...] = (),
+    columns: tuple[str, ...] = (),
 ):
     if method not in ["average", "min", "max", "first", "dense"]:
         raise ValueError(
@@ -417,8 +420,8 @@ def rank(
     if na_option not in ["keep", "top", "bottom"]:
         raise ValueError("na_option must be one of 'keep', 'top', or 'bottom'")
 
-    columns = block.value_columns
-    labels = block.column_labels
+    columns = columns or tuple(col for col in block.value_columns)
+    labels = [block.col_id_to_label[id] for id in columns]
     # Step 1: Calculate row numbers for each row
     # Identify null values to be treated according to na_option param
     rownum_col_ids = []
@@ -442,9 +445,13 @@ def rank(
         block, rownum_id = block.apply_window_op(
             col if na_option == "keep" else nullity_col_id,
             agg_ops.dense_rank_op if method == "dense" else agg_ops.count_op,
-            window_spec=windows.unbound(ordering=window_ordering)
+            window_spec=windows.unbound(
+                grouping_keys=grouping_cols, ordering=window_ordering
+            )
             if method == "dense"
-            else windows.rows(following=0, ordering=window_ordering),
+            else windows.rows(
+                following=0, ordering=window_ordering, grouping_keys=grouping_cols
+            ),
             skip_reproject_unsafe=(col != columns[-1]),
         )
         rownum_col_ids.append(rownum_id)
@@ -462,11 +469,31 @@ def rank(
             block, result_id = block.apply_window_op(
                 rownum_col_ids[i],
                 agg_op,
-                window_spec=windows.unbound(grouping_keys=(columns[i],)),
+                window_spec=windows.unbound(grouping_keys=(columns[i], *grouping_cols)),
                 skip_reproject_unsafe=(i < (len(columns) - 1)),
             )
             post_agg_rownum_col_ids.append(result_id)
         rownum_col_ids = post_agg_rownum_col_ids
+
+    # Pandas masks all values where any grouping column is null
+    # Note: we use pd.NA instead of float('nan')
+    if grouping_cols:
+        predicate = functools.reduce(
+            ops.and_op.as_expr,
+            [ops.notnull_op.as_expr(column_id) for column_id in grouping_cols],
+        )
+        block = block.project_exprs(
+            [
+                ops.where_op.as_expr(
+                    ex.deref(col),
+                    predicate,
+                    ex.const(None),
+                )
+                for col in rownum_col_ids
+            ],
+            labels=labels,
+        )
+        rownum_col_ids = list(block.value_columns[-len(rownum_col_ids) :])
 
     # Step 3: post processing: mask null values and cast to float
     if method in ["min", "max", "first", "dense"]:

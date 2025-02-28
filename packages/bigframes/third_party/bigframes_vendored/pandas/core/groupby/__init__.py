@@ -363,6 +363,77 @@ class GroupBy:
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
+    def rank(
+        self,
+        method: str = "average",
+        ascending: bool = True,
+        na_option: str = "keep",
+    ):
+        """
+        Provide the rank of values within each group.
+
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> import numpy as np
+            >>> bpd.options.display.progress_bar = None
+
+            >>> df = bpd.DataFrame(
+            ...     {
+            ...         "group": ["a", "a", "a", "a", "a", "b", "b", "b", "b", "b"],
+            ...         "value": [2, 4, 2, 3, 5, 1, 2, 4, 1, 5],
+            ...     }
+            ... )
+            >>> df
+            group  value
+            0     a      2
+            1     a      4
+            2     a      2
+            3     a      3
+            4     a      5
+            5     b      1
+            6     b      2
+            7     b      4
+            8     b      1
+            9     b      5
+            <BLANKLINE>
+            [10 rows x 2 columns]
+            >>> for method in ['average', 'min', 'max', 'dense', 'first']:
+            ...     df[f'{method}_rank'] = df.groupby('group')['value'].rank(method)
+            >>> df
+            group  value  average_rank  min_rank  max_rank  dense_rank  first_rank
+            0     a      2           1.5       1.0       2.0         1.0         1.0
+            1     a      4           4.0       4.0       4.0         3.0         4.0
+            2     a      2           1.5       1.0       2.0         1.0         2.0
+            3     a      3           3.0       3.0       3.0         2.0         3.0
+            4     a      5           5.0       5.0       5.0         4.0         5.0
+            5     b      1           1.5       1.0       2.0         1.0         1.0
+            6     b      2           3.0       3.0       3.0         2.0         3.0
+            7     b      4           4.0       4.0       4.0         3.0         4.0
+            8     b      1           1.5       1.0       2.0         1.0         2.0
+            9     b      5           5.0       5.0       5.0         4.0         5.0
+            <BLANKLINE>
+            [10 rows x 7 columns]
+
+        Args:
+            method ({'average', 'min', 'max', 'first', 'dense'}, default 'average'):
+                * average: average rank of group.
+                * min: lowest rank in group.
+                * max: highest rank in group.
+                * first: ranks assigned in order they appear in the array.
+                * dense: like 'min', but rank always increases by 1 between groups.
+            ascending (bool, default True):
+                False for ranks by high (1) to low (N).
+            na_option ({'keep', 'top', 'bottom'}, default 'keep'):
+                * keep: leave NA values where they are.
+                * top: smallest rank if ascending.
+                * bottom: smallest rank if descending.
+
+        Returns:
+            DataFrame with ranking of values within each group
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
     def skew(
         self,
         *,

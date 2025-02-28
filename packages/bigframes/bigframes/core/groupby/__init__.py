@@ -174,6 +174,20 @@ class DataFrameGroupBy(vendored_pandas_groupby.DataFrameGroupBy):
             return self.quantile(0.5)
         return self._aggregate_all(agg_ops.median_op, numeric_only=True)
 
+    def rank(
+        self, method="average", ascending: bool = True, na_option: str = "keep"
+    ) -> df.DataFrame:
+        return df.DataFrame(
+            block_ops.rank(
+                self._block,
+                method,
+                na_option,
+                ascending,
+                grouping_cols=tuple(self._by_col_ids),
+                columns=tuple(self._selected_cols),
+            )
+        )
+
     def quantile(
         self, q: Union[float, Sequence[float]] = 0.5, *, numeric_only: bool = False
     ) -> df.DataFrame:
@@ -573,6 +587,20 @@ class SeriesGroupBy(vendored_pandas_groupby.SeriesGroupBy):
 
     def mean(self, *args) -> series.Series:
         return self._aggregate(agg_ops.mean_op)
+
+    def rank(
+        self, method="average", ascending: bool = True, na_option: str = "keep"
+    ) -> series.Series:
+        return series.Series(
+            block_ops.rank(
+                self._block,
+                method,
+                na_option,
+                ascending,
+                grouping_cols=tuple(self._by_col_ids),
+                columns=(self._value_column,),
+            )
+        )
 
     def median(
         self,

@@ -397,6 +397,7 @@ def literal_to_ibis_scalar(
             )
         # "correct" way would be to use ibis.array, but this produces invalid BQ SQL syntax
         return tuple(literal)
+
     if not pd.api.types.is_list_like(literal) and pd.isna(literal):
         if ibis_dtype:
             return bigframes_vendored.ibis.null().cast(ibis_dtype)

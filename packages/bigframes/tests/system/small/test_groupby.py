@@ -16,7 +16,7 @@ import pandas as pd
 import pytest
 
 import bigframes.pandas as bpd
-from tests.system.utils import assert_pandas_df_equal
+from tests.system.utils import assert_pandas_df_equal, skip_legacy_pandas
 
 # =================
 # DataFrame.groupby
@@ -89,6 +89,72 @@ def test_dataframe_groupby_quantile(scalars_df_index, scalars_pandas_df_index, q
         scalars_df_index[col_names].groupby("string_col").quantile(q)
     ).to_pandas()
     pd_result = scalars_pandas_df_index[col_names].groupby("string_col").quantile(q)
+    pd.testing.assert_frame_equal(
+        pd_result, bf_result, check_dtype=False, check_index_type=False
+    )
+
+
+@skip_legacy_pandas
+@pytest.mark.parametrize(
+    ("na_option", "method", "ascending"),
+    [
+        (
+            "keep",
+            "average",
+            True,
+        ),
+        (
+            "top",
+            "min",
+            False,
+        ),
+        (
+            "bottom",
+            "max",
+            False,
+        ),
+        (
+            "top",
+            "first",
+            False,
+        ),
+        (
+            "bottom",
+            "dense",
+            False,
+        ),
+    ],
+)
+def test_dataframe_groupby_rank(
+    scalars_df_index,
+    scalars_pandas_df_index,
+    na_option,
+    method,
+    ascending,
+):
+    col_names = ["int64_too", "float64_col", "int64_col", "string_col"]
+    bf_result = (
+        scalars_df_index[col_names]
+        .groupby("string_col")
+        .rank(
+            na_option=na_option,
+            method=method,
+            ascending=ascending,
+        )
+    ).to_pandas()
+    pd_result = (
+        (
+            scalars_pandas_df_index[col_names]
+            .groupby("string_col")
+            .rank(
+                na_option=na_option,
+                method=method,
+                ascending=ascending,
+            )
+        )
+        .astype("float64")
+        .astype("Float64")
+    )
     pd.testing.assert_frame_equal(
         pd_result, bf_result, check_dtype=False, check_index_type=False
     )
@@ -531,6 +597,72 @@ def test_series_groupby_agg_list(scalars_df_index, scalars_pandas_df_index):
 
     pd.testing.assert_frame_equal(
         pd_result, bf_result_computed, check_dtype=False, check_names=False
+    )
+
+
+@skip_legacy_pandas
+@pytest.mark.parametrize(
+    ("na_option", "method", "ascending"),
+    [
+        (
+            "keep",
+            "average",
+            True,
+        ),
+        (
+            "top",
+            "min",
+            False,
+        ),
+        (
+            "bottom",
+            "max",
+            False,
+        ),
+        (
+            "top",
+            "first",
+            False,
+        ),
+        (
+            "bottom",
+            "dense",
+            False,
+        ),
+    ],
+)
+def test_series_groupby_rank(
+    scalars_df_index,
+    scalars_pandas_df_index,
+    na_option,
+    method,
+    ascending,
+):
+    col_names = ["int64_col", "string_col"]
+    bf_result = (
+        scalars_df_index[col_names]
+        .groupby("string_col")["int64_col"]
+        .rank(
+            na_option=na_option,
+            method=method,
+            ascending=ascending,
+        )
+    ).to_pandas()
+    pd_result = (
+        (
+            scalars_pandas_df_index[col_names]
+            .groupby("string_col")["int64_col"]
+            .rank(
+                na_option=na_option,
+                method=method,
+                ascending=ascending,
+            )
+        )
+        .astype("float64")
+        .astype("Float64")
+    )
+    pd.testing.assert_series_equal(
+        pd_result, bf_result, check_dtype=False, check_index_type=False
     )
 
 
