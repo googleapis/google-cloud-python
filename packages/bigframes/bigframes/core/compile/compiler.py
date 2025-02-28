@@ -68,9 +68,7 @@ class Compiler:
         node = self._replace_unsupported_ops(node)
         # prune before pulling up order to avoid unnnecessary row_number() ops
         node = rewrites.column_pruning(node)
-        node, ordering = rewrites.pull_up_order(
-            node, order_root=ordered, ordered_joins=self.strict
-        )
+        node, ordering = rewrites.pull_up_order(node, order_root=ordered)
         # final pruning to cleanup up any leftovers unused values
         node = rewrites.column_pruning(node)
         return self.compile_node(node).to_sql(
@@ -87,9 +85,7 @@ class Compiler:
     ]:
         node = self._replace_unsupported_ops(node)
         node = rewrites.column_pruning(node)
-        node, ordering = rewrites.pull_up_order(
-            node, order_root=True, ordered_joins=self.strict
-        )
+        node, ordering = rewrites.pull_up_order(node, order_root=True)
         node = rewrites.column_pruning(node)
         sql = self.compile_node(node).to_sql()
         return sql, node.schema.to_bigquery(), ordering

@@ -452,6 +452,7 @@ class ArrayValue:
         other: ArrayValue,
         conditions: typing.Tuple[typing.Tuple[str, str], ...] = (),
         type: typing.Literal["inner", "outer", "left", "right", "cross"] = "inner",
+        propogate_order: Optional[bool] = None,
     ) -> typing.Tuple[ArrayValue, typing.Tuple[dict[str, str], dict[str, str]]]:
         l_mapping = {  # Identity mapping, only rename right side
             lcol.name: lcol.name for lcol in self.node.ids
@@ -465,6 +466,7 @@ class ArrayValue:
                 for l_col, r_col in conditions
             ),
             type=type,
+            propogate_order=propogate_order or self.session._strictly_ordered,
         )
         return ArrayValue(join_node), (l_mapping, r_mapping)
 

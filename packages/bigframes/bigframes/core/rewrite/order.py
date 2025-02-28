@@ -29,7 +29,6 @@ def pull_up_order(
     root: bigframes.core.nodes.BigFrameNode,
     *,
     order_root: bool = True,
-    ordered_joins: bool = True,
 ) -> Tuple[bigframes.core.nodes.BigFrameNode, bigframes.core.ordering.RowOrdering]:
     """
     Pull the ordering up, putting full order definition into window ops.
@@ -92,7 +91,7 @@ def pull_up_order(
             child_result, child_order = pull_up_order_inner(node.child)
             return node.replace_child(child_result), child_order
         elif isinstance(node, bigframes.core.nodes.JoinNode):
-            if ordered_joins:
+            if node.propogate_order:
                 return pull_order_join(node)
             else:
                 return (
