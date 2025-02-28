@@ -24,7 +24,7 @@ import time
 
 
 MYPY_VERSION = "mypy==1.6.1"
-PYTYPE_VERSION = "pytype==2021.4.9"
+PYTYPE_VERSION = "pytype==2024.9.13"
 BLACK_VERSION = "black==23.7.0"
 BLACK_PATHS = (
     "benchmark",
@@ -37,9 +37,9 @@ BLACK_PATHS = (
     "setup.py",
 )
 
-DEFAULT_PYTHON_VERSION = "3.8"
-SYSTEM_TEST_PYTHON_VERSIONS = ["3.8", "3.11", "3.12"]
-UNIT_TEST_PYTHON_VERSIONS = ["3.7", "3.8", "3.12"]
+DEFAULT_PYTHON_VERSION = "3.9"
+SYSTEM_TEST_PYTHON_VERSIONS = ["3.9", "3.11", "3.12"]
+UNIT_TEST_PYTHON_VERSIONS = ["3.9", "3.11", "3.12"]
 CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
 
 
@@ -102,10 +102,16 @@ def default(session, install_extras=True):
         "-c",
         constraints_path,
     )
-
-    if install_extras and session.python in ["3.11", "3.12"]:
-        install_target = ".[bqstorage,ipywidgets,pandas,tqdm,opentelemetry]"
-    elif install_extras:
+    # We have logic in the magics.py file that checks for whether 'bigquery_magics'
+    # is imported OR not. If yes, we use a context object from that library.
+    # If no, we use our own context object from magics.py. In order to exercise
+    # that logic (and the associated tests) we avoid installing the [ipython] extra
+    # which has a downstream effect of then avoiding installing bigquery_magics.
+    if install_extras and session.python == UNIT_TEST_PYTHON_VERSIONS[0]:
+        install_target = (
+            ".[bqstorage,pandas,ipywidgets,geopandas,tqdm,opentelemetry,bigquery_v2]"
+        )
+    elif install_extras:  # run against all other UNIT_TEST_PYTHON_VERSIONS
         install_target = ".[all]"
     else:
         install_target = "."
@@ -157,7 +163,7 @@ def unit_noextras(session):
     # so that it continues to be an optional dependency.
     # https://github.com/googleapis/python-bigquery/issues/1877
     if session.python == UNIT_TEST_PYTHON_VERSIONS[0]:
-        session.install("pyarrow==1.0.0")
+        session.install("pyarrow==4.0.0")
 
     default(session, install_extras=False)
 
@@ -178,6 +184,7 @@ def mypy(session):
         "types-requests",
         "types-setuptools",
     )
+    session.run("python", "-m", "pip", "freeze")
     session.run("mypy", "-p", "google", "--show-traceback")
 
 
@@ -192,6 +199,7 @@ def pytype(session):
     session.install("attrs==20.3.0")
     session.install("-e", ".[all]")
     session.install(PYTYPE_VERSION)
+    session.run("python", "-m", "pip", "freeze")
     # See https://github.com/google/pytype/issues/464
     session.run("pytype", "-P", ".", "google/cloud/bigquery")
 
@@ -281,7 +289,7 @@ def mypy_samples(session):
         "types-setuptools",
     )
 
-    session.install("typing-extensions")  # for TypedDict in pre-3.8 Python versions
+    session.run("python", "-m", "pip", "freeze")
 
     session.run(
         "mypy",
@@ -307,10 +315,13 @@ def snippets(session):
     session.install("grpcio", "-c", constraints_path)
 
     if session.python in ["3.11", "3.12"]:
-        extras = "[bqstorage,ipywidgets,pandas,tqdm,opentelemetry]"
+        extras = (
+            "[bqstorage,pandas,ipywidgets,geopandas,tqdm,opentelemetry,bigquery_v2]"
+        )
     else:
         extras = "[all]"
     session.install("-e", f".{extras}", "-c", constraints_path)
+    session.run("python", "-m", "pip", "freeze")
 
     # Run py.test against the snippets tests.
     # Skip tests in samples/snippets, as those are run in a different session
@@ -339,6 +350,7 @@ def cover(session):
     """
 
     session.install("coverage", "pytest-cov")
+    session.run("python", "-m", "pip", "freeze")
     session.run("coverage", "report", "--show-missing", "--fail-under=100")
     session.run("coverage", "erase")
 
@@ -378,6 +390,7 @@ def prerelease_deps(session):
         "google-cloud-bigquery-storage",
         "google-cloud-core",
         "google-resumable-media",
+        "db-dtypes",
         # Exclude version 1.49.0rc1 which has a known issue. See https://github.com/grpc/grpc/pull/30642
         "grpcio!=1.49.0rc1",
     )
@@ -417,9 +430,6 @@ def prerelease_deps(session):
     session.install("--no-deps", "-e", ".[all]")
 
     # Print out prerelease package versions.
-    session.run("python", "-c", "import grpc; print(grpc.__version__)")
-    session.run("python", "-c", "import pandas; print(pandas.__version__)")
-    session.run("python", "-c", "import pyarrow; print(pyarrow.__version__)")
     session.run("python", "-m", "pip", "freeze")
 
     # Run all tests, except a few samples tests which require extra dependencies.
@@ -453,6 +463,7 @@ def lint(session):
 
     session.install("flake8", BLACK_VERSION)
     session.install("-e", ".")
+    session.run("python", "-m", "pip", "freeze")
     session.run("flake8", os.path.join("google", "cloud", "bigquery"))
     session.run("flake8", "tests")
     session.run("flake8", os.path.join("docs", "samples"))
@@ -467,6 +478,7 @@ def lint_setup_py(session):
     """Verify that setup.py is valid (including RST check)."""
 
     session.install("docutils", "Pygments")
+    session.run("python", "-m", "pip", "freeze")
     session.run("python", "setup.py", "check", "--restructuredtext", "--strict")
 
 
@@ -478,6 +490,7 @@ def blacken(session):
     """
 
     session.install(BLACK_VERSION)
+    session.run("python", "-m", "pip", "freeze")
     session.run("black", *BLACK_PATHS)
 
 
@@ -504,6 +517,7 @@ def docs(session):
     session.install("-e", ".[all]")
 
     shutil.rmtree(os.path.join("docs", "_build"), ignore_errors=True)
+    session.run("python", "-m", "pip", "freeze")
     session.run(
         "sphinx-build",
         "-W",  # warnings as errors
@@ -540,6 +554,7 @@ def docfx(session):
     )
 
     shutil.rmtree(os.path.join("docs", "_build"), ignore_errors=True)
+    session.run("python", "-m", "pip", "freeze")
     session.run(
         "sphinx-build",
         "-T",  # show full traceback on exception

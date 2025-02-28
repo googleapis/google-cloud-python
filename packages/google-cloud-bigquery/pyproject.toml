@@ -20,7 +20,7 @@ build-backend = "setuptools.build_meta"
 name = "google-cloud-bigquery"
 authors = [{ name = "Google LLC", email = "googleapis-packages@google.com" }]
 license = { text = "Apache 2.0" }
-requires-python = ">=3.7"
+requires-python = ">=3.9"
 description = "Google BigQuery API client library"
 readme = "README.rst"
 classifiers = [
@@ -33,8 +33,6 @@ classifiers = [
   "License :: OSI Approved :: Apache Software License",
   "Programming Language :: Python",
   "Programming Language :: Python :: 3",
-  "Programming Language :: Python :: 3.7",
-  "Programming Language :: Python :: 3.8",
   "Programming Language :: Python :: 3.9",
   "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",
@@ -47,8 +45,8 @@ dependencies = [
   "google-auth >= 2.14.1, < 3.0.0dev",
   "google-cloud-core >= 2.4.1, < 3.0.0dev",
   "google-resumable-media >= 2.0.0, < 3.0dev",
-  "packaging >= 20.0.0",
-  "python-dateutil >= 2.7.3, < 3.0dev",
+  "packaging >= 24.2.0",
+  "python-dateutil >= 2.8.2, < 3.0dev",
   "requests >= 2.21.0, < 3.0.0dev",
 ]
 dynamic = ["version"]
@@ -61,7 +59,7 @@ Repository = "https://github.com/googleapis/python-bigquery"
 # moved back to optional due to bloat.  See
 # https://github.com/googleapis/python-bigquery/issues/1196 for more background.
 bqstorage = [
-  "google-cloud-bigquery-storage >= 2.6.0, < 3.0.0dev",
+  "google-cloud-bigquery-storage >= 2.18.0, < 3.0.0dev",
   # Due to an issue in pip's dependency resolver, the `grpc` extra is not
   # installed, even though `google-cloud-bigquery-storage` specifies it
   # as `google-api-core[grpc]`. We thus need to explicitly specify it here.
@@ -70,20 +68,19 @@ bqstorage = [
   # https://github.com/grpc/grpc/pull/15254
   "grpcio >= 1.47.0, < 2.0dev",
   "grpcio >= 1.49.1, < 2.0dev; python_version >= '3.11'",
-  "pyarrow >= 3.0.0",
+  "pyarrow >= 4.0.0",
 ]
 pandas = [
-  "pandas >= 1.1.0",
+  "pandas >= 1.1.4",
   "pandas-gbq >= 0.26.1; python_version >= '3.8'",
   "grpcio >= 1.47.0, < 2.0dev",
   "grpcio >= 1.49.1, < 2.0dev; python_version >= '3.11'",
   "pyarrow >= 3.0.0",
-  "db-dtypes >= 0.3.0, < 2.0.0dev",
-  "importlib_metadata >= 1.0.0; python_version < '3.8'",
+  "db-dtypes >= 1.0.4, < 2.0.0dev",
 ]
-ipywidgets = ["ipywidgets >= 7.7.0", "ipykernel >= 6.0.0"]
+ipywidgets = ["ipywidgets >= 7.7.1", "ipykernel >= 6.2.0"]
 geopandas = ["geopandas >= 0.9.0, < 2.0dev", "Shapely >= 1.8.4, < 3.0.0dev"]
-ipython = ["bigquery-magics >= 0.1.0"]
+ipython = ["ipython >= 7.23.1", "bigquery-magics >= 0.6.0"]
 tqdm = ["tqdm >= 4.7.4, < 5.0.0dev"]
 opentelemetry = [
   "opentelemetry-api >= 1.1.0",

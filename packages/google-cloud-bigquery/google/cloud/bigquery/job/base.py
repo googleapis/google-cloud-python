@@ -415,7 +415,9 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
     @property
     def configuration(self) -> _JobConfig:
         """Job-type specific configurtion."""
-        configuration = self._CONFIG_CLASS()
+        # TODO: The typehinting for this needs work. Setting this pragma to temporarily
+        # manage a pytype issue that came up in another PR. See Issue: #2132
+        configuration = self._CONFIG_CLASS()  # pytype: disable=not-callable
         configuration._properties = self._properties.setdefault("configuration", {})
         return configuration
 

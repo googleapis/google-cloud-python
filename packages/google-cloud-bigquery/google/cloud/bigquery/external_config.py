@@ -835,8 +835,10 @@ class ExternalConfig(object):
         See
         https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#ExternalDataConfiguration.FIELDS.schema
         """
-        prop = self._properties.get("schema", {})
-        return [SchemaField.from_api_repr(field) for field in prop.get("fields", [])]
+        # TODO: The typehinting for this needs work. Setting this pragma to temporarily
+        # manage a pytype issue that came up in another PR. See Issue: #2132
+        prop = self._properties.get("schema", {})  # type: ignore
+        return [SchemaField.from_api_repr(field) for field in prop.get("fields", [])]  # type: ignore
 
     @schema.setter
     def schema(self, value):

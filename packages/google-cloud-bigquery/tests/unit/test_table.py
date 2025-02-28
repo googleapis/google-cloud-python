@@ -16,7 +16,6 @@ import copy
 import datetime
 import logging
 import re
-from sys import version_info
 import time
 import types
 import unittest
@@ -2171,10 +2170,11 @@ class Test_EmptyRowIterator(unittest.TestCase):
         df = row_iterator.to_geodataframe(create_bqstorage_client=False)
         self.assertIsInstance(df, geopandas.GeoDataFrame)
         self.assertEqual(len(df), 0)  # verify the number of rows
-        if version_info.major == 3 and version_info.minor > 7:
-            assert not hasattr(df, "crs")  # used with Python > 3.7
+
+        if geopandas.__version__ == "0.9.0":
+            assert hasattr(df, "crs")
         else:
-            self.assertIsNone(df.crs)  # used with Python == 3.7
+            assert not hasattr(df, "crs")
 
 
 class TestRowIterator(unittest.TestCase):
@@ -3699,10 +3699,10 @@ class TestRowIterator(unittest.TestCase):
         user_warnings = [
             warning for warning in warned if warning.category is UserWarning
         ]
-        # With Python 3.7 and 3.8, len(user_warnings) = 3. With pandas < 1.5,
-        # pandas.ArrowDtype is not supported. We raise warnings because
-        # range columns have to be converted to object.
-        # With higher Python versions and noextra tests, len(user_warnings) = 0
+        # With pandas < 1.5, pandas.ArrowDtype is not supported
+        # and len(user_warnings) = 3.
+        # We raise warnings because range columns have to be converted to object.
+        # With higher pandas versions and noextra tests, len(user_warnings) = 0
         self.assertIn(len(user_warnings), [0, 3])
         self.assertEqual(len(df), 4)
 
@@ -3734,10 +3734,10 @@ class TestRowIterator(unittest.TestCase):
         user_warnings = [
             warning for warning in warned if warning.category is UserWarning
         ]
-        # With Python 3.7 and 3.8, len(user_warnings) = 4. With pandas < 1.5,
-        # pandas.ArrowDtype is not supported. We raise warnings because
-        # range columns have to be converted to object.
-        # With higher Python versions and noextra tests, len(user_warnings) = 1
+        # With pandas < 1.5, pandas.ArrowDtype is not supported
+        # and len(user_warnings) = 4.
+        # We raise warnings because range columns have to be converted to object.
+        # With higher pandas versions and noextra tests, len(user_warnings) = 1
         self.assertIn(len(user_warnings), [1, 4])
 
         # Even though the progress bar won't show, downloading the dataframe
@@ -3991,6 +3991,8 @@ class TestRowIterator(unittest.TestCase):
         )
         self.assertEqual(df.name.dtype.name, "string")
 
+        # While pyproject.toml lists pandas 1.1 as the lowest supported version of
+        # pandas, the pip resolver is not able to resolve pandas 1.1 and numpy
         if hasattr(pandas, "Float64Dtype"):
             self.assertEqual(list(df.miles), [1.77, 6.66, 2.0])
             self.assertEqual(df.miles.dtype.name, "Float64")
@@ -4085,7 +4087,6 @@ class TestRowIterator(unittest.TestCase):
                     {"start": None, "end": None},
                 ],
             )
-
         else:
             self.assertEqual(
                 list(df.date),

@@ -12,9 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from unittest import mock
 import datetime
 import decimal
-from unittest import mock
 
 import pytest
 
@@ -34,12 +34,16 @@ def class_under_test():
     return RowIterator
 
 
+# TODO: The test needs work to account for pandas 2.0+. See Issue: #2132
+# pragma added due to issues with coverage.
 @pytest.mark.skipif(
     pandas.__version__.startswith("2."),
     reason="pandas 2.0 changes some default dtypes and we haven't update the test to account for those",
 )
-def test_to_dataframe_nullable_scalars(monkeypatch, class_under_test):
-    # See tests/system/test_arrow.py for the actual types we get from the API.
+def test_to_dataframe_nullable_scalars(
+    monkeypatch, class_under_test
+):  # pragma: NO COVER
+    """See tests/system/test_arrow.py for the actual types we get from the API."""
     arrow_schema = pyarrow.schema(
         [
             pyarrow.field("bignumeric_col", pyarrow.decimal256(76, scale=38)),
@@ -129,12 +133,10 @@ def test_to_dataframe_nullable_scalars(monkeypatch, class_under_test):
     assert df["int64_col"][0] == -7
     assert df["numeric_col"][0] == decimal.Decimal("-123.456789")
     assert df["string_col"][0] == "abcdefg"
-
     # Pandas timedelta64 might be a better choice for pandas time columns. Then
     # they can more easily be combined with date columns to form datetimes.
     # https://github.com/googleapis/python-bigquery/issues/862
     assert df["time_col"][0] == datetime.time(14, 21, 17, 123456)
-
     assert df["timestamp_col"][0] == pandas.to_datetime("2021-08-09 13:30:44.123456Z")
 
 

@@ -13,7 +13,7 @@
 # limitations under the License.
 
 import copy
-from typing import Dict, Optional
+from typing import Dict, Optional, Union
 
 
 class AvroOptions:
@@ -106,7 +106,7 @@ class ParquetOptions:
         self._properties["enableListInference"] = value
 
     @property
-    def map_target_type(self) -> str:
+    def map_target_type(self) -> Optional[Union[bool, str]]:
         """Indicates whether to simplify the representation of parquet maps to only show keys and values."""
 
         return self._properties.get("mapTargetType")

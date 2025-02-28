@@ -55,7 +55,6 @@ try:
 except ImportError:
     bigquery_magics = None
 
-
 IPYTHON_USER_AGENT = "ipython-{}".format(IPython.__version__)  # type: ignore
 
 

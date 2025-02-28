@@ -36,6 +36,7 @@ try:
 except ImportError:
     magics = None
 
+
 bigquery_storage = pytest.importorskip("google.cloud.bigquery_storage")
 IPython = pytest.importorskip("IPython")
 interactiveshell = pytest.importorskip("IPython.terminal.interactiveshell")

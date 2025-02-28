@@ -23,10 +23,7 @@ from typing import Union
 from unittest import mock
 import warnings
 
-try:
-    import importlib.metadata as metadata
-except ImportError:
-    import importlib_metadata as metadata
+import importlib.metadata as metadata
 
 try:
     import pandas

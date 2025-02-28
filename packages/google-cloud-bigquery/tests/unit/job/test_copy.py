@@ -147,7 +147,6 @@ class TestCopyJob(_Base):
         self._verifyReadonlyResourceProperties(job, resource)
 
         config = resource.get("configuration", {}).get("copy")
-
         table_ref = config["destinationTable"]
         self.assertEqual(job.destination.project, table_ref["projectId"])
         self.assertEqual(job.destination.dataset_id, table_ref["datasetId"])

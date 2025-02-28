@@ -9,6 +9,6 @@ omit =
     google/cloud/bigquery_v2/*  # Legacy proto-based types.
 exclude_lines =
     # Re-enable the standard pragma
-    pragma: NO COVER
+    pragma: (no cover|NO COVER)
     # Ignore debug-only repr
     def __repr__

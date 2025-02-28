@@ -14,7 +14,6 @@
 
 """This script is used to synthesize generated parts of this library."""
 from pathlib import Path
-import textwrap
 
 import synthtool as s
 from synthtool import gcp
@@ -70,13 +69,65 @@ s.move(
         # Include custom SNIPPETS_TESTS job for performance.
         # https://github.com/googleapis/python-bigquery/issues/191
         ".kokoro/presubmit/presubmit.cfg",
+        ".kokoro/presubmit/system-3.8.cfg",
         ".kokoro/continuous/prerelease-deps.cfg",
+        ".kokoro/samples/python3.7/**",
+        ".kokoro/samples/python3.8/**",
         ".github/workflows",  # exclude gh actions as credentials are needed for tests
-	"README.rst",
+        "README.rst",
     ],
 )
 
 python.configure_previous_major_version_branches()
+
+s.replace(
+    ".kokoro/test-samples-impl.sh",
+    """# `virtualenv==20.26.6` is added for Python 3.7 compatibility
+python3.9 -m pip install --upgrade --quiet nox virtualenv==20.26.6""",
+    "python3.9 -m pip install --upgrade --quiet nox virtualenv",
+)
+s.replace(
+    "CONTRIBUTING.rst",
+    "3.7, 3.8, 3.9, 3.10, 3.11, 3.12 and 3.13 on both UNIX and Windows.",
+    "3.9, 3.10, 3.11, 3.12 and 3.13 on both UNIX and Windows.",
+)
+s.replace(
+    "CONTRIBUTING.rst",
+    r"   \$ nox -s system-3.8 -- -k <name of test>",
+    r"   $ nox -s system-3.9 -- -k <name of test>",
+)
+s.replace(
+    "CONTRIBUTING.rst",
+    r"""System tests are only configured to run under Python 3.8.
+      For expediency, we do not run them in older versions of Python 3.""",
+    r"System tests are configured to run under Python 3.9, 3.11, 3.12.",
+)
+s.replace(
+    "CONTRIBUTING.rst",
+    r"\$ nox -s py-3.8",
+    r"$ nox -s py-3.9",
+)
+s.replace(
+    "CONTRIBUTING.rst",
+    r"""-  `Python 3.7`_
+-  `Python 3.8`_
+""",
+    r"",
+)
+s.replace(
+    "CONTRIBUTING.rst",
+    r""".. _Python 3.7: https://docs.python.org/3.7/
+.. _Python 3.8: https://docs.python.org/3.8/
+""",
+    r"",
+)
+s.replace(
+    "scripts/readme-gen/templates/install_deps.tmpl.rst",
+    r"Samples are compatible with Python 3.7",
+    r"Samples are compatible with Python 3.9",
+)
+
+
 # ----------------------------------------------------------------------------
 # Samples templates
 # ----------------------------------------------------------------------------
@@ -93,6 +144,17 @@ s.replace(
     r"exclude_patterns = \[",
     '\\g<0>\n    "google/cloud/bigquery_v2/**",  # Legacy proto-based types.',
 )
+s.replace(
+    "samples/**/noxfile.py",
+    'BLACK_VERSION = "black==22.3.0"',
+    'BLACK_VERSION = "black==23.7.0"',
+)
+s.replace(
+    "samples/**/noxfile.py",
+    r'ALL_VERSIONS = \["3.7", "3.8", "3.9", "3.10", "3.11", "3.12", "3.13"\]',
+    'ALL_VERSIONS = ["3.9", "3.10", "3.11", "3.12", "3.13"]',
+)
+
 
 # ----------------------------------------------------------------------------
 # pytype-related changes

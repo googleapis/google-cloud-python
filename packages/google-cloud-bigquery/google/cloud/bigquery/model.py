@@ -58,7 +58,7 @@ class Model:
         # semantics. The BigQuery API makes a distinction between an unset
         # value, a null value, and a default value (0 or ""), but the protocol
         # buffer classes do not.
-        self._properties = {}
+        self._properties: Dict[str, Any] = {}
 
         if isinstance(model_ref, str):
             model_ref = ModelReference.from_string(model_ref)

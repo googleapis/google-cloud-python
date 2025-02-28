@@ -137,6 +137,8 @@ def _reference_getter(table):
     return TableReference(dataset_ref, table.table_id)
 
 
+# TODO: The typehinting for this needs work. Setting this pragma to temporarily
+# manage a pytype issue that came up in another PR. See Issue: #2132
 def _view_use_legacy_sql_getter(table):
     """bool: Specifies whether to execute the view with Legacy or Standard SQL.
 
@@ -148,10 +150,11 @@ def _view_use_legacy_sql_getter(table):
     Raises:
         ValueError: For invalid value types.
     """
-    view = table._properties.get("view")
+
+    view = table._properties.get("view")  # type: ignore
     if view is not None:
         # The server-side default for useLegacySql is True.
-        return view.get("useLegacySql", True)
+        return view.get("useLegacySql", True)  # type: ignore
     # In some cases, such as in a table list no view object is present, but the
     # resource still represents a view. Use the type as a fallback.
     if table.table_type == "VIEW":
@@ -375,7 +378,7 @@ class Table(_TableBase):
             :meth:`~google.cloud.bigquery.schema.SchemaField.from_api_repr`.
     """
 
-    _PROPERTY_TO_API_FIELD = {
+    _PROPERTY_TO_API_FIELD: Dict[str, Any] = {
         **_TableBase._PROPERTY_TO_API_FIELD,
         "clustering_fields": "clustering",
         "created": "creationTime",
@@ -418,7 +421,10 @@ class Table(_TableBase):
 
     def __init__(self, table_ref, schema=None) -> None:
         table_ref = _table_arg_to_table_ref(table_ref)
-        self._properties = {"tableReference": table_ref.to_api_repr(), "labels": {}}
+        self._properties: Dict[str, Any] = {
+            "tableReference": table_ref.to_api_repr(),
+            "labels": {},
+        }
         # Let the @property do validation.
         if schema is not None:
             self.schema = schema

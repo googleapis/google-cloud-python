@@ -16,7 +16,7 @@
 
 """Define resources for the BigQuery Routines API."""
 
-from typing import Any, Dict, Optional
+from typing import Any, Dict, Optional, Union
 
 import google.cloud._helpers  # type: ignore
 from google.cloud.bigquery import _helpers
@@ -216,7 +216,7 @@ class Routine(object):
         self._properties[self._PROPERTY_TO_API_FIELD["return_type"]] = resource
 
     @property
-    def return_table_type(self) -> Optional[StandardSqlTableType]:
+    def return_table_type(self) -> Union[StandardSqlTableType, Any, None]:
         """The return type of a Table Valued Function (TVF) routine.
 
         .. versionadded:: 2.22.0
@@ -518,17 +518,23 @@ class RoutineReference(object):
     @property
     def project(self):
         """str: ID of the project containing the routine."""
-        return self._properties["projectId"]  # pytype: disable=key-error
+        # TODO: The typehinting for this needs work. Setting this pragma to temporarily
+        # manage a pytype issue that came up in another PR. See Issue: #2132
+        return self._properties["projectId"]  # pytype: disable=typed-dict-error
 
     @property
     def dataset_id(self):
         """str: ID of dataset containing the routine."""
-        return self._properties["datasetId"]  # pytype: disable=key-error
+        # TODO: The typehinting for this needs work. Setting this pragma to temporarily
+        # manage a pytype issue that came up in another PR. See Issue: #2132
+        return self._properties["datasetId"]  # pytype: disable=typed-dict-error
 
     @property
     def routine_id(self):
         """str: The routine ID."""
-        return self._properties["routineId"]  # pytype: disable=key-error
+        # TODO: The typehinting for this needs work. Setting this pragma to temporarily
+        # manage a pytype issue that came up in another PR. See Issue: #2132
+        return self._properties["routineId"]  # pytype: disable=typed-dict-error
 
     @property
     def path(self):
