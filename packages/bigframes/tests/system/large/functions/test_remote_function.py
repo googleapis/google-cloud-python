@@ -1359,6 +1359,16 @@ def test_remote_function_via_session_custom_sa(scalars_dfs):
         )
 
 
+def test_remote_function_warns_default_cloud_function_service_account():
+    project = "bigframes-dev-perf"
+    rf_session = bigframes.Session(context=bigframes.BigQueryOptions(project=project))
+
+    with pytest.warns(FutureWarning, match="You have not explicitly set a"):
+        rf_session.remote_function(
+            cloud_function_service_account=None,  # Explicitly omit service account.
+        )
+
+
 @pytest.mark.flaky(retries=2, delay=120)
 def test_remote_function_with_gcf_cmek():
     # TODO(shobs): Automate the following set-up during testing in the test project.
