@@ -805,7 +805,7 @@ class SpeechToTextConfig(proto.Message):
             doesn't return any word-level information.
         use_timeout_based_endpointing (bool):
             Use timeout based endpointing, interpreting
-            endpointer sensitivy as seconds of timeout
+            endpointer sensitivity as seconds of timeout
             value.
     """
 
