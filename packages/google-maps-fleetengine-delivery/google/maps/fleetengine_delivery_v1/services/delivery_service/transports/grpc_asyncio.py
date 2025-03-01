@@ -25,6 +25,7 @@ from google.api_core import gapic_v1, grpc_helpers_async
 from google.api_core import retry_async as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
+from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf.json_format import MessageToJson
 import google.protobuf.message
 import grpc  # type: ignore
@@ -391,6 +392,37 @@ class DeliveryServiceGrpcAsyncIOTransport(DeliveryServiceTransport):
         return self._stubs["get_delivery_vehicle"]
 
     @property
+    def delete_delivery_vehicle(
+        self,
+    ) -> Callable[
+        [delivery_api.DeleteDeliveryVehicleRequest], Awaitable[empty_pb2.Empty]
+    ]:
+        r"""Return a callable for the delete delivery vehicle method over gRPC.
+
+        Deletes a DeliveryVehicle from the Fleet Engine.
+
+        Returns FAILED_PRECONDITION if the DeliveryVehicle has OPEN
+        Tasks assigned to it.
+
+        Returns:
+            Callable[[~.DeleteDeliveryVehicleRequest],
+                    Awaitable[~.Empty]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_delivery_vehicle" not in self._stubs:
+            self._stubs["delete_delivery_vehicle"] = self._logged_channel.unary_unary(
+                "/maps.fleetengine.delivery.v1.DeliveryService/DeleteDeliveryVehicle",
+                request_serializer=delivery_api.DeleteDeliveryVehicleRequest.serialize,
+                response_deserializer=empty_pb2.Empty.FromString,
+            )
+        return self._stubs["delete_delivery_vehicle"]
+
+    @property
     def update_delivery_vehicle(
         self,
     ) -> Callable[
@@ -507,6 +539,35 @@ class DeliveryServiceGrpcAsyncIOTransport(DeliveryServiceTransport):
                 response_deserializer=tasks.Task.deserialize,
             )
         return self._stubs["get_task"]
+
+    @property
+    def delete_task(
+        self,
+    ) -> Callable[[delivery_api.DeleteTaskRequest], Awaitable[empty_pb2.Empty]]:
+        r"""Return a callable for the delete task method over gRPC.
+
+        Deletes a single Task.
+
+        Returns FAILED_PRECONDITION if the Task is OPEN and assigned to
+        a DeliveryVehicle.
+
+        Returns:
+            Callable[[~.DeleteTaskRequest],
+                    Awaitable[~.Empty]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_task" not in self._stubs:
+            self._stubs["delete_task"] = self._logged_channel.unary_unary(
+                "/maps.fleetengine.delivery.v1.DeliveryService/DeleteTask",
+                request_serializer=delivery_api.DeleteTaskRequest.serialize,
+                response_deserializer=empty_pb2.Empty.FromString,
+            )
+        return self._stubs["delete_task"]
 
     @property
     def update_task(
@@ -652,6 +713,11 @@ class DeliveryServiceGrpcAsyncIOTransport(DeliveryServiceTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
+            self.delete_delivery_vehicle: self._wrap_method(
+                self.delete_delivery_vehicle,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.update_delivery_vehicle: self._wrap_method(
                 self.update_delivery_vehicle,
                 default_retry=retries.AsyncRetry(
@@ -706,6 +772,11 @@ class DeliveryServiceGrpcAsyncIOTransport(DeliveryServiceTransport):
                     deadline=60.0,
                 ),
                 default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.delete_task: self._wrap_method(
+                self.delete_task,
+                default_timeout=None,
                 client_info=client_info,
             ),
             self.update_task: self._wrap_method(

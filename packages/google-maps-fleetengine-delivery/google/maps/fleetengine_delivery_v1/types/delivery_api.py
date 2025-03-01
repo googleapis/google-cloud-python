@@ -32,6 +32,7 @@ __protobuf__ = proto.module(
     manifest={
         "CreateDeliveryVehicleRequest",
         "GetDeliveryVehicleRequest",
+        "DeleteDeliveryVehicleRequest",
         "ListDeliveryVehiclesRequest",
         "ListDeliveryVehiclesResponse",
         "UpdateDeliveryVehicleRequest",
@@ -39,6 +40,7 @@ __protobuf__ = proto.module(
         "BatchCreateTasksResponse",
         "CreateTaskRequest",
         "GetTaskRequest",
+        "DeleteTaskRequest",
         "UpdateTaskRequest",
         "ListTasksRequest",
         "ListTasksResponse",
@@ -124,6 +126,31 @@ class GetDeliveryVehicleRequest(proto.Message):
     name: str = proto.Field(
         proto.STRING,
         number=3,
+    )
+
+
+class DeleteDeliveryVehicleRequest(proto.Message):
+    r"""DeleteDeliveryVehicle request message.
+
+    Attributes:
+        header (google.maps.fleetengine_delivery_v1.types.DeliveryRequestHeader):
+            Optional. The standard Delivery API request
+            header.
+        name (str):
+            Required. Must be in the format
+            ``providers/{provider}/deliveryVehicles/{delivery_vehicle}``.
+            The ``provider`` must be the Google Cloud Project ID. For
+            example, ``sample-cloud-project``.
+    """
+
+    header: mfd_header.DeliveryRequestHeader = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=mfd_header.DeliveryRequestHeader,
+    )
+    name: str = proto.Field(
+        proto.STRING,
+        number=2,
     )
 
 
@@ -428,6 +455,31 @@ class GetTaskRequest(proto.Message):
     name: str = proto.Field(
         proto.STRING,
         number=3,
+    )
+
+
+class DeleteTaskRequest(proto.Message):
+    r"""DeleteTask request message.
+
+    Attributes:
+        header (google.maps.fleetengine_delivery_v1.types.DeliveryRequestHeader):
+            Optional. The standard Delivery API request
+            header.
+        name (str):
+            Required. Must be in the format
+            ``providers/{provider}/tasks/{task}``. The ``provider`` must
+            be the Google Cloud Project ID. For example,
+            ``sample-cloud-project``.
+    """
+
+    header: mfd_header.DeliveryRequestHeader = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=mfd_header.DeliveryRequestHeader,
+    )
+    name: str = proto.Field(
+        proto.STRING,
+        number=2,
     )
 
 
