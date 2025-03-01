@@ -775,7 +775,10 @@ class NetworkEdgeSecurityServicesClient(
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project])
+        flattened_params = [project]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -912,7 +915,10 @@ class NetworkEdgeSecurityServicesClient(
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project, region, network_edge_security_service])
+        flattened_params = [project, region, network_edge_security_service]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -1049,7 +1055,10 @@ class NetworkEdgeSecurityServicesClient(
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project, region, network_edge_security_service])
+        flattened_params = [project, region, network_edge_security_service]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -1211,7 +1220,10 @@ class NetworkEdgeSecurityServicesClient(
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project, region, network_edge_security_service])
+        flattened_params = [project, region, network_edge_security_service]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -1348,8 +1360,9 @@ class NetworkEdgeSecurityServicesClient(
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any(
-            [project, region, network_edge_security_service_resource]
+        flattened_params = [project, region, network_edge_security_service_resource]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
         )
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1485,8 +1498,9 @@ class NetworkEdgeSecurityServicesClient(
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any(
-            [project, region, network_edge_security_service_resource]
+        flattened_params = [project, region, network_edge_security_service_resource]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
         )
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1656,13 +1670,14 @@ class NetworkEdgeSecurityServicesClient(
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any(
-            [
-                project,
-                region,
-                network_edge_security_service,
-                network_edge_security_service_resource,
-            ]
+        flattened_params = [
+            project,
+            region,
+            network_edge_security_service,
+            network_edge_security_service_resource,
+        ]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
         )
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1813,13 +1828,14 @@ class NetworkEdgeSecurityServicesClient(
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any(
-            [
-                project,
-                region,
-                network_edge_security_service,
-                network_edge_security_service_resource,
-            ]
+        flattened_params = [
+            project,
+            region,
+            network_edge_security_service,
+            network_edge_security_service_resource,
+        ]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
         )
         if request is not None and has_flattened_params:
             raise ValueError(
