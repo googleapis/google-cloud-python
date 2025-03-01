@@ -1,0 +1,2 @@
+recursive-include google/cloud/managedkafka *.py
+recursive-include google/cloud/managedkafka_v1 *.py
