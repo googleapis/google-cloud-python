@@ -55,9 +55,11 @@ class InputConfig(proto.Message):
     with non-terminal symbols defined near the end of this comment. The
     formats are:
 
-    AutoML Vision:
+    AutoML Vision
+    ^^^^^^^^^^^^^
 
-    Classification:
+    Classification
+    ''''''''''''''
 
     See `Preparing your training
     data <https://cloud.google.com/vision/automl/docs/prepare>`__ for
@@ -98,7 +100,8 @@ class InputConfig(proto.Message):
         UNASSIGNED,gs://folder/image3.jpg,daisy
         UNASSIGNED,gs://folder/image4.jpg
 
-    Object Detection:
+    Object Detection
+    ''''''''''''''''
 
     See `Preparing your training
     data <https://cloud.google.com/vision/automl/object-detection/docs/prepare>`__
@@ -148,9 +151,11 @@ class InputConfig(proto.Message):
           </section>
         </div>
 
-    AutoML Video Intelligence:
+    AutoML Video Intelligence
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-    Classification:
+    Classification
+    ''''''''''''''
 
     See `Preparing your training
     data <https://cloud.google.com/video-intelligence/automl/docs/prepare>`__
@@ -200,7 +205,8 @@ class InputConfig(proto.Message):
         gs://folder/vid2.avi,car,0,60.5
         gs://folder/vid3.avi,,,
 
-    Object Tracking:
+    Object Tracking
+    '''''''''''''''
 
     See `Preparing your training
     data </video-intelligence/automl/object-tracking/docs/prepare>`__
@@ -263,9 +269,11 @@ class InputConfig(proto.Message):
          gs://folder/video2.avi,car,1,0,.1,.9,,,.9,.1,,
          gs://folder/video2.avi,,,,,,,,,,,
 
-    AutoML Natural Language:
+    AutoML Natural Language
+    ^^^^^^^^^^^^^^^^^^^^^^^
 
-    Entity Extraction:
+    Entity Extraction
+    '''''''''''''''''
 
     See `Preparing your training
     data </natural-language/automl/entity-analysis/docs/prepare>`__ for
@@ -459,7 +467,8 @@ class InputConfig(proto.Message):
                   },
                 ],
 
-    Classification:
+    Classification
+    ''''''''''''''
 
     See `Preparing your training
     data <https://cloud.google.com/natural-language/automl/docs/prepare>`__
@@ -511,7 +520,8 @@ class InputConfig(proto.Message):
         TEST,gs://folder/document.pdf
         VALIDATE,gs://folder/text_files.zip,BadFood
 
-    Sentiment Analysis:
+    Sentiment Analysis
+    ''''''''''''''''''
 
     See `Preparing your training
     data <https://cloud.google.com/natural-language/automl/docs/prepare>`__
@@ -574,7 +584,8 @@ class InputConfig(proto.Message):
         TEST,gs://folder/document.pdf
         VALIDATE,gs://folder/text_files.zip,2
 
-    AutoML Tables:
+    AutoML Tables
+    ^^^^^^^^^^^^^
 
     See `Preparing your training
     data <https://cloud.google.com/automl-tables/docs/prepare>`__ for
@@ -691,7 +702,8 @@ class InputConfig(proto.Message):
             semantic of the imported data, any string must be up to
             25000 characters long.
 
-            AutoML Tables:
+            AutoML Tables
+            ^^^^^^^^^^^^^
 
             ``schema_inference_version`` : (integer) This value must be
             supplied. The version of the algorithm to use for the
@@ -724,29 +736,11 @@ class BatchPredictInputConfig(proto.Message):
     with non-terminal symbols defined near the end of this comment. The
     formats are:
 
-    AutoML Vision:
+    AutoML Vision
+    ^^^^^^^^^^^^^
 
-    Classification:
-
-    One or more CSV files where each line is a single column:
-
-    ::
-
-        GCS_FILE_PATH
-
-    The Google Cloud Storage location of an image of up to 30MB in size.
-    Supported extensions: .JPEG, .GIF, .PNG. This path is treated as the
-    ID in the batch predict output.
-
-    Sample rows:
-
-    ::
-
-        gs://folder/image1.jpeg
-        gs://folder/image2.gif
-        gs://folder/image3.png
-
-    Object Detection:
+    Classification
+    ''''''''''''''
 
     One or more CSV files where each line is a single column:
 
@@ -766,9 +760,32 @@ class BatchPredictInputConfig(proto.Message):
         gs://folder/image2.gif
         gs://folder/image3.png
 
-    AutoML Video Intelligence:
+    Object Detection
+    ''''''''''''''''
 
-    Classification:
+    One or more CSV files where each line is a single column:
+
+    ::
+
+        GCS_FILE_PATH
+
+    The Google Cloud Storage location of an image of up to 30MB in size.
+    Supported extensions: .JPEG, .GIF, .PNG. This path is treated as the
+    ID in the batch predict output.
+
+    Sample rows:
+
+    ::
+
+        gs://folder/image1.jpeg
+        gs://folder/image2.gif
+        gs://folder/image3.png
+
+    AutoML Video Intelligence
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+    Classification
+    ''''''''''''''
 
     One or more CSV files where each line is a single column:
 
@@ -791,7 +808,8 @@ class BatchPredictInputConfig(proto.Message):
         gs://folder/video1.mp4,20,60
         gs://folder/vid2.mov,0,inf
 
-    Object Tracking:
+    Object Tracking
+    '''''''''''''''
 
     One or more CSV files where each line is a single column:
 
@@ -814,9 +832,11 @@ class BatchPredictInputConfig(proto.Message):
         gs://folder/video1.mp4,20,60
         gs://folder/vid2.mov,0,inf
 
-    AutoML Natural Language:
+    AutoML Natural Language
+    ^^^^^^^^^^^^^^^^^^^^^^^
 
-    Classification:
+    Classification
+    ''''''''''''''
 
     One or more CSV files where each line is a single column:
 
@@ -837,7 +857,8 @@ class BatchPredictInputConfig(proto.Message):
         gs://folder/text2.pdf
         gs://folder/text3.tif
 
-    Sentiment Analysis:
+    Sentiment Analysis
+    ''''''''''''''''''
 
     One or more CSV files where each line is a single column:
 
@@ -858,7 +879,8 @@ class BatchPredictInputConfig(proto.Message):
         gs://folder/text2.pdf
         gs://folder/text3.tif
 
-    Entity Extraction:
+    Entity Extraction
+    '''''''''''''''''
 
     One or more JSONL (JSON Lines) files that either provide inline text
     or documents. You can only use one format, either inline text or
@@ -933,7 +955,8 @@ class BatchPredictInputConfig(proto.Message):
            }
          }
 
-    AutoML Tables:
+    AutoML Tables
+    ^^^^^^^^^^^^^
 
     See `Preparing your training
     data <https://cloud.google.com/automl-tables/docs/predict-batch>`__
