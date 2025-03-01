@@ -215,6 +215,8 @@ class Message(proto.Message):
             created in Contact Center AI.
         send_time (google.protobuf.timestamp_pb2.Timestamp):
             Optional. The time when the message was sent.
+            For voice messages, this is the time when an
+            utterance started.
         message_annotation (google.cloud.dialogflow_v2beta1.types.MessageAnnotation):
             Output only. The annotation for the message.
         sentiment_analysis (google.cloud.dialogflow_v2beta1.types.SentimentAnalysisResult):
@@ -820,8 +822,8 @@ class AnalyzeContentRequest(proto.Message):
             Note: this field should only be used if you are
             connecting to a Dialogflow CX agent.
         cx_current_page (str):
-            The unique identifier of the CX page to override the
-            ``current_page`` in the session. Format:
+            The unique identifier of the Dialogflow CX page to override
+            the ``current_page`` in the session. Format:
             ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>/pages/<Page ID>``.
 
             If ``cx_current_page`` is specified, the previous state of
@@ -1178,8 +1180,8 @@ class StreamingAnalyzeContentRequest(proto.Message):
             Note: this field should only be used if you are
             connecting to a Dialogflow CX agent.
         cx_current_page (str):
-            The unique identifier of the CX page to override the
-            ``current_page`` in the session. Format:
+            The unique identifier of the Dialogflow CX page to override
+            the ``current_page`` in the session. Format:
             ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>/pages/<Page ID>``.
 
             If ``cx_current_page`` is specified, the previous state of
@@ -1213,10 +1215,10 @@ class StreamingAnalyzeContentRequest(proto.Message):
             You can find more details in
             https://cloud.google.com/agent-assist/docs/extended-streaming
         enable_partial_automated_agent_reply (bool):
-            Enable partial virtual agent responses. If this flag is not
-            enabled, response stream still contains only one final
-            response even if some ``Fulfillment``\ s in Dialogflow
-            virtual agent have been configured to return partial
+            Optional. Enable partial responses from Dialogflow CX agent.
+            If this flag is not enabled, response stream still contains
+            only one final response even if some ``Fulfillment``\ s in
+            Dialogflow CX agent have been configured to return partial
             responses.
         enable_debugging_info (bool):
             if true, ``StreamingAnalyzeContentResponse.debugging_info``
@@ -2475,8 +2477,9 @@ class ResponseMessage(proto.Message):
 
         You may set this, for example:
 
-        -  In the entry fulfillment of a CX Page if entering the page
-           indicates something went extremely wrong in the conversation.
+        -  In the entry fulfillment of a Dialogflow CX Page if entering the
+           page indicates something went extremely wrong in the
+           conversation.
         -  In a webhook response when you determine that the customer issue
            can only be handled by a human.
 
@@ -2655,7 +2658,7 @@ class SuggestKnowledgeAssistRequest(proto.Message):
             Optional. The previously suggested query for
             the given conversation. This helps identify
             whether the next suggestion we generate is
-            resonably different from the previous one. This
+            reasonably different from the previous one. This
             is useful to avoid similar suggestions within
             the conversation.
     """

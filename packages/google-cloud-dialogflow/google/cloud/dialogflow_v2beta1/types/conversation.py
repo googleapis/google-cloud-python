@@ -1018,10 +1018,21 @@ class SearchKnowledgeRequest(proto.Message):
             filter_specs (MutableSequence[google.cloud.dialogflow_v2beta1.types.SearchKnowledgeRequest.SearchConfig.FilterSpecs]):
                 Optional. Filter specification for data store
                 queries.
+                Maps from datastore name to the filter
+                expression for that datastore. Do not specify
+                more than one FilterSpecs for each datastore
+                name. If multiple FilterSpecs are provided for
+                the same datastore name, the behavior is
+                undefined.
         """
 
         class BoostSpecs(proto.Message):
             r"""Boost specifications for data stores.
+
+            Maps from datastore name to their boost configuration. Do not
+            specify more than one BoostSpecs for each datastore name. If
+            multiple BoostSpecs are provided for the same datastore name,
+            the behavior is undefined.
 
             Attributes:
                 data_stores (MutableSequence[str]):
@@ -1044,7 +1055,7 @@ class SearchKnowledgeRequest(proto.Message):
                     condition_boost_specs (MutableSequence[google.cloud.dialogflow_v2beta1.types.SearchKnowledgeRequest.SearchConfig.BoostSpecs.BoostSpec.ConditionBoostSpec]):
                         Optional. Condition boost specifications. If
                         a document matches multiple conditions in the
-                        specifictions, boost scores from these
+                        specifications, boost scores from these
                         specifications are all applied and combined in a
                         non-linear way. Maximum number of specifications
                         is 20.
