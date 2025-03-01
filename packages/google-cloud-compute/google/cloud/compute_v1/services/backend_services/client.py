@@ -775,7 +775,10 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project, backend_service, signed_url_key_resource])
+        flattened_params = [project, backend_service, signed_url_key_resource]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -908,7 +911,10 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project, backend_service, signed_url_key_resource])
+        flattened_params = [project, backend_service, signed_url_key_resource]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -1056,7 +1062,10 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project])
+        flattened_params = [project]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -1180,7 +1189,10 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project, backend_service])
+        flattened_params = [project, backend_service]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -1300,7 +1312,10 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project, backend_service])
+        flattened_params = [project, backend_service]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -1458,7 +1473,10 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project, backend_service, key_name])
+        flattened_params = [project, backend_service, key_name]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -1594,7 +1612,10 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project, backend_service, key_name])
+        flattened_params = [project, backend_service, key_name]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -1753,7 +1774,10 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project, backend_service])
+        flattened_params = [project, backend_service]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -1881,8 +1905,9 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any(
-            [project, backend_service, resource_group_reference_resource]
+        flattened_params = [project, backend_service, resource_group_reference_resource]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
         )
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2030,7 +2055,10 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project, resource])
+        flattened_params = [project, resource]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -2149,7 +2177,10 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project, backend_service_resource])
+        flattened_params = [project, backend_service_resource]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -2263,7 +2294,10 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project, backend_service_resource])
+        flattened_params = [project, backend_service_resource]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -2398,7 +2432,10 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project])
+        flattened_params = [project]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -2518,7 +2555,10 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project])
+        flattened_params = [project]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -2652,7 +2692,10 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project, backend_service, backend_service_resource])
+        flattened_params = [project, backend_service, backend_service_resource]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -2784,7 +2827,10 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project, backend_service, backend_service_resource])
+        flattened_params = [project, backend_service, backend_service_resource]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -2943,8 +2989,13 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any(
-            [project, backend_service, security_policy_reference_resource]
+        flattened_params = [
+            project,
+            backend_service,
+            security_policy_reference_resource,
+        ]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
         )
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3082,8 +3133,13 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any(
-            [project, backend_service, security_policy_reference_resource]
+        flattened_params = [
+            project,
+            backend_service,
+            security_policy_reference_resource,
+        ]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
         )
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3263,8 +3319,9 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any(
-            [project, resource, global_set_policy_request_resource]
+        flattened_params = [project, resource, global_set_policy_request_resource]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
         )
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3402,8 +3459,13 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any(
-            [project, backend_service, security_policy_reference_resource]
+        flattened_params = [
+            project,
+            backend_service,
+            security_policy_reference_resource,
+        ]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
         )
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3541,8 +3603,13 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any(
-            [project, backend_service, security_policy_reference_resource]
+        flattened_params = [
+            project,
+            backend_service,
+            security_policy_reference_resource,
+        ]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
         )
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3700,8 +3767,9 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any(
-            [project, resource, test_permissions_request_resource]
+        flattened_params = [project, resource, test_permissions_request_resource]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
         )
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3834,7 +3902,10 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project, backend_service, backend_service_resource])
+        flattened_params = [project, backend_service, backend_service_resource]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -3964,7 +4035,10 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project, backend_service, backend_service_resource])
+        flattened_params = [project, backend_service, backend_service_resource]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "

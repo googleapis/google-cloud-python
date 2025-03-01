@@ -788,12 +788,13 @@ class GlobalNetworkEndpointGroupsClient(
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any(
-            [
-                project,
-                network_endpoint_group,
-                global_network_endpoint_groups_attach_endpoints_request_resource,
-            ]
+        flattened_params = [
+            project,
+            network_endpoint_group,
+            global_network_endpoint_groups_attach_endpoints_request_resource,
+        ]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
         )
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -938,12 +939,13 @@ class GlobalNetworkEndpointGroupsClient(
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any(
-            [
-                project,
-                network_endpoint_group,
-                global_network_endpoint_groups_attach_endpoints_request_resource,
-            ]
+        flattened_params = [
+            project,
+            network_endpoint_group,
+            global_network_endpoint_groups_attach_endpoints_request_resource,
+        ]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
         )
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1104,7 +1106,10 @@ class GlobalNetworkEndpointGroupsClient(
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project, network_endpoint_group])
+        flattened_params = [project, network_endpoint_group]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -1229,7 +1234,10 @@ class GlobalNetworkEndpointGroupsClient(
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project, network_endpoint_group])
+        flattened_params = [project, network_endpoint_group]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -1386,12 +1394,13 @@ class GlobalNetworkEndpointGroupsClient(
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any(
-            [
-                project,
-                network_endpoint_group,
-                global_network_endpoint_groups_detach_endpoints_request_resource,
-            ]
+        flattened_params = [
+            project,
+            network_endpoint_group,
+            global_network_endpoint_groups_detach_endpoints_request_resource,
+        ]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
         )
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1536,12 +1545,13 @@ class GlobalNetworkEndpointGroupsClient(
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any(
-            [
-                project,
-                network_endpoint_group,
-                global_network_endpoint_groups_detach_endpoints_request_resource,
-            ]
+        flattened_params = [
+            project,
+            network_endpoint_group,
+            global_network_endpoint_groups_detach_endpoints_request_resource,
+        ]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
         )
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1705,7 +1715,10 @@ class GlobalNetworkEndpointGroupsClient(
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project, network_endpoint_group])
+        flattened_params = [project, network_endpoint_group]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -1826,7 +1839,10 @@ class GlobalNetworkEndpointGroupsClient(
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project, network_endpoint_group_resource])
+        flattened_params = [project, network_endpoint_group_resource]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -1944,7 +1960,10 @@ class GlobalNetworkEndpointGroupsClient(
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project, network_endpoint_group_resource])
+        flattened_params = [project, network_endpoint_group_resource]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -2081,7 +2100,10 @@ class GlobalNetworkEndpointGroupsClient(
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project])
+        flattened_params = [project]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -2212,7 +2234,10 @@ class GlobalNetworkEndpointGroupsClient(
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project, network_endpoint_group])
+        flattened_params = [project, network_endpoint_group]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "

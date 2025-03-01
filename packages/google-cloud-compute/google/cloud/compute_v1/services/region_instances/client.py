@@ -772,8 +772,9 @@ class RegionInstancesClient(metaclass=RegionInstancesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any(
-            [project, region, bulk_insert_instance_resource_resource]
+        flattened_params = [project, region, bulk_insert_instance_resource_resource]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
         )
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -907,8 +908,9 @@ class RegionInstancesClient(metaclass=RegionInstancesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any(
-            [project, region, bulk_insert_instance_resource_resource]
+        flattened_params = [project, region, bulk_insert_instance_resource_resource]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
         )
         if request is not None and has_flattened_params:
             raise ValueError(

@@ -780,8 +780,15 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any(
-            [project, zone, instance, network_interface, access_config_resource]
+        flattened_params = [
+            project,
+            zone,
+            instance,
+            network_interface,
+            access_config_resource,
+        ]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
         )
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -932,8 +939,15 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any(
-            [project, zone, instance, network_interface, access_config_resource]
+        flattened_params = [
+            project,
+            zone,
+            instance,
+            network_interface,
+            access_config_resource,
+        ]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
         )
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1105,8 +1119,14 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any(
-            [project, zone, instance, instances_add_resource_policies_request_resource]
+        flattened_params = [
+            project,
+            zone,
+            instance,
+            instances_add_resource_policies_request_resource,
+        ]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
         )
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1253,8 +1273,14 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any(
-            [project, zone, instance, instances_add_resource_policies_request_resource]
+        flattened_params = [
+            project,
+            zone,
+            instance,
+            instances_add_resource_policies_request_resource,
+        ]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
         )
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1405,7 +1431,10 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project])
+        flattened_params = [project]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -1546,7 +1575,10 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project, zone, instance, attached_disk_resource])
+        flattened_params = [project, zone, instance, attached_disk_resource]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -1688,7 +1720,10 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project, zone, instance, attached_disk_resource])
+        flattened_params = [project, zone, instance, attached_disk_resource]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -1848,8 +1883,9 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any(
-            [project, zone, bulk_insert_instance_resource_resource]
+        flattened_params = [project, zone, bulk_insert_instance_resource_resource]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
         )
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1984,8 +2020,9 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any(
-            [project, zone, bulk_insert_instance_resource_resource]
+        flattened_params = [project, zone, bulk_insert_instance_resource_resource]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
         )
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2145,7 +2182,10 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project, zone, instance])
+        flattened_params = [project, zone, instance]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -2278,7 +2318,10 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project, zone, instance])
+        flattened_params = [project, zone, instance]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -2452,8 +2495,9 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any(
-            [project, zone, instance, access_config, network_interface]
+        flattened_params = [project, zone, instance, access_config, network_interface]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
         )
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2607,8 +2651,9 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any(
-            [project, zone, instance, access_config, network_interface]
+        flattened_params = [project, zone, instance, access_config, network_interface]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
         )
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2779,7 +2824,10 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project, zone, instance, device_name])
+        flattened_params = [project, zone, instance, device_name]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -2922,7 +2970,10 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project, zone, instance, device_name])
+        flattened_params = [project, zone, instance, device_name]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -3083,7 +3134,10 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project, zone, instance])
+        flattened_params = [project, zone, instance]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -3225,7 +3279,10 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project, zone, instance, network_interface])
+        flattened_params = [project, zone, instance, network_interface]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -3359,7 +3416,10 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project, zone, instance])
+        flattened_params = [project, zone, instance]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -3512,7 +3572,10 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project, zone, resource])
+        flattened_params = [project, zone, resource]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -3642,7 +3705,10 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project, zone, instance])
+        flattened_params = [project, zone, instance]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -3775,7 +3841,10 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project, zone, instance])
+        flattened_params = [project, zone, instance]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -3907,7 +3976,10 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project, zone, instance])
+        flattened_params = [project, zone, instance]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -4039,7 +4111,10 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project, zone, instance_resource])
+        flattened_params = [project, zone, instance_resource]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -4168,7 +4243,10 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project, zone, instance_resource])
+        flattened_params = [project, zone, instance_resource]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -4319,7 +4397,10 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project, zone])
+        flattened_params = [project, zone]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -4470,7 +4551,10 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project, zone, instance])
+        flattened_params = [project, zone, instance]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -4615,7 +4699,10 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project, zone, instance])
+        flattened_params = [project, zone, instance]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -4749,7 +4836,10 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project, zone, instance])
+        flattened_params = [project, zone, instance]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -4914,13 +5004,14 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any(
-            [
-                project,
-                zone,
-                instance,
-                instances_remove_resource_policies_request_resource,
-            ]
+        flattened_params = [
+            project,
+            zone,
+            instance,
+            instances_remove_resource_policies_request_resource,
+        ]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
         )
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -5065,13 +5156,14 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any(
-            [
-                project,
-                zone,
-                instance,
-                instances_remove_resource_policies_request_resource,
-            ]
+        flattened_params = [
+            project,
+            zone,
+            instance,
+            instances_remove_resource_policies_request_resource,
+        ]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
         )
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -5235,7 +5327,10 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project, zone, instance])
+        flattened_params = [project, zone, instance]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -5369,7 +5464,10 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project, zone, instance])
+        flattened_params = [project, zone, instance]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -5527,7 +5625,10 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project, zone, instance])
+        flattened_params = [project, zone, instance]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -5660,7 +5761,10 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project, zone, instance])
+        flattened_params = [project, zone, instance]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -5820,7 +5924,10 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project, zone, instance])
+        flattened_params = [project, zone, instance]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -5956,7 +6063,10 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project, zone, resource])
+        flattened_params = [project, zone, resource]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -6090,7 +6200,10 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project, zone, resource])
+        flattened_params = [project, zone, resource]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -6266,7 +6379,10 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project, zone, instance, auto_delete, device_name])
+        flattened_params = [project, zone, instance, auto_delete, device_name]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -6421,7 +6537,10 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project, zone, instance, auto_delete, device_name])
+        flattened_params = [project, zone, instance, auto_delete, device_name]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -6609,8 +6728,9 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any(
-            [project, zone, resource, zone_set_policy_request_resource]
+        flattened_params = [project, zone, resource, zone_set_policy_request_resource]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
         )
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -6756,8 +6876,14 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any(
-            [project, zone, instance, instances_set_labels_request_resource]
+        flattened_params = [
+            project,
+            zone,
+            instance,
+            instances_set_labels_request_resource,
+        ]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
         )
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -6903,8 +7029,14 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any(
-            [project, zone, instance, instances_set_labels_request_resource]
+        flattened_params = [
+            project,
+            zone,
+            instance,
+            instances_set_labels_request_resource,
+        ]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
         )
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -7077,8 +7209,14 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any(
-            [project, zone, instance, instances_set_machine_resources_request_resource]
+        flattened_params = [
+            project,
+            zone,
+            instance,
+            instances_set_machine_resources_request_resource,
+        ]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
         )
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -7226,8 +7364,14 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any(
-            [project, zone, instance, instances_set_machine_resources_request_resource]
+        flattened_params = [
+            project,
+            zone,
+            instance,
+            instances_set_machine_resources_request_resource,
+        ]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
         )
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -7398,8 +7542,14 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any(
-            [project, zone, instance, instances_set_machine_type_request_resource]
+        flattened_params = [
+            project,
+            zone,
+            instance,
+            instances_set_machine_type_request_resource,
+        ]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
         )
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -7545,8 +7695,14 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any(
-            [project, zone, instance, instances_set_machine_type_request_resource]
+        flattened_params = [
+            project,
+            zone,
+            instance,
+            instances_set_machine_type_request_resource,
+        ]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
         )
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -7715,7 +7871,10 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project, zone, instance, metadata_resource])
+        flattened_params = [project, zone, instance, metadata_resource]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -7856,7 +8015,10 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project, zone, instance, metadata_resource])
+        flattened_params = [project, zone, instance, metadata_resource]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -8026,8 +8188,14 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any(
-            [project, zone, instance, instances_set_min_cpu_platform_request_resource]
+        flattened_params = [
+            project,
+            zone,
+            instance,
+            instances_set_min_cpu_platform_request_resource,
+        ]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
         )
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -8175,8 +8343,14 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any(
-            [project, zone, instance, instances_set_min_cpu_platform_request_resource]
+        flattened_params = [
+            project,
+            zone,
+            instance,
+            instances_set_min_cpu_platform_request_resource,
+        ]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
         )
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -8344,8 +8518,14 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any(
-            [project, zone, instance, instances_set_name_request_resource]
+        flattened_params = [
+            project,
+            zone,
+            instance,
+            instances_set_name_request_resource,
+        ]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
         )
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -8488,8 +8668,14 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any(
-            [project, zone, instance, instances_set_name_request_resource]
+        flattened_params = [
+            project,
+            zone,
+            instance,
+            instances_set_name_request_resource,
+        ]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
         )
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -8660,7 +8846,10 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project, zone, instance, scheduling_resource])
+        flattened_params = [project, zone, instance, scheduling_resource]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -8803,7 +8992,10 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project, zone, instance, scheduling_resource])
+        flattened_params = [project, zone, instance, scheduling_resource]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -8973,8 +9165,14 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any(
-            [project, zone, instance, instances_set_security_policy_request_resource]
+        flattened_params = [
+            project,
+            zone,
+            instance,
+            instances_set_security_policy_request_resource,
+        ]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
         )
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -9122,8 +9320,14 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any(
-            [project, zone, instance, instances_set_security_policy_request_resource]
+        flattened_params = [
+            project,
+            zone,
+            instance,
+            instances_set_security_policy_request_resource,
+        ]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
         )
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -9295,8 +9499,14 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any(
-            [project, zone, instance, instances_set_service_account_request_resource]
+        flattened_params = [
+            project,
+            zone,
+            instance,
+            instances_set_service_account_request_resource,
+        ]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
         )
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -9443,8 +9653,14 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any(
-            [project, zone, instance, instances_set_service_account_request_resource]
+        flattened_params = [
+            project,
+            zone,
+            instance,
+            instances_set_service_account_request_resource,
+        ]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
         )
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -9619,8 +9835,14 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any(
-            [project, zone, instance, shielded_instance_integrity_policy_resource]
+        flattened_params = [
+            project,
+            zone,
+            instance,
+            shielded_instance_integrity_policy_resource,
+        ]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
         )
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -9774,8 +9996,14 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any(
-            [project, zone, instance, shielded_instance_integrity_policy_resource]
+        flattened_params = [
+            project,
+            zone,
+            instance,
+            shielded_instance_integrity_policy_resource,
+        ]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
         )
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -9948,7 +10176,10 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project, zone, instance, tags_resource])
+        flattened_params = [project, zone, instance, tags_resource]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -10089,7 +10320,10 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project, zone, instance, tags_resource])
+        flattened_params = [project, zone, instance, tags_resource]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -10251,7 +10485,10 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project, zone, instance])
+        flattened_params = [project, zone, instance]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -10388,7 +10625,10 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project, zone, instance])
+        flattened_params = [project, zone, instance]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -10549,7 +10789,10 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project, zone, instance])
+        flattened_params = [project, zone, instance]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -10683,7 +10926,10 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project, zone, instance])
+        flattened_params = [project, zone, instance]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -10852,13 +11098,14 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any(
-            [
-                project,
-                zone,
-                instance,
-                instances_start_with_encryption_key_request_resource,
-            ]
+        flattened_params = [
+            project,
+            zone,
+            instance,
+            instances_start_with_encryption_key_request_resource,
+        ]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
         )
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -11009,13 +11256,14 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any(
-            [
-                project,
-                zone,
-                instance,
-                instances_start_with_encryption_key_request_resource,
-            ]
+        flattened_params = [
+            project,
+            zone,
+            instance,
+            instances_start_with_encryption_key_request_resource,
+        ]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
         )
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -11184,7 +11432,10 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project, zone, instance])
+        flattened_params = [project, zone, instance]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -11321,7 +11572,10 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project, zone, instance])
+        flattened_params = [project, zone, instance]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -11486,7 +11740,10 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project, zone, instance])
+        flattened_params = [project, zone, instance]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -11626,7 +11883,10 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project, zone, instance])
+        flattened_params = [project, zone, instance]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -11792,8 +12052,9 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any(
-            [project, zone, resource, test_permissions_request_resource]
+        flattened_params = [project, zone, resource, test_permissions_request_resource]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
         )
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -11939,7 +12200,10 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project, zone, instance, instance_resource])
+        flattened_params = [project, zone, instance, instance_resource]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -12082,7 +12346,10 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project, zone, instance, instance_resource])
+        flattened_params = [project, zone, instance, instance_resource]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -12259,8 +12526,15 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any(
-            [project, zone, instance, network_interface, access_config_resource]
+        flattened_params = [
+            project,
+            zone,
+            instance,
+            network_interface,
+            access_config_resource,
+        ]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
         )
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -12415,8 +12689,15 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any(
-            [project, zone, instance, network_interface, access_config_resource]
+        flattened_params = [
+            project,
+            zone,
+            instance,
+            network_interface,
+            access_config_resource,
+        ]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
         )
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -12589,7 +12870,10 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project, zone, instance, display_device_resource])
+        flattened_params = [project, zone, instance, display_device_resource]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -12734,7 +13018,10 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project, zone, instance, display_device_resource])
+        flattened_params = [project, zone, instance, display_device_resource]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -12914,8 +13201,15 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any(
-            [project, zone, instance, network_interface, network_interface_resource]
+        flattened_params = [
+            project,
+            zone,
+            instance,
+            network_interface,
+            network_interface_resource,
+        ]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
         )
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -13073,8 +13367,15 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any(
-            [project, zone, instance, network_interface, network_interface_resource]
+        flattened_params = [
+            project,
+            zone,
+            instance,
+            network_interface,
+            network_interface_resource,
+        ]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
         )
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -13249,8 +13550,9 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any(
-            [project, zone, instance, shielded_instance_config_resource]
+        flattened_params = [project, zone, instance, shielded_instance_config_resource]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
         )
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -13402,8 +13704,9 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any(
-            [project, zone, instance, shielded_instance_config_resource]
+        flattened_params = [project, zone, instance, shielded_instance_config_resource]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
         )
         if request is not None and has_flattened_params:
             raise ValueError(
