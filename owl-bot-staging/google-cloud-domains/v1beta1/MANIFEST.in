@@ -1,0 +1,2 @@
+recursive-include google/cloud/domains *.py
+recursive-include google/cloud/domains_v1beta1 *.py
