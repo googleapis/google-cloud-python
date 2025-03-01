@@ -434,7 +434,7 @@ def pdf_chunk_func(src_obj_ref_rt: str, chunk_size: int, overlap_size: int) -> s
     if curr_chunk:
         all_text_chunks.append(curr_chunk)
 
-    all_text_json_string = json.dumps(["123"])
+    all_text_json_string = json.dumps(all_text_chunks)
     return all_text_json_string
 
 
