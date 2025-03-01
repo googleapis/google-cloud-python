@@ -774,13 +774,14 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any(
-            [
-                project,
-                region,
-                target_pool,
-                target_pools_add_health_check_request_resource,
-            ]
+        flattened_params = [
+            project,
+            region,
+            target_pool,
+            target_pools_add_health_check_request_resource,
+        ]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
         )
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -925,13 +926,14 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any(
-            [
-                project,
-                region,
-                target_pool,
-                target_pools_add_health_check_request_resource,
-            ]
+        flattened_params = [
+            project,
+            region,
+            target_pool,
+            target_pools_add_health_check_request_resource,
+        ]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
         )
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1101,8 +1103,14 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any(
-            [project, region, target_pool, target_pools_add_instance_request_resource]
+        flattened_params = [
+            project,
+            region,
+            target_pool,
+            target_pools_add_instance_request_resource,
+        ]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
         )
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1247,8 +1255,14 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any(
-            [project, region, target_pool, target_pools_add_instance_request_resource]
+        flattened_params = [
+            project,
+            region,
+            target_pool,
+            target_pools_add_instance_request_resource,
+        ]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
         )
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1396,7 +1410,10 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project])
+        flattened_params = [project]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -1529,7 +1546,10 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project, region, target_pool])
+        flattened_params = [project, region, target_pool]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -1661,7 +1681,10 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project, region, target_pool])
+        flattened_params = [project, region, target_pool]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -1824,7 +1847,10 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project, region, target_pool])
+        flattened_params = [project, region, target_pool]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -1962,8 +1988,9 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any(
-            [project, region, target_pool, instance_reference_resource]
+        flattened_params = [project, region, target_pool, instance_reference_resource]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
         )
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2096,7 +2123,10 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project, region, target_pool_resource])
+        flattened_params = [project, region, target_pool_resource]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -2225,7 +2255,10 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project, region, target_pool_resource])
+        flattened_params = [project, region, target_pool_resource]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -2377,7 +2410,10 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project, region])
+        flattened_params = [project, region]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -2525,13 +2561,14 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any(
-            [
-                project,
-                region,
-                target_pool,
-                target_pools_remove_health_check_request_resource,
-            ]
+        flattened_params = [
+            project,
+            region,
+            target_pool,
+            target_pools_remove_health_check_request_resource,
+        ]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
         )
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2676,13 +2713,14 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any(
-            [
-                project,
-                region,
-                target_pool,
-                target_pools_remove_health_check_request_resource,
-            ]
+        flattened_params = [
+            project,
+            region,
+            target_pool,
+            target_pools_remove_health_check_request_resource,
+        ]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
         )
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2852,13 +2890,14 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any(
-            [
-                project,
-                region,
-                target_pool,
-                target_pools_remove_instance_request_resource,
-            ]
+        flattened_params = [
+            project,
+            region,
+            target_pool,
+            target_pools_remove_instance_request_resource,
+        ]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
         )
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3003,13 +3042,14 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any(
-            [
-                project,
-                region,
-                target_pool,
-                target_pools_remove_instance_request_resource,
-            ]
+        flattened_params = [
+            project,
+            region,
+            target_pool,
+            target_pools_remove_instance_request_resource,
+        ]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
         )
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3177,8 +3217,9 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any(
-            [project, region, target_pool, target_reference_resource]
+        flattened_params = [project, region, target_pool, target_reference_resource]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
         )
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3319,8 +3360,9 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any(
-            [project, region, target_pool, target_reference_resource]
+        flattened_params = [project, region, target_pool, target_reference_resource]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
         )
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3493,8 +3535,14 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any(
-            [project, region, target_pool, security_policy_reference_resource]
+        flattened_params = [
+            project,
+            region,
+            target_pool,
+            security_policy_reference_resource,
+        ]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
         )
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3644,8 +3692,14 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any(
-            [project, region, target_pool, security_policy_reference_resource]
+        flattened_params = [
+            project,
+            region,
+            target_pool,
+            security_policy_reference_resource,
+        ]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
         )
         if request is not None and has_flattened_params:
             raise ValueError(
