@@ -501,3 +501,78 @@ replacements:
                         "another-example": "YW5vdGhlcl9leGFtcGxlX3ZhbHVl"
                       }\n
     count: 2
+  - paths: [
+      packages/google-cloud-automl/google/cloud/automl_v1/types/io.py,
+    ]
+    before: "Classification\n    ''''''''''''''"
+    after: "Classification:"
+    count: 6
+  - paths: [
+      packages/google-cloud-automl/google/cloud/automl_v1/types/io.py,
+    ]
+    before: |
+      AutoML Vision
+      \    \^\^\^\^\^\^\^\^\^\^\^\^\^
+    after: |
+      AutoML Vision:
+    count: 2
+  - paths: [
+      packages/google-cloud-automl/google/cloud/automl_v1/types/io.py,
+    ]
+    before: |
+      AutoML Tables
+      \    \^\^\^\^\^\^\^\^\^\^\^\^\^
+    after: |
+      AutoML Tables:
+    count: 2
+  - paths: [
+      packages/google-cloud-automl/google/cloud/automl_v1/types/io.py,
+    ]
+    before: |
+      AutoML Tables
+      \            \^\^\^\^\^\^\^\^\^\^\^\^\^
+    after: |
+      AutoML Tables:
+    count: 1
+  - paths: [
+      packages/google-cloud-automl/google/cloud/automl_v1/types/io.py,
+    ]
+    before: "Entity Extraction\n    '''''''''''''''''"
+    after: "Entity Extraction:"
+    count: 2
+  - paths: [
+      packages/google-cloud-automl/google/cloud/automl_v1/types/io.py,
+    ]
+    before: "Sentiment Analysis\n    ''''''''''''''''''"
+    after: "Sentiment Analysis:"
+    count: 2
+  - paths: [
+      packages/google-cloud-automl/google/cloud/automl_v1/types/io.py,
+    ]
+    before: "Object Tracking\n    '''''''''''''''"
+    after: "Object Tracking:"
+    count: 2
+  - paths: [
+      packages/google-cloud-automl/google/cloud/automl_v1/types/io.py,
+    ]
+    before: |
+      AutoML Video Intelligence
+      \    \^\^\^\^\^\^\^\^\^\^\^\^\^\^\^\^\^\^\^\^\^\^\^\^\^
+    after: |
+      AutoML Video Intelligence:
+    count: 2
+  - paths: [
+      packages/google-cloud-automl/google/cloud/automl_v1/types/io.py,
+    ]
+    before: "Object Detection\n    ''''''''''''''''"
+    after: "Object Detection:"
+    count: 2
+  - paths: [
+      packages/google-cloud-automl/google/cloud/automl_v1/types/io.py,
+    ]
+    before: |
+      AutoML Natural Language
+      \    \^\^\^\^\^\^\^\^\^\^\^\^\^\^\^\^\^\^\^\^\^\^\^
+    after: |
+      AutoML Natural Language:
+    count: 2
