@@ -403,7 +403,10 @@ class GenerativeServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([model, contents])
+        flattened_params = [model, contents]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -572,7 +575,10 @@ class GenerativeServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([model, contents, safety_settings, answer_style])
+        flattened_params = [model, contents, safety_settings, answer_style]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -717,7 +723,10 @@ class GenerativeServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([model, contents])
+        flattened_params = [model, contents]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -840,7 +849,10 @@ class GenerativeServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([model, content])
+        flattened_params = [model, content]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -972,7 +984,10 @@ class GenerativeServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([model, requests])
+        flattened_params = [model, requests]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -1103,7 +1118,10 @@ class GenerativeServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([model, contents])
+        flattened_params = [model, contents]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "

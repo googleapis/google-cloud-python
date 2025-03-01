@@ -967,7 +967,10 @@ class ApiHubClient(metaclass=ApiHubClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([parent, api, api_id])
+        flattened_params = [parent, api, api_id]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -1076,7 +1079,10 @@ class ApiHubClient(metaclass=ApiHubClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([name])
+        flattened_params = [name]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -1186,7 +1192,10 @@ class ApiHubClient(metaclass=ApiHubClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([parent])
+        flattened_params = [parent]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -1332,7 +1341,10 @@ class ApiHubClient(metaclass=ApiHubClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([api, update_mask])
+        flattened_params = [api, update_mask]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -1432,7 +1444,10 @@ class ApiHubClient(metaclass=ApiHubClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([name])
+        flattened_params = [name]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -1564,7 +1579,10 @@ class ApiHubClient(metaclass=ApiHubClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([parent, version, version_id])
+        flattened_params = [parent, version, version_id]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -1679,7 +1697,10 @@ class ApiHubClient(metaclass=ApiHubClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([name])
+        flattened_params = [name]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -1790,7 +1811,10 @@ class ApiHubClient(metaclass=ApiHubClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([parent])
+        flattened_params = [parent]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -1937,7 +1961,10 @@ class ApiHubClient(metaclass=ApiHubClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([version, update_mask])
+        flattened_params = [version, update_mask]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -2040,7 +2067,10 @@ class ApiHubClient(metaclass=ApiHubClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([name])
+        flattened_params = [name]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -2197,7 +2227,10 @@ class ApiHubClient(metaclass=ApiHubClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([parent, spec, spec_id])
+        flattened_params = [parent, spec, spec_id]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -2312,7 +2345,10 @@ class ApiHubClient(metaclass=ApiHubClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([name])
+        flattened_params = [name]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -2417,7 +2453,10 @@ class ApiHubClient(metaclass=ApiHubClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([name])
+        flattened_params = [name]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -2527,7 +2566,10 @@ class ApiHubClient(metaclass=ApiHubClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([parent])
+        flattened_params = [parent]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -2685,7 +2727,10 @@ class ApiHubClient(metaclass=ApiHubClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([spec, update_mask])
+        flattened_params = [spec, update_mask]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -2788,7 +2833,10 @@ class ApiHubClient(metaclass=ApiHubClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([name])
+        flattened_params = [name]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -2899,7 +2947,10 @@ class ApiHubClient(metaclass=ApiHubClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([name])
+        flattened_params = [name]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -3010,7 +3061,10 @@ class ApiHubClient(metaclass=ApiHubClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([parent])
+        flattened_params = [parent]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -3134,7 +3188,10 @@ class ApiHubClient(metaclass=ApiHubClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([name])
+        flattened_params = [name]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -3281,7 +3338,10 @@ class ApiHubClient(metaclass=ApiHubClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([parent, deployment, deployment_id])
+        flattened_params = [parent, deployment, deployment_id]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -3398,7 +3458,10 @@ class ApiHubClient(metaclass=ApiHubClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([name])
+        flattened_params = [name]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -3509,7 +3572,10 @@ class ApiHubClient(metaclass=ApiHubClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([parent])
+        flattened_params = [parent]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -3665,7 +3731,10 @@ class ApiHubClient(metaclass=ApiHubClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([deployment, update_mask])
+        flattened_params = [deployment, update_mask]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -3767,7 +3836,10 @@ class ApiHubClient(metaclass=ApiHubClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([name])
+        flattened_params = [name]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -3912,7 +3984,10 @@ class ApiHubClient(metaclass=ApiHubClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([parent, attribute, attribute_id])
+        flattened_params = [parent, attribute, attribute_id]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -4027,7 +4102,10 @@ class ApiHubClient(metaclass=ApiHubClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([name])
+        flattened_params = [name]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -4179,7 +4257,10 @@ class ApiHubClient(metaclass=ApiHubClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([attribute, update_mask])
+        flattened_params = [attribute, update_mask]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -4284,7 +4365,10 @@ class ApiHubClient(metaclass=ApiHubClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([name])
+        flattened_params = [name]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -4391,7 +4475,10 @@ class ApiHubClient(metaclass=ApiHubClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([parent])
+        flattened_params = [parent]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -4528,7 +4615,10 @@ class ApiHubClient(metaclass=ApiHubClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([location, query])
+        flattened_params = [location, query]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -4679,7 +4769,10 @@ class ApiHubClient(metaclass=ApiHubClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([parent, external_api, external_api_id])
+        flattened_params = [parent, external_api, external_api_id]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -4793,7 +4886,10 @@ class ApiHubClient(metaclass=ApiHubClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([name])
+        flattened_params = [name]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -4926,7 +5022,10 @@ class ApiHubClient(metaclass=ApiHubClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([external_api, update_mask])
+        flattened_params = [external_api, update_mask]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -5028,7 +5127,10 @@ class ApiHubClient(metaclass=ApiHubClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([name])
+        flattened_params = [name]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -5136,7 +5238,10 @@ class ApiHubClient(metaclass=ApiHubClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([parent])
+        flattened_params = [parent]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
