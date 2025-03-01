@@ -1,2 +1,0 @@
-recursive-include google/cloud/beyondcorp_appconnectors *.py
-recursive-include google/cloud/beyondcorp_appconnectors_v1 *.py
