@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for CancelWorkflowInvocation
+# Snippet for UpdateConfig
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,7 +23,7 @@
 #   python3 -m pip install google-cloud-dataform
 
 
-# [START dataform_v1beta1_generated_Dataform_CancelWorkflowInvocation_async]
+# [START dataform_v1beta1_generated_Dataform_UpdateConfig_async]
 # This snippet has been automatically generated and should be regarded as a
 # code template only.
 # It will require modifications to work:
@@ -34,19 +34,18 @@
 from google.cloud import dataform_v1beta1
 
 
-async def sample_cancel_workflow_invocation():
+async def sample_update_config():
     # Create a client
     client = dataform_v1beta1.DataformAsyncClient()
 
     # Initialize request argument(s)
-    request = dataform_v1beta1.CancelWorkflowInvocationRequest(
-        name="name_value",
+    request = dataform_v1beta1.UpdateConfigRequest(
     )
 
     # Make the request
-    response = await client.cancel_workflow_invocation(request=request)
+    response = await client.update_config(request=request)
 
     # Handle the response
     print(response)
 
-# [END dataform_v1beta1_generated_Dataform_CancelWorkflowInvocation_async]
+# [END dataform_v1beta1_generated_Dataform_UpdateConfig_async]

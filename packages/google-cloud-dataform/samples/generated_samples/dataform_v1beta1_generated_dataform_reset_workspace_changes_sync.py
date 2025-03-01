@@ -44,7 +44,9 @@ def sample_reset_workspace_changes():
     )
 
     # Make the request
-    client.reset_workspace_changes(request=request)
+    response = client.reset_workspace_changes(request=request)
 
+    # Handle the response
+    print(response)
 
 # [END dataform_v1beta1_generated_Dataform_ResetWorkspaceChanges_sync]

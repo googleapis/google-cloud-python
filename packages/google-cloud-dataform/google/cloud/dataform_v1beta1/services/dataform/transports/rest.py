@@ -76,13 +76,25 @@ class DataformRestInterceptor:
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
+            def post_cancel_workflow_invocation(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_commit_repository_changes(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
+            def post_commit_repository_changes(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_commit_workspace_changes(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
+
+            def post_commit_workspace_changes(self, response):
+                logging.log(f"Received response: {response}")
+                return response
 
             def pre_compute_repository_access_token_status(self, request, metadata):
                 logging.log(f"Received request: {request}")
@@ -205,6 +217,14 @@ class DataformRestInterceptor:
                 return request, metadata
 
             def post_get_compilation_result(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_get_config(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_config(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -332,9 +352,17 @@ class DataformRestInterceptor:
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
+            def post_pull_git_commits(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_push_git_commits(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
+
+            def post_push_git_commits(self, response):
+                logging.log(f"Received response: {response}")
+                return response
 
             def pre_query_compilation_result_actions(self, request, metadata):
                 logging.log(f"Received request: {request}")
@@ -388,13 +416,41 @@ class DataformRestInterceptor:
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
+            def post_remove_directory(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_remove_file(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
+            def post_remove_file(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_reset_workspace_changes(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
+
+            def post_reset_workspace_changes(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_search_files(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_search_files(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_update_config(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_update_config(self, response):
+                logging.log(f"Received response: {response}")
+                return response
 
             def pre_update_release_config(self, request, metadata):
                 logging.log(f"Received request: {request}")
@@ -449,6 +505,43 @@ class DataformRestInterceptor:
         """
         return request, metadata
 
+    def post_cancel_workflow_invocation(
+        self, response: dataform.CancelWorkflowInvocationResponse
+    ) -> dataform.CancelWorkflowInvocationResponse:
+        """Post-rpc interceptor for cancel_workflow_invocation
+
+        DEPRECATED. Please use the `post_cancel_workflow_invocation_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the Dataform server but before
+        it is returned to user code. This `post_cancel_workflow_invocation` interceptor runs
+        before the `post_cancel_workflow_invocation_with_metadata` interceptor.
+        """
+        return response
+
+    def post_cancel_workflow_invocation_with_metadata(
+        self,
+        response: dataform.CancelWorkflowInvocationResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        dataform.CancelWorkflowInvocationResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for cancel_workflow_invocation
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Dataform server but before it is returned to user code.
+
+        We recommend only using this `post_cancel_workflow_invocation_with_metadata`
+        interceptor in new development instead of the `post_cancel_workflow_invocation` interceptor.
+        When both interceptors are used, this `post_cancel_workflow_invocation_with_metadata` interceptor runs after the
+        `post_cancel_workflow_invocation` interceptor. The (possibly modified) response returned by
+        `post_cancel_workflow_invocation` will be passed to
+        `post_cancel_workflow_invocation_with_metadata`.
+        """
+        return response, metadata
+
     def pre_commit_repository_changes(
         self,
         request: dataform.CommitRepositoryChangesRequest,
@@ -463,6 +556,43 @@ class DataformRestInterceptor:
         """
         return request, metadata
 
+    def post_commit_repository_changes(
+        self, response: dataform.CommitRepositoryChangesResponse
+    ) -> dataform.CommitRepositoryChangesResponse:
+        """Post-rpc interceptor for commit_repository_changes
+
+        DEPRECATED. Please use the `post_commit_repository_changes_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the Dataform server but before
+        it is returned to user code. This `post_commit_repository_changes` interceptor runs
+        before the `post_commit_repository_changes_with_metadata` interceptor.
+        """
+        return response
+
+    def post_commit_repository_changes_with_metadata(
+        self,
+        response: dataform.CommitRepositoryChangesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        dataform.CommitRepositoryChangesResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for commit_repository_changes
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Dataform server but before it is returned to user code.
+
+        We recommend only using this `post_commit_repository_changes_with_metadata`
+        interceptor in new development instead of the `post_commit_repository_changes` interceptor.
+        When both interceptors are used, this `post_commit_repository_changes_with_metadata` interceptor runs after the
+        `post_commit_repository_changes` interceptor. The (possibly modified) response returned by
+        `post_commit_repository_changes` will be passed to
+        `post_commit_repository_changes_with_metadata`.
+        """
+        return response, metadata
+
     def pre_commit_workspace_changes(
         self,
         request: dataform.CommitWorkspaceChangesRequest,
@@ -476,6 +606,42 @@ class DataformRestInterceptor:
         before they are sent to the Dataform server.
         """
         return request, metadata
+
+    def post_commit_workspace_changes(
+        self, response: dataform.CommitWorkspaceChangesResponse
+    ) -> dataform.CommitWorkspaceChangesResponse:
+        """Post-rpc interceptor for commit_workspace_changes
+
+        DEPRECATED. Please use the `post_commit_workspace_changes_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the Dataform server but before
+        it is returned to user code. This `post_commit_workspace_changes` interceptor runs
+        before the `post_commit_workspace_changes_with_metadata` interceptor.
+        """
+        return response
+
+    def post_commit_workspace_changes_with_metadata(
+        self,
+        response: dataform.CommitWorkspaceChangesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        dataform.CommitWorkspaceChangesResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for commit_workspace_changes
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Dataform server but before it is returned to user code.
+
+        We recommend only using this `post_commit_workspace_changes_with_metadata`
+        interceptor in new development instead of the `post_commit_workspace_changes` interceptor.
+        When both interceptors are used, this `post_commit_workspace_changes_with_metadata` interceptor runs after the
+        `post_commit_workspace_changes` interceptor. The (possibly modified) response returned by
+        `post_commit_workspace_changes` will be passed to
+        `post_commit_workspace_changes_with_metadata`.
+        """
+        return response, metadata
 
     def pre_compute_repository_access_token_status(
         self,
@@ -1178,6 +1344,50 @@ class DataformRestInterceptor:
         `post_get_compilation_result` interceptor. The (possibly modified) response returned by
         `post_get_compilation_result` will be passed to
         `post_get_compilation_result_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_get_config(
+        self,
+        request: dataform.GetConfigRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[dataform.GetConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Pre-rpc interceptor for get_config
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Dataform server.
+        """
+        return request, metadata
+
+    def post_get_config(self, response: dataform.Config) -> dataform.Config:
+        """Post-rpc interceptor for get_config
+
+        DEPRECATED. Please use the `post_get_config_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the Dataform server but before
+        it is returned to user code. This `post_get_config` interceptor runs
+        before the `post_get_config_with_metadata` interceptor.
+        """
+        return response
+
+    def post_get_config_with_metadata(
+        self,
+        response: dataform.Config,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[dataform.Config, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_config
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Dataform server but before it is returned to user code.
+
+        We recommend only using this `post_get_config_with_metadata`
+        interceptor in new development instead of the `post_get_config` interceptor.
+        When both interceptors are used, this `post_get_config_with_metadata` interceptor runs after the
+        `post_get_config` interceptor. The (possibly modified) response returned by
+        `post_get_config` will be passed to
+        `post_get_config_with_metadata`.
         """
         return response, metadata
 
@@ -1912,6 +2122,42 @@ class DataformRestInterceptor:
         """
         return request, metadata
 
+    def post_pull_git_commits(
+        self, response: dataform.PullGitCommitsResponse
+    ) -> dataform.PullGitCommitsResponse:
+        """Post-rpc interceptor for pull_git_commits
+
+        DEPRECATED. Please use the `post_pull_git_commits_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the Dataform server but before
+        it is returned to user code. This `post_pull_git_commits` interceptor runs
+        before the `post_pull_git_commits_with_metadata` interceptor.
+        """
+        return response
+
+    def post_pull_git_commits_with_metadata(
+        self,
+        response: dataform.PullGitCommitsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        dataform.PullGitCommitsResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for pull_git_commits
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Dataform server but before it is returned to user code.
+
+        We recommend only using this `post_pull_git_commits_with_metadata`
+        interceptor in new development instead of the `post_pull_git_commits` interceptor.
+        When both interceptors are used, this `post_pull_git_commits_with_metadata` interceptor runs after the
+        `post_pull_git_commits` interceptor. The (possibly modified) response returned by
+        `post_pull_git_commits` will be passed to
+        `post_pull_git_commits_with_metadata`.
+        """
+        return response, metadata
+
     def pre_push_git_commits(
         self,
         request: dataform.PushGitCommitsRequest,
@@ -1923,6 +2169,42 @@ class DataformRestInterceptor:
         before they are sent to the Dataform server.
         """
         return request, metadata
+
+    def post_push_git_commits(
+        self, response: dataform.PushGitCommitsResponse
+    ) -> dataform.PushGitCommitsResponse:
+        """Post-rpc interceptor for push_git_commits
+
+        DEPRECATED. Please use the `post_push_git_commits_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the Dataform server but before
+        it is returned to user code. This `post_push_git_commits` interceptor runs
+        before the `post_push_git_commits_with_metadata` interceptor.
+        """
+        return response
+
+    def post_push_git_commits_with_metadata(
+        self,
+        response: dataform.PushGitCommitsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        dataform.PushGitCommitsResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for push_git_commits
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Dataform server but before it is returned to user code.
+
+        We recommend only using this `post_push_git_commits_with_metadata`
+        interceptor in new development instead of the `post_push_git_commits` interceptor.
+        When both interceptors are used, this `post_push_git_commits_with_metadata` interceptor runs after the
+        `post_push_git_commits` interceptor. The (possibly modified) response returned by
+        `post_push_git_commits` will be passed to
+        `post_push_git_commits_with_metadata`.
+        """
+        return response, metadata
 
     def pre_query_compilation_result_actions(
         self,
@@ -2240,6 +2522,42 @@ class DataformRestInterceptor:
         """
         return request, metadata
 
+    def post_remove_directory(
+        self, response: dataform.RemoveDirectoryResponse
+    ) -> dataform.RemoveDirectoryResponse:
+        """Post-rpc interceptor for remove_directory
+
+        DEPRECATED. Please use the `post_remove_directory_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the Dataform server but before
+        it is returned to user code. This `post_remove_directory` interceptor runs
+        before the `post_remove_directory_with_metadata` interceptor.
+        """
+        return response
+
+    def post_remove_directory_with_metadata(
+        self,
+        response: dataform.RemoveDirectoryResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        dataform.RemoveDirectoryResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for remove_directory
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Dataform server but before it is returned to user code.
+
+        We recommend only using this `post_remove_directory_with_metadata`
+        interceptor in new development instead of the `post_remove_directory` interceptor.
+        When both interceptors are used, this `post_remove_directory_with_metadata` interceptor runs after the
+        `post_remove_directory` interceptor. The (possibly modified) response returned by
+        `post_remove_directory` will be passed to
+        `post_remove_directory_with_metadata`.
+        """
+        return response, metadata
+
     def pre_remove_file(
         self,
         request: dataform.RemoveFileRequest,
@@ -2251,6 +2569,40 @@ class DataformRestInterceptor:
         before they are sent to the Dataform server.
         """
         return request, metadata
+
+    def post_remove_file(
+        self, response: dataform.RemoveFileResponse
+    ) -> dataform.RemoveFileResponse:
+        """Post-rpc interceptor for remove_file
+
+        DEPRECATED. Please use the `post_remove_file_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the Dataform server but before
+        it is returned to user code. This `post_remove_file` interceptor runs
+        before the `post_remove_file_with_metadata` interceptor.
+        """
+        return response
+
+    def post_remove_file_with_metadata(
+        self,
+        response: dataform.RemoveFileResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[dataform.RemoveFileResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for remove_file
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Dataform server but before it is returned to user code.
+
+        We recommend only using this `post_remove_file_with_metadata`
+        interceptor in new development instead of the `post_remove_file` interceptor.
+        When both interceptors are used, this `post_remove_file_with_metadata` interceptor runs after the
+        `post_remove_file` interceptor. The (possibly modified) response returned by
+        `post_remove_file` will be passed to
+        `post_remove_file_with_metadata`.
+        """
+        return response, metadata
 
     def pre_reset_workspace_changes(
         self,
@@ -2265,6 +2617,132 @@ class DataformRestInterceptor:
         before they are sent to the Dataform server.
         """
         return request, metadata
+
+    def post_reset_workspace_changes(
+        self, response: dataform.ResetWorkspaceChangesResponse
+    ) -> dataform.ResetWorkspaceChangesResponse:
+        """Post-rpc interceptor for reset_workspace_changes
+
+        DEPRECATED. Please use the `post_reset_workspace_changes_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the Dataform server but before
+        it is returned to user code. This `post_reset_workspace_changes` interceptor runs
+        before the `post_reset_workspace_changes_with_metadata` interceptor.
+        """
+        return response
+
+    def post_reset_workspace_changes_with_metadata(
+        self,
+        response: dataform.ResetWorkspaceChangesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        dataform.ResetWorkspaceChangesResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for reset_workspace_changes
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Dataform server but before it is returned to user code.
+
+        We recommend only using this `post_reset_workspace_changes_with_metadata`
+        interceptor in new development instead of the `post_reset_workspace_changes` interceptor.
+        When both interceptors are used, this `post_reset_workspace_changes_with_metadata` interceptor runs after the
+        `post_reset_workspace_changes` interceptor. The (possibly modified) response returned by
+        `post_reset_workspace_changes` will be passed to
+        `post_reset_workspace_changes_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_search_files(
+        self,
+        request: dataform.SearchFilesRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[dataform.SearchFilesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Pre-rpc interceptor for search_files
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Dataform server.
+        """
+        return request, metadata
+
+    def post_search_files(
+        self, response: dataform.SearchFilesResponse
+    ) -> dataform.SearchFilesResponse:
+        """Post-rpc interceptor for search_files
+
+        DEPRECATED. Please use the `post_search_files_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the Dataform server but before
+        it is returned to user code. This `post_search_files` interceptor runs
+        before the `post_search_files_with_metadata` interceptor.
+        """
+        return response
+
+    def post_search_files_with_metadata(
+        self,
+        response: dataform.SearchFilesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[dataform.SearchFilesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for search_files
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Dataform server but before it is returned to user code.
+
+        We recommend only using this `post_search_files_with_metadata`
+        interceptor in new development instead of the `post_search_files` interceptor.
+        When both interceptors are used, this `post_search_files_with_metadata` interceptor runs after the
+        `post_search_files` interceptor. The (possibly modified) response returned by
+        `post_search_files` will be passed to
+        `post_search_files_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_update_config(
+        self,
+        request: dataform.UpdateConfigRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[dataform.UpdateConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Pre-rpc interceptor for update_config
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Dataform server.
+        """
+        return request, metadata
+
+    def post_update_config(self, response: dataform.Config) -> dataform.Config:
+        """Post-rpc interceptor for update_config
+
+        DEPRECATED. Please use the `post_update_config_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the Dataform server but before
+        it is returned to user code. This `post_update_config` interceptor runs
+        before the `post_update_config_with_metadata` interceptor.
+        """
+        return response
+
+    def post_update_config_with_metadata(
+        self,
+        response: dataform.Config,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[dataform.Config, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_config
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Dataform server but before it is returned to user code.
+
+        We recommend only using this `post_update_config_with_metadata`
+        interceptor in new development instead of the `post_update_config` interceptor.
+        When both interceptors are used, this `post_update_config_with_metadata` interceptor runs after the
+        `post_update_config` interceptor. The (possibly modified) response returned by
+        `post_update_config` will be passed to
+        `post_update_config_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_release_config(
         self,
@@ -2702,7 +3180,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ):
+        ) -> dataform.CancelWorkflowInvocationResponse:
             r"""Call the cancel workflow
             invocation method over HTTP.
 
@@ -2716,6 +3194,10 @@ class DataformRestTransport(_BaseDataformRestTransport):
                         sent along with the request as metadata. Normally, each value must be of type `str`,
                         but for metadata keys ending with the suffix `-bin`, the corresponding values must
                         be of type `bytes`.
+
+                Returns:
+                    ~.dataform.CancelWorkflowInvocationResponse:
+                        ``CancelWorkflowInvocation`` response message.
             """
 
             http_options = (
@@ -2746,7 +3228,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -2780,6 +3262,42 @@ class DataformRestTransport(_BaseDataformRestTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = dataform.CancelWorkflowInvocationResponse()
+            pb_resp = dataform.CancelWorkflowInvocationResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_cancel_workflow_invocation(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_cancel_workflow_invocation_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        dataform.CancelWorkflowInvocationResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dataform_v1beta1.DataformClient.cancel_workflow_invocation",
+                    extra={
+                        "serviceName": "google.cloud.dataform.v1beta1.Dataform",
+                        "rpcName": "CancelWorkflowInvocation",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
 
     class _CommitRepositoryChanges(
         _BaseDataformRestTransport._BaseCommitRepositoryChanges, DataformRestStub
@@ -2817,7 +3335,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ):
+        ) -> dataform.CommitRepositoryChangesResponse:
             r"""Call the commit repository changes method over HTTP.
 
             Args:
@@ -2830,6 +3348,10 @@ class DataformRestTransport(_BaseDataformRestTransport):
                     sent along with the request as metadata. Normally, each value must be of type `str`,
                     but for metadata keys ending with the suffix `-bin`, the corresponding values must
                     be of type `bytes`.
+
+            Returns:
+                ~.dataform.CommitRepositoryChangesResponse:
+                    ``CommitRepositoryChanges`` response message.
             """
 
             http_options = (
@@ -2860,7 +3382,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -2894,6 +3416,42 @@ class DataformRestTransport(_BaseDataformRestTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = dataform.CommitRepositoryChangesResponse()
+            pb_resp = dataform.CommitRepositoryChangesResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_commit_repository_changes(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_commit_repository_changes_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = dataform.CommitRepositoryChangesResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dataform_v1beta1.DataformClient.commit_repository_changes",
+                    extra={
+                        "serviceName": "google.cloud.dataform.v1beta1.Dataform",
+                        "rpcName": "CommitRepositoryChanges",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
 
     class _CommitWorkspaceChanges(
         _BaseDataformRestTransport._BaseCommitWorkspaceChanges, DataformRestStub
@@ -2931,7 +3489,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ):
+        ) -> dataform.CommitWorkspaceChangesResponse:
             r"""Call the commit workspace changes method over HTTP.
 
             Args:
@@ -2944,6 +3502,10 @@ class DataformRestTransport(_BaseDataformRestTransport):
                     sent along with the request as metadata. Normally, each value must be of type `str`,
                     but for metadata keys ending with the suffix `-bin`, the corresponding values must
                     be of type `bytes`.
+
+            Returns:
+                ~.dataform.CommitWorkspaceChangesResponse:
+                    ``CommitWorkspaceChanges`` response message.
             """
 
             http_options = (
@@ -2974,7 +3536,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -3008,6 +3570,42 @@ class DataformRestTransport(_BaseDataformRestTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = dataform.CommitWorkspaceChangesResponse()
+            pb_resp = dataform.CommitWorkspaceChangesResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_commit_workspace_changes(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_commit_workspace_changes_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = dataform.CommitWorkspaceChangesResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dataform_v1beta1.DataformClient.commit_workspace_changes",
+                    extra={
+                        "serviceName": "google.cloud.dataform.v1beta1.Dataform",
+                        "rpcName": "CommitWorkspaceChanges",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
 
     class _ComputeRepositoryAccessTokenStatus(
         _BaseDataformRestTransport._BaseComputeRepositoryAccessTokenStatus,
@@ -5535,6 +6133,152 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 )
             return resp
 
+    class _GetConfig(_BaseDataformRestTransport._BaseGetConfig, DataformRestStub):
+        def __hash__(self):
+            return hash("DataformRestTransport.GetConfig")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: dataform.GetConfigRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> dataform.Config:
+            r"""Call the get config method over HTTP.
+
+            Args:
+                request (~.dataform.GetConfigRequest):
+                    The request object. ``GetConfig`` request message.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.dataform.Config:
+                    Config for all repositories in a
+                given project and location.
+
+            """
+
+            http_options = _BaseDataformRestTransport._BaseGetConfig._get_http_options()
+
+            request, metadata = self._interceptor.pre_get_config(request, metadata)
+            transcoded_request = (
+                _BaseDataformRestTransport._BaseGetConfig._get_transcoded_request(
+                    http_options, request
+                )
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseDataformRestTransport._BaseGetConfig._get_query_params_json(
+                    transcoded_request
+                )
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dataform_v1beta1.DataformClient.GetConfig",
+                    extra={
+                        "serviceName": "google.cloud.dataform.v1beta1.Dataform",
+                        "rpcName": "GetConfig",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = DataformRestTransport._GetConfig._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = dataform.Config()
+            pb_resp = dataform.Config.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_get_config(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_config_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = dataform.Config.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dataform_v1beta1.DataformClient.get_config",
+                    extra={
+                        "serviceName": "google.cloud.dataform.v1beta1.Dataform",
+                        "rpcName": "GetConfig",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     class _GetReleaseConfig(
         _BaseDataformRestTransport._BaseGetReleaseConfig, DataformRestStub
     ):
@@ -7813,7 +8557,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ):
+        ) -> dataform.PullGitCommitsResponse:
             r"""Call the pull git commits method over HTTP.
 
             Args:
@@ -7826,6 +8570,10 @@ class DataformRestTransport(_BaseDataformRestTransport):
                     sent along with the request as metadata. Normally, each value must be of type `str`,
                     but for metadata keys ending with the suffix `-bin`, the corresponding values must
                     be of type `bytes`.
+
+            Returns:
+                ~.dataform.PullGitCommitsResponse:
+                    ``PullGitCommits`` response message.
             """
 
             http_options = (
@@ -7862,7 +8610,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -7896,6 +8644,40 @@ class DataformRestTransport(_BaseDataformRestTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = dataform.PullGitCommitsResponse()
+            pb_resp = dataform.PullGitCommitsResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_pull_git_commits(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_pull_git_commits_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = dataform.PullGitCommitsResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dataform_v1beta1.DataformClient.pull_git_commits",
+                    extra={
+                        "serviceName": "google.cloud.dataform.v1beta1.Dataform",
+                        "rpcName": "PullGitCommits",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
 
     class _PushGitCommits(
         _BaseDataformRestTransport._BasePushGitCommits, DataformRestStub
@@ -7933,7 +8715,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ):
+        ) -> dataform.PushGitCommitsResponse:
             r"""Call the push git commits method over HTTP.
 
             Args:
@@ -7946,6 +8728,10 @@ class DataformRestTransport(_BaseDataformRestTransport):
                     sent along with the request as metadata. Normally, each value must be of type `str`,
                     but for metadata keys ending with the suffix `-bin`, the corresponding values must
                     be of type `bytes`.
+
+            Returns:
+                ~.dataform.PushGitCommitsResponse:
+                    ``PushGitCommits`` response message.
             """
 
             http_options = (
@@ -7982,7 +8768,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -8016,6 +8802,40 @@ class DataformRestTransport(_BaseDataformRestTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = dataform.PushGitCommitsResponse()
+            pb_resp = dataform.PushGitCommitsResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_push_git_commits(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_push_git_commits_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = dataform.PushGitCommitsResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dataform_v1beta1.DataformClient.push_git_commits",
+                    extra={
+                        "serviceName": "google.cloud.dataform.v1beta1.Dataform",
+                        "rpcName": "PushGitCommits",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
 
     class _QueryCompilationResultActions(
         _BaseDataformRestTransport._BaseQueryCompilationResultActions, DataformRestStub
@@ -8963,7 +9783,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ):
+        ) -> dataform.RemoveDirectoryResponse:
             r"""Call the remove directory method over HTTP.
 
             Args:
@@ -8976,6 +9796,10 @@ class DataformRestTransport(_BaseDataformRestTransport):
                     sent along with the request as metadata. Normally, each value must be of type `str`,
                     but for metadata keys ending with the suffix `-bin`, the corresponding values must
                     be of type `bytes`.
+
+            Returns:
+                ~.dataform.RemoveDirectoryResponse:
+                    ``RemoveDirectory`` response message.
             """
 
             http_options = (
@@ -9012,7 +9836,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -9046,6 +9870,42 @@ class DataformRestTransport(_BaseDataformRestTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = dataform.RemoveDirectoryResponse()
+            pb_resp = dataform.RemoveDirectoryResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_remove_directory(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_remove_directory_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = dataform.RemoveDirectoryResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dataform_v1beta1.DataformClient.remove_directory",
+                    extra={
+                        "serviceName": "google.cloud.dataform.v1beta1.Dataform",
+                        "rpcName": "RemoveDirectory",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
 
     class _RemoveFile(_BaseDataformRestTransport._BaseRemoveFile, DataformRestStub):
         def __hash__(self):
@@ -9081,7 +9941,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ):
+        ) -> dataform.RemoveFileResponse:
             r"""Call the remove file method over HTTP.
 
             Args:
@@ -9094,6 +9954,10 @@ class DataformRestTransport(_BaseDataformRestTransport):
                     sent along with the request as metadata. Normally, each value must be of type `str`,
                     but for metadata keys ending with the suffix `-bin`, the corresponding values must
                     be of type `bytes`.
+
+            Returns:
+                ~.dataform.RemoveFileResponse:
+                    ``RemoveFile`` response message.
             """
 
             http_options = (
@@ -9126,7 +9990,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -9160,6 +10024,40 @@ class DataformRestTransport(_BaseDataformRestTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = dataform.RemoveFileResponse()
+            pb_resp = dataform.RemoveFileResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_remove_file(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_remove_file_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = dataform.RemoveFileResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dataform_v1beta1.DataformClient.remove_file",
+                    extra={
+                        "serviceName": "google.cloud.dataform.v1beta1.Dataform",
+                        "rpcName": "RemoveFile",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
 
     class _ResetWorkspaceChanges(
         _BaseDataformRestTransport._BaseResetWorkspaceChanges, DataformRestStub
@@ -9197,7 +10095,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ):
+        ) -> dataform.ResetWorkspaceChangesResponse:
             r"""Call the reset workspace changes method over HTTP.
 
             Args:
@@ -9210,6 +10108,10 @@ class DataformRestTransport(_BaseDataformRestTransport):
                     sent along with the request as metadata. Normally, each value must be of type `str`,
                     but for metadata keys ending with the suffix `-bin`, the corresponding values must
                     be of type `bytes`.
+
+            Returns:
+                ~.dataform.ResetWorkspaceChangesResponse:
+                    ``ResetWorkspaceChanges`` response message.
             """
 
             http_options = (
@@ -9240,7 +10142,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -9274,6 +10176,345 @@ class DataformRestTransport(_BaseDataformRestTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = dataform.ResetWorkspaceChangesResponse()
+            pb_resp = dataform.ResetWorkspaceChangesResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_reset_workspace_changes(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_reset_workspace_changes_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = dataform.ResetWorkspaceChangesResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dataform_v1beta1.DataformClient.reset_workspace_changes",
+                    extra={
+                        "serviceName": "google.cloud.dataform.v1beta1.Dataform",
+                        "rpcName": "ResetWorkspaceChanges",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _SearchFiles(_BaseDataformRestTransport._BaseSearchFiles, DataformRestStub):
+        def __hash__(self):
+            return hash("DataformRestTransport.SearchFiles")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: dataform.SearchFilesRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> dataform.SearchFilesResponse:
+            r"""Call the search files method over HTTP.
+
+            Args:
+                request (~.dataform.SearchFilesRequest):
+                    The request object. Configuration containing file search
+                request parameters.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.dataform.SearchFilesResponse:
+                    Client-facing representation of a
+                file search response.
+
+            """
+
+            http_options = (
+                _BaseDataformRestTransport._BaseSearchFiles._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_search_files(request, metadata)
+            transcoded_request = (
+                _BaseDataformRestTransport._BaseSearchFiles._get_transcoded_request(
+                    http_options, request
+                )
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseDataformRestTransport._BaseSearchFiles._get_query_params_json(
+                    transcoded_request
+                )
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dataform_v1beta1.DataformClient.SearchFiles",
+                    extra={
+                        "serviceName": "google.cloud.dataform.v1beta1.Dataform",
+                        "rpcName": "SearchFiles",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = DataformRestTransport._SearchFiles._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = dataform.SearchFilesResponse()
+            pb_resp = dataform.SearchFilesResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_search_files(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_search_files_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = dataform.SearchFilesResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dataform_v1beta1.DataformClient.search_files",
+                    extra={
+                        "serviceName": "google.cloud.dataform.v1beta1.Dataform",
+                        "rpcName": "SearchFiles",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _UpdateConfig(_BaseDataformRestTransport._BaseUpdateConfig, DataformRestStub):
+        def __hash__(self):
+            return hash("DataformRestTransport.UpdateConfig")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: dataform.UpdateConfigRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> dataform.Config:
+            r"""Call the update config method over HTTP.
+
+            Args:
+                request (~.dataform.UpdateConfigRequest):
+                    The request object. ``UpdateConfig`` request message.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.dataform.Config:
+                    Config for all repositories in a
+                given project and location.
+
+            """
+
+            http_options = (
+                _BaseDataformRestTransport._BaseUpdateConfig._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_update_config(request, metadata)
+            transcoded_request = (
+                _BaseDataformRestTransport._BaseUpdateConfig._get_transcoded_request(
+                    http_options, request
+                )
+            )
+
+            body = _BaseDataformRestTransport._BaseUpdateConfig._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseDataformRestTransport._BaseUpdateConfig._get_query_params_json(
+                    transcoded_request
+                )
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dataform_v1beta1.DataformClient.UpdateConfig",
+                    extra={
+                        "serviceName": "google.cloud.dataform.v1beta1.Dataform",
+                        "rpcName": "UpdateConfig",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = DataformRestTransport._UpdateConfig._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = dataform.Config()
+            pb_resp = dataform.Config.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_update_config(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_config_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = dataform.Config.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dataform_v1beta1.DataformClient.update_config",
+                    extra={
+                        "serviceName": "google.cloud.dataform.v1beta1.Dataform",
+                        "rpcName": "UpdateConfig",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
 
     class _UpdateReleaseConfig(
         _BaseDataformRestTransport._BaseUpdateReleaseConfig, DataformRestStub
@@ -9892,7 +11133,10 @@ class DataformRestTransport(_BaseDataformRestTransport):
     @property
     def cancel_workflow_invocation(
         self,
-    ) -> Callable[[dataform.CancelWorkflowInvocationRequest], empty_pb2.Empty]:
+    ) -> Callable[
+        [dataform.CancelWorkflowInvocationRequest],
+        dataform.CancelWorkflowInvocationResponse,
+    ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CancelWorkflowInvocation(self._session, self._host, self._interceptor)  # type: ignore
@@ -9900,7 +11144,10 @@ class DataformRestTransport(_BaseDataformRestTransport):
     @property
     def commit_repository_changes(
         self,
-    ) -> Callable[[dataform.CommitRepositoryChangesRequest], empty_pb2.Empty]:
+    ) -> Callable[
+        [dataform.CommitRepositoryChangesRequest],
+        dataform.CommitRepositoryChangesResponse,
+    ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CommitRepositoryChanges(self._session, self._host, self._interceptor)  # type: ignore
@@ -9908,7 +11155,10 @@ class DataformRestTransport(_BaseDataformRestTransport):
     @property
     def commit_workspace_changes(
         self,
-    ) -> Callable[[dataform.CommitWorkspaceChangesRequest], empty_pb2.Empty]:
+    ) -> Callable[
+        [dataform.CommitWorkspaceChangesRequest],
+        dataform.CommitWorkspaceChangesResponse,
+    ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CommitWorkspaceChanges(self._session, self._host, self._interceptor)  # type: ignore
@@ -10074,6 +11324,12 @@ class DataformRestTransport(_BaseDataformRestTransport):
         return self._GetCompilationResult(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def get_config(self) -> Callable[[dataform.GetConfigRequest], dataform.Config]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetConfig(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def get_release_config(
         self,
     ) -> Callable[[dataform.GetReleaseConfigRequest], dataform.ReleaseConfig]:
@@ -10210,7 +11466,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
     @property
     def pull_git_commits(
         self,
-    ) -> Callable[[dataform.PullGitCommitsRequest], empty_pb2.Empty]:
+    ) -> Callable[[dataform.PullGitCommitsRequest], dataform.PullGitCommitsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._PullGitCommits(self._session, self._host, self._interceptor)  # type: ignore
@@ -10218,7 +11474,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
     @property
     def push_git_commits(
         self,
-    ) -> Callable[[dataform.PushGitCommitsRequest], empty_pb2.Empty]:
+    ) -> Callable[[dataform.PushGitCommitsRequest], dataform.PushGitCommitsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._PushGitCommits(self._session, self._host, self._interceptor)  # type: ignore
@@ -10288,13 +11544,15 @@ class DataformRestTransport(_BaseDataformRestTransport):
     @property
     def remove_directory(
         self,
-    ) -> Callable[[dataform.RemoveDirectoryRequest], empty_pb2.Empty]:
+    ) -> Callable[[dataform.RemoveDirectoryRequest], dataform.RemoveDirectoryResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._RemoveDirectory(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def remove_file(self) -> Callable[[dataform.RemoveFileRequest], empty_pb2.Empty]:
+    def remove_file(
+        self,
+    ) -> Callable[[dataform.RemoveFileRequest], dataform.RemoveFileResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._RemoveFile(self._session, self._host, self._interceptor)  # type: ignore
@@ -10302,10 +11560,28 @@ class DataformRestTransport(_BaseDataformRestTransport):
     @property
     def reset_workspace_changes(
         self,
-    ) -> Callable[[dataform.ResetWorkspaceChangesRequest], empty_pb2.Empty]:
+    ) -> Callable[
+        [dataform.ResetWorkspaceChangesRequest], dataform.ResetWorkspaceChangesResponse
+    ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ResetWorkspaceChanges(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def search_files(
+        self,
+    ) -> Callable[[dataform.SearchFilesRequest], dataform.SearchFilesResponse]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._SearchFiles(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def update_config(
+        self,
+    ) -> Callable[[dataform.UpdateConfigRequest], dataform.Config]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._UpdateConfig(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def update_release_config(

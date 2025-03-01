@@ -45,7 +45,9 @@ def sample_remove_directory():
     )
 
     # Make the request
-    client.remove_directory(request=request)
+    response = client.remove_directory(request=request)
 
+    # Handle the response
+    print(response)
 
 # [END dataform_v1beta1_generated_Dataform_RemoveDirectory_sync]

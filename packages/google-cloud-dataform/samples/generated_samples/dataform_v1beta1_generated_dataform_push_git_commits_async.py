@@ -44,7 +44,9 @@ async def sample_push_git_commits():
     )
 
     # Make the request
-    await client.push_git_commits(request=request)
+    response = await client.push_git_commits(request=request)
 
+    # Handle the response
+    print(response)
 
 # [END dataform_v1beta1_generated_Dataform_PushGitCommits_async]

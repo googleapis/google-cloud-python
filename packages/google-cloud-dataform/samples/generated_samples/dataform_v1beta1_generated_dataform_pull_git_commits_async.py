@@ -49,7 +49,9 @@ async def sample_pull_git_commits():
     )
 
     # Make the request
-    await client.pull_git_commits(request=request)
+    response = await client.pull_git_commits(request=request)
 
+    # Handle the response
+    print(response)
 
 # [END dataform_v1beta1_generated_Dataform_PullGitCommits_async]
