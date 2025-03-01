@@ -36,6 +36,7 @@ from .types.header import RequestHeader
 from .types.traffic import ConsumableTrafficPolyline, SpeedReadingInterval
 from .types.trip_api import (
     CreateTripRequest,
+    DeleteTripRequest,
     GetTripRequest,
     ReportBillableTripRequest,
     SearchTripsRequest,
@@ -51,6 +52,7 @@ from .types.trips import (
 )
 from .types.vehicle_api import (
     CreateVehicleRequest,
+    DeleteVehicleRequest,
     GetVehicleRequest,
     ListVehiclesRequest,
     ListVehiclesResponse,
@@ -85,6 +87,8 @@ __all__ = (
     "ConsumableTrafficPolyline",
     "CreateTripRequest",
     "CreateVehicleRequest",
+    "DeleteTripRequest",
+    "DeleteVehicleRequest",
     "DeviceSettings",
     "GetTripRequest",
     "GetVehicleRequest",

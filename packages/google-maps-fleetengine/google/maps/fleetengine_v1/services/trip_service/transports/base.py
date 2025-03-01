@@ -157,6 +157,11 @@ class TripServiceTransport(abc.ABC):
                 default_timeout=15.0,
                 client_info=client_info,
             ),
+            self.delete_trip: gapic_v1.method.wrap_method(
+                self.delete_trip,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.report_billable_trip: gapic_v1.method.wrap_method(
                 self.report_billable_trip,
                 default_timeout=None,
@@ -213,6 +218,14 @@ class TripServiceTransport(abc.ABC):
     def get_trip(
         self,
     ) -> Callable[[trip_api.GetTripRequest], Union[trips.Trip, Awaitable[trips.Trip]]]:
+        raise NotImplementedError()
+
+    @property
+    def delete_trip(
+        self,
+    ) -> Callable[
+        [trip_api.DeleteTripRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]
+    ]:
         raise NotImplementedError()
 
     @property
