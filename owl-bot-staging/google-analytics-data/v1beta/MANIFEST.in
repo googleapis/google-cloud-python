@@ -1,2 +1,0 @@
-recursive-include google/analytics/data *.py
-recursive-include google/analytics/data_v1beta *.py

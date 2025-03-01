@@ -859,16 +859,17 @@ class TextServiceClient(metaclass=TextServiceClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any(
-            [
-                model,
-                prompt,
-                temperature,
-                candidate_count,
-                max_output_tokens,
-                top_p,
-                top_k,
-            ]
+        flattened_params = [
+            model,
+            prompt,
+            temperature,
+            candidate_count,
+            max_output_tokens,
+            top_p,
+            top_k,
+        ]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
         )
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -994,7 +995,10 @@ class TextServiceClient(metaclass=TextServiceClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([model, text])
+        flattened_params = [model, text]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -1112,7 +1116,10 @@ class TextServiceClient(metaclass=TextServiceClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([model, texts])
+        flattened_params = [model, texts]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -1241,7 +1248,10 @@ class TextServiceClient(metaclass=TextServiceClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([model, prompt])
+        flattened_params = [model, prompt]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
