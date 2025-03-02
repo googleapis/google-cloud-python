@@ -49,9 +49,5 @@ dependencies = [
 [project.urls]
 Repository = "https://github.com/googleapis/google-cloud-python"
 
-[project.optional-dependencies]
-
-[tool.setuptools]
-
 [tool.setuptools.packages.find]
 include = ["google*"]
