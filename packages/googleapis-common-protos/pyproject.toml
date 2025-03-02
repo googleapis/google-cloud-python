@@ -52,6 +52,3 @@ grpc = ["grpcio >= 1.44.0, < 2.0.0.dev0"]
 
 [tool.setuptools.packages.find]
 exclude = ["tests*", "testing*"]
-
-[tool.setuptools.package-data]
-"*" = ["*.proto"]
