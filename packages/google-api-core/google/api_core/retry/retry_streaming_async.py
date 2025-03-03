@@ -62,8 +62,8 @@ async def retry_target_stream(
         [list[Exception], RetryFailureReason, float | None],
         tuple[Exception, Exception | None],
     ] = build_retry_error,
-    init_args: _P.args = (),
-    init_kwargs: _P.kwargs = {},
+    init_args: tuple = (),
+    init_kwargs: dict = {},
     **kwargs,
 ) -> AsyncGenerator[_Y, None]:
     """Create a generator wrapper that retries the wrapped stream if it fails.

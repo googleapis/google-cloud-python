@@ -59,8 +59,8 @@ def retry_target_stream(
         [List[Exception], RetryFailureReason, Optional[float]],
         Tuple[Exception, Optional[Exception]],
     ] = build_retry_error,
-    init_args: _P.args = (),
-    init_kwargs: _P.kwargs = {},
+    init_args: tuple = (),
+    init_kwargs: dict = {},
     **kwargs,
 ) -> Generator[_Y, Any, None]:
     """Create a generator wrapper that retries the wrapped stream if it fails.
