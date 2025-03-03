@@ -1,5 +1,46 @@
 # Changelog
 
+## [0.6.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataform-v0.5.16...google-cloud-dataform-v0.6.0) (2025-03-03)
+
+
+### ⚠ BREAKING CHANGES
+
+* **v1beta1:** Response type of method `CommitRepositoryChanges` is changed from `.google.protobuf.Empty` to `.google.cloud.dataform.v1beta1.CommitRepositoryChangesResponse` in service `Dataform`
+* **v1beta1:** Response type of method `PullGitCommits` is changed from `.google.protobuf.Empty` to `.google.cloud.dataform.v1beta1.PullGitCommitsResponse` in service `Dataform`
+* **v1beta1:** Response type of method `PushGitCommits` is changed from `.google.protobuf.Empty` to `.google.cloud.dataform.v1beta1.PushGitCommitsResponse` in service `Dataform`
+* **v1beta1:** Response type of method `CommitWorkspaceChanges` is changed from `.google.protobuf.Empty` to `.google.cloud.dataform.v1beta1.CommitWorkspaceChangesResponse` in service `Dataform`
+* **v1beta1:** Response type of method `ResetWorkspaceChanges` is changed from `.google.protobuf.Empty` to `.google.cloud.dataform.v1beta1.ResetWorkspaceChangesResponse` in service `Dataform`
+* **v1beta1:** Response type of method `RemoveDirectory` is changed from `.google.protobuf.Empty` to `.google.cloud.dataform.v1beta1.RemoveDirectoryResponse` in service `Dataform`
+* **v1beta1:** Response type of method `RemoveFileRequest` is changed from `.google.protobuf.Empty` to `.google.cloud.dataform.v1beta1.RemoveFileResponse` in service `Dataform`
+* **v1beta1:** Response type of method `CancelWorkflowInvocation` is changed from `.google.protobuf.Empty` to `.google.cloud.dataform.v1beta1.CancelWorkflowInvocationResponse` in service `Dataform`
+* **v1beta1:** An existing field `bigquery_action` is moved in to oneof in message `.google.cloud.dataform.v1beta1.WorkflowInvocationAction`
+
+### Features
+
+* **v1beta1:** Added new field `internal_metadata` to all resources to export all the metadata information that is used internally to serve the resource ([4aaf903](https://github.com/googleapis/google-cloud-python/commit/4aaf903957688ffccf272759e24680919115cb30))
+* **v1beta1:** Moving existing field `bigquery_action` to oneof in message `.google.cloud.dataform.v1beta1.WorkflowInvocationAction` to allow adding more actions types such as `notebook_action` ([4aaf903](https://github.com/googleapis/google-cloud-python/commit/4aaf903957688ffccf272759e24680919115cb30))
+* **v1beta1:** Returning `commit_sha` in the response of method `CommitRepositoryChanges` ([4aaf903](https://github.com/googleapis/google-cloud-python/commit/4aaf903957688ffccf272759e24680919115cb30))
+
+
+### Bug Fixes
+
+* **v1beta1:** An existing field `bigquery_action` is moved in to oneof in message `.google.cloud.dataform.v1beta1.WorkflowInvocationAction` ([4aaf903](https://github.com/googleapis/google-cloud-python/commit/4aaf903957688ffccf272759e24680919115cb30))
+* **v1beta1:** Response type of method `CancelWorkflowInvocation` is changed from `.google.protobuf.Empty` to `.google.cloud.dataform.v1beta1.CancelWorkflowInvocationResponse` in service `Dataform` ([4aaf903](https://github.com/googleapis/google-cloud-python/commit/4aaf903957688ffccf272759e24680919115cb30))
+* **v1beta1:** Response type of method `CommitRepositoryChanges` is changed from `.google.protobuf.Empty` to `.google.cloud.dataform.v1beta1.CommitRepositoryChangesResponse` in service `Dataform` ([4aaf903](https://github.com/googleapis/google-cloud-python/commit/4aaf903957688ffccf272759e24680919115cb30))
+* **v1beta1:** Response type of method `CommitWorkspaceChanges` is changed from `.google.protobuf.Empty` to `.google.cloud.dataform.v1beta1.CommitWorkspaceChangesResponse` in service `Dataform` ([4aaf903](https://github.com/googleapis/google-cloud-python/commit/4aaf903957688ffccf272759e24680919115cb30))
+* **v1beta1:** Response type of method `PullGitCommits` is changed from `.google.protobuf.Empty` to `.google.cloud.dataform.v1beta1.PullGitCommitsResponse` in service `Dataform` ([4aaf903](https://github.com/googleapis/google-cloud-python/commit/4aaf903957688ffccf272759e24680919115cb30))
+* **v1beta1:** Response type of method `PushGitCommits` is changed from `.google.protobuf.Empty` to `.google.cloud.dataform.v1beta1.PushGitCommitsResponse` in service `Dataform` ([4aaf903](https://github.com/googleapis/google-cloud-python/commit/4aaf903957688ffccf272759e24680919115cb30))
+* **v1beta1:** Response type of method `RemoveDirectory` is changed from `.google.protobuf.Empty` to `.google.cloud.dataform.v1beta1.RemoveDirectoryResponse` in service `Dataform` ([4aaf903](https://github.com/googleapis/google-cloud-python/commit/4aaf903957688ffccf272759e24680919115cb30))
+* **v1beta1:** Response type of method `RemoveFileRequest` is changed from `.google.protobuf.Empty` to `.google.cloud.dataform.v1beta1.RemoveFileResponse` in service `Dataform` ([4aaf903](https://github.com/googleapis/google-cloud-python/commit/4aaf903957688ffccf272759e24680919115cb30))
+* **v1beta1:** Response type of method `ResetWorkspaceChanges` is changed from `.google.protobuf.Empty` to `.google.cloud.dataform.v1beta1.ResetWorkspaceChangesResponse` in service `Dataform` ([4aaf903](https://github.com/googleapis/google-cloud-python/commit/4aaf903957688ffccf272759e24680919115cb30))
+
+
+### Documentation
+
+* **v1beta1:** Adds known limitations on several methods such as `UpdateRepository`, `UpdateReleaseConfig` and `UpdateWorkflowConfig` ([4aaf903](https://github.com/googleapis/google-cloud-python/commit/4aaf903957688ffccf272759e24680919115cb30))
+* **v1beta1:** Explained the effect of field `page_token` on the pagination in several messages ([4aaf903](https://github.com/googleapis/google-cloud-python/commit/4aaf903957688ffccf272759e24680919115cb30))
+* **v1beta1:** several comments reformatted ([4aaf903](https://github.com/googleapis/google-cloud-python/commit/4aaf903957688ffccf272759e24680919115cb30))
+
 ## [0.5.16](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataform-v0.5.15...google-cloud-dataform-v0.5.16) (2025-02-18)
 
 

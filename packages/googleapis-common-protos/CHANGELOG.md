@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.69.0](https://github.com/googleapis/google-cloud-python/compare/googleapis-common-protos-v1.68.0...googleapis-common-protos-v1.69.0) (2025-03-03)
+
+
+### Features
+
+* migrate to pyproject.toml ([#13551](https://github.com/googleapis/google-cloud-python/issues/13551)) ([7dda4d0](https://github.com/googleapis/google-cloud-python/commit/7dda4d0b94038444911a9796d74649bea2216a35))
+
 ## [1.68.0](https://github.com/googleapis/google-cloud-python/compare/googleapis-common-protos-v1.67.0...googleapis-common-protos-v1.68.0) (2025-02-18)
 
 

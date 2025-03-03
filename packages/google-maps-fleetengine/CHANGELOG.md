@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.2.8](https://github.com/googleapis/google-cloud-python/compare/google-maps-fleetengine-v0.2.7...google-maps-fleetengine-v0.2.8) (2025-03-03)
+
+
+### Features
+
+* [google-maps-fleetengine] Added Fleet Engine Delete APIs ([1df29f9](https://github.com/googleapis/google-cloud-python/commit/1df29f9aae7266a92683140596226a3e2dd33826))
+* [google-maps-fleetengine] Added Fleet Engine Delete APIs ([#13567](https://github.com/googleapis/google-cloud-python/issues/13567)) ([1df29f9](https://github.com/googleapis/google-cloud-python/commit/1df29f9aae7266a92683140596226a3e2dd33826))
+
 ## [0.2.7](https://github.com/googleapis/google-cloud-python/compare/google-maps-fleetengine-v0.2.6...google-maps-fleetengine-v0.2.7) (2025-02-27)
 
 
