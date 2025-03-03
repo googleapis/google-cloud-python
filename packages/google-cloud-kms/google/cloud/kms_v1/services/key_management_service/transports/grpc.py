@@ -1196,6 +1196,62 @@ class KeyManagementServiceGrpcTransport(KeyManagementServiceTransport):
             )
         return self._stubs["generate_random_bytes"]
 
+    def close(self):
+        self._logged_channel.close()
+
+    @property
+    def get_operation(
+        self,
+    ) -> Callable[[operations_pb2.GetOperationRequest], operations_pb2.Operation]:
+        r"""Return a callable for the get_operation method over gRPC."""
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_operation" not in self._stubs:
+            self._stubs["get_operation"] = self._logged_channel.unary_unary(
+                "/google.longrunning.Operations/GetOperation",
+                request_serializer=operations_pb2.GetOperationRequest.SerializeToString,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["get_operation"]
+
+    @property
+    def list_locations(
+        self,
+    ) -> Callable[
+        [locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse
+    ]:
+        r"""Return a callable for the list locations method over gRPC."""
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_locations" not in self._stubs:
+            self._stubs["list_locations"] = self._logged_channel.unary_unary(
+                "/google.cloud.location.Locations/ListLocations",
+                request_serializer=locations_pb2.ListLocationsRequest.SerializeToString,
+                response_deserializer=locations_pb2.ListLocationsResponse.FromString,
+            )
+        return self._stubs["list_locations"]
+
+    @property
+    def get_location(
+        self,
+    ) -> Callable[[locations_pb2.GetLocationRequest], locations_pb2.Location]:
+        r"""Return a callable for the list locations method over gRPC."""
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_location" not in self._stubs:
+            self._stubs["get_location"] = self._logged_channel.unary_unary(
+                "/google.cloud.location.Locations/GetLocation",
+                request_serializer=locations_pb2.GetLocationRequest.SerializeToString,
+                response_deserializer=locations_pb2.Location.FromString,
+            )
+        return self._stubs["get_location"]
+
     @property
     def set_iam_policy(
         self,
@@ -1275,62 +1331,6 @@ class KeyManagementServiceGrpcTransport(KeyManagementServiceTransport):
                 response_deserializer=iam_policy_pb2.TestIamPermissionsResponse.FromString,
             )
         return self._stubs["test_iam_permissions"]
-
-    def close(self):
-        self._logged_channel.close()
-
-    @property
-    def get_operation(
-        self,
-    ) -> Callable[[operations_pb2.GetOperationRequest], operations_pb2.Operation]:
-        r"""Return a callable for the get_operation method over gRPC."""
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "get_operation" not in self._stubs:
-            self._stubs["get_operation"] = self._logged_channel.unary_unary(
-                "/google.longrunning.Operations/GetOperation",
-                request_serializer=operations_pb2.GetOperationRequest.SerializeToString,
-                response_deserializer=operations_pb2.Operation.FromString,
-            )
-        return self._stubs["get_operation"]
-
-    @property
-    def list_locations(
-        self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse
-    ]:
-        r"""Return a callable for the list locations method over gRPC."""
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "list_locations" not in self._stubs:
-            self._stubs["list_locations"] = self._logged_channel.unary_unary(
-                "/google.cloud.location.Locations/ListLocations",
-                request_serializer=locations_pb2.ListLocationsRequest.SerializeToString,
-                response_deserializer=locations_pb2.ListLocationsResponse.FromString,
-            )
-        return self._stubs["list_locations"]
-
-    @property
-    def get_location(
-        self,
-    ) -> Callable[[locations_pb2.GetLocationRequest], locations_pb2.Location]:
-        r"""Return a callable for the list locations method over gRPC."""
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "get_location" not in self._stubs:
-            self._stubs["get_location"] = self._logged_channel.unary_unary(
-                "/google.cloud.location.Locations/GetLocation",
-                request_serializer=locations_pb2.GetLocationRequest.SerializeToString,
-                response_deserializer=locations_pb2.Location.FromString,
-            )
-        return self._stubs["get_location"]
 
     @property
     def kind(self) -> str:
