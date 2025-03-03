@@ -28,19 +28,19 @@ dependencies = [
     # Ensure that the lower bounds of these dependencies match what we have in the
     # templated setup.py.j2: https://github.com/googleapis/gapic-generator-python/blob/main/gapic/templates/setup.py.j2
     "click >= 6.7",
-    "google-api-core[grpc] >= 1.34.1, <3.0.0dev,!=2.0.*,!=2.1.*,!=2.2.*,!=2.3.*,!=2.4.*,!=2.5.*,!=2.6.*,!=2.7.*,!=2.8.*,!=2.9.*,!=2.10.*",
+    "google-api-core[grpc] >= 1.34.1, <3.0.0,!=2.0.*,!=2.1.*,!=2.2.*,!=2.3.*,!=2.4.*,!=2.5.*,!=2.6.*,!=2.7.*,!=2.8.*,!=2.9.*,!=2.10.*",
     "googleapis-common-protos >= 1.55.0",
     "grpcio >= 1.24.3",
     # 2.11.0 is required which adds the `default` argument to `jinja-filters.map()`
     # https://jinja.palletsprojects.com/en/3.0.x/templates/#jinja-filters.map
     # https://jinja.palletsprojects.com/en/2.11.x/changelog/#version-2-11-0
     "jinja2 >= 2.11",
-    "protobuf>=3.20.2,<6.0.0dev,!=4.21.0,!=4.21.1,!=4.21.2,!=4.21.3,!=4.21.4,!=4.21.5",
+    "protobuf>=3.20.2,<6.0.0,!=4.21.0,!=4.21.1,!=4.21.2,!=4.21.3,!=4.21.4,!=4.21.5",
     "pypandoc >= 1.4",
     "PyYAML >= 5.1.1",
-    "grpc-google-iam-v1 >= 0.14.0, < 1.0.0dev",
-    "libcst >= 0.4.9, < 2.0.0dev",
-    "inflection >= 0.5.1, < 1.0.0dev",
+    "grpc-google-iam-v1 >= 0.14.0, < 1.0.0",
+    "libcst >= 0.4.9, < 2.0.0",
+    "inflection >= 0.5.1, < 1.0.0",
 ]
 
 package_root = os.path.abspath(os.path.dirname(__file__))
