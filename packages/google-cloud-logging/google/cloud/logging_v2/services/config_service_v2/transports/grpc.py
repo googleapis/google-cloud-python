@@ -13,6 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import json
+import logging as std_logging
+import pickle
 import warnings
 from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
@@ -22,13 +25,91 @@ from google.api_core import gapic_v1
 import google.auth  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
+from google.protobuf.json_format import MessageToJson
+import google.protobuf.message
 
 import grpc  # type: ignore
+import proto  # type: ignore
 
 from google.cloud.logging_v2.types import logging_config
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 from .base import ConfigServiceV2Transport, DEFAULT_CLIENT_INFO
+
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = std_logging.getLogger(__name__)
+
+
+class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
+    def intercept_unary_unary(self, continuation, client_call_details, request):
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+            std_logging.DEBUG
+        )
+        if logging_enabled:  # pragma: NO COVER
+            request_metadata = client_call_details.metadata
+            if isinstance(request, proto.Message):
+                request_payload = type(request).to_json(request)
+            elif isinstance(request, google.protobuf.message.Message):
+                request_payload = MessageToJson(request)
+            else:
+                request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
+
+            request_metadata = {
+                key: value.decode("utf-8") if isinstance(value, bytes) else value
+                for key, value in request_metadata
+            }
+            grpc_request = {
+                "payload": request_payload,
+                "requestMethod": "grpc",
+                "metadata": dict(request_metadata),
+            }
+            _LOGGER.debug(
+                f"Sending request for {client_call_details.method}",
+                extra={
+                    "serviceName": "google.logging.v2.ConfigServiceV2",
+                    "rpcName": client_call_details.method,
+                    "request": grpc_request,
+                    "metadata": grpc_request["metadata"],
+                },
+            )
+
+        response = continuation(client_call_details, request)
+        if logging_enabled:  # pragma: NO COVER
+            response_metadata = response.trailing_metadata()
+            # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
+            metadata = (
+                dict([(k, str(v)) for k, v in response_metadata])
+                if response_metadata
+                else None
+            )
+            result = response.result()
+            if isinstance(result, proto.Message):
+                response_payload = type(result).to_json(result)
+            elif isinstance(result, google.protobuf.message.Message):
+                response_payload = MessageToJson(result)
+            else:
+                response_payload = f"{type(result).__name__}: {pickle.dumps(result)}"
+            grpc_response = {
+                "payload": response_payload,
+                "metadata": metadata,
+                "status": "OK",
+            }
+            _LOGGER.debug(
+                f"Received response for {client_call_details.method}.",
+                extra={
+                    "serviceName": "google.logging.v2.ConfigServiceV2",
+                    "rpcName": client_call_details.method,
+                    "response": grpc_response,
+                    "metadata": grpc_response["metadata"],
+                },
+            )
+        return response
 
 
 class ConfigServiceV2GrpcTransport(ConfigServiceV2Transport):
@@ -184,7 +265,12 @@ class ConfigServiceV2GrpcTransport(ConfigServiceV2Transport):
                 ],
             )
 
-        # Wrap messages. This must be done after self._grpc_channel exists
+        self._interceptor = _LoggingClientInterceptor()
+        self._logged_channel = grpc.intercept_channel(
+            self._grpc_channel, self._interceptor
+        )
+
+        # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
     @classmethod
@@ -248,7 +334,9 @@ class ConfigServiceV2GrpcTransport(ConfigServiceV2Transport):
         """
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsClient(self.grpc_channel)
+            self._operations_client = operations_v1.OperationsClient(
+                self._logged_channel
+            )
 
         # Return the client from cache.
         return self._operations_client
@@ -274,7 +362,7 @@ class ConfigServiceV2GrpcTransport(ConfigServiceV2Transport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_buckets" not in self._stubs:
-            self._stubs["list_buckets"] = self.grpc_channel.unary_unary(
+            self._stubs["list_buckets"] = self._logged_channel.unary_unary(
                 "/google.logging.v2.ConfigServiceV2/ListBuckets",
                 request_serializer=logging_config.ListBucketsRequest.serialize,
                 response_deserializer=logging_config.ListBucketsResponse.deserialize,
@@ -300,7 +388,7 @@ class ConfigServiceV2GrpcTransport(ConfigServiceV2Transport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_bucket" not in self._stubs:
-            self._stubs["get_bucket"] = self.grpc_channel.unary_unary(
+            self._stubs["get_bucket"] = self._logged_channel.unary_unary(
                 "/google.logging.v2.ConfigServiceV2/GetBucket",
                 request_serializer=logging_config.GetBucketRequest.serialize,
                 response_deserializer=logging_config.LogBucket.deserialize,
@@ -329,7 +417,7 @@ class ConfigServiceV2GrpcTransport(ConfigServiceV2Transport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_bucket_async" not in self._stubs:
-            self._stubs["create_bucket_async"] = self.grpc_channel.unary_unary(
+            self._stubs["create_bucket_async"] = self._logged_channel.unary_unary(
                 "/google.logging.v2.ConfigServiceV2/CreateBucketAsync",
                 request_serializer=logging_config.CreateBucketRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -361,7 +449,7 @@ class ConfigServiceV2GrpcTransport(ConfigServiceV2Transport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_bucket_async" not in self._stubs:
-            self._stubs["update_bucket_async"] = self.grpc_channel.unary_unary(
+            self._stubs["update_bucket_async"] = self._logged_channel.unary_unary(
                 "/google.logging.v2.ConfigServiceV2/UpdateBucketAsync",
                 request_serializer=logging_config.UpdateBucketRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -389,7 +477,7 @@ class ConfigServiceV2GrpcTransport(ConfigServiceV2Transport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_bucket" not in self._stubs:
-            self._stubs["create_bucket"] = self.grpc_channel.unary_unary(
+            self._stubs["create_bucket"] = self._logged_channel.unary_unary(
                 "/google.logging.v2.ConfigServiceV2/CreateBucket",
                 request_serializer=logging_config.CreateBucketRequest.serialize,
                 response_deserializer=logging_config.LogBucket.deserialize,
@@ -421,7 +509,7 @@ class ConfigServiceV2GrpcTransport(ConfigServiceV2Transport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_bucket" not in self._stubs:
-            self._stubs["update_bucket"] = self.grpc_channel.unary_unary(
+            self._stubs["update_bucket"] = self._logged_channel.unary_unary(
                 "/google.logging.v2.ConfigServiceV2/UpdateBucket",
                 request_serializer=logging_config.UpdateBucketRequest.serialize,
                 response_deserializer=logging_config.LogBucket.deserialize,
@@ -452,7 +540,7 @@ class ConfigServiceV2GrpcTransport(ConfigServiceV2Transport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_bucket" not in self._stubs:
-            self._stubs["delete_bucket"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_bucket"] = self._logged_channel.unary_unary(
                 "/google.logging.v2.ConfigServiceV2/DeleteBucket",
                 request_serializer=logging_config.DeleteBucketRequest.serialize,
                 response_deserializer=empty_pb2.Empty.FromString,
@@ -480,7 +568,7 @@ class ConfigServiceV2GrpcTransport(ConfigServiceV2Transport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "undelete_bucket" not in self._stubs:
-            self._stubs["undelete_bucket"] = self.grpc_channel.unary_unary(
+            self._stubs["undelete_bucket"] = self._logged_channel.unary_unary(
                 "/google.logging.v2.ConfigServiceV2/UndeleteBucket",
                 request_serializer=logging_config.UndeleteBucketRequest.serialize,
                 response_deserializer=empty_pb2.Empty.FromString,
@@ -506,7 +594,7 @@ class ConfigServiceV2GrpcTransport(ConfigServiceV2Transport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_views" not in self._stubs:
-            self._stubs["list_views"] = self.grpc_channel.unary_unary(
+            self._stubs["list_views"] = self._logged_channel.unary_unary(
                 "/google.logging.v2.ConfigServiceV2/ListViews",
                 request_serializer=logging_config.ListViewsRequest.serialize,
                 response_deserializer=logging_config.ListViewsResponse.deserialize,
@@ -532,7 +620,7 @@ class ConfigServiceV2GrpcTransport(ConfigServiceV2Transport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_view" not in self._stubs:
-            self._stubs["get_view"] = self.grpc_channel.unary_unary(
+            self._stubs["get_view"] = self._logged_channel.unary_unary(
                 "/google.logging.v2.ConfigServiceV2/GetView",
                 request_serializer=logging_config.GetViewRequest.serialize,
                 response_deserializer=logging_config.LogView.deserialize,
@@ -559,7 +647,7 @@ class ConfigServiceV2GrpcTransport(ConfigServiceV2Transport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_view" not in self._stubs:
-            self._stubs["create_view"] = self.grpc_channel.unary_unary(
+            self._stubs["create_view"] = self._logged_channel.unary_unary(
                 "/google.logging.v2.ConfigServiceV2/CreateView",
                 request_serializer=logging_config.CreateViewRequest.serialize,
                 response_deserializer=logging_config.LogView.deserialize,
@@ -589,7 +677,7 @@ class ConfigServiceV2GrpcTransport(ConfigServiceV2Transport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_view" not in self._stubs:
-            self._stubs["update_view"] = self.grpc_channel.unary_unary(
+            self._stubs["update_view"] = self._logged_channel.unary_unary(
                 "/google.logging.v2.ConfigServiceV2/UpdateView",
                 request_serializer=logging_config.UpdateViewRequest.serialize,
                 response_deserializer=logging_config.LogView.deserialize,
@@ -618,7 +706,7 @@ class ConfigServiceV2GrpcTransport(ConfigServiceV2Transport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_view" not in self._stubs:
-            self._stubs["delete_view"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_view"] = self._logged_channel.unary_unary(
                 "/google.logging.v2.ConfigServiceV2/DeleteView",
                 request_serializer=logging_config.DeleteViewRequest.serialize,
                 response_deserializer=empty_pb2.Empty.FromString,
@@ -644,7 +732,7 @@ class ConfigServiceV2GrpcTransport(ConfigServiceV2Transport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_sinks" not in self._stubs:
-            self._stubs["list_sinks"] = self.grpc_channel.unary_unary(
+            self._stubs["list_sinks"] = self._logged_channel.unary_unary(
                 "/google.logging.v2.ConfigServiceV2/ListSinks",
                 request_serializer=logging_config.ListSinksRequest.serialize,
                 response_deserializer=logging_config.ListSinksResponse.deserialize,
@@ -670,7 +758,7 @@ class ConfigServiceV2GrpcTransport(ConfigServiceV2Transport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_sink" not in self._stubs:
-            self._stubs["get_sink"] = self.grpc_channel.unary_unary(
+            self._stubs["get_sink"] = self._logged_channel.unary_unary(
                 "/google.logging.v2.ConfigServiceV2/GetSink",
                 request_serializer=logging_config.GetSinkRequest.serialize,
                 response_deserializer=logging_config.LogSink.deserialize,
@@ -700,7 +788,7 @@ class ConfigServiceV2GrpcTransport(ConfigServiceV2Transport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_sink" not in self._stubs:
-            self._stubs["create_sink"] = self.grpc_channel.unary_unary(
+            self._stubs["create_sink"] = self._logged_channel.unary_unary(
                 "/google.logging.v2.ConfigServiceV2/CreateSink",
                 request_serializer=logging_config.CreateSinkRequest.serialize,
                 response_deserializer=logging_config.LogSink.deserialize,
@@ -731,7 +819,7 @@ class ConfigServiceV2GrpcTransport(ConfigServiceV2Transport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_sink" not in self._stubs:
-            self._stubs["update_sink"] = self.grpc_channel.unary_unary(
+            self._stubs["update_sink"] = self._logged_channel.unary_unary(
                 "/google.logging.v2.ConfigServiceV2/UpdateSink",
                 request_serializer=logging_config.UpdateSinkRequest.serialize,
                 response_deserializer=logging_config.LogSink.deserialize,
@@ -758,7 +846,7 @@ class ConfigServiceV2GrpcTransport(ConfigServiceV2Transport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_sink" not in self._stubs:
-            self._stubs["delete_sink"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_sink"] = self._logged_channel.unary_unary(
                 "/google.logging.v2.ConfigServiceV2/DeleteSink",
                 request_serializer=logging_config.DeleteSinkRequest.serialize,
                 response_deserializer=empty_pb2.Empty.FromString,
@@ -787,7 +875,7 @@ class ConfigServiceV2GrpcTransport(ConfigServiceV2Transport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_link" not in self._stubs:
-            self._stubs["create_link"] = self.grpc_channel.unary_unary(
+            self._stubs["create_link"] = self._logged_channel.unary_unary(
                 "/google.logging.v2.ConfigServiceV2/CreateLink",
                 request_serializer=logging_config.CreateLinkRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -814,7 +902,7 @@ class ConfigServiceV2GrpcTransport(ConfigServiceV2Transport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_link" not in self._stubs:
-            self._stubs["delete_link"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_link"] = self._logged_channel.unary_unary(
                 "/google.logging.v2.ConfigServiceV2/DeleteLink",
                 request_serializer=logging_config.DeleteLinkRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -840,7 +928,7 @@ class ConfigServiceV2GrpcTransport(ConfigServiceV2Transport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_links" not in self._stubs:
-            self._stubs["list_links"] = self.grpc_channel.unary_unary(
+            self._stubs["list_links"] = self._logged_channel.unary_unary(
                 "/google.logging.v2.ConfigServiceV2/ListLinks",
                 request_serializer=logging_config.ListLinksRequest.serialize,
                 response_deserializer=logging_config.ListLinksResponse.deserialize,
@@ -866,7 +954,7 @@ class ConfigServiceV2GrpcTransport(ConfigServiceV2Transport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_link" not in self._stubs:
-            self._stubs["get_link"] = self.grpc_channel.unary_unary(
+            self._stubs["get_link"] = self._logged_channel.unary_unary(
                 "/google.logging.v2.ConfigServiceV2/GetLink",
                 request_serializer=logging_config.GetLinkRequest.serialize,
                 response_deserializer=logging_config.Link.deserialize,
@@ -895,7 +983,7 @@ class ConfigServiceV2GrpcTransport(ConfigServiceV2Transport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_exclusions" not in self._stubs:
-            self._stubs["list_exclusions"] = self.grpc_channel.unary_unary(
+            self._stubs["list_exclusions"] = self._logged_channel.unary_unary(
                 "/google.logging.v2.ConfigServiceV2/ListExclusions",
                 request_serializer=logging_config.ListExclusionsRequest.serialize,
                 response_deserializer=logging_config.ListExclusionsResponse.deserialize,
@@ -921,7 +1009,7 @@ class ConfigServiceV2GrpcTransport(ConfigServiceV2Transport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_exclusion" not in self._stubs:
-            self._stubs["get_exclusion"] = self.grpc_channel.unary_unary(
+            self._stubs["get_exclusion"] = self._logged_channel.unary_unary(
                 "/google.logging.v2.ConfigServiceV2/GetExclusion",
                 request_serializer=logging_config.GetExclusionRequest.serialize,
                 response_deserializer=logging_config.LogExclusion.deserialize,
@@ -949,7 +1037,7 @@ class ConfigServiceV2GrpcTransport(ConfigServiceV2Transport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_exclusion" not in self._stubs:
-            self._stubs["create_exclusion"] = self.grpc_channel.unary_unary(
+            self._stubs["create_exclusion"] = self._logged_channel.unary_unary(
                 "/google.logging.v2.ConfigServiceV2/CreateExclusion",
                 request_serializer=logging_config.CreateExclusionRequest.serialize,
                 response_deserializer=logging_config.LogExclusion.deserialize,
@@ -976,7 +1064,7 @@ class ConfigServiceV2GrpcTransport(ConfigServiceV2Transport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_exclusion" not in self._stubs:
-            self._stubs["update_exclusion"] = self.grpc_channel.unary_unary(
+            self._stubs["update_exclusion"] = self._logged_channel.unary_unary(
                 "/google.logging.v2.ConfigServiceV2/UpdateExclusion",
                 request_serializer=logging_config.UpdateExclusionRequest.serialize,
                 response_deserializer=logging_config.LogExclusion.deserialize,
@@ -1002,7 +1090,7 @@ class ConfigServiceV2GrpcTransport(ConfigServiceV2Transport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_exclusion" not in self._stubs:
-            self._stubs["delete_exclusion"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_exclusion"] = self._logged_channel.unary_unary(
                 "/google.logging.v2.ConfigServiceV2/DeleteExclusion",
                 request_serializer=logging_config.DeleteExclusionRequest.serialize,
                 response_deserializer=empty_pb2.Empty.FromString,
@@ -1037,7 +1125,7 @@ class ConfigServiceV2GrpcTransport(ConfigServiceV2Transport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_cmek_settings" not in self._stubs:
-            self._stubs["get_cmek_settings"] = self.grpc_channel.unary_unary(
+            self._stubs["get_cmek_settings"] = self._logged_channel.unary_unary(
                 "/google.logging.v2.ConfigServiceV2/GetCmekSettings",
                 request_serializer=logging_config.GetCmekSettingsRequest.serialize,
                 response_deserializer=logging_config.CmekSettings.deserialize,
@@ -1079,7 +1167,7 @@ class ConfigServiceV2GrpcTransport(ConfigServiceV2Transport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_cmek_settings" not in self._stubs:
-            self._stubs["update_cmek_settings"] = self.grpc_channel.unary_unary(
+            self._stubs["update_cmek_settings"] = self._logged_channel.unary_unary(
                 "/google.logging.v2.ConfigServiceV2/UpdateCmekSettings",
                 request_serializer=logging_config.UpdateCmekSettingsRequest.serialize,
                 response_deserializer=logging_config.CmekSettings.deserialize,
@@ -1115,7 +1203,7 @@ class ConfigServiceV2GrpcTransport(ConfigServiceV2Transport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_settings" not in self._stubs:
-            self._stubs["get_settings"] = self.grpc_channel.unary_unary(
+            self._stubs["get_settings"] = self._logged_channel.unary_unary(
                 "/google.logging.v2.ConfigServiceV2/GetSettings",
                 request_serializer=logging_config.GetSettingsRequest.serialize,
                 response_deserializer=logging_config.Settings.deserialize,
@@ -1158,7 +1246,7 @@ class ConfigServiceV2GrpcTransport(ConfigServiceV2Transport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_settings" not in self._stubs:
-            self._stubs["update_settings"] = self.grpc_channel.unary_unary(
+            self._stubs["update_settings"] = self._logged_channel.unary_unary(
                 "/google.logging.v2.ConfigServiceV2/UpdateSettings",
                 request_serializer=logging_config.UpdateSettingsRequest.serialize,
                 response_deserializer=logging_config.Settings.deserialize,
@@ -1185,7 +1273,7 @@ class ConfigServiceV2GrpcTransport(ConfigServiceV2Transport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "copy_log_entries" not in self._stubs:
-            self._stubs["copy_log_entries"] = self.grpc_channel.unary_unary(
+            self._stubs["copy_log_entries"] = self._logged_channel.unary_unary(
                 "/google.logging.v2.ConfigServiceV2/CopyLogEntries",
                 request_serializer=logging_config.CopyLogEntriesRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1193,7 +1281,7 @@ class ConfigServiceV2GrpcTransport(ConfigServiceV2Transport):
         return self._stubs["copy_log_entries"]
 
     def close(self):
-        self.grpc_channel.close()
+        self._logged_channel.close()
 
     @property
     def cancel_operation(
@@ -1205,7 +1293,7 @@ class ConfigServiceV2GrpcTransport(ConfigServiceV2Transport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "cancel_operation" not in self._stubs:
-            self._stubs["cancel_operation"] = self.grpc_channel.unary_unary(
+            self._stubs["cancel_operation"] = self._logged_channel.unary_unary(
                 "/google.longrunning.Operations/CancelOperation",
                 request_serializer=operations_pb2.CancelOperationRequest.SerializeToString,
                 response_deserializer=None,
@@ -1222,7 +1310,7 @@ class ConfigServiceV2GrpcTransport(ConfigServiceV2Transport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_operation" not in self._stubs:
-            self._stubs["get_operation"] = self.grpc_channel.unary_unary(
+            self._stubs["get_operation"] = self._logged_channel.unary_unary(
                 "/google.longrunning.Operations/GetOperation",
                 request_serializer=operations_pb2.GetOperationRequest.SerializeToString,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1241,7 +1329,7 @@ class ConfigServiceV2GrpcTransport(ConfigServiceV2Transport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_operations" not in self._stubs:
-            self._stubs["list_operations"] = self.grpc_channel.unary_unary(
+            self._stubs["list_operations"] = self._logged_channel.unary_unary(
                 "/google.longrunning.Operations/ListOperations",
                 request_serializer=operations_pb2.ListOperationsRequest.SerializeToString,
                 response_deserializer=operations_pb2.ListOperationsResponse.FromString,
