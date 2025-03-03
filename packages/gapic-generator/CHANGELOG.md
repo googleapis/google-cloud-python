@@ -1,6 +1,13 @@
 # Changelog
 
 
+## [1.23.3](https://github.com/googleapis/gapic-generator-python/compare/v1.23.2...v1.23.3) (2025-03-03)
+
+
+### Bug Fixes
+
+* Resolve issue where pre-release versions of dependencies are installed ([#2347](https://github.com/googleapis/gapic-generator-python/issues/2347)) ([aea00b2](https://github.com/googleapis/gapic-generator-python/commit/aea00b2137ac926bdc527eb9c4666eb8b1ca70e1))
+
 ## [1.23.2](https://github.com/googleapis/gapic-generator-python/compare/v1.23.1...v1.23.2) (2025-02-28)
 
 
