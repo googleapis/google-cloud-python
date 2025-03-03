@@ -502,6 +502,12 @@ replacements:
                       }\n
     count: 2
   - paths: [
+      packages/google-cloud-financialservices/google/cloud/financialservices_v1/types/engine_version.py,
+    ]
+    before: \"state:\*\"
+    after: "`state:*`"
+    count: 1
+  - paths: [
       packages/google-cloud-automl/google/cloud/automl_v1/types/io.py,
     ]
     before: "Classification\n    ''''''''''''''"
