@@ -8,7 +8,7 @@
     ],
     "language": "PYTHON",
     "name": "google-cloud-error-reporting",
-    "version": "1.11.1"
+    "version": "0.1.0"
   },
   "snippets": [
     {
@@ -47,7 +47,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.errorreporting_v1beta1.types.ErrorGroup",
@@ -127,7 +127,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.errorreporting_v1beta1.types.ErrorGroup",
@@ -208,7 +208,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.errorreporting_v1beta1.types.ErrorGroup",
@@ -288,7 +288,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.errorreporting_v1beta1.types.ErrorGroup",
@@ -369,7 +369,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.errorreporting_v1beta1.types.DeleteEventsResponse",
@@ -449,7 +449,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.errorreporting_v1beta1.types.DeleteEventsResponse",
@@ -534,7 +534,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.errorreporting_v1beta1.services.error_stats_service.pagers.ListEventsAsyncPager",
@@ -618,7 +618,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.errorreporting_v1beta1.services.error_stats_service.pagers.ListEventsPager",
@@ -703,7 +703,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.errorreporting_v1beta1.services.error_stats_service.pagers.ListGroupStatsAsyncPager",
@@ -787,7 +787,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.errorreporting_v1beta1.services.error_stats_service.pagers.ListGroupStatsPager",
@@ -872,7 +872,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.errorreporting_v1beta1.types.ReportErrorEventResponse",
@@ -956,7 +956,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.errorreporting_v1beta1.types.ReportErrorEventResponse",

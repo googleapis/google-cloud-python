@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import logging as std_logging
 from collections import OrderedDict
 import re
 from typing import (
@@ -47,6 +48,15 @@ from google.cloud.errorreporting_v1beta1.types import report_errors_service
 from .transports.base import ReportErrorsServiceTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc_asyncio import ReportErrorsServiceGrpcAsyncIOTransport
 from .client import ReportErrorsServiceClient
+
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = std_logging.getLogger(__name__)
 
 
 class ReportErrorsServiceAsyncClient:
@@ -255,6 +265,28 @@ class ReportErrorsServiceAsyncClient:
             client_info=client_info,
         )
 
+        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+            std_logging.DEBUG
+        ):  # pragma: NO COVER
+            _LOGGER.debug(
+                "Created client `google.devtools.clouderrorreporting_v1beta1.ReportErrorsServiceAsyncClient`.",
+                extra={
+                    "serviceName": "google.devtools.clouderrorreporting.v1beta1.ReportErrorsService",
+                    "universeDomain": getattr(
+                        self._client._transport._credentials, "universe_domain", ""
+                    ),
+                    "credentialsType": f"{type(self._client._transport._credentials).__module__}.{type(self._client._transport._credentials).__qualname__}",
+                    "credentialsInfo": getattr(
+                        self.transport._credentials, "get_cred_info", lambda: None
+                    )(),
+                }
+                if hasattr(self._client._transport, "_credentials")
+                else {
+                    "serviceName": "google.devtools.clouderrorreporting.v1beta1.ReportErrorsService",
+                    "credentialsType": None,
+                },
+            )
+
     async def report_error_event(
         self,
         request: Optional[
@@ -265,7 +297,7 @@ class ReportErrorsServiceAsyncClient:
         event: Optional[report_errors_service.ReportedErrorEvent] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> report_errors_service.ReportErrorEventResponse:
         r"""Report an individual error event and record the event to a log.
 
@@ -345,8 +377,10 @@ class ReportErrorsServiceAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.cloud.errorreporting_v1beta1.types.ReportErrorEventResponse:
@@ -358,7 +392,10 @@ class ReportErrorsServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project_name, event])
+        flattened_params = [project_name, event]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
