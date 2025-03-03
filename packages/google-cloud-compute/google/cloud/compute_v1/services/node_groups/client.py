@@ -772,8 +772,14 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any(
-            [project, zone, node_group, node_groups_add_nodes_request_resource]
+        flattened_params = [
+            project,
+            zone,
+            node_group,
+            node_groups_add_nodes_request_resource,
+        ]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
         )
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -916,8 +922,14 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any(
-            [project, zone, node_group, node_groups_add_nodes_request_resource]
+        flattened_params = [
+            project,
+            zone,
+            node_group,
+            node_groups_add_nodes_request_resource,
+        ]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
         )
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1066,7 +1078,10 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project])
+        flattened_params = [project]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -1199,7 +1214,10 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project, zone, node_group])
+        flattened_params = [project, zone, node_group]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -1331,7 +1349,10 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project, zone, node_group])
+        flattened_params = [project, zone, node_group]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -1496,8 +1517,14 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any(
-            [project, zone, node_group, node_groups_delete_nodes_request_resource]
+        flattened_params = [
+            project,
+            zone,
+            node_group,
+            node_groups_delete_nodes_request_resource,
+        ]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
         )
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1642,8 +1669,14 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any(
-            [project, zone, node_group, node_groups_delete_nodes_request_resource]
+        flattened_params = [
+            project,
+            zone,
+            node_group,
+            node_groups_delete_nodes_request_resource,
+        ]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
         )
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1814,7 +1847,10 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project, zone, node_group])
+        flattened_params = [project, zone, node_group]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -1967,7 +2003,10 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project, zone, resource])
+        flattened_params = [project, zone, resource]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -2106,8 +2145,9 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any(
-            [project, zone, initial_node_count, node_group_resource]
+        flattened_params = [project, zone, initial_node_count, node_group_resource]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
         )
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2248,8 +2288,9 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any(
-            [project, zone, initial_node_count, node_group_resource]
+        flattened_params = [project, zone, initial_node_count, node_group_resource]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
         )
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2405,7 +2446,10 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project, zone])
+        flattened_params = [project, zone]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -2547,7 +2591,10 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project, zone, node_group])
+        flattened_params = [project, zone, node_group]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -2696,7 +2743,10 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project, zone, node_group, node_group_resource])
+        flattened_params = [project, zone, node_group, node_group_resource]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -2836,7 +2886,10 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project, zone, node_group, node_group_resource])
+        flattened_params = [project, zone, node_group, node_group_resource]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -3006,13 +3059,14 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any(
-            [
-                project,
-                zone,
-                node_group,
-                node_groups_perform_maintenance_request_resource,
-            ]
+        flattened_params = [
+            project,
+            zone,
+            node_group,
+            node_groups_perform_maintenance_request_resource,
+        ]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
         )
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3160,13 +3214,14 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any(
-            [
-                project,
-                zone,
-                node_group,
-                node_groups_perform_maintenance_request_resource,
-            ]
+        flattened_params = [
+            project,
+            zone,
+            node_group,
+            node_groups_perform_maintenance_request_resource,
+        ]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
         )
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3355,8 +3410,9 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any(
-            [project, zone, resource, zone_set_policy_request_resource]
+        flattened_params = [project, zone, resource, zone_set_policy_request_resource]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
         )
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3501,8 +3557,14 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any(
-            [project, zone, node_group, node_groups_set_node_template_request_resource]
+        flattened_params = [
+            project,
+            zone,
+            node_group,
+            node_groups_set_node_template_request_resource,
+        ]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
         )
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3647,8 +3709,14 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any(
-            [project, zone, node_group, node_groups_set_node_template_request_resource]
+        flattened_params = [
+            project,
+            zone,
+            node_group,
+            node_groups_set_node_template_request_resource,
+        ]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
         )
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3822,13 +3890,14 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any(
-            [
-                project,
-                zone,
-                node_group,
-                node_groups_simulate_maintenance_event_request_resource,
-            ]
+        flattened_params = [
+            project,
+            zone,
+            node_group,
+            node_groups_simulate_maintenance_event_request_resource,
+        ]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
         )
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3979,13 +4048,14 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any(
-            [
-                project,
-                zone,
-                node_group,
-                node_groups_simulate_maintenance_event_request_resource,
-            ]
+        flattened_params = [
+            project,
+            zone,
+            node_group,
+            node_groups_simulate_maintenance_event_request_resource,
+        ]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
         )
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4158,8 +4228,9 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any(
-            [project, zone, resource, test_permissions_request_resource]
+        flattened_params = [project, zone, resource, test_permissions_request_resource]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
         )
         if request is not None and has_flattened_params:
             raise ValueError(

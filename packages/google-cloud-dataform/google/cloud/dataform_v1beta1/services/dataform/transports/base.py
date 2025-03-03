@@ -39,7 +39,10 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
 class DataformTransport(abc.ABC):
     """Abstract transport class for Dataform."""
 
-    AUTH_SCOPES = ("https://www.googleapis.com/auth/cloud-platform",)
+    AUTH_SCOPES = (
+        "https://www.googleapis.com/auth/bigquery",
+        "https://www.googleapis.com/auth/cloud-platform",
+    )
 
     DEFAULT_HOST: str = "dataform.googleapis.com"
 
@@ -252,6 +255,11 @@ class DataformTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.search_files: gapic_v1.method.wrap_method(
+                self.search_files,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.make_directory: gapic_v1.method.wrap_method(
                 self.make_directory,
                 default_timeout=None,
@@ -387,6 +395,16 @@ class DataformTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.get_config: gapic_v1.method.wrap_method(
+                self.get_config,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_config: gapic_v1.method.wrap_method(
+                self.update_config,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.get_location: gapic_v1.method.wrap_method(
                 self.get_location,
                 default_timeout=None,
@@ -476,7 +494,10 @@ class DataformTransport(abc.ABC):
         self,
     ) -> Callable[
         [dataform.CommitRepositoryChangesRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
+        Union[
+            dataform.CommitRepositoryChangesResponse,
+            Awaitable[dataform.CommitRepositoryChangesResponse],
+        ],
     ]:
         raise NotImplementedError()
 
@@ -595,7 +616,9 @@ class DataformTransport(abc.ABC):
         self,
     ) -> Callable[
         [dataform.PullGitCommitsRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
+        Union[
+            dataform.PullGitCommitsResponse, Awaitable[dataform.PullGitCommitsResponse]
+        ],
     ]:
         raise NotImplementedError()
 
@@ -604,7 +627,9 @@ class DataformTransport(abc.ABC):
         self,
     ) -> Callable[
         [dataform.PushGitCommitsRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
+        Union[
+            dataform.PushGitCommitsResponse, Awaitable[dataform.PushGitCommitsResponse]
+        ],
     ]:
         raise NotImplementedError()
 
@@ -637,7 +662,10 @@ class DataformTransport(abc.ABC):
         self,
     ) -> Callable[
         [dataform.CommitWorkspaceChangesRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
+        Union[
+            dataform.CommitWorkspaceChangesResponse,
+            Awaitable[dataform.CommitWorkspaceChangesResponse],
+        ],
     ]:
         raise NotImplementedError()
 
@@ -646,7 +674,10 @@ class DataformTransport(abc.ABC):
         self,
     ) -> Callable[
         [dataform.ResetWorkspaceChangesRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
+        Union[
+            dataform.ResetWorkspaceChangesResponse,
+            Awaitable[dataform.ResetWorkspaceChangesResponse],
+        ],
     ]:
         raise NotImplementedError()
 
@@ -674,6 +705,15 @@ class DataformTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
+    def search_files(
+        self,
+    ) -> Callable[
+        [dataform.SearchFilesRequest],
+        Union[dataform.SearchFilesResponse, Awaitable[dataform.SearchFilesResponse]],
+    ]:
+        raise NotImplementedError()
+
+    @property
     def make_directory(
         self,
     ) -> Callable[
@@ -689,7 +729,10 @@ class DataformTransport(abc.ABC):
         self,
     ) -> Callable[
         [dataform.RemoveDirectoryRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
+        Union[
+            dataform.RemoveDirectoryResponse,
+            Awaitable[dataform.RemoveDirectoryResponse],
+        ],
     ]:
         raise NotImplementedError()
 
@@ -717,7 +760,8 @@ class DataformTransport(abc.ABC):
     def remove_file(
         self,
     ) -> Callable[
-        [dataform.RemoveFileRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]
+        [dataform.RemoveFileRequest],
+        Union[dataform.RemoveFileResponse, Awaitable[dataform.RemoveFileResponse]],
     ]:
         raise NotImplementedError()
 
@@ -921,7 +965,10 @@ class DataformTransport(abc.ABC):
         self,
     ) -> Callable[
         [dataform.CancelWorkflowInvocationRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
+        Union[
+            dataform.CancelWorkflowInvocationResponse,
+            Awaitable[dataform.CancelWorkflowInvocationResponse],
+        ],
     ]:
         raise NotImplementedError()
 
@@ -934,6 +981,23 @@ class DataformTransport(abc.ABC):
             dataform.QueryWorkflowInvocationActionsResponse,
             Awaitable[dataform.QueryWorkflowInvocationActionsResponse],
         ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_config(
+        self,
+    ) -> Callable[
+        [dataform.GetConfigRequest], Union[dataform.Config, Awaitable[dataform.Config]]
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_config(
+        self,
+    ) -> Callable[
+        [dataform.UpdateConfigRequest],
+        Union[dataform.Config, Awaitable[dataform.Config]],
     ]:
         raise NotImplementedError()
 

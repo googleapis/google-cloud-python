@@ -380,6 +380,35 @@ class TripServiceGrpcAsyncIOTransport(TripServiceTransport):
         return self._stubs["get_trip"]
 
     @property
+    def delete_trip(
+        self,
+    ) -> Callable[[trip_api.DeleteTripRequest], Awaitable[empty_pb2.Empty]]:
+        r"""Return a callable for the delete trip method over gRPC.
+
+        Deletes a single Trip.
+
+        Returns FAILED_PRECONDITION if the Trip is active and assigned
+        to a vehicle.
+
+        Returns:
+            Callable[[~.DeleteTripRequest],
+                    Awaitable[~.Empty]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_trip" not in self._stubs:
+            self._stubs["delete_trip"] = self._logged_channel.unary_unary(
+                "/maps.fleetengine.v1.TripService/DeleteTrip",
+                request_serializer=trip_api.DeleteTripRequest.serialize,
+                response_deserializer=empty_pb2.Empty.FromString,
+            )
+        return self._stubs["delete_trip"]
+
+    @property
     def report_billable_trip(
         self,
     ) -> Callable[[trip_api.ReportBillableTripRequest], Awaitable[empty_pb2.Empty]]:
@@ -488,6 +517,11 @@ class TripServiceGrpcAsyncIOTransport(TripServiceTransport):
                     deadline=15.0,
                 ),
                 default_timeout=15.0,
+                client_info=client_info,
+            ),
+            self.delete_trip: self._wrap_method(
+                self.delete_trip,
+                default_timeout=None,
                 client_info=client_info,
             ),
             self.report_billable_trip: self._wrap_method(

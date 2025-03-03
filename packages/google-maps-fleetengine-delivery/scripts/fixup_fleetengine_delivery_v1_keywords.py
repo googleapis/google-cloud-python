@@ -42,6 +42,8 @@ class fleetengine_deliveryCallTransformer(cst.CSTTransformer):
         'batch_create_tasks': ('parent', 'requests', 'header', ),
         'create_delivery_vehicle': ('parent', 'delivery_vehicle_id', 'delivery_vehicle', 'header', ),
         'create_task': ('parent', 'task_id', 'task', 'header', ),
+        'delete_delivery_vehicle': ('name', 'header', ),
+        'delete_task': ('name', 'header', ),
         'get_delivery_vehicle': ('name', 'header', ),
         'get_task': ('name', 'header', ),
         'get_task_tracking_info': ('name', 'header', ),

@@ -776,8 +776,14 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any(
-            [project, region, disk, region_disks_add_resource_policies_request_resource]
+        flattened_params = [
+            project,
+            region,
+            disk,
+            region_disks_add_resource_policies_request_resource,
+        ]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
         )
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -924,8 +930,14 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any(
-            [project, region, disk, region_disks_add_resource_policies_request_resource]
+        flattened_params = [
+            project,
+            region,
+            disk,
+            region_disks_add_resource_policies_request_resource,
+        ]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
         )
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1086,8 +1098,9 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any(
-            [project, region, bulk_insert_disk_resource_resource]
+        flattened_params = [project, region, bulk_insert_disk_resource_resource]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
         )
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1220,8 +1233,9 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any(
-            [project, region, bulk_insert_disk_resource_resource]
+        flattened_params = [project, region, bulk_insert_disk_resource_resource]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
         )
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1388,7 +1402,10 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project, region, disk, snapshot_resource])
+        flattened_params = [project, region, disk, snapshot_resource]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -1530,7 +1547,10 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project, region, disk, snapshot_resource])
+        flattened_params = [project, region, disk, snapshot_resource]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -1691,7 +1711,10 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project, region, disk])
+        flattened_params = [project, region, disk]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -1825,7 +1848,10 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project, region, disk])
+        flattened_params = [project, region, disk]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -1990,7 +2016,10 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project, region, disk])
+        flattened_params = [project, region, disk]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -2143,7 +2172,10 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project, region, resource])
+        flattened_params = [project, region, resource]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -2271,7 +2303,10 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project, region, disk_resource])
+        flattened_params = [project, region, disk_resource]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -2398,7 +2433,10 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project, region, disk_resource])
+        flattened_params = [project, region, disk_resource]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -2548,7 +2586,10 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project, region])
+        flattened_params = [project, region]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -2696,13 +2737,14 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any(
-            [
-                project,
-                region,
-                disk,
-                region_disks_remove_resource_policies_request_resource,
-            ]
+        flattened_params = [
+            project,
+            region,
+            disk,
+            region_disks_remove_resource_policies_request_resource,
+        ]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
         )
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2847,13 +2889,14 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any(
-            [
-                project,
-                region,
-                disk,
-                region_disks_remove_resource_policies_request_resource,
-            ]
+        flattened_params = [
+            project,
+            region,
+            disk,
+            region_disks_remove_resource_policies_request_resource,
+        ]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
         )
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3019,8 +3062,9 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any(
-            [project, region, disk, region_disks_resize_request_resource]
+        flattened_params = [project, region, disk, region_disks_resize_request_resource]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
         )
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3161,8 +3205,9 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any(
-            [project, region, disk, region_disks_resize_request_resource]
+        flattened_params = [project, region, disk, region_disks_resize_request_resource]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
         )
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3353,8 +3398,14 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any(
-            [project, region, resource, region_set_policy_request_resource]
+        flattened_params = [
+            project,
+            region,
+            resource,
+            region_set_policy_request_resource,
+        ]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
         )
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3497,8 +3548,14 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any(
-            [project, region, resource, region_set_labels_request_resource]
+        flattened_params = [
+            project,
+            region,
+            resource,
+            region_set_labels_request_resource,
+        ]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
         )
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3641,8 +3698,14 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any(
-            [project, region, resource, region_set_labels_request_resource]
+        flattened_params = [
+            project,
+            region,
+            resource,
+            region_set_labels_request_resource,
+        ]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
         )
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3813,13 +3876,14 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any(
-            [
-                project,
-                region,
-                disk,
-                region_disks_start_async_replication_request_resource,
-            ]
+        flattened_params = [
+            project,
+            region,
+            disk,
+            region_disks_start_async_replication_request_resource,
+        ]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
         )
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3965,13 +4029,14 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any(
-            [
-                project,
-                region,
-                disk,
-                region_disks_start_async_replication_request_resource,
-            ]
+        flattened_params = [
+            project,
+            region,
+            disk,
+            region_disks_start_async_replication_request_resource,
+        ]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
         )
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4134,7 +4199,10 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project, region, disk])
+        flattened_params = [project, region, disk]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -4267,7 +4335,10 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project, region, disk])
+        flattened_params = [project, region, disk]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -4429,8 +4500,13 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any(
-            [project, region, disks_stop_group_async_replication_resource_resource]
+        flattened_params = [
+            project,
+            region,
+            disks_stop_group_async_replication_resource_resource,
+        ]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
         )
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4571,8 +4647,13 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any(
-            [project, region, disks_stop_group_async_replication_resource_resource]
+        flattened_params = [
+            project,
+            region,
+            disks_stop_group_async_replication_resource_resource,
+        ]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
         )
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4742,8 +4823,14 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any(
-            [project, region, resource, test_permissions_request_resource]
+        flattened_params = [
+            project,
+            region,
+            resource,
+            test_permissions_request_resource,
+        ]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
         )
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4887,7 +4974,10 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project, region, disk, disk_resource])
+        flattened_params = [project, region, disk, disk_resource]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -5028,7 +5118,10 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project, region, disk, disk_resource])
+        flattened_params = [project, region, disk, disk_resource]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "

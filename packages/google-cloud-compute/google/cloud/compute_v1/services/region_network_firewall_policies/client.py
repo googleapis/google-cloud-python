@@ -799,8 +799,14 @@ class RegionNetworkFirewallPoliciesClient(
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any(
-            [project, region, firewall_policy, firewall_policy_association_resource]
+        flattened_params = [
+            project,
+            region,
+            firewall_policy,
+            firewall_policy_association_resource,
+        ]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
         )
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -950,8 +956,14 @@ class RegionNetworkFirewallPoliciesClient(
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any(
-            [project, region, firewall_policy, firewall_policy_association_resource]
+        flattened_params = [
+            project,
+            region,
+            firewall_policy,
+            firewall_policy_association_resource,
+        ]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
         )
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1123,8 +1135,14 @@ class RegionNetworkFirewallPoliciesClient(
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any(
-            [project, region, firewall_policy, firewall_policy_rule_resource]
+        flattened_params = [
+            project,
+            region,
+            firewall_policy,
+            firewall_policy_rule_resource,
+        ]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
         )
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1267,8 +1285,14 @@ class RegionNetworkFirewallPoliciesClient(
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any(
-            [project, region, firewall_policy, firewall_policy_rule_resource]
+        flattened_params = [
+            project,
+            region,
+            firewall_policy,
+            firewall_policy_rule_resource,
+        ]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
         )
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1431,7 +1455,10 @@ class RegionNetworkFirewallPoliciesClient(
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project, region, firewall_policy])
+        flattened_params = [project, region, firewall_policy]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -1568,7 +1595,10 @@ class RegionNetworkFirewallPoliciesClient(
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project, region, firewall_policy])
+        flattened_params = [project, region, firewall_policy]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -1729,7 +1759,10 @@ class RegionNetworkFirewallPoliciesClient(
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project, region, firewall_policy])
+        flattened_params = [project, region, firewall_policy]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -1863,7 +1896,10 @@ class RegionNetworkFirewallPoliciesClient(
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project, region, firewall_policy])
+        flattened_params = [project, region, firewall_policy]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -2020,7 +2056,10 @@ class RegionNetworkFirewallPoliciesClient(
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project, region, firewall_policy])
+        flattened_params = [project, region, firewall_policy]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -2152,7 +2191,10 @@ class RegionNetworkFirewallPoliciesClient(
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project, region, firewall_policy])
+        flattened_params = [project, region, firewall_policy]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -2284,7 +2326,10 @@ class RegionNetworkFirewallPoliciesClient(
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project, region, network])
+        flattened_params = [project, region, network]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -2442,7 +2487,10 @@ class RegionNetworkFirewallPoliciesClient(
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project, region, resource])
+        flattened_params = [project, region, resource]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -2580,7 +2628,10 @@ class RegionNetworkFirewallPoliciesClient(
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project, region, firewall_policy])
+        flattened_params = [project, region, firewall_policy]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -2712,7 +2763,10 @@ class RegionNetworkFirewallPoliciesClient(
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project, region, firewall_policy_resource])
+        flattened_params = [project, region, firewall_policy_resource]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -2843,7 +2897,10 @@ class RegionNetworkFirewallPoliciesClient(
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project, region, firewall_policy_resource])
+        flattened_params = [project, region, firewall_policy_resource]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -2996,7 +3053,10 @@ class RegionNetworkFirewallPoliciesClient(
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project, region])
+        flattened_params = [project, region]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -3144,8 +3204,9 @@ class RegionNetworkFirewallPoliciesClient(
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any(
-            [project, region, firewall_policy, firewall_policy_resource]
+        flattened_params = [project, region, firewall_policy, firewall_policy_resource]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
         )
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3288,8 +3349,9 @@ class RegionNetworkFirewallPoliciesClient(
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any(
-            [project, region, firewall_policy, firewall_policy_resource]
+        flattened_params = [project, region, firewall_policy, firewall_policy_resource]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
         )
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3457,8 +3519,14 @@ class RegionNetworkFirewallPoliciesClient(
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any(
-            [project, region, firewall_policy, firewall_policy_rule_resource]
+        flattened_params = [
+            project,
+            region,
+            firewall_policy,
+            firewall_policy_rule_resource,
+        ]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
         )
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3601,8 +3669,14 @@ class RegionNetworkFirewallPoliciesClient(
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any(
-            [project, region, firewall_policy, firewall_policy_rule_resource]
+        flattened_params = [
+            project,
+            region,
+            firewall_policy,
+            firewall_policy_rule_resource,
+        ]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
         )
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3765,7 +3839,10 @@ class RegionNetworkFirewallPoliciesClient(
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project, region, firewall_policy])
+        flattened_params = [project, region, firewall_policy]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -3904,7 +3981,10 @@ class RegionNetworkFirewallPoliciesClient(
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project, region, firewall_policy])
+        flattened_params = [project, region, firewall_policy]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -4067,7 +4147,10 @@ class RegionNetworkFirewallPoliciesClient(
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project, region, firewall_policy])
+        flattened_params = [project, region, firewall_policy]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -4203,7 +4286,10 @@ class RegionNetworkFirewallPoliciesClient(
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project, region, firewall_policy])
+        flattened_params = [project, region, firewall_policy]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -4393,8 +4479,14 @@ class RegionNetworkFirewallPoliciesClient(
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any(
-            [project, region, resource, region_set_policy_request_resource]
+        flattened_params = [
+            project,
+            region,
+            resource,
+            region_set_policy_request_resource,
+        ]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
         )
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4542,8 +4634,14 @@ class RegionNetworkFirewallPoliciesClient(
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any(
-            [project, region, resource, test_permissions_request_resource]
+        flattened_params = [
+            project,
+            region,
+            resource,
+            test_permissions_request_resource,
+        ]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
         )
         if request is not None and has_flattened_params:
             raise ValueError(

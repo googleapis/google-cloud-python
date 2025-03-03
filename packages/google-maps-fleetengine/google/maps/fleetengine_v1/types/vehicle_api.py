@@ -34,6 +34,7 @@ __protobuf__ = proto.module(
     manifest={
         "CreateVehicleRequest",
         "GetVehicleRequest",
+        "DeleteVehicleRequest",
         "UpdateVehicleRequest",
         "UpdateVehicleAttributesRequest",
         "UpdateVehicleAttributesResponse",
@@ -164,6 +165,32 @@ class GetVehicleRequest(proto.Message):
         proto.MESSAGE,
         number=5,
         message=timestamp_pb2.Timestamp,
+    )
+
+
+class DeleteVehicleRequest(proto.Message):
+    r"""DeleteVehicle request message.
+
+    Attributes:
+        header (google.maps.fleetengine_v1.types.RequestHeader):
+            Optional. The standard Fleet Engine request
+            header.
+        name (str):
+            Required. Must be in the format
+            ``providers/{provider}/vehicles/{vehicle}``. The {provider}
+            must be the Project ID (for example,
+            ``sample-cloud-project``) of the Google Cloud Project of
+            which the service account making this call is a member.
+    """
+
+    header: mf_header.RequestHeader = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=mf_header.RequestHeader,
+    )
+    name: str = proto.Field(
+        proto.STRING,
+        number=2,
     )
 
 

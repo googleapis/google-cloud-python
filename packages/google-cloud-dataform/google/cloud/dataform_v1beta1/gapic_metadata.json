@@ -115,6 +115,11 @@
                 "get_compilation_result"
               ]
             },
+            "GetConfig": {
+              "methods": [
+                "get_config"
+              ]
+            },
             "GetReleaseConfig": {
               "methods": [
                 "get_release_config"
@@ -243,6 +248,16 @@
             "ResetWorkspaceChanges": {
               "methods": [
                 "reset_workspace_changes"
+              ]
+            },
+            "SearchFiles": {
+              "methods": [
+                "search_files"
+              ]
+            },
+            "UpdateConfig": {
+              "methods": [
+                "update_config"
               ]
             },
             "UpdateReleaseConfig": {
@@ -375,6 +390,11 @@
                 "get_compilation_result"
               ]
             },
+            "GetConfig": {
+              "methods": [
+                "get_config"
+              ]
+            },
             "GetReleaseConfig": {
               "methods": [
                 "get_release_config"
@@ -503,6 +523,16 @@
             "ResetWorkspaceChanges": {
               "methods": [
                 "reset_workspace_changes"
+              ]
+            },
+            "SearchFiles": {
+              "methods": [
+                "search_files"
+              ]
+            },
+            "UpdateConfig": {
+              "methods": [
+                "update_config"
               ]
             },
             "UpdateReleaseConfig": {
@@ -635,6 +665,11 @@
                 "get_compilation_result"
               ]
             },
+            "GetConfig": {
+              "methods": [
+                "get_config"
+              ]
+            },
             "GetReleaseConfig": {
               "methods": [
                 "get_release_config"
@@ -763,6 +798,16 @@
             "ResetWorkspaceChanges": {
               "methods": [
                 "reset_workspace_changes"
+              ]
+            },
+            "SearchFiles": {
+              "methods": [
+                "search_files"
+              ]
+            },
+            "UpdateConfig": {
+              "methods": [
+                "update_config"
               ]
             },
             "UpdateReleaseConfig": {

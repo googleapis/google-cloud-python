@@ -23,6 +23,7 @@ from google.api_core import retry as retries
 import google.auth  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+from google.protobuf import empty_pb2  # type: ignore
 
 from google.maps.fleetengine_delivery_v1 import gapic_version as package_version
 from google.maps.fleetengine_delivery_v1.types import (
@@ -161,6 +162,11 @@ class DeliveryServiceTransport(abc.ABC):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
+            self.delete_delivery_vehicle: gapic_v1.method.wrap_method(
+                self.delete_delivery_vehicle,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.update_delivery_vehicle: gapic_v1.method.wrap_method(
                 self.update_delivery_vehicle,
                 default_retry=retries.Retry(
@@ -215,6 +221,11 @@ class DeliveryServiceTransport(abc.ABC):
                     deadline=60.0,
                 ),
                 default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.delete_task: gapic_v1.method.wrap_method(
+                self.delete_task,
+                default_timeout=None,
                 client_info=client_info,
             ),
             self.update_task: gapic_v1.method.wrap_method(
@@ -309,6 +320,15 @@ class DeliveryServiceTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
+    def delete_delivery_vehicle(
+        self,
+    ) -> Callable[
+        [delivery_api.DeleteDeliveryVehicleRequest],
+        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
+    ]:
+        raise NotImplementedError()
+
+    @property
     def update_delivery_vehicle(
         self,
     ) -> Callable[
@@ -345,6 +365,15 @@ class DeliveryServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [delivery_api.GetTaskRequest], Union[tasks.Task, Awaitable[tasks.Task]]
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_task(
+        self,
+    ) -> Callable[
+        [delivery_api.DeleteTaskRequest],
+        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
     ]:
         raise NotImplementedError()
 

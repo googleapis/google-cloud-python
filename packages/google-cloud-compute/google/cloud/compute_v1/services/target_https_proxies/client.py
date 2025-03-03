@@ -767,7 +767,10 @@ class TargetHttpsProxiesClient(metaclass=TargetHttpsProxiesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project])
+        flattened_params = [project]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -891,7 +894,10 @@ class TargetHttpsProxiesClient(metaclass=TargetHttpsProxiesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project, target_https_proxy])
+        flattened_params = [project, target_https_proxy]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -1011,7 +1017,10 @@ class TargetHttpsProxiesClient(metaclass=TargetHttpsProxiesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project, target_https_proxy])
+        flattened_params = [project, target_https_proxy]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -1169,7 +1178,10 @@ class TargetHttpsProxiesClient(metaclass=TargetHttpsProxiesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project, target_https_proxy])
+        flattened_params = [project, target_https_proxy]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -1287,7 +1299,10 @@ class TargetHttpsProxiesClient(metaclass=TargetHttpsProxiesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project, target_https_proxy_resource])
+        flattened_params = [project, target_https_proxy_resource]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -1400,7 +1415,10 @@ class TargetHttpsProxiesClient(metaclass=TargetHttpsProxiesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project, target_https_proxy_resource])
+        flattened_params = [project, target_https_proxy_resource]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -1535,7 +1553,10 @@ class TargetHttpsProxiesClient(metaclass=TargetHttpsProxiesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project])
+        flattened_params = [project]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -1668,8 +1689,9 @@ class TargetHttpsProxiesClient(metaclass=TargetHttpsProxiesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any(
-            [project, target_https_proxy, target_https_proxy_resource]
+        flattened_params = [project, target_https_proxy, target_https_proxy_resource]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
         )
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1801,8 +1823,9 @@ class TargetHttpsProxiesClient(metaclass=TargetHttpsProxiesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any(
-            [project, target_https_proxy, target_https_proxy_resource]
+        flattened_params = [project, target_https_proxy, target_https_proxy_resource]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
         )
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1961,12 +1984,13 @@ class TargetHttpsProxiesClient(metaclass=TargetHttpsProxiesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any(
-            [
-                project,
-                target_https_proxy,
-                target_https_proxies_set_certificate_map_request_resource,
-            ]
+        flattened_params = [
+            project,
+            target_https_proxy,
+            target_https_proxies_set_certificate_map_request_resource,
+        ]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
         )
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2103,12 +2127,13 @@ class TargetHttpsProxiesClient(metaclass=TargetHttpsProxiesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any(
-            [
-                project,
-                target_https_proxy,
-                target_https_proxies_set_certificate_map_request_resource,
-            ]
+        flattened_params = [
+            project,
+            target_https_proxy,
+            target_https_proxies_set_certificate_map_request_resource,
+        ]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
         )
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2268,12 +2293,13 @@ class TargetHttpsProxiesClient(metaclass=TargetHttpsProxiesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any(
-            [
-                project,
-                target_https_proxy,
-                target_https_proxies_set_quic_override_request_resource,
-            ]
+        flattened_params = [
+            project,
+            target_https_proxy,
+            target_https_proxies_set_quic_override_request_resource,
+        ]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
         )
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2409,12 +2435,13 @@ class TargetHttpsProxiesClient(metaclass=TargetHttpsProxiesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any(
-            [
-                project,
-                target_https_proxy,
-                target_https_proxies_set_quic_override_request_resource,
-            ]
+        flattened_params = [
+            project,
+            target_https_proxy,
+            target_https_proxies_set_quic_override_request_resource,
+        ]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
         )
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2573,12 +2600,13 @@ class TargetHttpsProxiesClient(metaclass=TargetHttpsProxiesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any(
-            [
-                project,
-                target_https_proxy,
-                target_https_proxies_set_ssl_certificates_request_resource,
-            ]
+        flattened_params = [
+            project,
+            target_https_proxy,
+            target_https_proxies_set_ssl_certificates_request_resource,
+        ]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
         )
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2713,12 +2741,13 @@ class TargetHttpsProxiesClient(metaclass=TargetHttpsProxiesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any(
-            [
-                project,
-                target_https_proxy,
-                target_https_proxies_set_ssl_certificates_request_resource,
-            ]
+        flattened_params = [
+            project,
+            target_https_proxy,
+            target_https_proxies_set_ssl_certificates_request_resource,
+        ]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
         )
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2881,8 +2910,9 @@ class TargetHttpsProxiesClient(metaclass=TargetHttpsProxiesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any(
-            [project, target_https_proxy, ssl_policy_reference_resource]
+        flattened_params = [project, target_https_proxy, ssl_policy_reference_resource]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
         )
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3019,8 +3049,9 @@ class TargetHttpsProxiesClient(metaclass=TargetHttpsProxiesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any(
-            [project, target_https_proxy, ssl_policy_reference_resource]
+        flattened_params = [project, target_https_proxy, ssl_policy_reference_resource]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
         )
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3173,8 +3204,9 @@ class TargetHttpsProxiesClient(metaclass=TargetHttpsProxiesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any(
-            [project, target_https_proxy, url_map_reference_resource]
+        flattened_params = [project, target_https_proxy, url_map_reference_resource]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
         )
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3303,8 +3335,9 @@ class TargetHttpsProxiesClient(metaclass=TargetHttpsProxiesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any(
-            [project, target_https_proxy, url_map_reference_resource]
+        flattened_params = [project, target_https_proxy, url_map_reference_resource]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
         )
         if request is not None and has_flattened_params:
             raise ValueError(
