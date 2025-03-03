@@ -48,7 +48,7 @@ jobs:
       - name: Run configure_release_please.py
         run: python3 configure_release_please.py
         working-directory: ./scripts/configure_release_please
-      - uses: googleapis/code-suggester@v4
+      - uses: googleapis/code-suggester@v5
         env:
           ACCESS_TOKEN: ${{ secrets.YOSHI_CODE_BOT_TOKEN }}
         with:
