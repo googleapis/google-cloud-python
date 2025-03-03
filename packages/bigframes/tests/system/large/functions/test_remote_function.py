@@ -21,6 +21,7 @@ import shutil
 import sys
 import tempfile
 import textwrap
+import warnings
 
 import google.api_core.exceptions
 from google.cloud import bigquery, functions_v2, storage
@@ -2363,40 +2364,64 @@ def test_df_apply_axis_1_array_output(session, scalars_dfs):
 
 
 @pytest.mark.parametrize(
-    ("ingress_settings_args", "effective_ingress_settings"),
+    ("ingress_settings_args", "effective_ingress_settings", "expected_warning"),
     [
         pytest.param(
-            {}, functions_v2.ServiceConfig.IngressSettings.ALLOW_ALL, id="no-set"
+            {},
+            functions_v2.ServiceConfig.IngressSettings.ALLOW_ALL,
+            FutureWarning,
+            id="no-set",
+        ),
+        pytest.param(
+            {"cloud_function_ingress_settings": None},
+            functions_v2.ServiceConfig.IngressSettings.ALLOW_ALL,
+            FutureWarning,
+            id="set-none",
         ),
         pytest.param(
             {"cloud_function_ingress_settings": "all"},
             functions_v2.ServiceConfig.IngressSettings.ALLOW_ALL,
+            None,
             id="set-all",
         ),
         pytest.param(
             {"cloud_function_ingress_settings": "internal-only"},
             functions_v2.ServiceConfig.IngressSettings.ALLOW_INTERNAL_ONLY,
+            None,
             id="set-internal-only",
         ),
         pytest.param(
             {"cloud_function_ingress_settings": "internal-and-gclb"},
             functions_v2.ServiceConfig.IngressSettings.ALLOW_INTERNAL_AND_GCLB,
+            None,
             id="set-internal-and-gclb",
         ),
     ],
 )
 @pytest.mark.flaky(retries=2, delay=120)
 def test_remote_function_ingress_settings(
-    session, scalars_dfs, ingress_settings_args, effective_ingress_settings
+    session,
+    scalars_dfs,
+    ingress_settings_args,
+    effective_ingress_settings,
+    expected_warning,
 ):
     try:
+        # Verify the function raises the expected security warning message.
+        with warnings.catch_warnings(record=True) as w:
 
-        def square(x: int) -> int:
-            return x * x
+            def square(x: int) -> int:
+                return x * x
 
-        square_remote = session.remote_function(reuse=False, **ingress_settings_args)(
-            square
-        )
+            square_remote = session.remote_function(
+                reuse=False, **ingress_settings_args
+            )(square)
+
+            if expected_warning is not None:
+                assert issubclass(w[0].category, FutureWarning)
+                assert "Consider using 'internal-only' for enhanced security." in str(
+                    w[0].message
+                )
 
         # Assert that the GCF is created with the intended maximum timeout
         gcf = session.cloudfunctionsclient.get_function(

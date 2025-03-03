@@ -121,9 +121,9 @@ class FunctionSession:
         cloud_function_max_instances: Optional[int] = None,
         cloud_function_vpc_connector: Optional[str] = None,
         cloud_function_memory_mib: Optional[int] = 1024,
-        cloud_function_ingress_settings: Literal[
-            "all", "internal-only", "internal-and-gclb"
-        ] = "all",
+        cloud_function_ingress_settings: Optional[
+            Literal["all", "internal-only", "internal-and-gclb"]
+        ] = None,
     ):
         """Decorator to turn a user defined function into a BigQuery remote function.
 
@@ -311,8 +311,9 @@ class FunctionSession:
                 https://cloud.google.com/functions/docs/configuring/memory.
             cloud_function_ingress_settings (str, Optional):
                 Ingress settings controls dictating what traffic can reach the
-                function. By default `all` will be used. It must be one of:
-                `all`, `internal-only`, `internal-and-gclb`. See for more details
+                function. Options are: `all`, `internal-only`, or `internal-and-gclb`.
+                If no setting is provided, `all` will be used by default and a warning
+                will be issued. See for more details
                 https://cloud.google.com/functions/docs/networking/network-settings#ingress_settings.
         """
         # Some defaults may be used from the session if not provided otherwise
@@ -428,6 +429,16 @@ class FunctionSession:
                 "cloud_function_docker_repository must be specified with cloud_function_kms_key_name."
                 " For more details see https://cloud.google.com/functions/docs/securing/cmek#before_you_begin"
             )
+
+        if cloud_function_ingress_settings is None:
+            cloud_function_ingress_settings = "all"
+            msg = (
+                "The `cloud_function_ingress_settings` are set to 'all' by default, "
+                "which will change to 'internal-only' for enhanced security in future version 2.0 onwards. "
+                "However, you will be able to explicitly pass cloud_function_ingress_settings='all' if you need. "
+                "See https://cloud.google.com/functions/docs/networking/network-settings#ingress_settings for details."
+            )
+            warnings.warn(msg, category=FutureWarning, stacklevel=2)
 
         bq_connection_manager = session.bqconnectionmanager
 
