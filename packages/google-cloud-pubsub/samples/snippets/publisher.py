@@ -809,7 +809,7 @@ def detach_subscription(project_id: str, subscription_id: str) -> None:
     # [END pubsub_detach_subscription]
 
 
-if __name__ == "__main__":
+if __name__ == "__main__":  # noqa: C901
     parser = argparse.ArgumentParser(
         description=__doc__,
         formatter_class=argparse.RawDescriptionHelpFormatter,
