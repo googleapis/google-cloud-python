@@ -13,9 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import logging
+import json  # type: ignore
 
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
-import json  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import retry as retries
@@ -43,11 +44,19 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
     grpc_version=None,
-    rest_version=requests_version,
+    rest_version=f"requests@{requests_version}",
 )
 
 
@@ -137,8 +146,10 @@ class DatastoreRestInterceptor:
     """
 
     def pre_allocate_ids(
-        self, request: datastore.AllocateIdsRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[datastore.AllocateIdsRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: datastore.AllocateIdsRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[datastore.AllocateIdsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for allocate_ids
 
         Override in a subclass to manipulate the request or metadata
@@ -151,17 +162,42 @@ class DatastoreRestInterceptor:
     ) -> datastore.AllocateIdsResponse:
         """Post-rpc interceptor for allocate_ids
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_allocate_ids_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Datastore server but before
-        it is returned to user code.
+        it is returned to user code. This `post_allocate_ids` interceptor runs
+        before the `post_allocate_ids_with_metadata` interceptor.
         """
         return response
+
+    def post_allocate_ids_with_metadata(
+        self,
+        response: datastore.AllocateIdsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[datastore.AllocateIdsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for allocate_ids
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Datastore server but before it is returned to user code.
+
+        We recommend only using this `post_allocate_ids_with_metadata`
+        interceptor in new development instead of the `post_allocate_ids` interceptor.
+        When both interceptors are used, this `post_allocate_ids_with_metadata` interceptor runs after the
+        `post_allocate_ids` interceptor. The (possibly modified) response returned by
+        `post_allocate_ids` will be passed to
+        `post_allocate_ids_with_metadata`.
+        """
+        return response, metadata
 
     def pre_begin_transaction(
         self,
         request: datastore.BeginTransactionRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[datastore.BeginTransactionRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        datastore.BeginTransactionRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for begin_transaction
 
         Override in a subclass to manipulate the request or metadata
@@ -174,15 +210,42 @@ class DatastoreRestInterceptor:
     ) -> datastore.BeginTransactionResponse:
         """Post-rpc interceptor for begin_transaction
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_begin_transaction_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Datastore server but before
-        it is returned to user code.
+        it is returned to user code. This `post_begin_transaction` interceptor runs
+        before the `post_begin_transaction_with_metadata` interceptor.
         """
         return response
 
+    def post_begin_transaction_with_metadata(
+        self,
+        response: datastore.BeginTransactionResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        datastore.BeginTransactionResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for begin_transaction
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Datastore server but before it is returned to user code.
+
+        We recommend only using this `post_begin_transaction_with_metadata`
+        interceptor in new development instead of the `post_begin_transaction` interceptor.
+        When both interceptors are used, this `post_begin_transaction_with_metadata` interceptor runs after the
+        `post_begin_transaction` interceptor. The (possibly modified) response returned by
+        `post_begin_transaction` will be passed to
+        `post_begin_transaction_with_metadata`.
+        """
+        return response, metadata
+
     def pre_commit(
-        self, request: datastore.CommitRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[datastore.CommitRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: datastore.CommitRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[datastore.CommitRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for commit
 
         Override in a subclass to manipulate the request or metadata
@@ -195,15 +258,40 @@ class DatastoreRestInterceptor:
     ) -> datastore.CommitResponse:
         """Post-rpc interceptor for commit
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_commit_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Datastore server but before
-        it is returned to user code.
+        it is returned to user code. This `post_commit` interceptor runs
+        before the `post_commit_with_metadata` interceptor.
         """
         return response
 
+    def post_commit_with_metadata(
+        self,
+        response: datastore.CommitResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[datastore.CommitResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for commit
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Datastore server but before it is returned to user code.
+
+        We recommend only using this `post_commit_with_metadata`
+        interceptor in new development instead of the `post_commit` interceptor.
+        When both interceptors are used, this `post_commit_with_metadata` interceptor runs after the
+        `post_commit` interceptor. The (possibly modified) response returned by
+        `post_commit` will be passed to
+        `post_commit_with_metadata`.
+        """
+        return response, metadata
+
     def pre_lookup(
-        self, request: datastore.LookupRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[datastore.LookupRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: datastore.LookupRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[datastore.LookupRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for lookup
 
         Override in a subclass to manipulate the request or metadata
@@ -216,15 +304,40 @@ class DatastoreRestInterceptor:
     ) -> datastore.LookupResponse:
         """Post-rpc interceptor for lookup
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_lookup_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Datastore server but before
-        it is returned to user code.
+        it is returned to user code. This `post_lookup` interceptor runs
+        before the `post_lookup_with_metadata` interceptor.
         """
         return response
 
+    def post_lookup_with_metadata(
+        self,
+        response: datastore.LookupResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[datastore.LookupResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for lookup
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Datastore server but before it is returned to user code.
+
+        We recommend only using this `post_lookup_with_metadata`
+        interceptor in new development instead of the `post_lookup` interceptor.
+        When both interceptors are used, this `post_lookup_with_metadata` interceptor runs after the
+        `post_lookup` interceptor. The (possibly modified) response returned by
+        `post_lookup` will be passed to
+        `post_lookup_with_metadata`.
+        """
+        return response, metadata
+
     def pre_reserve_ids(
-        self, request: datastore.ReserveIdsRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[datastore.ReserveIdsRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: datastore.ReserveIdsRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[datastore.ReserveIdsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for reserve_ids
 
         Override in a subclass to manipulate the request or metadata
@@ -237,15 +350,40 @@ class DatastoreRestInterceptor:
     ) -> datastore.ReserveIdsResponse:
         """Post-rpc interceptor for reserve_ids
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_reserve_ids_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Datastore server but before
-        it is returned to user code.
+        it is returned to user code. This `post_reserve_ids` interceptor runs
+        before the `post_reserve_ids_with_metadata` interceptor.
         """
         return response
 
+    def post_reserve_ids_with_metadata(
+        self,
+        response: datastore.ReserveIdsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[datastore.ReserveIdsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for reserve_ids
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Datastore server but before it is returned to user code.
+
+        We recommend only using this `post_reserve_ids_with_metadata`
+        interceptor in new development instead of the `post_reserve_ids` interceptor.
+        When both interceptors are used, this `post_reserve_ids_with_metadata` interceptor runs after the
+        `post_reserve_ids` interceptor. The (possibly modified) response returned by
+        `post_reserve_ids` will be passed to
+        `post_reserve_ids_with_metadata`.
+        """
+        return response, metadata
+
     def pre_rollback(
-        self, request: datastore.RollbackRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[datastore.RollbackRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: datastore.RollbackRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[datastore.RollbackRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for rollback
 
         Override in a subclass to manipulate the request or metadata
@@ -258,17 +396,42 @@ class DatastoreRestInterceptor:
     ) -> datastore.RollbackResponse:
         """Post-rpc interceptor for rollback
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_rollback_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Datastore server but before
-        it is returned to user code.
+        it is returned to user code. This `post_rollback` interceptor runs
+        before the `post_rollback_with_metadata` interceptor.
         """
         return response
+
+    def post_rollback_with_metadata(
+        self,
+        response: datastore.RollbackResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[datastore.RollbackResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for rollback
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Datastore server but before it is returned to user code.
+
+        We recommend only using this `post_rollback_with_metadata`
+        interceptor in new development instead of the `post_rollback` interceptor.
+        When both interceptors are used, this `post_rollback_with_metadata` interceptor runs after the
+        `post_rollback` interceptor. The (possibly modified) response returned by
+        `post_rollback` will be passed to
+        `post_rollback_with_metadata`.
+        """
+        return response, metadata
 
     def pre_run_aggregation_query(
         self,
         request: datastore.RunAggregationQueryRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[datastore.RunAggregationQueryRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        datastore.RunAggregationQueryRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for run_aggregation_query
 
         Override in a subclass to manipulate the request or metadata
@@ -281,15 +444,42 @@ class DatastoreRestInterceptor:
     ) -> datastore.RunAggregationQueryResponse:
         """Post-rpc interceptor for run_aggregation_query
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_run_aggregation_query_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Datastore server but before
-        it is returned to user code.
+        it is returned to user code. This `post_run_aggregation_query` interceptor runs
+        before the `post_run_aggregation_query_with_metadata` interceptor.
         """
         return response
 
+    def post_run_aggregation_query_with_metadata(
+        self,
+        response: datastore.RunAggregationQueryResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        datastore.RunAggregationQueryResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for run_aggregation_query
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Datastore server but before it is returned to user code.
+
+        We recommend only using this `post_run_aggregation_query_with_metadata`
+        interceptor in new development instead of the `post_run_aggregation_query` interceptor.
+        When both interceptors are used, this `post_run_aggregation_query_with_metadata` interceptor runs after the
+        `post_run_aggregation_query` interceptor. The (possibly modified) response returned by
+        `post_run_aggregation_query` will be passed to
+        `post_run_aggregation_query_with_metadata`.
+        """
+        return response, metadata
+
     def pre_run_query(
-        self, request: datastore.RunQueryRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[datastore.RunQueryRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: datastore.RunQueryRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[datastore.RunQueryRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for run_query
 
         Override in a subclass to manipulate the request or metadata
@@ -302,17 +492,42 @@ class DatastoreRestInterceptor:
     ) -> datastore.RunQueryResponse:
         """Post-rpc interceptor for run_query
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_run_query_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Datastore server but before
-        it is returned to user code.
+        it is returned to user code. This `post_run_query` interceptor runs
+        before the `post_run_query_with_metadata` interceptor.
         """
         return response
+
+    def post_run_query_with_metadata(
+        self,
+        response: datastore.RunQueryResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[datastore.RunQueryResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for run_query
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Datastore server but before it is returned to user code.
+
+        We recommend only using this `post_run_query_with_metadata`
+        interceptor in new development instead of the `post_run_query` interceptor.
+        When both interceptors are used, this `post_run_query_with_metadata` interceptor runs after the
+        `post_run_query` interceptor. The (possibly modified) response returned by
+        `post_run_query` will be passed to
+        `post_run_query_with_metadata`.
+        """
+        return response, metadata
 
     def pre_cancel_operation(
         self,
         request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -332,8 +547,10 @@ class DatastoreRestInterceptor:
     def pre_delete_operation(
         self,
         request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -353,8 +570,10 @@ class DatastoreRestInterceptor:
     def pre_get_operation(
         self,
         request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -376,8 +595,10 @@ class DatastoreRestInterceptor:
     def pre_list_operations(
         self,
         request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -522,7 +743,7 @@ class DatastoreRestTransport(_BaseDatastoreRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> datastore.AllocateIdsResponse:
             r"""Call the allocate ids method over HTTP.
 
@@ -533,8 +754,10 @@ class DatastoreRestTransport(_BaseDatastoreRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.datastore.AllocateIdsResponse:
@@ -546,6 +769,7 @@ class DatastoreRestTransport(_BaseDatastoreRestTransport):
             http_options = (
                 _BaseDatastoreRestTransport._BaseAllocateIds._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_allocate_ids(request, metadata)
             transcoded_request = (
                 _BaseDatastoreRestTransport._BaseAllocateIds._get_transcoded_request(
@@ -563,6 +787,33 @@ class DatastoreRestTransport(_BaseDatastoreRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.datastore_v1.DatastoreClient.AllocateIds",
+                    extra={
+                        "serviceName": "google.datastore.v1.Datastore",
+                        "rpcName": "AllocateIds",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DatastoreRestTransport._AllocateIds._get_response(
@@ -585,7 +836,33 @@ class DatastoreRestTransport(_BaseDatastoreRestTransport):
             pb_resp = datastore.AllocateIdsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_allocate_ids(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_allocate_ids_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = datastore.AllocateIdsResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.datastore_v1.DatastoreClient.allocate_ids",
+                    extra={
+                        "serviceName": "google.datastore.v1.Datastore",
+                        "rpcName": "AllocateIds",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _BeginTransaction(
@@ -623,7 +900,7 @@ class DatastoreRestTransport(_BaseDatastoreRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> datastore.BeginTransactionResponse:
             r"""Call the begin transaction method over HTTP.
 
@@ -634,8 +911,10 @@ class DatastoreRestTransport(_BaseDatastoreRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.datastore.BeginTransactionResponse:
@@ -647,6 +926,7 @@ class DatastoreRestTransport(_BaseDatastoreRestTransport):
             http_options = (
                 _BaseDatastoreRestTransport._BaseBeginTransaction._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_begin_transaction(
                 request, metadata
             )
@@ -662,6 +942,33 @@ class DatastoreRestTransport(_BaseDatastoreRestTransport):
             query_params = _BaseDatastoreRestTransport._BaseBeginTransaction._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.datastore_v1.DatastoreClient.BeginTransaction",
+                    extra={
+                        "serviceName": "google.datastore.v1.Datastore",
+                        "rpcName": "BeginTransaction",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DatastoreRestTransport._BeginTransaction._get_response(
@@ -684,7 +991,35 @@ class DatastoreRestTransport(_BaseDatastoreRestTransport):
             pb_resp = datastore.BeginTransactionResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_begin_transaction(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_begin_transaction_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = datastore.BeginTransactionResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.datastore_v1.DatastoreClient.begin_transaction",
+                    extra={
+                        "serviceName": "google.datastore.v1.Datastore",
+                        "rpcName": "BeginTransaction",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _Commit(_BaseDatastoreRestTransport._BaseCommit, DatastoreRestStub):
@@ -720,7 +1055,7 @@ class DatastoreRestTransport(_BaseDatastoreRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> datastore.CommitResponse:
             r"""Call the commit method over HTTP.
 
@@ -731,8 +1066,10 @@ class DatastoreRestTransport(_BaseDatastoreRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.datastore.CommitResponse:
@@ -742,6 +1079,7 @@ class DatastoreRestTransport(_BaseDatastoreRestTransport):
             """
 
             http_options = _BaseDatastoreRestTransport._BaseCommit._get_http_options()
+
             request, metadata = self._interceptor.pre_commit(request, metadata)
             transcoded_request = (
                 _BaseDatastoreRestTransport._BaseCommit._get_transcoded_request(
@@ -759,6 +1097,33 @@ class DatastoreRestTransport(_BaseDatastoreRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.datastore_v1.DatastoreClient.Commit",
+                    extra={
+                        "serviceName": "google.datastore.v1.Datastore",
+                        "rpcName": "Commit",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DatastoreRestTransport._Commit._get_response(
@@ -781,7 +1146,33 @@ class DatastoreRestTransport(_BaseDatastoreRestTransport):
             pb_resp = datastore.CommitResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_commit(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_commit_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = datastore.CommitResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.datastore_v1.DatastoreClient.commit",
+                    extra={
+                        "serviceName": "google.datastore.v1.Datastore",
+                        "rpcName": "Commit",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _Lookup(_BaseDatastoreRestTransport._BaseLookup, DatastoreRestStub):
@@ -817,7 +1208,7 @@ class DatastoreRestTransport(_BaseDatastoreRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> datastore.LookupResponse:
             r"""Call the lookup method over HTTP.
 
@@ -828,8 +1219,10 @@ class DatastoreRestTransport(_BaseDatastoreRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.datastore.LookupResponse:
@@ -839,6 +1232,7 @@ class DatastoreRestTransport(_BaseDatastoreRestTransport):
             """
 
             http_options = _BaseDatastoreRestTransport._BaseLookup._get_http_options()
+
             request, metadata = self._interceptor.pre_lookup(request, metadata)
             transcoded_request = (
                 _BaseDatastoreRestTransport._BaseLookup._get_transcoded_request(
@@ -856,6 +1250,33 @@ class DatastoreRestTransport(_BaseDatastoreRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.datastore_v1.DatastoreClient.Lookup",
+                    extra={
+                        "serviceName": "google.datastore.v1.Datastore",
+                        "rpcName": "Lookup",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DatastoreRestTransport._Lookup._get_response(
@@ -878,7 +1299,33 @@ class DatastoreRestTransport(_BaseDatastoreRestTransport):
             pb_resp = datastore.LookupResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_lookup(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_lookup_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = datastore.LookupResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.datastore_v1.DatastoreClient.lookup",
+                    extra={
+                        "serviceName": "google.datastore.v1.Datastore",
+                        "rpcName": "Lookup",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ReserveIds(_BaseDatastoreRestTransport._BaseReserveIds, DatastoreRestStub):
@@ -914,7 +1361,7 @@ class DatastoreRestTransport(_BaseDatastoreRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> datastore.ReserveIdsResponse:
             r"""Call the reserve ids method over HTTP.
 
@@ -925,8 +1372,10 @@ class DatastoreRestTransport(_BaseDatastoreRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.datastore.ReserveIdsResponse:
@@ -938,6 +1387,7 @@ class DatastoreRestTransport(_BaseDatastoreRestTransport):
             http_options = (
                 _BaseDatastoreRestTransport._BaseReserveIds._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_reserve_ids(request, metadata)
             transcoded_request = (
                 _BaseDatastoreRestTransport._BaseReserveIds._get_transcoded_request(
@@ -955,6 +1405,33 @@ class DatastoreRestTransport(_BaseDatastoreRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.datastore_v1.DatastoreClient.ReserveIds",
+                    extra={
+                        "serviceName": "google.datastore.v1.Datastore",
+                        "rpcName": "ReserveIds",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DatastoreRestTransport._ReserveIds._get_response(
@@ -977,7 +1454,33 @@ class DatastoreRestTransport(_BaseDatastoreRestTransport):
             pb_resp = datastore.ReserveIdsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_reserve_ids(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_reserve_ids_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = datastore.ReserveIdsResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.datastore_v1.DatastoreClient.reserve_ids",
+                    extra={
+                        "serviceName": "google.datastore.v1.Datastore",
+                        "rpcName": "ReserveIds",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _Rollback(_BaseDatastoreRestTransport._BaseRollback, DatastoreRestStub):
@@ -1013,7 +1516,7 @@ class DatastoreRestTransport(_BaseDatastoreRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> datastore.RollbackResponse:
             r"""Call the rollback method over HTTP.
 
@@ -1024,8 +1527,10 @@ class DatastoreRestTransport(_BaseDatastoreRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.datastore.RollbackResponse:
@@ -1036,6 +1541,7 @@ class DatastoreRestTransport(_BaseDatastoreRestTransport):
             """
 
             http_options = _BaseDatastoreRestTransport._BaseRollback._get_http_options()
+
             request, metadata = self._interceptor.pre_rollback(request, metadata)
             transcoded_request = (
                 _BaseDatastoreRestTransport._BaseRollback._get_transcoded_request(
@@ -1053,6 +1559,33 @@ class DatastoreRestTransport(_BaseDatastoreRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.datastore_v1.DatastoreClient.Rollback",
+                    extra={
+                        "serviceName": "google.datastore.v1.Datastore",
+                        "rpcName": "Rollback",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DatastoreRestTransport._Rollback._get_response(
@@ -1075,7 +1608,33 @@ class DatastoreRestTransport(_BaseDatastoreRestTransport):
             pb_resp = datastore.RollbackResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_rollback(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_rollback_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = datastore.RollbackResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.datastore_v1.DatastoreClient.rollback",
+                    extra={
+                        "serviceName": "google.datastore.v1.Datastore",
+                        "rpcName": "Rollback",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _RunAggregationQuery(
@@ -1113,7 +1672,7 @@ class DatastoreRestTransport(_BaseDatastoreRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> datastore.RunAggregationQueryResponse:
             r"""Call the run aggregation query method over HTTP.
 
@@ -1124,8 +1683,10 @@ class DatastoreRestTransport(_BaseDatastoreRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.datastore.RunAggregationQueryResponse:
@@ -1137,6 +1698,7 @@ class DatastoreRestTransport(_BaseDatastoreRestTransport):
             http_options = (
                 _BaseDatastoreRestTransport._BaseRunAggregationQuery._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_run_aggregation_query(
                 request, metadata
             )
@@ -1152,6 +1714,33 @@ class DatastoreRestTransport(_BaseDatastoreRestTransport):
             query_params = _BaseDatastoreRestTransport._BaseRunAggregationQuery._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.datastore_v1.DatastoreClient.RunAggregationQuery",
+                    extra={
+                        "serviceName": "google.datastore.v1.Datastore",
+                        "rpcName": "RunAggregationQuery",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DatastoreRestTransport._RunAggregationQuery._get_response(
@@ -1174,7 +1763,35 @@ class DatastoreRestTransport(_BaseDatastoreRestTransport):
             pb_resp = datastore.RunAggregationQueryResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_run_aggregation_query(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_run_aggregation_query_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = datastore.RunAggregationQueryResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.datastore_v1.DatastoreClient.run_aggregation_query",
+                    extra={
+                        "serviceName": "google.datastore.v1.Datastore",
+                        "rpcName": "RunAggregationQuery",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _RunQuery(_BaseDatastoreRestTransport._BaseRunQuery, DatastoreRestStub):
@@ -1210,7 +1827,7 @@ class DatastoreRestTransport(_BaseDatastoreRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> datastore.RunQueryResponse:
             r"""Call the run query method over HTTP.
 
@@ -1221,8 +1838,10 @@ class DatastoreRestTransport(_BaseDatastoreRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.datastore.RunQueryResponse:
@@ -1232,6 +1851,7 @@ class DatastoreRestTransport(_BaseDatastoreRestTransport):
             """
 
             http_options = _BaseDatastoreRestTransport._BaseRunQuery._get_http_options()
+
             request, metadata = self._interceptor.pre_run_query(request, metadata)
             transcoded_request = (
                 _BaseDatastoreRestTransport._BaseRunQuery._get_transcoded_request(
@@ -1249,6 +1869,33 @@ class DatastoreRestTransport(_BaseDatastoreRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.datastore_v1.DatastoreClient.RunQuery",
+                    extra={
+                        "serviceName": "google.datastore.v1.Datastore",
+                        "rpcName": "RunQuery",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DatastoreRestTransport._RunQuery._get_response(
@@ -1271,7 +1918,33 @@ class DatastoreRestTransport(_BaseDatastoreRestTransport):
             pb_resp = datastore.RunQueryResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_run_query(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_run_query_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = datastore.RunQueryResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.datastore_v1.DatastoreClient.run_query",
+                    extra={
+                        "serviceName": "google.datastore.v1.Datastore",
+                        "rpcName": "RunQuery",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property
@@ -1376,7 +2049,7 @@ class DatastoreRestTransport(_BaseDatastoreRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> None:
             r"""Call the cancel operation method over HTTP.
 
@@ -1386,13 +2059,16 @@ class DatastoreRestTransport(_BaseDatastoreRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseDatastoreRestTransport._BaseCancelOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
             )
@@ -1406,6 +2082,33 @@ class DatastoreRestTransport(_BaseDatastoreRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.datastore_v1.DatastoreClient.CancelOperation",
+                    extra={
+                        "serviceName": "google.datastore.v1.Datastore",
+                        "rpcName": "CancelOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DatastoreRestTransport._CancelOperation._get_response(
@@ -1462,7 +2165,7 @@ class DatastoreRestTransport(_BaseDatastoreRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> None:
             r"""Call the delete operation method over HTTP.
 
@@ -1472,13 +2175,16 @@ class DatastoreRestTransport(_BaseDatastoreRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseDatastoreRestTransport._BaseDeleteOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_operation(
                 request, metadata
             )
@@ -1492,6 +2198,33 @@ class DatastoreRestTransport(_BaseDatastoreRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.datastore_v1.DatastoreClient.DeleteOperation",
+                    extra={
+                        "serviceName": "google.datastore.v1.Datastore",
+                        "rpcName": "DeleteOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DatastoreRestTransport._DeleteOperation._get_response(
@@ -1548,7 +2281,7 @@ class DatastoreRestTransport(_BaseDatastoreRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the get operation method over HTTP.
 
@@ -1558,8 +2291,10 @@ class DatastoreRestTransport(_BaseDatastoreRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.Operation: Response from GetOperation method.
@@ -1568,6 +2303,7 @@ class DatastoreRestTransport(_BaseDatastoreRestTransport):
             http_options = (
                 _BaseDatastoreRestTransport._BaseGetOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = (
                 _BaseDatastoreRestTransport._BaseGetOperation._get_transcoded_request(
@@ -1581,6 +2317,33 @@ class DatastoreRestTransport(_BaseDatastoreRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.datastore_v1.DatastoreClient.GetOperation",
+                    extra={
+                        "serviceName": "google.datastore.v1.Datastore",
+                        "rpcName": "GetOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DatastoreRestTransport._GetOperation._get_response(
@@ -1601,6 +2364,27 @@ class DatastoreRestTransport(_BaseDatastoreRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.datastore_v1.DatastoreAsyncClient.GetOperation",
+                    extra={
+                        "serviceName": "google.datastore.v1.Datastore",
+                        "rpcName": "GetOperation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -1641,7 +2425,7 @@ class DatastoreRestTransport(_BaseDatastoreRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.ListOperationsResponse:
             r"""Call the list operations method over HTTP.
 
@@ -1651,8 +2435,10 @@ class DatastoreRestTransport(_BaseDatastoreRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
@@ -1661,6 +2447,7 @@ class DatastoreRestTransport(_BaseDatastoreRestTransport):
             http_options = (
                 _BaseDatastoreRestTransport._BaseListOperations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
             transcoded_request = (
                 _BaseDatastoreRestTransport._BaseListOperations._get_transcoded_request(
@@ -1674,6 +2461,33 @@ class DatastoreRestTransport(_BaseDatastoreRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.datastore_v1.DatastoreClient.ListOperations",
+                    extra={
+                        "serviceName": "google.datastore.v1.Datastore",
+                        "rpcName": "ListOperations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DatastoreRestTransport._ListOperations._get_response(
@@ -1694,6 +2508,27 @@ class DatastoreRestTransport(_BaseDatastoreRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.datastore_v1.DatastoreAsyncClient.ListOperations",
+                    extra={
+                        "serviceName": "google.datastore.v1.Datastore",
+                        "rpcName": "ListOperations",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property

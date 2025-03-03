@@ -73,6 +73,14 @@ from google.protobuf import empty_pb2  # type: ignore
 import google.auth
 
 
+CRED_INFO_JSON = {
+    "credential_source": "/path/to/file",
+    "credential_type": "service account credentials",
+    "principal": "service-account@example.com",
+}
+CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
+
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
         chunk = data[i : i + chunk_size]
@@ -331,83 +339,46 @@ def test__get_universe_domain():
 
 
 @pytest.mark.parametrize(
-    "client_class,transport_class,transport_name",
+    "error_code,cred_info_json,show_cred_info",
     [
-        (DatastoreAdminClient, transports.DatastoreAdminGrpcTransport, "grpc"),
-        (DatastoreAdminClient, transports.DatastoreAdminRestTransport, "rest"),
+        (401, CRED_INFO_JSON, True),
+        (403, CRED_INFO_JSON, True),
+        (404, CRED_INFO_JSON, True),
+        (500, CRED_INFO_JSON, False),
+        (401, None, False),
+        (403, None, False),
+        (404, None, False),
+        (500, None, False),
     ],
 )
-def test__validate_universe_domain(client_class, transport_class, transport_name):
-    client = client_class(
-        transport=transport_class(credentials=ga_credentials.AnonymousCredentials())
-    )
-    assert client._validate_universe_domain() == True
+def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
+    cred = mock.Mock(["get_cred_info"])
+    cred.get_cred_info = mock.Mock(return_value=cred_info_json)
+    client = DatastoreAdminClient(credentials=cred)
+    client._transport._credentials = cred
 
-    # Test the case when universe is already validated.
-    assert client._validate_universe_domain() == True
+    error = core_exceptions.GoogleAPICallError("message", details=["foo"])
+    error.code = error_code
 
-    if transport_name == "grpc":
-        # Test the case where credentials are provided by the
-        # `local_channel_credentials`. The default universes in both match.
-        channel = grpc.secure_channel(
-            "http://localhost/", grpc.local_channel_credentials()
-        )
-        client = client_class(transport=transport_class(channel=channel))
-        assert client._validate_universe_domain() == True
+    client._add_cred_info_for_auth_errors(error)
+    if show_cred_info:
+        assert error.details == ["foo", CRED_INFO_STRING]
+    else:
+        assert error.details == ["foo"]
 
-        # Test the case where credentials do not exist: e.g. a transport is provided
-        # with no credentials. Validation should still succeed because there is no
-        # mismatch with non-existent credentials.
-        channel = grpc.secure_channel(
-            "http://localhost/", grpc.local_channel_credentials()
-        )
-        transport = transport_class(channel=channel)
-        transport._credentials = None
-        client = client_class(transport=transport)
-        assert client._validate_universe_domain() == True
 
-    # TODO: This is needed to cater for older versions of google-auth
-    # Make this test unconditional once the minimum supported version of
-    # google-auth becomes 2.23.0 or higher.
-    google_auth_major, google_auth_minor = [
-        int(part) for part in google.auth.__version__.split(".")[0:2]
-    ]
-    if google_auth_major > 2 or (google_auth_major == 2 and google_auth_minor >= 23):
-        credentials = ga_credentials.AnonymousCredentials()
-        credentials._universe_domain = "foo.com"
-        # Test the case when there is a universe mismatch from the credentials.
-        client = client_class(transport=transport_class(credentials=credentials))
-        with pytest.raises(ValueError) as excinfo:
-            client._validate_universe_domain()
-        assert (
-            str(excinfo.value)
-            == "The configured universe domain (googleapis.com) does not match the universe domain found in the credentials (foo.com). If you haven't configured the universe domain explicitly, `googleapis.com` is the default."
-        )
+@pytest.mark.parametrize("error_code", [401, 403, 404, 500])
+def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
+    cred = mock.Mock([])
+    assert not hasattr(cred, "get_cred_info")
+    client = DatastoreAdminClient(credentials=cred)
+    client._transport._credentials = cred
 
-        # Test the case when there is a universe mismatch from the client.
-        #
-        # TODO: Make this test unconditional once the minimum supported version of
-        # google-api-core becomes 2.15.0 or higher.
-        api_core_major, api_core_minor = [
-            int(part) for part in api_core_version.__version__.split(".")[0:2]
-        ]
-        if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 15):
-            client = client_class(
-                client_options={"universe_domain": "bar.com"},
-                transport=transport_class(
-                    credentials=ga_credentials.AnonymousCredentials(),
-                ),
-            )
-            with pytest.raises(ValueError) as excinfo:
-                client._validate_universe_domain()
-            assert (
-                str(excinfo.value)
-                == "The configured universe domain (bar.com) does not match the universe domain found in the credentials (googleapis.com). If you haven't configured the universe domain explicitly, `googleapis.com` is the default."
-            )
+    error = core_exceptions.GoogleAPICallError("message", details=[])
+    error.code = error_code
 
-    # Test that ValueError is raised if universe_domain is provided via client options and credentials is None
-    with pytest.raises(ValueError):
-        client._compare_universes("foo.bar", None)
+    client._add_cred_info_for_auth_errors(error)
+    assert error.details == []
 
 
 @pytest.mark.parametrize(
@@ -3171,6 +3142,7 @@ def test_export_entities_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.export_entities(request)
 
@@ -3225,6 +3197,7 @@ def test_export_entities_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.export_entities(**mock_args)
 
@@ -3363,6 +3336,7 @@ def test_import_entities_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.import_entities(request)
 
@@ -3417,6 +3391,7 @@ def test_import_entities_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.import_entities(**mock_args)
 
@@ -4094,6 +4069,7 @@ def test_export_entities_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.export_entities(request)
 
 
@@ -4124,6 +4100,7 @@ def test_export_entities_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.export_entities(request)
 
     # Establish that the response is the type that we expect.
@@ -4149,10 +4126,13 @@ def test_export_entities_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.DatastoreAdminRestInterceptor, "post_export_entities"
     ) as post, mock.patch.object(
+        transports.DatastoreAdminRestInterceptor, "post_export_entities_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.DatastoreAdminRestInterceptor, "pre_export_entities"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = datastore_admin.ExportEntitiesRequest.pb(
             datastore_admin.ExportEntitiesRequest()
         )
@@ -4165,6 +4145,7 @@ def test_export_entities_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -4175,6 +4156,7 @@ def test_export_entities_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.export_entities(
             request,
@@ -4186,6 +4168,7 @@ def test_export_entities_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_import_entities_rest_bad_request(
@@ -4209,6 +4192,7 @@ def test_import_entities_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.import_entities(request)
 
 
@@ -4239,6 +4223,7 @@ def test_import_entities_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.import_entities(request)
 
     # Establish that the response is the type that we expect.
@@ -4264,10 +4249,13 @@ def test_import_entities_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.DatastoreAdminRestInterceptor, "post_import_entities"
     ) as post, mock.patch.object(
+        transports.DatastoreAdminRestInterceptor, "post_import_entities_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.DatastoreAdminRestInterceptor, "pre_import_entities"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = datastore_admin.ImportEntitiesRequest.pb(
             datastore_admin.ImportEntitiesRequest()
         )
@@ -4280,6 +4268,7 @@ def test_import_entities_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -4290,6 +4279,7 @@ def test_import_entities_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.import_entities(
             request,
@@ -4301,6 +4291,7 @@ def test_import_entities_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_index_rest_bad_request(request_type=datastore_admin.CreateIndexRequest):
@@ -4322,6 +4313,7 @@ def test_create_index_rest_bad_request(request_type=datastore_admin.CreateIndexR
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_index(request)
 
 
@@ -4427,6 +4419,7 @@ def test_create_index_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_index(request)
 
     # Establish that the response is the type that we expect.
@@ -4452,10 +4445,13 @@ def test_create_index_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.DatastoreAdminRestInterceptor, "post_create_index"
     ) as post, mock.patch.object(
+        transports.DatastoreAdminRestInterceptor, "post_create_index_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.DatastoreAdminRestInterceptor, "pre_create_index"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = datastore_admin.CreateIndexRequest.pb(
             datastore_admin.CreateIndexRequest()
         )
@@ -4468,6 +4464,7 @@ def test_create_index_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -4478,6 +4475,7 @@ def test_create_index_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_index(
             request,
@@ -4489,6 +4487,7 @@ def test_create_index_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_index_rest_bad_request(request_type=datastore_admin.DeleteIndexRequest):
@@ -4510,6 +4509,7 @@ def test_delete_index_rest_bad_request(request_type=datastore_admin.DeleteIndexR
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_index(request)
 
 
@@ -4540,6 +4540,7 @@ def test_delete_index_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.delete_index(request)
 
     # Establish that the response is the type that we expect.
@@ -4565,10 +4566,13 @@ def test_delete_index_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.DatastoreAdminRestInterceptor, "post_delete_index"
     ) as post, mock.patch.object(
+        transports.DatastoreAdminRestInterceptor, "post_delete_index_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.DatastoreAdminRestInterceptor, "pre_delete_index"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = datastore_admin.DeleteIndexRequest.pb(
             datastore_admin.DeleteIndexRequest()
         )
@@ -4581,6 +4585,7 @@ def test_delete_index_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -4591,6 +4596,7 @@ def test_delete_index_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_index(
             request,
@@ -4602,6 +4608,7 @@ def test_delete_index_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_index_rest_bad_request(request_type=datastore_admin.GetIndexRequest):
@@ -4623,6 +4630,7 @@ def test_get_index_rest_bad_request(request_type=datastore_admin.GetIndexRequest
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_index(request)
 
 
@@ -4662,6 +4670,7 @@ def test_get_index_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_index(request)
 
     # Establish that the response is the type that we expect.
@@ -4690,10 +4699,13 @@ def test_get_index_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DatastoreAdminRestInterceptor, "post_get_index"
     ) as post, mock.patch.object(
+        transports.DatastoreAdminRestInterceptor, "post_get_index_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.DatastoreAdminRestInterceptor, "pre_get_index"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = datastore_admin.GetIndexRequest.pb(
             datastore_admin.GetIndexRequest()
         )
@@ -4706,6 +4718,7 @@ def test_get_index_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = index.Index.to_json(index.Index())
         req.return_value.content = return_value
 
@@ -4716,6 +4729,7 @@ def test_get_index_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = index.Index()
+        post_with_metadata.return_value = index.Index(), metadata
 
         client.get_index(
             request,
@@ -4727,6 +4741,7 @@ def test_get_index_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_indexes_rest_bad_request(request_type=datastore_admin.ListIndexesRequest):
@@ -4748,6 +4763,7 @@ def test_list_indexes_rest_bad_request(request_type=datastore_admin.ListIndexesR
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_indexes(request)
 
 
@@ -4783,6 +4799,7 @@ def test_list_indexes_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_indexes(request)
 
     # Establish that the response is the type that we expect.
@@ -4807,10 +4824,13 @@ def test_list_indexes_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DatastoreAdminRestInterceptor, "post_list_indexes"
     ) as post, mock.patch.object(
+        transports.DatastoreAdminRestInterceptor, "post_list_indexes_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.DatastoreAdminRestInterceptor, "pre_list_indexes"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = datastore_admin.ListIndexesRequest.pb(
             datastore_admin.ListIndexesRequest()
         )
@@ -4823,6 +4843,7 @@ def test_list_indexes_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = datastore_admin.ListIndexesResponse.to_json(
             datastore_admin.ListIndexesResponse()
         )
@@ -4835,6 +4856,10 @@ def test_list_indexes_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = datastore_admin.ListIndexesResponse()
+        post_with_metadata.return_value = (
+            datastore_admin.ListIndexesResponse(),
+            metadata,
+        )
 
         client.list_indexes(
             request,
@@ -4846,6 +4871,7 @@ def test_list_indexes_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_cancel_operation_rest_bad_request(
@@ -4871,6 +4897,7 @@ def test_cancel_operation_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.cancel_operation(request)
 
 
@@ -4901,6 +4928,7 @@ def test_cancel_operation_rest(request_type):
         response_value.content = json_return_value.encode("UTF-8")
 
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         response = client.cancel_operation(request)
 
@@ -4931,6 +4959,7 @@ def test_delete_operation_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_operation(request)
 
 
@@ -4961,6 +4990,7 @@ def test_delete_operation_rest(request_type):
         response_value.content = json_return_value.encode("UTF-8")
 
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         response = client.delete_operation(request)
 
@@ -4991,6 +5021,7 @@ def test_get_operation_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_operation(request)
 
 
@@ -5021,6 +5052,7 @@ def test_get_operation_rest(request_type):
         response_value.content = json_return_value.encode("UTF-8")
 
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         response = client.get_operation(request)
 
@@ -5049,6 +5081,7 @@ def test_list_operations_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_operations(request)
 
 
@@ -5079,6 +5112,7 @@ def test_list_operations_rest(request_type):
         response_value.content = json_return_value.encode("UTF-8")
 
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         response = client.list_operations(request)
 
