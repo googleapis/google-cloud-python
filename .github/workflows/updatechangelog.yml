@@ -41,7 +41,7 @@ jobs:
           fetch-depth: 2
       - name: Run bash script to update CHANGELOG.md in the root directory
         run: ./scripts/updatechangelog.sh
-      - uses: googleapis/code-suggester@v4
+      - uses: googleapis/code-suggester@v5
         env:
           ACCESS_TOKEN: ${{ secrets.YOSHI_CODE_BOT_TOKEN }}
         with:
