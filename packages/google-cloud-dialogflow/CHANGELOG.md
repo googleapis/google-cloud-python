@@ -4,6 +4,16 @@
 
 [1]: https://pypi.org/project/google-cloud-dialogflow/#history
 
+## [2.39.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dialogflow-v2.39.0...google-cloud-dialogflow-v2.39.1) (2025-03-03)
+
+
+### Documentation
+
+* **v2beta1:** clarified wording around BoostSpec and filter_specs ([e262c10](https://github.com/googleapis/google-cloud-python/commit/e262c1022982bedba36c25ebe1583cf71dba705a))
+* **v2beta1:** clarified wording around document_correctness ([e262c10](https://github.com/googleapis/google-cloud-python/commit/e262c1022982bedba36c25ebe1583cf71dba705a))
+* **v2beta1:** clarified wording around send_time ([e262c10](https://github.com/googleapis/google-cloud-python/commit/e262c1022982bedba36c25ebe1583cf71dba705a))
+* **v2beta1:** clarified wording around use_timeout_based_endpointing ([e262c10](https://github.com/googleapis/google-cloud-python/commit/e262c1022982bedba36c25ebe1583cf71dba705a))
+
 ## [2.39.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dialogflow-v2.38.0...google-cloud-dialogflow-v2.39.0) (2025-02-12)
 
 
