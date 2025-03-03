@@ -1,0 +1,2 @@
+recursive-include google/maps/areainsights *.py
+recursive-include google/maps/areainsights_v1 *.py
