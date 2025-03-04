@@ -8,7 +8,7 @@
     ],
     "language": "PYTHON",
     "name": "google-cloud-dialogflow",
-    "version": "2.39.1"
+    "version": "0.1.0"
   },
   "snippets": [
     {
@@ -15012,6 +15012,10 @@
             "type": "google.cloud.dialogflow_v2.types.EventInput"
           },
           {
+            "name": "audio_input",
+            "type": "google.cloud.dialogflow_v2.types.AudioInput"
+          },
+          {
             "name": "retry",
             "type": "google.api_core.retry.Retry"
           },
@@ -15098,6 +15102,10 @@
           {
             "name": "event_input",
             "type": "google.cloud.dialogflow_v2.types.EventInput"
+          },
+          {
+            "name": "audio_input",
+            "type": "google.cloud.dialogflow_v2.types.AudioInput"
           },
           {
             "name": "retry",
