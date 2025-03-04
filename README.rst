@@ -841,6 +841,12 @@ Libraries
      -
      -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
+   * - `Anti Money Laundering AI API <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-financialservices>`_
+     - preview
+     - |PyPI-google-cloud-financialservices|
+     -
+     -
+     - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Apigee Registry API <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-apigee-registry>`_
      - preview
      - |PyPI-google-cloud-apigee-registry|
@@ -1728,6 +1734,8 @@ Libraries
      :target: https://pypi.org/project/google-analytics-data
 .. |PyPI-google-cloud-gke-multicloud| image:: https://img.shields.io/pypi/v/google-cloud-gke-multicloud.svg
      :target: https://pypi.org/project/google-cloud-gke-multicloud
+.. |PyPI-google-cloud-financialservices| image:: https://img.shields.io/pypi/v/google-cloud-financialservices.svg
+     :target: https://pypi.org/project/google-cloud-financialservices
 .. |PyPI-google-cloud-apigee-registry| image:: https://img.shields.io/pypi/v/google-cloud-apigee-registry.svg
      :target: https://pypi.org/project/google-cloud-apigee-registry
 .. |PyPI-google-cloud-apphub| image:: https://img.shields.io/pypi/v/google-cloud-apphub.svg
