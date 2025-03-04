@@ -13,3 +13,7 @@
 # limitations under the License.
 
 __version__ = "1.38.0"
+
+# {x-release-please-start-date}
+__release_date__ = "2025-02-24"
+# {x-release-please-end}
