@@ -3733,6 +3733,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
                 default_project=default_project,
             )
         )
+
         query_job = self._session._executor.export_gbq(
             export_array.rename_columns(id_overrides),
             destination=destination,

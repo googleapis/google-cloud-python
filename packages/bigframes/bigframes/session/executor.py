@@ -33,7 +33,7 @@ import warnings
 import weakref
 
 import google.api_core.exceptions
-import google.cloud.bigquery as bigquery
+from google.cloud import bigquery
 import google.cloud.bigquery.job as bq_job
 import google.cloud.bigquery.table as bq_table
 import google.cloud.bigquery_storage_v1
@@ -47,6 +47,7 @@ import bigframes.core.nodes as nodes
 import bigframes.core.ordering as order
 import bigframes.core.schema
 import bigframes.core.tree_properties as tree_properties
+import bigframes.dtypes
 import bigframes.features
 import bigframes.session._io.bigquery as bq_io
 import bigframes.session.metrics
@@ -320,6 +321,19 @@ class BigQueryCachingExecutor(Executor):
             sql=sql,
             job_config=job_config,
         )
+
+        has_timedelta_col = any(
+            t == bigframes.dtypes.TIMEDELTA_DTYPE for t in array_value.schema.dtypes
+        )
+
+        if if_exists != "append" and has_timedelta_col:
+            # Only update schema if this is not modifying an existing table, and the
+            # new table contains timedelta columns.
+            assert query_job.destination is not None
+            table = self.bqclient.get_table(query_job.destination)
+            table.schema = array_value.schema.to_bigquery()
+            self.bqclient.update_table(table, ["schema"])
+
         return query_job
 
     def export_gcs(
@@ -649,10 +663,26 @@ class BigQueryCachingExecutor(Executor):
             raise ValueError(
                 f"This error should only occur while testing. BigFrames internal schema: {internal_schema.to_bigquery()} does not match actual schema: {actual_schema}"
             )
-        if ibis_schema.to_bigquery() != actual_schema:
+        sanitized_schema = _sanitize_for_ibis(actual_schema)
+        if ibis_schema.to_bigquery() != sanitized_schema:
             raise ValueError(
-                f"This error should only occur while testing. Ibis schema: {ibis_schema.to_bigquery()} does not match actual schema: {actual_schema}"
+                f"This error should only occur while testing. Ibis schema: {ibis_schema.to_bigquery()} does not match sanitized schema: {sanitized_schema}"
             )
+
+
+def _sanitize_for_ibis(
+    schema: Tuple[bigquery.SchemaField, ...]
+) -> Tuple[bigquery.SchemaField, ...]:
+    # Schema inferred from Ibis does not contain description field. We only need to compare the names, types and modes.
+    return tuple(
+        bigquery.SchemaField(
+            f.name,
+            f.field_type,
+            f.mode,  # type:ignore
+            fields=_sanitize_for_ibis(f.fields),
+        )
+        for f in schema
+    )
 
 
 def generate_head_plan(node: nodes.BigFrameNode, n: int):
