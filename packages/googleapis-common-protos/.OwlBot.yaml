@@ -28,7 +28,7 @@ deep-copy-regex:
     dest: /owl-bot-staging/googleapis-common-protos/$1/google/logging/type/$2
   - source: /google/logging/type/(logging-type-py)/(log_severity.*)
     dest: /owl-bot-staging/googleapis-common-protos/$1/google/logging/type/$2
-  - source: /google/longrunning/(operations-py)/(operations)(.*pb2.*)
+  - source: /google/longrunning/(operations-py)/(operations)(.*pb2.*|.*.proto)
     dest: /owl-bot-staging/googleapis-common-protos/$1/google/longrunning/$2_proto$3
   - source: /google/rpc/(rpc-py)/(.*)
     dest: /owl-bot-staging/googleapis-common-protos/$1/google/rpc/$2
