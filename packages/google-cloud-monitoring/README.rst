@@ -106,3 +106,92 @@ Next Steps
 
 .. _Stackdriver Monitoring Product documentation:  https://cloud.google.com/monitoring/docs
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
+
+Logging
+-------
+
+This library uses the standard Python :code:`logging` functionality to log some RPC events that could be of interest for debugging and monitoring purposes.
+Note the following:
+
+#. Logs may contain sensitive information. Take care to **restrict access to the logs** if they are saved, whether it be on local storage or on Google Cloud Logging.
+#. Google may refine the occurrence, level, and content of various log messages in this library without flagging such changes as breaking. **Do not depend on immutability of the logging events**.
+#. By default, the logging events from this library are not handled. You must **explicitly configure log handling** using one of the mechanisms below.
+
+Simple, environment-based configuration
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+To enable logging for this library without any changes in your code, set the :code:`GOOGLE_SDK_PYTHON_LOGGING_SCOPE` environment variable to a valid Google
+logging scope. This configures handling of logging events (at level :code:`logging.DEBUG` or higher) from this library in a default manner, emitting the logged
+messages in a structured format. It does not currently allow customizing the logging levels captured nor the handlers, formatters, etc. used for any logging
+event.
+
+A logging scope is a period-separated namespace that begins with :code:`google`, identifying the Python module or package to log.
+
+- Valid logging scopes: :code:`google`, :code:`google.cloud.asset.v1`, :code:`google.api`, :code:`google.auth`, etc.
+- Invalid logging scopes: :code:`foo`, :code:`123`, etc.
+
+**NOTE**: If the logging scope is invalid, the library does not set up any logging handlers.
+
+Environment-Based Examples
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- Enabling the default handler for all Google-based loggers
+
+.. code-block:: console
+
+    export GOOGLE_SDK_PYTHON_LOGGING_SCOPE=google
+
+- Enabling the default handler for a specific Google module (for a client library called :code:`library_v1`):
+
+.. code-block:: console
+
+    export GOOGLE_SDK_PYTHON_LOGGING_SCOPE=google.cloud.library_v1
+
+
+Advanced, code-based configuration
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also configure a valid logging scope using Python's standard `logging` mechanism.
+
+Code-Based Examples
+^^^^^^^^^^^^^^^^^^^
+
+- Configuring a handler for all Google-based loggers
+
+.. code-block:: python
+
+    import logging
+    
+    from google.cloud.translate_v3 import translate
+    
+    base_logger = logging.getLogger("google")
+    base_logger.addHandler(logging.StreamHandler())
+    base_logger.setLevel(logging.DEBUG)
+
+- Configuring a handler for a specific Google module (for a client library called :code:`library_v1`):
+
+.. code-block:: python
+
+    import logging
+    
+    from google.cloud.translate_v3 import translate
+    
+    base_logger = logging.getLogger("google.cloud.library_v1")
+    base_logger.addHandler(logging.StreamHandler())
+    base_logger.setLevel(logging.DEBUG)
+
+Logging details
+~~~~~~~~~~~~~~~
+
+#. Regardless of which of the mechanisms above you use to configure logging for this library, by default logging events are not propagated up to the root
+   logger from the `google`-level logger. If you need the events to be propagated to the root logger, you must explicitly set
+   :code:`logging.getLogger("google").propagate = True` in your code.
+#. You can mix the different logging configurations above for different Google modules. For example, you may want use a code-based logging configuration for
+   one library, but decide you need to also set up environment-based logging configuration for another library.
+
+   #. If you attempt to use both code-based and environment-based configuration for the same module, the environment-based configuration will be ineffectual
+      if the code -based configuration gets applied first.
+
+#. The Google-specific logging configurations (default handlers for environment-based configuration; not propagating logging events to the root logger) get
+   executed the first time *any* client library is instantiated in your application, and only if the affected loggers have not been previously configured.
+   (This is the reason for 2.i. above.)
