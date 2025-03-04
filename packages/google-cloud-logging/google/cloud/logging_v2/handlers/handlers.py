@@ -296,7 +296,8 @@ def setup_logging(
         excluded_loggers (Optional[Tuple[str]]): The loggers to not attach the handler
             to. This will always include the loggers in the
             path of the logging client itself.
-        log_level (Optional[int]): Python logging log level. Defaults to
+        log_level (Optional[int]): The logging level threshold of the attached logger,
+            as set by the :meth:`logging.Logger.setLevel` method. Defaults to
             :const:`logging.INFO`.
     """
     all_excluded_loggers = set(excluded_loggers + _INTERNAL_LOGGERS)

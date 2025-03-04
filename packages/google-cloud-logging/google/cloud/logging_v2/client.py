@@ -400,7 +400,8 @@ class Client(ClientWithProject):
         loggers, will report to Cloud Logging.
 
         Args:
-            log_level (Optional[int]): Python logging log level. Defaults to
+            log_level (Optional[int]): The logging level threshold of the attached logger,
+                as set by the :meth:`logging.Logger.setLevel` method. Defaults to
                 :const:`logging.INFO`.
             excluded_loggers (Optional[Tuple[str]]): The loggers to not attach the
                 handler to. This will always include the

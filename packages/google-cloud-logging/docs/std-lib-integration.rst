@@ -16,6 +16,21 @@ call :meth:`~google.cloud.logging_v2.client.Client.setup_logging` on a :class:`~
     :end-before: [END logging_handler_setup]
     :dedent: 4
 
+
+You can also set the logging level threshold of the logging handler created by :meth:`~google.cloud.logging_v2.client.Client.setup_logging`,
+as well as set loggers excluded from the logger that is created:
+
+.. literalinclude:: ../samples/snippets/usage_guide.py
+    :start-after: [START logging_setup_logging]
+    :end-before: [END logging_setup_logging]
+    :dedent: 4
+
+.. literalinclude:: ../samples/snippets/usage_guide.py
+    :start-after: [START logging_setup_logging_excludes]
+    :end-before: [END logging_setup_logging_excludes]
+    :dedent: 4
+
+
 This :meth:`~google.cloud.logging_v2.client.Client.setup_logging` function chooses the best configurations for the environment your
 code is running on. For more information, see the `Google Cloud Logging documentation <https://cloud.google.com/logging/docs/setup/python>`_.
 
