@@ -1,6 +1,13 @@
 # Changelog
 
 
+## [1.23.4](https://github.com/googleapis/gapic-generator-python/compare/v1.23.3...v1.23.4) (2025-03-04)
+
+
+### Bug Fixes
+
+* Allow proto files to be included in the output of py_gapic_assembly_pkg ([#2349](https://github.com/googleapis/gapic-generator-python/issues/2349)) ([b301bef](https://github.com/googleapis/gapic-generator-python/commit/b301befcda29ae1f9c204e0836656c03c2d74a2a))
+
 ## [1.23.3](https://github.com/googleapis/gapic-generator-python/compare/v1.23.2...v1.23.3) (2025-03-03)
 
 
