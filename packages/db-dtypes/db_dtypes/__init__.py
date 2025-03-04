@@ -50,7 +50,7 @@ _NP_BOX_DTYPE = "datetime64[us]"
 # To use JSONArray and JSONDtype, you'll need Pandas 1.5.0 or later. With the removal
 # of Python 3.7 compatibility, the minimum Pandas version will be updated to 1.5.0.
 if packaging.version.Version(pandas.__version__) >= packaging.version.Version("1.5.0"):
-    from db_dtypes.json import JSONArray, JSONArrowScalar, JSONArrowType, JSONDtype
+    from db_dtypes.json import JSONArray, JSONArrowType, JSONDtype
 else:
     JSONArray = None
     JSONDtype = None
@@ -375,7 +375,6 @@ else:
         "JSONDtype",
         "JSONArray",
         "JSONArrowType",
-        "JSONArrowScalar",
         "TimeArray",
         "TimeDtype",
     ]

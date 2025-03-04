@@ -13,7 +13,6 @@
 # limitations under the License.
 
 import json
-import math
 
 import numpy as np
 import pandas as pd
@@ -160,20 +159,15 @@ def test_json_arrow_to_pandas():
     s = arr.to_pandas()
     assert isinstance(s.dtypes, db_dtypes.JSONDtype)
     assert s[0]
-    assert s[1] == 100
-    assert math.isclose(s[2], 0.98)
-    assert s[3] == "hello world"
-    assert math.isclose(s[4][0], 0.1)
-    assert math.isclose(s[4][1], 0.2)
-    assert s[5] == {
-        "null_field": None,
-        "order": {
-            "items": ["book", "pen", "computer"],
-            "total": 15,
-            "address": {"street": "123 Main St", "city": "Anytown"},
-        },
-    }
-    assert pd.isna(s[6])
+    assert s[1] == "100"
+    assert s[2] == "0.98"
+    assert s[3] == '"hello world"'
+    assert s[4] == "[0.1,0.2]"
+    assert (
+        s[5]
+        == '{"null_field":null,"order":{"address":{"city":"Anytown","street":"123 Main St"},"items":["book","pen","computer"],"total":15}}'
+    )
+    assert s[6] == "null"
 
 
 def test_json_arrow_to_pylist():
@@ -186,20 +180,15 @@ def test_json_arrow_to_pylist():
     s = arr.to_pylist()
     assert isinstance(s, list)
     assert s[0]
-    assert s[1] == 100
-    assert math.isclose(s[2], 0.98)
-    assert s[3] == "hello world"
-    assert math.isclose(s[4][0], 0.1)
-    assert math.isclose(s[4][1], 0.2)
-    assert s[5] == {
-        "null_field": None,
-        "order": {
-            "items": ["book", "pen", "computer"],
-            "total": 15,
-            "address": {"street": "123 Main St", "city": "Anytown"},
-        },
-    }
-    assert s[6] is None
+    assert s[1] == "100"
+    assert s[2] == "0.98"
+    assert s[3] == '"hello world"'
+    assert s[4] == "[0.1,0.2]"
+    assert (
+        s[5]
+        == '{"null_field":null,"order":{"address":{"city":"Anytown","street":"123 Main St"},"items":["book","pen","computer"],"total":15}}'
+    )
+    assert s[6] == "null"
 
 
 def test_json_arrow_record_batch():
@@ -226,17 +215,12 @@ def test_json_arrow_record_batch():
 
     assert isinstance(s, list)
     assert s[0]
-    assert s[1] == 100
-    assert math.isclose(s[2], 0.98)
-    assert s[3] == "hello world"
-    assert math.isclose(s[4][0], 0.1)
-    assert math.isclose(s[4][1], 0.2)
-    assert s[5] == {
-        "null_field": None,
-        "order": {
-            "items": ["book", "pen", "computer"],
-            "total": 15,
-            "address": {"street": "123 Main St", "city": "Anytown"},
-        },
-    }
-    assert s[6] is None
+    assert s[1] == "100"
+    assert s[2] == "0.98"
+    assert s[3] == '"hello world"'
+    assert s[4] == "[0.1,0.2]"
+    assert (
+        s[5]
+        == '{"null_field":null,"order":{"address":{"city":"Anytown","street":"123 Main St"},"items":["book","pen","computer"],"total":15}}'
+    )
+    assert s[6] == "null"
