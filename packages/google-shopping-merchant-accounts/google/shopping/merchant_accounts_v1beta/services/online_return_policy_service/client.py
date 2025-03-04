@@ -735,7 +735,7 @@ class OnlineReturnPolicyServiceClient(metaclass=OnlineReturnPolicyServiceClientM
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> online_return_policy.OnlineReturnPolicy:
-        r"""Gets an existing return policy.
+        r"""Gets an existing return policy for a given business.
 
         .. code-block:: python
 
@@ -847,7 +847,8 @@ class OnlineReturnPolicyServiceClient(metaclass=OnlineReturnPolicyServiceClientM
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListOnlineReturnPoliciesPager:
-        r"""Lists all existing return policies.
+        r"""Lists all existing return policies for a given
+        business.
 
         .. code-block:: python
 
@@ -881,7 +882,7 @@ class OnlineReturnPolicyServiceClient(metaclass=OnlineReturnPolicyServiceClientM
                 The request object. Request message for the ``ListOnlineReturnPolicies``
                 method.
             parent (str):
-                Required. The merchant account for which to list return
+                Required. The business account for which to list return
                 policies. Format: ``accounts/{account}``
 
                 This corresponds to the ``parent`` field
