@@ -651,35 +651,36 @@ class BigQueryCachingExecutor(Executor):
         array_value: bigframes.core.ArrayValue,
         bq_schema: list[bigquery.SchemaField],
     ):
-        actual_schema = tuple(bq_schema)
+        actual_schema = _sanitize(tuple(bq_schema))
         ibis_schema = bigframes.core.compile.test_only_ibis_inferred_schema(
             self.replace_cached_subtrees(array_value.node)
-        )
-        internal_schema = array_value.schema
+        ).to_bigquery()
+        internal_schema = _sanitize(array_value.schema.to_bigquery())
         if not bigframes.features.PANDAS_VERSIONS.is_arrow_list_dtype_usable:
             return
 
-        if internal_schema.to_bigquery() != actual_schema:
+        if internal_schema != actual_schema:
             raise ValueError(
-                f"This error should only occur while testing. BigFrames internal schema: {internal_schema.to_bigquery()} does not match actual schema: {actual_schema}"
+                f"This error should only occur while testing. BigFrames internal schema: {internal_schema} does not match actual schema: {actual_schema}"
             )
-        sanitized_schema = _sanitize_for_ibis(actual_schema)
-        if ibis_schema.to_bigquery() != sanitized_schema:
+
+        if ibis_schema != actual_schema:
             raise ValueError(
-                f"This error should only occur while testing. Ibis schema: {ibis_schema.to_bigquery()} does not match sanitized schema: {sanitized_schema}"
+                f"This error should only occur while testing. Ibis schema: {ibis_schema} does not match actual schema: {actual_schema}"
             )
 
 
-def _sanitize_for_ibis(
+def _sanitize(
     schema: Tuple[bigquery.SchemaField, ...]
 ) -> Tuple[bigquery.SchemaField, ...]:
-    # Schema inferred from Ibis does not contain description field. We only need to compare the names, types and modes.
+    # Schema inferred from SQL strings and Ibis expressions contain only names, types and modes,
+    # so we disregard other fields (e.g timedelta description for timedelta columns) for validations.
     return tuple(
         bigquery.SchemaField(
             f.name,
             f.field_type,
             f.mode,  # type:ignore
-            fields=_sanitize_for_ibis(f.fields),
+            fields=_sanitize(f.fields),
         )
         for f in schema
     )
