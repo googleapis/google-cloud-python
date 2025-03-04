@@ -285,6 +285,8 @@ class ChangeHistoryResourceType(proto.Enum):
             EventCreateRule resource
         CALCULATED_METRIC (31):
             CalculatedMetric resource
+        KEY_EVENT (32):
+            KeyEvent resource
     """
     CHANGE_HISTORY_RESOURCE_TYPE_UNSPECIFIED = 0
     ACCOUNT = 1
@@ -312,6 +314,7 @@ class ChangeHistoryResourceType(proto.Enum):
     AUDIENCE = 28
     EVENT_CREATE_RULE = 29
     CALCULATED_METRIC = 31
+    KEY_EVENT = 32
 
 
 class GoogleSignalsState(proto.Enum):
@@ -1593,6 +1596,11 @@ class ChangeHistoryChange(proto.Message):
                 change history.
 
                 This field is a member of `oneof`_ ``resource``.
+            key_event (google.analytics.admin_v1alpha.types.KeyEvent):
+                A snapshot of a KeyEvent resource in change
+                history.
+
+                This field is a member of `oneof`_ ``resource``.
         """
 
         account: "Account" = proto.Field(
@@ -1748,6 +1756,12 @@ class ChangeHistoryChange(proto.Message):
             number=31,
             oneof="resource",
             message="CalculatedMetric",
+        )
+        key_event: "KeyEvent" = proto.Field(
+            proto.MESSAGE,
+            number=32,
+            oneof="resource",
+            message="KeyEvent",
         )
 
     resource: str = proto.Field(
