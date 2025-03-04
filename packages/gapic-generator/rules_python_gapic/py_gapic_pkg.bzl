@@ -19,6 +19,13 @@ def _py_gapic_src_pkg_impl(ctx):
     dir_srcs = []
     py_srcs = []
     for dep in ctx.attr.deps:
+        # Check if this is a `proto_library` dependency which has `ProtoInfo`
+        # See https://bazel.build/versions/6.5.0/rules/lib/ProtoInfo
+        if ProtoInfo in dep:
+            # Add `*.proto` files to the output which exist in `direct_sources`
+            # https://bazel.build/versions/6.5.0/rules/lib/ProtoInfo#direct_sources
+            for source in dep[ProtoInfo].direct_sources:
+                py_srcs.append(source)
         for f in dep.files.to_list():
             if f.is_directory:
                 dir_srcs.append(f)
