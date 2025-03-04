@@ -341,7 +341,7 @@ class OnlineReturnPolicyServiceGrpcAsyncIOTransport(OnlineReturnPolicyServiceTra
     ]:
         r"""Return a callable for the get online return policy method over gRPC.
 
-        Gets an existing return policy.
+        Gets an existing return policy for a given business.
 
         Returns:
             Callable[[~.GetOnlineReturnPolicyRequest],
@@ -370,7 +370,8 @@ class OnlineReturnPolicyServiceGrpcAsyncIOTransport(OnlineReturnPolicyServiceTra
     ]:
         r"""Return a callable for the list online return policies method over gRPC.
 
-        Lists all existing return policies.
+        Lists all existing return policies for a given
+        business.
 
         Returns:
             Callable[[~.ListOnlineReturnPoliciesRequest],
