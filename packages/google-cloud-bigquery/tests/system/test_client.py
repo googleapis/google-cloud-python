@@ -97,6 +97,10 @@ TIME_PARTITIONING_CLUSTERING_FIELDS_SCHEMA = [
         ],
     ),
 ]
+TABLE_CONSTRAINTS_SCHEMA = [
+    bigquery.SchemaField("id", "INTEGER", mode="REQUIRED"),
+    bigquery.SchemaField("fk_id", "STRING", mode="REQUIRED"),
+]
 
 SOURCE_URIS_AVRO = [
     "gs://cloud-samples-data/bigquery/federated-formats-reference-file-schema/a-twitter.avro",
@@ -900,6 +904,79 @@ class TestBigQuery(unittest.TestCase):
         table2.clustering_fields = None
         table3 = Config.CLIENT.update_table(table2, ["clustering_fields"])
         self.assertIsNone(table3.clustering_fields, None)
+
+    def test_update_table_constraints(self):
+        from google.cloud.bigquery.table import TableConstraints
+        from google.cloud.bigquery.table import (
+            PrimaryKey,
+            ForeignKey,
+            TableReference,
+            ColumnReference,
+        )
+
+        dataset = self.temp_dataset(_make_dataset_id("update_table"))
+
+        TABLE_NAME = "test_table"
+        table_arg = Table(dataset.table(TABLE_NAME), schema=TABLE_CONSTRAINTS_SCHEMA)
+        self.assertFalse(_table_exists(table_arg))
+
+        table = helpers.retry_403(Config.CLIENT.create_table)(table_arg)
+        self.to_delete.insert(0, table)
+        self.assertTrue(_table_exists(table))
+
+        REFERENCE_TABLE_NAME = "test_table2"
+        reference_table_arg = Table(
+            dataset.table(REFERENCE_TABLE_NAME),
+            schema=[
+                bigquery.SchemaField("id", "INTEGER", mode="REQUIRED"),
+            ],
+        )
+        reference_table = helpers.retry_403(Config.CLIENT.create_table)(
+            reference_table_arg
+        )
+        self.to_delete.insert(0, reference_table)
+        self.assertTrue(_table_exists(reference_table))
+
+        reference_table.table_constraints = TableConstraints(
+            primary_key=PrimaryKey(columns=["id"]), foreign_keys=None
+        )
+        reference_table2 = Config.CLIENT.update_table(
+            reference_table, ["table_constraints"]
+        )
+        self.assertEqual(
+            reference_table2.table_constraints.primary_key,
+            reference_table.table_constraints.primary_key,
+        )
+
+        table_constraints = TableConstraints(
+            primary_key=PrimaryKey(columns=["id"]),
+            foreign_keys=[
+                ForeignKey(
+                    name="fk_id",
+                    referenced_table=TableReference(dataset, "test_table2"),
+                    column_references=[
+                        ColumnReference(referencing_column="id", referenced_column="id")
+                    ],
+                ),
+            ],
+        )
+
+        table.table_constraints = table_constraints
+        table2 = Config.CLIENT.update_table(table, ["table_constraints"])
+        self.assertEqual(
+            table2.table_constraints,
+            table_constraints,
+        )
+
+        table2.table_constraints = None
+        table3 = Config.CLIENT.update_table(table2, ["table_constraints"])
+        self.assertIsNone(table3.table_constraints, None)
+
+        reference_table2.table_constraints = None
+        reference_table3 = Config.CLIENT.update_table(
+            reference_table2, ["table_constraints"]
+        )
+        self.assertIsNone(reference_table3.table_constraints, None)
 
     @staticmethod
     def _fetch_single_page(table, selected_fields=None):

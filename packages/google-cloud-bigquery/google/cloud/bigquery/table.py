@@ -1058,6 +1058,17 @@ class Table(_TableBase):
             table_constraints = TableConstraints.from_api_repr(table_constraints)
         return table_constraints
 
+    @table_constraints.setter
+    def table_constraints(self, value):
+        """Tables Primary Key and Foreign Key information."""
+        api_repr = value
+        if not isinstance(value, TableConstraints) and value is not None:
+            raise ValueError(
+                "value must be google.cloud.bigquery.table.TableConstraints or None"
+            )
+        api_repr = value.to_api_repr() if value else None
+        self._properties[self._PROPERTY_TO_API_FIELD["table_constraints"]] = api_repr
+
     @property
     def resource_tags(self):
         """Dict[str, str]: Resource tags for the table.
@@ -1111,11 +1122,9 @@ class Table(_TableBase):
     def foreign_type_info(self) -> Optional[_schema.ForeignTypeInfo]:
         """Optional. Specifies metadata of the foreign data type definition in
         field schema (TableFieldSchema.foreign_type_definition).
-
         Returns:
             Optional[schema.ForeignTypeInfo]:
                 Foreign type information, or :data:`None` if not set.
-
         .. Note::
             foreign_type_info is only required if you are referencing an
             external catalog such as a Hive table.
@@ -3404,6 +3413,20 @@ class ForeignKey:
             ],
         )
 
+    def to_api_repr(self) -> Dict[str, Any]:
+        """Return a dictionary representing this object."""
+        return {
+            "name": self.name,
+            "referencedTable": self.referenced_table.to_api_repr(),
+            "columnReferences": [
+                {
+                    "referencingColumn": column_reference.referencing_column,
+                    "referencedColumn": column_reference.referenced_column,
+                }
+                for column_reference in self.column_references
+            ],
+        }
+
 
 class TableConstraints:
     """The TableConstraints defines the primary key and foreign key.
@@ -3425,6 +3448,13 @@ class TableConstraints:
         self.primary_key = primary_key
         self.foreign_keys = foreign_keys
 
+    def __eq__(self, other):
+        if not isinstance(other, TableConstraints) and other is not None:
+            raise TypeError("The value provided is not a BigQuery TableConstraints.")
+        return (
+            self.primary_key == other.primary_key if other.primary_key else None
+        ) and (self.foreign_keys == other.foreign_keys if other.foreign_keys else None)
+
     @classmethod
     def from_api_repr(cls, resource: Dict[str, Any]) -> "TableConstraints":
         """Create an instance from API representation."""
@@ -3439,6 +3469,17 @@ class TableConstraints:
                 for foreign_key_resource in resource["foreignKeys"]
             ]
         return cls(primary_key, foreign_keys)
+
+    def to_api_repr(self) -> Dict[str, Any]:
+        """Return a dictionary representing this object."""
+        resource: Dict[str, Any] = {}
+        if self.primary_key:
+            resource["primaryKey"] = {"columns": self.primary_key.columns}
+        if self.foreign_keys:
+            resource["foreignKeys"] = [
+                foreign_key.to_api_repr() for foreign_key in self.foreign_keys
+            ]
+        return resource
 
 
 def _item_to_row(iterator, resource):
