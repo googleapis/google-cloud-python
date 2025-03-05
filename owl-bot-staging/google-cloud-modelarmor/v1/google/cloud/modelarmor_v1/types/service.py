@@ -1084,7 +1084,7 @@ class FilterResult(proto.Message):
             Malicious URI filter results.
 
             This field is a member of `oneof`_ ``filter_result``.
-        csam_filter_result (google.cloud.modelarmor_v1.types.CsamFilterResult):
+        csam_filter_filter_result (google.cloud.modelarmor_v1.types.CsamFilterResult):
             CSAM filter results.
 
             This field is a member of `oneof`_ ``filter_result``.
@@ -1118,7 +1118,7 @@ class FilterResult(proto.Message):
         oneof='filter_result',
         message='MaliciousUriFilterResult',
     )
-    csam_filter_result: 'CsamFilterResult' = proto.Field(
+    csam_filter_filter_result: 'CsamFilterResult' = proto.Field(
         proto.MESSAGE,
         number=5,
         oneof='filter_result',
