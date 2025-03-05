@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.14.2-alpha](https://github.com/googleapis/python-documentai-toolbox/compare/v0.14.1-alpha...v0.14.2-alpha) (2025-03-05)
+
+
+### Bug Fixes
+
+* Allow google-cloud-storage 3.x ([#378](https://github.com/googleapis/python-documentai-toolbox/issues/378)) ([ec42e86](https://github.com/googleapis/python-documentai-toolbox/commit/ec42e865007326ca2b966b2171a6545307e30b32))
+
 ## [0.14.1-alpha](https://github.com/googleapis/python-documentai-toolbox/compare/v0.14.0-alpha...v0.14.1-alpha) (2024-12-17)
 
 
