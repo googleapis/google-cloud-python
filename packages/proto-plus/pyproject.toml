@@ -40,7 +40,7 @@ classifiers = [
   "Topic :: Software Development :: Code Generators",
   "Topic :: Software Development :: Libraries :: Python Modules",
 ]
-dependencies = ["protobuf >=3.19.0, < 6.0.0dev"]
+dependencies = ["protobuf >=3.19.0, < 7.0.0"]
 dynamic = ["version"]
 
 [project.urls]
