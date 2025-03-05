@@ -18,21 +18,18 @@ import bigframes
 import bigframes.pandas as bpd
 
 
-def test_blob_create_from_uri_str(bq_connection: str, session: bigframes.Session):
+def test_blob_create_from_uri_str(
+    bq_connection: str, session: bigframes.Session, images_uris
+):
     bigframes.options.experiments.blob = True
 
-    uris = [
-        "gs://bigframes_blob_test/images/img0.jpg",
-        "gs://bigframes_blob_test/images/img1.jpg",
-    ]
-
-    uri_series = bpd.Series(uris, session=session)
+    uri_series = bpd.Series(images_uris, session=session)
     blob_series = uri_series.str.to_blob(connection=bq_connection)
 
     pd_blob_df = blob_series.struct.explode().to_pandas()
     expected_pd_df = pd.DataFrame(
         {
-            "uri": uris,
+            "uri": images_uris,
             "version": [None, None],
             "authorizer": [bq_connection.casefold(), bq_connection.casefold()],
             "details": [None, None],
@@ -44,19 +41,18 @@ def test_blob_create_from_uri_str(bq_connection: str, session: bigframes.Session
     )
 
 
-def test_blob_create_from_glob_path(bq_connection: str, session: bigframes.Session):
+def test_blob_create_from_glob_path(
+    bq_connection: str, session: bigframes.Session, images_gcs_path, images_uris
+):
     bigframes.options.experiments.blob = True
 
     blob_df = session.from_glob_path(
-        "gs://bigframes_blob_test/images/*", connection=bq_connection, name="blob_col"
+        images_gcs_path, connection=bq_connection, name="blob_col"
     )
     pd_blob_df = blob_df["blob_col"].struct.explode().to_pandas()
     expected_df = pd.DataFrame(
         {
-            "uri": [
-                "gs://bigframes_blob_test/images/img0.jpg",
-                "gs://bigframes_blob_test/images/img1.jpg",
-            ],
+            "uri": images_uris,
             "version": [None, None],
             "authorizer": [bq_connection.casefold(), bq_connection.casefold()],
             "details": [None, None],
@@ -69,22 +65,17 @@ def test_blob_create_from_glob_path(bq_connection: str, session: bigframes.Sessi
 
 
 def test_blob_create_read_gbq_object_table(
-    bq_connection: str, session: bigframes.Session
+    bq_connection: str, session: bigframes.Session, images_gcs_path, images_uris
 ):
     bigframes.options.experiments.blob = True
 
-    obj_table = session._create_object_table(
-        "gs://bigframes_blob_test/images/*", bq_connection
-    )
+    obj_table = session._create_object_table(images_gcs_path, bq_connection)
 
     blob_df = session.read_gbq_object_table(obj_table, name="blob_col")
     pd_blob_df = blob_df["blob_col"].struct.explode().to_pandas()
     expected_df = pd.DataFrame(
         {
-            "uri": [
-                "gs://bigframes_blob_test/images/img0.jpg",
-                "gs://bigframes_blob_test/images/img1.jpg",
-            ],
+            "uri": images_uris,
             "version": [None, None],
             "authorizer": [bq_connection.casefold(), bq_connection.casefold()],
             "details": [None, None],
