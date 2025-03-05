@@ -30,6 +30,7 @@ import bigframes.core.compile.aggregate_compiler as agg_compiler
 import bigframes.core.compile.googlesql
 import bigframes.core.compile.ibis_types
 import bigframes.core.compile.scalar_op_compiler as op_compilers
+import bigframes.core.compile.scalar_op_compiler as scalar_op_compiler
 import bigframes.core.expression as ex
 import bigframes.core.guid
 from bigframes.core.ordering import OrderingExpression
@@ -676,4 +677,7 @@ def _as_groupable(value: ibis_types.Value):
     # Some types need to be converted to string to enable groupby
     if value.type().is_float64() or value.type().is_geospatial():
         return value.cast(ibis_dtypes.str)
-    return value
+    elif value.type().is_json():
+        return scalar_op_compiler.to_json_string(value)
+    else:
+        return value

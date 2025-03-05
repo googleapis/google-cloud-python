@@ -6,10 +6,10 @@
 {"rowindex": 5, "json_col": []}
 {"rowindex": 6, "json_col": [1, 2, 3]}
 {"rowindex": 7, "json_col": [{"a": 1}, {"a": 2}, {"a": null}, {}]}
-{"rowindex": 8, "json_col": {"bool_value": true}}
+{"rowindex": 8, "json_col": "100"}
 {"rowindex": 9, "json_col": {"folat_num": 3.14159}}
 {"rowindex": 10, "json_col": {"date": "2024-07-16"}}
-{"rowindex": 11, "json_col": {"null_filed": null}}
+{"rowindex": 11, "json_col": 100}
 {"rowindex": 12, "json_col": {"int_value": 2, "null_filed": null}}
 {"rowindex": 13, "json_col": {"list_data": [10, 20, 30]}}
 {"rowindex": 14, "json_col": {"person": {"name": "Alice", "age": 35}}}

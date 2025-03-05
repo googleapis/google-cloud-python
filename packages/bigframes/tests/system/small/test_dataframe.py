@@ -4534,11 +4534,28 @@ def test_loc_bf_index_integer_index_renamed_col(
 )
 def test_df_drop_duplicates(scalars_df_index, scalars_pandas_df_index, keep, subset):
     columns = ["bool_col", "int64_too", "int64_col"]
-    bf_series = scalars_df_index[columns].drop_duplicates(subset, keep=keep).to_pandas()
-    pd_series = scalars_pandas_df_index[columns].drop_duplicates(subset, keep=keep)
+    bf_df = scalars_df_index[columns].drop_duplicates(subset, keep=keep).to_pandas()
+    pd_df = scalars_pandas_df_index[columns].drop_duplicates(subset, keep=keep)
     pd.testing.assert_frame_equal(
-        pd_series,
-        bf_series,
+        pd_df,
+        bf_df,
+    )
+
+
+@pytest.mark.parametrize(
+    ("keep",),
+    [
+        ("first",),
+        ("last",),
+        (False,),
+    ],
+)
+def test_df_drop_duplicates_w_json(json_df, keep):
+    bf_df = json_df.drop_duplicates(keep=keep).to_pandas()
+    pd_df = json_df.to_pandas().drop_duplicates(keep=keep)
+    pd.testing.assert_frame_equal(
+        pd_df,
+        bf_df,
     )
 
 
