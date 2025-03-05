@@ -36,12 +36,16 @@ from google.cloud.pubsub_v1.open_telemetry.context_propagation import (
 from google.pubsub_v1.types import PubsubMessage
 
 
-# NOTE: This interceptor is required to create an intercept channel.
-class _SubscriberClientGrpcInterceptor(
-    grpc.UnaryUnaryClientInterceptor,
-):
-    def intercept_unary_unary(self, continuation, client_call_details, request):
-        pass
+# Attempt to use `_thunk` to obtain the underlying grpc channel from
+# the intercept channel. Default to obtaining the grpc channel directly
+# for backwards compatibility.
+# TODO(https://github.com/grpc/grpc/issues/38519): Workaround to obtain a channel
+# until a public API is available.
+def get_pull_channel(client):
+    try:
+        return client._transport.pull._thunk("")._channel
+    except AttributeError:
+        return client._transport.pull._channel
 
 
 def test_init_default_client_info(creds):
@@ -127,27 +131,17 @@ def test_init_client_options_pass_through():
         assert client.transport._ssl_channel_credentials == mock_ssl_creds
 
 
-def test_init_emulator(monkeypatch, creds):
+def test_init_emulator(monkeypatch):
     monkeypatch.setenv("PUBSUB_EMULATOR_HOST", "/baz/bacon:123")
     # NOTE: When the emulator host is set, a custom channel will be used, so
     #       no credentials (mock ot otherwise) can be passed in.
-
-    # TODO(https://github.com/grpc/grpc/issues/38519): Workaround to create an intercept
-    # channel (for forwards compatibility) with a channel created by the publisher client
-    # where target is set to the emulator host.
-    channel = subscriber.Client().transport.grpc_channel
-    interceptor = _SubscriberClientGrpcInterceptor()
-    intercept_channel = grpc.intercept_channel(channel, interceptor)
-    transport = subscriber.Client.get_transport_class("grpc")(
-        credentials=creds, channel=intercept_channel
-    )
-    client = subscriber.Client(transport=transport)
+    client = subscriber.Client()
 
     # Establish that a gRPC request would attempt to hit the emulator host.
     #
     # Sadly, there seems to be no good way to do this without poking at
     # the private API of gRPC.
-    channel = client._transport.pull._thunk("")._channel
+    channel = get_pull_channel(client)
     # Behavior to include dns prefix changed in gRPCv1.63
     grpc_major, grpc_minor = [int(part) for part in grpc.__version__.split(".")[0:2]]
     if grpc_major > 1 or (grpc_major == 1 and grpc_minor >= 63):

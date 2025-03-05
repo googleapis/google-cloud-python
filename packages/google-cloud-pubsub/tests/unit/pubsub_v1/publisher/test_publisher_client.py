@@ -57,12 +57,16 @@ C = TypeVar("C", bound=Callable[..., Any])
 typed_flaky = cast(Callable[[C], C], flaky(max_runs=5, min_passes=1))
 
 
-# NOTE: This interceptor is required to create an intercept channel.
-class _PublisherClientGrpcInterceptor(
-    grpc.UnaryUnaryClientInterceptor,
-):
-    def intercept_unary_unary(self, continuation, client_call_details, request):
-        pass
+# Attempt to use `_thunk` to obtain the underlying grpc channel from
+# the intercept channel. Default to obtaining the grpc channel directly
+# for backwards compatibility.
+# TODO(https://github.com/grpc/grpc/issues/38519): Workaround to obtain a channel
+# until a public API is available.
+def get_publish_channel(client):
+    try:
+        return client._transport.publish._thunk("")._channel
+    except AttributeError:
+        return client._transport.publish._channel
 
 
 def _assert_retries_equal(retry, retry2):
@@ -424,27 +428,17 @@ def test_init_client_options_pass_through():
         assert client.transport._ssl_channel_credentials == mock_ssl_creds
 
 
-def test_init_emulator(monkeypatch, creds):
+def test_init_emulator(monkeypatch):
     monkeypatch.setenv("PUBSUB_EMULATOR_HOST", "/foo/bar:123")
     # NOTE: When the emulator host is set, a custom channel will be used, so
     #       no credentials (mock ot otherwise) can be passed in.
-
-    # TODO(https://github.com/grpc/grpc/issues/38519): Workaround to create an intercept
-    # channel (for forwards compatibility) with a channel created by the publisher client
-    # where target is set to the emulator host.
-    channel = publisher.Client().transport.grpc_channel
-    interceptor = _PublisherClientGrpcInterceptor()
-    intercept_channel = grpc.intercept_channel(channel, interceptor)
-    transport = publisher.Client.get_transport_class("grpc")(
-        credentials=creds, channel=intercept_channel
-    )
-    client = publisher.Client(transport=transport)
+    client = publisher.Client()
 
     # Establish that a gRPC request would attempt to hit the emulator host.
     #
     # Sadly, there seems to be no good way to do this without poking at
     # the private API of gRPC.
-    channel = client._transport.publish._thunk("")._channel
+    channel = get_publish_channel(client)
     # Behavior to include dns prefix changed in gRPCv1.63
     grpc_major, grpc_minor = [int(part) for part in grpc.__version__.split(".")[0:2]]
     if grpc_major > 1 or (grpc_major == 1 and grpc_minor >= 63):
