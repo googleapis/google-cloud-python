@@ -1314,6 +1314,7 @@ class ParticipantsClient(metaclass=ParticipantsClientMeta):
         participant: Optional[str] = None,
         text_input: Optional[session.TextInput] = None,
         event_input: Optional[session.EventInput] = None,
+        audio_input: Optional[gcd_participant.AudioInput] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
@@ -1380,6 +1381,13 @@ class ParticipantsClient(metaclass=ParticipantsClientMeta):
                 This corresponds to the ``event_input`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
+            audio_input (google.cloud.dialogflow_v2.types.AudioInput):
+                The natural language speech audio to
+                be processed.
+
+                This corresponds to the ``audio_input`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1397,7 +1405,7 @@ class ParticipantsClient(metaclass=ParticipantsClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        flattened_params = [participant, text_input, event_input]
+        flattened_params = [participant, text_input, event_input, audio_input]
         has_flattened_params = (
             len([param for param in flattened_params if param is not None]) > 0
         )
@@ -1419,6 +1427,8 @@ class ParticipantsClient(metaclass=ParticipantsClientMeta):
                 request.text_input = text_input
             if event_input is not None:
                 request.event_input = event_input
+            if audio_input is not None:
+                request.audio_input = audio_input
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.

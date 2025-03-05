@@ -116,10 +116,22 @@ class ListAnswerRecordsRequest(proto.Message):
             ``projects/<Project ID>/locations/<Location ID>``.
         filter (str):
             Optional. Filters to restrict results to specific answer
-            records.
+            records. The expression has the following syntax:
 
-            Marked deprecated as it hasn't been, and isn't currently,
-            supported.
+            ::
+
+                <field> <operator> <value> [AND <field> <operator> <value>] ...
+
+            The following fields and operators are supported:
+
+            -  conversation_id with equals(=) operator
+
+            Examples:
+
+            -  ``conversation_id=bar`` matches answer records in the
+               ``projects/foo/locations/global/conversations/bar``
+               conversation (assuming the parent is
+               ``projects/foo/locations/global``).
 
             For more information about filtering, see `API
             Filtering <https://aip.dev/160>`__.
@@ -311,7 +323,8 @@ class AgentAssistantFeedback(proto.Message):
             -  Suggested document says: "Items must be
                returned/exchanged within 60 days of the purchase date."
             -  Ground truth: "No return or exchange is allowed."
-            -
+            -  [document_correctness][google.cloud.dialogflow.v2.AgentAssistantFeedback.document_correctness]:
+               [INCORRECT][google.cloud.dialogflow.v2.AgentAssistantFeedback.DocumentCorrectness.INCORRECT]
         document_efficiency (google.cloud.dialogflow_v2.types.AgentAssistantFeedback.DocumentEfficiency):
             Optional. Whether or not the suggested document is
             efficient. For example, if the document is poorly written,

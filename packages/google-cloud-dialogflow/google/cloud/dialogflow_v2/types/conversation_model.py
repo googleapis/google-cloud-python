@@ -228,7 +228,7 @@ class ConversationModelEvaluation(proto.Message):
 
             This field is a member of `oneof`_ ``metrics``.
         raw_human_eval_template_csv (str):
-            Output only. Human eval template in csv format. It tooks
+            Output only. Human eval template in csv format. It takes
             real-world conversations provided through input dataset,
             generates example suggestions for customer to verify quality
             of the model. For Smart Reply, the generated csv file
@@ -290,12 +290,12 @@ class EvaluationConfig(proto.Message):
             Required. Datasets used for evaluation.
         smart_reply_config (google.cloud.dialogflow_v2.types.EvaluationConfig.SmartReplyConfig):
             Configuration for smart reply model
-            evalution.
+            evaluation.
 
             This field is a member of `oneof`_ ``model_specific_config``.
         smart_compose_config (google.cloud.dialogflow_v2.types.EvaluationConfig.SmartComposeConfig):
             Configuration for smart compose model
-            evalution.
+            evaluation.
 
             This field is a member of `oneof`_ ``model_specific_config``.
     """

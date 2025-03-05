@@ -47,6 +47,7 @@ __protobuf__ = proto.module(
         "SuggestFaqAnswersResponse",
         "SuggestSmartRepliesRequest",
         "SuggestSmartRepliesResponse",
+        "AudioInput",
         "OutputAudio",
         "AutomatedAgentReply",
         "ArticleAnswer",
@@ -212,6 +213,8 @@ class Message(proto.Message):
             created in Contact Center AI.
         send_time (google.protobuf.timestamp_pb2.Timestamp):
             Optional. The time when the message was sent.
+            For voice messages, this is the time when an
+            utterance started.
         message_annotation (google.cloud.dialogflow_v2.types.MessageAnnotation):
             Output only. The annotation for the message.
         sentiment_analysis (google.cloud.dialogflow_v2.types.SentimentAnalysisResult):
@@ -406,6 +409,11 @@ class AnalyzeContentRequest(proto.Message):
             The natural language text to be processed.
 
             This field is a member of `oneof`_ ``input``.
+        audio_input (google.cloud.dialogflow_v2.types.AudioInput):
+            The natural language speech audio to be
+            processed.
+
+            This field is a member of `oneof`_ ``input``.
         event_input (google.cloud.dialogflow_v2.types.EventInput):
             An input event to send to Dialogflow.
 
@@ -450,6 +458,12 @@ class AnalyzeContentRequest(proto.Message):
         number=6,
         oneof="input",
         message=session.TextInput,
+    )
+    audio_input: "AudioInput" = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        oneof="input",
+        message="AudioInput",
     )
     event_input: session.EventInput = proto.Field(
         proto.MESSAGE,
@@ -728,10 +742,10 @@ class StreamingAnalyzeContentRequest(proto.Message):
             You can find more details in
             https://cloud.google.com/agent-assist/docs/extended-streaming
         enable_partial_automated_agent_reply (bool):
-            Enable partial virtual agent responses. If this flag is not
-            enabled, response stream still contains only one final
-            response even if some ``Fulfillment``\ s in Dialogflow
-            virtual agent have been configured to return partial
+            Optional. Enable partial responses from Dialogflow CX agent.
+            If this flag is not enabled, response stream still contains
+            only one final response even if some ``Fulfillment``\ s in
+            Dialogflow CX agent have been configured to return partial
             responses.
         enable_debugging_info (bool):
             If true, ``StreamingAnalyzeContentResponse.debugging_info``
@@ -878,6 +892,9 @@ class StreamingAnalyzeContentResponse(proto.Message):
             Debugging info that would get populated when
             ``StreamingAnalyzeContentRequest.enable_debugging_info`` is
             set to true.
+        speech_model (str):
+            The name of the actual Cloud speech model
+            used for speech recognition.
     """
 
     recognition_result: session.StreamingRecognitionResult = proto.Field(
@@ -927,6 +944,10 @@ class StreamingAnalyzeContentResponse(proto.Message):
         proto.MESSAGE,
         number=11,
         message=session.CloudConversationDebuggingInfo,
+    )
+    speech_model: str = proto.Field(
+        proto.STRING,
+        number=13,
     )
 
 
@@ -1177,6 +1198,32 @@ class SuggestSmartRepliesResponse(proto.Message):
     context_size: int = proto.Field(
         proto.INT32,
         number=3,
+    )
+
+
+class AudioInput(proto.Message):
+    r"""Represents the natural language speech audio to be processed.
+
+    Attributes:
+        config (google.cloud.dialogflow_v2.types.InputAudioConfig):
+            Required. Instructs the speech recognizer how
+            to process the speech audio.
+        audio (bytes):
+            Required. The natural language speech audio
+            to be processed. A single request can contain up
+            to 2 minutes of speech audio data. The
+            transcribed text cannot contain more than 256
+            bytes for virtual agent interactions.
+    """
+
+    config: gcd_audio_config.InputAudioConfig = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=gcd_audio_config.InputAudioConfig,
+    )
+    audio: bytes = proto.Field(
+        proto.BYTES,
+        number=2,
     )
 
 
@@ -1714,7 +1761,7 @@ class SuggestKnowledgeAssistRequest(proto.Message):
             Optional. The previously suggested query for
             the given conversation. This helps identify
             whether the next suggestion we generate is
-            resonably different from the previous one. This
+            reasonably different from the previous one. This
             is useful to avoid similar suggestions within
             the conversation.
     """
