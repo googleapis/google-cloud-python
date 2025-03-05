@@ -294,7 +294,8 @@ def test_iam_policy(
 
     new_policy = temp_db.get_iam_policy(3)
     assert new_policy.version == 3
-    assert new_policy.bindings == [new_binding]
+    assert len(new_policy.bindings) == 1
+    assert new_policy.bindings[0] == new_binding
 
 
 def test_table_not_found(shared_instance):

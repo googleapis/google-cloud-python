@@ -294,8 +294,18 @@ def install_systemtest_dependencies(session, *constraints):
 
 
 @nox.session(python=SYSTEM_TEST_PYTHON_VERSIONS)
-@nox.parametrize("database_dialect", ["GOOGLE_STANDARD_SQL", "POSTGRESQL"])
-def system(session, database_dialect):
+@nox.parametrize(
+    "protobuf_implementation,database_dialect",
+    [
+        ("python", "GOOGLE_STANDARD_SQL"),
+        ("python", "POSTGRESQL"),
+        ("upb", "GOOGLE_STANDARD_SQL"),
+        ("upb", "POSTGRESQL"),
+        ("cpp", "GOOGLE_STANDARD_SQL"),
+        ("cpp", "POSTGRESQL"),
+    ],
+)
+def system(session, protobuf_implementation, database_dialect):
     """Run the system test suite."""
     constraints_path = str(
         CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
@@ -329,6 +339,12 @@ def system(session, database_dialect):
 
     install_systemtest_dependencies(session, "-c", constraints_path)
 
+    # TODO(https://github.com/googleapis/synthtool/issues/1976):
+    # Remove the 'cpp' implementation once support for Protobuf 3.x is dropped.
+    # The 'cpp' implementation requires Protobuf<4.
+    if protobuf_implementation == "cpp":
+        session.install("protobuf<4")
+
     # Run py.test against the system tests.
     if system_test_exists:
         session.run(
@@ -338,6 +354,7 @@ def system(session, database_dialect):
             system_test_path,
             *session.posargs,
             env={
+                "PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION": protobuf_implementation,
                 "SPANNER_DATABASE_DIALECT": database_dialect,
                 "SKIP_BACKUP_TESTS": "true",
             },
@@ -350,6 +367,7 @@ def system(session, database_dialect):
             system_test_folder_path,
             *session.posargs,
             env={
+                "PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION": protobuf_implementation,
                 "SPANNER_DATABASE_DIALECT": database_dialect,
                 "SKIP_BACKUP_TESTS": "true",
             },
