@@ -553,8 +553,7 @@ class BlobAccessor(base.SeriesMethods):
         container_cpu: Union[float, int] = 0.33,
         container_memory: str = "512Mi",
     ) -> bigframes.series.Series:
-        """Extracts and chunks text from PDF URLs and saves the text as
-           arrays of string.
+        """Extracts text from PDF URLs and saves the text as string.
 
         .. note::
             BigFrames Blob is still under experiments. It may not work and
