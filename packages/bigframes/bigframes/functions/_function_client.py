@@ -125,6 +125,7 @@ class FunctionClient:
             create_function_ddl,
             job_config=bigquery.QueryJobConfig(),
         )
+        assert query_job is not None
         logger.info(f"Created bigframes function {query_job.ddl_target_routine}")
 
     def _format_function_options(self, function_options: dict) -> str:

@@ -726,7 +726,7 @@ class GbqDataLoader:
             job_config.maximum_bytes_billed = (
                 bigframes.options.compute.maximum_bytes_billed
             )
-        return bf_io_bigquery.start_query_with_client(
+        iterator, query_job = bf_io_bigquery.start_query_with_client(
             self._bqclient,
             sql,
             job_config=job_config,
@@ -734,6 +734,8 @@ class GbqDataLoader:
             timeout=timeout,
             api_name=api_name,
         )
+        assert query_job is not None
+        return iterator, query_job
 
 
 def _transform_read_gbq_configuration(configuration: Optional[dict]) -> dict:

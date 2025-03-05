@@ -40,7 +40,6 @@ class TestExecutor(bigframes.session.executor.Executor):
         *,
         ordered: bool = True,
         use_explicit_destination: Optional[bool] = False,
-        get_size_bytes: bool = False,
         page_size: Optional[int] = None,
         max_results: Optional[int] = None,
     ):

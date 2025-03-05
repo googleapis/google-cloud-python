@@ -344,11 +344,25 @@ class Session(
     @property
     def bytes_processed_sum(self):
         """The sum of all bytes processed by bigquery jobs using this session."""
+        warnings.warn(
+            "Queries executed with `allow_large_results=False` within the session will not "
+            "have their bytes processed counted in this sum. If you need precise "
+            "bytes processed information, query the `INFORMATION_SCHEMA` tables "
+            "to get relevant metrics.",
+            UserWarning,
+        )
         return self._metrics.bytes_processed
 
     @property
     def slot_millis_sum(self):
         """The sum of all slot time used by bigquery jobs in this session."""
+        warnings.warn(
+            "Queries executed with `allow_large_results=False` within the session will not "
+            "have their slot milliseconds counted in this sum.  If you need precise slot "
+            "milliseconds information, query the `INFORMATION_SCHEMA` tables "
+            "to get relevant metrics.",
+            UserWarning,
+        )
         return self._metrics.slot_millis
 
     @property
@@ -1675,10 +1689,12 @@ class Session(
         # so we must reset any encryption set in the job config
         # https://cloud.google.com/bigquery/docs/customer-managed-encryption#encrypt-model
         job_config.destination_encryption_configuration = None
-
-        return bf_io_bigquery.start_query_with_client(
+        iterator, query_job = bf_io_bigquery.start_query_with_client(
             self.bqclient, sql, job_config=job_config, metrics=self._metrics
         )
+
+        assert query_job is not None
+        return iterator, query_job
 
     def _create_object_table(self, path: str, connection: str) -> str:
         """Create a random id Object Table from the input path and connection."""

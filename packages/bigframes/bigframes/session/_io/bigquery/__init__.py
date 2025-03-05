@@ -228,7 +228,9 @@ def start_query_with_client(
     timeout: Optional[float] = None,
     api_name: Optional[str] = None,
     metrics: Optional[bigframes.session.metrics.ExecutionMetrics] = None,
-) -> Tuple[bigquery.table.RowIterator, bigquery.QueryJob]:
+    *,
+    query_with_job: bool = True,
+) -> Tuple[bigquery.table.RowIterator, Optional[bigquery.QueryJob]]:
     """
     Starts query job and waits for results.
     """
@@ -236,6 +238,18 @@ def start_query_with_client(
         # Note: Ensure no additional labels are added to job_config after this point,
         # as `add_and_trim_labels` ensures the label count does not exceed 64.
         add_and_trim_labels(job_config, api_name=api_name)
+        if not query_with_job:
+            results_iterator = bq_client.query_and_wait(
+                sql,
+                job_config=job_config,
+                location=location,
+                project=project,
+                api_timeout=timeout,
+            )
+            if metrics is not None:
+                metrics.count_job_stats()
+            return results_iterator, None
+
         query_job = bq_client.query(
             sql,
             job_config=job_config,
@@ -338,6 +352,7 @@ def create_bq_dataset_reference(
     # to the dataset, no BigQuery Session required. Note: there is a
     # different anonymous dataset per location. See:
     # https://cloud.google.com/bigquery/docs/cached-results#how_cached_results_are_stored
+    assert query_job is not None
     query_destination = query_job.destination
     return bigquery.DatasetReference(
         query_destination.project,

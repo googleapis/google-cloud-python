@@ -505,7 +505,8 @@ class Index(vendored_pandas_index.Index):
         df, query_job = self._block.index.to_pandas(
             ordered=True, allow_large_results=allow_large_results
         )
-        self._query_job = query_job
+        if query_job:
+            self._query_job = query_job
         return df
 
     def to_numpy(self, dtype=None, *, allow_large_results=None, **kwargs) -> np.ndarray:

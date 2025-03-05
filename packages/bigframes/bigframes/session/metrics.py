@@ -32,7 +32,11 @@ class ExecutionMetrics:
     execution_secs: float = 0
     query_char_count: int = 0
 
-    def count_job_stats(self, query_job: bq_job.QueryJob):
+    def count_job_stats(self, query_job: Optional[bq_job.QueryJob] = None):
+        if query_job is None:
+            self.execution_count += 1
+            return
+
         stats = get_performance_stats(query_job)
         if stats is not None:
             bytes_processed, slot_millis, execution_secs, query_char_count = stats

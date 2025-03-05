@@ -559,10 +559,12 @@ class Block:
         return df, query_job
 
     def try_peek(
-        self, n: int = 20, force: bool = False
+        self, n: int = 20, force: bool = False, allow_large_results=None
     ) -> typing.Optional[pd.DataFrame]:
         if force or self.expr.supports_fast_peek:
-            result = self.session._executor.peek(self.expr, n)
+            result = self.session._executor.peek(
+                self.expr, n, use_explicit_destination=allow_large_results
+            )
             df = io_pandas.arrow_to_pandas(result.to_arrow_table(), self.expr.schema)
             self._copy_index_to_pandas(df)
             return df
@@ -614,17 +616,27 @@ class Block:
             self.expr,
             ordered=materialize_options.ordered,
             use_explicit_destination=materialize_options.allow_large_results,
-            get_size_bytes=True,
         )
-        assert execute_result.total_bytes is not None
-        table_mb = execute_result.total_bytes / _BYTES_TO_MEGABYTES
         sample_config = materialize_options.downsampling
-        max_download_size = sample_config.max_download_size
-        fraction = (
-            max_download_size / table_mb
-            if (max_download_size is not None) and (table_mb != 0)
-            else 2
-        )
+        if execute_result.total_bytes is not None:
+            table_mb = execute_result.total_bytes / _BYTES_TO_MEGABYTES
+            max_download_size = sample_config.max_download_size
+            fraction = (
+                max_download_size / table_mb
+                if (max_download_size is not None) and (table_mb != 0)
+                else 2
+            )
+        else:
+            # Since we cannot acquire the table size without a query_job,
+            # we skip the sampling.
+            if sample_config.enable_downsampling:
+                warnings.warn(
+                    "Sampling is disabled and there is no download size limit when 'allow_large_results' is set to "
+                    "False. To prevent downloading excessive data, it is recommended to use the peek() method, or "
+                    "limit the data with methods like .head() or .sample() before proceeding with downloads.",
+                    UserWarning,
+                )
+            fraction = 2
 
         # TODO: Maybe materialize before downsampling
         # Some downsampling methods

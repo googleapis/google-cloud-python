@@ -662,7 +662,25 @@ def test_rename(scalars_dfs):
 
 def test_df_peek(scalars_dfs_maybe_ordered):
     scalars_df, scalars_pandas_df = scalars_dfs_maybe_ordered
+
+    session = scalars_df._block.session
+    slot_millis_sum = session.slot_millis_sum
     peek_result = scalars_df.peek(n=3, force=False)
+
+    assert session.slot_millis_sum - slot_millis_sum > 1000
+    pd.testing.assert_index_equal(scalars_pandas_df.columns, peek_result.columns)
+    assert len(peek_result) == 3
+
+
+def test_df_peek_with_large_results_not_allowed(scalars_dfs_maybe_ordered):
+    scalars_df, scalars_pandas_df = scalars_dfs_maybe_ordered
+
+    session = scalars_df._block.session
+    slot_millis_sum = session.slot_millis_sum
+    peek_result = scalars_df.peek(n=3, force=False, allow_large_results=False)
+
+    # The metrics won't be fully updated when we call query_and_wait.
+    assert session.slot_millis_sum - slot_millis_sum < 500
     pd.testing.assert_index_equal(scalars_pandas_df.columns, peek_result.columns)
     assert len(peek_result) == 3
 
