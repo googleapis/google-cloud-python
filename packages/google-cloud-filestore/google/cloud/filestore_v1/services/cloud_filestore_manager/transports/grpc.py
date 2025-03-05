@@ -852,6 +852,34 @@ class CloudFilestoreManagerGrpcTransport(CloudFilestoreManagerTransport):
             )
         return self._stubs["update_backup"]
 
+    @property
+    def promote_replica(
+        self,
+    ) -> Callable[
+        [cloud_filestore_service.PromoteReplicaRequest], operations_pb2.Operation
+    ]:
+        r"""Return a callable for the promote replica method over gRPC.
+
+        Promote the standby instance (replica).
+
+        Returns:
+            Callable[[~.PromoteReplicaRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "promote_replica" not in self._stubs:
+            self._stubs["promote_replica"] = self._logged_channel.unary_unary(
+                "/google.cloud.filestore.v1.CloudFilestoreManager/PromoteReplica",
+                request_serializer=cloud_filestore_service.PromoteReplicaRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["promote_replica"]
+
     def close(self):
         self._logged_channel.close()
 
