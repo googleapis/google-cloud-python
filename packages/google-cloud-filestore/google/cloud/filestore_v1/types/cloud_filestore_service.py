@@ -28,6 +28,8 @@ __protobuf__ = proto.module(
         "NetworkConfig",
         "FileShareConfig",
         "NfsExportOptions",
+        "ReplicaConfig",
+        "Replication",
         "Instance",
         "CreateInstanceRequest",
         "GetInstanceRequest",
@@ -48,6 +50,7 @@ __protobuf__ = proto.module(
         "CreateBackupRequest",
         "DeleteBackupRequest",
         "UpdateBackupRequest",
+        "PromoteReplicaRequest",
         "GetBackupRequest",
         "ListBackupsRequest",
         "ListBackupsResponse",
@@ -291,6 +294,125 @@ class NfsExportOptions(proto.Message):
     )
 
 
+class ReplicaConfig(proto.Message):
+    r"""Replica configuration for the instance.
+
+    Attributes:
+        state (google.cloud.filestore_v1.types.ReplicaConfig.State):
+            Output only. The replica state.
+        state_reasons (MutableSequence[google.cloud.filestore_v1.types.ReplicaConfig.StateReason]):
+            Output only. Additional information about the
+            replication state, if available.
+        peer_instance (str):
+            Optional. The peer instance.
+        last_active_sync_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The timestamp of the latest
+            replication snapshot taken on the active
+            instance and is already replicated safely.
+    """
+
+    class State(proto.Enum):
+        r"""The replica state.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                State not set.
+            CREATING (1):
+                The replica is being created.
+            READY (3):
+                The replica is ready.
+            REMOVING (4):
+                The replica is being removed.
+            FAILED (5):
+                The replica is experiencing an issue and might be unusable.
+                You can get further details from the ``stateReasons`` field
+                of the ``ReplicaConfig`` object.
+        """
+        STATE_UNSPECIFIED = 0
+        CREATING = 1
+        READY = 3
+        REMOVING = 4
+        FAILED = 5
+
+    class StateReason(proto.Enum):
+        r"""Additional information about the replication state, if
+        available.
+
+        Values:
+            STATE_REASON_UNSPECIFIED (0):
+                Reason not specified.
+            PEER_INSTANCE_UNREACHABLE (1):
+                The peer instance is unreachable.
+            REMOVE_FAILED (2):
+                The remove replica peer instance operation
+                failed.
+        """
+        STATE_REASON_UNSPECIFIED = 0
+        PEER_INSTANCE_UNREACHABLE = 1
+        REMOVE_FAILED = 2
+
+    state: State = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=State,
+    )
+    state_reasons: MutableSequence[StateReason] = proto.RepeatedField(
+        proto.ENUM,
+        number=2,
+        enum=StateReason,
+    )
+    peer_instance: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    last_active_sync_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=10,
+        message=timestamp_pb2.Timestamp,
+    )
+
+
+class Replication(proto.Message):
+    r"""Replication specifications.
+
+    Attributes:
+        role (google.cloud.filestore_v1.types.Replication.Role):
+            Optional. The replication role.
+        replicas (MutableSequence[google.cloud.filestore_v1.types.ReplicaConfig]):
+            Optional. Replication configuration for the
+            replica instance associated with this instance.
+            Only a single replica is supported.
+    """
+
+    class Role(proto.Enum):
+        r"""Replication role.
+
+        Values:
+            ROLE_UNSPECIFIED (0):
+                Role not set.
+            ACTIVE (1):
+                The instance is the ``ACTIVE`` replication member, functions
+                as the replication source instance.
+            STANDBY (2):
+                The instance is the ``STANDBY`` replication member,
+                functions as the replication destination instance.
+        """
+        ROLE_UNSPECIFIED = 0
+        ACTIVE = 1
+        STANDBY = 2
+
+    role: Role = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=Role,
+    )
+    replicas: MutableSequence["ReplicaConfig"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message="ReplicaConfig",
+    )
+
+
 class Instance(proto.Message):
     r"""A Filestore instance.
 
@@ -336,6 +458,40 @@ class Instance(proto.Message):
         suspension_reasons (MutableSequence[google.cloud.filestore_v1.types.Instance.SuspensionReason]):
             Output only. Field indicates all the reasons
             the instance is in "SUSPENDED" state.
+        replication (google.cloud.filestore_v1.types.Replication):
+            Optional. Replication configuration.
+        tags (MutableMapping[str, str]):
+            Optional. Input only. Immutable. Tag key-value pairs bound
+            to this resource. Each key must be a namespaced name and
+            each value a short name. Example: "123456789012/environment"
+            : "production", "123456789013/costCenter" : "marketing" See
+            the documentation for more information:
+
+            -  Namespaced name:
+               https://cloud.google.com/resource-manager/docs/tags/tags-creating-and-managing#retrieving_tag_key
+            -  Short name:
+               https://cloud.google.com/resource-manager/docs/tags/tags-creating-and-managing#retrieving_tag_value
+        protocol (google.cloud.filestore_v1.types.Instance.FileProtocol):
+            Immutable. The protocol indicates the access protocol for
+            all shares in the instance. This field is immutable and it
+            cannot be changed after the instance has been created.
+            Default value: ``NFS_V3``.
+        custom_performance_supported (bool):
+            Output only. Indicates whether this instance supports
+            configuring its performance. If true, the user can configure
+            the instance's performance by using the 'performance_config'
+            field.
+        performance_config (google.cloud.filestore_v1.types.Instance.PerformanceConfig):
+            Optional. Used to configure performance.
+        performance_limits (google.cloud.filestore_v1.types.Instance.PerformanceLimits):
+            Output only. Used for getting performance
+            limits.
+        deletion_protection_enabled (bool):
+            Optional. Indicates whether the instance is
+            protected against deletion.
+        deletion_protection_reason (str):
+            Optional. The reason for enabling deletion
+            protection.
     """
 
     class State(proto.Enum):
@@ -374,6 +530,8 @@ class Instance(proto.Message):
                 active.
             REVERTING (12):
                 The instance is reverting to a snapshot.
+            PROMOTING (13):
+                The replica instance is being promoted.
         """
         STATE_UNSPECIFIED = 0
         CREATING = 1
@@ -386,6 +544,7 @@ class Instance(proto.Message):
         SUSPENDING = 9
         RESUMING = 10
         REVERTING = 12
+        PROMOTING = 13
 
     class Tier(proto.Enum):
         r"""Available service tiers.
@@ -444,6 +603,151 @@ class Instance(proto.Message):
         """
         SUSPENSION_REASON_UNSPECIFIED = 0
         KMS_KEY_ISSUE = 1
+
+    class FileProtocol(proto.Enum):
+        r"""File access protocol.
+
+        Values:
+            FILE_PROTOCOL_UNSPECIFIED (0):
+                FILE_PROTOCOL_UNSPECIFIED serves a "not set" default value
+                when a FileProtocol is a separate field in a message.
+            NFS_V3 (1):
+                NFS 3.0.
+            NFS_V4_1 (2):
+                NFS 4.1.
+        """
+        FILE_PROTOCOL_UNSPECIFIED = 0
+        NFS_V3 = 1
+        NFS_V4_1 = 2
+
+    class IOPSPerTB(proto.Message):
+        r"""IOPS per TB.
+        Filestore defines TB as 1024^4 bytes (TiB).
+
+        Attributes:
+            max_iops_per_tb (int):
+                Required. Maximum IOPS per TiB.
+        """
+
+        max_iops_per_tb: int = proto.Field(
+            proto.INT64,
+            number=2,
+        )
+
+    class FixedIOPS(proto.Message):
+        r"""Fixed IOPS (input/output operations per second) parameters.
+
+        Attributes:
+            max_iops (int):
+                Required. Maximum IOPS.
+        """
+
+        max_iops: int = proto.Field(
+            proto.INT64,
+            number=2,
+        )
+
+    class PerformanceConfig(proto.Message):
+        r"""Used for setting the performance configuration.
+        If the user doesn't specify PerformanceConfig, automatically
+        provision the default performance settings as described in
+        https://cloud.google.com/filestore/docs/performance. Larger
+        instances will be linearly set to more IOPS. If the instance's
+        capacity is increased or decreased, its performance will be
+        automatically adjusted upwards or downwards accordingly
+        (respectively).
+
+        This message has `oneof`_ fields (mutually exclusive fields).
+        For each oneof, at most one member field can be set at the same time.
+        Setting any member of the oneof automatically clears all other
+        members.
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+        Attributes:
+            iops_per_tb (google.cloud.filestore_v1.types.Instance.IOPSPerTB):
+                Provision IOPS dynamically based on the capacity of the
+                instance. Provisioned IOPS will be calculated by multiplying
+                the capacity of the instance in TiB by the ``iops_per_tb``
+                value. For example, for a 2 TiB instance with an
+                ``iops_per_tb`` value of 17000 the provisioned IOPS will be
+                34000.
+
+                If the calculated value is outside the supported range for
+                the instance's capacity during instance creation, instance
+                creation will fail with an ``InvalidArgument`` error.
+                Similarly, if an instance capacity update would result in a
+                value outside the supported range, the update will fail with
+                an ``InvalidArgument`` error.
+
+                This field is a member of `oneof`_ ``mode``.
+            fixed_iops (google.cloud.filestore_v1.types.Instance.FixedIOPS):
+                Choose a fixed provisioned IOPS value for the instance,
+                which will remain constant regardless of instance capacity.
+                Value must be a multiple of 1000.
+
+                If the chosen value is outside the supported range for the
+                instance's capacity during instance creation, instance
+                creation will fail with an ``InvalidArgument`` error.
+                Similarly, if an instance capacity update would result in a
+                value outside the supported range, the update will fail with
+                an ``InvalidArgument`` error.
+
+                This field is a member of `oneof`_ ``mode``.
+        """
+
+        iops_per_tb: "Instance.IOPSPerTB" = proto.Field(
+            proto.MESSAGE,
+            number=4,
+            oneof="mode",
+            message="Instance.IOPSPerTB",
+        )
+        fixed_iops: "Instance.FixedIOPS" = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            oneof="mode",
+            message="Instance.FixedIOPS",
+        )
+
+    class PerformanceLimits(proto.Message):
+        r"""The enforced performance limits, calculated from the
+        instance's performance configuration.
+
+        Attributes:
+            max_iops (int):
+                Output only. The max IOPS.
+            max_read_iops (int):
+                Output only. The max read IOPS.
+            max_write_iops (int):
+                Output only. The max write IOPS.
+            max_read_throughput_bps (int):
+                Output only. The max read throughput in bytes
+                per second.
+            max_write_throughput_bps (int):
+                Output only. The max write throughput in
+                bytes per second.
+        """
+
+        max_iops: int = proto.Field(
+            proto.INT64,
+            number=7,
+        )
+        max_read_iops: int = proto.Field(
+            proto.INT64,
+            number=1,
+        )
+        max_write_iops: int = proto.Field(
+            proto.INT64,
+            number=2,
+        )
+        max_read_throughput_bps: int = proto.Field(
+            proto.INT64,
+            number=5,
+        )
+        max_write_throughput_bps: int = proto.Field(
+            proto.INT64,
+            number=6,
+        )
 
     name: str = proto.Field(
         proto.STRING,
@@ -509,6 +813,43 @@ class Instance(proto.Message):
         number=15,
         enum=SuspensionReason,
     )
+    replication: "Replication" = proto.Field(
+        proto.MESSAGE,
+        number=19,
+        message="Replication",
+    )
+    tags: MutableMapping[str, str] = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=20,
+    )
+    protocol: FileProtocol = proto.Field(
+        proto.ENUM,
+        number=21,
+        enum=FileProtocol,
+    )
+    custom_performance_supported: bool = proto.Field(
+        proto.BOOL,
+        number=23,
+    )
+    performance_config: PerformanceConfig = proto.Field(
+        proto.MESSAGE,
+        number=24,
+        message=PerformanceConfig,
+    )
+    performance_limits: PerformanceLimits = proto.Field(
+        proto.MESSAGE,
+        number=25,
+        message=PerformanceLimits,
+    )
+    deletion_protection_enabled: bool = proto.Field(
+        proto.BOOL,
+        number=26,
+    )
+    deletion_protection_reason: str = proto.Field(
+        proto.STRING,
+        number=27,
+    )
 
 
 class CreateInstanceRequest(proto.Message):
@@ -570,7 +911,10 @@ class UpdateInstanceRequest(proto.Message):
 
             -  "description"
             -  "file_shares"
-            -  "labels".
+            -  "labels"
+            -  "performance_config"
+            -  "deletion_protection_enabled"
+            -  "deletion_protection_reason".
         instance (google.cloud.filestore_v1.types.Instance):
             Only fields specified in update_mask are updated.
     """
@@ -630,9 +974,8 @@ class RevertInstanceRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required.
+            Required. The resource name of the instance, in the format
             ``projects/{project_id}/locations/{location_id}/instances/{instance_id}``.
-            The resource name of the instance, in the format
         target_snapshot_id (str):
             Required. The snapshot resource ID, in the format
             'my-snapshot', where the specified ID is the {snapshot_id}
@@ -737,7 +1080,8 @@ class ListInstancesResponse(proto.Message):
             page of results. Not returned if there are no
             more results in the list.
         unreachable (MutableSequence[str]):
-            Locations that could not be reached.
+            Unordered list. Locations that could not be
+            reached.
     """
 
     @property
@@ -782,6 +1126,17 @@ class Snapshot(proto.Message):
         filesystem_used_bytes (int):
             Output only. The amount of bytes needed to
             allocate a full copy of the snapshot content
+        tags (MutableMapping[str, str]):
+            Optional. Input only. Immutable. Tag key-value pairs bound
+            to this resource. Each key must be a namespaced name and
+            each value a short name. Example: "123456789012/environment"
+            : "production", "123456789013/costCenter" : "marketing" See
+            the documentation for more information:
+
+            -  Namespaced name:
+               https://cloud.google.com/resource-manager/docs/tags/tags-creating-and-managing#retrieving_tag_key
+            -  Short name:
+               https://cloud.google.com/resource-manager/docs/tags/tags-creating-and-managing#retrieving_tag_value
     """
 
     class State(proto.Enum):
@@ -828,6 +1183,11 @@ class Snapshot(proto.Message):
     filesystem_used_bytes: int = proto.Field(
         proto.INT64,
         number=6,
+    )
+    tags: MutableMapping[str, str] = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=7,
     )
 
 
@@ -938,6 +1298,9 @@ class ListSnapshotsRequest(proto.Message):
             "name desc" or "" (unsorted).
         filter (str):
             List filter.
+        return_partial_success (bool):
+            Optional. If true, allow partial responses
+            for multi-regional Aggregated List requests.
     """
 
     parent: str = proto.Field(
@@ -960,6 +1323,10 @@ class ListSnapshotsRequest(proto.Message):
         proto.STRING,
         number=5,
     )
+    return_partial_success: bool = proto.Field(
+        proto.BOOL,
+        number=6,
+    )
 
 
 class ListSnapshotsResponse(proto.Message):
@@ -973,6 +1340,9 @@ class ListSnapshotsResponse(proto.Message):
             The token you can use to retrieve the next
             page of results. Not returned if there are no
             more results in the list.
+        unreachable (MutableSequence[str]):
+            Unordered list. Locations that could not be
+            reached.
     """
 
     @property
@@ -987,6 +1357,10 @@ class ListSnapshotsResponse(proto.Message):
     next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+    unreachable: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=3,
     )
 
 
@@ -1043,6 +1417,21 @@ class Backup(proto.Message):
         kms_key (str):
             Immutable. KMS key name used for data
             encryption.
+        tags (MutableMapping[str, str]):
+            Optional. Input only. Immutable. Tag key-value pairs bound
+            to this resource. Each key must be a namespaced name and
+            each value a short name. Example: "123456789012/environment"
+            : "production", "123456789013/costCenter" : "marketing" See
+            the documentation for more information:
+
+            -  Namespaced name:
+               https://cloud.google.com/resource-manager/docs/tags/tags-creating-and-managing#retrieving_tag_key
+            -  Short name:
+               https://cloud.google.com/resource-manager/docs/tags/tags-creating-and-managing#retrieving_tag_value
+        file_system_protocol (google.cloud.filestore_v1.types.Instance.FileProtocol):
+            Output only. The file system protocol of the
+            source Filestore instance that this backup is
+            created from.
     """
 
     class State(proto.Enum):
@@ -1134,6 +1523,16 @@ class Backup(proto.Message):
         proto.STRING,
         number=13,
     )
+    tags: MutableMapping[str, str] = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=15,
+    )
+    file_system_protocol: "Instance.FileProtocol" = proto.Field(
+        proto.ENUM,
+        number=16,
+        enum="Instance.FileProtocol",
+    )
 
 
 class CreateBackupRequest(proto.Message):
@@ -1210,6 +1609,32 @@ class UpdateBackupRequest(proto.Message):
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
+    )
+
+
+class PromoteReplicaRequest(proto.Message):
+    r"""PromoteReplicaRequest promotes a Filestore standby instance
+    (replica).
+
+    Attributes:
+        name (str):
+            Required. The resource name of the instance, in the format
+            ``projects/{project_id}/locations/{location_id}/instances/{instance_id}``.
+        peer_instance (str):
+            Optional. The resource name of the peer instance to promote,
+            in the format
+            ``projects/{project_id}/locations/{location_id}/instances/{instance_id}``.
+            The peer instance is required if the operation is called on
+            an active instance.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    peer_instance: str = proto.Field(
+        proto.STRING,
+        number=2,
     )
 
 
@@ -1290,7 +1715,8 @@ class ListBackupsResponse(proto.Message):
             page of results. Not returned if there are no
             more results in the list.
         unreachable (MutableSequence[str]):
-            Locations that could not be reached.
+            Unordered list. Locations that could not be
+            reached.
     """
 
     @property
