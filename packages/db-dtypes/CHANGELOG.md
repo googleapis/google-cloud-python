@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.2](https://github.com/googleapis/python-db-dtypes-pandas/compare/v1.4.1...v1.4.2) (2025-03-04)
+
+
+### Bug Fixes
+
+* Remove unbox json functionality from JSONArrowType ([#325](https://github.com/googleapis/python-db-dtypes-pandas/issues/325)) ([60deef1](https://github.com/googleapis/python-db-dtypes-pandas/commit/60deef1636ba3e4f88725db8b9ce23b634168ac2))
+
 ## [1.4.1](https://github.com/googleapis/python-db-dtypes-pandas/compare/v1.4.0...v1.4.1) (2025-01-30)
 
 
