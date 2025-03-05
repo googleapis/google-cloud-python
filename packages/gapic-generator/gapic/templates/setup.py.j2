@@ -40,7 +40,7 @@ dependencies = [
     "proto-plus >= 1.22.3, <2.0.0",
     "proto-plus >= 1.25.0, <2.0.0; python_version >= '3.13'",
     {# Explicitly exclude protobuf versions mentioned in https://cloud.google.com/support/bulletins#GCP-2022-019 #}
-    "protobuf>=3.20.2,<6.0.0,!=4.21.0,!=4.21.1,!=4.21.2,!=4.21.3,!=4.21.4,!=4.21.5",
+    "protobuf>=3.20.2,<7.0.0,!=4.21.0,!=4.21.1,!=4.21.2,!=4.21.3,!=4.21.4,!=4.21.5",
     {% for package_tuple, package_info in pypi_packages.items() %}
     {# Quick check to make sure the package is different from this setup.py #}
     {% if api.naming.warehouse_package_name != package_info.package_name %}

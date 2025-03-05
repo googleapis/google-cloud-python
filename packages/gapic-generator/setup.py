@@ -35,7 +35,7 @@ dependencies = [
     # https://jinja.palletsprojects.com/en/3.0.x/templates/#jinja-filters.map
     # https://jinja.palletsprojects.com/en/2.11.x/changelog/#version-2-11-0
     "jinja2 >= 2.11",
-    "protobuf>=3.20.2,<6.0.0,!=4.21.0,!=4.21.1,!=4.21.2,!=4.21.3,!=4.21.4,!=4.21.5",
+    "protobuf>=3.20.2,<7.0.0,!=4.21.0,!=4.21.1,!=4.21.2,!=4.21.3,!=4.21.4,!=4.21.5",
     "pypandoc >= 1.4",
     "PyYAML >= 5.1.1",
     "grpc-google-iam-v1 >= 0.14.0, < 1.0.0",
