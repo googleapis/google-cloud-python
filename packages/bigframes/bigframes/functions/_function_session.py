@@ -21,6 +21,7 @@ import sys
 import threading
 from typing import (
     Any,
+    Callable,
     cast,
     Dict,
     Literal,
@@ -46,7 +47,9 @@ from google.cloud import (
 )
 
 from bigframes import clients
-from bigframes import version as bigframes_version
+import bigframes.core.compile.ibis_types
+import bigframes.exceptions as bfe
+import bigframes.series as bf_series
 
 if TYPE_CHECKING:
     from bigframes.session import Session
@@ -54,6 +57,9 @@ if TYPE_CHECKING:
 import pandas
 
 from . import _function_client, _utils
+
+# BQ managed functions (@udf) currently only support Python 3.11.
+_MANAGED_FUNC_PYTHON_VERSIONS = ("python-3.11",)
 
 
 class FunctionSession:
@@ -65,6 +71,123 @@ class FunctionSession:
 
         # Lock to synchronize the update of the session artifacts
         self._artifacts_lock = threading.Lock()
+
+    def _resolve_session(self, session: Optional[Session]) -> Session:
+        """Resolves the BigFrames session."""
+        import bigframes.pandas as bpd
+        import bigframes.session
+
+        # Using the global session if none is provided.
+        return cast(bigframes.session.Session, session or bpd.get_global_session())
+
+    def _resolve_bigquery_client(
+        self, session: Session, bigquery_client: Optional[bigquery.Client]
+    ) -> bigquery.Client:
+        """Resolves the BigQuery client."""
+        if not bigquery_client:
+            bigquery_client = session.bqclient
+        if not bigquery_client:
+            raise ValueError(
+                "A bigquery client must be provided, either directly or via "
+                f"session. {constants.FEEDBACK_LINK}"
+            )
+        return bigquery_client
+
+    def _resolve_bigquery_connection_client(
+        self,
+        session: Session,
+        bigquery_connection_client: Optional[
+            bigquery_connection_v1.ConnectionServiceClient
+        ],
+    ) -> bigquery_connection_v1.ConnectionServiceClient:
+        """Resolves the BigQuery connection client."""
+        if not bigquery_connection_client:
+            bigquery_connection_client = session.bqconnectionclient
+        if not bigquery_connection_client:
+            raise ValueError(
+                "A bigquery connection client must be provided, either "
+                f"directly or via session. {constants.FEEDBACK_LINK}"
+            )
+        return bigquery_connection_client
+
+    def _resolve_resource_manager_client(
+        self,
+        session: Session,
+        resource_manager_client: Optional[resourcemanager_v3.ProjectsClient],
+    ) -> resourcemanager_v3.ProjectsClient:
+        """Resolves the resource manager client."""
+        if not resource_manager_client:
+            resource_manager_client = session.resourcemanagerclient
+        if not resource_manager_client:
+            raise ValueError(
+                "A resource manager client must be provided, either directly "
+                f"or via session. {constants.FEEDBACK_LINK}"
+            )
+        return resource_manager_client
+
+    def _resolve_dataset_reference(
+        self,
+        session: Session,
+        bigquery_client: bigquery.Client,
+        dataset: Optional[str],
+    ) -> bigquery.DatasetReference:
+        """Resolves the dataset reference for the bigframes function."""
+        if dataset:
+            dataset_ref = bigquery.DatasetReference.from_string(
+                dataset, default_project=bigquery_client.project
+            )
+        else:
+            dataset_ref = session._anonymous_dataset
+        return dataset_ref
+
+    def _resolve_cloud_functions_client(
+        self,
+        session: Session,
+        cloud_functions_client: Optional[functions_v2.FunctionServiceClient],
+    ) -> Optional[functions_v2.FunctionServiceClient]:
+        """Resolves the Cloud Functions client."""
+        if not cloud_functions_client:
+            cloud_functions_client = session.cloudfunctionsclient
+        if not cloud_functions_client:
+            raise ValueError(
+                "A cloud functions client must be provided, either directly "
+                f"or via session. {constants.FEEDBACK_LINK}"
+            )
+        return cloud_functions_client
+
+    def _resolve_bigquery_connection_id(
+        self,
+        session: Session,
+        dataset_ref: bigquery.DatasetReference,
+        bq_location: str,
+        bigquery_connection: Optional[str] = None,
+    ) -> str:
+        """Resolves BigQuery connection id."""
+        if not bigquery_connection:
+            bigquery_connection = session._bq_connection  # type: ignore
+
+        bigquery_connection = clients.resolve_full_bq_connection_name(
+            bigquery_connection,
+            default_project=dataset_ref.project,
+            default_location=bq_location,
+        )
+        # Guaranteed to be the form of <project>.<location>.<connection_id>
+        (
+            gcp_project_id,
+            bq_connection_location,
+            bq_connection_id,
+        ) = bigquery_connection.split(".")
+        if gcp_project_id.casefold() != dataset_ref.project.casefold():
+            raise ValueError(
+                "The project_id does not match BigQuery connection "
+                f"gcp_project_id: {dataset_ref.project}."
+            )
+        if bq_connection_location.casefold() != bq_location.casefold():
+            raise ValueError(
+                "The location does not match BigQuery connection location: "
+                f"{bq_location}."
+            )
+        return bq_connection_id
 
     def _update_temp_artifacts(self, bqrf_routine: str, gcf_path: str):
         """Update function artifacts in the current session."""
@@ -84,14 +207,26 @@ class FunctionSession:
                 # deleted directly by the user
                 bqclient.delete_routine(bqrf_routine, not_found_ok=True)
 
-                # Let's accept the possibility that the cloud function may have
-                # been deleted directly by the user
-                try:
-                    gcfclient.delete_function(name=gcf_path)
-                except google.api_core.exceptions.NotFound:
-                    pass
+                if gcf_path:
+                    # Let's accept the possibility that the cloud function may
+                    # have been deleted directly by the user
+                    try:
+                        gcfclient.delete_function(name=gcf_path)
+                    except google.api_core.exceptions.NotFound:
+                        pass
 
             self._temp_artifacts.clear()
+
+    def _try_delattr(self, func: Callable, attr: str) -> None:
+        """Attempts to delete an attribute from a bigframes function."""
+        # In the unlikely case where the user is trying to re-deploy the same
+        # function, cleanup the attributes we add in bigframes functions, first.
+        # This prevents the pickle from having dependencies that might not
+        # otherwise be present such as ibis or pandas.
+        try:
+            delattr(func, attr)
+        except AttributeError:
+            pass
 
     # Inspired by @udf decorator implemented in ibis-bigquery package
     # https://github.com/ibis-project/ibis-bigquery/blob/main/ibis_bigquery/udf/__init__.py
@@ -129,14 +264,6 @@ class FunctionSession:
 
         .. deprecated:: 0.0.1
         This is an internal method. Please use :func:`bigframes.pandas.remote_function` instead.
-
-        .. warning::
-            To use remote functions with Bigframes 2.0 and onwards, please (preferred)
-            set an explicit user-managed ``cloud_function_service_account`` or (discouraged)
-            set ``cloud_function_service_account`` to use the Compute Engine service account
-            by setting it to `"default"`.
-
-            See, https://cloud.google.com/functions/docs/securing/function-identity.
 
         .. note::
             Please make sure following is setup before using this API:
@@ -311,116 +438,46 @@ class FunctionSession:
                 https://cloud.google.com/functions/docs/configuring/memory.
             cloud_function_ingress_settings (str, Optional):
                 Ingress settings controls dictating what traffic can reach the
-                function. Options are: `all`, `internal-only`, or `internal-and-gclb`.
-                If no setting is provided, `all` will be used by default and a warning
-                will be issued. See for more details
+                function. By default `all` will be used. It must be one of:
+                `all`, `internal-only`, `internal-and-gclb`. See for more details
                 https://cloud.google.com/functions/docs/networking/network-settings#ingress_settings.
         """
-        # Some defaults may be used from the session if not provided otherwise
-        import bigframes.exceptions as bfe
-        import bigframes.pandas as bpd
-        import bigframes.series as bf_series
-        import bigframes.session
+        # Some defaults may be used from the session if not provided otherwise.
+        session = self._resolve_session(session)
 
-        session = cast(bigframes.session.Session, session or bpd.get_global_session())
+        # A BigQuery client is required to perform BQ operations.
+        bigquery_client = self._resolve_bigquery_client(session, bigquery_client)
 
-        # raise a UserWarning if user does not explicitly set cloud_function_service_account to a
-        # user-managed cloud_function_service_account of to default
-        msg = (
-            "You have not explicitly set a user-managed `cloud_function_service_account`. "
-            "Using the default Compute Engine service account. "
-            "To use Bigframes 2.0, please explicitly set `cloud_function_service_account` "
-            'either to a user-managed service account (preferred) or to `"default"` '
-            "to use the Compute Engine service account (discouraged). "
-            "See, https://cloud.google.com/functions/docs/securing/function-identity."
+        # A BigQuery connection client is required for BQ connection operations.
+        bigquery_connection_client = self._resolve_bigquery_connection_client(
+            session, bigquery_connection_client
         )
 
-        if (
-            bigframes_version.__version__.startswith("1.")
-            and cloud_function_service_account is None
-        ):
-            warnings.warn(msg, stacklevel=2, category=FutureWarning)
+        # A resource manager client is required to get/set IAM operations.
+        resource_manager_client = self._resolve_resource_manager_client(
+            session, resource_manager_client
+        )
 
-        if cloud_function_service_account == "default":
-            cloud_function_service_account = None
-
-        # A BigQuery client is required to perform BQ operations
-        if not bigquery_client:
-            bigquery_client = session.bqclient
-        if not bigquery_client:
-            raise ValueError(
-                "A bigquery client must be provided, either directly or via session. "
-                f"{constants.FEEDBACK_LINK}"
-            )
-
-        # A BigQuery connection client is required to perform BQ connection operations
-        if not bigquery_connection_client:
-            bigquery_connection_client = session.bqconnectionclient
-        if not bigquery_connection_client:
-            raise ValueError(
-                "A bigquery connection client must be provided, either directly or via session. "
-                f"{constants.FEEDBACK_LINK}"
-            )
-
-        # A cloud functions client is required to perform cloud functions operations
-        if not cloud_functions_client:
-            cloud_functions_client = session.cloudfunctionsclient
-        if not cloud_functions_client:
-            raise ValueError(
-                "A cloud functions client must be provided, either directly or via session. "
-                f"{constants.FEEDBACK_LINK}"
-            )
-
-        # A resource manager client is required to get/set IAM operations
-        if not resource_manager_client:
-            resource_manager_client = session.resourcemanagerclient
-        if not resource_manager_client:
-            raise ValueError(
-                "A resource manager client must be provided, either directly or via session. "
-                f"{constants.FEEDBACK_LINK}"
-            )
-
-        # BQ remote function must be persisted, for which we need a dataset
+        # BQ remote function must be persisted, for which we need a dataset.
         # https://cloud.google.com/bigquery/docs/reference/standard-sql/remote-functions#:~:text=You%20cannot%20create%20temporary%20remote%20functions.
-        if dataset:
-            dataset_ref = bigquery.DatasetReference.from_string(
-                dataset, default_project=bigquery_client.project
-            )
-        else:
-            dataset_ref = session._anonymous_dataset
+        dataset_ref = self._resolve_dataset_reference(session, bigquery_client, dataset)
+
+        # A cloud functions client is required for cloud functions operations.
+        cloud_functions_client = self._resolve_cloud_functions_client(
+            session, cloud_functions_client
+        )
 
         bq_location, cloud_function_region = _utils.get_remote_function_locations(
             bigquery_client.location
         )
 
-        # A connection is required for BQ remote function
+        # A connection is required for BQ remote function.
         # https://cloud.google.com/bigquery/docs/reference/standard-sql/remote-functions#create_a_remote_function
-        if not bigquery_connection:
-            bigquery_connection = session._bq_connection  # type: ignore
-
-        bigquery_connection = clients.resolve_full_bq_connection_name(
-            bigquery_connection,
-            default_project=dataset_ref.project,
-            default_location=bq_location,
+        bq_connection_id = self._resolve_bigquery_connection_id(
+            session, dataset_ref, bq_location, bigquery_connection
         )
-        # Guaranteed to be the form of <project>.<location>.<connection_id>
-        (
-            gcp_project_id,
-            bq_connection_location,
-            bq_connection_id,
-        ) = bigquery_connection.split(".")
-        if gcp_project_id.casefold() != dataset_ref.project.casefold():
-            raise ValueError(
-                "The project_id does not match BigQuery connection gcp_project_id: "
-                f"{dataset_ref.project}."
-            )
-        if bq_connection_location.casefold() != bq_location.casefold():
-            raise ValueError(
-                "The location does not match BigQuery connection location: "
-                f"{bq_location}."
-            )
 
-        # If any CMEK is intended then check that a docker repository is also specified
+        # If any CMEK is intended then check that a docker repository is also specified.
         if (
             cloud_function_kms_key_name is not None
             and cloud_function_docker_repository is None
@@ -496,26 +553,26 @@ class FunctionSession:
                 warnings.warn(msg, stacklevel=1, category=bfe.PreviewWarning)
 
                 # we will model the row as a json serialized string containing the data
-                # and the metadata representing the row
+                # and the metadata representing the row.
                 input_types = [str]
                 is_row_processor = True
             elif isinstance(input_types, type):
                 input_types = [input_types]
 
-            # TODO(b/340898611): fix type error
+            # TODO(b/340898611): fix type error.
             ibis_signature = _utils.ibis_signature_from_python_signature(
                 signature, input_types, output_type  # type: ignore
             )
 
             remote_function_client = _function_client.FunctionClient(
                 dataset_ref.project,
-                cloud_function_region,
-                cloud_functions_client,
                 bq_location,
                 dataset_ref.dataset_id,
                 bigquery_client,
                 bq_connection_id,
                 bq_connection_manager,
+                cloud_function_region,
+                cloud_functions_client,
                 cloud_function_service_account,
                 cloud_function_kms_key_name,
                 cloud_function_docker_repository,
@@ -524,29 +581,20 @@ class FunctionSession:
 
             # To respect the user code/environment let's use a copy of the
             # original udf, especially since we would be setting some properties
-            # on it
+            # on it.
             func = cloudpickle.loads(cloudpickle.dumps(func))
 
-            # In the unlikely case where the user is trying to re-deploy the same
-            # function, cleanup the attributes we add below, first. This prevents
-            # the pickle from having dependencies that might not otherwise be
-            # present such as ibis or pandas.
-            def try_delattr(attr):
-                try:
-                    delattr(func, attr)
-                except AttributeError:
-                    pass
-
-            try_delattr("bigframes_cloud_function")
-            try_delattr("bigframes_remote_function")
-            try_delattr("input_dtypes")
-            try_delattr("output_dtype")
-            try_delattr("bigframes_bigquery_function_output_dtype")
-            try_delattr("is_row_processor")
-            try_delattr("ibis_node")
+            self._try_delattr(func, "bigframes_cloud_function")
+            self._try_delattr(func, "bigframes_remote_function")
+            self._try_delattr(func, "bigframes_bigquery_function")
+            self._try_delattr(func, "bigframes_bigquery_function_output_dtype")
+            self._try_delattr(func, "input_dtypes")
+            self._try_delattr(func, "output_dtype")
+            self._try_delattr(func, "is_row_processor")
+            self._try_delattr(func, "ibis_node")
 
             # resolve the output type that can be supported in the bigframes,
-            # ibis, BQ remote functions and cloud functions integration
+            # ibis, BQ remote functions and cloud functions integration.
             ibis_output_type_for_bqrf = ibis_signature.output_type
             bqrf_metadata = None
             if isinstance(ibis_signature.output_type, ibis_dtypes.Array):
@@ -600,7 +648,7 @@ class FunctionSession:
                 ]
             )
 
-            # TODO: Move ibis logic to compiler step
+            # TODO: Move ibis logic to compiler step.
             node = ibis_udf.scalar.builtin(
                 func,
                 name=rf_name,
@@ -611,11 +659,12 @@ class FunctionSession:
             func.bigframes_cloud_function = (
                 remote_function_client.get_cloud_function_fully_qualified_name(cf_name)
             )
-            func.bigframes_remote_function = (
+            func.bigframes_bigquery_function = (
                 remote_function_client.get_remote_function_fully_qualilfied_name(
                     rf_name
                 )
             )
+            func.bigframes_remote_function = func.bigframes_bigquery_function
             func.input_dtypes = tuple(
                 [
                     bigframes.core.compile.ibis_types.ibis_dtype_to_bigframes_dtype(
@@ -649,6 +698,237 @@ class FunctionSession:
                 self._update_temp_artifacts(
                     func.bigframes_remote_function, func.bigframes_cloud_function
                 )
+            return func
+
+        return wrapper
+
+    def udf(
+        self,
+        input_types: Union[None, type, Sequence[type]] = None,
+        output_type: Optional[type] = None,
+        session: Optional[Session] = None,
+        bigquery_client: Optional[bigquery.Client] = None,
+        dataset: Optional[str] = None,
+        bigquery_connection: Optional[str] = None,
+        name: Optional[str] = None,
+        packages: Optional[Sequence[str]] = None,
+    ):
+        """Decorator to turn a Python udf into a BigQuery managed function.
+
+        .. note::
+            Please have following IAM roles enabled for you:
+
+            * BigQuery Data Editor (roles/bigquery.dataEditor)
+
+        Args:
+            input_types (type or sequence(type), Optional):
+                For scalar user defined function it should be the input type or
+                sequence of input types. The supported scalar input types are
+                `bool`, `bytes`, `float`, `int`, `str`.
+            output_type (type, Optional):
+                Data type of the output in the user defined function. If the
+                user defined function returns an array, then `list[type]` should
+                be specified. The supported output types are `bool`, `bytes`,
+                `float`, `int`, `str`, `list[bool]`, `list[float]`, `list[int]`
+                and `list[str]`.
+            session (bigframes.Session, Optional):
+                BigQuery DataFrames session to use for getting default project,
+                dataset and BigQuery connection.
+            bigquery_client (google.cloud.bigquery.Client, Optional):
+                Client to use for BigQuery operations. If this param is not
+                provided, then bigquery client from the session would be used.
+            dataset (str, Optional):
+                Dataset in which to create a BigQuery managed function. It
+                should be in `<project_id>.<dataset_name>` or `<dataset_name>`
+                format. If this parameter is not provided then session dataset
+                id is used.
+            bigquery_connection (str, Optional):
+                Name of the BigQuery connection. It is used to provide an
+                identity to the serverless instances running the user code. It
+                helps BigQuery manage and track the resources used by the udf.
+            name (str, Optional):
+                Explicit name of the persisted BigQuery managed function. Use it
+                with caution, because more than one users working in the same
+                project and dataset could overwrite each other's managed
+                functions if they use the same persistent name. When an explicit
+                name is provided, any session specific clean up (
+                ``bigframes.session.Session.close``/
+                ``bigframes.pandas.close_session``/
+                ``bigframes.pandas.reset_session``/
+                ``bigframes.pandas.clean_up_by_session_id``) does not clean up
+                the function, and leaves it for the user to manage the function
+                and the associated cloud function directly.
+            packages (str[], Optional):
+                Explicit name of the external package dependencies. Each
+                dependency is added to the `requirements.txt` as is, and can be
+                of the form supported in
+                https://pip.pypa.io/en/stable/reference/requirements-file-format/.
+        """
+        if not bigframes.options.experiments.udf:
+            raise NotImplementedError()
+
+        # Check the Python version.
+        python_version = _utils.get_python_version()
+        if python_version not in _MANAGED_FUNC_PYTHON_VERSIONS:
+            raise RuntimeError(
+                f"Python version {python_version} is not supported yet for "
+                "BigFrames managed function."
+            )
+
+        # Some defaults may be used from the session if not provided otherwise.
+        session = self._resolve_session(session)
+
+        # A BigQuery client is required to perform BQ operations.
+        bigquery_client = self._resolve_bigquery_client(session, bigquery_client)
+
+        # BQ managed function must be persisted, for which we need a dataset.
+        dataset_ref = self._resolve_dataset_reference(session, bigquery_client, dataset)
+
+        bq_location, _ = _utils.get_remote_function_locations(bigquery_client.location)
+
+        # A connection is required for BQ managed function.
+        bq_connection_id = self._resolve_bigquery_connection_id(
+            session, dataset_ref, bq_location, bigquery_connection
+        )
+
+        bq_connection_manager = session.bqconnectionmanager
+
+        # TODO(b/399129906): Write a method for the repeated part in the wrapper
+        # for both managed function and remote function.
+        def wrapper(func):
+            nonlocal input_types, output_type
+
+            if not callable(func):
+                raise TypeError("f must be callable, got {}".format(func))
+
+            # Managed function supports version >= 3.11.
+            signature_kwargs: Mapping[str, Any] = {"eval_str": True}
+            signature = inspect.signature(func, **signature_kwargs)
+
+            # Try to get input types via type annotations.
+            if input_types is None:
+                input_types = []
+                for parameter in signature.parameters.values():
+                    if (param_type := parameter.annotation) is inspect.Signature.empty:
+                        raise ValueError(
+                            "'input_types' was not set and parameter "
+                            f"'{parameter.name}' is missing a type annotation. "
+                            "Types are required to use managed function."
+                        )
+                    input_types.append(param_type)
+            elif not isinstance(input_types, collections.abc.Sequence):
+                input_types = [input_types]
+
+            if output_type is None:
+                if (
+                    output_type := signature.return_annotation
+                ) is inspect.Signature.empty:
+                    raise ValueError(
+                        "'output_type' was not set and function is missing a "
+                        "return type annotation. Types are required to use "
+                        "managed function."
+                    )
+
+            # The function will actually be receiving a pandas Series, but allow
+            # both BigQuery DataFrames and pandas object types for compatibility.
+            is_row_processor = False
+            if len(input_types) == 1 and (
+                (input_type := input_types[0]) == bf_series.Series
+                or input_type == pandas.Series
+            ):
+                msg = "input_types=Series is in preview."
+                warnings.warn(msg, stacklevel=1, category=bfe.PreviewWarning)
+
+                # we will model the row as a json serialized string containing
+                # the data and the metadata representing the row.
+                input_types = [str]
+                is_row_processor = True
+            elif isinstance(input_types, type):
+                input_types = [input_types]
+
+            # TODO(b/340898611): fix type error.
+            ibis_signature = _utils.ibis_signature_from_python_signature(
+                signature, input_types, output_type  # type: ignore
+            )
+
+            remote_function_client = _function_client.FunctionClient(
+                dataset_ref.project,
+                bq_location,
+                dataset_ref.dataset_id,
+                bigquery_client,
+                bq_connection_id,
+                bq_connection_manager,
+                session=session,  # type: ignore
+            )
+
+            func = cloudpickle.loads(cloudpickle.dumps(func))
+
+            self._try_delattr(func, "bigframes_bigquery_function")
+            self._try_delattr(func, "input_dtypes")
+            self._try_delattr(func, "output_dtype")
+            self._try_delattr(func, "is_row_processor")
+            self._try_delattr(func, "ibis_node")
+
+            bq_function_name = remote_function_client.provision_bq_managed_function(
+                func=func,
+                input_types=tuple(
+                    third_party_ibis_bqtypes.BigQueryType.from_ibis(type_)
+                    for type_ in ibis_signature.input_types
+                    if type_ is not None
+                ),
+                output_type=third_party_ibis_bqtypes.BigQueryType.from_ibis(
+                    ibis_signature.output_type
+                ),
+                name=name,
+                packages=packages,
+                is_row_processor=is_row_processor,
+            )
+
+            # TODO(shobs): Find a better way to support udfs with param named
+            # "name". This causes an issue in the ibis compilation.
+            func.__signature__ = inspect.signature(func).replace(  # type: ignore
+                parameters=[
+                    inspect.Parameter(
+                        f"bigframes_{param.name}",
+                        param.kind,
+                    )
+                    for param in inspect.signature(func).parameters.values()
+                ]
+            )
+
+            # TODO: Move ibis logic to compiler step.
+            node = ibis_udf.scalar.builtin(
+                func,
+                name=bq_function_name,
+                catalog=dataset_ref.project,
+                database=dataset_ref.dataset_id,
+                signature=(ibis_signature.input_types, ibis_signature.output_type),
+            )  # type: ignore
+            func.bigframes_bigquery_function = (
+                remote_function_client.get_remote_function_fully_qualilfied_name(
+                    bq_function_name
+                )
+            )
+            func.input_dtypes = tuple(
+                [
+                    bigframes.core.compile.ibis_types.ibis_dtype_to_bigframes_dtype(
+                        input_type
+                    )
+                    for input_type in ibis_signature.input_types
+                    if input_type is not None
+                ]
+            )
+            func.output_dtype = (
+                bigframes.core.compile.ibis_types.ibis_dtype_to_bigframes_dtype(
+                    ibis_signature.output_type
+                )
+            )
+            func.is_row_processor = is_row_processor
+            func.ibis_node = node
+
+            if not name:
+                self._update_temp_artifacts(func.bigframes_bigquery_function, "")
+
             return func
 
         return wrapper

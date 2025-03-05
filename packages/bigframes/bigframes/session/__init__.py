@@ -1407,6 +1407,83 @@ class Session(
             cloud_function_ingress_settings=cloud_function_ingress_settings,
         )
 
+    def udf(
+        self,
+        *,
+        input_types: Union[None, type, Sequence[type]] = None,
+        output_type: Optional[type] = None,
+        dataset: Optional[str] = None,
+        bigquery_connection: Optional[str] = None,
+        name: Optional[str] = None,
+        packages: Optional[Sequence[str]] = None,
+    ):
+        """Decorator to turn a Python udf into a BigQuery managed function.
+
+        .. note::
+            Please have following IAM roles enabled for you:
+
+            * BigQuery Data Editor (roles/bigquery.dataEditor)
+
+        Args:
+            input_types (type or sequence(type), Optional):
+                For scalar user defined function it should be the input type or
+                sequence of input types. The supported scalar input types are
+                `bool`, `bytes`, `float`, `int`, `str`.
+            output_type (type, Optional):
+                Data type of the output in the user defined function. If the
+                user defined function returns an array, then `list[type]` should
+                be specified. The supported output types are `bool`, `bytes`,
+                `float`, `int`, `str`, `list[bool]`, `list[float]`, `list[int]`
+                and `list[str]`.
+            dataset (str, Optional):
+                Dataset in which to create a BigQuery managed function. It
+                should be in `<project_id>.<dataset_name>` or `<dataset_name>`
+                format. If this parameter is not provided then session dataset
+                id is used.
+            bigquery_connection (str, Optional):
+                Name of the BigQuery connection. You should either have the
+                connection already created in the `location` you have chosen, or
+                you should have the Project IAM Admin role to enable the service
+                to create the connection for you if you need it. If this
+                parameter is not provided then the BigQuery connection from the
+                session is used.
+            name (str, Optional):
+                Explicit name of the persisted BigQuery managed function. Use it
+                with caution, because more than one users working in the same
+                project and dataset could overwrite each other's managed
+                functions if they use the same persistent name. When an explicit
+                name is provided, any session specific clean up (
+                ``bigframes.session.Session.close``/
+                ``bigframes.pandas.close_session``/
+                ``bigframes.pandas.reset_session``/
+                ``bigframes.pandas.clean_up_by_session_id``) does not clean up
+                the function, and leaves it for the user to manage the function
+                and the associated cloud function directly.
+            packages (str[], Optional):
+                Explicit name of the external package dependencies. Each
+                dependency is added to the `requirements.txt` as is, and can be
+                of the form supported in
+                https://pip.pypa.io/en/stable/reference/requirements-file-format/.
+        Returns:
+            collections.abc.Callable:
+                A managed function object pointing to the cloud assets created
+                in the background to support the remote execution. The cloud
+                ssets can be located through the following properties set in the
+                object:
+
+                `bigframes_bigquery_function` - The bigquery managed function
+                deployed for the user defined code.
+        """
+        return self._function_session.udf(
+            input_types,
+            output_type,
+            session=self,
+            dataset=dataset,
+            bigquery_connection=bigquery_connection,
+            name=name,
+            packages=packages,
+        )
+
     def read_gbq_function(
         self,
         function_name: str,

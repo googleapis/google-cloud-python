@@ -16,6 +16,7 @@
 import hashlib
 import inspect
 import json
+import sys
 import typing
 from typing import cast, List, NamedTuple, Optional, Sequence, Set
 
@@ -185,8 +186,8 @@ def get_cloud_function_name(function_hash, session_id=None, uniq_suffix=None):
     return _GCF_FUNCTION_NAME_SEPERATOR.join(parts)
 
 
-def get_remote_function_name(function_hash, session_id, uniq_suffix=None):
-    "Get a name for the remote function for the given user defined function."
+def get_bigframes_function_name(function_hash, session_id, uniq_suffix=None):
+    "Get a name for the bigframes function for the given user defined function."
     parts = [_BIGFRAMES_FUNCTION_PREFIX, session_id, function_hash]
     if uniq_suffix:
         parts.append(uniq_suffix)
@@ -280,3 +281,12 @@ def get_bigframes_metadata(*, python_output_type: Optional[type] = None) -> str:
         )
 
     return metadata_ser
+
+
+def get_python_version(is_compat: bool = False) -> str:
+    # Cloud Run functions use the 'compat' format (e.g., python311, see more
+    # from https://cloud.google.com/functions/docs/runtime-support#python),
+    # while managed functions use the standard format (e.g., python-3.11).
+    major = sys.version_info.major
+    minor = sys.version_info.minor
+    return f"python{major}{minor}" if is_compat else f"python-{major}.{minor}"

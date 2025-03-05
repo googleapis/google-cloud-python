@@ -383,3 +383,44 @@ def delete_cloud_function(
 
 def get_first_file_from_wildcard(path):
     return path.replace("*", "000000000000")
+
+
+def cleanup_function_assets(
+    bigframes_func,
+    bigquery_client,
+    cloudfunctions_client=None,
+    ignore_failures=True,
+) -> None:
+    """Clean up the GCP assets behind a bigframess function."""
+
+    # Clean up bigframes function.
+    try:
+        bigquery_client.delete_routine(bigframes_func.bigframes_bigquery_function)
+    except Exception:
+        # By default don't raise exception in cleanup.
+        if not ignore_failures:
+            raise
+
+    # Clean up cloud function
+    try:
+        delete_cloud_function(
+            cloudfunctions_client, bigframes_func.bigframes_cloud_function
+        )
+    except Exception:
+        # By default don't raise exception in cleanup.
+        if not ignore_failures:
+            raise
+
+
+def get_function_name(func, package_requirements=None, is_row_processor=False):
+    """Get a bigframes function name for testing given a udf."""
+    # Augment user package requirements with any internal package
+    # requirements.
+    package_requirements = bff_utils._get_updated_package_requirements(
+        package_requirements, is_row_processor
+    )
+
+    # Compute a unique hash representing the user code.
+    function_hash = bff_utils._get_hash(func, package_requirements)
+
+    return f"bigframes_{function_hash}"

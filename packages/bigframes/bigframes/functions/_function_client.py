@@ -21,8 +21,8 @@ import os
 import random
 import shutil
 import string
-import sys
 import tempfile
+import textwrap
 import types
 from typing import cast, Tuple, TYPE_CHECKING
 
@@ -55,7 +55,7 @@ _INGRESS_SETTINGS_MAP = types.MappingProxyType(
 
 
 class FunctionClient:
-    # Wait time (in seconds) for an IAM binding to take effect after creation
+    # Wait time (in seconds) for an IAM binding to take effect after creation.
     _iam_wait_seconds = 120
 
     # TODO(b/392707725): Convert all necessary parameters for cloud function
@@ -63,31 +63,78 @@ class FunctionClient:
     def __init__(
         self,
         gcp_project_id,
-        cloud_function_region,
-        cloud_functions_client,
         bq_location,
         bq_dataset,
         bq_client,
         bq_connection_id,
         bq_connection_manager,
-        cloud_function_service_account,
-        cloud_function_kms_key_name,
-        cloud_function_docker_repository,
+        cloud_function_region=None,
+        cloud_functions_client=None,
+        cloud_function_service_account=None,
+        cloud_function_kms_key_name=None,
+        cloud_function_docker_repository=None,
         *,
         session: Session,
     ):
         self._gcp_project_id = gcp_project_id
-        self._cloud_function_region = cloud_function_region
-        self._cloud_functions_client = cloud_functions_client
         self._bq_location = bq_location
         self._bq_dataset = bq_dataset
         self._bq_client = bq_client
         self._bq_connection_id = bq_connection_id
         self._bq_connection_manager = bq_connection_manager
+        self._session = session
+
+        # Optional attributes only for remote functions.
+        self._cloud_function_region = cloud_function_region
+        self._cloud_functions_client = cloud_functions_client
         self._cloud_function_service_account = cloud_function_service_account
         self._cloud_function_kms_key_name = cloud_function_kms_key_name
         self._cloud_function_docker_repository = cloud_function_docker_repository
-        self._session = session
+
+    def _create_bq_connection(self) -> None:
+        if self._bq_connection_manager:
+            self._bq_connection_manager.create_bq_connection(
+                self._gcp_project_id,
+                self._bq_location,
+                self._bq_connection_id,
+                "run.invoker",
+            )
+
+    def _ensure_dataset_exists(self) -> None:
+        # Make sure the dataset exists, i.e. if it doesn't exist, go ahead and
+        # create it.
+        dataset = bigquery.Dataset(
+            bigquery.DatasetReference.from_string(
+                self._bq_dataset, default_project=self._gcp_project_id
+            )
+        )
+        dataset.location = self._bq_location
+        try:
+            # This check does not require bigquery.datasets.create IAM
+            # permission. So, if the data set already exists, then user can work
+            # without having that permission.
+            self._bq_client.get_dataset(dataset)
+        except google.api_core.exceptions.NotFound:
+            # This requires bigquery.datasets.create IAM permission.
+            self._bq_client.create_dataset(dataset, exists_ok=True)
+
+    def _create_bq_function(self, create_function_ddl: str) -> None:
+        # TODO(swast): plumb through the original, user-facing api_name.
+        _, query_job = bigframes.session._io.bigquery.start_query_with_client(
+            self._session.bqclient,
+            create_function_ddl,
+            job_config=bigquery.QueryJobConfig(),
+        )
+        logger.info(f"Created bigframes function {query_job.ddl_target_routine}")
+
+    def _format_function_options(self, function_options: dict) -> str:
+        return ", ".join(
+            [
+                f"{key}='{val}'" if isinstance(val, str) else f"{key}={val}"
+                for key, val in function_options.items()
+                if val is not None
+            ]
+        )
 
     def create_bq_remote_function(
         self,
@@ -101,13 +148,7 @@ class FunctionClient:
     ):
         """Create a BigQuery remote function given the artifacts of a user defined
         function and the http endpoint of a corresponding cloud function."""
-        if self._bq_connection_manager:
-            self._bq_connection_manager.create_bq_connection(
-                self._gcp_project_id,
-                self._bq_location,
-                self._bq_connection_id,
-                "run.invoker",
-            )
+        self._create_bq_connection()
 
         # Create BQ function
         # https://cloud.google.com/bigquery/docs/reference/standard-sql/remote-functions#create_a_remote_function_2
@@ -128,12 +169,8 @@ class FunctionClient:
             # bigframes specific metadata for the lack of a better option
             remote_function_options["description"] = metadata
 
-        remote_function_options_str = ", ".join(
-            [
-                f"{key}='{val}'" if isinstance(val, str) else f"{key}={val}"
-                for key, val in remote_function_options.items()
-                if val is not None
-            ]
+        remote_function_options_str = self._format_function_options(
+            remote_function_options
         )
 
         create_function_ddl = f"""
@@ -144,31 +181,78 @@ class FunctionClient:
 
         logger.info(f"Creating BQ remote function: {create_function_ddl}")
 
-        # Make sure the dataset exists. I.e. if it doesn't exist, go ahead and
-        # create it
-        dataset = bigquery.Dataset(
-            bigquery.DatasetReference.from_string(
-                self._bq_dataset, default_project=self._gcp_project_id
+        self._ensure_dataset_exists()
+        self._create_bq_function(create_function_ddl)
+
+    def provision_bq_managed_function(
+        self,
+        func,
+        input_types,
+        output_type,
+        name,
+        packages,
+        is_row_processor,
+    ):
+        """Create a BigQuery managed function."""
+        import cloudpickle
+
+        pickled = cloudpickle.dumps(func)
+
+        # Create BQ managed function.
+        bq_function_args = []
+        bq_function_return_type = output_type
+
+        input_args = inspect.getargs(func.__code__).args
+        # We expect the input type annotations to be 1:1 with the input args.
+        for name_, type_ in zip(input_args, input_types):
+            bq_function_args.append(f"{name_} {type_}")
+
+        managed_function_options = {
+            "runtime_version": _utils.get_python_version(),
+            "entry_point": "bigframes_handler",
+        }
+
+        # Augment user package requirements with any internal package
+        # requirements.
+        packages = _utils._get_updated_package_requirements(packages, is_row_processor)
+        if packages:
+            managed_function_options["packages"] = packages
+        managed_function_options_str = self._format_function_options(
+            managed_function_options
+        )
+
+        session_id = None if name else self._session.session_id
+        bq_function_name = name
+        if not bq_function_name:
+            # Compute a unique hash representing the user code.
+            function_hash = _utils._get_hash(func, packages)
+            bq_function_name = _utils.get_bigframes_function_name(
+                function_hash,
+                session_id,
             )
-        )
-        dataset.location = self._bq_location
-        try:
-            # This check does not require bigquery.datasets.create IAM
-            # permission. So, if the data set already exists, then user can work
-            # without having that permission.
-            self._bq_client.get_dataset(dataset)
-        except google.api_core.exceptions.NotFound:
-            # This requires bigquery.datasets.create IAM permission
-            self._bq_client.create_dataset(dataset, exists_ok=True)
 
-        # TODO(swast): plumb through the original, user-facing api_name.
-        _, query_job = bigframes.session._io.bigquery.start_query_with_client(
-            self._session.bqclient,
-            create_function_ddl,
-            job_config=bigquery.QueryJobConfig(),
+        persistent_func_id = (
+            f"`{self._gcp_project_id}.{self._bq_dataset}`.{bq_function_name}"
         )
+        create_function_ddl = textwrap.dedent(
+            f"""
+            CREATE OR REPLACE FUNCTION {persistent_func_id}({','.join(bq_function_args)})
+            RETURNS {bq_function_return_type}
+            LANGUAGE python
+            OPTIONS ({managed_function_options_str})
+            AS r'''
+            import cloudpickle
+            udf = cloudpickle.loads({pickled})
+            def bigframes_handler(*args):
+                return udf(*args)
+            '''
+        """
+        ).strip()
 
-        logger.info(f"Created remote function {query_job.ddl_target_routine}")
+        self._ensure_dataset_exists()
+        self._create_bq_function(create_function_ddl)
+
+        return bq_function_name
 
     def get_cloud_function_fully_qualified_parent(self):
         "Get the fully qualilfied parent for a cloud function."
@@ -262,9 +346,7 @@ class FunctionClient:
             # TODO(shobs): Figure out how to achieve version compatibility, specially
             # when pickle (internally used by cloudpickle) guarantees that:
             # https://docs.python.org/3/library/pickle.html#:~:text=The%20pickle%20serialization%20format%20is,unique%20breaking%20change%20language%20boundary.
-            python_version = "python{}{}".format(
-                sys.version_info.major, sys.version_info.minor
-            )
+            python_version = _utils.get_python_version(is_compat=True)
 
             # Determine an upload URL for user code
             upload_url_request = functions_v2.GenerateUploadUrlRequest(
@@ -443,7 +525,7 @@ class FunctionClient:
         # Derive the name of the remote function
         remote_function_name = name
         if not remote_function_name:
-            remote_function_name = _utils.get_remote_function_name(
+            remote_function_name = _utils.get_bigframes_function_name(
                 function_hash, self._session.session_id, uniq_suffix
             )
         rf_endpoint, rf_conn = self.get_remote_function_specs(remote_function_name)

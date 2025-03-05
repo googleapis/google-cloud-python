@@ -122,13 +122,22 @@ def get_routine_reference(
 
 
 def remote_function(*args, **kwargs):
-    remote_function_session = bff_session.FunctionSession()
-    return remote_function_session.remote_function(*args, **kwargs)
+    function_session = bff_session.FunctionSession()
+    return function_session.remote_function(*args, **kwargs)
 
 
 remote_function.__doc__ = bff_session.FunctionSession.remote_function.__doc__
 
 
+def udf(*args, **kwargs):
+    function_session = bff_session.FunctionSession()
+    return function_session.udf(*args, **kwargs)
+
+
+udf.__doc__ = bff_session.FunctionSession.udf.__doc__
+
+
+# TODO(b/399894805): Support managed function.
 def read_gbq_function(
     function_name: str,
     *,

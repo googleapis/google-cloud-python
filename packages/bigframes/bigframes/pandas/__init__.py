@@ -108,6 +108,29 @@ def remote_function(
 remote_function.__doc__ = inspect.getdoc(bigframes.session.Session.remote_function)
 
 
+def udf(
+    *,
+    input_types: Union[None, type, Sequence[type]] = None,
+    output_type: Optional[type] = None,
+    dataset: Optional[str] = None,
+    bigquery_connection: Optional[str] = None,
+    name: Optional[str] = None,
+    packages: Optional[Sequence[str]] = None,
+):
+    return global_session.with_default_session(
+        bigframes.session.Session.udf,
+        input_types=input_types,
+        output_type=output_type,
+        dataset=dataset,
+        bigquery_connection=bigquery_connection,
+        name=name,
+        packages=packages,
+    )
+
+
+udf.__doc__ = inspect.getdoc(bigframes.session.Session.udf)
+
+
 @typing.overload
 def to_datetime(
     arg: Union[

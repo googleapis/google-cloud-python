@@ -39,6 +39,7 @@ import bigframes.pandas as bpd
 import bigframes.series
 from tests.system.utils import (
     assert_pandas_df_equal,
+    cleanup_function_assets,
     delete_cloud_function,
     get_cloud_functions,
 )
@@ -53,30 +54,6 @@ pytestmark = pytest.mark.skipif(
     sys.version_info >= (3, 13),
     reason="Runtime 'python313' is not supported yet. Skip for now.",
 )
-
-
-def cleanup_remote_function_assets(
-    bigquery_client, cloudfunctions_client, remote_udf, ignore_failures=True
-):
-    """Clean up the GCP assets behind a bigframes remote function."""
-
-    # Clean up BQ remote function
-    try:
-        bigquery_client.delete_routine(remote_udf.bigframes_remote_function)
-    except Exception:
-        # By default don't raise exception in cleanup
-        if not ignore_failures:
-            raise
-
-    # Clean up cloud function
-    try:
-        delete_cloud_function(
-            cloudfunctions_client, remote_udf.bigframes_cloud_function
-        )
-    except Exception:
-        # By default don't raise exception in cleanup
-        if not ignore_failures:
-            raise
 
 
 def make_uniq_udf(udf):
@@ -178,9 +155,7 @@ def test_remote_function_multiply_with_ibis(
         )
     finally:
         # clean up the gcp assets created for the remote function
-        cleanup_remote_function_assets(
-            bigquery_client, session.cloudfunctionsclient, multiply
-        )
+        cleanup_function_assets(multiply, bigquery_client, session.cloudfunctionsclient)
 
 
 @pytest.mark.flaky(retries=2, delay=120)
@@ -230,8 +205,8 @@ def test_remote_function_stringify_with_ibis(
         )
     finally:
         # clean up the gcp assets created for the remote function
-        cleanup_remote_function_assets(
-            bigquery_client, session.cloudfunctionsclient, stringify
+        cleanup_function_assets(
+            stringify, bigquery_client, session.cloudfunctionsclient
         )
 
 
@@ -265,8 +240,8 @@ def test_remote_function_binop(session, scalars_dfs, dataset_id, bq_cf_connectio
         pandas.testing.assert_series_equal(bf_result, pd_result)
     finally:
         # clean up the gcp assets created for the remote function
-        cleanup_remote_function_assets(
-            session.bqclient, session.cloudfunctionsclient, remote_func
+        cleanup_function_assets(
+            remote_func, session.bqclient, session.cloudfunctionsclient
         )
 
 
@@ -302,8 +277,8 @@ def test_remote_function_binop_array_output(
         pandas.testing.assert_series_equal(bf_result, pd_result, check_dtype=False)
     finally:
         # clean up the gcp assets created for the remote function
-        cleanup_remote_function_assets(
-            session.bqclient, session.cloudfunctionsclient, remote_func
+        cleanup_function_assets(
+            remote_func, session.bqclient, session.cloudfunctionsclient
         )
 
 
@@ -347,9 +322,7 @@ def test_remote_function_decorator_with_bigframes_series(
         assert_pandas_df_equal(bf_result, pd_result)
     finally:
         # clean up the gcp assets created for the remote function
-        cleanup_remote_function_assets(
-            session.bqclient, session.cloudfunctionsclient, square
-        )
+        cleanup_function_assets(square, session.bqclient, session.cloudfunctionsclient)
 
 
 @pytest.mark.flaky(retries=2, delay=120)
@@ -393,8 +366,8 @@ def test_remote_function_explicit_with_bigframes_series(
         assert_pandas_df_equal(bf_result, pd_result)
     finally:
         # clean up the gcp assets created for the remote function
-        cleanup_remote_function_assets(
-            session.bqclient, session.cloudfunctionsclient, remote_add_one
+        cleanup_function_assets(
+            remote_add_one, session.bqclient, session.cloudfunctionsclient
         )
 
 
@@ -423,8 +396,8 @@ def test_remote_function_input_types(session, scalars_dfs, input_types):
         pandas.testing.assert_series_equal(bf_result, pd_result, check_dtype=False)
     finally:
         # clean up the gcp assets created for the remote function
-        cleanup_remote_function_assets(
-            session.bqclient, session.cloudfunctionsclient, remote_add_one
+        cleanup_function_assets(
+            remote_add_one, session.bqclient, session.cloudfunctionsclient
         )
 
 
@@ -471,9 +444,7 @@ def test_remote_function_explicit_dataset_not_created(
         assert_pandas_df_equal(bf_result, pd_result)
     finally:
         # clean up the gcp assets created for the remote function
-        cleanup_remote_function_assets(
-            session.bqclient, session.cloudfunctionsclient, square
-        )
+        cleanup_function_assets(square, session.bqclient, session.cloudfunctionsclient)
 
 
 @pytest.mark.flaky(retries=2, delay=120)
@@ -524,8 +495,8 @@ def test_remote_udf_referring_outside_var(
         assert_pandas_df_equal(bf_result, pd_result)
     finally:
         # clean up the gcp assets created for the remote function
-        cleanup_remote_function_assets(
-            session.bqclient, session.cloudfunctionsclient, remote_sign
+        cleanup_function_assets(
+            remote_sign, session.bqclient, session.cloudfunctionsclient
         )
 
 
@@ -571,8 +542,8 @@ def test_remote_udf_referring_outside_import(
         assert_pandas_df_equal(bf_result, pd_result)
     finally:
         # clean up the gcp assets created for the remote function
-        cleanup_remote_function_assets(
-            session.bqclient, session.cloudfunctionsclient, remote_circumference
+        cleanup_function_assets(
+            remote_circumference, session.bqclient, session.cloudfunctionsclient
         )
 
 
@@ -620,8 +591,8 @@ def test_remote_udf_referring_global_var_and_import(
         assert_pandas_df_equal(bf_result, pd_result)
     finally:
         # clean up the gcp assets created for the remote function
-        cleanup_remote_function_assets(
-            session.bqclient, session.cloudfunctionsclient, remote_find_team
+        cleanup_function_assets(
+            remote_find_team, session.bqclient, session.cloudfunctionsclient
         )
 
 
@@ -757,8 +728,8 @@ def test_remote_function_restore_with_bigframes_series(
         shutil.rmtree(add_one_uniq_dir)
     finally:
         # clean up the gcp assets created for the remote function
-        cleanup_remote_function_assets(
-            session.bqclient, session.cloudfunctionsclient, remote_add_one
+        cleanup_function_assets(
+            remote_add_one, session.bqclient, session.cloudfunctionsclient
         )
 
 
@@ -797,8 +768,8 @@ def test_remote_udf_mask_default_value(
         assert_pandas_df_equal(bf_result, pd_result)
     finally:
         # clean up the gcp assets created for the remote function
-        cleanup_remote_function_assets(
-            session.bqclient, session.cloudfunctionsclient, is_odd_remote
+        cleanup_function_assets(
+            is_odd_remote, session.bqclient, session.cloudfunctionsclient
         )
 
 
@@ -840,8 +811,8 @@ def test_remote_udf_mask_custom_value(
         assert_pandas_df_equal(bf_result, pd_result)
     finally:
         # clean up the gcp assets created for the remote function
-        cleanup_remote_function_assets(
-            session.bqclient, session.cloudfunctionsclient, is_odd_remote
+        cleanup_function_assets(
+            is_odd_remote, session.bqclient, session.cloudfunctionsclient
         )
 
 
@@ -882,8 +853,8 @@ def test_remote_udf_lambda(session, scalars_dfs, dataset_id, bq_cf_connection):
         assert_pandas_df_equal(bf_result, pd_result)
     finally:
         # clean up the gcp assets created for the remote function
-        cleanup_remote_function_assets(
-            session.bqclient, session.cloudfunctionsclient, add_one_lambda_remote
+        cleanup_function_assets(
+            add_one_lambda_remote, session.bqclient, session.cloudfunctionsclient
         )
 
 
@@ -939,8 +910,8 @@ def test_remote_function_with_explicit_name(
         assert_pandas_df_equal(bf_result, pd_result)
     finally:
         # clean up the gcp assets created for the remote function
-        cleanup_remote_function_assets(
-            session.bqclient, session.cloudfunctionsclient, square_remote
+        cleanup_function_assets(
+            square_remote, session.bqclient, session.cloudfunctionsclient
         )
 
 
@@ -984,8 +955,8 @@ def test_remote_function_with_external_package_dependencies(
         assert_pandas_df_equal(bf_result, pd_result)
     finally:
         # clean up the gcp assets created for the remote function
-        cleanup_remote_function_assets(
-            session.bqclient, session.cloudfunctionsclient, pd_np_foo_remote
+        cleanup_function_assets(
+            pd_np_foo_remote, session.bqclient, session.cloudfunctionsclient
         )
 
 
@@ -1137,14 +1108,14 @@ def test_remote_function_with_explicit_name_reuse(
         test_internal(plusone_remote, plusone)
     finally:
         # clean up the gcp assets created for the remote function
-        cleanup_remote_function_assets(
-            session.bqclient, session.cloudfunctionsclient, square_remote1
+        cleanup_function_assets(
+            square_remote1, session.bqclient, session.cloudfunctionsclient
         )
-        cleanup_remote_function_assets(
-            session.bqclient, session.cloudfunctionsclient, square_remote2
+        cleanup_function_assets(
+            square_remote2, session.bqclient, session.cloudfunctionsclient
         )
-        cleanup_remote_function_assets(
-            session.bqclient, session.cloudfunctionsclient, plusone_remote
+        cleanup_function_assets(
+            plusone_remote, session.bqclient, session.cloudfunctionsclient
         )
         for dir_ in dirs_to_cleanup:
             shutil.rmtree(dir_)
@@ -1197,9 +1168,7 @@ def test_remote_function_via_session_context_connection_setter(
         assert_pandas_df_equal(bf_result, pd_result)
     finally:
         # clean up the gcp assets created for the remote function
-        cleanup_remote_function_assets(
-            session.bqclient, session.cloudfunctionsclient, square
-        )
+        cleanup_function_assets(square, session.bqclient, session.cloudfunctionsclient)
 
 
 @pytest.mark.flaky(retries=2, delay=120)
@@ -1234,9 +1203,7 @@ def test_remote_function_default_connection(session, scalars_dfs, dataset_id):
         assert_pandas_df_equal(bf_result, pd_result)
     finally:
         # clean up the gcp assets created for the remote function
-        cleanup_remote_function_assets(
-            session.bqclient, session.cloudfunctionsclient, square
-        )
+        cleanup_function_assets(square, session.bqclient, session.cloudfunctionsclient)
 
 
 @pytest.mark.flaky(retries=2, delay=120)
@@ -1257,9 +1224,7 @@ def test_remote_function_runtime_error(session, scalars_dfs, dataset_id):
             scalars_df["int64_col"].apply(square).to_pandas()
     finally:
         # clean up the gcp assets created for the remote function
-        cleanup_remote_function_assets(
-            session.bqclient, session.cloudfunctionsclient, square
-        )
+        cleanup_function_assets(square, session.bqclient, session.cloudfunctionsclient)
 
 
 @pytest.mark.flaky(retries=2, delay=120)
@@ -1302,9 +1267,7 @@ def test_remote_function_anonymous_dataset(session, scalars_dfs):
         assert_pandas_df_equal(bf_result, pd_result)
     finally:
         # clean up the gcp assets created for the remote function
-        cleanup_remote_function_assets(
-            session.bqclient, session.cloudfunctionsclient, square
-        )
+        cleanup_function_assets(square, session.bqclient, session.cloudfunctionsclient)
 
 
 @pytest.mark.flaky(retries=2, delay=120)
@@ -1355,8 +1318,8 @@ def test_remote_function_via_session_custom_sa(scalars_dfs):
         assert gcf.service_config.service_account_email == gcf_service_account
     finally:
         # clean up the gcp assets created for the remote function
-        cleanup_remote_function_assets(
-            rf_session.bqclient, rf_session.cloudfunctionsclient, square_num
+        cleanup_function_assets(
+            square_num, rf_session.bqclient, rf_session.cloudfunctionsclient
         )
 
 
@@ -1430,8 +1393,8 @@ def test_remote_function_with_gcf_cmek():
 
     finally:
         # clean up the gcp assets created for the remote function
-        cleanup_remote_function_assets(
-            session.bqclient, session.cloudfunctionsclient, square_num
+        cleanup_function_assets(
+            square_num, session.bqclient, session.cloudfunctionsclient
         )
 
 
@@ -1489,8 +1452,8 @@ def test_remote_function_via_session_vpc(scalars_dfs):
         assert gcf.service_config.vpc_connector == gcf_vpc_connector
     finally:
         # clean up the gcp assets created for the remote function
-        cleanup_remote_function_assets(
-            rf_session.bqclient, rf_session.cloudfunctionsclient, square_num_remote
+        cleanup_function_assets(
+            square_num_remote, rf_session.bqclient, rf_session.cloudfunctionsclient
         )
 
 
@@ -1525,8 +1488,8 @@ def test_remote_function_max_batching_rows(session, scalars_dfs, max_batching_ro
         pandas.testing.assert_series_equal(bf_result, pd_result, check_dtype=False)
     finally:
         # clean up the gcp assets created for the remote function
-        cleanup_remote_function_assets(
-            session.bqclient, session.cloudfunctionsclient, square_remote
+        cleanup_function_assets(
+            square_remote, session.bqclient, session.cloudfunctionsclient
         )
 
 
@@ -1565,8 +1528,8 @@ def test_remote_function_gcf_timeout(
         pandas.testing.assert_series_equal(bf_result, pd_result, check_dtype=False)
     finally:
         # clean up the gcp assets created for the remote function
-        cleanup_remote_function_assets(
-            session.bqclient, session.cloudfunctionsclient, square_remote
+        cleanup_function_assets(
+            square_remote, session.bqclient, session.cloudfunctionsclient
         )
 
 
@@ -1614,8 +1577,8 @@ def test_remote_function_max_instances(
         pandas.testing.assert_series_equal(bf_result, pd_result, check_dtype=False)
     finally:
         # clean up the gcp assets created for the remote function
-        cleanup_remote_function_assets(
-            session.bqclient, session.cloudfunctionsclient, square_remote
+        cleanup_function_assets(
+            square_remote, session.bqclient, session.cloudfunctionsclient
         )
 
 
@@ -1666,8 +1629,8 @@ def test_df_apply_axis_1(session, scalars_dfs):
         pandas.testing.assert_series_equal(pd_result, bf_result, check_dtype=False)
     finally:
         # clean up the gcp assets created for the remote function
-        cleanup_remote_function_assets(
-            session.bqclient, session.cloudfunctionsclient, serialize_row_remote
+        cleanup_function_assets(
+            serialize_row_remote, session.bqclient, session.cloudfunctionsclient
         )
 
 
@@ -1707,8 +1670,8 @@ def test_df_apply_axis_1_aggregates(session, scalars_dfs):
         pandas.testing.assert_series_equal(pd_result, bf_result, check_dtype=False)
     finally:
         # clean up the gcp assets created for the remote function
-        cleanup_remote_function_assets(
-            session.bqclient, session.cloudfunctionsclient, analyze_remote
+        cleanup_function_assets(
+            analyze_remote, session.bqclient, session.cloudfunctionsclient
         )
 
 
@@ -1827,8 +1790,8 @@ def test_df_apply_axis_1_complex(session, pd_df):
         )
     finally:
         # clean up the gcp assets created for the remote function
-        cleanup_remote_function_assets(
-            session.bqclient, session.cloudfunctionsclient, serialize_row_remote
+        cleanup_function_assets(
+            serialize_row_remote, session.bqclient, session.cloudfunctionsclient
         )
 
 
@@ -1890,8 +1853,8 @@ SELECT "pandas na" AS text, NULL AS num
         pandas.testing.assert_series_equal(bq_result, bf_result)
     finally:
         # clean up the gcp assets created for the remote function
-        cleanup_remote_function_assets(
-            session.bqclient, session.cloudfunctionsclient, float_parser_remote
+        cleanup_function_assets(
+            float_parser_remote, session.bqclient, session.cloudfunctionsclient
         )
 
 
@@ -1931,8 +1894,8 @@ def test_remote_function_gcf_memory(
         pandas.testing.assert_series_equal(bf_result, pd_result, check_dtype=False)
     finally:
         # clean up the gcp assets created for the remote function
-        cleanup_remote_function_assets(
-            session.bqclient, session.cloudfunctionsclient, square_remote
+        cleanup_function_assets(
+            square_remote, session.bqclient, session.cloudfunctionsclient
         )
 
 
@@ -2027,9 +1990,7 @@ def test_remote_function_named_perists_w_session_cleanup():
         assert gcf.state is functions_v2.Function.State.ACTIVE
     finally:
         # clean up the gcp assets created for the remote function
-        cleanup_remote_function_assets(
-            session.bqclient, session.cloudfunctionsclient, foo
-        )
+        cleanup_function_assets(foo, session.bqclient, session.cloudfunctionsclient)
 
 
 @pytest.mark.flaky(retries=2, delay=120)
@@ -2089,8 +2050,8 @@ def test_remote_function_clean_up_by_session_id():
         assert gcf.state is functions_v2.Function.State.ACTIVE
     finally:
         # clean up the gcp assets created for the remote function
-        cleanup_remote_function_assets(
-            session.bqclient, session.cloudfunctionsclient, foo_named
+        cleanup_function_assets(
+            foo_named, session.bqclient, session.cloudfunctionsclient
         )
 
 
@@ -2166,9 +2127,7 @@ def test_df_apply_axis_1_multiple_params(session):
         )
     finally:
         # clean up the gcp assets created for the remote function
-        cleanup_remote_function_assets(
-            session.bqclient, session.cloudfunctionsclient, foo
-        )
+        cleanup_function_assets(foo, session.bqclient, session.cloudfunctionsclient)
 
 
 def test_df_apply_axis_1_multiple_params_array_output(session):
@@ -2254,9 +2213,7 @@ def test_df_apply_axis_1_multiple_params_array_output(session):
         )
     finally:
         # clean up the gcp assets created for the remote function
-        cleanup_remote_function_assets(
-            session.bqclient, session.cloudfunctionsclient, foo
-        )
+        cleanup_function_assets(foo, session.bqclient, session.cloudfunctionsclient)
 
 
 def test_df_apply_axis_1_single_param_non_series(session):
@@ -2318,9 +2275,7 @@ def test_df_apply_axis_1_single_param_non_series(session):
         )
     finally:
         # clean up the gcp assets created for the remote function
-        cleanup_remote_function_assets(
-            session.bqclient, session.cloudfunctionsclient, foo
-        )
+        cleanup_function_assets(foo, session.bqclient, session.cloudfunctionsclient)
 
 
 @pytest.mark.flaky(retries=2, delay=120)
@@ -2358,8 +2313,8 @@ def test_df_apply_axis_1_array_output(session, scalars_dfs):
         pandas.testing.assert_series_equal(pd_result, bf_result, check_dtype=False)
     finally:
         # clean up the gcp assets created for the remote function
-        cleanup_remote_function_assets(
-            session.bqclient, session.cloudfunctionsclient, generate_stats
+        cleanup_function_assets(
+            generate_stats, session.bqclient, session.cloudfunctionsclient
         )
 
 
@@ -2437,8 +2392,8 @@ def test_remote_function_ingress_settings(
         pandas.testing.assert_series_equal(bf_result, pd_result, check_dtype=False)
     finally:
         # clean up the gcp assets created for the remote function
-        cleanup_remote_function_assets(
-            session.bqclient, session.cloudfunctionsclient, square_remote
+        cleanup_function_assets(
+            square_remote, session.bqclient, session.cloudfunctionsclient
         )
 
 
@@ -2523,8 +2478,8 @@ def test_remote_function_w_context_manager_unnamed(
         # clean up the gcp assets created for the temporary remote function,
         # just in case it was not explicitly cleaned up in the try clause due
         # to assertion failure or exception earlier than that
-        cleanup_remote_function_assets(
-            session.bqclient, session.cloudfunctionsclient, add_one_remote_temp
+        cleanup_function_assets(
+            add_one_remote_temp, session.bqclient, session.cloudfunctionsclient
         )
 
 
@@ -2600,8 +2555,8 @@ def test_remote_function_w_context_manager_named(
         )
     finally:
         # clean up the gcp assets created for the persistent remote function
-        cleanup_remote_function_assets(
-            session.bqclient, session.cloudfunctionsclient, add_one_remote_persist
+        cleanup_function_assets(
+            add_one_remote_persist, session.bqclient, session.cloudfunctionsclient
         )
 
 
@@ -2647,8 +2602,8 @@ def test_remote_function_array_output(
         pandas.testing.assert_series_equal(pd_result, bf_result, check_dtype=False)
     finally:
         # clean up the gcp assets created for the remote function
-        cleanup_remote_function_assets(
-            session.bqclient, session.cloudfunctionsclient, featurize
+        cleanup_function_assets(
+            featurize, session.bqclient, session.cloudfunctionsclient
         )
 
 
@@ -2686,10 +2641,10 @@ def test_remote_function_array_output_partial_ordering_mode(
         pandas.testing.assert_series_equal(pd_result, bf_result, check_dtype=False)
     finally:
         # clean up the gcp assets created for the remote function
-        cleanup_remote_function_assets(
+        cleanup_function_assets(
+            featurize,
             unordered_session.bqclient,
             unordered_session.cloudfunctionsclient,
-            featurize,
         )
 
 
@@ -2722,6 +2677,6 @@ def test_remote_function_array_output_multiindex(
         pandas.testing.assert_series_equal(pd_result, bf_result, check_dtype=False)
     finally:
         # clean up the gcp assets created for the remote function
-        cleanup_remote_function_assets(
-            session.bqclient, session.cloudfunctionsclient, featurize
+        cleanup_function_assets(
+            featurize, session.bqclient, session.cloudfunctionsclient
         )
