@@ -112,6 +112,10 @@ def image_blur_func(
     import cv2 as cv  # type: ignore
     import numpy as np
     import requests
+    from requests import adapters
+
+    session = requests.Session()
+    session.mount("https://", adapters.HTTPAdapter(max_retries=3))
 
     ext = ext or ".jpeg"
 
@@ -121,7 +125,7 @@ def image_blur_func(
     src_url = src_obj_ref_rt_json["access_urls"]["read_url"]
     dst_url = dst_obj_ref_rt_json["access_urls"]["write_url"]
 
-    response = requests.get(src_url)
+    response = session.get(src_url, timeout=30)
     bts = response.content
 
     nparr = np.frombuffer(bts, np.uint8)
@@ -135,12 +139,13 @@ def image_blur_func(
     ext = ext_mappings.get(ext, ext)
     content_type = "image/" + ext
 
-    requests.put(
+    session.put(
         url=dst_url,
         data=bts,
         headers={
             "Content-Type": content_type,
         },
+        timeout=30,
     )
 
     return dst_obj_ref_rt
@@ -157,13 +162,17 @@ def image_blur_to_bytes_func(
     import cv2 as cv  # type: ignore
     import numpy as np
     import requests
+    from requests import adapters
+
+    session = requests.Session()
+    session.mount("https://", adapters.HTTPAdapter(max_retries=3))
 
     ext = ext or ".jpeg"
 
     src_obj_ref_rt_json = json.loads(src_obj_ref_rt)
     src_url = src_obj_ref_rt_json["access_urls"]["read_url"]
 
-    response = requests.get(src_url)
+    response = session.get(src_url, timeout=30)
     bts = response.content
 
     nparr = np.frombuffer(bts, np.uint8)
@@ -193,6 +202,10 @@ def image_resize_func(
     import cv2 as cv  # type: ignore
     import numpy as np
     import requests
+    from requests import adapters
+
+    session = requests.Session()
+    session.mount("https://", adapters.HTTPAdapter(max_retries=3))
 
     ext = ext or ".jpeg"
 
@@ -202,7 +215,7 @@ def image_resize_func(
     src_url = src_obj_ref_rt_json["access_urls"]["read_url"]
     dst_url = dst_obj_ref_rt_json["access_urls"]["write_url"]
 
-    response = requests.get(src_url)
+    response = session.get(src_url, timeout=30)
     bts = response.content
 
     nparr = np.frombuffer(bts, np.uint8)
@@ -216,12 +229,13 @@ def image_resize_func(
     ext = ext_mappings.get(ext, ext)
     content_type = "image/" + ext
 
-    requests.put(
+    session.put(
         url=dst_url,
         data=bts,
         headers={
             "Content-Type": content_type,
         },
+        timeout=30,
     )
 
     return dst_obj_ref_rt
@@ -245,13 +259,17 @@ def image_resize_to_bytes_func(
     import cv2 as cv  # type: ignore
     import numpy as np
     import requests
+    from requests import adapters
+
+    session = requests.Session()
+    session.mount("https://", adapters.HTTPAdapter(max_retries=3))
 
     ext = ext or ".jpeg"
 
     src_obj_ref_rt_json = json.loads(src_obj_ref_rt)
     src_url = src_obj_ref_rt_json["access_urls"]["read_url"]
 
-    response = requests.get(src_url)
+    response = session.get(src_url, timeout=30)
     bts = response.content
 
     nparr = np.frombuffer(bts, np.uint8)
@@ -280,6 +298,10 @@ def image_normalize_func(
     import cv2 as cv  # type: ignore
     import numpy as np
     import requests
+    from requests import adapters
+
+    session = requests.Session()
+    session.mount("https://", adapters.HTTPAdapter(max_retries=3))
 
     ext = ext or ".jpeg"
 
@@ -296,7 +318,7 @@ def image_normalize_func(
     src_url = src_obj_ref_rt_json["access_urls"]["read_url"]
     dst_url = dst_obj_ref_rt_json["access_urls"]["write_url"]
 
-    response = requests.get(src_url)
+    response = session.get(src_url, timeout=30)
     bts = response.content
 
     nparr = np.frombuffer(bts, np.uint8)
@@ -312,12 +334,13 @@ def image_normalize_func(
     ext = ext_mappings.get(ext, ext)
     content_type = "image/" + ext
 
-    requests.put(
+    session.put(
         url=dst_url,
         data=bts,
         headers={
             "Content-Type": content_type,
         },
+        timeout=30,
     )
 
     return dst_obj_ref_rt
@@ -336,6 +359,10 @@ def image_normalize_to_bytes_func(
     import cv2 as cv  # type: ignore
     import numpy as np
     import requests
+    from requests import adapters
+
+    session = requests.Session()
+    session.mount("https://", adapters.HTTPAdapter(max_retries=3))
 
     ext = ext or ".jpeg"
 
@@ -349,7 +376,7 @@ def image_normalize_to_bytes_func(
     src_obj_ref_rt_json = json.loads(src_obj_ref_rt)
     src_url = src_obj_ref_rt_json["access_urls"]["read_url"]
 
-    response = requests.get(src_url)
+    response = session.get(src_url, timeout=30)
     bts = response.content
 
     nparr = np.frombuffer(bts, np.uint8)
@@ -374,11 +401,15 @@ def pdf_extract_func(src_obj_ref_rt: str) -> str:
 
     from pypdf import PdfReader  # type: ignore
     import requests
+    from requests import adapters
+
+    session = requests.Session()
+    session.mount("https://", adapters.HTTPAdapter(max_retries=3))
 
     src_obj_ref_rt_json = json.loads(src_obj_ref_rt)
     src_url = src_obj_ref_rt_json["access_urls"]["read_url"]
 
-    response = requests.get(src_url, stream=True)
+    response = session.get(src_url, timeout=30, stream=True)
     response.raise_for_status()
     pdf_bytes = response.content
 
@@ -403,11 +434,15 @@ def pdf_chunk_func(src_obj_ref_rt: str, chunk_size: int, overlap_size: int) -> s
 
     from pypdf import PdfReader  # type: ignore
     import requests
+    from requests import adapters
+
+    session = requests.Session()
+    session.mount("https://", adapters.HTTPAdapter(max_retries=3))
 
     src_obj_ref_rt_json = json.loads(src_obj_ref_rt)
     src_url = src_obj_ref_rt_json["access_urls"]["read_url"]
 
-    response = requests.get(src_url, stream=True)
+    response = session.get(src_url, timeout=30, stream=True)
     response.raise_for_status()
     pdf_bytes = response.content
 
