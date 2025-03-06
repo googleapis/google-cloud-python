@@ -379,12 +379,14 @@ def _perform_loc_list_join(
         result = typing.cast(
             bigframes.series.Series,
             series_or_dataframe.to_frame()._perform_join_by_index(
-                keys_index, how="right"
+                keys_index, how="right", always_order=True
             )[name],
         )
         result = result.rename(original_name)
     else:
-        result = series_or_dataframe._perform_join_by_index(keys_index, how="right")
+        result = series_or_dataframe._perform_join_by_index(
+            keys_index, how="right", always_order=True
+        )
 
     if drop_levels and series_or_dataframe.index.nlevels > keys_index.nlevels:
         # drop common levels
@@ -492,6 +494,12 @@ def _iloc_getitem_series_or_dataframe(
 
         # set to offset index and use regular loc, then restore index
         df = df.reset_index(drop=False)
+        block = df._block
+        # explicitly set index to offsets, reset_index may not generate offsets in some modes
+        block, offsets_id = block.promote_offsets("temp_iloc_offsets_")
+        block = block.set_index([offsets_id])
+        df = bigframes.dataframe.DataFrame(block)
+
         result = df.loc[key]
         result = result.set_index(temporary_index_names)
         result = result.rename_axis(original_index_names)

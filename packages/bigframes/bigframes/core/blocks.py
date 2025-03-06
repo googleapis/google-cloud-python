@@ -2325,6 +2325,7 @@ class Block:
 
         return self.project_exprs(exprs, labels=labels, drop=True)
 
+    # TODO: Re-implement join in terms of merge (requires also adding remaining merge args)
     def join(
         self,
         other: Block,
@@ -2332,6 +2333,7 @@ class Block:
         how="left",
         sort: bool = False,
         block_identity_join: bool = False,
+        always_order: bool = False,
     ) -> Tuple[Block, Tuple[Mapping[str, str], Mapping[str, str]],]:
         """
         Join two blocks objects together, and provide mappings between source columns and output columns.
@@ -2345,6 +2347,8 @@ class Block:
                 if true will sort result by index
             block_identity_join (bool):
                 If true, will not convert join to a projection (implicitly assuming unique indices)
+            always_order (bool):
+                If true, will always preserve input ordering, even if ordering mode is partial
 
         Returns:
             Block, (left_mapping, right_mapping): Result block and mappers from input column ids to result column ids.
@@ -2390,10 +2394,14 @@ class Block:
         self._throw_if_null_index("join")
         other._throw_if_null_index("join")
         if self.index.nlevels == other.index.nlevels == 1:
-            return join_mono_indexed(self, other, how=how, sort=sort)
+            return join_mono_indexed(
+                self, other, how=how, sort=sort, propogate_order=always_order
+            )
         else:  # Handles cases where one or both sides are multi-indexed
             # Always sort mult-index join
-            return join_multi_indexed(self, other, how=how, sort=sort)
+            return join_multi_indexed(
+                self, other, how=how, sort=sort, propogate_order=always_order
+            )
 
     def is_monotonic_increasing(
         self, column_id: typing.Union[str, Sequence[str]]
@@ -2850,7 +2858,8 @@ def join_mono_indexed(
     right: Block,
     *,
     how="left",
-    sort=False,
+    sort: bool = False,
+    propogate_order: bool = False,
 ) -> Tuple[Block, Tuple[Mapping[str, str], Mapping[str, str]],]:
     left_expr = left.expr
     right_expr = right.expr
@@ -2861,6 +2870,7 @@ def join_mono_indexed(
         conditions=(
             join_defs.JoinCondition(left.index_columns[0], right.index_columns[0]),
         ),
+        propogate_order=propogate_order,
     )
 
     left_index = get_column_left[left.index_columns[0]]
@@ -2895,7 +2905,8 @@ def join_multi_indexed(
     right: Block,
     *,
     how="left",
-    sort=False,
+    sort: bool = False,
+    propogate_order: bool = False,
 ) -> Tuple[Block, Tuple[Mapping[str, str], Mapping[str, str]],]:
     if not (left.index.is_uniquely_named() and right.index.is_uniquely_named()):
         raise ValueError("Joins not supported on indices with non-unique level names")
@@ -2924,6 +2935,7 @@ def join_multi_indexed(
             join_defs.JoinCondition(left, right)
             for left, right in zip(left_join_ids, right_join_ids)
         ),
+        propogate_order=propogate_order,
     )
 
     left_ids_post_join = [get_column_left[id] for id in left_join_ids]

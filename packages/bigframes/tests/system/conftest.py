@@ -545,6 +545,16 @@ def scalars_df_index(
 
 
 @pytest.fixture(scope="session")
+def scalars_df_partial_ordering(
+    scalars_table_id: str, unordered_session: bigframes.Session
+) -> bigframes.dataframe.DataFrame:
+    """DataFrame pointing at test data."""
+    return unordered_session.read_gbq(
+        scalars_table_id, index_col="rowindex"
+    ).sort_index()
+
+
+@pytest.fixture(scope="session")
 def scalars_df_null_index(
     scalars_table_id: str, session: bigframes.Session
 ) -> bigframes.dataframe.DataFrame:
