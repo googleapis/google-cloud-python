@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.13.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-filestore-v1.12.0...google-cloud-filestore-v1.13.0) (2025-03-06)
+
+
+### Features
+
+* Added REGIONAL tier support in the v1 API ([675aaad](https://github.com/googleapis/google-cloud-python/commit/675aaad7f1736e1ffec8191935db48dd3e3570d5))
+
 ## [1.12.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-filestore-v1.11.0...google-cloud-filestore-v1.12.0) (2025-02-12)
 
 

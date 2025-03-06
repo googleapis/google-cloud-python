@@ -1,5 +1,39 @@
 # Changelog
 
+## [0.3.0](https://github.com/googleapis/google-cloud-python/compare/google-shopping-merchant-accounts-v0.2.4...google-shopping-merchant-accounts-v0.3.0) (2025-03-06)
+
+
+### ⚠ BREAKING CHANGES
+
+* An existing optional field `type` is converted to required field in message .google.shopping.merchant.accounts.v1beta.OnlineReturnPolicy
+* An existing optional field `label` is converted to required field in message .google.shopping.merchant.accounts.v1beta.OnlineReturnPolicy
+* An existing optional field `countries` is converted to required field in message .google.shopping.merchant.accounts.v1beta.OnlineReturnPolicy
+* An existing optional field `return_policy_uri` is converted to required field in message .google.shopping.merchant.accounts.v1beta.OnlineReturnPolicy
+
+### Features
+
+* A new field `seasonal_overrides` is added to message .google.shopping.merchant.accounts.v1beta.OnlineReturnPolicy ([0d67a43](https://github.com/googleapis/google-cloud-python/commit/0d67a43217055096adcc825455011e4a7dfa40e7))
+* A new message `SeasonalOverride` is added ([0d67a43](https://github.com/googleapis/google-cloud-python/commit/0d67a43217055096adcc825455011e4a7dfa40e7))
+
+
+### Bug Fixes
+
+* An existing optional field `countries` is converted to required field in message .google.shopping.merchant.accounts.v1beta.OnlineReturnPolicy ([0d67a43](https://github.com/googleapis/google-cloud-python/commit/0d67a43217055096adcc825455011e4a7dfa40e7))
+* An existing optional field `label` is converted to required field in message .google.shopping.merchant.accounts.v1beta.OnlineReturnPolicy ([0d67a43](https://github.com/googleapis/google-cloud-python/commit/0d67a43217055096adcc825455011e4a7dfa40e7))
+* An existing optional field `return_policy_uri` is converted to required field in message .google.shopping.merchant.accounts.v1beta.OnlineReturnPolicy ([0d67a43](https://github.com/googleapis/google-cloud-python/commit/0d67a43217055096adcc825455011e4a7dfa40e7))
+* An existing optional field `type` is converted to required field in message .google.shopping.merchant.accounts.v1beta.OnlineReturnPolicy ([0d67a43](https://github.com/googleapis/google-cloud-python/commit/0d67a43217055096adcc825455011e4a7dfa40e7))
+
+
+### Documentation
+
+* The documentation for field `countries` in message `.google.shopping.merchant.accounts.v1beta.OnlineReturnPolicy` is improved ([0d67a43](https://github.com/googleapis/google-cloud-python/commit/0d67a43217055096adcc825455011e4a7dfa40e7))
+* The documentation for field `label` in message `.google.shopping.merchant.accounts.v1beta.OnlineReturnPolicy` is improved ([0d67a43](https://github.com/googleapis/google-cloud-python/commit/0d67a43217055096adcc825455011e4a7dfa40e7))
+* The documentation for field `parent` in message `.google.shopping.merchant.accounts.v1beta.ListOnlineReturnPoliciesRequest` is improved ([0d67a43](https://github.com/googleapis/google-cloud-python/commit/0d67a43217055096adcc825455011e4a7dfa40e7))
+* The documentation for field `return_policy_uri` in message `.google.shopping.merchant.accounts.v1beta.OnlineReturnPolicy` is improved ([0d67a43](https://github.com/googleapis/google-cloud-python/commit/0d67a43217055096adcc825455011e4a7dfa40e7))
+* The documentation for field `type` in message `.google.shopping.merchant.accounts.v1beta.OnlineReturnPolicy` is improved ([0d67a43](https://github.com/googleapis/google-cloud-python/commit/0d67a43217055096adcc825455011e4a7dfa40e7))
+* The documentation for method `GetOnlineReturnPolicy` in service `OnlineReturnPolicyService` is improved ([0d67a43](https://github.com/googleapis/google-cloud-python/commit/0d67a43217055096adcc825455011e4a7dfa40e7))
+* The documentation for method `ListOnlineReturnPolicies` in service `OnlineReturnPolicyService` is improved ([0d67a43](https://github.com/googleapis/google-cloud-python/commit/0d67a43217055096adcc825455011e4a7dfa40e7))
+
 ## [0.2.4](https://github.com/googleapis/google-cloud-python/compare/google-shopping-merchant-accounts-v0.2.3...google-shopping-merchant-accounts-v0.2.4) (2025-02-18)
 
 

@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.23.5](https://github.com/googleapis/google-cloud-python/compare/google-analytics-admin-v0.23.4...google-analytics-admin-v0.23.5) (2025-03-06)
+
+
+### Features
+
+* added support for KeyEvents AdminAPI ChangeHistory ([1cc1a3d](https://github.com/googleapis/google-cloud-python/commit/1cc1a3d09ee59e4be030d3019d147f33b4009a34))
+
 ## [0.23.4](https://github.com/googleapis/google-cloud-python/compare/google-analytics-admin-v0.23.3...google-analytics-admin-v0.23.4) (2025-02-12)
 
 
