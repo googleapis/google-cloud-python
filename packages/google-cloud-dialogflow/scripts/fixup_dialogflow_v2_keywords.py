@@ -39,7 +39,7 @@ def partition(
 class dialogflowCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
-        'analyze_content': ('participant', 'text_input', 'event_input', 'suggestion_input', 'reply_audio_config', 'query_params', 'assist_query_params', 'cx_parameters', 'request_id', ),
+        'analyze_content': ('participant', 'text_input', 'audio_input', 'event_input', 'suggestion_input', 'reply_audio_config', 'query_params', 'assist_query_params', 'cx_parameters', 'request_id', ),
         'batch_create_entities': ('parent', 'entities', 'language_code', ),
         'batch_delete_entities': ('parent', 'entity_values', 'language_code', ),
         'batch_delete_entity_types': ('parent', 'entity_type_names', ),
@@ -82,8 +82,9 @@ class dialogflowCallTransformer(cst.CSTTransformer):
         'detect_intent': ('session', 'query_input', 'query_params', 'output_audio_config', 'output_audio_config_mask', 'input_audio', ),
         'export_agent': ('parent', 'agent_uri', ),
         'export_document': ('name', 'gcs_destination', 'export_full_content', 'smart_messaging_partial_update', ),
-        'generate_stateless_suggestion': ('parent', 'generator', 'generator_name', 'conversation_context', 'trigger_events', ),
+        'generate_stateless_suggestion': ('parent', 'generator', 'generator_name', 'context_references', 'conversation_context', 'trigger_events', ),
         'generate_stateless_summary': ('stateless_conversation', 'conversation_profile', 'latest_message', 'max_context_size', ),
+        'generate_suggestions': ('conversation', 'latest_message', 'trigger_events', ),
         'get_agent': ('parent', ),
         'get_context': ('name', ),
         'get_conversation': ('name', ),
@@ -107,6 +108,7 @@ class dialogflowCallTransformer(cst.CSTTransformer):
         'import_agent': ('parent', 'agent_uri', 'agent_content', ),
         'import_conversation_data': ('name', 'input_config', ),
         'import_documents': ('parent', 'document_template', 'gcs_source', 'import_gcs_custom_metadata', ),
+        'ingest_context_references': ('conversation', 'context_references', ),
         'initialize_encryption_spec': ('encryption_spec', ),
         'list_answer_records': ('parent', 'filter', 'page_size', 'page_token', ),
         'list_contexts': ('parent', 'page_size', 'page_token', ),

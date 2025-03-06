@@ -694,8 +694,10 @@ class SpeechToTextConfig(proto.Message):
             settings <https://cloud.google.com/dialogflow/cx/docs/concept/agent#settings-speech>`__
             for model selection.
         phrase_sets (MutableSequence[str]):
-            List of names of Cloud Speech phrase sets
-            that are used for transcription.
+            List of names of Cloud Speech phrase sets that are used for
+            transcription. For phrase set limitations, please refer to
+            `Cloud Speech API quotas and
+            limits <https://cloud.google.com/speech-to-text/quotas#content>`__.
         audio_encoding (google.cloud.dialogflow_v2.types.AudioEncoding):
             Audio encoding of the audio content to
             process.
@@ -721,7 +723,7 @@ class SpeechToTextConfig(proto.Message):
             doesn't return any word-level information.
         use_timeout_based_endpointing (bool):
             Use timeout based endpointing, interpreting
-            endpointer sensitivy as seconds of timeout
+            endpointer sensitivity as seconds of timeout
             value.
     """
 

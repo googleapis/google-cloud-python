@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for GenerateStatelessSuggestion
+# Snippet for GenerateSuggestions
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,7 +23,7 @@
 #   python3 -m pip install google-cloud-dialogflow
 
 
-# [START dialogflow_v2_generated_Conversations_GenerateStatelessSuggestion_async]
+# [START dialogflow_v2_generated_Conversations_GenerateSuggestions_async]
 # This snippet has been automatically generated and should be regarded as a
 # code template only.
 # It will require modifications to work:
@@ -34,23 +34,19 @@
 from google.cloud import dialogflow_v2
 
 
-async def sample_generate_stateless_suggestion():
+async def sample_generate_suggestions():
     # Create a client
     client = dialogflow_v2.ConversationsAsyncClient()
 
     # Initialize request argument(s)
-    generator = dialogflow_v2.Generator()
-    generator.published_model = "published_model_value"
-
-    request = dialogflow_v2.GenerateStatelessSuggestionRequest(
-        generator=generator,
-        parent="parent_value",
+    request = dialogflow_v2.GenerateSuggestionsRequest(
+        conversation="conversation_value",
     )
 
     # Make the request
-    response = await client.generate_stateless_suggestion(request=request)
+    response = await client.generate_suggestions(request=request)
 
     # Handle the response
     print(response)
 
-# [END dialogflow_v2_generated_Conversations_GenerateStatelessSuggestion_async]
+# [END dialogflow_v2_generated_Conversations_GenerateSuggestions_async]

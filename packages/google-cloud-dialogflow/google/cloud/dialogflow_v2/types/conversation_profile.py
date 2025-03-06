@@ -1150,6 +1150,9 @@ class SuggestionFeature(proto.Message):
                 Run FAQ model for chat.
             SMART_REPLY (3):
                 Run smart reply model for chat.
+            CONVERSATION_SUMMARIZATION (8):
+                Run conversation summarization model for
+                chat.
             KNOWLEDGE_SEARCH (14):
                 Run knowledge search with text input from
                 agent or text generated query.
@@ -1161,6 +1164,7 @@ class SuggestionFeature(proto.Message):
         ARTICLE_SUGGESTION = 1
         FAQ = 2
         SMART_REPLY = 3
+        CONVERSATION_SUMMARIZATION = 8
         KNOWLEDGE_SEARCH = 14
         KNOWLEDGE_ASSIST = 15
 

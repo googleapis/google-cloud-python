@@ -39,6 +39,8 @@ __protobuf__ = proto.module(
         "ListMessagesRequest",
         "ListMessagesResponse",
         "ConversationPhoneNumber",
+        "IngestContextReferencesRequest",
+        "IngestContextReferencesResponse",
         "SuggestConversationSummaryRequest",
         "SuggestConversationSummaryResponse",
         "GenerateStatelessSummaryRequest",
@@ -48,6 +50,7 @@ __protobuf__ = proto.module(
         "SearchKnowledgeRequest",
         "SearchKnowledgeResponse",
         "SearchKnowledgeAnswer",
+        "GenerateSuggestionsRequest",
     },
 )
 
@@ -99,6 +102,12 @@ class Conversation(proto.Message):
             [ConversationStage.VIRTUAL_AGENT_STAGE][google.cloud.dialogflow.v2.Conversation.ConversationStage.VIRTUAL_AGENT_STAGE]
             stage and directly goes to
             [ConversationStage.HUMAN_ASSIST_STAGE][google.cloud.dialogflow.v2.Conversation.ConversationStage.HUMAN_ASSIST_STAGE].
+        telephony_connection_info (google.cloud.dialogflow_v2.types.Conversation.TelephonyConnectionInfo):
+            Output only. The telephony connection
+            information.
+        ingested_context_references (MutableMapping[str, google.cloud.dialogflow_v2.types.Conversation.ContextReference]):
+            Output only. The context reference updates
+            provided by external systems.
     """
 
     class LifecycleState(proto.Enum):
@@ -118,10 +127,9 @@ class Conversation(proto.Message):
         COMPLETED = 2
 
     class ConversationStage(proto.Enum):
-        r"""Enumeration of the different conversation stages a
-        conversation can be in. Reference:
-
-        https://cloud.google.com/dialogflow/priv/docs/contact-center/basics#stages
+        r"""Enumeration of the different conversation stages a conversation can
+        be in. Reference:
+        https://cloud.google.com/agent-assist/docs/basics#conversation_stages
 
         Values:
             CONVERSATION_STAGE_UNSPECIFIED (0):
@@ -137,6 +145,191 @@ class Conversation(proto.Message):
         CONVERSATION_STAGE_UNSPECIFIED = 0
         VIRTUAL_AGENT_STAGE = 1
         HUMAN_ASSIST_STAGE = 2
+
+    class TelephonyConnectionInfo(proto.Message):
+        r"""The information about phone calls connected via phone gateway
+        to the conversation.
+
+        Attributes:
+            dialed_number (str):
+                Output only. The number dialed to connect
+                this call in E.164 format.
+            sdp (str):
+                Optional. SDP of the call. It's initially the
+                SDP answer to the endpoint, but maybe later
+                updated for the purpose of making the link
+                active, etc.
+            sip_headers (MutableSequence[google.cloud.dialogflow_v2.types.Conversation.TelephonyConnectionInfo.SipHeader]):
+                Output only. The SIP headers from the initial
+                SIP INVITE.
+            extra_mime_contents (MutableSequence[google.cloud.dialogflow_v2.types.Conversation.TelephonyConnectionInfo.MimeContent]):
+                Output only. The mime content from the
+                initial SIP INVITE.
+        """
+
+        class SipHeader(proto.Message):
+            r"""The SIP headers from the initial SIP INVITE.
+
+            Attributes:
+                name (str):
+                    Optional. The name of the header.
+                value (str):
+                    Optional. The value of the header.
+            """
+
+            name: str = proto.Field(
+                proto.STRING,
+                number=1,
+            )
+            value: str = proto.Field(
+                proto.STRING,
+                number=2,
+            )
+
+        class MimeContent(proto.Message):
+            r"""The mime content from the initial SIP INVITE.
+
+            Attributes:
+                mime_type (str):
+                    Optional. The mime type of the content.
+                content (bytes):
+                    Optional. The content payload.
+            """
+
+            mime_type: str = proto.Field(
+                proto.STRING,
+                number=1,
+            )
+            content: bytes = proto.Field(
+                proto.BYTES,
+                number=2,
+            )
+
+        dialed_number: str = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+        sdp: str = proto.Field(
+            proto.STRING,
+            number=5,
+        )
+        sip_headers: MutableSequence[
+            "Conversation.TelephonyConnectionInfo.SipHeader"
+        ] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=12,
+            message="Conversation.TelephonyConnectionInfo.SipHeader",
+        )
+        extra_mime_contents: MutableSequence[
+            "Conversation.TelephonyConnectionInfo.MimeContent"
+        ] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=13,
+            message="Conversation.TelephonyConnectionInfo.MimeContent",
+        )
+
+    class ContextReference(proto.Message):
+        r"""Represents a section of ingested context information.
+
+        Attributes:
+            context_contents (MutableSequence[google.cloud.dialogflow_v2.types.Conversation.ContextReference.ContextContent]):
+                Required. The list of content updates for a
+                context reference.
+            update_mode (google.cloud.dialogflow_v2.types.Conversation.ContextReference.UpdateMode):
+                Required. The mode in which context reference
+                contents are updated.
+            language_code (str):
+                Optional. The language of the information
+                ingested, defaults to "en-US" if not set.
+            create_time (google.protobuf.timestamp_pb2.Timestamp):
+                Output only. The time the context reference
+                was first created.
+        """
+
+        class UpdateMode(proto.Enum):
+            r"""Represents the mode in which context reference contents are
+            updated.
+
+            Values:
+                UPDATE_MODE_UNSPECIFIED (0):
+                    Unspecified update mode.
+                APPEND (1):
+                    Context content updates are applied in append
+                    mode.
+                OVERWRITE (2):
+                    Context content updates are applied in
+                    overwrite mode.
+            """
+            UPDATE_MODE_UNSPECIFIED = 0
+            APPEND = 1
+            OVERWRITE = 2
+
+        class ContextContent(proto.Message):
+            r"""Contents ingested.
+
+            Attributes:
+                content (str):
+                    Required. The information ingested in a
+                    single request.
+                content_format (google.cloud.dialogflow_v2.types.Conversation.ContextReference.ContextContent.ContentFormat):
+                    Required. The format of the ingested string.
+                ingestion_time (google.protobuf.timestamp_pb2.Timestamp):
+                    Output only. The time when this information
+                    was incorporated into the relevant context
+                    reference.
+            """
+
+            class ContentFormat(proto.Enum):
+                r"""Represents the format of the ingested string.
+
+                Values:
+                    CONTENT_FORMAT_UNSPECIFIED (0):
+                        Unspecified content format.
+                    JSON (1):
+                        Content was provided in JSON format.
+                    PLAIN_TEXT (2):
+                        Content was provided as plain text.
+                """
+                CONTENT_FORMAT_UNSPECIFIED = 0
+                JSON = 1
+                PLAIN_TEXT = 2
+
+            content: str = proto.Field(
+                proto.STRING,
+                number=1,
+            )
+            content_format: "Conversation.ContextReference.ContextContent.ContentFormat" = proto.Field(
+                proto.ENUM,
+                number=2,
+                enum="Conversation.ContextReference.ContextContent.ContentFormat",
+            )
+            ingestion_time: timestamp_pb2.Timestamp = proto.Field(
+                proto.MESSAGE,
+                number=3,
+                message=timestamp_pb2.Timestamp,
+            )
+
+        context_contents: MutableSequence[
+            "Conversation.ContextReference.ContextContent"
+        ] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="Conversation.ContextReference.ContextContent",
+        )
+        update_mode: "Conversation.ContextReference.UpdateMode" = proto.Field(
+            proto.ENUM,
+            number=2,
+            enum="Conversation.ContextReference.UpdateMode",
+        )
+        language_code: str = proto.Field(
+            proto.STRING,
+            number=3,
+        )
+        create_time: timestamp_pb2.Timestamp = proto.Field(
+            proto.MESSAGE,
+            number=4,
+            message=timestamp_pb2.Timestamp,
+        )
 
     name: str = proto.Field(
         proto.STRING,
@@ -170,6 +363,17 @@ class Conversation(proto.Message):
         proto.ENUM,
         number=7,
         enum=ConversationStage,
+    )
+    telephony_connection_info: TelephonyConnectionInfo = proto.Field(
+        proto.MESSAGE,
+        number=10,
+        message=TelephonyConnectionInfo,
+    )
+    ingested_context_references: MutableMapping[str, ContextReference] = proto.MapField(
+        proto.STRING,
+        proto.MESSAGE,
+        number=17,
+        message=ContextReference,
     )
 
 
@@ -404,14 +608,72 @@ class ConversationPhoneNumber(proto.Message):
     allows for connecting a particular conversation over telephony.
 
     Attributes:
+        country_code (int):
+            Output only. Desired country code for the
+            phone number.
         phone_number (str):
             Output only. The phone number to connect to
             this conversation.
     """
 
+    country_code: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
     phone_number: str = proto.Field(
         proto.STRING,
         number=3,
+    )
+
+
+class IngestContextReferencesRequest(proto.Message):
+    r"""The request message for
+    [ConversationsService.IngestContextReferences][].
+
+    Attributes:
+        conversation (str):
+            Required. Resource identifier of the conversation to ingest
+            context information for. Format:
+            ``projects/<Project ID>/locations/<Location ID>/conversations/<Conversation ID>``.
+        context_references (MutableMapping[str, google.cloud.dialogflow_v2.types.Conversation.ContextReference]):
+            Required. The context references to ingest.
+            The key is the name of the context reference and
+            the value contains the contents of the context
+            reference. The key is used to incorporate
+            ingested context references to enhance the
+            generator.
+    """
+
+    conversation: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    context_references: MutableMapping[
+        str, "Conversation.ContextReference"
+    ] = proto.MapField(
+        proto.STRING,
+        proto.MESSAGE,
+        number=2,
+        message="Conversation.ContextReference",
+    )
+
+
+class IngestContextReferencesResponse(proto.Message):
+    r"""The response message for
+    [ConversationsService.IngestContextReferences][].
+
+    Attributes:
+        ingested_context_references (MutableMapping[str, google.cloud.dialogflow_v2.types.Conversation.ContextReference]):
+            All context references ingested.
+    """
+
+    ingested_context_references: MutableMapping[
+        str, "Conversation.ContextReference"
+    ] = proto.MapField(
+        proto.STRING,
+        proto.MESSAGE,
+        number=1,
+        message="Conversation.ContextReference",
     )
 
 
@@ -705,6 +967,13 @@ class GenerateStatelessSuggestionRequest(proto.Message):
             ``projects/<Project ID>/locations/<Location ID>/generators/<Generator ID>``
 
             This field is a member of `oneof`_ ``generator_resource``.
+        context_references (MutableMapping[str, google.cloud.dialogflow_v2.types.Conversation.ContextReference]):
+            Optional. A section of ingested context
+            information. The key is the name of the context
+            reference and the value contains the contents of
+            the context reference. The key is used to
+            incorporate ingested context references to
+            enhance the generator.
         conversation_context (google.cloud.dialogflow_v2.types.ConversationContext):
             Optional. Context of the conversation,
             including transcripts.
@@ -728,6 +997,14 @@ class GenerateStatelessSuggestionRequest(proto.Message):
         proto.STRING,
         number=3,
         oneof="generator_resource",
+    )
+    context_references: MutableMapping[
+        str, "Conversation.ContextReference"
+    ] = proto.MapField(
+        proto.STRING,
+        proto.MESSAGE,
+        number=4,
+        message="Conversation.ContextReference",
     )
     conversation_context: gcd_generator.ConversationContext = proto.Field(
         proto.MESSAGE,
@@ -848,9 +1125,20 @@ class SearchKnowledgeRequest(proto.Message):
             boost_specs (MutableSequence[google.cloud.dialogflow_v2.types.SearchKnowledgeRequest.SearchConfig.BoostSpecs]):
                 Optional. Boost specifications for data
                 stores.
+                Maps from datastore name to their boost
+                configuration. Do not specify more than one
+                BoostSpecs for each datastore name. If multiple
+                BoostSpecs are provided for the same datastore
+                name, the behavior is undefined.
             filter_specs (MutableSequence[google.cloud.dialogflow_v2.types.SearchKnowledgeRequest.SearchConfig.FilterSpecs]):
                 Optional. Filter specification for data store
                 queries.
+                TMaps from datastore name to the filter
+                expression for that datastore. Do not specify
+                more than one FilterSpecs for each datastore
+                name. If multiple FilterSpecs are provided for
+                the same datastore name, the behavior is
+                undefined.
         """
 
         class BoostSpecs(proto.Message):
@@ -877,7 +1165,7 @@ class SearchKnowledgeRequest(proto.Message):
                     condition_boost_specs (MutableSequence[google.cloud.dialogflow_v2.types.SearchKnowledgeRequest.SearchConfig.BoostSpecs.BoostSpec.ConditionBoostSpec]):
                         Optional. Condition boost specifications. If
                         a document matches multiple conditions in the
-                        specifictions, boost scores from these
+                        specifications, boost scores from these
                         specifications are all applied and combined in a
                         non-linear way. Maximum number of specifications
                         is 20.
@@ -995,7 +1283,29 @@ class SearchKnowledgeRequest(proto.Message):
                             defined through these control points can only be monotonically
                             increasing or decreasing(constant values are acceptable).
 
+                            Attributes:
+                                attribute_value (str):
+                                    Optional. Can be one of:
+
+                                    1. The numerical field value.
+                                    2. The duration spec for freshness: The value must be
+                                       formatted as an XSD ``dayTimeDuration`` value (a
+                                       restricted subset of an ISO 8601 duration value). The
+                                       pattern for this is: ``[nD][T[nH][nM][nS]]``.
+                                boost_amount (float):
+                                    Optional. The value between -1 to 1 by which to boost the
+                                    score if the attribute_value evaluates to the value
+                                    specified above.
                             """
+
+                            attribute_value: str = proto.Field(
+                                proto.STRING,
+                                number=1,
+                            )
+                            boost_amount: float = proto.Field(
+                                proto.FLOAT,
+                                number=2,
+                            )
 
                         field_name: str = proto.Field(
                             proto.STRING,
@@ -1246,6 +1556,44 @@ class SearchKnowledgeAnswer(proto.Message):
     answer_record: str = proto.Field(
         proto.STRING,
         number=5,
+    )
+
+
+class GenerateSuggestionsRequest(proto.Message):
+    r"""The request message for
+    [Conversations.GenerateSuggestions][google.cloud.dialogflow.v2.Conversations.GenerateSuggestions].
+
+    Attributes:
+        conversation (str):
+            Required. The conversation for which the suggestions are
+            generated. Format:
+            ``projects/<Project ID>/locations/<Location ID>/conversations/<Conversation ID>``.
+
+            The conversation must be created with a conversation profile
+            which has generators configured in it to be able to get
+            suggestions.
+        latest_message (str):
+            Optional. The name of the latest conversation message for
+            which the request is triggered. Format:
+            ``projects/<Project ID>/locations/<Location ID>/conversations/<Conversation ID>/messages/<Message ID>``.
+        trigger_events (MutableSequence[google.cloud.dialogflow_v2.types.TriggerEvent]):
+            Optional. A list of trigger events. Only generators
+            configured in the conversation_profile whose trigger_event
+            is listed here will be triggered.
+    """
+
+    conversation: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    latest_message: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    trigger_events: MutableSequence[gcd_generator.TriggerEvent] = proto.RepeatedField(
+        proto.ENUM,
+        number=3,
+        enum=gcd_generator.TriggerEvent,
     )
 
 

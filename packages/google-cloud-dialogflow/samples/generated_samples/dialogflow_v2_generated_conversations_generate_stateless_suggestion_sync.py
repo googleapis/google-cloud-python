@@ -39,7 +39,11 @@ def sample_generate_stateless_suggestion():
     client = dialogflow_v2.ConversationsClient()
 
     # Initialize request argument(s)
+    generator = dialogflow_v2.Generator()
+    generator.published_model = "published_model_value"
+
     request = dialogflow_v2.GenerateStatelessSuggestionRequest(
+        generator=generator,
         parent="parent_value",
     )
 

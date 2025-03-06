@@ -24,7 +24,7 @@ from google.rpc import status_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.dialogflow_v2.types import audio_config as gcd_audio_config
-from google.cloud.dialogflow_v2.types import session
+from google.cloud.dialogflow_v2.types import generator, session
 
 __protobuf__ = proto.module(
     package="google.cloud.dialogflow.v2",
@@ -45,8 +45,10 @@ __protobuf__ = proto.module(
         "SuggestArticlesResponse",
         "SuggestFaqAnswersRequest",
         "SuggestFaqAnswersResponse",
+        "GenerateSuggestionsResponse",
         "SuggestSmartRepliesRequest",
         "SuggestSmartRepliesResponse",
+        "AudioInput",
         "OutputAudio",
         "AutomatedAgentReply",
         "ArticleAnswer",
@@ -212,6 +214,8 @@ class Message(proto.Message):
             created in Contact Center AI.
         send_time (google.protobuf.timestamp_pb2.Timestamp):
             Optional. The time when the message was sent.
+            For voice messages, this is the time when an
+            utterance started.
         message_annotation (google.cloud.dialogflow_v2.types.MessageAnnotation):
             Output only. The annotation for the message.
         sentiment_analysis (google.cloud.dialogflow_v2.types.SentimentAnalysisResult):
@@ -406,6 +410,11 @@ class AnalyzeContentRequest(proto.Message):
             The natural language text to be processed.
 
             This field is a member of `oneof`_ ``input``.
+        audio_input (google.cloud.dialogflow_v2.types.AudioInput):
+            The natural language speech audio to be
+            processed.
+
+            This field is a member of `oneof`_ ``input``.
         event_input (google.cloud.dialogflow_v2.types.EventInput):
             An input event to send to Dialogflow.
 
@@ -450,6 +459,12 @@ class AnalyzeContentRequest(proto.Message):
         number=6,
         oneof="input",
         message=session.TextInput,
+    )
+    audio_input: "AudioInput" = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        oneof="input",
+        message="AudioInput",
     )
     event_input: session.EventInput = proto.Field(
         proto.MESSAGE,
@@ -728,10 +743,10 @@ class StreamingAnalyzeContentRequest(proto.Message):
             You can find more details in
             https://cloud.google.com/agent-assist/docs/extended-streaming
         enable_partial_automated_agent_reply (bool):
-            Enable partial virtual agent responses. If this flag is not
-            enabled, response stream still contains only one final
-            response even if some ``Fulfillment``\ s in Dialogflow
-            virtual agent have been configured to return partial
+            Optional. Enable partial responses from Dialogflow CX agent.
+            If this flag is not enabled, response stream still contains
+            only one final response even if some ``Fulfillment``\ s in
+            Dialogflow CX agent have been configured to return partial
             responses.
         enable_debugging_info (bool):
             If true, ``StreamingAnalyzeContentResponse.debugging_info``
@@ -878,6 +893,9 @@ class StreamingAnalyzeContentResponse(proto.Message):
             Debugging info that would get populated when
             ``StreamingAnalyzeContentRequest.enable_debugging_info`` is
             set to true.
+        speech_model (str):
+            The name of the actual Cloud speech model
+            used for speech recognition.
     """
 
     recognition_result: session.StreamingRecognitionResult = proto.Field(
@@ -927,6 +945,10 @@ class StreamingAnalyzeContentResponse(proto.Message):
         proto.MESSAGE,
         number=11,
         message=session.CloudConversationDebuggingInfo,
+    )
+    speech_model: str = proto.Field(
+        proto.STRING,
+        number=13,
     )
 
 
@@ -1092,6 +1114,65 @@ class SuggestFaqAnswersResponse(proto.Message):
     )
 
 
+class GenerateSuggestionsResponse(proto.Message):
+    r"""The response message for
+    [Conversations.GenerateSuggestions][google.cloud.dialogflow.v2.Conversations.GenerateSuggestions].
+
+    Attributes:
+        generator_suggestion_answers (MutableSequence[google.cloud.dialogflow_v2.types.GenerateSuggestionsResponse.GeneratorSuggestionAnswer]):
+            The answers generated for the conversation
+            based on context.
+        latest_message (str):
+            The name of the latest conversation message used as context
+            for compiling suggestion.
+
+            Format:
+            ``projects/<Project ID>/locations/<Location ID>/conversations/<Conversation ID>/messages/<Message ID>``.
+    """
+
+    class GeneratorSuggestionAnswer(proto.Message):
+        r"""A GeneratorSuggestion answer.
+
+        Attributes:
+            generator_suggestion (google.cloud.dialogflow_v2.types.GeneratorSuggestion):
+                Suggestion details.
+            source_generator (str):
+                The name of the generator used to generate this suggestion.
+                Format:
+                ``projects/<Project ID>/locations/<Location ID>/generators/<Generator ID>``.
+            answer_record (str):
+                Answer record that uniquely identifies the
+                suggestion. This can be used to provide
+                suggestion feedback.
+        """
+
+        generator_suggestion: generator.GeneratorSuggestion = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            message=generator.GeneratorSuggestion,
+        )
+        source_generator: str = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+        answer_record: str = proto.Field(
+            proto.STRING,
+            number=3,
+        )
+
+    generator_suggestion_answers: MutableSequence[
+        GeneratorSuggestionAnswer
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=GeneratorSuggestionAnswer,
+    )
+    latest_message: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
 class SuggestSmartRepliesRequest(proto.Message):
     r"""The request message for
     [Participants.SuggestSmartReplies][google.cloud.dialogflow.v2.Participants.SuggestSmartReplies].
@@ -1177,6 +1258,32 @@ class SuggestSmartRepliesResponse(proto.Message):
     context_size: int = proto.Field(
         proto.INT32,
         number=3,
+    )
+
+
+class AudioInput(proto.Message):
+    r"""Represents the natural language speech audio to be processed.
+
+    Attributes:
+        config (google.cloud.dialogflow_v2.types.InputAudioConfig):
+            Required. Instructs the speech recognizer how
+            to process the speech audio.
+        audio (bytes):
+            Required. The natural language speech audio
+            to be processed. A single request can contain up
+            to 2 minutes of speech audio data. The
+            transcribed text cannot contain more than 256
+            bytes for virtual agent interactions.
+    """
+
+    config: gcd_audio_config.InputAudioConfig = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=gcd_audio_config.InputAudioConfig,
+    )
+    audio: bytes = proto.Field(
+        proto.BYTES,
+        number=2,
     )
 
 
@@ -1520,6 +1627,11 @@ class SuggestionResult(proto.Message):
             SuggestSmartRepliesResponse if request is for SMART_REPLY.
 
             This field is a member of `oneof`_ ``suggestion_response``.
+        generate_suggestions_response (google.cloud.dialogflow_v2.types.GenerateSuggestionsResponse):
+            Suggestions generated using generators
+            triggered by customer or agent messages.
+
+            This field is a member of `oneof`_ ``suggestion_response``.
     """
 
     error: status_pb2.Status = proto.Field(
@@ -1551,6 +1663,12 @@ class SuggestionResult(proto.Message):
         number=4,
         oneof="suggestion_response",
         message="SuggestSmartRepliesResponse",
+    )
+    generate_suggestions_response: "GenerateSuggestionsResponse" = proto.Field(
+        proto.MESSAGE,
+        number=9,
+        oneof="suggestion_response",
+        message="GenerateSuggestionsResponse",
     )
 
 
@@ -1714,7 +1832,7 @@ class SuggestKnowledgeAssistRequest(proto.Message):
             Optional. The previously suggested query for
             the given conversation. This helps identify
             whether the next suggestion we generate is
-            resonably different from the previous one. This
+            reasonably different from the previous one. This
             is useful to avoid similar suggestions within
             the conversation.
     """
