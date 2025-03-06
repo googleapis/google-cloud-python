@@ -38,7 +38,9 @@ __protobuf__ = proto.module(
         "InferenceParameter",
         "SummarizationSection",
         "SummarizationContext",
+        "FreeFormContext",
         "Generator",
+        "FreeFormSuggestion",
         "SummarySuggestion",
         "GeneratorSuggestion",
     },
@@ -59,10 +61,16 @@ class TriggerEvent(proto.Enum):
             calls, such as
             Conversations.GenerateStatelessSuggestion and
             Conversations.GenerateSuggestions.
+        CUSTOMER_MESSAGE (3):
+            Triggers after each customer message only.
+        AGENT_MESSAGE (4):
+            Triggers after each agent message only.
     """
     TRIGGER_EVENT_UNSPECIFIED = 0
     END_OF_UTTERANCE = 1
     MANUAL_CALL = 2
+    CUSTOMER_MESSAGE = 3
+    AGENT_MESSAGE = 4
 
 
 class CreateGeneratorRequest(proto.Message):
@@ -469,6 +477,14 @@ class SummarizationSection(proto.Message):
                 "entities/".
             CUSTOMER_DEFINED (7):
                 Customer defined sections.
+            SITUATION_CONCISE (9):
+                Concise version of the situation section.
+                This type is only available if type SITUATION is
+                not selected.
+            ACTION_CONCISE (10):
+                Concise version of the action section. This
+                type is only available if type ACTION is not
+                selected.
         """
         TYPE_UNSPECIFIED = 0
         SITUATION = 1
@@ -478,6 +494,8 @@ class SummarizationSection(proto.Message):
         CUSTOMER_SATISFACTION = 5
         ENTITIES = 6
         CUSTOMER_DEFINED = 7
+        SITUATION_CONCISE = 9
+        ACTION_CONCISE = 10
 
     key: str = proto.Field(
         proto.STRING,
@@ -536,8 +554,27 @@ class SummarizationContext(proto.Message):
     )
 
 
+class FreeFormContext(proto.Message):
+    r"""Free form generator context that customer can configure.
+
+    Attributes:
+        text (str):
+            Optional. Free form text input to LLM.
+    """
+
+    text: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
 class Generator(proto.Message):
     r"""LLM generator.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
@@ -549,6 +586,10 @@ class Generator(proto.Message):
         description (str):
             Optional. Human readable description of the
             generator.
+        free_form_context (google.cloud.dialogflow_v2beta1.types.FreeFormContext):
+            Input of free from generator to LLM.
+
+            This field is a member of `oneof`_ ``context``.
         summarization_context (google.cloud.dialogflow_v2beta1.types.SummarizationContext):
             Input of Summarization feature.
 
@@ -560,6 +601,15 @@ class Generator(proto.Message):
             Optional. The trigger event of the generator.
             It defines when the generator is triggered in a
             conversation.
+        published_model (str):
+            Optional. The published Large Language Model name.
+
+            -  To use the latest model version, specify the model name
+               without version number. Example: ``text-bison``
+            -  To use a stable model version, specify the version number
+               as well. Example: ``text-bison@002``.
+
+            This field is a member of `oneof`_ ``foundation_model``.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Creation time of this generator.
         update_time (google.protobuf.timestamp_pb2.Timestamp):
@@ -573,6 +623,12 @@ class Generator(proto.Message):
     description: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+    free_form_context: "FreeFormContext" = proto.Field(
+        proto.MESSAGE,
+        number=11,
+        oneof="context",
+        message="FreeFormContext",
     )
     summarization_context: "SummarizationContext" = proto.Field(
         proto.MESSAGE,
@@ -590,6 +646,11 @@ class Generator(proto.Message):
         number=5,
         enum="TriggerEvent",
     )
+    published_model: str = proto.Field(
+        proto.STRING,
+        number=15,
+        oneof="foundation_model",
+    )
     create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=8,
@@ -599,6 +660,20 @@ class Generator(proto.Message):
         proto.MESSAGE,
         number=9,
         message=timestamp_pb2.Timestamp,
+    )
+
+
+class FreeFormSuggestion(proto.Message):
+    r"""Suggestion generated using free form generator.
+
+    Attributes:
+        response (str):
+            Required. Free form suggestion.
+    """
+
+    response: str = proto.Field(
+        proto.STRING,
+        number=1,
     )
 
 
@@ -639,15 +714,30 @@ class SummarySuggestion(proto.Message):
 class GeneratorSuggestion(proto.Message):
     r"""Suggestion generated using a Generator.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
+        free_form_suggestion (google.cloud.dialogflow_v2beta1.types.FreeFormSuggestion):
+            Optional. Free form suggestion.
+
+            This field is a member of `oneof`_ ``suggestion``.
         summary_suggestion (google.cloud.dialogflow_v2beta1.types.SummarySuggestion):
             Optional. Suggested summary.
 
             This field is a member of `oneof`_ ``suggestion``.
     """
 
+    free_form_suggestion: "FreeFormSuggestion" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        oneof="suggestion",
+        message="FreeFormSuggestion",
+    )
     summary_suggestion: "SummarySuggestion" = proto.Field(
         proto.MESSAGE,
         number=2,

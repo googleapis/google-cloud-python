@@ -486,9 +486,19 @@
                 "generate_stateless_summary"
               ]
             },
+            "GenerateSuggestions": {
+              "methods": [
+                "generate_suggestions"
+              ]
+            },
             "GetConversation": {
               "methods": [
                 "get_conversation"
+              ]
+            },
+            "IngestContextReferences": {
+              "methods": [
+                "ingest_context_references"
               ]
             },
             "ListConversations": {
@@ -541,9 +551,19 @@
                 "generate_stateless_summary"
               ]
             },
+            "GenerateSuggestions": {
+              "methods": [
+                "generate_suggestions"
+              ]
+            },
             "GetConversation": {
               "methods": [
                 "get_conversation"
+              ]
+            },
+            "IngestContextReferences": {
+              "methods": [
+                "ingest_context_references"
               ]
             },
             "ListConversations": {
@@ -596,9 +616,19 @@
                 "generate_stateless_summary"
               ]
             },
+            "GenerateSuggestions": {
+              "methods": [
+                "generate_suggestions"
+              ]
+            },
             "GetConversation": {
               "methods": [
                 "get_conversation"
+              ]
+            },
+            "IngestContextReferences": {
+              "methods": [
+                "ingest_context_references"
               ]
             },
             "ListConversations": {

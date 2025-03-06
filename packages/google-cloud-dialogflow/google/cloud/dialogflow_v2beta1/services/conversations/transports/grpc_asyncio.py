@@ -35,6 +35,7 @@ import proto  # type: ignore
 
 from google.cloud.dialogflow_v2beta1.types import conversation as gcd_conversation
 from google.cloud.dialogflow_v2beta1.types import conversation
+from google.cloud.dialogflow_v2beta1.types import participant
 
 from .base import DEFAULT_CLIENT_INFO, ConversationsTransport
 from .grpc import ConversationsGrpcTransport
@@ -469,6 +470,36 @@ class ConversationsGrpcAsyncIOTransport(ConversationsTransport):
         return self._stubs["complete_conversation"]
 
     @property
+    def ingest_context_references(
+        self,
+    ) -> Callable[
+        [gcd_conversation.IngestContextReferencesRequest],
+        Awaitable[gcd_conversation.IngestContextReferencesResponse],
+    ]:
+        r"""Return a callable for the ingest context references method over gRPC.
+
+        Data ingestion API.
+        Ingests context references for an existing conversation.
+
+        Returns:
+            Callable[[~.IngestContextReferencesRequest],
+                    Awaitable[~.IngestContextReferencesResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "ingest_context_references" not in self._stubs:
+            self._stubs["ingest_context_references"] = self._logged_channel.unary_unary(
+                "/google.cloud.dialogflow.v2beta1.Conversations/IngestContextReferences",
+                request_serializer=gcd_conversation.IngestContextReferencesRequest.serialize,
+                response_deserializer=gcd_conversation.IngestContextReferencesResponse.deserialize,
+            )
+        return self._stubs["ingest_context_references"]
+
+    @property
     def batch_create_messages(
         self,
     ) -> Callable[
@@ -658,6 +689,37 @@ class ConversationsGrpcAsyncIOTransport(ConversationsTransport):
             )
         return self._stubs["search_knowledge"]
 
+    @property
+    def generate_suggestions(
+        self,
+    ) -> Callable[
+        [gcd_conversation.GenerateSuggestionsRequest],
+        Awaitable[participant.GenerateSuggestionsResponse],
+    ]:
+        r"""Return a callable for the generate suggestions method over gRPC.
+
+        Generates all the suggestions using generators
+        configured in the conversation profile. A generator is
+        used only if its trigger event is matched.
+
+        Returns:
+            Callable[[~.GenerateSuggestionsRequest],
+                    Awaitable[~.GenerateSuggestionsResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "generate_suggestions" not in self._stubs:
+            self._stubs["generate_suggestions"] = self._logged_channel.unary_unary(
+                "/google.cloud.dialogflow.v2beta1.Conversations/GenerateSuggestions",
+                request_serializer=gcd_conversation.GenerateSuggestionsRequest.serialize,
+                response_deserializer=participant.GenerateSuggestionsResponse.deserialize,
+            )
+        return self._stubs["generate_suggestions"]
+
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
@@ -678,6 +740,11 @@ class ConversationsGrpcAsyncIOTransport(ConversationsTransport):
             ),
             self.complete_conversation: self._wrap_method(
                 self.complete_conversation,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.ingest_context_references: self._wrap_method(
+                self.ingest_context_references,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -708,6 +775,11 @@ class ConversationsGrpcAsyncIOTransport(ConversationsTransport):
             ),
             self.search_knowledge: self._wrap_method(
                 self.search_knowledge,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.generate_suggestions: self._wrap_method(
+                self.generate_suggestions,
                 default_timeout=None,
                 client_info=client_info,
             ),

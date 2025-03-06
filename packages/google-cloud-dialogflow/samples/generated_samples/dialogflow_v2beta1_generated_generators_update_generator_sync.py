@@ -39,7 +39,11 @@ def sample_update_generator():
     client = dialogflow_v2beta1.GeneratorsClient()
 
     # Initialize request argument(s)
+    generator = dialogflow_v2beta1.Generator()
+    generator.published_model = "published_model_value"
+
     request = dialogflow_v2beta1.UpdateGeneratorRequest(
+        generator=generator,
     )
 
     # Make the request
