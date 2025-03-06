@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.17](https://github.com/googleapis/google-cloud-python/compare/google-cloud-eventarc-publishing-v0.6.16...google-cloud-eventarc-publishing-v0.6.17) (2025-03-06)
+
+
+### Documentation
+
+* [google-cloud-eventarc-publishing] Documentation improvements for the Publisher service ([#13613](https://github.com/googleapis/google-cloud-python/issues/13613)) ([4a1f534](https://github.com/googleapis/google-cloud-python/commit/4a1f53417b480307c6896ea3030dbf61f8db48a7))
+
 ## [0.6.16](https://github.com/googleapis/google-cloud-python/compare/google-cloud-eventarc-publishing-v0.6.15...google-cloud-eventarc-publishing-v0.6.16) (2025-02-12)
 
 

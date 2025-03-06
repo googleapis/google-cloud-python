@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-audit-log-v0.3.0...google-cloud-audit-log-v0.3.1) (2025-03-06)
+
+
+### Features
+
+* Updates audit_log proto with PermissionType ([#13616](https://github.com/googleapis/google-cloud-python/issues/13616)) ([04ab652](https://github.com/googleapis/google-cloud-python/commit/04ab652a5bd70647217c839ebfddb0c99e659d7a))
+
 ## [0.3.0](https://github.com/googleapis/python-audit-log/compare/v0.2.5...v0.3.0) (2024-08-15)
 
 

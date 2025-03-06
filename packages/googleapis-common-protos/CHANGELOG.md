@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.69.1](https://github.com/googleapis/google-cloud-python/compare/googleapis-common-protos-v1.69.0...googleapis-common-protos-v1.69.1) (2025-03-06)
+
+
+### Bug Fixes
+
+* exclude docs in tool.setuptools.packages.find ([#13607](https://github.com/googleapis/google-cloud-python/issues/13607)) ([1e4de9d](https://github.com/googleapis/google-cloud-python/commit/1e4de9d50950c7536f428d96775d81cefdda1d9b))
+* restore *.proto files removed in version 1.67.0 ([#13614](https://github.com/googleapis/google-cloud-python/issues/13614)) ([323a503](https://github.com/googleapis/google-cloud-python/commit/323a503b69afcb23eababa0a0b21232a02c0f1f3))
+
 ## [1.69.0](https://github.com/googleapis/google-cloud-python/compare/googleapis-common-protos-v1.68.0...googleapis-common-protos-v1.69.0) (2025-03-03)
 
 
