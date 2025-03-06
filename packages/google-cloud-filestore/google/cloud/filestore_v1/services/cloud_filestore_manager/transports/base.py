@@ -251,6 +251,11 @@ class CloudFilestoreManagerTransport(abc.ABC):
                 default_timeout=600.0,
                 client_info=client_info,
             ),
+            self.promote_replica: gapic_v1.method.wrap_method(
+                self.promote_replica,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.get_location: gapic_v1.method.wrap_method(
                 self.get_location,
                 default_timeout=None,
@@ -463,6 +468,15 @@ class CloudFilestoreManagerTransport(abc.ABC):
         self,
     ) -> Callable[
         [cloud_filestore_service.UpdateBackupRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def promote_replica(
+        self,
+    ) -> Callable[
+        [cloud_filestore_service.PromoteReplicaRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()
