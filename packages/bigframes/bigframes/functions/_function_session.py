@@ -489,7 +489,7 @@ class FunctionSession:
 
         if cloud_function_ingress_settings is None:
             cloud_function_ingress_settings = "all"
-            msg = (
+            msg = bfe.format_message(
                 "The `cloud_function_ingress_settings` are set to 'all' by default, "
                 "which will change to 'internal-only' for enhanced security in future version 2.0 onwards. "
                 "However, you will be able to explicitly pass cloud_function_ingress_settings='all' if you need. "
@@ -549,7 +549,7 @@ class FunctionSession:
                 (input_type := input_types[0]) == bf_series.Series
                 or input_type == pandas.Series
             ):
-                msg = "input_types=Series is in preview."
+                msg = bfe.format_message("input_types=Series is in preview.")
                 warnings.warn(msg, stacklevel=1, category=bfe.PreviewWarning)
 
                 # we will model the row as a json serialized string containing the data
@@ -836,7 +836,7 @@ class FunctionSession:
                 (input_type := input_types[0]) == bf_series.Series
                 or input_type == pandas.Series
             ):
-                msg = "input_types=Series is in preview."
+                msg = bfe.format_message("input_types=Series is in preview.")
                 warnings.warn(msg, stacklevel=1, category=bfe.PreviewWarning)
 
                 # we will model the row as a json serialized string containing

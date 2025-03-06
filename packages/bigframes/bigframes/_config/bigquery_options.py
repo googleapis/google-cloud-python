@@ -59,7 +59,9 @@ def _get_validated_location(value: Optional[str]) -> Optional[str]:
     # -> bpd.options.bigquery.location = "us-central-1"
     # -> location.setter
     # -> _get_validated_location
-    msg = UNKNOWN_LOCATION_MESSAGE.format(location=location, possibility=possibility)
+    msg = bfe.format_message(
+        UNKNOWN_LOCATION_MESSAGE.format(location=location, possibility=possibility)
+    )
     warnings.warn(msg, stacklevel=3, category=bfe.UnknownLocationWarning)
 
     return value
@@ -294,7 +296,7 @@ class BigQueryOptions:
             )
 
         if value:
-            msg = (
+            msg = bfe.format_message(
                 "Use of regional endpoints is a feature in preview and "
                 "available only in selected regions and projects. "
             )
@@ -354,7 +356,7 @@ class BigQueryOptions:
 
     @client_endpoints_override.setter
     def client_endpoints_override(self, value: dict):
-        msg = (
+        msg = bfe.format_message(
             "This is an advanced configuration option for directly setting endpoints. "
             "Incorrect use may lead to unexpected behavior or system instability. "
             "Proceed only if you fully understand its implications."

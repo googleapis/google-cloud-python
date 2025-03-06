@@ -39,7 +39,7 @@ def _try_close_session(session: bigframes.session.Session):
         session_id = session.session_id
         location = session._location
         project_id = session._project
-        msg = (
+        msg = bfe.format_message(
             f"Session cleanup failed for session with id: {session_id}, "
             f"location: {location}, project: {project_id}"
         )

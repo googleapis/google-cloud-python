@@ -164,13 +164,18 @@ def test_location_set_to_invalid_warning(invalid_location, possibility):
         options.location = invalid_location
 
     for op in [set_location_in_constructor, set_location_property]:
-        with pytest.warns(
-            bigframes.exceptions.UnknownLocationWarning,
-            match=re.escape(
-                f"The location '{invalid_location}' is set to an unknown value. Did you mean '{possibility}'?"
-            ),
-        ):
+        with warnings.catch_warnings(record=True) as w:
             op()
+
+            assert issubclass(
+                w[0].category, bigframes.exceptions.UnknownLocationWarning
+            )
+            assert (
+                f"The location '{invalid_location}' is set to an unknown value. "
+                in str(w[0].message)
+            )
+            # The message might contain newlines added by textwrap.fill.
+            assert possibility in str(w[0].message).replace("\n", "")
 
 
 def test_client_endpoints_override_set_shows_warning():

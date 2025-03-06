@@ -34,7 +34,7 @@ class ExperimentOptions:
     @semantic_operators.setter
     def semantic_operators(self, value: bool):
         if value is True:
-            msg = (
+            msg = bfe.format_message(
                 "Semantic operators are still under experiments, and are subject "
                 "to change in the future."
             )
@@ -48,7 +48,7 @@ class ExperimentOptions:
     @blob.setter
     def blob(self, value: bool):
         if value is True:
-            msg = (
+            msg = bfe.format_message(
                 "BigFrames Blob is still under experiments. It may not work and "
                 "subject to change in the future."
             )
@@ -62,7 +62,7 @@ class ExperimentOptions:
     @udf.setter
     def udf(self, value: bool):
         if value is True:
-            msg = (
+            msg = bfe.format_message(
                 "BigFrames managed function (udf) is still under experiments. "
                 "It may not work and subject to change in the future."
             )

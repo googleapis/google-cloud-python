@@ -1581,7 +1581,10 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         Returns:
             pyarrow.Table: A pyarrow Table with all rows and columns of this DataFrame.
         """
-        msg = "to_arrow is in preview. Types and unnamed / duplicate name columns may change in future."
+        msg = bfe.format_message(
+            "to_arrow is in preview. Types and unnamed or duplicate name columns may "
+            "change in future."
+        )
         warnings.warn(msg, category=bfe.PreviewWarning)
 
         pa_table, query_job = self._block.to_arrow(
@@ -4104,7 +4107,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         # to the applied function should be a Series, not a scalar.
 
         if utils.get_axis_number(axis) == 1:
-            msg = "axis=1 scenario is in preview."
+            msg = bfe.format_message("axis=1 scenario is in preview.")
             warnings.warn(msg, category=bfe.PreviewWarning)
 
             # TODO(jialuo): Deprecate the "bigframes_remote_function" attribute.

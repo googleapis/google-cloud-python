@@ -59,7 +59,7 @@ def get_table_metadata(
         # Cache hit could be unexpected. See internal issue 329545805.
         # Raise a warning with more information about how to avoid the
         # problems with the cache.
-        msg = (
+        msg = bfe.format_message(
             f"Reading cached table from {snapshot_timestamp} to avoid "
             "incompatibilies with previous reads of this table. To read "
             "the latest version, set `use_cache=False` or close the "
@@ -104,7 +104,7 @@ def validate_table(
     # Only true tables support time travel
     elif table.table_type != "TABLE":
         if table.table_type == "MATERIALIZED_VIEW":
-            msg = (
+            msg = bfe.format_message(
                 "Materialized views do not support FOR SYSTEM_TIME AS OF queries. "
                 "Attempting query without time travel. Be aware that as materialized views "
                 "are updated periodically, modifications to the underlying data in the view may "
@@ -142,7 +142,7 @@ def validate_table(
         snapshot_sql, job_config=bigquery.QueryJobConfig(dry_run=True)
     )
     if time_travel_not_found:
-        msg = (
+        msg = bfe.format_message(
             "NotFound error when reading table with time travel."
             " Attempting query without time travel. Warning: Without"
             " time travel, modifications to the underlying table may"
@@ -269,7 +269,7 @@ def get_index_cols(
         # resource utilization because of the default sequential index. See
         # internal issue 335727141.
         if _is_table_clustered_or_partitioned(table) and not primary_keys:
-            msg = (
+            msg = bfe.format_message(
                 f"Table '{str(table.reference)}' is clustered and/or "
                 "partitioned, but BigQuery DataFrames was not able to find a "
                 "suitable index. To avoid this warning, set at least one of: "

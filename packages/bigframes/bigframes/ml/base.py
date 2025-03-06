@@ -27,6 +27,7 @@ import warnings
 
 import bigframes_vendored.sklearn.base
 
+import bigframes.exceptions as bfe
 from bigframes.ml import core
 import bigframes.ml.utils as utils
 import bigframes.pandas as bpd
@@ -269,7 +270,7 @@ class RetriableRemotePredictor(BaseEstimator):
 
             if df_succ.empty:
                 if max_retries > 0:
-                    msg = "Can't make any progress, stop retrying."
+                    msg = bfe.format_message("Can't make any progress, stop retrying.")
                     warnings.warn(msg, category=RuntimeWarning)
                 break
 
@@ -281,7 +282,7 @@ class RetriableRemotePredictor(BaseEstimator):
                 break
 
         if not df_fail.empty:
-            msg = (
+            msg = bfe.format_message(
                 f"Some predictions failed. Check column {self._status_col} for detailed "
                 "status. You may want to filter the failed rows and retry."
             )

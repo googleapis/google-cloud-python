@@ -64,6 +64,7 @@ import bigframes.core.sql as sql
 import bigframes.core.utils as utils
 import bigframes.core.window_spec as windows
 import bigframes.dtypes
+import bigframes.exceptions as bfe
 import bigframes.features
 import bigframes.operations as ops
 import bigframes.operations.aggregations as agg_ops
@@ -630,12 +631,12 @@ class Block:
             # Since we cannot acquire the table size without a query_job,
             # we skip the sampling.
             if sample_config.enable_downsampling:
-                warnings.warn(
+                msg = bfe.format_message(
                     "Sampling is disabled and there is no download size limit when 'allow_large_results' is set to "
                     "False. To prevent downloading excessive data, it is recommended to use the peek() method, or "
-                    "limit the data with methods like .head() or .sample() before proceeding with downloads.",
-                    UserWarning,
+                    "limit the data with methods like .head() or .sample() before proceeding with downloads."
                 )
+                warnings.warn(msg, category=UserWarning)
             fraction = 2
 
         # TODO: Maybe materialize before downsampling
@@ -652,7 +653,7 @@ class Block:
                     " # Setting it to None will download all the data\n"
                     f"{constants.FEEDBACK_LINK}"
                 )
-            msg = (
+            msg = bfe.format_message(
                 f"The data size ({table_mb:.2f} MB) exceeds the maximum download limit of"
                 f"({max_download_size} MB). It will be downsampled to {max_download_size} "
                 "MB for download.\nPlease refer to the documentation for configuring "

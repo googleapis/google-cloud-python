@@ -372,7 +372,9 @@ def _to_bigtable(
             For example, the job can be cancelled or its error status
             can be examined.
     """
-    msg = "The bigframes.streaming module is a preview feature, and subject to change."
+    msg = bfe.format_message(
+        "The bigframes.streaming module is a preview feature, and subject to change."
+    )
     warnings.warn(msg, stacklevel=1, category=bfe.PreviewWarning)
 
     # get default client if not passed
@@ -484,7 +486,9 @@ def _to_pubsub(
             For example, the job can be cancelled or its error status
             can be examined.
     """
-    msg = "The bigframes.streaming module is a preview feature, and subject to change."
+    msg = bfe.format_message(
+        "The bigframes.streaming module is a preview feature, and subject to change."
+    )
     warnings.warn(msg, stacklevel=1, category=bfe.PreviewWarning)
 
     # get default client if not passed

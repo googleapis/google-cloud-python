@@ -32,6 +32,7 @@ import google.cloud.resourcemanager_v3
 import pydata_google_auth
 
 import bigframes.constants
+import bigframes.exceptions as bfe
 import bigframes.version
 
 _ENV_DEFAULT_PROJECT = "GOOGLE_CLOUD_PROJECT"
@@ -102,12 +103,13 @@ class ClientsProvider:
             and location.lower()
             not in bigframes.constants.REP_ENABLED_BIGQUERY_LOCATIONS
         ):
-            warnings.warn(
+            msg = bfe.format_message(
                 bigframes.constants.LEP_DEPRECATION_WARNING_MESSAGE.format(
                     location=location
                 ),
-                category=FutureWarning,
+                fill=False,
             )
+            warnings.warn(msg, category=FutureWarning)
         self._location = location
         self._use_regional_endpoints = use_regional_endpoints
 

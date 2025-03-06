@@ -165,7 +165,7 @@ def _(
 ) -> ibis_types.NumericValue:
     # Will be null if all inputs are null. Pandas defaults to zero sum though.
     bq_sum = _apply_window_if_present(column.sum(), window)
-    return bq_sum.fillna(ibis_types.literal(0))
+    return bq_sum.fill_null(ibis_types.literal(0))
 
 
 @compile_unary_agg.register
@@ -610,12 +610,7 @@ def _(
     result = _apply_window_if_present(_is_true(column).all(), window)
     literal = ibis_types.literal(True)
 
-    return cast(
-        ibis_types.BooleanScalar,
-        result.fill_null(literal)
-        if hasattr(result, "fill_null")
-        else result.fillna(literal),
-    )
+    return cast(ibis_types.BooleanScalar, result.fill_null(literal))
 
 
 @compile_unary_agg.register
@@ -628,12 +623,7 @@ def _(
     result = _apply_window_if_present(_is_true(column).any(), window)
     literal = ibis_types.literal(False)
 
-    return cast(
-        ibis_types.BooleanScalar,
-        result.fill_null(literal)
-        if hasattr(result, "fill_null")
-        else result.fillna(literal),
-    )
+    return cast(ibis_types.BooleanScalar, result.fill_null(literal))
 
 
 @compile_ordered_unary_agg.register

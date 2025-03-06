@@ -48,6 +48,7 @@ import bigframes.core.ordering as order
 import bigframes.core.schema
 import bigframes.core.tree_properties as tree_properties
 import bigframes.dtypes
+import bigframes.exceptions as bfe
 import bigframes.features
 import bigframes.session._io.bigquery as bq_io
 import bigframes.session.metrics
@@ -271,13 +272,13 @@ class BigQueryCachingExecutor(Executor):
             size_bytes = None
 
         if size_bytes is not None and size_bytes >= MAX_SMALL_RESULT_BYTES:
-            warnings.warn(
+            msg = bfe.format_message(
                 "The query result size has exceeded 10 GB. In BigFrames 2.0 and "
                 "later, you might need to manually set `allow_large_results=True` in "
                 "the IO method or adjust the BigFrames option: "
-                "`bigframes.options.bigquery.allow_large_results=True`.",
-                FutureWarning,
+                "`bigframes.options.bigquery.allow_large_results=True`."
             )
+            warnings.warn(msg, FutureWarning)
         # Runs strict validations to ensure internal type predictions and ibis are completely in sync
         # Do not execute these validations outside of testing suite.
         if "PYTEST_CURRENT_TEST" in os.environ:
@@ -383,7 +384,7 @@ class BigQueryCachingExecutor(Executor):
         """
         plan = self.replace_cached_subtrees(array_value.node)
         if not tree_properties.can_fast_peek(plan):
-            msg = "Peeking this value cannot be done efficiently."
+            msg = bfe.format_message("Peeking this value cannot be done efficiently.")
             warnings.warn(msg)
         if use_explicit_destination is None:
             use_explicit_destination = bigframes.options.bigquery.allow_large_results

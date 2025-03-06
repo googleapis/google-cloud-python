@@ -929,7 +929,7 @@ def test_read_gbq_function_requires_explicit_types(
     )
     with pytest.warns(
         bigframes.exceptions.UnknownDataTypeWarning,
-        match="missing input data types.*assume default data type",
+        match=r"missing input data types[\s\S]*assume default data type",
     ):
         bff.read_gbq_function(
             str(only_return_type_specified.reference),

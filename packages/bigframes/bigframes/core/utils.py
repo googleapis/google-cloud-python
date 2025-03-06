@@ -196,7 +196,7 @@ def preview(*, name: str):
 
         @functools.wraps(func)
         def wrapper(*args, **kwargs):
-            warnings.warn(msg, category=bfe.PreviewWarning)
+            warnings.warn(bfe.format_message(msg), category=bfe.PreviewWarning)
             return func(*args, **kwargs)
 
         return wrapper

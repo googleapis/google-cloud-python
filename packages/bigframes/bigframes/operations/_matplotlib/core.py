@@ -20,6 +20,7 @@ import bigframes_vendored.constants as constants
 import pandas as pd
 
 import bigframes.dtypes as dtypes
+import bigframes.exceptions as bfe
 
 DEFAULT_SAMPLING_N = 1000
 DEFAULT_SAMPLING_STATE = 0
@@ -70,10 +71,12 @@ class SamplingPlot(MPLPlot):
         if self._sampling_warning_msg is not None:
             total_n = data.shape[0]
             if sampling_n < total_n:
-                msg = self._sampling_warning_msg.format(
-                    sampling_n=sampling_n, total_n=total_n
+                msg = bfe.format_message(
+                    self._sampling_warning_msg.format(
+                        sampling_n=sampling_n, total_n=total_n
+                    )
                 )
-                warnings.warn(msg)
+                warnings.warn(msg, category=UserWarning)
 
         sampling_random_state = self.kwargs.pop(
             "sampling_random_state", DEFAULT_SAMPLING_STATE

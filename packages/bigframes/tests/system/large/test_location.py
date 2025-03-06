@@ -163,11 +163,7 @@ def test_bq_lep_endpoints(bigquery_location):
             location=bigquery_location, use_regional_endpoints=True
         )
         assert len(record) == 1
-        assert typing.cast(Warning, record[0].message).args[
-            0
-        ] == bigframes.constants.LEP_DEPRECATION_WARNING_MESSAGE.format(
-            location=bigquery_location
-        )
+        assert bigquery_location in typing.cast(Warning, record[0].message).args[0]
 
     # Verify that location and endpoints are correctly set for the BigQuery API
     # client

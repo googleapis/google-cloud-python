@@ -231,7 +231,7 @@ def read_gbq_function(
             )
         function_input_dtypes.append(input_dtype)
     if has_unknown_dtypes:
-        msg = (
+        msg = bfe.format_message(
             "The function has one or more missing input data types. BigQuery DataFrames "
             f"will assume default data type {bigframes.dtypes.DEFAULT_DTYPE} for them."
         )

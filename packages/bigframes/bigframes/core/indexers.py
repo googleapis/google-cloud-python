@@ -407,7 +407,7 @@ def _struct_accessor_check_and_warn(
         return
 
     if not bigframes.dtypes.is_string_like(series.index.dtype):
-        msg = (
+        msg = bfe.format_message(
             "Are you trying to access struct fields? If so, please use Series.struct.field(...) "
             "method instead."
         )

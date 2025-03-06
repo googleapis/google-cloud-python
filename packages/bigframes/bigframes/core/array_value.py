@@ -107,8 +107,8 @@ class ArrayValue:
         if offsets_col and primary_key:
             raise ValueError("must set at most one of 'offests', 'primary_key'")
         if any(i.field_type == "JSON" for i in table.schema if i.name in schema.names):
-            msg = (
-                "Interpreting JSON column(s) as the `db_dtypes.dbjson` extension type is"
+            msg = bfe.format_message(
+                "Interpreting JSON column(s) as the `db_dtypes.dbjson` extension type is "
                 "in preview; this behavior may change in future versions."
             )
             warnings.warn(msg, bfe.PreviewWarning)
@@ -232,7 +232,9 @@ class ArrayValue:
         self, start: Optional[int], stop: Optional[int], step: Optional[int]
     ) -> ArrayValue:
         if self.node.order_ambiguous and not (self.session._strictly_ordered):
-            msg = "Window ordering may be ambiguous, this can cause unstable results."
+            msg = bfe.format_message(
+                "Window ordering may be ambiguous, this can cause unstable results."
+            )
             warnings.warn(msg, bfe.AmbiguousWindowWarning)
         return ArrayValue(
             nodes.SliceNode(
@@ -254,7 +256,7 @@ class ArrayValue:
                     "Generating offsets not supported in partial ordering mode"
                 )
             else:
-                msg = (
+                msg = bfe.format_message(
                     "Window ordering may be ambiguous, this can cause unstable results."
                 )
                 warnings.warn(msg, category=bfe.AmbiguousWindowWarning)
@@ -417,7 +419,9 @@ class ArrayValue:
                         "Generating offsets not supported in partial ordering mode"
                     )
                 else:
-                    msg = "Window ordering may be ambiguous, this can cause unstable results."
+                    msg = bfe.format_message(
+                        "Window ordering may be ambiguous, this can cause unstable results."
+                    )
                     warnings.warn(msg, category=bfe.AmbiguousWindowWarning)
 
         output_name = self._gen_namespaced_uid()

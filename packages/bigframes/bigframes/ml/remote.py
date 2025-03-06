@@ -21,6 +21,7 @@ import warnings
 
 from bigframes.core import global_session, log_adapter
 import bigframes.dataframe
+import bigframes.exceptions as bfe
 from bigframes.ml import base, core, globals, utils
 import bigframes.session
 
@@ -119,7 +120,7 @@ class VertexAIModel(base.BaseEstimator):
 
         # unlike LLM models, the general remote model status is null for successful runs.
         if (df[_REMOTE_MODEL_STATUS].notna()).any():
-            msg = (
+            msg = bfe.format_message(
                 f"Some predictions failed. Check column {_REMOTE_MODEL_STATUS} for "
                 "detailed status. You may want to filter the failed rows and retry."
             )
