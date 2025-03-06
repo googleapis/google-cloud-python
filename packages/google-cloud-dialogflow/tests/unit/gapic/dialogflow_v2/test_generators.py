@@ -1101,6 +1101,7 @@ def test_create_generator(request_type, transport: str = "grpc"):
             name="name_value",
             description="description_value",
             trigger_event=gcd_generator.TriggerEvent.END_OF_UTTERANCE,
+            published_model="published_model_value",
         )
         response = client.create_generator(request)
 
@@ -1456,6 +1457,7 @@ def test_get_generator(request_type, transport: str = "grpc"):
             name="name_value",
             description="description_value",
             trigger_event=generator.TriggerEvent.END_OF_UTTERANCE,
+            published_model="published_model_value",
         )
         response = client.get_generator(request)
 
@@ -2615,6 +2617,7 @@ def test_update_generator(request_type, transport: str = "grpc"):
             name="name_value",
             description="description_value",
             trigger_event=gcd_generator.TriggerEvent.END_OF_UTTERANCE,
+            published_model="published_model_value",
         )
         response = client.update_generator(request)
 
@@ -4325,6 +4328,7 @@ def test_create_generator_rest_call_success(request_type):
     request_init["generator"] = {
         "name": "name_value",
         "description": "description_value",
+        "free_form_context": {"text": "text_value"},
         "summarization_context": {
             "summarization_sections": [
                 {"key": "key_value", "definition": "definition_value", "type_": 1}
@@ -4344,11 +4348,12 @@ def test_create_generator_rest_call_success(request_type):
                     "extra_info": {},
                     "summarization_section_list": {"summarization_sections": {}},
                     "output": {
+                        "free_form_suggestion": {"response": "response_value"},
                         "summary_suggestion": {
                             "summary_sections": [
                                 {"section": "section_value", "summary": "summary_value"}
                             ]
-                        }
+                        },
                     },
                 }
             ],
@@ -4362,6 +4367,7 @@ def test_create_generator_rest_call_success(request_type):
             "top_p": 0.546,
         },
         "trigger_event": 1,
+        "published_model": "published_model_value",
         "create_time": {},
         "update_time": {},
     }
@@ -4441,6 +4447,7 @@ def test_create_generator_rest_call_success(request_type):
             name="name_value",
             description="description_value",
             trigger_event=gcd_generator.TriggerEvent.END_OF_UTTERANCE,
+            published_model="published_model_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -4570,6 +4577,7 @@ def test_get_generator_rest_call_success(request_type):
             name="name_value",
             description="description_value",
             trigger_event=generator.TriggerEvent.END_OF_UTTERANCE,
+            published_model="published_model_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -4933,6 +4941,7 @@ def test_update_generator_rest_call_success(request_type):
     request_init["generator"] = {
         "name": "projects/sample1/locations/sample2/generators/sample3",
         "description": "description_value",
+        "free_form_context": {"text": "text_value"},
         "summarization_context": {
             "summarization_sections": [
                 {"key": "key_value", "definition": "definition_value", "type_": 1}
@@ -4952,11 +4961,12 @@ def test_update_generator_rest_call_success(request_type):
                     "extra_info": {},
                     "summarization_section_list": {"summarization_sections": {}},
                     "output": {
+                        "free_form_suggestion": {"response": "response_value"},
                         "summary_suggestion": {
                             "summary_sections": [
                                 {"section": "section_value", "summary": "summary_value"}
                             ]
-                        }
+                        },
                     },
                 }
             ],
@@ -4970,6 +4980,7 @@ def test_update_generator_rest_call_success(request_type):
             "top_p": 0.546,
         },
         "trigger_event": 1,
+        "published_model": "published_model_value",
         "create_time": {},
         "update_time": {},
     }
@@ -5049,6 +5060,7 @@ def test_update_generator_rest_call_success(request_type):
             name="name_value",
             description="description_value",
             trigger_event=gcd_generator.TriggerEvent.END_OF_UTTERANCE,
+            published_model="published_model_value",
         )
 
         # Wrap the value into a proper Response obj

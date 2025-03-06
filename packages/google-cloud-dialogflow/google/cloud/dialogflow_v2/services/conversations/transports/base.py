@@ -29,6 +29,7 @@ from google.oauth2 import service_account  # type: ignore
 from google.cloud.dialogflow_v2 import gapic_version as package_version
 from google.cloud.dialogflow_v2.types import conversation
 from google.cloud.dialogflow_v2.types import conversation as gcd_conversation
+from google.cloud.dialogflow_v2.types import participant
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
@@ -154,6 +155,11 @@ class ConversationsTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.ingest_context_references: gapic_v1.method.wrap_method(
+                self.ingest_context_references,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.list_messages: gapic_v1.method.wrap_method(
                 self.list_messages,
                 default_timeout=None,
@@ -176,6 +182,11 @@ class ConversationsTransport(abc.ABC):
             ),
             self.search_knowledge: gapic_v1.method.wrap_method(
                 self.search_knowledge,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.generate_suggestions: gapic_v1.method.wrap_method(
+                self.generate_suggestions,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -255,6 +266,18 @@ class ConversationsTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
+    def ingest_context_references(
+        self,
+    ) -> Callable[
+        [gcd_conversation.IngestContextReferencesRequest],
+        Union[
+            gcd_conversation.IngestContextReferencesResponse,
+            Awaitable[gcd_conversation.IngestContextReferencesResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
     def list_messages(
         self,
     ) -> Callable[
@@ -310,6 +333,18 @@ class ConversationsTransport(abc.ABC):
         Union[
             conversation.SearchKnowledgeResponse,
             Awaitable[conversation.SearchKnowledgeResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def generate_suggestions(
+        self,
+    ) -> Callable[
+        [gcd_conversation.GenerateSuggestionsRequest],
+        Union[
+            participant.GenerateSuggestionsResponse,
+            Awaitable[participant.GenerateSuggestionsResponse],
         ],
     ]:
         raise NotImplementedError()

@@ -39,8 +39,12 @@ def sample_create_generator():
     client = dialogflow_v2.GeneratorsClient()
 
     # Initialize request argument(s)
+    generator = dialogflow_v2.Generator()
+    generator.published_model = "published_model_value"
+
     request = dialogflow_v2.CreateGeneratorRequest(
         parent="parent_value",
+        generator=generator,
     )
 
     # Make the request

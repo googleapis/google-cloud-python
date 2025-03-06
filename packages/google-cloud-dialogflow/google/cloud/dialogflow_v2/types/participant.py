@@ -24,7 +24,7 @@ from google.rpc import status_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.dialogflow_v2.types import audio_config as gcd_audio_config
-from google.cloud.dialogflow_v2.types import session
+from google.cloud.dialogflow_v2.types import generator, session
 
 __protobuf__ = proto.module(
     package="google.cloud.dialogflow.v2",
@@ -45,6 +45,7 @@ __protobuf__ = proto.module(
         "SuggestArticlesResponse",
         "SuggestFaqAnswersRequest",
         "SuggestFaqAnswersResponse",
+        "GenerateSuggestionsResponse",
         "SuggestSmartRepliesRequest",
         "SuggestSmartRepliesResponse",
         "AudioInput",
@@ -1113,6 +1114,65 @@ class SuggestFaqAnswersResponse(proto.Message):
     )
 
 
+class GenerateSuggestionsResponse(proto.Message):
+    r"""The response message for
+    [Conversations.GenerateSuggestions][google.cloud.dialogflow.v2.Conversations.GenerateSuggestions].
+
+    Attributes:
+        generator_suggestion_answers (MutableSequence[google.cloud.dialogflow_v2.types.GenerateSuggestionsResponse.GeneratorSuggestionAnswer]):
+            The answers generated for the conversation
+            based on context.
+        latest_message (str):
+            The name of the latest conversation message used as context
+            for compiling suggestion.
+
+            Format:
+            ``projects/<Project ID>/locations/<Location ID>/conversations/<Conversation ID>/messages/<Message ID>``.
+    """
+
+    class GeneratorSuggestionAnswer(proto.Message):
+        r"""A GeneratorSuggestion answer.
+
+        Attributes:
+            generator_suggestion (google.cloud.dialogflow_v2.types.GeneratorSuggestion):
+                Suggestion details.
+            source_generator (str):
+                The name of the generator used to generate this suggestion.
+                Format:
+                ``projects/<Project ID>/locations/<Location ID>/generators/<Generator ID>``.
+            answer_record (str):
+                Answer record that uniquely identifies the
+                suggestion. This can be used to provide
+                suggestion feedback.
+        """
+
+        generator_suggestion: generator.GeneratorSuggestion = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            message=generator.GeneratorSuggestion,
+        )
+        source_generator: str = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+        answer_record: str = proto.Field(
+            proto.STRING,
+            number=3,
+        )
+
+    generator_suggestion_answers: MutableSequence[
+        GeneratorSuggestionAnswer
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=GeneratorSuggestionAnswer,
+    )
+    latest_message: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
 class SuggestSmartRepliesRequest(proto.Message):
     r"""The request message for
     [Participants.SuggestSmartReplies][google.cloud.dialogflow.v2.Participants.SuggestSmartReplies].
@@ -1567,6 +1627,11 @@ class SuggestionResult(proto.Message):
             SuggestSmartRepliesResponse if request is for SMART_REPLY.
 
             This field is a member of `oneof`_ ``suggestion_response``.
+        generate_suggestions_response (google.cloud.dialogflow_v2.types.GenerateSuggestionsResponse):
+            Suggestions generated using generators
+            triggered by customer or agent messages.
+
+            This field is a member of `oneof`_ ``suggestion_response``.
     """
 
     error: status_pb2.Status = proto.Field(
@@ -1598,6 +1663,12 @@ class SuggestionResult(proto.Message):
         number=4,
         oneof="suggestion_response",
         message="SuggestSmartRepliesResponse",
+    )
+    generate_suggestions_response: "GenerateSuggestionsResponse" = proto.Field(
+        proto.MESSAGE,
+        number=9,
+        oneof="suggestion_response",
+        message="GenerateSuggestionsResponse",
     )
 
 
