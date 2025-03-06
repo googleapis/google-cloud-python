@@ -40,6 +40,8 @@ from google.cloud.spanner_v1.batch import Batch
 from google.cloud.spanner_v1.snapshot import Snapshot
 from google.cloud.spanner_v1.transaction import Transaction
 
+from google.cloud.spanner_v1.metrics.metrics_capture import MetricsCapture
+
 
 DEFAULT_RETRY_TIMEOUT_SECS = 30
 """Default timeout used by :meth:`Session.run_in_transaction`."""
@@ -165,7 +167,7 @@ class Session(object):
             self,
             self._labels,
             observability_options=observability_options,
-        ):
+        ), MetricsCapture():
             session_pb = api.create_session(
                 request=request,
                 metadata=metadata,
@@ -205,7 +207,7 @@ class Session(object):
         observability_options = getattr(self._database, "observability_options", None)
         with trace_call(
             "CloudSpanner.GetSession", self, observability_options=observability_options
-        ) as span:
+        ) as span, MetricsCapture():
             try:
                 api.get_session(name=self.name, metadata=metadata)
                 if span:
@@ -248,7 +250,7 @@ class Session(object):
                 "session.name": self.name,
             },
             observability_options=observability_options,
-        ):
+        ), MetricsCapture():
             api.delete_session(name=self.name, metadata=metadata)
 
     def ping(self):
@@ -467,7 +469,7 @@ class Session(object):
             "CloudSpanner.Session.run_in_transaction",
             self,
             observability_options=observability_options,
-        ) as span:
+        ) as span, MetricsCapture():
             while True:
                 if self._transaction is None:
                     txn = self.transaction()

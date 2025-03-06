@@ -32,6 +32,8 @@ from google.cloud.spanner_v1._opentelemetry_tracing import (
 )
 from warnings import warn
 
+from google.cloud.spanner_v1.metrics.metrics_capture import MetricsCapture
+
 _NOW = datetime.datetime.utcnow  # unit tests may replace
 
 
@@ -242,7 +244,7 @@ class FixedSizePool(AbstractSessionPool):
         with trace_call(
             "CloudSpanner.FixedPool.BatchCreateSessions",
             observability_options=observability_options,
-        ) as span:
+        ) as span, MetricsCapture():
             returned_session_count = 0
             while not self._sessions.full():
                 request.session_count = requested_session_count - self._sessions.qsize()
@@ -552,7 +554,7 @@ class PingingPool(AbstractSessionPool):
         with trace_call(
             "CloudSpanner.PingingPool.BatchCreateSessions",
             observability_options=observability_options,
-        ) as span:
+        ) as span, MetricsCapture():
             returned_session_count = 0
             while returned_session_count < self.size:
                 resp = api.batch_create_sessions(

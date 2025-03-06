@@ -1,4 +1,4 @@
-# Copyright 2016 Google LLC All rights reserved.
+﻿# Copyright 2025 Google LLC All rights reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -333,7 +333,7 @@ if HAS_OPENTELEMETRY_INSTALLED:
             self.assertEqual(len(mockClient.create_service_time_series.mock_calls), 2)
 
         @patch(
-            "google.cloud.spanner_v1.metrics.metrics_exporter.HAS_DEPENDENCIES_INSTALLED",
+            "google.cloud.spanner_v1.metrics.metrics_exporter.HAS_OPENTELEMETRY_INSTALLED",
             False,
         )
         def test_export_early_exit_if_extras_not_installed(self):

@@ -181,10 +181,16 @@ class TestTags(MockServerTestBase):
             # This query will not have a request tag.
             cursor.execute("select name from singers")
         requests = self.spanner_service.requests
-        self.assertTrue(isinstance(requests[1], ExecuteSqlRequest))
-        self.assertTrue(isinstance(requests[2], ExecuteSqlRequest))
-        self.assertEqual("my_tag", requests[1].request_options.request_tag)
-        self.assertEqual("", requests[2].request_options.request_tag)
+
+        # Filter for SQL requests calls
+        sql_requests = [
+            request for request in requests if isinstance(request, ExecuteSqlRequest)
+        ]
+
+        self.assertTrue(isinstance(sql_requests[0], ExecuteSqlRequest))
+        self.assertTrue(isinstance(sql_requests[1], ExecuteSqlRequest))
+        self.assertEqual("my_tag", sql_requests[0].request_options.request_tag)
+        self.assertEqual("", sql_requests[1].request_options.request_tag)
 
     def _execute_and_verify_select_singers(
         self, connection: Connection, request_tag: str = "", transaction_tag: str = ""

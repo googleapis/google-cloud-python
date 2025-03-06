@@ -14,6 +14,7 @@
 
 import unittest
 
+import os
 import mock
 from google.cloud.spanner_v1 import DirectedReadOptions
 
@@ -158,6 +159,8 @@ class TestClient(unittest.TestCase):
         creds = _make_credentials()
         self._constructor_test_helper(expected_scopes, creds, client_info=client_info)
 
+    # Disable metrics to avoid google.auth.default calls from Metric Exporter
+    @mock.patch.dict(os.environ, {"SPANNER_ENABLE_BUILTIN_METRICS": ""})
     def test_constructor_implicit_credentials(self):
         from google.cloud.spanner_v1 import client as MUT
 

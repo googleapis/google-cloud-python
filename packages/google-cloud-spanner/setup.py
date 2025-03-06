@@ -50,7 +50,9 @@ extras = {
         "opentelemetry-api >= 1.22.0",
         "opentelemetry-sdk >= 1.22.0",
         "opentelemetry-semantic-conventions >= 0.43b0",
+        "opentelemetry-resourcedetector-gcp >= 1.8.0a0",
         "google-cloud-monitoring >= 2.16.0",
+        "mmh3 >= 4.1.0 ",
     ],
     "libcst": "libcst >= 0.2.5",
 }

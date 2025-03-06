@@ -1,4 +1,4 @@
-﻿# Copyright 2025 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,6 +15,12 @@
 BUILT_IN_METRICS_METER_NAME = "gax-python"
 NATIVE_METRICS_PREFIX = "spanner.googleapis.com/internal/client"
 SPANNER_RESOURCE_TYPE = "spanner_instance_client"
+SPANNER_SERVICE_NAME = "spanner-python"
+GOOGLE_CLOUD_RESOURCE_KEY = "google-cloud-resource-prefix"
+GOOGLE_CLOUD_REGION_KEY = "cloud.region"
+GOOGLE_CLOUD_REGION_GLOBAL = "global"
+SPANNER_METHOD_PREFIX = "/google.spanner.v1."
+ENABLE_SPANNER_METRICS_ENV_VAR = "SPANNER_ENABLE_BUILTIN_METRICS"
 
 # Monitored resource labels
 MONITORED_RES_LABEL_KEY_PROJECT = "project_id"
@@ -61,3 +67,5 @@ METRIC_NAMES = [
     METRIC_NAME_OPERATION_COUNT,
     METRIC_NAME_ATTEMPT_COUNT,
 ]
+
+METRIC_EXPORT_INTERVAL_MS = 60000  # 1 Minute

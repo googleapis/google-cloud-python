@@ -485,6 +485,7 @@ def test_spanner_client_client_options(client_class, transport_class, transport_
             client_info=transports.base.DEFAULT_CLIENT_INFO,
             always_use_jwt_access=True,
             api_audience=None,
+            metrics_interceptor=mock.ANY,
         )
 
     # Check the case api_endpoint is not provided and GOOGLE_API_USE_MTLS_ENDPOINT is
@@ -505,6 +506,7 @@ def test_spanner_client_client_options(client_class, transport_class, transport_
                 client_info=transports.base.DEFAULT_CLIENT_INFO,
                 always_use_jwt_access=True,
                 api_audience=None,
+                metrics_interceptor=mock.ANY,
             )
 
     # Check the case api_endpoint is not provided and GOOGLE_API_USE_MTLS_ENDPOINT is
@@ -523,6 +525,7 @@ def test_spanner_client_client_options(client_class, transport_class, transport_
                 client_info=transports.base.DEFAULT_CLIENT_INFO,
                 always_use_jwt_access=True,
                 api_audience=None,
+                metrics_interceptor=mock.ANY,
             )
 
     # Check the case api_endpoint is not provided and GOOGLE_API_USE_MTLS_ENDPOINT has
@@ -563,6 +566,7 @@ def test_spanner_client_client_options(client_class, transport_class, transport_
             client_info=transports.base.DEFAULT_CLIENT_INFO,
             always_use_jwt_access=True,
             api_audience=None,
+            metrics_interceptor=mock.ANY,
         )
     # Check the case api_endpoint is provided
     options = client_options.ClientOptions(
@@ -583,6 +587,7 @@ def test_spanner_client_client_options(client_class, transport_class, transport_
             client_info=transports.base.DEFAULT_CLIENT_INFO,
             always_use_jwt_access=True,
             api_audience="https://language.googleapis.com",
+            metrics_interceptor=mock.ANY,
         )
 
 
@@ -655,6 +660,7 @@ def test_spanner_client_mtls_env_auto(
                 client_info=transports.base.DEFAULT_CLIENT_INFO,
                 always_use_jwt_access=True,
                 api_audience=None,
+                metrics_interceptor=mock.ANY,
             )
 
     # Check the case ADC client cert is provided. Whether client cert is used depends on
@@ -692,6 +698,7 @@ def test_spanner_client_mtls_env_auto(
                         client_info=transports.base.DEFAULT_CLIENT_INFO,
                         always_use_jwt_access=True,
                         api_audience=None,
+                        metrics_interceptor=mock.ANY,
                     )
 
     # Check the case client_cert_source and ADC client cert are not provided.
@@ -717,6 +724,7 @@ def test_spanner_client_mtls_env_auto(
                     client_info=transports.base.DEFAULT_CLIENT_INFO,
                     always_use_jwt_access=True,
                     api_audience=None,
+                    metrics_interceptor=mock.ANY,
                 )
 
 
@@ -932,6 +940,7 @@ def test_spanner_client_client_options_scopes(
             client_info=transports.base.DEFAULT_CLIENT_INFO,
             always_use_jwt_access=True,
             api_audience=None,
+            metrics_interceptor=mock.ANY,
         )
 
 
@@ -969,6 +978,7 @@ def test_spanner_client_client_options_credentials_file(
             client_info=transports.base.DEFAULT_CLIENT_INFO,
             always_use_jwt_access=True,
             api_audience=None,
+            metrics_interceptor=mock.ANY,
         )
 
 
@@ -988,6 +998,7 @@ def test_spanner_client_client_options_from_dict():
             client_info=transports.base.DEFAULT_CLIENT_INFO,
             always_use_jwt_access=True,
             api_audience=None,
+            metrics_interceptor=mock.ANY,
         )
 
 
@@ -1024,6 +1035,7 @@ def test_spanner_client_create_channel_credentials_file(
             client_info=transports.base.DEFAULT_CLIENT_INFO,
             always_use_jwt_access=True,
             api_audience=None,
+            metrics_interceptor=mock.ANY,
         )
 
     # test that the credentials from file are saved and used as the credentials.
@@ -12717,4 +12729,5 @@ def test_api_key_credentials(client_class, transport_class):
                 client_info=transports.base.DEFAULT_CLIENT_INFO,
                 always_use_jwt_access=True,
                 api_audience=None,
+                metrics_interceptor=mock.ANY,
             )

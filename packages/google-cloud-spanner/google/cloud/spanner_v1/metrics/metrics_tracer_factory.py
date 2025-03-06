@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -32,6 +31,8 @@ from google.cloud.spanner_v1.metrics.constants import (
     METRIC_LABEL_KEY_DATABASE,
     METRIC_LABEL_KEY_DIRECT_PATH_ENABLED,
     BUILT_IN_METRICS_METER_NAME,
+    METRIC_NAME_GFE_LATENCY,
+    METRIC_NAME_GFE_MISSING_HEADER_COUNT,
 )
 
 from typing import Dict
@@ -50,26 +51,29 @@ class MetricsTracerFactory:
     """Factory class for creating MetricTracer instances. This class facilitates the creation of MetricTracer objects, which are responsible for collecting and tracing metrics."""
 
     enabled: bool
-    _instrument_attempt_latency: Histogram
-    _instrument_attempt_counter: Counter
-    _instrument_operation_latency: Histogram
-    _instrument_operation_counter: Counter
+    gfe_enabled: bool
+    _instrument_attempt_latency: "Histogram"
+    _instrument_attempt_counter: "Counter"
+    _instrument_operation_latency: "Histogram"
+    _instrument_operation_counter: "Counter"
+    _instrument_gfe_latency: "Histogram"
+    _instrument_gfe_missing_header_count: "Counter"
     _client_attributes: Dict[str, str]
 
     @property
-    def instrument_attempt_latency(self) -> Histogram:
+    def instrument_attempt_latency(self) -> "Histogram":
         return self._instrument_attempt_latency
 
     @property
-    def instrument_attempt_counter(self) -> Counter:
+    def instrument_attempt_counter(self) -> "Counter":
         return self._instrument_attempt_counter
 
     @property
-    def instrument_operation_latency(self) -> Histogram:
+    def instrument_operation_latency(self) -> "Histogram":
         return self._instrument_operation_latency
 
     @property
-    def instrument_operation_counter(self) -> Counter:
+    def instrument_operation_counter(self) -> "Counter":
         return self._instrument_operation_counter
 
     def __init__(self, enabled: bool, service_name: str):
@@ -255,6 +259,9 @@ class MetricsTracerFactory:
         Returns:
             MetricsTracer: A MetricsTracer instance with default settings and client attributes.
         """
+        if not HAS_OPENTELEMETRY_INSTALLED:
+            return None
+
         metrics_tracer = MetricsTracer(
             enabled=self.enabled and HAS_OPENTELEMETRY_INSTALLED,
             instrument_attempt_latency=self._instrument_attempt_latency,
@@ -306,4 +313,16 @@ class MetricsTracerFactory:
             name=METRIC_NAME_OPERATION_COUNT,
             unit="1",
             description="Number of operations.",
+        )
+
+        self._instrument_gfe_latency = meter.create_histogram(
+            name=METRIC_NAME_GFE_LATENCY,
+            unit="ms",
+            description="GFE Latency.",
+        )
+
+        self._instrument_gfe_missing_header_count = meter.create_counter(
+            name=METRIC_NAME_GFE_MISSING_HEADER_COUNT,
+            unit="1",
+            description="GFE missing header count.",
         )

@@ -32,6 +32,7 @@ from google.cloud.spanner_v1._helpers import _retry
 from google.cloud.spanner_v1._helpers import _retry_on_aborted_exception
 from google.cloud.spanner_v1._helpers import _check_rst_stream_error
 from google.api_core.exceptions import InternalServerError
+from google.cloud.spanner_v1.metrics.metrics_capture import MetricsCapture
 import time
 
 DEFAULT_RETRY_TIMEOUT_SECS = 30
@@ -226,7 +227,7 @@ class Batch(_BatchBase):
             self._session,
             trace_attributes,
             observability_options=observability_options,
-        ):
+        ), MetricsCapture():
             method = functools.partial(
                 api.commit,
                 request=request,
@@ -348,7 +349,7 @@ class MutationGroups(_SessionWrapper):
             self._session,
             trace_attributes,
             observability_options=observability_options,
-        ):
+        ), MetricsCapture():
             method = functools.partial(
                 api.batch_write,
                 request=request,

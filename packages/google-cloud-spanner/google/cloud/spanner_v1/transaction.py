@@ -34,6 +34,7 @@ from google.cloud.spanner_v1.snapshot import _SnapshotBase
 from google.cloud.spanner_v1.batch import _BatchBase
 from google.cloud.spanner_v1._opentelemetry_tracing import add_span_event, trace_call
 from google.cloud.spanner_v1 import RequestOptions
+from google.cloud.spanner_v1.metrics.metrics_capture import MetricsCapture
 from google.api_core import gapic_v1
 from google.api_core.exceptions import InternalServerError
 from dataclasses import dataclass
@@ -118,7 +119,7 @@ class Transaction(_SnapshotBase, _BatchBase):
         request.transaction = transaction
         with trace_call(
             trace_name, session, attributes, observability_options=observability_options
-        ):
+        ), MetricsCapture():
             method = functools.partial(method, request=request)
             response = _retry(
                 method,
@@ -160,7 +161,7 @@ class Transaction(_SnapshotBase, _BatchBase):
             f"CloudSpanner.{type(self).__name__}.begin",
             self._session,
             observability_options=observability_options,
-        ) as span:
+        ) as span, MetricsCapture():
             method = functools.partial(
                 api.begin_transaction,
                 session=self._session.name,
@@ -202,7 +203,7 @@ class Transaction(_SnapshotBase, _BatchBase):
                 f"CloudSpanner.{type(self).__name__}.rollback",
                 self._session,
                 observability_options=observability_options,
-            ):
+            ), MetricsCapture():
                 method = functools.partial(
                     api.rollback,
                     session=self._session.name,
@@ -250,7 +251,7 @@ class Transaction(_SnapshotBase, _BatchBase):
             self._session,
             trace_attributes,
             observability_options,
-        ) as span:
+        ) as span, MetricsCapture():
             self._check_state()
             if self._transaction_id is None and len(self._mutations) > 0:
                 self.begin()

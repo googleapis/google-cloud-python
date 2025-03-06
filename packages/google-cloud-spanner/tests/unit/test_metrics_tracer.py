@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -222,3 +221,45 @@ def test_set_method(metrics_tracer):
     # Ensure it does not overwrite
     metrics_tracer.set_method("new_method")
     assert metrics_tracer.client_attributes["method"] == "test_method"
+
+
+def test_record_gfe_latency(metrics_tracer):
+    mock_gfe_latency = mock.create_autospec(Histogram, instance=True)
+    metrics_tracer._instrument_gfe_latency = mock_gfe_latency
+    metrics_tracer.gfe_enabled = True  # Ensure GFE is enabled
+
+    # Test when tracing is enabled
+    metrics_tracer.record_gfe_latency(100)
+    assert mock_gfe_latency.record.call_count == 1
+    assert mock_gfe_latency.record.call_args[1]["amount"] == 100
+    assert (
+        mock_gfe_latency.record.call_args[1]["attributes"]
+        == metrics_tracer.client_attributes
+    )
+
+    # Test when tracing is disabled
+    metrics_tracer.enabled = False
+    metrics_tracer.record_gfe_latency(200)
+    assert mock_gfe_latency.record.call_count == 1  # Should not increment
+    metrics_tracer.enabled = True  # Reset for next test
+
+
+def test_record_gfe_missing_header_count(metrics_tracer):
+    mock_gfe_missing_header_count = mock.create_autospec(Counter, instance=True)
+    metrics_tracer._instrument_gfe_missing_header_count = mock_gfe_missing_header_count
+    metrics_tracer.gfe_enabled = True  # Ensure GFE is enabled
+
+    # Test when tracing is enabled
+    metrics_tracer.record_gfe_missing_header_count()
+    assert mock_gfe_missing_header_count.add.call_count == 1
+    assert mock_gfe_missing_header_count.add.call_args[1]["amount"] == 1
+    assert (
+        mock_gfe_missing_header_count.add.call_args[1]["attributes"]
+        == metrics_tracer.client_attributes
+    )
+
+    # Test when tracing is disabled
+    metrics_tracer.enabled = False
+    metrics_tracer.record_gfe_missing_header_count()
+    assert mock_gfe_missing_header_count.add.call_count == 1  # Should not increment
+    metrics_tracer.enabled = True  # Reset for next test

@@ -74,6 +74,7 @@ from .transports.base import SpannerTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc import SpannerGrpcTransport
 from .transports.grpc_asyncio import SpannerGrpcAsyncIOTransport
 from .transports.rest import SpannerRestTransport
+from google.cloud.spanner_v1.metrics.metrics_interceptor import MetricsInterceptor
 
 
 class SpannerClientMeta(type):
@@ -714,6 +715,7 @@ class SpannerClient(metaclass=SpannerClientMeta):
                 client_info=client_info,
                 always_use_jwt_access=True,
                 api_audience=self._client_options.api_audience,
+                metrics_interceptor=MetricsInterceptor(),
             )
 
         if "async" not in str(self._transport):

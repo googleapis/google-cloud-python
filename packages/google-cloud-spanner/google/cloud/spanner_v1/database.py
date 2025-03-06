@@ -72,6 +72,7 @@ from google.cloud.spanner_v1._opentelemetry_tracing import (
     get_current_span,
     trace_call,
 )
+from google.cloud.spanner_v1.metrics.metrics_capture import MetricsCapture
 
 
 SPANNER_DATA_SCOPE = "https://www.googleapis.com/auth/spanner.data"
@@ -702,7 +703,7 @@ class Database(object):
             with trace_call(
                 "CloudSpanner.Database.execute_partitioned_pdml",
                 observability_options=self.observability_options,
-            ) as span:
+            ) as span, MetricsCapture():
                 with SessionCheckout(self._pool) as session:
                     add_span_event(span, "Starting BeginTransaction")
                     txn = api.begin_transaction(
@@ -897,7 +898,7 @@ class Database(object):
         with trace_call(
             "CloudSpanner.Database.run_in_transaction",
             observability_options=observability_options,
-        ):
+        ), MetricsCapture():
             # Sanity check: Is there a transaction already running?
             # If there is, then raise a red flag. Otherwise, mark that this one
             # is running.
@@ -1489,7 +1490,7 @@ class BatchSnapshot(object):
             f"CloudSpanner.{type(self).__name__}.generate_read_batches",
             extra_attributes=dict(table=table, columns=columns),
             observability_options=self.observability_options,
-        ):
+        ), MetricsCapture():
             partitions = self._get_snapshot().partition_read(
                 table=table,
                 columns=columns,
@@ -1540,7 +1541,7 @@ class BatchSnapshot(object):
         with trace_call(
             f"CloudSpanner.{type(self).__name__}.process_read_batch",
             observability_options=observability_options,
-        ):
+        ), MetricsCapture():
             kwargs = copy.deepcopy(batch["read"])
             keyset_dict = kwargs.pop("keyset")
             kwargs["keyset"] = KeySet._from_dict(keyset_dict)
@@ -1625,7 +1626,7 @@ class BatchSnapshot(object):
             f"CloudSpanner.{type(self).__name__}.generate_query_batches",
             extra_attributes=dict(sql=sql),
             observability_options=self.observability_options,
-        ):
+        ), MetricsCapture():
             partitions = self._get_snapshot().partition_query(
                 sql=sql,
                 params=params,
@@ -1681,7 +1682,7 @@ class BatchSnapshot(object):
         with trace_call(
             f"CloudSpanner.{type(self).__name__}.process_query_batch",
             observability_options=self.observability_options,
-        ):
+        ), MetricsCapture():
             return self._get_snapshot().execute_sql(
                 partition=batch["partition"],
                 **batch["query"],
@@ -1746,7 +1747,7 @@ class BatchSnapshot(object):
             f"CloudSpanner.${type(self).__name__}.run_partitioned_query",
             extra_attributes=dict(sql=sql),
             observability_options=self.observability_options,
-        ):
+        ), MetricsCapture():
             partitions = list(
                 self.generate_query_batches(
                     sql,

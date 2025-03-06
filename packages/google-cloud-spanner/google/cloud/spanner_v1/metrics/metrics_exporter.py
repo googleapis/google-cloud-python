@@ -23,7 +23,7 @@ from .constants import (
 )
 
 import logging
-from typing import Optional, List, Union, NoReturn, Tuple
+from typing import Optional, List, Union, NoReturn, Tuple, Dict
 
 import google.auth
 from google.api.distribution_pb2 import (  # pylint: disable=no-name-in-module
@@ -37,10 +37,6 @@ from google.api.metric_pb2 import (  # pylint: disable=no-name-in-module
 )
 from google.api.monitored_resource_pb2 import (  # pylint: disable=no-name-in-module
     MonitoredResource,
-)
-
-from google.cloud.monitoring_v3.services.metric_service.transports.grpc import (
-    MetricServiceGrpcTransport,
 )
 
 # pylint: disable=no-name-in-module
@@ -60,12 +56,9 @@ try:
         Sum,
     )
     from opentelemetry.sdk.resources import Resource
-
-    HAS_OPENTELEMETRY_INSTALLED = True
-except ImportError:  # pragma: NO COVER
-    HAS_OPENTELEMETRY_INSTALLED = False
-
-try:
+    from google.cloud.monitoring_v3.services.metric_service.transports.grpc import (
+        MetricServiceGrpcTransport,
+    )
     from google.cloud.monitoring_v3 import (
         CreateTimeSeriesRequest,
         MetricServiceClient,
@@ -75,13 +68,10 @@ try:
         TypedValue,
     )
 
-    HAS_GOOGLE_CLOUD_MONITORING_INSTALLED = True
-except ImportError:
-    HAS_GOOGLE_CLOUD_MONITORING_INSTALLED = False
-
-HAS_DEPENDENCIES_INSTALLED = (
-    HAS_OPENTELEMETRY_INSTALLED and HAS_GOOGLE_CLOUD_MONITORING_INSTALLED
-)
+    HAS_OPENTELEMETRY_INSTALLED = True
+except ImportError:  # pragma: NO COVER
+    HAS_OPENTELEMETRY_INSTALLED = False
+    MetricExporter = object
 
 logger = logging.getLogger(__name__)
 MAX_BATCH_WRITE = 200
@@ -120,7 +110,7 @@ class CloudMonitoringMetricsExporter(MetricExporter):
     def __init__(
         self,
         project_id: Optional[str] = None,
-        client: Optional[MetricServiceClient] = None,
+        client: Optional["MetricServiceClient"] = None,
     ):
         """Initialize a custom exporter to send metrics for the Spanner Service Metrics."""
         # Default preferred_temporality is all CUMULATIVE so need to customize
@@ -144,7 +134,7 @@ class CloudMonitoringMetricsExporter(MetricExporter):
             self.project_id = project_id
         self.project_name = self.client.common_project_path(self.project_id)
 
-    def _batch_write(self, series: List[TimeSeries], timeout_millis: float) -> None:
+    def _batch_write(self, series: List["TimeSeries"], timeout_millis: float) -> None:
         """Cloud Monitoring allows writing up to 200 time series at once.
 
         :param series: ProtoBuf TimeSeries
@@ -166,8 +156,8 @@ class CloudMonitoringMetricsExporter(MetricExporter):
 
     @staticmethod
     def _resource_to_monitored_resource_pb(
-        resource: Resource, labels: any
-    ) -> MonitoredResource:
+        resource: "Resource", labels: Dict[str, str]
+    ) -> "MonitoredResource":
         """
         Convert the resource to a Google Cloud Monitoring monitored resource.
 
@@ -182,7 +172,7 @@ class CloudMonitoringMetricsExporter(MetricExporter):
         return monitored_resource
 
     @staticmethod
-    def _to_metric_kind(metric: Metric) -> MetricDescriptor.MetricKind:
+    def _to_metric_kind(metric: "Metric") -> MetricDescriptor.MetricKind:
         """
         Convert the metric to a Google Cloud Monitoring metric kind.
 
@@ -210,7 +200,7 @@ class CloudMonitoringMetricsExporter(MetricExporter):
 
     @staticmethod
     def _extract_metric_labels(
-        data_point: Union[NumberDataPoint, HistogramDataPoint]
+        data_point: Union["NumberDataPoint", "HistogramDataPoint"]
     ) -> Tuple[dict, dict]:
         """
         Extract the metric labels from the data point.
@@ -233,8 +223,8 @@ class CloudMonitoringMetricsExporter(MetricExporter):
     @staticmethod
     def _to_point(
         kind: "MetricDescriptor.MetricKind.V",
-        data_point: Union[NumberDataPoint, HistogramDataPoint],
-    ) -> Point:
+        data_point: Union["NumberDataPoint", "HistogramDataPoint"],
+    ) -> "Point":
         # Create a Google Cloud Monitoring data point value based on the OpenTelemetry metric data point type
         ## For histograms, we need to calculate the mean and bucket counts
         if isinstance(data_point, HistogramDataPoint):
@@ -281,7 +271,7 @@ class CloudMonitoringMetricsExporter(MetricExporter):
         metric,
         monitored_resource,
         labels,
-    ) -> TimeSeries:
+    ) -> "TimeSeries":
         """
         Convert the data point to a Google Cloud Monitoring time series.
 
@@ -308,8 +298,8 @@ class CloudMonitoringMetricsExporter(MetricExporter):
 
     @staticmethod
     def _resource_metrics_to_timeseries_pb(
-        metrics_data: MetricsData,
-    ) -> List[TimeSeries]:
+        metrics_data: "MetricsData",
+    ) -> List["TimeSeries"]:
         """
         Convert the metrics data to a list of Google Cloud Monitoring time series.
 
@@ -346,10 +336,10 @@ class CloudMonitoringMetricsExporter(MetricExporter):
 
     def export(
         self,
-        metrics_data: MetricsData,
+        metrics_data: "MetricsData",
         timeout_millis: float = 10_000,
         **kwargs,
-    ) -> MetricExportResult:
+    ) -> "MetricExportResult":
         """
         Export the metrics data to Google Cloud Monitoring.
 
@@ -357,10 +347,9 @@ class CloudMonitoringMetricsExporter(MetricExporter):
         :param timeout_millis: timeout in milliseconds
         :return: MetricExportResult
         """
-        if not HAS_DEPENDENCIES_INSTALLED:
+        if not HAS_OPENTELEMETRY_INSTALLED:
             logger.warning("Metric exporter called without dependencies installed.")
             return False
-
         time_series_list = self._resource_metrics_to_timeseries_pb(metrics_data)
         self._batch_write(time_series_list, timeout_millis)
         return True
@@ -370,8 +359,8 @@ class CloudMonitoringMetricsExporter(MetricExporter):
         return True
 
     def shutdown(self, timeout_millis: float = 30_000, **kwargs) -> None:
-        """Not implemented."""
-        pass
+        """Safely shuts down the exporter and closes all opened GRPC channels."""
+        self.client.transport.close()
 
 
 def _timestamp_from_nanos(nanos: int) -> Timestamp:

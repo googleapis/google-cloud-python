@@ -43,6 +43,8 @@ from google.cloud.spanner_v1._opentelemetry_tracing import trace_call
 from google.cloud.spanner_v1.streamed import StreamedResultSet
 from google.cloud.spanner_v1 import RequestOptions
 
+from google.cloud.spanner_v1.metrics.metrics_capture import MetricsCapture
+
 _STREAM_RESUMPTION_INTERNAL_ERROR_MESSAGES = (
     "RST_STREAM",
     "Received unexpected EOS on DATA frame from server",
@@ -96,7 +98,7 @@ def _restart_on_unavailable(
                     session,
                     attributes,
                     observability_options=observability_options,
-                ):
+                ), MetricsCapture():
                     iterator = method(request=request)
             for item in iterator:
                 item_buffer.append(item)
@@ -119,7 +121,7 @@ def _restart_on_unavailable(
                 session,
                 attributes,
                 observability_options=observability_options,
-            ):
+            ), MetricsCapture():
                 request.resume_token = resume_token
                 if transaction is not None:
                     transaction_selector = transaction._make_txn_selector()
@@ -139,7 +141,7 @@ def _restart_on_unavailable(
                 session,
                 attributes,
                 observability_options=observability_options,
-            ):
+            ), MetricsCapture():
                 request.resume_token = resume_token
                 if transaction is not None:
                     transaction_selector = transaction._make_txn_selector()
@@ -704,7 +706,7 @@ class _SnapshotBase(_SessionWrapper):
             self._session,
             extra_attributes=trace_attributes,
             observability_options=getattr(database, "observability_options", None),
-        ):
+        ), MetricsCapture():
             method = functools.partial(
                 api.partition_read,
                 request=request,
@@ -807,7 +809,7 @@ class _SnapshotBase(_SessionWrapper):
             self._session,
             trace_attributes,
             observability_options=getattr(database, "observability_options", None),
-        ):
+        ), MetricsCapture():
             method = functools.partial(
                 api.partition_query,
                 request=request,
@@ -953,7 +955,7 @@ class Snapshot(_SnapshotBase):
             f"CloudSpanner.{type(self).__name__}.begin",
             self._session,
             observability_options=getattr(database, "observability_options", None),
-        ):
+        ), MetricsCapture():
             method = functools.partial(
                 api.begin_transaction,
                 session=self._session.name,

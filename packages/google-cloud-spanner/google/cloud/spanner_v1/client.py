@@ -48,9 +48,30 @@ from google.cloud.spanner_v1 import ExecuteSqlRequest
 from google.cloud.spanner_v1._helpers import _merge_query_options
 from google.cloud.spanner_v1._helpers import _metadata_with_prefix
 from google.cloud.spanner_v1.instance import Instance
+from google.cloud.spanner_v1.metrics.constants import (
+    ENABLE_SPANNER_METRICS_ENV_VAR,
+    METRIC_EXPORT_INTERVAL_MS,
+)
+from google.cloud.spanner_v1.metrics.spanner_metrics_tracer_factory import (
+    SpannerMetricsTracerFactory,
+)
+from google.cloud.spanner_v1.metrics.metrics_exporter import (
+    CloudMonitoringMetricsExporter,
+)
+
+try:
+    from opentelemetry import metrics
+    from opentelemetry.sdk.metrics import MeterProvider
+    from opentelemetry.sdk.metrics.export import PeriodicExportingMetricReader
+
+    HAS_GOOGLE_CLOUD_MONITORING_INSTALLED = True
+except ImportError:  # pragma: NO COVER
+    HAS_GOOGLE_CLOUD_MONITORING_INSTALLED = False
+
 
 _CLIENT_INFO = client_info.ClientInfo(client_library_version=__version__)
 EMULATOR_ENV_VAR = "SPANNER_EMULATOR_HOST"
+ENABLE_BUILTIN_METRICS_ENV_VAR = "SPANNER_ENABLE_BUILTIN_METRICS"
 _EMULATOR_HOST_HTTP_SCHEME = (
     "%s contains a http scheme. When used with a scheme it may cause gRPC's "
     "DNS resolver to endlessly attempt to resolve. %s is intended to be used "
@@ -71,6 +92,10 @@ def _get_spanner_optimizer_version():
 
 def _get_spanner_optimizer_statistics_package():
     return os.getenv(OPTIMIZER_STATISITCS_PACKAGE_ENV_VAR, "")
+
+
+def _get_spanner_enable_builtin_metrics():
+    return os.getenv(ENABLE_SPANNER_METRICS_ENV_VAR) == "true"
 
 
 class Client(ClientWithProject):
@@ -195,6 +220,25 @@ class Client(ClientWithProject):
             "http://" in self._emulator_host or "https://" in self._emulator_host
         ):
             warnings.warn(_EMULATOR_HOST_HTTP_SCHEME)
+        # Check flag to enable Spanner builtin metrics
+        if (
+            _get_spanner_enable_builtin_metrics()
+            and HAS_GOOGLE_CLOUD_MONITORING_INSTALLED
+        ):
+            meter_provider = metrics.NoOpMeterProvider()
+            if not _get_spanner_emulator_host():
+                meter_provider = MeterProvider(
+                    metric_readers=[
+                        PeriodicExportingMetricReader(
+                            CloudMonitoringMetricsExporter(),
+                            export_interval_millis=METRIC_EXPORT_INTERVAL_MS,
+                        )
+                    ]
+                )
+            metrics.set_meter_provider(meter_provider)
+            SpannerMetricsTracerFactory()
+        else:
+            SpannerMetricsTracerFactory(enabled=False)
 
         self._route_to_leader_enabled = route_to_leader_enabled
         self._directed_read_options = directed_read_options

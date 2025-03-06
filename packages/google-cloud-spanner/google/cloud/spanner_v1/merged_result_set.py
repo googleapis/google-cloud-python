@@ -18,6 +18,7 @@ from typing import Any, TYPE_CHECKING
 from threading import Lock, Event
 
 from google.cloud.spanner_v1._opentelemetry_tracing import trace_call
+from google.cloud.spanner_v1.metrics.metrics_capture import MetricsCapture
 
 if TYPE_CHECKING:
     from google.cloud.spanner_v1.database import BatchSnapshot
@@ -45,7 +46,7 @@ class PartitionExecutor:
         with trace_call(
             "CloudSpanner.PartitionExecutor.run",
             observability_options=observability_options,
-        ):
+        ), MetricsCapture():
             self.__run()
 
     def __run(self):
