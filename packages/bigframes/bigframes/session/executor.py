@@ -204,7 +204,7 @@ class BigQueryCachingExecutor(Executor):
         self.bqclient = bqclient
         self.storage_manager = storage_manager
         self.compiler: bigframes.core.compile.SQLCompiler = (
-            bigframes.core.compile.SQLCompiler(strict=strictly_ordered)
+            bigframes.core.compile.SQLCompiler()
         )
         self.strictly_ordered: bool = strictly_ordered
         self._cached_executions: weakref.WeakKeyDictionary[

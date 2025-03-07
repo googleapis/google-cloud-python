@@ -25,13 +25,8 @@ if TYPE_CHECKING:
     import bigframes.core.ordering
     import bigframes.core.schema
 
-_STRICT_COMPILER = compiler.Compiler(strict=True)
-
 
 class SQLCompiler:
-    def __init__(self, strict: bool = True):
-        self._compiler = compiler.Compiler(strict=strict)
-
     def compile(
         self,
         node: bigframes.core.nodes.BigFrameNode,
@@ -41,7 +36,7 @@ class SQLCompiler:
     ) -> str:
         """Compile node into sql where rows are sorted with ORDER BY."""
         # If we are ordering the query anyways, compiling the slice as a limit is probably a good idea.
-        return self._compiler.compile_sql(node, ordered=ordered, limit=limit)
+        return compiler.compile_sql(node, ordered=ordered, limit=limit)
 
     def compile_raw(
         self,
@@ -50,16 +45,16 @@ class SQLCompiler:
         str, Sequence[bigquery.SchemaField], bigframes.core.ordering.RowOrdering
     ]:
         """Compile node into sql that exposes all columns, including hidden ordering-only columns."""
-        return self._compiler.compile_raw(node)
+        return compiler.compile_raw(node)
 
 
 def test_only_ibis_inferred_schema(node: bigframes.core.nodes.BigFrameNode):
     """Use only for testing paths to ensure ibis inferred schema does not diverge from bigframes inferred schema."""
     import bigframes.core.schema
 
-    node = _STRICT_COMPILER._replace_unsupported_ops(node)
+    node = compiler._replace_unsupported_ops(node)
     node, _ = rewrite.pull_up_order(node, order_root=False)
-    ir = _STRICT_COMPILER.compile_node(node)
+    ir = compiler.compile_node(node)
     items = tuple(
         bigframes.core.schema.SchemaItem(name, ir.get_column_type(ibis_id))
         for name, ibis_id in zip(node.schema.names, ir.column_ids)

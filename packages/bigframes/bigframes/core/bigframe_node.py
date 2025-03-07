@@ -32,6 +32,8 @@ if typing.TYPE_CHECKING:
 
 COLUMN_SET = frozenset[identifiers.ColumnId]
 
+T = typing.TypeVar("T")
+
 
 @dataclasses.dataclass(frozen=True)
 class Field:
@@ -379,6 +381,17 @@ class BigFrameNode:
             # child nodes have already been transformed
             result = node.transform_children(lambda x: results[x])
             result = transform(result)
+            results[node] = result
+
+        return results[self]
+
+    def reduce_up(self, reduction: Callable[[BigFrameNode, Tuple[T, ...]], T]) -> T:
+        """Apply a bottom-up reduction to the tree."""
+        results: dict[BigFrameNode, T] = {}
+        for node in list(self.iter_nodes_topo()):
+            # child nodes have already been transformed
+            child_results = tuple(results[child] for child in node.child_nodes)
+            result = reduction(node, child_results)
             results[node] = result
 
         return results[self]
