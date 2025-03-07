@@ -28,6 +28,9 @@ from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
+from google.apps.chat_v1.types import (
+    space_notification_setting as gc_space_notification_setting,
+)
 from google.apps.chat_v1.types import attachment
 from google.apps.chat_v1.types import membership
 from google.apps.chat_v1.types import membership as gc_membership
@@ -38,6 +41,7 @@ from google.apps.chat_v1.types import reaction as gc_reaction
 from google.apps.chat_v1.types import space
 from google.apps.chat_v1.types import space as gc_space
 from google.apps.chat_v1.types import space_event
+from google.apps.chat_v1.types import space_notification_setting
 from google.apps.chat_v1.types import space_read_state
 from google.apps.chat_v1.types import space_read_state as gc_space_read_state
 from google.apps.chat_v1.types import space_setup, thread_read_state
@@ -189,6 +193,14 @@ class ChatServiceRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_get_space_notification_setting(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_space_notification_setting(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_get_space_read_state(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -282,6 +294,14 @@ class ChatServiceRestInterceptor:
                 return request, metadata
 
             def post_update_space(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_update_space_notification_setting(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_update_space_notification_setting(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -899,6 +919,58 @@ class ChatServiceRestInterceptor:
         """
         return response, metadata
 
+    def pre_get_space_notification_setting(
+        self,
+        request: space_notification_setting.GetSpaceNotificationSettingRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        space_notification_setting.GetSpaceNotificationSettingRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for get_space_notification_setting
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the ChatService server.
+        """
+        return request, metadata
+
+    def post_get_space_notification_setting(
+        self, response: space_notification_setting.SpaceNotificationSetting
+    ) -> space_notification_setting.SpaceNotificationSetting:
+        """Post-rpc interceptor for get_space_notification_setting
+
+        DEPRECATED. Please use the `post_get_space_notification_setting_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the ChatService server but before
+        it is returned to user code. This `post_get_space_notification_setting` interceptor runs
+        before the `post_get_space_notification_setting_with_metadata` interceptor.
+        """
+        return response
+
+    def post_get_space_notification_setting_with_metadata(
+        self,
+        response: space_notification_setting.SpaceNotificationSetting,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        space_notification_setting.SpaceNotificationSetting,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for get_space_notification_setting
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ChatService server but before it is returned to user code.
+
+        We recommend only using this `post_get_space_notification_setting_with_metadata`
+        interceptor in new development instead of the `post_get_space_notification_setting` interceptor.
+        When both interceptors are used, this `post_get_space_notification_setting_with_metadata` interceptor runs after the
+        `post_get_space_notification_setting` interceptor. The (possibly modified) response returned by
+        `post_get_space_notification_setting` will be passed to
+        `post_get_space_notification_setting_with_metadata`.
+        """
+        return response, metadata
+
     def pre_get_space_read_state(
         self,
         request: space_read_state.GetSpaceReadStateRequest,
@@ -1462,6 +1534,58 @@ class ChatServiceRestInterceptor:
         `post_update_space` interceptor. The (possibly modified) response returned by
         `post_update_space` will be passed to
         `post_update_space_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_update_space_notification_setting(
+        self,
+        request: gc_space_notification_setting.UpdateSpaceNotificationSettingRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        gc_space_notification_setting.UpdateSpaceNotificationSettingRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for update_space_notification_setting
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the ChatService server.
+        """
+        return request, metadata
+
+    def post_update_space_notification_setting(
+        self, response: gc_space_notification_setting.SpaceNotificationSetting
+    ) -> gc_space_notification_setting.SpaceNotificationSetting:
+        """Post-rpc interceptor for update_space_notification_setting
+
+        DEPRECATED. Please use the `post_update_space_notification_setting_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the ChatService server but before
+        it is returned to user code. This `post_update_space_notification_setting` interceptor runs
+        before the `post_update_space_notification_setting_with_metadata` interceptor.
+        """
+        return response
+
+    def post_update_space_notification_setting_with_metadata(
+        self,
+        response: gc_space_notification_setting.SpaceNotificationSetting,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        gc_space_notification_setting.SpaceNotificationSetting,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for update_space_notification_setting
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ChatService server but before it is returned to user code.
+
+        We recommend only using this `post_update_space_notification_setting_with_metadata`
+        interceptor in new development instead of the `post_update_space_notification_setting` interceptor.
+        When both interceptors are used, this `post_update_space_notification_setting_with_metadata` interceptor runs after the
+        `post_update_space_notification_setting` interceptor. The (possibly modified) response returned by
+        `post_update_space_notification_setting` will be passed to
+        `post_update_space_notification_setting_with_metadata`.
         """
         return response, metadata
 
@@ -3805,6 +3929,168 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
                 )
             return resp
 
+    class _GetSpaceNotificationSetting(
+        _BaseChatServiceRestTransport._BaseGetSpaceNotificationSetting,
+        ChatServiceRestStub,
+    ):
+        def __hash__(self):
+            return hash("ChatServiceRestTransport.GetSpaceNotificationSetting")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: space_notification_setting.GetSpaceNotificationSettingRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> space_notification_setting.SpaceNotificationSetting:
+            r"""Call the get space notification
+            setting method over HTTP.
+
+                Args:
+                    request (~.space_notification_setting.GetSpaceNotificationSettingRequest):
+                        The request object. Request message to get space
+                    notification setting. Only supports
+                    getting notification setting for the
+                    calling user.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
+
+                Returns:
+                    ~.space_notification_setting.SpaceNotificationSetting:
+                        The notification setting of a user in
+                    a space.
+
+            """
+
+            http_options = (
+                _BaseChatServiceRestTransport._BaseGetSpaceNotificationSetting._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_get_space_notification_setting(
+                request, metadata
+            )
+            transcoded_request = _BaseChatServiceRestTransport._BaseGetSpaceNotificationSetting._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseChatServiceRestTransport._BaseGetSpaceNotificationSetting._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.chat_v1.ChatServiceClient.GetSpaceNotificationSetting",
+                    extra={
+                        "serviceName": "google.chat.v1.ChatService",
+                        "rpcName": "GetSpaceNotificationSetting",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = (
+                ChatServiceRestTransport._GetSpaceNotificationSetting._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = space_notification_setting.SpaceNotificationSetting()
+            pb_resp = space_notification_setting.SpaceNotificationSetting.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_get_space_notification_setting(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_get_space_notification_setting_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        space_notification_setting.SpaceNotificationSetting.to_json(
+                            response
+                        )
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.chat_v1.ChatServiceClient.get_space_notification_setting",
+                    extra={
+                        "serviceName": "google.chat.v1.ChatService",
+                        "rpcName": "GetSpaceNotificationSetting",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     class _GetSpaceReadState(
         _BaseChatServiceRestTransport._BaseGetSpaceReadState, ChatServiceRestStub
     ):
@@ -5639,6 +5925,174 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
                 )
             return resp
 
+    class _UpdateSpaceNotificationSetting(
+        _BaseChatServiceRestTransport._BaseUpdateSpaceNotificationSetting,
+        ChatServiceRestStub,
+    ):
+        def __hash__(self):
+            return hash("ChatServiceRestTransport.UpdateSpaceNotificationSetting")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: gc_space_notification_setting.UpdateSpaceNotificationSettingRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> gc_space_notification_setting.SpaceNotificationSetting:
+            r"""Call the update space notification
+            setting method over HTTP.
+
+                Args:
+                    request (~.gc_space_notification_setting.UpdateSpaceNotificationSettingRequest):
+                        The request object. Request to update the space
+                    notification settings. Only supports
+                    updating notification setting for the
+                    calling user.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
+
+                Returns:
+                    ~.gc_space_notification_setting.SpaceNotificationSetting:
+                        The notification setting of a user in
+                    a space.
+
+            """
+
+            http_options = (
+                _BaseChatServiceRestTransport._BaseUpdateSpaceNotificationSetting._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_update_space_notification_setting(
+                request, metadata
+            )
+            transcoded_request = _BaseChatServiceRestTransport._BaseUpdateSpaceNotificationSetting._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseChatServiceRestTransport._BaseUpdateSpaceNotificationSetting._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseChatServiceRestTransport._BaseUpdateSpaceNotificationSetting._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.chat_v1.ChatServiceClient.UpdateSpaceNotificationSetting",
+                    extra={
+                        "serviceName": "google.chat.v1.ChatService",
+                        "rpcName": "UpdateSpaceNotificationSetting",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = (
+                ChatServiceRestTransport._UpdateSpaceNotificationSetting._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = gc_space_notification_setting.SpaceNotificationSetting()
+            pb_resp = gc_space_notification_setting.SpaceNotificationSetting.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_update_space_notification_setting(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_update_space_notification_setting_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        gc_space_notification_setting.SpaceNotificationSetting.to_json(
+                            response
+                        )
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.chat_v1.ChatServiceClient.update_space_notification_setting",
+                    extra={
+                        "serviceName": "google.chat.v1.ChatService",
+                        "rpcName": "UpdateSpaceNotificationSetting",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     class _UpdateSpaceReadState(
         _BaseChatServiceRestTransport._BaseUpdateSpaceReadState, ChatServiceRestStub
     ):
@@ -6066,6 +6520,17 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
         return self._GetSpaceEvent(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def get_space_notification_setting(
+        self,
+    ) -> Callable[
+        [space_notification_setting.GetSpaceNotificationSettingRequest],
+        space_notification_setting.SpaceNotificationSetting,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetSpaceNotificationSetting(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def get_space_read_state(
         self,
     ) -> Callable[
@@ -6164,6 +6629,17 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateSpace(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def update_space_notification_setting(
+        self,
+    ) -> Callable[
+        [gc_space_notification_setting.UpdateSpaceNotificationSettingRequest],
+        gc_space_notification_setting.SpaceNotificationSetting,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._UpdateSpaceNotificationSetting(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def update_space_read_state(

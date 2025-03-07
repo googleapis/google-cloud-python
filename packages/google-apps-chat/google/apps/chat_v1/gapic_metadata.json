@@ -85,6 +85,11 @@
                 "get_space_event"
               ]
             },
+            "GetSpaceNotificationSetting": {
+              "methods": [
+                "get_space_notification_setting"
+              ]
+            },
             "GetSpaceReadState": {
               "methods": [
                 "get_space_read_state"
@@ -143,6 +148,11 @@
             "UpdateSpace": {
               "methods": [
                 "update_space"
+              ]
+            },
+            "UpdateSpaceNotificationSetting": {
+              "methods": [
+                "update_space_notification_setting"
               ]
             },
             "UpdateSpaceReadState": {
@@ -235,6 +245,11 @@
                 "get_space_event"
               ]
             },
+            "GetSpaceNotificationSetting": {
+              "methods": [
+                "get_space_notification_setting"
+              ]
+            },
             "GetSpaceReadState": {
               "methods": [
                 "get_space_read_state"
@@ -293,6 +308,11 @@
             "UpdateSpace": {
               "methods": [
                 "update_space"
+              ]
+            },
+            "UpdateSpaceNotificationSetting": {
+              "methods": [
+                "update_space_notification_setting"
               ]
             },
             "UpdateSpaceReadState": {
@@ -385,6 +405,11 @@
                 "get_space_event"
               ]
             },
+            "GetSpaceNotificationSetting": {
+              "methods": [
+                "get_space_notification_setting"
+              ]
+            },
             "GetSpaceReadState": {
               "methods": [
                 "get_space_read_state"
@@ -443,6 +468,11 @@
             "UpdateSpace": {
               "methods": [
                 "update_space"
+              ]
+            },
+            "UpdateSpaceNotificationSetting": {
+              "methods": [
+                "update_space_notification_setting"
               ]
             },
             "UpdateSpaceReadState": {
