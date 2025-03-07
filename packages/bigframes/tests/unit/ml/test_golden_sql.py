@@ -66,6 +66,7 @@ def mock_y(mock_session):
     mock_y._session = mock_session
     mock_y.columns = pd.Index(["input_column_label"])
     mock_y.cache.return_value = mock_y
+    mock_y.copy.return_value = mock_y
 
     return mock_y
 
@@ -98,6 +99,7 @@ def mock_X(mock_y, mock_session):
     )
 
     mock_X.cache.return_value = mock_X
+    mock_X.copy.return_value = mock_X
 
     return mock_X
 

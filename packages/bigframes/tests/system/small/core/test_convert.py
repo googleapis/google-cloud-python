@@ -56,4 +56,7 @@ def test_to_bf_dataframe(input, session):
 def test_to_bf_dataframe_with_bf_dataframe(session):
     bf = dataframe.DataFrame({"test": [1, 2, 3]}, session=session)
 
-    assert convert.to_bf_dataframe(bf, None, session) is bf
+    testing.assert_frame_equal(
+        convert.to_bf_dataframe(bf, None, session).to_pandas(),
+        bf.to_pandas(),
+    )

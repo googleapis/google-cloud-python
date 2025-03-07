@@ -54,7 +54,7 @@ def to_bf_series(
         bigframes.pandas.Series
     """
     if isinstance(obj, series.Series):
-        return obj
+        return obj.copy()
 
     if session is None:
         session = global_session.get_global_session()
@@ -118,7 +118,7 @@ def to_bf_dataframe(
     session: Optional[session.Session] = None,
 ) -> dataframe.DataFrame:
     if isinstance(obj, dataframe.DataFrame):
-        return obj
+        return obj.copy()
 
     if isinstance(obj, pd.DataFrame):
         if session is None:
