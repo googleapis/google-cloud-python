@@ -44,7 +44,7 @@ class BlobAccessor(base.SeriesMethods):
             BigFrames Blob is still under experiments. It may not work and subject to change in the future.
 
         Returns:
-            BigFrames Series: URIs as string."""
+            bigframes.series.Series: URIs as string."""
         s = bigframes.series.Series(self._block)
 
         return s.struct.field("uri")
@@ -56,7 +56,7 @@ class BlobAccessor(base.SeriesMethods):
             BigFrames Blob is still under experiments. It may not work and subject to change in the future.
 
         Returns:
-            BigFrames Series: Autorithers(connection) as string."""
+            bigframes.series.Series: Autorithers(connection) as string."""
         s = bigframes.series.Series(self._block)
 
         return s.struct.field("authorizer")
@@ -68,7 +68,7 @@ class BlobAccessor(base.SeriesMethods):
             BigFrames Blob is still under experiments. It may not work and subject to change in the future.
 
         Returns:
-            BigFrames Series: Version as string."""
+            bigframes.series.Series: Version as string."""
         # version must be retrieved after fetching metadata
         return self._apply_unary_op(ops.obj_fetch_metadata_op).struct.field("version")
 
@@ -79,7 +79,7 @@ class BlobAccessor(base.SeriesMethods):
             BigFrames Blob is still under experiments. It may not work and subject to change in the future.
 
         Returns:
-            BigFrames Series: JSON metadata of the Blob. Contains fields: content_type, md5_hash, size and updated(time)."""
+            bigframes.series.Series: JSON metadata of the Blob. Contains fields: content_type, md5_hash, size and updated(time)."""
         details_json = self._apply_unary_op(ops.obj_fetch_metadata_op).struct.field(
             "details"
         )
@@ -94,7 +94,7 @@ class BlobAccessor(base.SeriesMethods):
             BigFrames Blob is still under experiments. It may not work and subject to change in the future.
 
         Returns:
-            BigFrames Series: string of the content type."""
+            bigframes.series.Series: string of the content type."""
         return (
             self.metadata()
             ._apply_unary_op(ops.JSONValue(json_path="$.content_type"))
@@ -108,7 +108,7 @@ class BlobAccessor(base.SeriesMethods):
             BigFrames Blob is still under experiments. It may not work and subject to change in the future.
 
         Returns:
-            BigFrames Series: string of the md5 hash."""
+            bigframes.series.Series: string of the md5 hash."""
         return (
             self.metadata()
             ._apply_unary_op(ops.JSONValue(json_path="$.md5_hash"))
@@ -122,7 +122,7 @@ class BlobAccessor(base.SeriesMethods):
             BigFrames Blob is still under experiments. It may not work and subject to change in the future.
 
         Returns:
-            BigFrames Series: file size in bytes."""
+            bigframes.series.Series: file size in bytes."""
         return (
             self.metadata()
             ._apply_unary_op(ops.JSONValue(json_path="$.size"))
@@ -137,7 +137,7 @@ class BlobAccessor(base.SeriesMethods):
             BigFrames Blob is still under experiments. It may not work and subject to change in the future.
 
         Returns:
-            BigFrames Series: updated time as UTC datetime."""
+            bigframes.series.Series: updated time as UTC datetime."""
         import bigframes.pandas as bpd
 
         updated = (
@@ -159,7 +159,7 @@ class BlobAccessor(base.SeriesMethods):
             metadata (bool, default False): whether to fetch the metadata in the ObjectRefRuntime.
 
         Returns:
-            bigframes Series: ObjectRefRuntime JSON.
+            bigframes.series.Series: ObjectRefRuntime JSON.
         """
         s = self._apply_unary_op(ops.obj_fetch_metadata_op) if with_metadata else self
 
@@ -172,7 +172,7 @@ class BlobAccessor(base.SeriesMethods):
             BigFrames Blob is still under experiments. It may not work and subject to change in the future.
 
         Returns:
-            BigFrames Series: Read only URLs."""
+            bigframes.series.Series: Read only URLs."""
         return self._get_runtime(mode="R")._apply_unary_op(
             ops.JSONValue(json_path="$.access_urls.read_url")
         )
@@ -184,7 +184,7 @@ class BlobAccessor(base.SeriesMethods):
             BigFrames Blob is still under experiments. It may not work and subject to change in the future.
 
         Returns:
-            BigFrames Series: Writable URLs."""
+            bigframes.series.Series: Writable URLs."""
         return self._get_runtime(mode="RW")._apply_unary_op(
             ops.JSONValue(json_path="$.access_urls.write_url")
         )
@@ -303,7 +303,7 @@ class BlobAccessor(base.SeriesMethods):
             container_memory (str, default "512Mi"): container memory size. String of the format <number><unit>. Possible values are from 512Mi to 32Gi.
 
         Returns:
-            BigFrames Blob Series
+            bigframes.series.Series: blob Series if destination is GCS. Or bytes Series if destination is BQ.
         """
         import bigframes.blob._functions as blob_func
 
@@ -390,7 +390,7 @@ class BlobAccessor(base.SeriesMethods):
             container_memory (str, default "512Mi"): container memory size. String of the format <number><unit>. Possible values are from 512Mi to 32Gi.
 
         Returns:
-            BigFrames Blob Series
+            bigframes.series.Series: blob Series if destination is GCS. Or bytes Series if destination is BQ.
         """
         dsize_set = dsize[0] > 0 and dsize[1] > 0
         fsize_set = fx > 0.0 and fy > 0.0
@@ -486,7 +486,7 @@ class BlobAccessor(base.SeriesMethods):
             container_memory (str, default "512Mi"): container memory size. String of the format <number><unit>. Possible values are from 512Mi to 32Gi.
 
         Returns:
-            BigFrames Blob Series
+            bigframes.series.Series: blob Series if destination is GCS. Or bytes Series if destination is BQ.
         """
         import bigframes.blob._functions as blob_func
 
@@ -603,8 +603,7 @@ class BlobAccessor(base.SeriesMethods):
            arrays of strings.
 
         .. note::
-            BigFrames Blob is still under experiments. It may not work and
-            subject to change in the future.
+            BigFrames Blob is still under experiments. It may not work and subject to change in the future.
 
         Args:
             connection (str or None, default None): BQ connection used for
@@ -621,7 +620,7 @@ class BlobAccessor(base.SeriesMethods):
             container_memory (str, default "512Mi"): container memory size. String of the format <number><unit>. Possible values are from 512Mi to 32Gi.
 
         Returns:
-            bigframe.series.Series of array[str], where each string is a
+            bigframe.series.Series: Series of array[str], where each string is a
                 chunk of text extracted from PDF.
         """
 
