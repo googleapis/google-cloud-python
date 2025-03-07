@@ -123,6 +123,11 @@ from google.apps.chat_v1.types.space_event import (
     ListSpaceEventsResponse,
     SpaceEvent,
 )
+from google.apps.chat_v1.types.space_notification_setting import (
+    GetSpaceNotificationSettingRequest,
+    SpaceNotificationSetting,
+    UpdateSpaceNotificationSettingRequest,
+)
 from google.apps.chat_v1.types.space_read_state import (
     GetSpaceReadStateRequest,
     SpaceReadState,
@@ -224,6 +229,9 @@ __all__ = (
     "ListSpaceEventsRequest",
     "ListSpaceEventsResponse",
     "SpaceEvent",
+    "GetSpaceNotificationSettingRequest",
+    "SpaceNotificationSetting",
+    "UpdateSpaceNotificationSettingRequest",
     "GetSpaceReadStateRequest",
     "SpaceReadState",
     "UpdateSpaceReadStateRequest",

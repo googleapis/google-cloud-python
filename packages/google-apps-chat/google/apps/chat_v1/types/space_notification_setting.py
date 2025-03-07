@@ -17,17 +17,15 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+from google.protobuf import field_mask_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.protobuf import field_mask_pb2  # type: ignore
-
-
 __protobuf__ = proto.module(
-    package='google.chat.v1',
+    package="google.chat.v1",
     manifest={
-        'SpaceNotificationSetting',
-        'GetSpaceNotificationSettingRequest',
-        'UpdateSpaceNotificationSettingRequest',
+        "SpaceNotificationSetting",
+        "GetSpaceNotificationSettingRequest",
+        "UpdateSpaceNotificationSettingRequest",
     },
 )
 
@@ -51,6 +49,7 @@ class SpaceNotificationSetting(proto.Message):
 
             This field is a member of `oneof`_ ``_mute_setting``.
     """
+
     class NotificationSetting(proto.Enum):
         r"""The notification setting types. Other types might be
         supported in the future.
@@ -158,10 +157,10 @@ class UpdateSpaceNotificationSettingRequest(proto.Message):
             -  ``mute_setting``
     """
 
-    space_notification_setting: 'SpaceNotificationSetting' = proto.Field(
+    space_notification_setting: "SpaceNotificationSetting" = proto.Field(
         proto.MESSAGE,
         number=1,
-        message='SpaceNotificationSetting',
+        message="SpaceNotificationSetting",
     )
     update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,

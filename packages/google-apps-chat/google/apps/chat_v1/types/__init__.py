@@ -114,6 +114,11 @@ from .space_event import (
     ListSpaceEventsResponse,
     SpaceEvent,
 )
+from .space_notification_setting import (
+    GetSpaceNotificationSettingRequest,
+    SpaceNotificationSetting,
+    UpdateSpaceNotificationSettingRequest,
+)
 from .space_read_state import (
     GetSpaceReadStateRequest,
     SpaceReadState,
@@ -210,6 +215,9 @@ __all__ = (
     "ListSpaceEventsRequest",
     "ListSpaceEventsResponse",
     "SpaceEvent",
+    "GetSpaceNotificationSettingRequest",
+    "SpaceNotificationSetting",
+    "UpdateSpaceNotificationSettingRequest",
     "GetSpaceReadStateRequest",
     "SpaceReadState",
     "UpdateSpaceReadStateRequest",

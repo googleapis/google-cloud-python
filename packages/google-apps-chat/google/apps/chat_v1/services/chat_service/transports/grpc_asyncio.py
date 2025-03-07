@@ -32,6 +32,9 @@ import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
 import proto  # type: ignore
 
+from google.apps.chat_v1.types import (
+    space_notification_setting as gc_space_notification_setting,
+)
 from google.apps.chat_v1.types import attachment
 from google.apps.chat_v1.types import membership
 from google.apps.chat_v1.types import membership as gc_membership
@@ -42,6 +45,7 @@ from google.apps.chat_v1.types import reaction as gc_reaction
 from google.apps.chat_v1.types import space
 from google.apps.chat_v1.types import space as gc_space
 from google.apps.chat_v1.types import space_event
+from google.apps.chat_v1.types import space_notification_setting
 from google.apps.chat_v1.types import space_read_state
 from google.apps.chat_v1.types import space_read_state as gc_space_read_state
 from google.apps.chat_v1.types import space_setup, thread_read_state
@@ -1586,6 +1590,79 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
             )
         return self._stubs["list_space_events"]
 
+    @property
+    def get_space_notification_setting(
+        self,
+    ) -> Callable[
+        [space_notification_setting.GetSpaceNotificationSettingRequest],
+        Awaitable[space_notification_setting.SpaceNotificationSetting],
+    ]:
+        r"""Return a callable for the get space notification setting method over gRPC.
+
+        Gets the space notification setting. For an example, see `Get
+        the caller's space notification
+        setting <https://developers.google.com/workspace/chat/get-space-notification-setting>`__.
+
+        Requires `user
+        authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__.
+
+        Returns:
+            Callable[[~.GetSpaceNotificationSettingRequest],
+                    Awaitable[~.SpaceNotificationSetting]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_space_notification_setting" not in self._stubs:
+            self._stubs[
+                "get_space_notification_setting"
+            ] = self._logged_channel.unary_unary(
+                "/google.chat.v1.ChatService/GetSpaceNotificationSetting",
+                request_serializer=space_notification_setting.GetSpaceNotificationSettingRequest.serialize,
+                response_deserializer=space_notification_setting.SpaceNotificationSetting.deserialize,
+            )
+        return self._stubs["get_space_notification_setting"]
+
+    @property
+    def update_space_notification_setting(
+        self,
+    ) -> Callable[
+        [gc_space_notification_setting.UpdateSpaceNotificationSettingRequest],
+        Awaitable[gc_space_notification_setting.SpaceNotificationSetting],
+    ]:
+        r"""Return a callable for the update space notification
+        setting method over gRPC.
+
+        Updates the space notification setting. For an example, see
+        `Update the caller's space notification
+        setting <https://developers.google.com/workspace/chat/update-space-notification-setting>`__.
+
+        Requires `user
+        authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__.
+
+        Returns:
+            Callable[[~.UpdateSpaceNotificationSettingRequest],
+                    Awaitable[~.SpaceNotificationSetting]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_space_notification_setting" not in self._stubs:
+            self._stubs[
+                "update_space_notification_setting"
+            ] = self._logged_channel.unary_unary(
+                "/google.chat.v1.ChatService/UpdateSpaceNotificationSetting",
+                request_serializer=gc_space_notification_setting.UpdateSpaceNotificationSettingRequest.serialize,
+                response_deserializer=gc_space_notification_setting.SpaceNotificationSetting.deserialize,
+            )
+        return self._stubs["update_space_notification_setting"]
+
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
@@ -1983,6 +2060,34 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
             ),
             self.list_space_events: self._wrap_method(
                 self.list_space_events,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=30.0,
+                ),
+                default_timeout=30.0,
+                client_info=client_info,
+            ),
+            self.get_space_notification_setting: self._wrap_method(
+                self.get_space_notification_setting,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=30.0,
+                ),
+                default_timeout=30.0,
+                client_info=client_info,
+            ),
+            self.update_space_notification_setting: self._wrap_method(
+                self.update_space_notification_setting,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
                     maximum=10.0,

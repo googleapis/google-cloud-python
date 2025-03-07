@@ -54,6 +54,7 @@ class chatCallTransformer(cst.CSTTransformer):
         'get_message': ('name', ),
         'get_space': ('name', 'use_admin_access', ),
         'get_space_event': ('name', ),
+        'get_space_notification_setting': ('name', ),
         'get_space_read_state': ('name', ),
         'get_thread_read_state': ('name', ),
         'list_memberships': ('parent', 'page_size', 'page_token', 'filter', 'show_groups', 'show_invited', 'use_admin_access', ),
@@ -66,6 +67,7 @@ class chatCallTransformer(cst.CSTTransformer):
         'update_membership': ('membership', 'update_mask', 'use_admin_access', ),
         'update_message': ('message', 'update_mask', 'allow_missing', ),
         'update_space': ('space', 'update_mask', 'use_admin_access', ),
+        'update_space_notification_setting': ('space_notification_setting', 'update_mask', ),
         'update_space_read_state': ('space_read_state', 'update_mask', ),
         'upload_attachment': ('parent', 'filename', ),
     }
