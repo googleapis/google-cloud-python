@@ -226,7 +226,7 @@ class Webhook(proto.Message):
                     Required. The client ID provided by the 3rd
                     party platform.
                 client_secret (str):
-                    Required. The client secret provided by the
+                    Optional. The client secret provided by the
                     3rd party platform.
                 token_endpoint (str):
                     Required. The token endpoint provided by the
