@@ -320,8 +320,12 @@ class GeneratorsAsyncClient:
                 client = dialogflow_v2beta1.GeneratorsAsyncClient()
 
                 # Initialize request argument(s)
+                generator = dialogflow_v2beta1.Generator()
+                generator.published_model = "published_model_value"
+
                 request = dialogflow_v2beta1.CreateGeneratorRequest(
                     parent="parent_value",
+                    generator=generator,
                 )
 
                 # Make the request
@@ -791,7 +795,11 @@ class GeneratorsAsyncClient:
                 client = dialogflow_v2beta1.GeneratorsAsyncClient()
 
                 # Initialize request argument(s)
+                generator = dialogflow_v2beta1.Generator()
+                generator.published_model = "published_model_value"
+
                 request = dialogflow_v2beta1.UpdateGeneratorRequest(
+                    generator=generator,
                 )
 
                 # Make the request

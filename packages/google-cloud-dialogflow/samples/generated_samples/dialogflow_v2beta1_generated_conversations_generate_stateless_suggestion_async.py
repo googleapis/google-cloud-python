@@ -39,7 +39,11 @@ async def sample_generate_stateless_suggestion():
     client = dialogflow_v2beta1.ConversationsAsyncClient()
 
     # Initialize request argument(s)
+    generator = dialogflow_v2beta1.Generator()
+    generator.published_model = "published_model_value"
+
     request = dialogflow_v2beta1.GenerateStatelessSuggestionRequest(
+        generator=generator,
         parent="parent_value",
     )
 

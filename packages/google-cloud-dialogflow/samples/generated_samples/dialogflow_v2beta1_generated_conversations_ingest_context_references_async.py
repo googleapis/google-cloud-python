@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for UpdateGenerator
+# Snippet for IngestContextReferences
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,7 +23,7 @@
 #   python3 -m pip install google-cloud-dialogflow
 
 
-# [START dialogflow_v2beta1_generated_Generators_UpdateGenerator_async]
+# [START dialogflow_v2beta1_generated_Conversations_IngestContextReferences_async]
 # This snippet has been automatically generated and should be regarded as a
 # code template only.
 # It will require modifications to work:
@@ -34,22 +34,19 @@
 from google.cloud import dialogflow_v2beta1
 
 
-async def sample_update_generator():
+async def sample_ingest_context_references():
     # Create a client
-    client = dialogflow_v2beta1.GeneratorsAsyncClient()
+    client = dialogflow_v2beta1.ConversationsAsyncClient()
 
     # Initialize request argument(s)
-    generator = dialogflow_v2beta1.Generator()
-    generator.published_model = "published_model_value"
-
-    request = dialogflow_v2beta1.UpdateGeneratorRequest(
-        generator=generator,
+    request = dialogflow_v2beta1.IngestContextReferencesRequest(
+        conversation="conversation_value",
     )
 
     # Make the request
-    response = await client.update_generator(request=request)
+    response = await client.ingest_context_references(request=request)
 
     # Handle the response
     print(response)
 
-# [END dialogflow_v2beta1_generated_Generators_UpdateGenerator_async]
+# [END dialogflow_v2beta1_generated_Conversations_IngestContextReferences_async]
