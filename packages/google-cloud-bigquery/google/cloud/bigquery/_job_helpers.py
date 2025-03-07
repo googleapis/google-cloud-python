@@ -526,6 +526,8 @@ def query_and_wait(
             query_id=query_results.query_id,
             project=query_results.project,
             num_dml_affected_rows=query_results.num_dml_affected_rows,
+            query=query,
+            total_bytes_processed=query_results.total_bytes_processed,
         )
 
     if job_retry is not None:

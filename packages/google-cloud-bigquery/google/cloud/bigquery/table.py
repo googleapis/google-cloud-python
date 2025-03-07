@@ -1760,6 +1760,10 @@ class RowIterator(HTTPIterator):
         first_page_response (Optional[dict]):
             API response for the first page of results. These are returned when
             the first page is requested.
+        query (Optional[str]):
+            The query text used.
+        total_bytes_processed (Optinal[int]):
+            total bytes processed from job statistics, if present.
     """
 
     def __init__(
@@ -1781,6 +1785,8 @@ class RowIterator(HTTPIterator):
         query_id: Optional[str] = None,
         project: Optional[str] = None,
         num_dml_affected_rows: Optional[int] = None,
+        query: Optional[str] = None,
+        total_bytes_processed: Optional[int] = None,
     ):
         super(RowIterator, self).__init__(
             client,
@@ -1808,6 +1814,8 @@ class RowIterator(HTTPIterator):
         self._query_id = query_id
         self._project = project
         self._num_dml_affected_rows = num_dml_affected_rows
+        self._query = query
+        self._total_bytes_processed = total_bytes_processed
 
     @property
     def _billing_project(self) -> Optional[str]:
@@ -1854,6 +1862,16 @@ class RowIterator(HTTPIterator):
         This ID is auto-generated and not guaranteed to be populated.
         """
         return self._query_id
+
+    @property
+    def query(self) -> Optional[str]:
+        """The query text used."""
+        return self._query
+
+    @property
+    def total_bytes_processed(self) -> Optional[int]:
+        """total bytes processed from job statistics, if present."""
+        return self._total_bytes_processed
 
     def _is_almost_completely_cached(self):
         """Check if all results are completely cached.

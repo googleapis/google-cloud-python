@@ -4081,6 +4081,8 @@ class Client(ClientWithProject):
         query_id: Optional[str] = None,
         first_page_response: Optional[Dict[str, Any]] = None,
         num_dml_affected_rows: Optional[int] = None,
+        query: Optional[str] = None,
+        total_bytes_processed: Optional[int] = None,
     ) -> RowIterator:
         """List the rows of a completed query.
         See
@@ -4128,6 +4130,10 @@ class Client(ClientWithProject):
             num_dml_affected_rows (Optional[int]):
                 If this RowIterator is the result of a DML query, the number of
                 rows that were affected.
+            query (Optional[str]):
+                The query text used.
+            total_bytes_processed (Optinal[int]):
+                total bytes processed from job statistics, if present.
 
         Returns:
             google.cloud.bigquery.table.RowIterator:
@@ -4165,6 +4171,8 @@ class Client(ClientWithProject):
             query_id=query_id,
             first_page_response=first_page_response,
             num_dml_affected_rows=num_dml_affected_rows,
+            query=query,
+            total_bytes_processed=total_bytes_processed,
         )
         return row_iterator
 

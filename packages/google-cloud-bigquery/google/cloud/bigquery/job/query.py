@@ -1741,6 +1741,8 @@ class QueryJob(_AsyncJob):
             query_id=self.query_id,
             first_page_response=first_page_response,
             num_dml_affected_rows=self._query_results.num_dml_affected_rows,
+            query=self.query,
+            total_bytes_processed=self.total_bytes_processed,
             **list_rows_kwargs,
         )
         rows._preserve_order = _contains_order_by(self.query)

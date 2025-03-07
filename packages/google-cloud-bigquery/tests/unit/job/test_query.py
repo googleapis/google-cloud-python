@@ -887,6 +887,7 @@ class TestQueryJob(_Base):
         }
         job_resource = self._make_resource(started=True, location="EU")
         job_resource_done = self._make_resource(started=True, ended=True, location="EU")
+        job_resource_done["statistics"]["query"]["totalBytesProcessed"] = str(1234)
         job_resource_done["configuration"]["query"]["destinationTable"] = {
             "projectId": "dest-project",
             "datasetId": "dest_dataset",
@@ -966,6 +967,8 @@ class TestQueryJob(_Base):
         # Test that the total_rows property has changed during iteration, based
         # on the response from tabledata.list.
         self.assertEqual(result.total_rows, 1)
+        self.assertEqual(result.query, job.query)
+        self.assertEqual(result.total_bytes_processed, 1234)
 
         query_results_path = f"/projects/{self.PROJECT}/queries/{self.JOB_ID}"
         query_results_call = mock.call(
