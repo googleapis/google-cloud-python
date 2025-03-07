@@ -53,15 +53,15 @@ extras = {
     # Keep the no-op bqstorage extra for backward compatibility.
     # See: https://github.com/googleapis/python-bigquery/issues/757
     "bqstorage": [
-        "google-cloud-bigquery-storage >= 2.0.0, <3.0.0dev",
+        "google-cloud-bigquery-storage >= 2.0.0, <3.0.0",
         # Due to an issue in pip's dependency resolver, the `grpc` extra is not
         # installed, even though `google-cloud-bigquery-storage` specifies it
         # as `google-api-core[grpc]`. We thus need to explicitly specify it here.
         # See: https://github.com/googleapis/python-bigquery/issues/83 The
         # grpc.Channel.close() method isn't added until 1.32.0.
         # https://github.com/grpc/grpc/pull/15254
-        "grpcio >= 1.47.0, < 2.0dev",
-        "grpcio >= 1.49.1, < 2.0dev; python_version>='3.11'",
+        "grpcio >= 1.47.0, < 2.0.0",
+        "grpcio >= 1.49.1, < 2.0.0; python_version>='3.11'",
         "pyarrow >= 3.0.0",
     ],
 }
@@ -109,14 +109,14 @@ setup(
     ],
     platforms="Posix; MacOS X; Windows",
     install_requires=[
-        "google-api-core >= 1.31.5, <3.0.0dev,!=2.0.*,!=2.1.*,!=2.2.*,!=2.3.0",
+        "google-api-core >= 1.31.5, <3.0.0,!=2.0.*,!=2.1.*,!=2.2.*,!=2.3.0",
         # NOTE: Maintainers, please do not require google-auth>=2.x.x
         # Until this issue is closed
         # https://github.com/googleapis/google-cloud-python/issues/10566
-        "google-auth>=1.25.0,<3.0.0dev",  # Work around pip wack.
-        "google-cloud-bigquery>=3.3.6,<4.0.0dev",
+        "google-auth>=1.25.0,<3.0.0",  # Work around pip wack.
+        "google-cloud-bigquery>=3.3.6,<4.0.0",
         "packaging",
-        "sqlalchemy>=1.4.16,<3.0.0dev",
+        "sqlalchemy>=1.4.16,<3.0.0",
     ],
     extras_require=extras,
     python_requires=">=3.8, <3.13",
