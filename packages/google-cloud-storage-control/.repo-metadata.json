@@ -12,6 +12,6 @@
     "distribution_name": "google-cloud-storage-control",
     "api_id": "storage.googleapis.com",
     "default_version": "v2",
-    "codeowner_team": "",
+    "codeowner_team": "@googleapis/gcs-sdk-team",
     "api_shortname": "storagecontrol"
 }

@@ -12,6 +12,6 @@
     "distribution_name": "google-cloud-storageinsights",
     "api_id": "storageinsights.googleapis.com",
     "default_version": "v1",
-    "codeowner_team": "",
+    "codeowner_team": "@googleapis/gcs-sdk-team",
     "api_shortname": "storageinsights"
 }
