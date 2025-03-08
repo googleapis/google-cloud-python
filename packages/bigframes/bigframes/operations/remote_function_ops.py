@@ -29,11 +29,12 @@ class RemoteFunctionOp(base_ops.UnaryOp):
         return True
 
     def output_type(self, *input_types):
-        # This property should be set to a valid Dtype by the @remote_function decorator or read_gbq_function method
+        # The output dtype should be set to a valid Dtype by @udf decorator,
+        # @remote_function decorator, or read_gbq_function method.
         if hasattr(self.func, "bigframes_bigquery_function_output_dtype"):
             return self.func.bigframes_bigquery_function_output_dtype
-        else:
-            raise AttributeError("bigframes_bigquery_function_output_dtype not defined")
+
+        raise AttributeError("bigframes_bigquery_function_output_dtype not defined")
 
 
 @dataclasses.dataclass(frozen=True)
@@ -46,11 +47,12 @@ class BinaryRemoteFunctionOp(base_ops.BinaryOp):
         return True
 
     def output_type(self, *input_types):
-        # This property should be set to a valid Dtype by the @remote_function decorator or read_gbq_function method
+        # The output dtype should be set to a valid Dtype by @udf decorator,
+        # @remote_function decorator, or read_gbq_function method.
         if hasattr(self.func, "bigframes_bigquery_function_output_dtype"):
             return self.func.bigframes_bigquery_function_output_dtype
-        else:
-            raise AttributeError("bigframes_bigquery_function_output_dtype not defined")
+
+        raise AttributeError("bigframes_bigquery_function_output_dtype not defined")
 
 
 @dataclasses.dataclass(frozen=True)
@@ -63,8 +65,9 @@ class NaryRemoteFunctionOp(base_ops.NaryOp):
         return True
 
     def output_type(self, *input_types):
-        # This property should be set to a valid Dtype by the @remote_function decorator or read_gbq_function method
+        # The output dtype should be set to a valid Dtype by @udf decorator,
+        # @remote_function decorator, or read_gbq_function method.
         if hasattr(self.func, "bigframes_bigquery_function_output_dtype"):
             return self.func.bigframes_bigquery_function_output_dtype
-        else:
-            raise AttributeError("bigframes_bigquery_function_output_dtype not defined")
+
+        raise AttributeError("bigframes_bigquery_function_output_dtype not defined")

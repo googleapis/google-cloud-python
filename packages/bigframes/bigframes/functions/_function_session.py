@@ -892,6 +892,7 @@ class FunctionSession:
             func = cloudpickle.loads(cloudpickle.dumps(func))
 
             self._try_delattr(func, "bigframes_bigquery_function")
+            self._try_delattr(func, "bigframes_bigquery_function_output_dtype")
             self._try_delattr(func, "input_dtypes")
             self._try_delattr(func, "output_dtype")
             self._try_delattr(func, "is_row_processor")
@@ -951,6 +952,10 @@ class FunctionSession:
                     ibis_signature.output_type
                 )
             )
+            # Managed function directly supports certain output types which are
+            # not supported in remote function (e.g. list output). Thus no more
+            # processing for 'bigframes_bigquery_function_output_dtype'.
+            func.bigframes_bigquery_function_output_dtype = func.output_dtype
             func.is_row_processor = is_row_processor
             func.ibis_node = node
 

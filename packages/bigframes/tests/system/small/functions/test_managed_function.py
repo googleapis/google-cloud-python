@@ -62,6 +62,9 @@ def test_managed_function_series_apply(
 
     assert hasattr(foo, "bigframes_bigquery_function")
     assert hasattr(foo, "ibis_node")
+    assert hasattr(foo, "input_dtypes")
+    assert hasattr(foo, "output_dtype")
+    assert hasattr(foo, "bigframes_bigquery_function_output_dtype")
 
     scalars_df, scalars_pandas_df = scalars_dfs
 
@@ -121,6 +124,88 @@ def test_managed_function_series_combine(dataset_id_permanent, scalars_dfs):
     )
 
     # ignore any dtype difference.
+    pd.testing.assert_series_equal(pd_result, bf_result, check_dtype=False)
+
+
+@pytest.mark.skipif(
+    get_python_version() not in bff_session._MANAGED_FUNC_PYTHON_VERSIONS,
+    reason=f"Supported version: {bff_session._MANAGED_FUNC_PYTHON_VERSIONS}",
+)
+@pytest.mark.parametrize(
+    ("typ",),
+    [
+        pytest.param(int),
+        pytest.param(float),
+        pytest.param(bool),
+        pytest.param(str),
+    ],
+)
+def test_managed_function_series_apply_list_output(
+    typ,
+    scalars_dfs,
+    dataset_id_permanent,
+):
+    def foo_list(x):
+        # The bytes() constructor expects a non-negative interger as its arg.
+        return [typ(abs(x)), typ(abs(x) + 1)]
+
+    foo_list = udf(
+        input_types=int,
+        output_type=list[typ],  # type: ignore
+        dataset=dataset_id_permanent,
+        name=get_function_name(foo_list),
+    )(foo_list)
+
+    scalars_df, scalars_pandas_df = scalars_dfs
+
+    bf_result_col = scalars_df["int64_too"].apply(foo_list)
+    bf_result = (
+        scalars_df["int64_too"].to_frame().assign(result=bf_result_col).to_pandas()
+    )
+
+    pd_result_col = scalars_pandas_df["int64_too"].apply(foo_list)
+    pd_result = scalars_pandas_df["int64_too"].to_frame().assign(result=pd_result_col)
+
+    # Ignore any dtype difference.
+    assert_pandas_df_equal(bf_result, pd_result, check_dtype=False)
+
+
+@pytest.mark.skipif(
+    get_python_version() not in bff_session._MANAGED_FUNC_PYTHON_VERSIONS,
+    reason=f"Supported version: {bff_session._MANAGED_FUNC_PYTHON_VERSIONS}",
+)
+def test_managed_function_series_combine_list_output(dataset_id_permanent, scalars_dfs):
+    def add_list(x: int, y: int) -> list[int]:
+        return [x, y]
+
+    scalars_df, scalars_pandas_df = scalars_dfs
+    int_col_name_with_nulls = "int64_col"
+    int_col_name_no_nulls = "int64_too"
+    bf_df = scalars_df[[int_col_name_with_nulls, int_col_name_no_nulls]]
+    pd_df = scalars_pandas_df[[int_col_name_with_nulls, int_col_name_no_nulls]]
+
+    # Make sure there are NA values in the test column.
+    assert any([pd.isna(val) for val in bf_df[int_col_name_with_nulls]])
+
+    add_list_managed_func = udf(
+        dataset=dataset_id_permanent,
+        name=get_function_name(add_list),
+    )(add_list)
+
+    # After filtering out nulls the managed function application should work
+    # similar to pandas.
+    pd_filter = pd_df[int_col_name_with_nulls].notnull()
+    pd_result = pd_df[pd_filter][int_col_name_with_nulls].combine(
+        pd_df[pd_filter][int_col_name_no_nulls], add_list
+    )
+    bf_filter = bf_df[int_col_name_with_nulls].notnull()
+    bf_result = (
+        bf_df[bf_filter][int_col_name_with_nulls]
+        .combine(bf_df[bf_filter][int_col_name_no_nulls], add_list_managed_func)
+        .to_pandas()
+    )
+
+    # Ignore any dtype difference.
     pd.testing.assert_series_equal(pd_result, bf_result, check_dtype=False)
 
 
@@ -197,3 +282,73 @@ def test_managed_function_dataframe_apply_axis_1(
     pd.testing.assert_series_equal(
         pd_result, bf_result, check_dtype=False, check_exact=True
     )
+
+
+@pytest.mark.skipif(
+    get_python_version() not in bff_session._MANAGED_FUNC_PYTHON_VERSIONS,
+    reason=f"Supported version: {bff_session._MANAGED_FUNC_PYTHON_VERSIONS}",
+)
+def test_managed_function_dataframe_map_list_output(scalars_dfs, dataset_id_permanent):
+    def add_one_list(x):
+        return [x + 1] * 3
+
+    mf_add_one_list = udf(
+        input_types=[int],
+        output_type=list[int],
+        dataset=dataset_id_permanent,
+        name=get_function_name(add_one_list),
+    )(add_one_list)
+
+    scalars_df, scalars_pandas_df = scalars_dfs
+    int64_cols = ["int64_col", "int64_too"]
+
+    bf_int64_df = scalars_df[int64_cols]
+    bf_int64_df_filtered = bf_int64_df.dropna()
+    bf_result = bf_int64_df_filtered.map(mf_add_one_list).to_pandas()
+
+    pd_int64_df = scalars_pandas_df[int64_cols]
+    pd_int64_df_filtered = pd_int64_df.dropna()
+    pd_result = pd_int64_df_filtered.map(add_one_list)
+
+    # Ignore any dtype difference.
+    assert_pandas_df_equal(bf_result, pd_result, check_dtype=False)
+
+
+@pytest.mark.skipif(
+    get_python_version() not in bff_session._MANAGED_FUNC_PYTHON_VERSIONS,
+    reason=f"Supported version: {bff_session._MANAGED_FUNC_PYTHON_VERSIONS}",
+)
+def test_managed_function_dataframe_apply_axis_1_list_output(
+    session, scalars_dfs, dataset_id_permanent
+):
+    scalars_df, scalars_pandas_df = scalars_dfs
+    series = scalars_df["int64_too"]
+    series_pandas = scalars_pandas_df["int64_too"]
+
+    def add_ints_list(x, y):
+        return [x + y] * 2
+
+    add_ints_list_mf = session.udf(
+        input_types=[int, int],
+        output_type=list[int],
+        dataset=dataset_id_permanent,
+        name=get_function_name(add_ints_list, is_row_processor=True),
+    )(add_ints_list)
+    assert add_ints_list_mf.bigframes_bigquery_function  # type: ignore
+
+    with pytest.warns(
+        bigframes.exceptions.PreviewWarning,
+        match="axis=1 scenario is in preview.",
+    ):
+        bf_result = (
+            bpd.DataFrame({"x": series, "y": series})
+            .apply(add_ints_list_mf, axis=1)
+            .to_pandas()
+        )
+
+    pd_result = pd.DataFrame({"x": series_pandas, "y": series_pandas}).apply(
+        lambda row: add_ints_list(row["x"], row["y"]), axis=1
+    )
+
+    # Ignore any dtype difference.
+    pd.testing.assert_series_equal(pd_result, bf_result, check_dtype=False)
