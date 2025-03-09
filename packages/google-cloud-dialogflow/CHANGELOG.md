@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-dialogflow/#history
 
+## [2.41.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dialogflow-v2.40.0...google-cloud-dialogflow-v2.41.0) (2025-03-09)
+
+
+### Features
+
+* Add new RPC IngestContextReferences, GenerateSuggestions ([b1ab233](https://github.com/googleapis/google-cloud-python/commit/b1ab233a031c0d43a9aa23ca3242a17d14bbdf2e))
+
+
+### Documentation
+
+* clarified wording around phrase_sets ([b1ab233](https://github.com/googleapis/google-cloud-python/commit/b1ab233a031c0d43a9aa23ca3242a17d14bbdf2e))
+
 ## [2.40.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dialogflow-v2.39.1...google-cloud-dialogflow-v2.40.0) (2025-03-06)
 
 
