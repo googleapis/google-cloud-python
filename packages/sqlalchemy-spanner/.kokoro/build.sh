@@ -21,12 +21,6 @@ export GOOGLE_APPLICATION_CREDENTIALS=${KOKORO_GFILE_DIR}/service-account.json
 export PROJECT_ID=$(cat "${KOKORO_GFILE_DIR}/project-id.json")
 export GOOGLE_CLOUD_PROJECT=$(cat "${KOKORO_GFILE_DIR}/project-id.json")
 
-# Remove old nox
-python3 -m pip uninstall --yes --quiet nox-automation
-
-# Install nox
-python3 -m pip install --require-hashes -r .kokoro/requirements.txt
-python3 -m pip install --upgrade --quiet nox
 python3 -m nox --version
 
 # If this is a continuous build, send the test log to the FlakyBot.
