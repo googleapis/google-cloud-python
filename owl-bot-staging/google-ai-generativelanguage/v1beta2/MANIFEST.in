@@ -1,0 +1,2 @@
+recursive-include google/ai/generativelanguage *.py
+recursive-include google/ai/generativelanguage_v1beta2 *.py
