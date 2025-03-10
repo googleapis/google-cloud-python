@@ -1,0 +1,2 @@
+recursive-include google/cloud/batch *.py
+recursive-include google/cloud/batch_v1 *.py

@@ -1,0 +1,2 @@
+recursive-include google/cloud/bigquery_connection *.py
+recursive-include google/cloud/bigquery_connection_v1 *.py

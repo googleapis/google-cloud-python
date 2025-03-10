@@ -1,0 +1,2 @@
+recursive-include google/cloud/beyondcorp_appgateways *.py
+recursive-include google/cloud/beyondcorp_appgateways_v1 *.py

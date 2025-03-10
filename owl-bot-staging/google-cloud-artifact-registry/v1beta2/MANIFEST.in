@@ -1,0 +1,2 @@
+recursive-include google/cloud/artifactregistry *.py
+recursive-include google/cloud/artifactregistry_v1beta2 *.py
