@@ -97,7 +97,7 @@ Documentation
 
 See the `documentation`_.
 
-.. _documentation: https://googleapis.dev/python/gapic-generator-python/latest
+.. _documentation: https://googleapis.dev/python/gapic-generator/latest/
 
 .. |release level| image:: https://img.shields.io/badge/support-stable-gold.svg
   :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#general-availability
