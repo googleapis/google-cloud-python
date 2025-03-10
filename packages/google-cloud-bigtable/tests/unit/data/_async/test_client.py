@@ -377,7 +377,17 @@ class TestBigtableDataClientAsync:
         import time
         import threading
 
+        if CrossSync.is_async:
+            from google.cloud.bigtable_v2.services.bigtable.transports.grpc_asyncio import (
+                _LoggingClientAIOInterceptor as Interceptor,
+            )
+        else:
+            from google.cloud.bigtable_v2.services.bigtable.transports.grpc import (
+                _LoggingClientInterceptor as Interceptor,
+            )
+
         client_mock = mock.Mock()
+        client_mock.transport._interceptor = Interceptor()
         client_mock._is_closed.is_set.return_value = False
         client_mock._channel_init_time = time.monotonic()
         orig_channel = client_mock.transport.grpc_channel

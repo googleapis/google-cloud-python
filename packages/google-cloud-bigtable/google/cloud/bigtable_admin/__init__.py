@@ -47,6 +47,18 @@ from google.cloud.bigtable_admin_v2.types.bigtable_instance_admin import (
     CreateInstanceRequest,
 )
 from google.cloud.bigtable_admin_v2.types.bigtable_instance_admin import (
+    CreateLogicalViewMetadata,
+)
+from google.cloud.bigtable_admin_v2.types.bigtable_instance_admin import (
+    CreateLogicalViewRequest,
+)
+from google.cloud.bigtable_admin_v2.types.bigtable_instance_admin import (
+    CreateMaterializedViewMetadata,
+)
+from google.cloud.bigtable_admin_v2.types.bigtable_instance_admin import (
+    CreateMaterializedViewRequest,
+)
+from google.cloud.bigtable_admin_v2.types.bigtable_instance_admin import (
     DeleteAppProfileRequest,
 )
 from google.cloud.bigtable_admin_v2.types.bigtable_instance_admin import (
@@ -56,6 +68,12 @@ from google.cloud.bigtable_admin_v2.types.bigtable_instance_admin import (
     DeleteInstanceRequest,
 )
 from google.cloud.bigtable_admin_v2.types.bigtable_instance_admin import (
+    DeleteLogicalViewRequest,
+)
+from google.cloud.bigtable_admin_v2.types.bigtable_instance_admin import (
+    DeleteMaterializedViewRequest,
+)
+from google.cloud.bigtable_admin_v2.types.bigtable_instance_admin import (
     GetAppProfileRequest,
 )
 from google.cloud.bigtable_admin_v2.types.bigtable_instance_admin import (
@@ -63,6 +81,12 @@ from google.cloud.bigtable_admin_v2.types.bigtable_instance_admin import (
 )
 from google.cloud.bigtable_admin_v2.types.bigtable_instance_admin import (
     GetInstanceRequest,
+)
+from google.cloud.bigtable_admin_v2.types.bigtable_instance_admin import (
+    GetLogicalViewRequest,
+)
+from google.cloud.bigtable_admin_v2.types.bigtable_instance_admin import (
+    GetMaterializedViewRequest,
 )
 from google.cloud.bigtable_admin_v2.types.bigtable_instance_admin import (
     ListAppProfilesRequest,
@@ -89,6 +113,18 @@ from google.cloud.bigtable_admin_v2.types.bigtable_instance_admin import (
     ListInstancesResponse,
 )
 from google.cloud.bigtable_admin_v2.types.bigtable_instance_admin import (
+    ListLogicalViewsRequest,
+)
+from google.cloud.bigtable_admin_v2.types.bigtable_instance_admin import (
+    ListLogicalViewsResponse,
+)
+from google.cloud.bigtable_admin_v2.types.bigtable_instance_admin import (
+    ListMaterializedViewsRequest,
+)
+from google.cloud.bigtable_admin_v2.types.bigtable_instance_admin import (
+    ListMaterializedViewsResponse,
+)
+from google.cloud.bigtable_admin_v2.types.bigtable_instance_admin import (
     PartialUpdateClusterMetadata,
 )
 from google.cloud.bigtable_admin_v2.types.bigtable_instance_admin import (
@@ -108,6 +144,18 @@ from google.cloud.bigtable_admin_v2.types.bigtable_instance_admin import (
 )
 from google.cloud.bigtable_admin_v2.types.bigtable_instance_admin import (
     UpdateInstanceMetadata,
+)
+from google.cloud.bigtable_admin_v2.types.bigtable_instance_admin import (
+    UpdateLogicalViewMetadata,
+)
+from google.cloud.bigtable_admin_v2.types.bigtable_instance_admin import (
+    UpdateLogicalViewRequest,
+)
+from google.cloud.bigtable_admin_v2.types.bigtable_instance_admin import (
+    UpdateMaterializedViewMetadata,
+)
+from google.cloud.bigtable_admin_v2.types.bigtable_instance_admin import (
+    UpdateMaterializedViewRequest,
 )
 from google.cloud.bigtable_admin_v2.types.bigtable_table_admin import (
     CheckConsistencyRequest,
@@ -230,6 +278,8 @@ from google.cloud.bigtable_admin_v2.types.instance import AutoscalingTargets
 from google.cloud.bigtable_admin_v2.types.instance import Cluster
 from google.cloud.bigtable_admin_v2.types.instance import HotTablet
 from google.cloud.bigtable_admin_v2.types.instance import Instance
+from google.cloud.bigtable_admin_v2.types.instance import LogicalView
+from google.cloud.bigtable_admin_v2.types.instance import MaterializedView
 from google.cloud.bigtable_admin_v2.types.table import AuthorizedView
 from google.cloud.bigtable_admin_v2.types.table import Backup
 from google.cloud.bigtable_admin_v2.types.table import BackupInfo
@@ -253,12 +303,20 @@ __all__ = (
     "CreateClusterRequest",
     "CreateInstanceMetadata",
     "CreateInstanceRequest",
+    "CreateLogicalViewMetadata",
+    "CreateLogicalViewRequest",
+    "CreateMaterializedViewMetadata",
+    "CreateMaterializedViewRequest",
     "DeleteAppProfileRequest",
     "DeleteClusterRequest",
     "DeleteInstanceRequest",
+    "DeleteLogicalViewRequest",
+    "DeleteMaterializedViewRequest",
     "GetAppProfileRequest",
     "GetClusterRequest",
     "GetInstanceRequest",
+    "GetLogicalViewRequest",
+    "GetMaterializedViewRequest",
     "ListAppProfilesRequest",
     "ListAppProfilesResponse",
     "ListClustersRequest",
@@ -267,6 +325,10 @@ __all__ = (
     "ListHotTabletsResponse",
     "ListInstancesRequest",
     "ListInstancesResponse",
+    "ListLogicalViewsRequest",
+    "ListLogicalViewsResponse",
+    "ListMaterializedViewsRequest",
+    "ListMaterializedViewsResponse",
     "PartialUpdateClusterMetadata",
     "PartialUpdateClusterRequest",
     "PartialUpdateInstanceRequest",
@@ -274,6 +336,10 @@ __all__ = (
     "UpdateAppProfileRequest",
     "UpdateClusterMetadata",
     "UpdateInstanceMetadata",
+    "UpdateLogicalViewMetadata",
+    "UpdateLogicalViewRequest",
+    "UpdateMaterializedViewMetadata",
+    "UpdateMaterializedViewRequest",
     "CheckConsistencyRequest",
     "CheckConsistencyResponse",
     "CopyBackupMetadata",
@@ -327,6 +393,8 @@ __all__ = (
     "Cluster",
     "HotTablet",
     "Instance",
+    "LogicalView",
+    "MaterializedView",
     "AuthorizedView",
     "Backup",
     "BackupInfo",

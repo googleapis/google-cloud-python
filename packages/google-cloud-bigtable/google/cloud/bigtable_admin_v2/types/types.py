@@ -35,34 +35,27 @@ class Type(proto.Message):
     features.
 
     For compatibility with Bigtable's existing untyped APIs, each
-    ``Type`` includes an ``Encoding`` which describes how to convert
-    to/from the underlying data.
+    ``Type`` includes an ``Encoding`` which describes how to convert to
+    or from the underlying data.
 
-    Each encoding also defines the following properties:
+    Each encoding can operate in one of two modes:
 
-    -  Order-preserving: Does the encoded value sort consistently with
-       the original typed value? Note that Bigtable will always sort
-       data based on the raw encoded value, *not* the decoded type.
+    -  Sorted: In this mode, Bigtable guarantees that
+       ``Encode(X) <= Encode(Y)`` if and only if ``X <= Y``. This is
+       useful anywhere sort order is important, for example when
+       encoding keys.
+    -  Distinct: In this mode, Bigtable guarantees that if ``X != Y``
+       then ``Encode(X) != Encode(Y)``. However, the converse is not
+       guaranteed. For example, both "{'foo': '1', 'bar': '2'}" and
+       "{'bar': '2', 'foo': '1'}" are valid encodings of the same JSON
+       value.
 
-       -  Example: BYTES values sort in the same order as their raw
-          encodings.
-       -  Counterexample: Encoding INT64 as a fixed-width decimal string
-          does *not* preserve sort order when dealing with negative
-          numbers. ``INT64(1) > INT64(-1)``, but
-          ``STRING("-00001") > STRING("00001)``.
-
-    -  Self-delimiting: If we concatenate two encoded values, can we
-       always tell where the first one ends and the second one begins?
-
-       -  Example: If we encode INT64s to fixed-width STRINGs, the first
-          value will always contain exactly N digits, possibly preceded
-          by a sign.
-       -  Counterexample: If we concatenate two UTF-8 encoded STRINGs,
-          we have no way to tell where the first one ends.
-
-    -  Compatibility: Which other systems have matching encoding
-       schemes? For example, does this encoding have a GoogleSQL
-       equivalent? HBase? Java?
+    The API clearly documents which mode is used wherever an encoding
+    can be configured. Each encoding also documents which values are
+    supported in which modes. For example, when encoding INT64 as a
+    numeric STRING, negative numbers cannot be encoded in sorted mode.
+    This is because ``INT64(1) > INT64(-1)``, but
+    ``STRING("-00001") > STRING("00001")``.
 
     This message has `oneof`_ fields (mutually exclusive fields).
     For each oneof, at most one member field can be set at the same time.
@@ -127,12 +120,12 @@ class Type(proto.Message):
 
         Attributes:
             encoding (google.cloud.bigtable_admin_v2.types.Type.Bytes.Encoding):
-                The encoding to use when converting to/from
-                lower level types.
+                The encoding to use when converting to or
+                from lower level types.
         """
 
         class Encoding(proto.Message):
-            r"""Rules used to convert to/from lower level types.
+            r"""Rules used to convert to or from lower level types.
 
             .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
@@ -144,11 +137,11 @@ class Type(proto.Message):
             """
 
             class Raw(proto.Message):
-                r"""Leaves the value "as-is"
+                r"""Leaves the value as-is.
 
-                -  Order-preserving? Yes
-                -  Self-delimiting? No
-                -  Compatibility? N/A
+                Sorted mode: all values are supported.
+
+                Distinct mode: all values are supported.
 
                 """
 
@@ -171,12 +164,12 @@ class Type(proto.Message):
 
         Attributes:
             encoding (google.cloud.bigtable_admin_v2.types.Type.String.Encoding):
-                The encoding to use when converting to/from
-                lower level types.
+                The encoding to use when converting to or
+                from lower level types.
         """
 
         class Encoding(proto.Message):
-            r"""Rules used to convert to/from lower level types.
+            r"""Rules used to convert to or from lower level types.
 
             This message has `oneof`_ fields (mutually exclusive fields).
             For each oneof, at most one member field can be set at the same time.
@@ -200,15 +193,20 @@ class Type(proto.Message):
                 r"""Deprecated: prefer the equivalent ``Utf8Bytes``."""
 
             class Utf8Bytes(proto.Message):
-                r"""UTF-8 encoding
+                r"""UTF-8 encoding.
 
-                -  Order-preserving? Yes (code point order)
-                -  Self-delimiting? No
-                -  Compatibility?
+                Sorted mode:
 
-                   -  BigQuery Federation ``TEXT`` encoding
-                   -  HBase ``Bytes.toBytes``
-                   -  Java ``String#getBytes(StandardCharsets.UTF_8)``
+                -  All values are supported.
+                -  Code point order is preserved.
+
+                Distinct mode: all values are supported.
+
+                Compatible with:
+
+                -  BigQuery ``TEXT`` encoding
+                -  HBase ``Bytes.toBytes``
+                -  Java ``String#getBytes(StandardCharsets.UTF_8)``
 
                 """
 
@@ -236,12 +234,17 @@ class Type(proto.Message):
 
         Attributes:
             encoding (google.cloud.bigtable_admin_v2.types.Type.Int64.Encoding):
-                The encoding to use when converting to/from
-                lower level types.
+                The encoding to use when converting to or
+                from lower level types.
         """
 
         class Encoding(proto.Message):
-            r"""Rules used to convert to/from lower level types.
+            r"""Rules used to convert to or from lower level types.
+
+            This message has `oneof`_ fields (mutually exclusive fields).
+            For each oneof, at most one member field can be set at the same time.
+            Setting any member of the oneof automatically clears all other
+            members.
 
             .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
@@ -250,19 +253,24 @@ class Type(proto.Message):
                     Use ``BigEndianBytes`` encoding.
 
                     This field is a member of `oneof`_ ``encoding``.
+                ordered_code_bytes (google.cloud.bigtable_admin_v2.types.Type.Int64.Encoding.OrderedCodeBytes):
+                    Use ``OrderedCodeBytes`` encoding.
+
+                    This field is a member of `oneof`_ ``encoding``.
             """
 
             class BigEndianBytes(proto.Message):
-                r"""Encodes the value as an 8-byte big endian twos complement ``Bytes``
-                value.
+                r"""Encodes the value as an 8-byte big-endian two's complement value.
 
-                -  Order-preserving? No (positive values only)
-                -  Self-delimiting? Yes
-                -  Compatibility?
+                Sorted mode: non-negative values are supported.
 
-                   -  BigQuery Federation ``BINARY`` encoding
-                   -  HBase ``Bytes.toBytes``
-                   -  Java ``ByteBuffer.putLong()`` with ``ByteOrder.BIG_ENDIAN``
+                Distinct mode: all values are supported.
+
+                Compatible with:
+
+                -  BigQuery ``BINARY`` encoding
+                -  HBase ``Bytes.toBytes``
+                -  Java ``ByteBuffer.putLong()`` with ``ByteOrder.BIG_ENDIAN``
 
                 Attributes:
                     bytes_type (google.cloud.bigtable_admin_v2.types.Type.Bytes):
@@ -275,11 +283,27 @@ class Type(proto.Message):
                     message="Type.Bytes",
                 )
 
+            class OrderedCodeBytes(proto.Message):
+                r"""Encodes the value in a variable length binary format of up to
+                10 bytes. Values that are closer to zero use fewer bytes.
+
+                Sorted mode: all values are supported.
+
+                Distinct mode: all values are supported.
+
+                """
+
             big_endian_bytes: "Type.Int64.Encoding.BigEndianBytes" = proto.Field(
                 proto.MESSAGE,
                 number=1,
                 oneof="encoding",
                 message="Type.Int64.Encoding.BigEndianBytes",
+            )
+            ordered_code_bytes: "Type.Int64.Encoding.OrderedCodeBytes" = proto.Field(
+                proto.MESSAGE,
+                number=2,
+                oneof="encoding",
+                message="Type.Int64.Encoding.OrderedCodeBytes",
             )
 
         encoding: "Type.Int64.Encoding" = proto.Field(
@@ -307,7 +331,42 @@ class Type(proto.Message):
         r"""Timestamp Values of type ``Timestamp`` are stored in
         ``Value.timestamp_value``.
 
+        Attributes:
+            encoding (google.cloud.bigtable_admin_v2.types.Type.Timestamp.Encoding):
+                The encoding to use when converting to or
+                from lower level types.
         """
+
+        class Encoding(proto.Message):
+            r"""Rules used to convert to or from lower level types.
+
+            .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+            Attributes:
+                unix_micros_int64 (google.cloud.bigtable_admin_v2.types.Type.Int64.Encoding):
+                    Encodes the number of microseconds since the Unix epoch
+                    using the given ``Int64`` encoding. Values must be
+                    microsecond-aligned.
+
+                    Compatible with:
+
+                    -  Java ``Instant.truncatedTo()`` with ``ChronoUnit.MICROS``
+
+                    This field is a member of `oneof`_ ``encoding``.
+            """
+
+            unix_micros_int64: "Type.Int64.Encoding" = proto.Field(
+                proto.MESSAGE,
+                number=1,
+                oneof="encoding",
+                message="Type.Int64.Encoding",
+            )
+
+        encoding: "Type.Timestamp.Encoding" = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            message="Type.Timestamp.Encoding",
+        )
 
     class Date(proto.Message):
         r"""Date Values of type ``Date`` are stored in ``Value.date_value``."""
@@ -322,6 +381,9 @@ class Type(proto.Message):
             fields (MutableSequence[google.cloud.bigtable_admin_v2.types.Type.Struct.Field]):
                 The names and types of the fields in this
                 struct.
+            encoding (google.cloud.bigtable_admin_v2.types.Type.Struct.Encoding):
+                The encoding to use when converting to or
+                from lower level types.
         """
 
         class Field(proto.Message):
@@ -345,10 +407,145 @@ class Type(proto.Message):
                 message="Type",
             )
 
+        class Encoding(proto.Message):
+            r"""Rules used to convert to or from lower level types.
+
+            This message has `oneof`_ fields (mutually exclusive fields).
+            For each oneof, at most one member field can be set at the same time.
+            Setting any member of the oneof automatically clears all other
+            members.
+
+            .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+            Attributes:
+                singleton (google.cloud.bigtable_admin_v2.types.Type.Struct.Encoding.Singleton):
+                    Use ``Singleton`` encoding.
+
+                    This field is a member of `oneof`_ ``encoding``.
+                delimited_bytes (google.cloud.bigtable_admin_v2.types.Type.Struct.Encoding.DelimitedBytes):
+                    Use ``DelimitedBytes`` encoding.
+
+                    This field is a member of `oneof`_ ``encoding``.
+                ordered_code_bytes (google.cloud.bigtable_admin_v2.types.Type.Struct.Encoding.OrderedCodeBytes):
+                    User ``OrderedCodeBytes`` encoding.
+
+                    This field is a member of `oneof`_ ``encoding``.
+            """
+
+            class Singleton(proto.Message):
+                r"""Uses the encoding of ``fields[0].type`` as-is. Only valid if
+                ``fields.size == 1``.
+
+                """
+
+            class DelimitedBytes(proto.Message):
+                r"""Fields are encoded independently and concatenated with a
+                configurable ``delimiter`` in between.
+
+                A struct with no fields defined is encoded as a single
+                ``delimiter``.
+
+                Sorted mode:
+
+                -  Fields are encoded in sorted mode.
+                -  Encoded field values must not contain any bytes <=
+                   ``delimiter[0]``
+                -  Element-wise order is preserved: ``A < B`` if ``A[0] < B[0]``, or
+                   if ``A[0] == B[0] && A[1] < B[1]``, etc. Strict prefixes sort
+                   first.
+
+                Distinct mode:
+
+                -  Fields are encoded in distinct mode.
+                -  Encoded field values must not contain ``delimiter[0]``.
+
+                Attributes:
+                    delimiter (bytes):
+                        Byte sequence used to delimit concatenated
+                        fields. The delimiter must contain at least 1
+                        character and at most 50 characters.
+                """
+
+                delimiter: bytes = proto.Field(
+                    proto.BYTES,
+                    number=1,
+                )
+
+            class OrderedCodeBytes(proto.Message):
+                r"""Fields are encoded independently and concatenated with the fixed
+                byte pair {0x00, 0x01} in between.
+
+                Any null (0x00) byte in an encoded field is replaced by the fixed
+                byte pair {0x00, 0xFF}.
+
+                Fields that encode to the empty string "" have special handling:
+
+                -  If *every* field encodes to "", or if the STRUCT has no fields
+                   defined, then the STRUCT is encoded as the fixed byte pair {0x00,
+                   0x00}.
+                -  Otherwise, the STRUCT only encodes until the last non-empty
+                   field, omitting any trailing empty fields. Any empty fields that
+                   aren't omitted are replaced with the fixed byte pair {0x00,
+                   0x00}.
+
+                Examples:
+
+                -  STRUCT() -> "\00\00"
+                -  STRUCT("") -> "\00\00"
+                -  STRUCT("", "") -> "\00\00"
+                -  STRUCT("", "B") -> "\00\00" + "\00\01" + "B"
+                -  STRUCT("A", "") -> "A"
+                -  STRUCT("", "B", "") -> "\00\00" + "\00\01" + "B"
+                -  STRUCT("A", "", "C") -> "A" + "\00\01" + "\00\00" + "\00\01" +
+                   "C"
+
+                Since null bytes are always escaped, this encoding can cause size
+                blowup for encodings like ``Int64.BigEndianBytes`` that are likely
+                to produce many such bytes.
+
+                Sorted mode:
+
+                -  Fields are encoded in sorted mode.
+                -  All values supported by the field encodings are allowed
+                -  Element-wise order is preserved: ``A < B`` if ``A[0] < B[0]``, or
+                   if ``A[0] == B[0] && A[1] < B[1]``, etc. Strict prefixes sort
+                   first.
+
+                Distinct mode:
+
+                -  Fields are encoded in distinct mode.
+                -  All values supported by the field encodings are allowed.
+
+                """
+
+            singleton: "Type.Struct.Encoding.Singleton" = proto.Field(
+                proto.MESSAGE,
+                number=1,
+                oneof="encoding",
+                message="Type.Struct.Encoding.Singleton",
+            )
+            delimited_bytes: "Type.Struct.Encoding.DelimitedBytes" = proto.Field(
+                proto.MESSAGE,
+                number=2,
+                oneof="encoding",
+                message="Type.Struct.Encoding.DelimitedBytes",
+            )
+            ordered_code_bytes: "Type.Struct.Encoding.OrderedCodeBytes" = proto.Field(
+                proto.MESSAGE,
+                number=3,
+                oneof="encoding",
+                message="Type.Struct.Encoding.OrderedCodeBytes",
+            )
+
         fields: MutableSequence["Type.Struct.Field"] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message="Type.Struct.Field",
+        )
+        encoding: "Type.Struct.Encoding" = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            message="Type.Struct.Encoding",
         )
 
     class Array(proto.Message):

@@ -21,6 +21,7 @@ import proto  # type: ignore
 
 from google.cloud.bigtable_v2.types import data
 from google.cloud.bigtable_v2.types import request_stats as gb_request_stats
+from google.cloud.bigtable_v2.types import types
 from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.protobuf import wrappers_pb2  # type: ignore
@@ -51,6 +52,8 @@ __protobuf__ = proto.module(
         "ReadChangeStreamResponse",
         "ExecuteQueryRequest",
         "ExecuteQueryResponse",
+        "PrepareQueryRequest",
+        "PrepareQueryResponse",
     },
 )
 
@@ -70,6 +73,12 @@ class ReadRowsRequest(proto.Message):
 
             Values are of the form
             ``projects/<project>/instances/<instance>/tables/<table>/authorizedViews/<authorized_view>``.
+        materialized_view_name (str):
+            Optional. The unique name of the MaterializedView from which
+            to read.
+
+            Values are of the form
+            ``projects/<project>/instances/<instance>/materializedViews/<materialized_view>``.
         app_profile_id (str):
             This value specifies routing for replication.
             If not specified, the "default" application
@@ -135,6 +144,10 @@ class ReadRowsRequest(proto.Message):
     authorized_view_name: str = proto.Field(
         proto.STRING,
         number=9,
+    )
+    materialized_view_name: str = proto.Field(
+        proto.STRING,
+        number=11,
     )
     app_profile_id: str = proto.Field(
         proto.STRING,
@@ -351,6 +364,12 @@ class SampleRowKeysRequest(proto.Message):
 
             Values are of the form
             ``projects/<project>/instances/<instance>/tables/<table>/authorizedViews/<authorized_view>``.
+        materialized_view_name (str):
+            Optional. The unique name of the MaterializedView from which
+            to read.
+
+            Values are of the form
+            ``projects/<project>/instances/<instance>/materializedViews/<materialized_view>``.
         app_profile_id (str):
             This value specifies routing for replication.
             If not specified, the "default" application
@@ -364,6 +383,10 @@ class SampleRowKeysRequest(proto.Message):
     authorized_view_name: str = proto.Field(
         proto.STRING,
         number=4,
+    )
+    materialized_view_name: str = proto.Field(
+        proto.STRING,
+        number=5,
     )
     app_profile_id: str = proto.Field(
         proto.STRING,
@@ -1276,6 +1299,23 @@ class ExecuteQueryRequest(proto.Message):
             used.
         query (str):
             Required. The query string.
+
+            Exactly one of ``query`` and ``prepared_query`` is required.
+            Setting both or neither is an ``INVALID_ARGUMENT``.
+        prepared_query (bytes):
+            A prepared query that was returned from
+            ``PrepareQueryResponse``.
+
+            Exactly one of ``query`` and ``prepared_query`` is required.
+            Setting both or neither is an ``INVALID_ARGUMENT``.
+
+            Setting this field also places restrictions on several other
+            fields:
+
+            -  ``data_format`` must be empty.
+            -  ``validate_only`` must be false.
+            -  ``params`` must match the ``param_types`` set in the
+               ``PrepareQueryRequest``.
         proto_format (google.cloud.bigtable_v2.types.ProtoFormat):
             Protocol buffer format as described by
             ProtoSchema and ProtoRows messages.
@@ -1301,14 +1341,19 @@ class ExecuteQueryRequest(proto.Message):
             then ``@firstName`` will be replaced with googlesql bytes
             value "foo" in the query string during query evaluation.
 
-            In case of Value.kind is not set, it will be set to
-            corresponding null value in googlesql.
+            If ``Value.kind`` is not set, the value is treated as a NULL
+            value of the given type. For example, if
             ``params["firstName"] = type {string_type {}}`` then
             ``@firstName`` will be replaced with googlesql null string.
 
-            Value.type should always be set and no inference of type
-            will be made from Value.kind. If Value.type is not set, we
-            will return INVALID_ARGUMENT error.
+            If ``query`` is set, any empty ``Value.type`` in the map
+            will be rejected with ``INVALID_ARGUMENT``.
+
+            If ``prepared_query`` is set, any empty ``Value.type`` in
+            the map will be inferred from the ``param_types`` in the
+            ``PrepareQueryRequest``. Any non-empty ``Value.type`` must
+            match the corresponding ``param_types`` entry, or be
+            rejected with ``INVALID_ARGUMENT``.
     """
 
     instance_name: str = proto.Field(
@@ -1322,6 +1367,10 @@ class ExecuteQueryRequest(proto.Message):
     query: str = proto.Field(
         proto.STRING,
         number=3,
+    )
+    prepared_query: bytes = proto.Field(
+        proto.BYTES,
+        number=9,
     )
     proto_format: data.ProtoFormat = proto.Field(
         proto.MESSAGE,
@@ -1378,6 +1427,104 @@ class ExecuteQueryResponse(proto.Message):
         number=2,
         oneof="response",
         message=data.PartialResultSet,
+    )
+
+
+class PrepareQueryRequest(proto.Message):
+    r"""Request message for Bigtable.PrepareQuery
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        instance_name (str):
+            Required. The unique name of the instance against which the
+            query should be executed. Values are of the form
+            ``projects/<project>/instances/<instance>``
+        app_profile_id (str):
+            Optional. This value specifies routing for preparing the
+            query. Note that this ``app_profile_id`` is only used for
+            preparing the query. The actual query execution will use the
+            app profile specified in the ``ExecuteQueryRequest``. If not
+            specified, the ``default`` application profile will be used.
+        query (str):
+            Required. The query string.
+        proto_format (google.cloud.bigtable_v2.types.ProtoFormat):
+            Protocol buffer format as described by
+            ProtoSchema and ProtoRows messages.
+
+            This field is a member of `oneof`_ ``data_format``.
+        param_types (MutableMapping[str, google.cloud.bigtable_v2.types.Type]):
+            Required. ``param_types`` is a map of parameter identifier
+            strings to their ``Type``\ s.
+
+            In query string, a parameter placeholder consists of the
+            ``@`` character followed by the parameter name (for example,
+            ``@firstName``) in the query string.
+
+            For example, if param_types["firstName"] = Bytes then
+            @firstName will be a query parameter of type Bytes. The
+            specific ``Value`` to be used for the query execution must
+            be sent in ``ExecuteQueryRequest`` in the ``params`` map.
+    """
+
+    instance_name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    app_profile_id: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    query: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    proto_format: data.ProtoFormat = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        oneof="data_format",
+        message=data.ProtoFormat,
+    )
+    param_types: MutableMapping[str, types.Type] = proto.MapField(
+        proto.STRING,
+        proto.MESSAGE,
+        number=6,
+        message=types.Type,
+    )
+
+
+class PrepareQueryResponse(proto.Message):
+    r"""Response message for Bigtable.PrepareQueryResponse
+
+    Attributes:
+        metadata (google.cloud.bigtable_v2.types.ResultSetMetadata):
+            Structure of rows in the response stream of
+            ``ExecuteQueryResponse`` for the returned
+            ``prepared_query``.
+        prepared_query (bytes):
+            A serialized prepared query. Clients should treat this as an
+            opaque blob of bytes to send in ``ExecuteQueryRequest``.
+        valid_until (google.protobuf.timestamp_pb2.Timestamp):
+            The time at which the prepared query token
+            becomes invalid. A token may become invalid
+            early due to changes in the data being read, but
+            it provides a guideline to refresh query plans
+            asynchronously.
+    """
+
+    metadata: data.ResultSetMetadata = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=data.ResultSetMetadata,
+    )
+    prepared_query: bytes = proto.Field(
+        proto.BYTES,
+        number=2,
+    )
+    valid_until: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
     )
 
 

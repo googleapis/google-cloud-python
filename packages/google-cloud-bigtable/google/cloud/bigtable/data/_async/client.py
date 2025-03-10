@@ -87,6 +87,7 @@ if CrossSync.is_async:
 else:
     from typing import Iterable  # noqa: F401
     from grpc import insecure_channel
+    from grpc import intercept_channel
     from google.cloud.bigtable_v2.services.bigtable.transports import BigtableGrpcTransport as TransportType  # type: ignore
     from google.cloud.bigtable.data._sync_autogen.mutations_batcher import _MB_SIZE
 
@@ -366,11 +367,21 @@ class BigtableDataClientAsync(ClientWithProject):
                 break
             start_timestamp = time.monotonic()
             # prepare new channel for use
+            # TODO: refactor to avoid using internal references: https://github.com/googleapis/python-bigtable/issues/1094
             old_channel = self.transport.grpc_channel
             new_channel = self.transport.create_channel()
+            if CrossSync.is_async:
+                new_channel._unary_unary_interceptors.append(
+                    self.transport._interceptor
+                )
+            else:
+                new_channel = intercept_channel(
+                    new_channel, self.transport._interceptor
+                )
             await self._ping_and_warm_instances(channel=new_channel)
             # cycle channel out of use, with long grace window before closure
             self.transport._grpc_channel = new_channel
+            self.transport._logged_channel = new_channel
             # invalidate caches
             self.transport._stubs = {}
             self.transport._prep_wrapped_messages(self.client_info)
