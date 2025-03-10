@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.26.1](https://github.com/googleapis/proto-plus-python/compare/v1.26.0...v1.26.1) (2025-03-05)
+
+
+### Bug Fixes
+
+* **deps:** Allow protobuf 6.x ([#536](https://github.com/googleapis/proto-plus-python/issues/536)) ([51ba025](https://github.com/googleapis/proto-plus-python/commit/51ba02513c4fa12fe94db74c4a23fed7af972ea9))
+
 ## [1.26.0](https://github.com/googleapis/proto-plus-python/compare/v1.25.0...v1.26.0) (2025-01-22)
 
 
