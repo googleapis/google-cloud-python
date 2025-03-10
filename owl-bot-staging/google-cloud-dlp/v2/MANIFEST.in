@@ -1,0 +1,2 @@
+recursive-include google/cloud/dlp *.py
+recursive-include google/cloud/dlp_v2 *.py

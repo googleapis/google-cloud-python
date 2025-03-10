@@ -1,0 +1,2 @@
+recursive-include google/cloud/dataproc *.py
+recursive-include google/cloud/dataproc_v1 *.py

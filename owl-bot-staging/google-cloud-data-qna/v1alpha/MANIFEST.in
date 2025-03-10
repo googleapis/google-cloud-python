@@ -1,0 +1,2 @@
+recursive-include google/cloud/dataqna *.py
+recursive-include google/cloud/dataqna_v1alpha *.py
