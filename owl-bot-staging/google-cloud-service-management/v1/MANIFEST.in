@@ -1,0 +1,2 @@
+recursive-include google/cloud/servicemanagement *.py
+recursive-include google/cloud/servicemanagement_v1 *.py

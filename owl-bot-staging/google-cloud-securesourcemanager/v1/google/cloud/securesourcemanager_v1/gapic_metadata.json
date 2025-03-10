@@ -1,0 +1,268 @@
+ {
+  "comment": "This file maps proto services/RPCs to the corresponding library clients/methods",
+  "language": "python",
+  "libraryPackage": "google.cloud.securesourcemanager_v1",
+  "protoPackage": "google.cloud.securesourcemanager.v1",
+  "schema": "1.0",
+  "services": {
+    "SecureSourceManager": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "SecureSourceManagerClient",
+          "rpcs": {
+            "CreateBranchRule": {
+              "methods": [
+                "create_branch_rule"
+              ]
+            },
+            "CreateInstance": {
+              "methods": [
+                "create_instance"
+              ]
+            },
+            "CreateRepository": {
+              "methods": [
+                "create_repository"
+              ]
+            },
+            "DeleteBranchRule": {
+              "methods": [
+                "delete_branch_rule"
+              ]
+            },
+            "DeleteInstance": {
+              "methods": [
+                "delete_instance"
+              ]
+            },
+            "DeleteRepository": {
+              "methods": [
+                "delete_repository"
+              ]
+            },
+            "GetBranchRule": {
+              "methods": [
+                "get_branch_rule"
+              ]
+            },
+            "GetIamPolicyRepo": {
+              "methods": [
+                "get_iam_policy_repo"
+              ]
+            },
+            "GetInstance": {
+              "methods": [
+                "get_instance"
+              ]
+            },
+            "GetRepository": {
+              "methods": [
+                "get_repository"
+              ]
+            },
+            "ListBranchRules": {
+              "methods": [
+                "list_branch_rules"
+              ]
+            },
+            "ListInstances": {
+              "methods": [
+                "list_instances"
+              ]
+            },
+            "ListRepositories": {
+              "methods": [
+                "list_repositories"
+              ]
+            },
+            "SetIamPolicyRepo": {
+              "methods": [
+                "set_iam_policy_repo"
+              ]
+            },
+            "TestIamPermissionsRepo": {
+              "methods": [
+                "test_iam_permissions_repo"
+              ]
+            },
+            "UpdateBranchRule": {
+              "methods": [
+                "update_branch_rule"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "SecureSourceManagerAsyncClient",
+          "rpcs": {
+            "CreateBranchRule": {
+              "methods": [
+                "create_branch_rule"
+              ]
+            },
+            "CreateInstance": {
+              "methods": [
+                "create_instance"
+              ]
+            },
+            "CreateRepository": {
+              "methods": [
+                "create_repository"
+              ]
+            },
+            "DeleteBranchRule": {
+              "methods": [
+                "delete_branch_rule"
+              ]
+            },
+            "DeleteInstance": {
+              "methods": [
+                "delete_instance"
+              ]
+            },
+            "DeleteRepository": {
+              "methods": [
+                "delete_repository"
+              ]
+            },
+            "GetBranchRule": {
+              "methods": [
+                "get_branch_rule"
+              ]
+            },
+            "GetIamPolicyRepo": {
+              "methods": [
+                "get_iam_policy_repo"
+              ]
+            },
+            "GetInstance": {
+              "methods": [
+                "get_instance"
+              ]
+            },
+            "GetRepository": {
+              "methods": [
+                "get_repository"
+              ]
+            },
+            "ListBranchRules": {
+              "methods": [
+                "list_branch_rules"
+              ]
+            },
+            "ListInstances": {
+              "methods": [
+                "list_instances"
+              ]
+            },
+            "ListRepositories": {
+              "methods": [
+                "list_repositories"
+              ]
+            },
+            "SetIamPolicyRepo": {
+              "methods": [
+                "set_iam_policy_repo"
+              ]
+            },
+            "TestIamPermissionsRepo": {
+              "methods": [
+                "test_iam_permissions_repo"
+              ]
+            },
+            "UpdateBranchRule": {
+              "methods": [
+                "update_branch_rule"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "SecureSourceManagerClient",
+          "rpcs": {
+            "CreateBranchRule": {
+              "methods": [
+                "create_branch_rule"
+              ]
+            },
+            "CreateInstance": {
+              "methods": [
+                "create_instance"
+              ]
+            },
+            "CreateRepository": {
+              "methods": [
+                "create_repository"
+              ]
+            },
+            "DeleteBranchRule": {
+              "methods": [
+                "delete_branch_rule"
+              ]
+            },
+            "DeleteInstance": {
+              "methods": [
+                "delete_instance"
+              ]
+            },
+            "DeleteRepository": {
+              "methods": [
+                "delete_repository"
+              ]
+            },
+            "GetBranchRule": {
+              "methods": [
+                "get_branch_rule"
+              ]
+            },
+            "GetIamPolicyRepo": {
+              "methods": [
+                "get_iam_policy_repo"
+              ]
+            },
+            "GetInstance": {
+              "methods": [
+                "get_instance"
+              ]
+            },
+            "GetRepository": {
+              "methods": [
+                "get_repository"
+              ]
+            },
+            "ListBranchRules": {
+              "methods": [
+                "list_branch_rules"
+              ]
+            },
+            "ListInstances": {
+              "methods": [
+                "list_instances"
+              ]
+            },
+            "ListRepositories": {
+              "methods": [
+                "list_repositories"
+              ]
+            },
+            "SetIamPolicyRepo": {
+              "methods": [
+                "set_iam_policy_repo"
+              ]
+            },
+            "TestIamPermissionsRepo": {
+              "methods": [
+                "test_iam_permissions_repo"
+              ]
+            },
+            "UpdateBranchRule": {
+              "methods": [
+                "update_branch_rule"
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,2 @@
+recursive-include google/cloud/secretmanager *.py
+recursive-include google/cloud/secretmanager_v1 *.py
