@@ -140,7 +140,7 @@ def test_ordered_messages_one_key():
     assert moh.size == 0
 
 
-def test_ordered_messages_drop_duplicate_keys(caplog):
+def test_ordered_messages_drop_duplicate_keys(caplog, modify_google_logger_propagation):
     moh = messages_on_hold.MessagesOnHold()
 
     msg1 = make_message(ack_id="ack1", ordering_key="key1")
@@ -377,7 +377,7 @@ def test_ordered_and_unordered_messages_interleaved():
     assert moh.size == 0
 
 
-def test_cleanup_nonexistent_key(caplog):
+def test_cleanup_nonexistent_key(caplog, modify_google_logger_propagation):
     moh = messages_on_hold.MessagesOnHold()
     moh._clean_up_ordering_key("non-existent-key")
     assert (
@@ -386,7 +386,7 @@ def test_cleanup_nonexistent_key(caplog):
     )
 
 
-def test_cleanup_key_with_messages(caplog):
+def test_cleanup_key_with_messages(caplog, modify_google_logger_propagation):
     moh = messages_on_hold.MessagesOnHold()
 
     # Put message with "key1".

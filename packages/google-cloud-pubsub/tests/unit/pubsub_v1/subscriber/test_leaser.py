@@ -53,7 +53,7 @@ def test_add_and_remove():
     assert leaser_.bytes == 25
 
 
-def test_add_already_managed(caplog):
+def test_add_already_managed(caplog, modify_google_logger_propagation):
     caplog.set_level(logging.DEBUG)
 
     leaser_ = leaser.Leaser(mock.sentinel.manager)
@@ -64,7 +64,7 @@ def test_add_already_managed(caplog):
     assert "already lease managed" in caplog.text
 
 
-def test_remove_not_managed(caplog):
+def test_remove_not_managed(caplog, modify_google_logger_propagation):
     caplog.set_level(logging.DEBUG)
 
     leaser_ = leaser.Leaser(mock.sentinel.manager)
@@ -74,7 +74,7 @@ def test_remove_not_managed(caplog):
     assert "not managed" in caplog.text
 
 
-def test_remove_negative_bytes(caplog):
+def test_remove_negative_bytes(caplog, modify_google_logger_propagation):
     caplog.set_level(logging.DEBUG)
 
     leaser_ = leaser.Leaser(mock.sentinel.manager)
@@ -98,7 +98,7 @@ def create_manager(flow_control=types.FlowControl()):
     return manager
 
 
-def test_maintain_leases_inactive_manager(caplog):
+def test_maintain_leases_inactive_manager(caplog, modify_google_logger_propagation):
     caplog.set_level(logging.DEBUG)
     manager = create_manager()
     manager.is_active = False
@@ -117,7 +117,7 @@ def test_maintain_leases_inactive_manager(caplog):
     assert "exiting" in caplog.text
 
 
-def test_maintain_leases_stopped(caplog):
+def test_maintain_leases_stopped(caplog, modify_google_logger_propagation):
     caplog.set_level(logging.DEBUG)
     manager = create_manager()
 

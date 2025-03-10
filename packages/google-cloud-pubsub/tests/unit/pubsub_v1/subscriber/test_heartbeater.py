@@ -28,7 +28,9 @@ else:
 import pytest
 
 
-def test_heartbeat_inactive_manager_active_rpc(caplog):
+def test_heartbeat_inactive_manager_active_rpc(
+    caplog, modify_google_logger_propagation
+):
     caplog.set_level(logging.DEBUG)
 
     manager = mock.create_autospec(
@@ -46,7 +48,10 @@ def test_heartbeat_inactive_manager_active_rpc(caplog):
     assert "exiting" in caplog.text
 
 
-def test_heartbeat_inactive_manager_inactive_rpc(caplog):
+def test_heartbeat_inactive_manager_inactive_rpc(
+    caplog,
+    modify_google_logger_propagation,
+):
     caplog.set_level(logging.DEBUG)
 
     manager = mock.create_autospec(
@@ -64,7 +69,7 @@ def test_heartbeat_inactive_manager_inactive_rpc(caplog):
     assert "exiting" in caplog.text
 
 
-def test_heartbeat_stopped(caplog):
+def test_heartbeat_stopped(caplog, modify_google_logger_propagation):
     caplog.set_level(logging.DEBUG)
     manager = mock.create_autospec(
         streaming_pull_manager.StreamingPullManager, instance=True

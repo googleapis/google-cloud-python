@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import logging
 import pytest
 
 from opentelemetry.sdk.trace import TracerProvider
@@ -43,3 +44,19 @@ def span_exporter():
     provider = trace.get_tracer_provider()
     provider.add_span_processor(processor)
     yield exporter
+
+
+@pytest.fixture()
+def modify_google_logger_propagation():
+    """
+    Allow propagation of logs to the root logger for tests
+    that depend on the caplog fixture. Restore the default
+    propagation setting after the test finishes.
+    """
+    logger = logging.getLogger("google")
+    original_propagate = logger.propagate
+    logger.propagate = True
+    try:
+        yield
+    finally:
+        logger.propagate = original_propagate
