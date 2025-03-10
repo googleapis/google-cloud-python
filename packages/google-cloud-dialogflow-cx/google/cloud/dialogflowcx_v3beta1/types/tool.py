@@ -512,7 +512,7 @@ class Tool(proto.Message):
             name (str):
                 Required. The full resource name of the referenced
                 Integration Connectors Connection. Format:
-                'projects/*/locations/*/connections/*'
+                ``projects/*/locations/*/connections/*``
             actions (MutableSequence[google.cloud.dialogflowcx_v3beta1.types.Tool.ConnectorTool.Action]):
                 Required. Actions for the tool to use.
             end_user_auth_config (google.cloud.dialogflowcx_v3beta1.types.Tool.EndUserAuthConfig):
