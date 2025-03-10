@@ -33,6 +33,8 @@ from .types.bigtable import MutateRowsRequest
 from .types.bigtable import MutateRowsResponse
 from .types.bigtable import PingAndWarmRequest
 from .types.bigtable import PingAndWarmResponse
+from .types.bigtable import PrepareQueryRequest
+from .types.bigtable import PrepareQueryResponse
 from .types.bigtable import RateLimitInfo
 from .types.bigtable import ReadChangeStreamRequest
 from .types.bigtable import ReadChangeStreamResponse
@@ -99,6 +101,8 @@ __all__ = (
     "PartialResultSet",
     "PingAndWarmRequest",
     "PingAndWarmResponse",
+    "PrepareQueryRequest",
+    "PrepareQueryResponse",
     "ProtoFormat",
     "ProtoRows",
     "ProtoRowsBatch",

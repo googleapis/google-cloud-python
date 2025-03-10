@@ -378,6 +378,56 @@ class BigtableInstanceAdminTransport(abc.ABC):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
+            self.create_logical_view: gapic_v1.method.wrap_method(
+                self.create_logical_view,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_logical_view: gapic_v1.method.wrap_method(
+                self.get_logical_view,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_logical_views: gapic_v1.method.wrap_method(
+                self.list_logical_views,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_logical_view: gapic_v1.method.wrap_method(
+                self.update_logical_view,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_logical_view: gapic_v1.method.wrap_method(
+                self.delete_logical_view,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_materialized_view: gapic_v1.method.wrap_method(
+                self.create_materialized_view,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_materialized_view: gapic_v1.method.wrap_method(
+                self.get_materialized_view,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_materialized_views: gapic_v1.method.wrap_method(
+                self.list_materialized_views,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_materialized_view: gapic_v1.method.wrap_method(
+                self.update_materialized_view,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_materialized_view: gapic_v1.method.wrap_method(
+                self.delete_materialized_view,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -594,6 +644,102 @@ class BigtableInstanceAdminTransport(abc.ABC):
             bigtable_instance_admin.ListHotTabletsResponse,
             Awaitable[bigtable_instance_admin.ListHotTabletsResponse],
         ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_logical_view(
+        self,
+    ) -> Callable[
+        [bigtable_instance_admin.CreateLogicalViewRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_logical_view(
+        self,
+    ) -> Callable[
+        [bigtable_instance_admin.GetLogicalViewRequest],
+        Union[instance.LogicalView, Awaitable[instance.LogicalView]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_logical_views(
+        self,
+    ) -> Callable[
+        [bigtable_instance_admin.ListLogicalViewsRequest],
+        Union[
+            bigtable_instance_admin.ListLogicalViewsResponse,
+            Awaitable[bigtable_instance_admin.ListLogicalViewsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_logical_view(
+        self,
+    ) -> Callable[
+        [bigtable_instance_admin.UpdateLogicalViewRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_logical_view(
+        self,
+    ) -> Callable[
+        [bigtable_instance_admin.DeleteLogicalViewRequest],
+        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_materialized_view(
+        self,
+    ) -> Callable[
+        [bigtable_instance_admin.CreateMaterializedViewRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_materialized_view(
+        self,
+    ) -> Callable[
+        [bigtable_instance_admin.GetMaterializedViewRequest],
+        Union[instance.MaterializedView, Awaitable[instance.MaterializedView]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_materialized_views(
+        self,
+    ) -> Callable[
+        [bigtable_instance_admin.ListMaterializedViewsRequest],
+        Union[
+            bigtable_instance_admin.ListMaterializedViewsResponse,
+            Awaitable[bigtable_instance_admin.ListMaterializedViewsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_materialized_view(
+        self,
+    ) -> Callable[
+        [bigtable_instance_admin.UpdateMaterializedViewRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_materialized_view(
+        self,
+    ) -> Callable[
+        [bigtable_instance_admin.DeleteMaterializedViewRequest],
+        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
     ]:
         raise NotImplementedError()
 

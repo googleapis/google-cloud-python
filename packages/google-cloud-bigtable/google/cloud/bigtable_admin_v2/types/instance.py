@@ -32,6 +32,8 @@ __protobuf__ = proto.module(
         "Cluster",
         "AppProfile",
         "HotTablet",
+        "LogicalView",
+        "MaterializedView",
     },
 )
 
@@ -55,7 +57,8 @@ class Instance(proto.Message):
             any time, but should be kept globally unique to
             avoid confusion.
         state (google.cloud.bigtable_admin_v2.types.Instance.State):
-            (``OutputOnly``) The current state of the instance.
+            Output only. The current state of the
+            instance.
         type_ (google.cloud.bigtable_admin_v2.types.Instance.Type):
             The type of the instance. Defaults to ``PRODUCTION``.
         labels (MutableMapping[str, str]):
@@ -74,14 +77,18 @@ class Instance(proto.Message):
                resource.
             -  Keys and values must both be under 128 bytes.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
-            Output only. A server-assigned timestamp representing when
-            this Instance was created. For instances created before this
+            Output only. A commit timestamp representing when this
+            Instance was created. For instances created before this
             field was added (August 2021), this value is
             ``seconds: 0, nanos: 1``.
         satisfies_pzs (bool):
             Output only. Reserved for future use.
 
             This field is a member of `oneof`_ ``_satisfies_pzs``.
+        satisfies_pzi (bool):
+            Output only. Reserved for future use.
+
+            This field is a member of `oneof`_ ``_satisfies_pzi``.
     """
 
     class State(proto.Enum):
@@ -155,6 +162,11 @@ class Instance(proto.Message):
     satisfies_pzs: bool = proto.Field(
         proto.BOOL,
         number=8,
+        optional=True,
+    )
+    satisfies_pzi: bool = proto.Field(
+        proto.BOOL,
+        number=11,
         optional=True,
     )
 
@@ -234,9 +246,10 @@ class Cluster(proto.Message):
             Output only. The current state of the
             cluster.
         serve_nodes (int):
-            The number of nodes allocated to this
-            cluster. More nodes enable higher throughput and
-            more consistent performance.
+            The number of nodes in the cluster. If no
+            value is set, Cloud Bigtable automatically
+            allocates nodes based on your data footprint and
+            optimized for 50% storage utilization.
         node_scaling_factor (google.cloud.bigtable_admin_v2.types.Cluster.NodeScalingFactor):
             Immutable. The node scaling factor of this
             cluster.
@@ -361,9 +374,8 @@ class Cluster(proto.Message):
                    ``cloudkms.cryptoKeyEncrypterDecrypter`` role on the CMEK
                    key.
                 2) Only regional keys can be used and the region of the CMEK
-                   key must match the region of the cluster.
-                3) All clusters within an instance must use the same CMEK
-                   key. Values are of the form
+                   key must match the region of the cluster. Values are of
+                   the form
                    ``projects/{project}/locations/{location}/keyRings/{keyring}/cryptoKeys/{key}``
         """
 
@@ -583,17 +595,10 @@ class AppProfile(proto.Message):
 
     class DataBoostIsolationReadOnly(proto.Message):
         r"""Data Boost is a serverless compute capability that lets you
-        run high-throughput read jobs on your Bigtable data, without
-        impacting the performance of the clusters that handle your
-        application traffic. Currently, Data Boost exclusively supports
-        read-only use-cases with single-cluster routing.
-
-        Data Boost reads are only guaranteed to see the results of
-        writes that were written at least 30 minutes ago. This means
-        newly written values may not become visible for up to 30m, and
-        also means that old values may remain visible for up to 30m
-        after being deleted or overwritten. To mitigate the staleness of
-        the data, users may either wait 30m, or use CheckConsistency.
+        run high-throughput read jobs and queries on your Bigtable data,
+        without impacting the performance of the clusters that handle
+        your application traffic. Data Boost supports read-only use
+        cases with single-cluster routing.
 
 
         .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
@@ -735,6 +740,79 @@ class HotTablet(proto.Message):
     node_cpu_usage_percent: float = proto.Field(
         proto.FLOAT,
         number=7,
+    )
+
+
+class LogicalView(proto.Message):
+    r"""A SQL logical view object that can be referenced in SQL
+    queries.
+
+    Attributes:
+        name (str):
+            Identifier. The unique name of the logical view. Format:
+            ``projects/{project}/instances/{instance}/logicalViews/{logical_view}``
+        query (str):
+            Required. The logical view's select query.
+        etag (str):
+            Optional. The etag for this logical view.
+            This may be sent on update requests to ensure
+            that the client has an up-to-date value before
+            proceeding. The server returns an ABORTED error
+            on a mismatched etag.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    query: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    etag: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class MaterializedView(proto.Message):
+    r"""A materialized view object that can be referenced in SQL
+    queries.
+
+    Attributes:
+        name (str):
+            Identifier. The unique name of the materialized view.
+            Format:
+            ``projects/{project}/instances/{instance}/materializedViews/{materialized_view}``
+        query (str):
+            Required. Immutable. The materialized view's
+            select query.
+        etag (str):
+            Optional. The etag for this materialized
+            view. This may be sent on update requests to
+            ensure that the client has an up-to-date value
+            before proceeding. The server returns an ABORTED
+            error on a mismatched etag.
+        deletion_protection (bool):
+            Set to true to make the MaterializedView
+            protected against deletion.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    query: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    etag: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    deletion_protection: bool = proto.Field(
+        proto.BOOL,
+        number=6,
     )
 
 

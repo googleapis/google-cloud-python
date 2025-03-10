@@ -40,15 +40,16 @@ class bigtableCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
         'check_and_mutate_row': ('row_key', 'table_name', 'authorized_view_name', 'app_profile_id', 'predicate_filter', 'true_mutations', 'false_mutations', ),
-        'execute_query': ('instance_name', 'query', 'params', 'app_profile_id', 'proto_format', 'resume_token', ),
+        'execute_query': ('instance_name', 'query', 'params', 'app_profile_id', 'prepared_query', 'proto_format', 'resume_token', ),
         'generate_initial_change_stream_partitions': ('table_name', 'app_profile_id', ),
         'mutate_row': ('row_key', 'mutations', 'table_name', 'authorized_view_name', 'app_profile_id', ),
         'mutate_rows': ('entries', 'table_name', 'authorized_view_name', 'app_profile_id', ),
         'ping_and_warm': ('name', 'app_profile_id', ),
+        'prepare_query': ('instance_name', 'query', 'param_types', 'app_profile_id', 'proto_format', ),
         'read_change_stream': ('table_name', 'app_profile_id', 'partition', 'start_time', 'continuation_tokens', 'end_time', 'heartbeat_duration', ),
         'read_modify_write_row': ('row_key', 'rules', 'table_name', 'authorized_view_name', 'app_profile_id', ),
-        'read_rows': ('table_name', 'authorized_view_name', 'app_profile_id', 'rows', 'filter', 'rows_limit', 'request_stats_view', 'reversed', ),
-        'sample_row_keys': ('table_name', 'authorized_view_name', 'app_profile_id', ),
+        'read_rows': ('table_name', 'authorized_view_name', 'materialized_view_name', 'app_profile_id', 'rows', 'filter', 'rows_limit', 'request_stats_view', 'reversed', ),
+        'sample_row_keys': ('table_name', 'authorized_view_name', 'materialized_view_name', 'app_profile_id', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:

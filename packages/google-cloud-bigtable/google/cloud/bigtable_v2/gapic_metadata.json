@@ -40,6 +40,11 @@
                 "ping_and_warm"
               ]
             },
+            "PrepareQuery": {
+              "methods": [
+                "prepare_query"
+              ]
+            },
             "ReadChangeStream": {
               "methods": [
                 "read_change_stream"
@@ -95,6 +100,11 @@
                 "ping_and_warm"
               ]
             },
+            "PrepareQuery": {
+              "methods": [
+                "prepare_query"
+              ]
+            },
             "ReadChangeStream": {
               "methods": [
                 "read_change_stream"
@@ -148,6 +158,11 @@
             "PingAndWarm": {
               "methods": [
                 "ping_and_warm"
+              ]
+            },
+            "PrepareQuery": {
+              "methods": [
+                "prepare_query"
               ]
             },
             "ReadChangeStream": {
