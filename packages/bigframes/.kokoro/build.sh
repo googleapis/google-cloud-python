@@ -50,3 +50,6 @@ if [[ -n "${NOX_SESSION:-}" ]]; then
 else
     python3 -m nox --stop-on-first-error
 fi
+
+# Prevent kokoro from trying to collect many mb of artifacts, wasting several minutes
+sudo rm -rf "${KOKORO_ARTIFACTS_DIR?}"/*
