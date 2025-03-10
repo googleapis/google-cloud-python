@@ -1,0 +1,2 @@
+recursive-include google/cloud/websecurityscanner *.py
+recursive-include google/cloud/websecurityscanner_v1alpha *.py
