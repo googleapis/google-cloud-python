@@ -1,0 +1,2 @@
+recursive-include google/cloud/lifesciences *.py
+recursive-include google/cloud/lifesciences_v2beta *.py

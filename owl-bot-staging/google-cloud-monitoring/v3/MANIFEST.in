@@ -1,0 +1,2 @@
+recursive-include google/cloud/monitoring *.py
+recursive-include google/cloud/monitoring_v3 *.py
