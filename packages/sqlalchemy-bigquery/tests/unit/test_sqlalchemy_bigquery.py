@@ -240,3 +240,24 @@ def test_setting_user_supplied_client_skips_creating_client(
     )
     assert result == ([], {})
     assert not mock_create_bigquery_client.called
+
+
+def test_do_execute():
+    # Ensures the do_execute() method overrides that of the parent class.
+    import sqlalchemy_bigquery  # noqa
+    from sqlalchemy_bigquery.base import BigQueryExecutionContext
+
+    job_config_kwargs = {}
+    job_config_kwargs["use_query_cache"] = False
+    job_config = bigquery.QueryJobConfig(**job_config_kwargs)
+    execution_options = {"job_config": job_config}
+    context = mock.MagicMock(spec=BigQueryExecutionContext)
+    type(context).execution_options = mock.PropertyMock(return_value=execution_options)
+
+    cursor = mock.MagicMock()
+
+    sqlalchemy_bigquery.BigQueryDialect().do_execute(
+        cursor, sqlalchemy.text("SELECT 'a' AS `1`"), mock.MagicMock(), context=context
+    )
+
+    assert cursor.execute.call_args.kwargs["job_config"] is job_config

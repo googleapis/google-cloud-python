@@ -1124,6 +1124,12 @@ class BigQueryDialect(DefaultDialect):
 
             job_config.default_dataset = "{}.{}".format(project_id, dataset_id)
 
+    def do_execute(self, cursor, statement, parameters, context=None):
+        kwargs = {}
+        if context is not None and context.execution_options.get("job_config"):
+            kwargs["job_config"] = context.execution_options.get("job_config")
+        cursor.execute(statement, parameters, **kwargs)
+
     def create_connect_args(self, url):
         (
             project_id,
