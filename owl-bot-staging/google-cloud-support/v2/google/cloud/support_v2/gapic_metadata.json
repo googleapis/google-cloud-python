@@ -1,0 +1,231 @@
+ {
+  "comment": "This file maps proto services/RPCs to the corresponding library clients/methods",
+  "language": "python",
+  "libraryPackage": "google.cloud.support_v2",
+  "protoPackage": "google.cloud.support.v2",
+  "schema": "1.0",
+  "services": {
+    "CaseAttachmentService": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "CaseAttachmentServiceClient",
+          "rpcs": {
+            "ListAttachments": {
+              "methods": [
+                "list_attachments"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "CaseAttachmentServiceAsyncClient",
+          "rpcs": {
+            "ListAttachments": {
+              "methods": [
+                "list_attachments"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "CaseAttachmentServiceClient",
+          "rpcs": {
+            "ListAttachments": {
+              "methods": [
+                "list_attachments"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "CaseService": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "CaseServiceClient",
+          "rpcs": {
+            "CloseCase": {
+              "methods": [
+                "close_case"
+              ]
+            },
+            "CreateCase": {
+              "methods": [
+                "create_case"
+              ]
+            },
+            "EscalateCase": {
+              "methods": [
+                "escalate_case"
+              ]
+            },
+            "GetCase": {
+              "methods": [
+                "get_case"
+              ]
+            },
+            "ListCases": {
+              "methods": [
+                "list_cases"
+              ]
+            },
+            "SearchCaseClassifications": {
+              "methods": [
+                "search_case_classifications"
+              ]
+            },
+            "SearchCases": {
+              "methods": [
+                "search_cases"
+              ]
+            },
+            "UpdateCase": {
+              "methods": [
+                "update_case"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "CaseServiceAsyncClient",
+          "rpcs": {
+            "CloseCase": {
+              "methods": [
+                "close_case"
+              ]
+            },
+            "CreateCase": {
+              "methods": [
+                "create_case"
+              ]
+            },
+            "EscalateCase": {
+              "methods": [
+                "escalate_case"
+              ]
+            },
+            "GetCase": {
+              "methods": [
+                "get_case"
+              ]
+            },
+            "ListCases": {
+              "methods": [
+                "list_cases"
+              ]
+            },
+            "SearchCaseClassifications": {
+              "methods": [
+                "search_case_classifications"
+              ]
+            },
+            "SearchCases": {
+              "methods": [
+                "search_cases"
+              ]
+            },
+            "UpdateCase": {
+              "methods": [
+                "update_case"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "CaseServiceClient",
+          "rpcs": {
+            "CloseCase": {
+              "methods": [
+                "close_case"
+              ]
+            },
+            "CreateCase": {
+              "methods": [
+                "create_case"
+              ]
+            },
+            "EscalateCase": {
+              "methods": [
+                "escalate_case"
+              ]
+            },
+            "GetCase": {
+              "methods": [
+                "get_case"
+              ]
+            },
+            "ListCases": {
+              "methods": [
+                "list_cases"
+              ]
+            },
+            "SearchCaseClassifications": {
+              "methods": [
+                "search_case_classifications"
+              ]
+            },
+            "SearchCases": {
+              "methods": [
+                "search_cases"
+              ]
+            },
+            "UpdateCase": {
+              "methods": [
+                "update_case"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "CommentService": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "CommentServiceClient",
+          "rpcs": {
+            "CreateComment": {
+              "methods": [
+                "create_comment"
+              ]
+            },
+            "ListComments": {
+              "methods": [
+                "list_comments"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "CommentServiceAsyncClient",
+          "rpcs": {
+            "CreateComment": {
+              "methods": [
+                "create_comment"
+              ]
+            },
+            "ListComments": {
+              "methods": [
+                "list_comments"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "CommentServiceClient",
+          "rpcs": {
+            "CreateComment": {
+              "methods": [
+                "create_comment"
+              ]
+            },
+            "ListComments": {
+              "methods": [
+                "list_comments"
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}
