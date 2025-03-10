@@ -1,0 +1,2 @@
+recursive-include google/cloud/iap *.py
+recursive-include google/cloud/iap_v1 *.py

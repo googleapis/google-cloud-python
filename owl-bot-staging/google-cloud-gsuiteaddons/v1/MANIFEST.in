@@ -1,0 +1,2 @@
+recursive-include google/cloud/gsuiteaddons *.py
+recursive-include google/cloud/gsuiteaddons_v1 *.py

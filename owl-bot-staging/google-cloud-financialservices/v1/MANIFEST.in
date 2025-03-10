@@ -1,0 +1,2 @@
+recursive-include google/cloud/financialservices *.py
+recursive-include google/cloud/financialservices_v1 *.py

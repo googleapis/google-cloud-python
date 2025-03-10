@@ -1,0 +1,2 @@
+recursive-include google/cloud/filestore *.py
+recursive-include google/cloud/filestore_v1 *.py
