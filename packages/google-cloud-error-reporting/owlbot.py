@@ -79,7 +79,7 @@ for noxfile in Path(".").glob("**/noxfile.py"):
 # --------------------------------------------------------------------------
 
 # add shared environment variables to test configs
-tracked_subdirs = ["continuous", "presubmit", "samples", "docs"]
+tracked_subdirs = ["continuous", "presubmit", "samples"]
 for subdir in tracked_subdirs:
     for path, subdirs, files in os.walk(f".kokoro/{subdir}"):
         for name in files:
