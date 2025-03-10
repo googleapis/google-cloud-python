@@ -1,0 +1,73 @@
+ {
+  "comment": "This file maps proto services/RPCs to the corresponding library clients/methods",
+  "language": "python",
+  "libraryPackage": "google.cloud.policysimulator_v1",
+  "protoPackage": "google.cloud.policysimulator.v1",
+  "schema": "1.0",
+  "services": {
+    "Simulator": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "SimulatorClient",
+          "rpcs": {
+            "CreateReplay": {
+              "methods": [
+                "create_replay"
+              ]
+            },
+            "GetReplay": {
+              "methods": [
+                "get_replay"
+              ]
+            },
+            "ListReplayResults": {
+              "methods": [
+                "list_replay_results"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "SimulatorAsyncClient",
+          "rpcs": {
+            "CreateReplay": {
+              "methods": [
+                "create_replay"
+              ]
+            },
+            "GetReplay": {
+              "methods": [
+                "get_replay"
+              ]
+            },
+            "ListReplayResults": {
+              "methods": [
+                "list_replay_results"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "SimulatorClient",
+          "rpcs": {
+            "CreateReplay": {
+              "methods": [
+                "create_replay"
+              ]
+            },
+            "GetReplay": {
+              "methods": [
+                "get_replay"
+              ]
+            },
+            "ListReplayResults": {
+              "methods": [
+                "list_replay_results"
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}
