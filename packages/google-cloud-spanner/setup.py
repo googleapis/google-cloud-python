@@ -36,13 +36,13 @@ else:
     release_status = "Development Status :: 5 - Production/Stable"
 
 dependencies = [
-    "google-api-core[grpc] >= 1.34.0, <3.0.0dev,!=2.0.*,!=2.1.*,!=2.2.*,!=2.3.*,!=2.4.*,!=2.5.*,!=2.6.*,!=2.7.*,!=2.8.*,!=2.9.*,!=2.10.*",
-    "google-cloud-core >= 1.4.4, < 3.0dev",
-    "grpc-google-iam-v1 >= 0.12.4, <1.0.0dev",
-    "proto-plus >= 1.22.0, <2.0.0dev",
+    "google-api-core[grpc] >= 1.34.0, <3.0.0,!=2.0.*,!=2.1.*,!=2.2.*,!=2.3.*,!=2.4.*,!=2.5.*,!=2.6.*,!=2.7.*,!=2.8.*,!=2.9.*,!=2.10.*",
+    "google-cloud-core >= 1.4.4, < 3.0.0",
+    "grpc-google-iam-v1 >= 0.12.4, <1.0.0",
+    "proto-plus >= 1.22.0, <2.0.0",
     "sqlparse >= 0.4.4",
-    "proto-plus >= 1.22.2, <2.0.0dev; python_version>='3.11'",
-    "protobuf>=3.20.2,<6.0.0dev,!=4.21.0,!=4.21.1,!=4.21.2,!=4.21.3,!=4.21.4,!=4.21.5",
+    "proto-plus >= 1.22.2, <2.0.0; python_version>='3.11'",
+    "protobuf>=3.20.2,<7.0.0,!=4.21.0,!=4.21.1,!=4.21.2,!=4.21.3,!=4.21.4,!=4.21.5",
     "grpc-interceptor >= 0.15.4",
 ]
 extras = {
