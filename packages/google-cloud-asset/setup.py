@@ -46,7 +46,7 @@ dependencies = [
     "google-cloud-org-policy >= 0.1.2, <2.0.0",
     "proto-plus >= 1.22.3, <2.0.0",
     "proto-plus >= 1.25.0, <2.0.0; python_version >= '3.13'",
-    "protobuf>=3.20.2,<6.0.0,!=4.21.0,!=4.21.1,!=4.21.2,!=4.21.3,!=4.21.4,!=4.21.5",
+    "protobuf>=6.30.0,<6.30.1,!=4.21.0,!=4.21.1,!=4.21.2,!=4.21.3,!=4.21.4,!=4.21.5",
     "google-cloud-access-context-manager >= 0.1.2, <1.0.0",
     "google-cloud-os-config >= 1.0.0, <2.0.0",
     "grpc-google-iam-v1 >= 0.14.0, <1.0.0",
