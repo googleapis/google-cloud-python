@@ -1,0 +1,197 @@
+ {
+  "comment": "This file maps proto services/RPCs to the corresponding library clients/methods",
+  "language": "python",
+  "libraryPackage": "google.cloud.cloudcontrolspartner_v1",
+  "protoPackage": "google.cloud.cloudcontrolspartner.v1",
+  "schema": "1.0",
+  "services": {
+    "CloudControlsPartnerCore": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "CloudControlsPartnerCoreClient",
+          "rpcs": {
+            "GetCustomer": {
+              "methods": [
+                "get_customer"
+              ]
+            },
+            "GetEkmConnections": {
+              "methods": [
+                "get_ekm_connections"
+              ]
+            },
+            "GetPartner": {
+              "methods": [
+                "get_partner"
+              ]
+            },
+            "GetPartnerPermissions": {
+              "methods": [
+                "get_partner_permissions"
+              ]
+            },
+            "GetWorkload": {
+              "methods": [
+                "get_workload"
+              ]
+            },
+            "ListAccessApprovalRequests": {
+              "methods": [
+                "list_access_approval_requests"
+              ]
+            },
+            "ListCustomers": {
+              "methods": [
+                "list_customers"
+              ]
+            },
+            "ListWorkloads": {
+              "methods": [
+                "list_workloads"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "CloudControlsPartnerCoreAsyncClient",
+          "rpcs": {
+            "GetCustomer": {
+              "methods": [
+                "get_customer"
+              ]
+            },
+            "GetEkmConnections": {
+              "methods": [
+                "get_ekm_connections"
+              ]
+            },
+            "GetPartner": {
+              "methods": [
+                "get_partner"
+              ]
+            },
+            "GetPartnerPermissions": {
+              "methods": [
+                "get_partner_permissions"
+              ]
+            },
+            "GetWorkload": {
+              "methods": [
+                "get_workload"
+              ]
+            },
+            "ListAccessApprovalRequests": {
+              "methods": [
+                "list_access_approval_requests"
+              ]
+            },
+            "ListCustomers": {
+              "methods": [
+                "list_customers"
+              ]
+            },
+            "ListWorkloads": {
+              "methods": [
+                "list_workloads"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "CloudControlsPartnerCoreClient",
+          "rpcs": {
+            "GetCustomer": {
+              "methods": [
+                "get_customer"
+              ]
+            },
+            "GetEkmConnections": {
+              "methods": [
+                "get_ekm_connections"
+              ]
+            },
+            "GetPartner": {
+              "methods": [
+                "get_partner"
+              ]
+            },
+            "GetPartnerPermissions": {
+              "methods": [
+                "get_partner_permissions"
+              ]
+            },
+            "GetWorkload": {
+              "methods": [
+                "get_workload"
+              ]
+            },
+            "ListAccessApprovalRequests": {
+              "methods": [
+                "list_access_approval_requests"
+              ]
+            },
+            "ListCustomers": {
+              "methods": [
+                "list_customers"
+              ]
+            },
+            "ListWorkloads": {
+              "methods": [
+                "list_workloads"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "CloudControlsPartnerMonitoring": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "CloudControlsPartnerMonitoringClient",
+          "rpcs": {
+            "GetViolation": {
+              "methods": [
+                "get_violation"
+              ]
+            },
+            "ListViolations": {
+              "methods": [
+                "list_violations"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "CloudControlsPartnerMonitoringAsyncClient",
+          "rpcs": {
+            "GetViolation": {
+              "methods": [
+                "get_violation"
+              ]
+            },
+            "ListViolations": {
+              "methods": [
+                "list_violations"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "CloudControlsPartnerMonitoringClient",
+          "rpcs": {
+            "GetViolation": {
+              "methods": [
+                "get_violation"
+              ]
+            },
+            "ListViolations": {
+              "methods": [
+                "list_violations"
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}

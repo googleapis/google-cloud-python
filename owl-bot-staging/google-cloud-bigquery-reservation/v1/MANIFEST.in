@@ -1,0 +1,2 @@
+recursive-include google/cloud/bigquery_reservation *.py
+recursive-include google/cloud/bigquery_reservation_v1 *.py

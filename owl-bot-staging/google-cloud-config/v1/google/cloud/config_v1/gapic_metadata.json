@@ -1,0 +1,373 @@
+ {
+  "comment": "This file maps proto services/RPCs to the corresponding library clients/methods",
+  "language": "python",
+  "libraryPackage": "google.cloud.config_v1",
+  "protoPackage": "google.cloud.config.v1",
+  "schema": "1.0",
+  "services": {
+    "Config": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "ConfigClient",
+          "rpcs": {
+            "CreateDeployment": {
+              "methods": [
+                "create_deployment"
+              ]
+            },
+            "CreatePreview": {
+              "methods": [
+                "create_preview"
+              ]
+            },
+            "DeleteDeployment": {
+              "methods": [
+                "delete_deployment"
+              ]
+            },
+            "DeletePreview": {
+              "methods": [
+                "delete_preview"
+              ]
+            },
+            "DeleteStatefile": {
+              "methods": [
+                "delete_statefile"
+              ]
+            },
+            "ExportDeploymentStatefile": {
+              "methods": [
+                "export_deployment_statefile"
+              ]
+            },
+            "ExportLockInfo": {
+              "methods": [
+                "export_lock_info"
+              ]
+            },
+            "ExportPreviewResult": {
+              "methods": [
+                "export_preview_result"
+              ]
+            },
+            "ExportRevisionStatefile": {
+              "methods": [
+                "export_revision_statefile"
+              ]
+            },
+            "GetDeployment": {
+              "methods": [
+                "get_deployment"
+              ]
+            },
+            "GetPreview": {
+              "methods": [
+                "get_preview"
+              ]
+            },
+            "GetResource": {
+              "methods": [
+                "get_resource"
+              ]
+            },
+            "GetRevision": {
+              "methods": [
+                "get_revision"
+              ]
+            },
+            "GetTerraformVersion": {
+              "methods": [
+                "get_terraform_version"
+              ]
+            },
+            "ImportStatefile": {
+              "methods": [
+                "import_statefile"
+              ]
+            },
+            "ListDeployments": {
+              "methods": [
+                "list_deployments"
+              ]
+            },
+            "ListPreviews": {
+              "methods": [
+                "list_previews"
+              ]
+            },
+            "ListResources": {
+              "methods": [
+                "list_resources"
+              ]
+            },
+            "ListRevisions": {
+              "methods": [
+                "list_revisions"
+              ]
+            },
+            "ListTerraformVersions": {
+              "methods": [
+                "list_terraform_versions"
+              ]
+            },
+            "LockDeployment": {
+              "methods": [
+                "lock_deployment"
+              ]
+            },
+            "UnlockDeployment": {
+              "methods": [
+                "unlock_deployment"
+              ]
+            },
+            "UpdateDeployment": {
+              "methods": [
+                "update_deployment"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "ConfigAsyncClient",
+          "rpcs": {
+            "CreateDeployment": {
+              "methods": [
+                "create_deployment"
+              ]
+            },
+            "CreatePreview": {
+              "methods": [
+                "create_preview"
+              ]
+            },
+            "DeleteDeployment": {
+              "methods": [
+                "delete_deployment"
+              ]
+            },
+            "DeletePreview": {
+              "methods": [
+                "delete_preview"
+              ]
+            },
+            "DeleteStatefile": {
+              "methods": [
+                "delete_statefile"
+              ]
+            },
+            "ExportDeploymentStatefile": {
+              "methods": [
+                "export_deployment_statefile"
+              ]
+            },
+            "ExportLockInfo": {
+              "methods": [
+                "export_lock_info"
+              ]
+            },
+            "ExportPreviewResult": {
+              "methods": [
+                "export_preview_result"
+              ]
+            },
+            "ExportRevisionStatefile": {
+              "methods": [
+                "export_revision_statefile"
+              ]
+            },
+            "GetDeployment": {
+              "methods": [
+                "get_deployment"
+              ]
+            },
+            "GetPreview": {
+              "methods": [
+                "get_preview"
+              ]
+            },
+            "GetResource": {
+              "methods": [
+                "get_resource"
+              ]
+            },
+            "GetRevision": {
+              "methods": [
+                "get_revision"
+              ]
+            },
+            "GetTerraformVersion": {
+              "methods": [
+                "get_terraform_version"
+              ]
+            },
+            "ImportStatefile": {
+              "methods": [
+                "import_statefile"
+              ]
+            },
+            "ListDeployments": {
+              "methods": [
+                "list_deployments"
+              ]
+            },
+            "ListPreviews": {
+              "methods": [
+                "list_previews"
+              ]
+            },
+            "ListResources": {
+              "methods": [
+                "list_resources"
+              ]
+            },
+            "ListRevisions": {
+              "methods": [
+                "list_revisions"
+              ]
+            },
+            "ListTerraformVersions": {
+              "methods": [
+                "list_terraform_versions"
+              ]
+            },
+            "LockDeployment": {
+              "methods": [
+                "lock_deployment"
+              ]
+            },
+            "UnlockDeployment": {
+              "methods": [
+                "unlock_deployment"
+              ]
+            },
+            "UpdateDeployment": {
+              "methods": [
+                "update_deployment"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "ConfigClient",
+          "rpcs": {
+            "CreateDeployment": {
+              "methods": [
+                "create_deployment"
+              ]
+            },
+            "CreatePreview": {
+              "methods": [
+                "create_preview"
+              ]
+            },
+            "DeleteDeployment": {
+              "methods": [
+                "delete_deployment"
+              ]
+            },
+            "DeletePreview": {
+              "methods": [
+                "delete_preview"
+              ]
+            },
+            "DeleteStatefile": {
+              "methods": [
+                "delete_statefile"
+              ]
+            },
+            "ExportDeploymentStatefile": {
+              "methods": [
+                "export_deployment_statefile"
+              ]
+            },
+            "ExportLockInfo": {
+              "methods": [
+                "export_lock_info"
+              ]
+            },
+            "ExportPreviewResult": {
+              "methods": [
+                "export_preview_result"
+              ]
+            },
+            "ExportRevisionStatefile": {
+              "methods": [
+                "export_revision_statefile"
+              ]
+            },
+            "GetDeployment": {
+              "methods": [
+                "get_deployment"
+              ]
+            },
+            "GetPreview": {
+              "methods": [
+                "get_preview"
+              ]
+            },
+            "GetResource": {
+              "methods": [
+                "get_resource"
+              ]
+            },
+            "GetRevision": {
+              "methods": [
+                "get_revision"
+              ]
+            },
+            "GetTerraformVersion": {
+              "methods": [
+                "get_terraform_version"
+              ]
+            },
+            "ImportStatefile": {
+              "methods": [
+                "import_statefile"
+              ]
+            },
+            "ListDeployments": {
+              "methods": [
+                "list_deployments"
+              ]
+            },
+            "ListPreviews": {
+              "methods": [
+                "list_previews"
+              ]
+            },
+            "ListResources": {
+              "methods": [
+                "list_resources"
+              ]
+            },
+            "ListRevisions": {
+              "methods": [
+                "list_revisions"
+              ]
+            },
+            "ListTerraformVersions": {
+              "methods": [
+                "list_terraform_versions"
+              ]
+            },
+            "LockDeployment": {
+              "methods": [
+                "lock_deployment"
+              ]
+            },
+            "UnlockDeployment": {
+              "methods": [
+                "unlock_deployment"
+              ]
+            },
+            "UpdateDeployment": {
+              "methods": [
+                "update_deployment"
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}

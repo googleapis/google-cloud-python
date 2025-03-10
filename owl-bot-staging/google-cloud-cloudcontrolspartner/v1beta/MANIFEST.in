@@ -1,0 +1,2 @@
+recursive-include google/cloud/cloudcontrolspartner *.py
+recursive-include google/cloud/cloudcontrolspartner_v1beta *.py
