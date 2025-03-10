@@ -155,9 +155,9 @@ googleapis-common-protos[grpc]==1.69.1 \
     #   google-api-core
     #   grpc-google-iam-v1
     #   grpcio-status
-grpc-google-iam-v1==0.14.0 \
-    --hash=sha256:c66e07aa642e39bb37950f9e7f491f70dad150ac9801263b42b2814307c2df99 \
-    --hash=sha256:fb4a084b30099ba3ab07d61d620a0d4429570b13ff53bd37bac75235f98b7da4
+grpc-google-iam-v1==0.14.1 \
+    --hash=sha256:14149f37af0e5779fa8a22a8ae588663269e8a479d9c2e69a5056e589bf8a891 \
+    --hash=sha256:b4eca35b2231dd76066ebf1728f3cd30d51034db946827ef63ef138da14eea16
     # via google-cloud-spanner
 grpc-interceptor==0.15.4 \
     --hash=sha256:0035f33228693ed3767ee49d937bac424318db173fef4d2d0170b3215f254d9d \
