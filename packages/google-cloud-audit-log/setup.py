@@ -23,8 +23,8 @@ description = "Google Cloud Audit Protos"
 version = "0.3.1"
 release_status = "Development Status :: 4 - Beta"
 dependencies = [
-    "protobuf>=3.20.2,<6.0.0dev,!=4.21.1,!=4.21.2,!=4.21.3,!=4.21.4,!=4.21.5",
-    "googleapis-common-protos >= 1.56.2, < 2.0dev",
+    "protobuf>=3.20.2,<7.0.0,!=4.21.1,!=4.21.2,!=4.21.3,!=4.21.4,!=4.21.5",
+    "googleapis-common-protos >= 1.56.2, < 2.0.0",
 ]
 
 package_root = os.path.abspath(os.path.dirname(__file__))

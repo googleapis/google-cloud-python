@@ -41,9 +41,9 @@ classifiers = [
   "Topic :: Internet",
 ]
 dependencies = [
-  "grpcio >= 1.44.0, < 2.0.0dev",
+  "grpcio >= 1.44.0, < 2.0.0",
   "googleapis-common-protos[grpc] >= 1.56.0, < 2.0.0dev",
-  "protobuf >= 3.20.2, < 6.0.0dev, != 4.21.1, != 4.21.2, != 4.21.3, != 4.21.4, != 4.21.5",
+  "protobuf >= 3.20.2, < 7.0.0, != 4.21.1, != 4.21.2, != 4.21.3, != 4.21.4, != 4.21.5",
 ]
 
 [project.urls]
