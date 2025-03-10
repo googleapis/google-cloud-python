@@ -1,0 +1,58 @@
+ {
+  "comment": "This file maps proto services/RPCs to the corresponding library clients/methods",
+  "language": "python",
+  "libraryPackage": "google.maps.routeoptimization_v1",
+  "protoPackage": "google.maps.routeoptimization.v1",
+  "schema": "1.0",
+  "services": {
+    "RouteOptimization": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "RouteOptimizationClient",
+          "rpcs": {
+            "BatchOptimizeTours": {
+              "methods": [
+                "batch_optimize_tours"
+              ]
+            },
+            "OptimizeTours": {
+              "methods": [
+                "optimize_tours"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "RouteOptimizationAsyncClient",
+          "rpcs": {
+            "BatchOptimizeTours": {
+              "methods": [
+                "batch_optimize_tours"
+              ]
+            },
+            "OptimizeTours": {
+              "methods": [
+                "optimize_tours"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "RouteOptimizationClient",
+          "rpcs": {
+            "BatchOptimizeTours": {
+              "methods": [
+                "batch_optimize_tours"
+              ]
+            },
+            "OptimizeTours": {
+              "methods": [
+                "optimize_tours"
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,2 @@
+recursive-include google/shopping/merchant_promotions *.py
+recursive-include google/shopping/merchant_promotions_v1beta *.py

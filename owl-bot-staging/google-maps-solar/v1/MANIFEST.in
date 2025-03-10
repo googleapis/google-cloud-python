@@ -1,0 +1,2 @@
+recursive-include google/maps/solar *.py
+recursive-include google/maps/solar_v1 *.py
