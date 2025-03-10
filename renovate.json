@@ -6,7 +6,8 @@
     "schedule:weekly"
   ],
   "ignorePaths": [
-    ".kokoro/docker/docs/requirements.txt",
-    ".github/workflows/unittest.yml"
+    ".github/workflows/unittest.yml",
+    "**/pyproject.toml",
+    "**/setup.py"
   ]
 }
