@@ -1,2 +1,0 @@
-recursive-include google/cloud/workflows *.py
-recursive-include google/cloud/workflows_v1 *.py
