@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.7.0](https://github.com/googleapis/python-bigquery-magics/compare/v0.6.0...v0.7.0) (2025-03-11)
+
+
+### Features
+
+* Support visualization of graph queries by adding the --graph argument. ([#94](https://github.com/googleapis/python-bigquery-magics/issues/94)) ([3c054f5](https://github.com/googleapis/python-bigquery-magics/commit/3c054f5e27b5097c18899ff732fccebdf36b47e6))
+
+
+### Bug Fixes
+
+* Resolve issue where pre-release versions of dependencies are installed ([#97](https://github.com/googleapis/python-bigquery-magics/issues/97)) ([79c59e7](https://github.com/googleapis/python-bigquery-magics/commit/79c59e7b8ceba6f2be1fbe16d12b69b5a0b4d774))
+
 ## [0.6.0](https://github.com/googleapis/python-bigquery-magics/compare/v0.5.0...v0.6.0) (2025-02-12)
 
 
