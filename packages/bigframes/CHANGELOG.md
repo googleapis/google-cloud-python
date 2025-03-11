@@ -4,6 +4,30 @@
 
 [1]: https://pypi.org/project/bigframes/#history
 
+## [1.40.0](https://github.com/googleapis/python-bigquery-dataframes/compare/v1.39.0...v1.40.0) (2025-03-11)
+
+
+### ⚠ BREAKING CHANGES
+
+* reading JSON data as a custom arrow extension type ([#1458](https://github.com/googleapis/python-bigquery-dataframes/issues/1458))
+
+### Features
+
+* Reading JSON data as a custom arrow extension type ([#1458](https://github.com/googleapis/python-bigquery-dataframes/issues/1458)) ([e720f41](https://github.com/googleapis/python-bigquery-dataframes/commit/e720f41ef643ac14ae94fa98de5ef4a3fd6dde93))
+* Support list output for managed function ([#1457](https://github.com/googleapis/python-bigquery-dataframes/issues/1457)) ([461e9e0](https://github.com/googleapis/python-bigquery-dataframes/commit/461e9e017d513376fc623a5ee47f8b9dd002b452))
+
+
+### Bug Fixes
+
+* Fix list-like indexers in partial ordering mode ([#1456](https://github.com/googleapis/python-bigquery-dataframes/issues/1456)) ([fe72ada](https://github.com/googleapis/python-bigquery-dataframes/commit/fe72ada9cebb32947560c97567d7937c8b618f0d))
+* Fix the merge issue between 1424 and 1373 ([#1461](https://github.com/googleapis/python-bigquery-dataframes/issues/1461)) ([7b6e361](https://github.com/googleapis/python-bigquery-dataframes/commit/7b6e3615f8d4531beb4b59ca1223927112e713da))
+* Use `==` instead of `is` for timedelta type equality checks ([#1480](https://github.com/googleapis/python-bigquery-dataframes/issues/1480)) ([0db248b](https://github.com/googleapis/python-bigquery-dataframes/commit/0db248b5597a3966ac3dee1cca849509e48f4648))
+
+
+### Performance Improvements
+
+* Compilation no longer bounded by recursion ([#1464](https://github.com/googleapis/python-bigquery-dataframes/issues/1464)) ([27ab028](https://github.com/googleapis/python-bigquery-dataframes/commit/27ab028cdc45296923b12446c77b344af4208a3a))
+
 ## [1.39.0](https://github.com/googleapis/python-bigquery-dataframes/compare/v1.38.0...v1.39.0) (2025-03-05)
 
 
