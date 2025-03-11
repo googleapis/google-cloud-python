@@ -1,0 +1,2 @@
+recursive-include google/cloud/datacatalog *.py
+recursive-include google/cloud/datacatalog_v1beta1 *.py
