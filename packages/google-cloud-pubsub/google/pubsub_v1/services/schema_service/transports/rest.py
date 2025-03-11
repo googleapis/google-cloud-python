@@ -13,9 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import logging
+import json  # type: ignore
 
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
-import json  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import retry as retries
@@ -33,8 +34,6 @@ from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
 
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 from google.pubsub_v1.types import schema
 from google.pubsub_v1.types import schema as gp_schema
@@ -48,6 +47,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -156,8 +163,8 @@ class SchemaServiceRestInterceptor:
     def pre_commit_schema(
         self,
         request: gp_schema.CommitSchemaRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[gp_schema.CommitSchemaRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[gp_schema.CommitSchemaRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for commit_schema
 
         Override in a subclass to manipulate the request or metadata
@@ -168,17 +175,40 @@ class SchemaServiceRestInterceptor:
     def post_commit_schema(self, response: gp_schema.Schema) -> gp_schema.Schema:
         """Post-rpc interceptor for commit_schema
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_commit_schema_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the SchemaService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_commit_schema` interceptor runs
+        before the `post_commit_schema_with_metadata` interceptor.
         """
         return response
+
+    def post_commit_schema_with_metadata(
+        self,
+        response: gp_schema.Schema,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[gp_schema.Schema, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for commit_schema
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the SchemaService server but before it is returned to user code.
+
+        We recommend only using this `post_commit_schema_with_metadata`
+        interceptor in new development instead of the `post_commit_schema` interceptor.
+        When both interceptors are used, this `post_commit_schema_with_metadata` interceptor runs after the
+        `post_commit_schema` interceptor. The (possibly modified) response returned by
+        `post_commit_schema` will be passed to
+        `post_commit_schema_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_schema(
         self,
         request: gp_schema.CreateSchemaRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[gp_schema.CreateSchemaRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[gp_schema.CreateSchemaRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_schema
 
         Override in a subclass to manipulate the request or metadata
@@ -189,15 +219,40 @@ class SchemaServiceRestInterceptor:
     def post_create_schema(self, response: gp_schema.Schema) -> gp_schema.Schema:
         """Post-rpc interceptor for create_schema
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_schema_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the SchemaService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_schema` interceptor runs
+        before the `post_create_schema_with_metadata` interceptor.
         """
         return response
 
+    def post_create_schema_with_metadata(
+        self,
+        response: gp_schema.Schema,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[gp_schema.Schema, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_schema
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the SchemaService server but before it is returned to user code.
+
+        We recommend only using this `post_create_schema_with_metadata`
+        interceptor in new development instead of the `post_create_schema` interceptor.
+        When both interceptors are used, this `post_create_schema_with_metadata` interceptor runs after the
+        `post_create_schema` interceptor. The (possibly modified) response returned by
+        `post_create_schema` will be passed to
+        `post_create_schema_with_metadata`.
+        """
+        return response, metadata
+
     def pre_delete_schema(
-        self, request: schema.DeleteSchemaRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[schema.DeleteSchemaRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: schema.DeleteSchemaRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[schema.DeleteSchemaRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_schema
 
         Override in a subclass to manipulate the request or metadata
@@ -208,8 +263,10 @@ class SchemaServiceRestInterceptor:
     def pre_delete_schema_revision(
         self,
         request: schema.DeleteSchemaRevisionRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[schema.DeleteSchemaRevisionRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        schema.DeleteSchemaRevisionRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_schema_revision
 
         Override in a subclass to manipulate the request or metadata
@@ -220,15 +277,38 @@ class SchemaServiceRestInterceptor:
     def post_delete_schema_revision(self, response: schema.Schema) -> schema.Schema:
         """Post-rpc interceptor for delete_schema_revision
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_schema_revision_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the SchemaService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_schema_revision` interceptor runs
+        before the `post_delete_schema_revision_with_metadata` interceptor.
         """
         return response
 
+    def post_delete_schema_revision_with_metadata(
+        self, response: schema.Schema, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[schema.Schema, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_schema_revision
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the SchemaService server but before it is returned to user code.
+
+        We recommend only using this `post_delete_schema_revision_with_metadata`
+        interceptor in new development instead of the `post_delete_schema_revision` interceptor.
+        When both interceptors are used, this `post_delete_schema_revision_with_metadata` interceptor runs after the
+        `post_delete_schema_revision` interceptor. The (possibly modified) response returned by
+        `post_delete_schema_revision` will be passed to
+        `post_delete_schema_revision_with_metadata`.
+        """
+        return response, metadata
+
     def pre_get_schema(
-        self, request: schema.GetSchemaRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[schema.GetSchemaRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: schema.GetSchemaRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[schema.GetSchemaRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_schema
 
         Override in a subclass to manipulate the request or metadata
@@ -239,17 +319,40 @@ class SchemaServiceRestInterceptor:
     def post_get_schema(self, response: schema.Schema) -> schema.Schema:
         """Post-rpc interceptor for get_schema
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_schema_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the SchemaService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_schema` interceptor runs
+        before the `post_get_schema_with_metadata` interceptor.
         """
         return response
+
+    def post_get_schema_with_metadata(
+        self, response: schema.Schema, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[schema.Schema, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_schema
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the SchemaService server but before it is returned to user code.
+
+        We recommend only using this `post_get_schema_with_metadata`
+        interceptor in new development instead of the `post_get_schema` interceptor.
+        When both interceptors are used, this `post_get_schema_with_metadata` interceptor runs after the
+        `post_get_schema` interceptor. The (possibly modified) response returned by
+        `post_get_schema` will be passed to
+        `post_get_schema_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_schema_revisions(
         self,
         request: schema.ListSchemaRevisionsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[schema.ListSchemaRevisionsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        schema.ListSchemaRevisionsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_schema_revisions
 
         Override in a subclass to manipulate the request or metadata
@@ -262,15 +365,42 @@ class SchemaServiceRestInterceptor:
     ) -> schema.ListSchemaRevisionsResponse:
         """Post-rpc interceptor for list_schema_revisions
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_schema_revisions_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the SchemaService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_schema_revisions` interceptor runs
+        before the `post_list_schema_revisions_with_metadata` interceptor.
         """
         return response
 
+    def post_list_schema_revisions_with_metadata(
+        self,
+        response: schema.ListSchemaRevisionsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        schema.ListSchemaRevisionsResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_schema_revisions
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the SchemaService server but before it is returned to user code.
+
+        We recommend only using this `post_list_schema_revisions_with_metadata`
+        interceptor in new development instead of the `post_list_schema_revisions` interceptor.
+        When both interceptors are used, this `post_list_schema_revisions_with_metadata` interceptor runs after the
+        `post_list_schema_revisions` interceptor. The (possibly modified) response returned by
+        `post_list_schema_revisions` will be passed to
+        `post_list_schema_revisions_with_metadata`.
+        """
+        return response, metadata
+
     def pre_list_schemas(
-        self, request: schema.ListSchemasRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[schema.ListSchemasRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: schema.ListSchemasRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[schema.ListSchemasRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_schemas
 
         Override in a subclass to manipulate the request or metadata
@@ -283,15 +413,40 @@ class SchemaServiceRestInterceptor:
     ) -> schema.ListSchemasResponse:
         """Post-rpc interceptor for list_schemas
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_schemas_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the SchemaService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_schemas` interceptor runs
+        before the `post_list_schemas_with_metadata` interceptor.
         """
         return response
 
+    def post_list_schemas_with_metadata(
+        self,
+        response: schema.ListSchemasResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[schema.ListSchemasResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for list_schemas
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the SchemaService server but before it is returned to user code.
+
+        We recommend only using this `post_list_schemas_with_metadata`
+        interceptor in new development instead of the `post_list_schemas` interceptor.
+        When both interceptors are used, this `post_list_schemas_with_metadata` interceptor runs after the
+        `post_list_schemas` interceptor. The (possibly modified) response returned by
+        `post_list_schemas` will be passed to
+        `post_list_schemas_with_metadata`.
+        """
+        return response, metadata
+
     def pre_rollback_schema(
-        self, request: schema.RollbackSchemaRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[schema.RollbackSchemaRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: schema.RollbackSchemaRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[schema.RollbackSchemaRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for rollback_schema
 
         Override in a subclass to manipulate the request or metadata
@@ -302,17 +457,38 @@ class SchemaServiceRestInterceptor:
     def post_rollback_schema(self, response: schema.Schema) -> schema.Schema:
         """Post-rpc interceptor for rollback_schema
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_rollback_schema_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the SchemaService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_rollback_schema` interceptor runs
+        before the `post_rollback_schema_with_metadata` interceptor.
         """
         return response
+
+    def post_rollback_schema_with_metadata(
+        self, response: schema.Schema, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[schema.Schema, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for rollback_schema
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the SchemaService server but before it is returned to user code.
+
+        We recommend only using this `post_rollback_schema_with_metadata`
+        interceptor in new development instead of the `post_rollback_schema` interceptor.
+        When both interceptors are used, this `post_rollback_schema_with_metadata` interceptor runs after the
+        `post_rollback_schema` interceptor. The (possibly modified) response returned by
+        `post_rollback_schema` will be passed to
+        `post_rollback_schema_with_metadata`.
+        """
+        return response, metadata
 
     def pre_validate_message(
         self,
         request: schema.ValidateMessageRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[schema.ValidateMessageRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[schema.ValidateMessageRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for validate_message
 
         Override in a subclass to manipulate the request or metadata
@@ -325,17 +501,42 @@ class SchemaServiceRestInterceptor:
     ) -> schema.ValidateMessageResponse:
         """Post-rpc interceptor for validate_message
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_validate_message_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the SchemaService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_validate_message` interceptor runs
+        before the `post_validate_message_with_metadata` interceptor.
         """
         return response
+
+    def post_validate_message_with_metadata(
+        self,
+        response: schema.ValidateMessageResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[schema.ValidateMessageResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for validate_message
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the SchemaService server but before it is returned to user code.
+
+        We recommend only using this `post_validate_message_with_metadata`
+        interceptor in new development instead of the `post_validate_message` interceptor.
+        When both interceptors are used, this `post_validate_message_with_metadata` interceptor runs after the
+        `post_validate_message` interceptor. The (possibly modified) response returned by
+        `post_validate_message` will be passed to
+        `post_validate_message_with_metadata`.
+        """
+        return response, metadata
 
     def pre_validate_schema(
         self,
         request: gp_schema.ValidateSchemaRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[gp_schema.ValidateSchemaRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        gp_schema.ValidateSchemaRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for validate_schema
 
         Override in a subclass to manipulate the request or metadata
@@ -348,17 +549,44 @@ class SchemaServiceRestInterceptor:
     ) -> gp_schema.ValidateSchemaResponse:
         """Post-rpc interceptor for validate_schema
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_validate_schema_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the SchemaService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_validate_schema` interceptor runs
+        before the `post_validate_schema_with_metadata` interceptor.
         """
         return response
+
+    def post_validate_schema_with_metadata(
+        self,
+        response: gp_schema.ValidateSchemaResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        gp_schema.ValidateSchemaResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for validate_schema
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the SchemaService server but before it is returned to user code.
+
+        We recommend only using this `post_validate_schema_with_metadata`
+        interceptor in new development instead of the `post_validate_schema` interceptor.
+        When both interceptors are used, this `post_validate_schema_with_metadata` interceptor runs after the
+        `post_validate_schema` interceptor. The (possibly modified) response returned by
+        `post_validate_schema` will be passed to
+        `post_validate_schema_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_iam_policy(
         self,
         request: iam_policy_pb2.GetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -378,8 +606,10 @@ class SchemaServiceRestInterceptor:
     def pre_set_iam_policy(
         self,
         request: iam_policy_pb2.SetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for set_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -399,8 +629,11 @@ class SchemaServiceRestInterceptor:
     def pre_test_iam_permissions(
         self,
         request: iam_policy_pb2.TestIamPermissionsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[iam_policy_pb2.TestIamPermissionsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        iam_policy_pb2.TestIamPermissionsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the request or metadata
@@ -541,7 +774,7 @@ class SchemaServiceRestTransport(_BaseSchemaServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> gp_schema.Schema:
             r"""Call the commit schema method over HTTP.
 
@@ -551,8 +784,10 @@ class SchemaServiceRestTransport(_BaseSchemaServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.gp_schema.Schema:
@@ -562,6 +797,7 @@ class SchemaServiceRestTransport(_BaseSchemaServiceRestTransport):
             http_options = (
                 _BaseSchemaServiceRestTransport._BaseCommitSchema._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_commit_schema(request, metadata)
             transcoded_request = _BaseSchemaServiceRestTransport._BaseCommitSchema._get_transcoded_request(
                 http_options, request
@@ -575,6 +811,33 @@ class SchemaServiceRestTransport(_BaseSchemaServiceRestTransport):
             query_params = _BaseSchemaServiceRestTransport._BaseCommitSchema._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.pubsub_v1.SchemaServiceClient.CommitSchema",
+                    extra={
+                        "serviceName": "google.pubsub.v1.SchemaService",
+                        "rpcName": "CommitSchema",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SchemaServiceRestTransport._CommitSchema._get_response(
@@ -597,7 +860,33 @@ class SchemaServiceRestTransport(_BaseSchemaServiceRestTransport):
             pb_resp = gp_schema.Schema.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_commit_schema(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_commit_schema_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = gp_schema.Schema.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.pubsub_v1.SchemaServiceClient.commit_schema",
+                    extra={
+                        "serviceName": "google.pubsub.v1.SchemaService",
+                        "rpcName": "CommitSchema",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateSchema(
@@ -635,7 +924,7 @@ class SchemaServiceRestTransport(_BaseSchemaServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> gp_schema.Schema:
             r"""Call the create schema method over HTTP.
 
@@ -645,8 +934,10 @@ class SchemaServiceRestTransport(_BaseSchemaServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.gp_schema.Schema:
@@ -656,6 +947,7 @@ class SchemaServiceRestTransport(_BaseSchemaServiceRestTransport):
             http_options = (
                 _BaseSchemaServiceRestTransport._BaseCreateSchema._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_schema(request, metadata)
             transcoded_request = _BaseSchemaServiceRestTransport._BaseCreateSchema._get_transcoded_request(
                 http_options, request
@@ -669,6 +961,33 @@ class SchemaServiceRestTransport(_BaseSchemaServiceRestTransport):
             query_params = _BaseSchemaServiceRestTransport._BaseCreateSchema._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.pubsub_v1.SchemaServiceClient.CreateSchema",
+                    extra={
+                        "serviceName": "google.pubsub.v1.SchemaService",
+                        "rpcName": "CreateSchema",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SchemaServiceRestTransport._CreateSchema._get_response(
@@ -691,7 +1010,33 @@ class SchemaServiceRestTransport(_BaseSchemaServiceRestTransport):
             pb_resp = gp_schema.Schema.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_schema(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_schema_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = gp_schema.Schema.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.pubsub_v1.SchemaServiceClient.create_schema",
+                    extra={
+                        "serviceName": "google.pubsub.v1.SchemaService",
+                        "rpcName": "CreateSchema",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteSchema(
@@ -728,7 +1073,7 @@ class SchemaServiceRestTransport(_BaseSchemaServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete schema method over HTTP.
 
@@ -738,13 +1083,16 @@ class SchemaServiceRestTransport(_BaseSchemaServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseSchemaServiceRestTransport._BaseDeleteSchema._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_schema(request, metadata)
             transcoded_request = _BaseSchemaServiceRestTransport._BaseDeleteSchema._get_transcoded_request(
                 http_options, request
@@ -754,6 +1102,33 @@ class SchemaServiceRestTransport(_BaseSchemaServiceRestTransport):
             query_params = _BaseSchemaServiceRestTransport._BaseDeleteSchema._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.pubsub_v1.SchemaServiceClient.DeleteSchema",
+                    extra={
+                        "serviceName": "google.pubsub.v1.SchemaService",
+                        "rpcName": "DeleteSchema",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SchemaServiceRestTransport._DeleteSchema._get_response(
@@ -804,7 +1179,7 @@ class SchemaServiceRestTransport(_BaseSchemaServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> schema.Schema:
             r"""Call the delete schema revision method over HTTP.
 
@@ -814,8 +1189,10 @@ class SchemaServiceRestTransport(_BaseSchemaServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.schema.Schema:
@@ -825,6 +1202,7 @@ class SchemaServiceRestTransport(_BaseSchemaServiceRestTransport):
             http_options = (
                 _BaseSchemaServiceRestTransport._BaseDeleteSchemaRevision._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_schema_revision(
                 request, metadata
             )
@@ -836,6 +1214,33 @@ class SchemaServiceRestTransport(_BaseSchemaServiceRestTransport):
             query_params = _BaseSchemaServiceRestTransport._BaseDeleteSchemaRevision._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.pubsub_v1.SchemaServiceClient.DeleteSchemaRevision",
+                    extra={
+                        "serviceName": "google.pubsub.v1.SchemaService",
+                        "rpcName": "DeleteSchemaRevision",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SchemaServiceRestTransport._DeleteSchemaRevision._get_response(
@@ -857,7 +1262,33 @@ class SchemaServiceRestTransport(_BaseSchemaServiceRestTransport):
             pb_resp = schema.Schema.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_schema_revision(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_schema_revision_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = schema.Schema.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.pubsub_v1.SchemaServiceClient.delete_schema_revision",
+                    extra={
+                        "serviceName": "google.pubsub.v1.SchemaService",
+                        "rpcName": "DeleteSchemaRevision",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetSchema(
@@ -894,7 +1325,7 @@ class SchemaServiceRestTransport(_BaseSchemaServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> schema.Schema:
             r"""Call the get schema method over HTTP.
 
@@ -904,8 +1335,10 @@ class SchemaServiceRestTransport(_BaseSchemaServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.schema.Schema:
@@ -915,6 +1348,7 @@ class SchemaServiceRestTransport(_BaseSchemaServiceRestTransport):
             http_options = (
                 _BaseSchemaServiceRestTransport._BaseGetSchema._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_schema(request, metadata)
             transcoded_request = (
                 _BaseSchemaServiceRestTransport._BaseGetSchema._get_transcoded_request(
@@ -928,6 +1362,33 @@ class SchemaServiceRestTransport(_BaseSchemaServiceRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.pubsub_v1.SchemaServiceClient.GetSchema",
+                    extra={
+                        "serviceName": "google.pubsub.v1.SchemaService",
+                        "rpcName": "GetSchema",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SchemaServiceRestTransport._GetSchema._get_response(
@@ -949,7 +1410,33 @@ class SchemaServiceRestTransport(_BaseSchemaServiceRestTransport):
             pb_resp = schema.Schema.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_schema(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_schema_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = schema.Schema.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.pubsub_v1.SchemaServiceClient.get_schema",
+                    extra={
+                        "serviceName": "google.pubsub.v1.SchemaService",
+                        "rpcName": "GetSchema",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListSchemaRevisions(
@@ -986,7 +1473,7 @@ class SchemaServiceRestTransport(_BaseSchemaServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> schema.ListSchemaRevisionsResponse:
             r"""Call the list schema revisions method over HTTP.
 
@@ -996,8 +1483,10 @@ class SchemaServiceRestTransport(_BaseSchemaServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.schema.ListSchemaRevisionsResponse:
@@ -1007,6 +1496,7 @@ class SchemaServiceRestTransport(_BaseSchemaServiceRestTransport):
             http_options = (
                 _BaseSchemaServiceRestTransport._BaseListSchemaRevisions._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_schema_revisions(
                 request, metadata
             )
@@ -1018,6 +1508,33 @@ class SchemaServiceRestTransport(_BaseSchemaServiceRestTransport):
             query_params = _BaseSchemaServiceRestTransport._BaseListSchemaRevisions._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.pubsub_v1.SchemaServiceClient.ListSchemaRevisions",
+                    extra={
+                        "serviceName": "google.pubsub.v1.SchemaService",
+                        "rpcName": "ListSchemaRevisions",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SchemaServiceRestTransport._ListSchemaRevisions._get_response(
@@ -1039,7 +1556,35 @@ class SchemaServiceRestTransport(_BaseSchemaServiceRestTransport):
             pb_resp = schema.ListSchemaRevisionsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_schema_revisions(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_schema_revisions_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = schema.ListSchemaRevisionsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.pubsub_v1.SchemaServiceClient.list_schema_revisions",
+                    extra={
+                        "serviceName": "google.pubsub.v1.SchemaService",
+                        "rpcName": "ListSchemaRevisions",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListSchemas(
@@ -1076,7 +1621,7 @@ class SchemaServiceRestTransport(_BaseSchemaServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> schema.ListSchemasResponse:
             r"""Call the list schemas method over HTTP.
 
@@ -1086,8 +1631,10 @@ class SchemaServiceRestTransport(_BaseSchemaServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.schema.ListSchemasResponse:
@@ -1097,6 +1644,7 @@ class SchemaServiceRestTransport(_BaseSchemaServiceRestTransport):
             http_options = (
                 _BaseSchemaServiceRestTransport._BaseListSchemas._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_schemas(request, metadata)
             transcoded_request = _BaseSchemaServiceRestTransport._BaseListSchemas._get_transcoded_request(
                 http_options, request
@@ -1108,6 +1656,33 @@ class SchemaServiceRestTransport(_BaseSchemaServiceRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.pubsub_v1.SchemaServiceClient.ListSchemas",
+                    extra={
+                        "serviceName": "google.pubsub.v1.SchemaService",
+                        "rpcName": "ListSchemas",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SchemaServiceRestTransport._ListSchemas._get_response(
@@ -1129,7 +1704,33 @@ class SchemaServiceRestTransport(_BaseSchemaServiceRestTransport):
             pb_resp = schema.ListSchemasResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_schemas(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_schemas_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = schema.ListSchemasResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.pubsub_v1.SchemaServiceClient.list_schemas",
+                    extra={
+                        "serviceName": "google.pubsub.v1.SchemaService",
+                        "rpcName": "ListSchemas",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _RollbackSchema(
@@ -1167,7 +1768,7 @@ class SchemaServiceRestTransport(_BaseSchemaServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> schema.Schema:
             r"""Call the rollback schema method over HTTP.
 
@@ -1177,8 +1778,10 @@ class SchemaServiceRestTransport(_BaseSchemaServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.schema.Schema:
@@ -1188,6 +1791,7 @@ class SchemaServiceRestTransport(_BaseSchemaServiceRestTransport):
             http_options = (
                 _BaseSchemaServiceRestTransport._BaseRollbackSchema._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_rollback_schema(request, metadata)
             transcoded_request = _BaseSchemaServiceRestTransport._BaseRollbackSchema._get_transcoded_request(
                 http_options, request
@@ -1201,6 +1805,33 @@ class SchemaServiceRestTransport(_BaseSchemaServiceRestTransport):
             query_params = _BaseSchemaServiceRestTransport._BaseRollbackSchema._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.pubsub_v1.SchemaServiceClient.RollbackSchema",
+                    extra={
+                        "serviceName": "google.pubsub.v1.SchemaService",
+                        "rpcName": "RollbackSchema",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SchemaServiceRestTransport._RollbackSchema._get_response(
@@ -1223,7 +1854,33 @@ class SchemaServiceRestTransport(_BaseSchemaServiceRestTransport):
             pb_resp = schema.Schema.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_rollback_schema(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_rollback_schema_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = schema.Schema.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.pubsub_v1.SchemaServiceClient.rollback_schema",
+                    extra={
+                        "serviceName": "google.pubsub.v1.SchemaService",
+                        "rpcName": "RollbackSchema",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ValidateMessage(
@@ -1261,7 +1918,7 @@ class SchemaServiceRestTransport(_BaseSchemaServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> schema.ValidateMessageResponse:
             r"""Call the validate message method over HTTP.
 
@@ -1271,8 +1928,10 @@ class SchemaServiceRestTransport(_BaseSchemaServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.schema.ValidateMessageResponse:
@@ -1284,6 +1943,7 @@ class SchemaServiceRestTransport(_BaseSchemaServiceRestTransport):
             http_options = (
                 _BaseSchemaServiceRestTransport._BaseValidateMessage._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_validate_message(
                 request, metadata
             )
@@ -1299,6 +1959,33 @@ class SchemaServiceRestTransport(_BaseSchemaServiceRestTransport):
             query_params = _BaseSchemaServiceRestTransport._BaseValidateMessage._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.pubsub_v1.SchemaServiceClient.ValidateMessage",
+                    extra={
+                        "serviceName": "google.pubsub.v1.SchemaService",
+                        "rpcName": "ValidateMessage",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SchemaServiceRestTransport._ValidateMessage._get_response(
@@ -1321,7 +2008,33 @@ class SchemaServiceRestTransport(_BaseSchemaServiceRestTransport):
             pb_resp = schema.ValidateMessageResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_validate_message(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_validate_message_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = schema.ValidateMessageResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.pubsub_v1.SchemaServiceClient.validate_message",
+                    extra={
+                        "serviceName": "google.pubsub.v1.SchemaService",
+                        "rpcName": "ValidateMessage",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ValidateSchema(
@@ -1359,7 +2072,7 @@ class SchemaServiceRestTransport(_BaseSchemaServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> gp_schema.ValidateSchemaResponse:
             r"""Call the validate schema method over HTTP.
 
@@ -1369,8 +2082,10 @@ class SchemaServiceRestTransport(_BaseSchemaServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.gp_schema.ValidateSchemaResponse:
@@ -1382,6 +2097,7 @@ class SchemaServiceRestTransport(_BaseSchemaServiceRestTransport):
             http_options = (
                 _BaseSchemaServiceRestTransport._BaseValidateSchema._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_validate_schema(request, metadata)
             transcoded_request = _BaseSchemaServiceRestTransport._BaseValidateSchema._get_transcoded_request(
                 http_options, request
@@ -1395,6 +2111,33 @@ class SchemaServiceRestTransport(_BaseSchemaServiceRestTransport):
             query_params = _BaseSchemaServiceRestTransport._BaseValidateSchema._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.pubsub_v1.SchemaServiceClient.ValidateSchema",
+                    extra={
+                        "serviceName": "google.pubsub.v1.SchemaService",
+                        "rpcName": "ValidateSchema",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SchemaServiceRestTransport._ValidateSchema._get_response(
@@ -1417,7 +2160,35 @@ class SchemaServiceRestTransport(_BaseSchemaServiceRestTransport):
             pb_resp = gp_schema.ValidateSchemaResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_validate_schema(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_validate_schema_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = gp_schema.ValidateSchemaResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.pubsub_v1.SchemaServiceClient.validate_schema",
+                    extra={
+                        "serviceName": "google.pubsub.v1.SchemaService",
+                        "rpcName": "ValidateSchema",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property
@@ -1536,7 +2307,7 @@ class SchemaServiceRestTransport(_BaseSchemaServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> policy_pb2.Policy:
             r"""Call the get iam policy method over HTTP.
 
@@ -1546,8 +2317,10 @@ class SchemaServiceRestTransport(_BaseSchemaServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 policy_pb2.Policy: Response from GetIamPolicy method.
@@ -1556,6 +2329,7 @@ class SchemaServiceRestTransport(_BaseSchemaServiceRestTransport):
             http_options = (
                 _BaseSchemaServiceRestTransport._BaseGetIamPolicy._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
             transcoded_request = _BaseSchemaServiceRestTransport._BaseGetIamPolicy._get_transcoded_request(
                 http_options, request
@@ -1565,6 +2339,33 @@ class SchemaServiceRestTransport(_BaseSchemaServiceRestTransport):
             query_params = _BaseSchemaServiceRestTransport._BaseGetIamPolicy._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.pubsub_v1.SchemaServiceClient.GetIamPolicy",
+                    extra={
+                        "serviceName": "google.pubsub.v1.SchemaService",
+                        "rpcName": "GetIamPolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SchemaServiceRestTransport._GetIamPolicy._get_response(
@@ -1585,6 +2386,27 @@ class SchemaServiceRestTransport(_BaseSchemaServiceRestTransport):
             resp = policy_pb2.Policy()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_iam_policy(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.pubsub_v1.SchemaServiceAsyncClient.GetIamPolicy",
+                    extra={
+                        "serviceName": "google.pubsub.v1.SchemaService",
+                        "rpcName": "GetIamPolicy",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -1626,7 +2448,7 @@ class SchemaServiceRestTransport(_BaseSchemaServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> policy_pb2.Policy:
             r"""Call the set iam policy method over HTTP.
 
@@ -1636,8 +2458,10 @@ class SchemaServiceRestTransport(_BaseSchemaServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 policy_pb2.Policy: Response from SetIamPolicy method.
@@ -1646,6 +2470,7 @@ class SchemaServiceRestTransport(_BaseSchemaServiceRestTransport):
             http_options = (
                 _BaseSchemaServiceRestTransport._BaseSetIamPolicy._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
             transcoded_request = _BaseSchemaServiceRestTransport._BaseSetIamPolicy._get_transcoded_request(
                 http_options, request
@@ -1659,6 +2484,33 @@ class SchemaServiceRestTransport(_BaseSchemaServiceRestTransport):
             query_params = _BaseSchemaServiceRestTransport._BaseSetIamPolicy._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.pubsub_v1.SchemaServiceClient.SetIamPolicy",
+                    extra={
+                        "serviceName": "google.pubsub.v1.SchemaService",
+                        "rpcName": "SetIamPolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SchemaServiceRestTransport._SetIamPolicy._get_response(
@@ -1680,6 +2532,27 @@ class SchemaServiceRestTransport(_BaseSchemaServiceRestTransport):
             resp = policy_pb2.Policy()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_set_iam_policy(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.pubsub_v1.SchemaServiceAsyncClient.SetIamPolicy",
+                    extra={
+                        "serviceName": "google.pubsub.v1.SchemaService",
+                        "rpcName": "SetIamPolicy",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -1721,7 +2594,7 @@ class SchemaServiceRestTransport(_BaseSchemaServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> iam_policy_pb2.TestIamPermissionsResponse:
             r"""Call the test iam permissions method over HTTP.
 
@@ -1731,8 +2604,10 @@ class SchemaServiceRestTransport(_BaseSchemaServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 iam_policy_pb2.TestIamPermissionsResponse: Response from TestIamPermissions method.
@@ -1741,6 +2616,7 @@ class SchemaServiceRestTransport(_BaseSchemaServiceRestTransport):
             http_options = (
                 _BaseSchemaServiceRestTransport._BaseTestIamPermissions._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_test_iam_permissions(
                 request, metadata
             )
@@ -1756,6 +2632,33 @@ class SchemaServiceRestTransport(_BaseSchemaServiceRestTransport):
             query_params = _BaseSchemaServiceRestTransport._BaseTestIamPermissions._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.pubsub_v1.SchemaServiceClient.TestIamPermissions",
+                    extra={
+                        "serviceName": "google.pubsub.v1.SchemaService",
+                        "rpcName": "TestIamPermissions",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SchemaServiceRestTransport._TestIamPermissions._get_response(
@@ -1777,6 +2680,27 @@ class SchemaServiceRestTransport(_BaseSchemaServiceRestTransport):
             resp = iam_policy_pb2.TestIamPermissionsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_test_iam_permissions(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.pubsub_v1.SchemaServiceAsyncClient.TestIamPermissions",
+                    extra={
+                        "serviceName": "google.pubsub.v1.SchemaService",
+                        "rpcName": "TestIamPermissions",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property

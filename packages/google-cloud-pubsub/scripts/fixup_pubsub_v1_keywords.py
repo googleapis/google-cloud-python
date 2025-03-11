@@ -74,9 +74,6 @@ class pubsubCallTransformer(cst.CSTTransformer):
         'update_topic': ('topic', 'update_mask', ),
         'validate_message': ('parent', 'name', 'schema', 'message', 'encoding', ),
         'validate_schema': ('parent', 'schema', ),
-    'get_iam_policy': ('resource', 'options', ),
-    'set_iam_policy': ('resource', 'policy', ),
-    'test_iam_permissions': ('resource', 'permissions', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:

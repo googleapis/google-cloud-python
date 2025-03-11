@@ -67,6 +67,14 @@ from google.pubsub_v1.types import schema as gp_schema
 import google.auth
 
 
+CRED_INFO_JSON = {
+    "credential_source": "/path/to/file",
+    "credential_type": "service account credentials",
+    "principal": "service-account@example.com",
+}
+CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
+
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
         chunk = data[i : i + chunk_size]
@@ -318,6 +326,49 @@ def test__get_universe_domain():
     with pytest.raises(ValueError) as excinfo:
         SchemaServiceClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+
+@pytest.mark.parametrize(
+    "error_code,cred_info_json,show_cred_info",
+    [
+        (401, CRED_INFO_JSON, True),
+        (403, CRED_INFO_JSON, True),
+        (404, CRED_INFO_JSON, True),
+        (500, CRED_INFO_JSON, False),
+        (401, None, False),
+        (403, None, False),
+        (404, None, False),
+        (500, None, False),
+    ],
+)
+def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
+    cred = mock.Mock(["get_cred_info"])
+    cred.get_cred_info = mock.Mock(return_value=cred_info_json)
+    client = SchemaServiceClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=["foo"])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    if show_cred_info:
+        assert error.details == ["foo", CRED_INFO_STRING]
+    else:
+        assert error.details == ["foo"]
+
+
+@pytest.mark.parametrize("error_code", [401, 403, 404, 500])
+def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
+    cred = mock.Mock([])
+    assert not hasattr(cred, "get_cred_info")
+    client = SchemaServiceClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=[])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    assert error.details == []
 
 
 @pytest.mark.parametrize(
@@ -4840,6 +4891,7 @@ def test_create_schema_rest_required_fields(request_type=gp_schema.CreateSchemaR
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.create_schema(request)
 
@@ -4895,6 +4947,7 @@ def test_create_schema_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.create_schema(**mock_args)
 
@@ -5026,6 +5079,7 @@ def test_get_schema_rest_required_fields(request_type=schema.GetSchemaRequest):
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_schema(request)
 
@@ -5071,6 +5125,7 @@ def test_get_schema_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_schema(**mock_args)
 
@@ -5206,6 +5261,7 @@ def test_list_schemas_rest_required_fields(request_type=schema.ListSchemasReques
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_schemas(request)
 
@@ -5260,6 +5316,7 @@ def test_list_schemas_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_schemas(**mock_args)
 
@@ -5463,6 +5520,7 @@ def test_list_schema_revisions_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_schema_revisions(request)
 
@@ -5517,6 +5575,7 @@ def test_list_schema_revisions_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_schema_revisions(**mock_args)
 
@@ -5709,6 +5768,7 @@ def test_commit_schema_rest_required_fields(request_type=gp_schema.CommitSchemaR
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.commit_schema(request)
 
@@ -5763,6 +5823,7 @@ def test_commit_schema_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.commit_schema(**mock_args)
 
@@ -5898,6 +5959,7 @@ def test_rollback_schema_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.rollback_schema(request)
 
@@ -5952,6 +6014,7 @@ def test_rollback_schema_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.rollback_schema(**mock_args)
 
@@ -6090,6 +6153,7 @@ def test_delete_schema_revision_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.delete_schema_revision(request)
 
@@ -6136,6 +6200,7 @@ def test_delete_schema_revision_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.delete_schema_revision(**mock_args)
 
@@ -6262,6 +6327,7 @@ def test_delete_schema_rest_required_fields(request_type=schema.DeleteSchemaRequ
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.delete_schema(request)
 
@@ -6305,6 +6371,7 @@ def test_delete_schema_rest_flattened():
         json_return_value = ""
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.delete_schema(**mock_args)
 
@@ -6435,6 +6502,7 @@ def test_validate_schema_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.validate_schema(request)
 
@@ -6489,6 +6557,7 @@ def test_validate_schema_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.validate_schema(**mock_args)
 
@@ -6623,6 +6692,7 @@ def test_validate_message_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.validate_message(request)
 
@@ -7281,6 +7351,7 @@ def test_create_schema_rest_bad_request(request_type=gp_schema.CreateSchemaReque
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_schema(request)
 
 
@@ -7393,6 +7464,7 @@ def test_create_schema_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_schema(request)
 
     # Establish that the response is the type that we expect.
@@ -7420,10 +7492,13 @@ def test_create_schema_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.SchemaServiceRestInterceptor, "post_create_schema"
     ) as post, mock.patch.object(
+        transports.SchemaServiceRestInterceptor, "post_create_schema_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.SchemaServiceRestInterceptor, "pre_create_schema"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = gp_schema.CreateSchemaRequest.pb(gp_schema.CreateSchemaRequest())
         transcode.return_value = {
             "method": "post",
@@ -7434,6 +7509,7 @@ def test_create_schema_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = gp_schema.Schema.to_json(gp_schema.Schema())
         req.return_value.content = return_value
 
@@ -7444,6 +7520,7 @@ def test_create_schema_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = gp_schema.Schema()
+        post_with_metadata.return_value = gp_schema.Schema(), metadata
 
         client.create_schema(
             request,
@@ -7455,6 +7532,7 @@ def test_create_schema_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_schema_rest_bad_request(request_type=schema.GetSchemaRequest):
@@ -7476,6 +7554,7 @@ def test_get_schema_rest_bad_request(request_type=schema.GetSchemaRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_schema(request)
 
 
@@ -7514,6 +7593,7 @@ def test_get_schema_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_schema(request)
 
     # Establish that the response is the type that we expect.
@@ -7541,10 +7621,13 @@ def test_get_schema_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.SchemaServiceRestInterceptor, "post_get_schema"
     ) as post, mock.patch.object(
+        transports.SchemaServiceRestInterceptor, "post_get_schema_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.SchemaServiceRestInterceptor, "pre_get_schema"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = schema.GetSchemaRequest.pb(schema.GetSchemaRequest())
         transcode.return_value = {
             "method": "post",
@@ -7555,6 +7638,7 @@ def test_get_schema_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = schema.Schema.to_json(schema.Schema())
         req.return_value.content = return_value
 
@@ -7565,6 +7649,7 @@ def test_get_schema_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = schema.Schema()
+        post_with_metadata.return_value = schema.Schema(), metadata
 
         client.get_schema(
             request,
@@ -7576,6 +7661,7 @@ def test_get_schema_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_schemas_rest_bad_request(request_type=schema.ListSchemasRequest):
@@ -7597,6 +7683,7 @@ def test_list_schemas_rest_bad_request(request_type=schema.ListSchemasRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_schemas(request)
 
 
@@ -7632,6 +7719,7 @@ def test_list_schemas_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_schemas(request)
 
     # Establish that the response is the type that we expect.
@@ -7656,10 +7744,13 @@ def test_list_schemas_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.SchemaServiceRestInterceptor, "post_list_schemas"
     ) as post, mock.patch.object(
+        transports.SchemaServiceRestInterceptor, "post_list_schemas_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.SchemaServiceRestInterceptor, "pre_list_schemas"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = schema.ListSchemasRequest.pb(schema.ListSchemasRequest())
         transcode.return_value = {
             "method": "post",
@@ -7670,6 +7761,7 @@ def test_list_schemas_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = schema.ListSchemasResponse.to_json(schema.ListSchemasResponse())
         req.return_value.content = return_value
 
@@ -7680,6 +7772,7 @@ def test_list_schemas_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = schema.ListSchemasResponse()
+        post_with_metadata.return_value = schema.ListSchemasResponse(), metadata
 
         client.list_schemas(
             request,
@@ -7691,6 +7784,7 @@ def test_list_schemas_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_schema_revisions_rest_bad_request(
@@ -7714,6 +7808,7 @@ def test_list_schema_revisions_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_schema_revisions(request)
 
 
@@ -7749,6 +7844,7 @@ def test_list_schema_revisions_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_schema_revisions(request)
 
     # Establish that the response is the type that we expect.
@@ -7773,10 +7869,14 @@ def test_list_schema_revisions_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.SchemaServiceRestInterceptor, "post_list_schema_revisions"
     ) as post, mock.patch.object(
+        transports.SchemaServiceRestInterceptor,
+        "post_list_schema_revisions_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.SchemaServiceRestInterceptor, "pre_list_schema_revisions"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = schema.ListSchemaRevisionsRequest.pb(
             schema.ListSchemaRevisionsRequest()
         )
@@ -7789,6 +7889,7 @@ def test_list_schema_revisions_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = schema.ListSchemaRevisionsResponse.to_json(
             schema.ListSchemaRevisionsResponse()
         )
@@ -7801,6 +7902,7 @@ def test_list_schema_revisions_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = schema.ListSchemaRevisionsResponse()
+        post_with_metadata.return_value = schema.ListSchemaRevisionsResponse(), metadata
 
         client.list_schema_revisions(
             request,
@@ -7812,6 +7914,7 @@ def test_list_schema_revisions_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_commit_schema_rest_bad_request(request_type=gp_schema.CommitSchemaRequest):
@@ -7833,6 +7936,7 @@ def test_commit_schema_rest_bad_request(request_type=gp_schema.CommitSchemaReque
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.commit_schema(request)
 
 
@@ -7871,6 +7975,7 @@ def test_commit_schema_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.commit_schema(request)
 
     # Establish that the response is the type that we expect.
@@ -7898,10 +8003,13 @@ def test_commit_schema_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.SchemaServiceRestInterceptor, "post_commit_schema"
     ) as post, mock.patch.object(
+        transports.SchemaServiceRestInterceptor, "post_commit_schema_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.SchemaServiceRestInterceptor, "pre_commit_schema"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = gp_schema.CommitSchemaRequest.pb(gp_schema.CommitSchemaRequest())
         transcode.return_value = {
             "method": "post",
@@ -7912,6 +8020,7 @@ def test_commit_schema_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = gp_schema.Schema.to_json(gp_schema.Schema())
         req.return_value.content = return_value
 
@@ -7922,6 +8031,7 @@ def test_commit_schema_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = gp_schema.Schema()
+        post_with_metadata.return_value = gp_schema.Schema(), metadata
 
         client.commit_schema(
             request,
@@ -7933,6 +8043,7 @@ def test_commit_schema_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_rollback_schema_rest_bad_request(request_type=schema.RollbackSchemaRequest):
@@ -7954,6 +8065,7 @@ def test_rollback_schema_rest_bad_request(request_type=schema.RollbackSchemaRequ
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.rollback_schema(request)
 
 
@@ -7992,6 +8104,7 @@ def test_rollback_schema_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.rollback_schema(request)
 
     # Establish that the response is the type that we expect.
@@ -8019,10 +8132,13 @@ def test_rollback_schema_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.SchemaServiceRestInterceptor, "post_rollback_schema"
     ) as post, mock.patch.object(
+        transports.SchemaServiceRestInterceptor, "post_rollback_schema_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.SchemaServiceRestInterceptor, "pre_rollback_schema"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = schema.RollbackSchemaRequest.pb(schema.RollbackSchemaRequest())
         transcode.return_value = {
             "method": "post",
@@ -8033,6 +8149,7 @@ def test_rollback_schema_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = schema.Schema.to_json(schema.Schema())
         req.return_value.content = return_value
 
@@ -8043,6 +8160,7 @@ def test_rollback_schema_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = schema.Schema()
+        post_with_metadata.return_value = schema.Schema(), metadata
 
         client.rollback_schema(
             request,
@@ -8054,6 +8172,7 @@ def test_rollback_schema_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_schema_revision_rest_bad_request(
@@ -8077,6 +8196,7 @@ def test_delete_schema_revision_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_schema_revision(request)
 
 
@@ -8115,6 +8235,7 @@ def test_delete_schema_revision_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.delete_schema_revision(request)
 
     # Establish that the response is the type that we expect.
@@ -8142,10 +8263,14 @@ def test_delete_schema_revision_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.SchemaServiceRestInterceptor, "post_delete_schema_revision"
     ) as post, mock.patch.object(
+        transports.SchemaServiceRestInterceptor,
+        "post_delete_schema_revision_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.SchemaServiceRestInterceptor, "pre_delete_schema_revision"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = schema.DeleteSchemaRevisionRequest.pb(
             schema.DeleteSchemaRevisionRequest()
         )
@@ -8158,6 +8283,7 @@ def test_delete_schema_revision_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = schema.Schema.to_json(schema.Schema())
         req.return_value.content = return_value
 
@@ -8168,6 +8294,7 @@ def test_delete_schema_revision_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = schema.Schema()
+        post_with_metadata.return_value = schema.Schema(), metadata
 
         client.delete_schema_revision(
             request,
@@ -8179,6 +8306,7 @@ def test_delete_schema_revision_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_schema_rest_bad_request(request_type=schema.DeleteSchemaRequest):
@@ -8200,6 +8328,7 @@ def test_delete_schema_rest_bad_request(request_type=schema.DeleteSchemaRequest)
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_schema(request)
 
 
@@ -8230,6 +8359,7 @@ def test_delete_schema_rest_call_success(request_type):
         json_return_value = ""
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.delete_schema(request)
 
     # Establish that the response is the type that we expect.
@@ -8264,6 +8394,7 @@ def test_delete_schema_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         request = schema.DeleteSchemaRequest()
         metadata = [
@@ -8302,6 +8433,7 @@ def test_validate_schema_rest_bad_request(request_type=gp_schema.ValidateSchemaR
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.validate_schema(request)
 
 
@@ -8335,6 +8467,7 @@ def test_validate_schema_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.validate_schema(request)
 
     # Establish that the response is the type that we expect.
@@ -8358,10 +8491,13 @@ def test_validate_schema_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.SchemaServiceRestInterceptor, "post_validate_schema"
     ) as post, mock.patch.object(
+        transports.SchemaServiceRestInterceptor, "post_validate_schema_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.SchemaServiceRestInterceptor, "pre_validate_schema"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = gp_schema.ValidateSchemaRequest.pb(
             gp_schema.ValidateSchemaRequest()
         )
@@ -8374,6 +8510,7 @@ def test_validate_schema_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = gp_schema.ValidateSchemaResponse.to_json(
             gp_schema.ValidateSchemaResponse()
         )
@@ -8386,6 +8523,7 @@ def test_validate_schema_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = gp_schema.ValidateSchemaResponse()
+        post_with_metadata.return_value = gp_schema.ValidateSchemaResponse(), metadata
 
         client.validate_schema(
             request,
@@ -8397,6 +8535,7 @@ def test_validate_schema_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_validate_message_rest_bad_request(request_type=schema.ValidateMessageRequest):
@@ -8418,6 +8557,7 @@ def test_validate_message_rest_bad_request(request_type=schema.ValidateMessageRe
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.validate_message(request)
 
 
@@ -8451,6 +8591,7 @@ def test_validate_message_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.validate_message(request)
 
     # Establish that the response is the type that we expect.
@@ -8474,10 +8615,13 @@ def test_validate_message_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.SchemaServiceRestInterceptor, "post_validate_message"
     ) as post, mock.patch.object(
+        transports.SchemaServiceRestInterceptor, "post_validate_message_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.SchemaServiceRestInterceptor, "pre_validate_message"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = schema.ValidateMessageRequest.pb(schema.ValidateMessageRequest())
         transcode.return_value = {
             "method": "post",
@@ -8488,6 +8632,7 @@ def test_validate_message_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = schema.ValidateMessageResponse.to_json(
             schema.ValidateMessageResponse()
         )
@@ -8500,6 +8645,7 @@ def test_validate_message_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = schema.ValidateMessageResponse()
+        post_with_metadata.return_value = schema.ValidateMessageResponse(), metadata
 
         client.validate_message(
             request,
@@ -8511,6 +8657,7 @@ def test_validate_message_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_iam_policy_rest_bad_request(
@@ -8536,6 +8683,7 @@ def test_get_iam_policy_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_iam_policy(request)
 
 
@@ -8566,6 +8714,7 @@ def test_get_iam_policy_rest(request_type):
         response_value.content = json_return_value.encode("UTF-8")
 
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         response = client.get_iam_policy(request)
 
@@ -8596,6 +8745,7 @@ def test_set_iam_policy_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.set_iam_policy(request)
 
 
@@ -8626,6 +8776,7 @@ def test_set_iam_policy_rest(request_type):
         response_value.content = json_return_value.encode("UTF-8")
 
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         response = client.set_iam_policy(request)
 
@@ -8656,6 +8807,7 @@ def test_test_iam_permissions_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.test_iam_permissions(request)
 
 
@@ -8686,6 +8838,7 @@ def test_test_iam_permissions_rest(request_type):
         response_value.content = json_return_value.encode("UTF-8")
 
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         response = client.test_iam_permissions(request)
 

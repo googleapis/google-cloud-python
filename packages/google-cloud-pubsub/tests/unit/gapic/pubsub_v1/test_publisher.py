@@ -69,6 +69,14 @@ from google.pubsub_v1.types import schema
 import google.auth
 
 
+CRED_INFO_JSON = {
+    "credential_source": "/path/to/file",
+    "credential_type": "service account credentials",
+    "principal": "service-account@example.com",
+}
+CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
+
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
         chunk = data[i : i + chunk_size]
@@ -299,6 +307,49 @@ def test__get_universe_domain():
     with pytest.raises(ValueError) as excinfo:
         PublisherClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+
+@pytest.mark.parametrize(
+    "error_code,cred_info_json,show_cred_info",
+    [
+        (401, CRED_INFO_JSON, True),
+        (403, CRED_INFO_JSON, True),
+        (404, CRED_INFO_JSON, True),
+        (500, CRED_INFO_JSON, False),
+        (401, None, False),
+        (403, None, False),
+        (404, None, False),
+        (500, None, False),
+    ],
+)
+def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
+    cred = mock.Mock(["get_cred_info"])
+    cred.get_cred_info = mock.Mock(return_value=cred_info_json)
+    client = PublisherClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=["foo"])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    if show_cred_info:
+        assert error.details == ["foo", CRED_INFO_STRING]
+    else:
+        assert error.details == ["foo"]
+
+
+@pytest.mark.parametrize("error_code", [401, 403, 404, 500])
+def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
+    cred = mock.Mock([])
+    assert not hasattr(cred, "get_cred_info")
+    client = PublisherClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=[])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    assert error.details == []
 
 
 @pytest.mark.parametrize(
@@ -4639,6 +4690,7 @@ def test_create_topic_rest_required_fields(request_type=pubsub.Topic):
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.create_topic(request)
 
@@ -4684,6 +4736,7 @@ def test_create_topic_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.create_topic(**mock_args)
 
@@ -4807,6 +4860,7 @@ def test_update_topic_rest_required_fields(request_type=pubsub.UpdateTopicReques
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.update_topic(request)
 
@@ -4861,6 +4915,7 @@ def test_update_topic_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.update_topic(**mock_args)
 
@@ -4990,6 +5045,7 @@ def test_publish_rest_required_fields(request_type=pubsub.PublishRequest):
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.publish(request)
 
@@ -5044,6 +5100,7 @@ def test_publish_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.publish(**mock_args)
 
@@ -5173,6 +5230,7 @@ def test_get_topic_rest_required_fields(request_type=pubsub.GetTopicRequest):
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_topic(request)
 
@@ -5218,6 +5276,7 @@ def test_get_topic_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_topic(**mock_args)
 
@@ -5352,6 +5411,7 @@ def test_list_topics_rest_required_fields(request_type=pubsub.ListTopicsRequest)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_topics(request)
 
@@ -5405,6 +5465,7 @@ def test_list_topics_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_topics(**mock_args)
 
@@ -5607,6 +5668,7 @@ def test_list_topic_subscriptions_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_topic_subscriptions(request)
 
@@ -5660,6 +5722,7 @@ def test_list_topic_subscriptions_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_topic_subscriptions(**mock_args)
 
@@ -5864,6 +5927,7 @@ def test_list_topic_snapshots_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_topic_snapshots(request)
 
@@ -5917,6 +5981,7 @@ def test_list_topic_snapshots_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_topic_snapshots(**mock_args)
 
@@ -6103,6 +6168,7 @@ def test_delete_topic_rest_required_fields(request_type=pubsub.DeleteTopicReques
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.delete_topic(request)
 
@@ -6146,6 +6212,7 @@ def test_delete_topic_rest_flattened():
         json_return_value = ""
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.delete_topic(**mock_args)
 
@@ -6279,6 +6346,7 @@ def test_detach_subscription_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.detach_subscription(request)
 
@@ -6891,6 +6959,7 @@ def test_create_topic_rest_bad_request(request_type=pubsub.Topic):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_topic(request)
 
 
@@ -6929,6 +6998,7 @@ def test_create_topic_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_topic(request)
 
     # Establish that the response is the type that we expect.
@@ -6954,10 +7024,13 @@ def test_create_topic_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.PublisherRestInterceptor, "post_create_topic"
     ) as post, mock.patch.object(
+        transports.PublisherRestInterceptor, "post_create_topic_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.PublisherRestInterceptor, "pre_create_topic"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = pubsub.Topic.pb(pubsub.Topic())
         transcode.return_value = {
             "method": "post",
@@ -6968,6 +7041,7 @@ def test_create_topic_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = pubsub.Topic.to_json(pubsub.Topic())
         req.return_value.content = return_value
 
@@ -6978,6 +7052,7 @@ def test_create_topic_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = pubsub.Topic()
+        post_with_metadata.return_value = pubsub.Topic(), metadata
 
         client.create_topic(
             request,
@@ -6989,6 +7064,7 @@ def test_create_topic_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_topic_rest_bad_request(request_type=pubsub.UpdateTopicRequest):
@@ -7010,6 +7086,7 @@ def test_update_topic_rest_bad_request(request_type=pubsub.UpdateTopicRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.update_topic(request)
 
 
@@ -7048,6 +7125,7 @@ def test_update_topic_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.update_topic(request)
 
     # Establish that the response is the type that we expect.
@@ -7073,10 +7151,13 @@ def test_update_topic_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.PublisherRestInterceptor, "post_update_topic"
     ) as post, mock.patch.object(
+        transports.PublisherRestInterceptor, "post_update_topic_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.PublisherRestInterceptor, "pre_update_topic"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = pubsub.UpdateTopicRequest.pb(pubsub.UpdateTopicRequest())
         transcode.return_value = {
             "method": "post",
@@ -7087,6 +7168,7 @@ def test_update_topic_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = pubsub.Topic.to_json(pubsub.Topic())
         req.return_value.content = return_value
 
@@ -7097,6 +7179,7 @@ def test_update_topic_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = pubsub.Topic()
+        post_with_metadata.return_value = pubsub.Topic(), metadata
 
         client.update_topic(
             request,
@@ -7108,6 +7191,7 @@ def test_update_topic_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_publish_rest_bad_request(request_type=pubsub.PublishRequest):
@@ -7129,6 +7213,7 @@ def test_publish_rest_bad_request(request_type=pubsub.PublishRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.publish(request)
 
 
@@ -7164,6 +7249,7 @@ def test_publish_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.publish(request)
 
     # Establish that the response is the type that we expect.
@@ -7186,10 +7272,13 @@ def test_publish_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.PublisherRestInterceptor, "post_publish"
     ) as post, mock.patch.object(
+        transports.PublisherRestInterceptor, "post_publish_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.PublisherRestInterceptor, "pre_publish"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = pubsub.PublishRequest.pb(pubsub.PublishRequest())
         transcode.return_value = {
             "method": "post",
@@ -7200,6 +7289,7 @@ def test_publish_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = pubsub.PublishResponse.to_json(pubsub.PublishResponse())
         req.return_value.content = return_value
 
@@ -7210,6 +7300,7 @@ def test_publish_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = pubsub.PublishResponse()
+        post_with_metadata.return_value = pubsub.PublishResponse(), metadata
 
         client.publish(
             request,
@@ -7221,6 +7312,7 @@ def test_publish_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_topic_rest_bad_request(request_type=pubsub.GetTopicRequest):
@@ -7242,6 +7334,7 @@ def test_get_topic_rest_bad_request(request_type=pubsub.GetTopicRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_topic(request)
 
 
@@ -7280,6 +7373,7 @@ def test_get_topic_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_topic(request)
 
     # Establish that the response is the type that we expect.
@@ -7305,10 +7399,13 @@ def test_get_topic_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.PublisherRestInterceptor, "post_get_topic"
     ) as post, mock.patch.object(
+        transports.PublisherRestInterceptor, "post_get_topic_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.PublisherRestInterceptor, "pre_get_topic"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = pubsub.GetTopicRequest.pb(pubsub.GetTopicRequest())
         transcode.return_value = {
             "method": "post",
@@ -7319,6 +7416,7 @@ def test_get_topic_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = pubsub.Topic.to_json(pubsub.Topic())
         req.return_value.content = return_value
 
@@ -7329,6 +7427,7 @@ def test_get_topic_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = pubsub.Topic()
+        post_with_metadata.return_value = pubsub.Topic(), metadata
 
         client.get_topic(
             request,
@@ -7340,6 +7439,7 @@ def test_get_topic_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_topics_rest_bad_request(request_type=pubsub.ListTopicsRequest):
@@ -7361,6 +7461,7 @@ def test_list_topics_rest_bad_request(request_type=pubsub.ListTopicsRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_topics(request)
 
 
@@ -7396,6 +7497,7 @@ def test_list_topics_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_topics(request)
 
     # Establish that the response is the type that we expect.
@@ -7418,10 +7520,13 @@ def test_list_topics_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.PublisherRestInterceptor, "post_list_topics"
     ) as post, mock.patch.object(
+        transports.PublisherRestInterceptor, "post_list_topics_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.PublisherRestInterceptor, "pre_list_topics"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = pubsub.ListTopicsRequest.pb(pubsub.ListTopicsRequest())
         transcode.return_value = {
             "method": "post",
@@ -7432,6 +7537,7 @@ def test_list_topics_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = pubsub.ListTopicsResponse.to_json(pubsub.ListTopicsResponse())
         req.return_value.content = return_value
 
@@ -7442,6 +7548,7 @@ def test_list_topics_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = pubsub.ListTopicsResponse()
+        post_with_metadata.return_value = pubsub.ListTopicsResponse(), metadata
 
         client.list_topics(
             request,
@@ -7453,6 +7560,7 @@ def test_list_topics_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_topic_subscriptions_rest_bad_request(
@@ -7476,6 +7584,7 @@ def test_list_topic_subscriptions_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_topic_subscriptions(request)
 
 
@@ -7512,6 +7621,7 @@ def test_list_topic_subscriptions_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_topic_subscriptions(request)
 
     # Establish that the response is the type that we expect.
@@ -7535,10 +7645,14 @@ def test_list_topic_subscriptions_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.PublisherRestInterceptor, "post_list_topic_subscriptions"
     ) as post, mock.patch.object(
+        transports.PublisherRestInterceptor,
+        "post_list_topic_subscriptions_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.PublisherRestInterceptor, "pre_list_topic_subscriptions"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = pubsub.ListTopicSubscriptionsRequest.pb(
             pubsub.ListTopicSubscriptionsRequest()
         )
@@ -7551,6 +7665,7 @@ def test_list_topic_subscriptions_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = pubsub.ListTopicSubscriptionsResponse.to_json(
             pubsub.ListTopicSubscriptionsResponse()
         )
@@ -7563,6 +7678,10 @@ def test_list_topic_subscriptions_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = pubsub.ListTopicSubscriptionsResponse()
+        post_with_metadata.return_value = (
+            pubsub.ListTopicSubscriptionsResponse(),
+            metadata,
+        )
 
         client.list_topic_subscriptions(
             request,
@@ -7574,6 +7693,7 @@ def test_list_topic_subscriptions_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_topic_snapshots_rest_bad_request(
@@ -7597,6 +7717,7 @@ def test_list_topic_snapshots_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_topic_snapshots(request)
 
 
@@ -7633,6 +7754,7 @@ def test_list_topic_snapshots_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_topic_snapshots(request)
 
     # Establish that the response is the type that we expect.
@@ -7656,10 +7778,13 @@ def test_list_topic_snapshots_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.PublisherRestInterceptor, "post_list_topic_snapshots"
     ) as post, mock.patch.object(
+        transports.PublisherRestInterceptor, "post_list_topic_snapshots_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.PublisherRestInterceptor, "pre_list_topic_snapshots"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = pubsub.ListTopicSnapshotsRequest.pb(
             pubsub.ListTopicSnapshotsRequest()
         )
@@ -7672,6 +7797,7 @@ def test_list_topic_snapshots_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = pubsub.ListTopicSnapshotsResponse.to_json(
             pubsub.ListTopicSnapshotsResponse()
         )
@@ -7684,6 +7810,7 @@ def test_list_topic_snapshots_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = pubsub.ListTopicSnapshotsResponse()
+        post_with_metadata.return_value = pubsub.ListTopicSnapshotsResponse(), metadata
 
         client.list_topic_snapshots(
             request,
@@ -7695,6 +7822,7 @@ def test_list_topic_snapshots_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_topic_rest_bad_request(request_type=pubsub.DeleteTopicRequest):
@@ -7716,6 +7844,7 @@ def test_delete_topic_rest_bad_request(request_type=pubsub.DeleteTopicRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_topic(request)
 
 
@@ -7746,6 +7875,7 @@ def test_delete_topic_rest_call_success(request_type):
         json_return_value = ""
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.delete_topic(request)
 
     # Establish that the response is the type that we expect.
@@ -7778,6 +7908,7 @@ def test_delete_topic_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         request = pubsub.DeleteTopicRequest()
         metadata = [
@@ -7818,6 +7949,7 @@ def test_detach_subscription_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.detach_subscription(request)
 
 
@@ -7851,6 +7983,7 @@ def test_detach_subscription_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.detach_subscription(request)
 
     # Establish that the response is the type that we expect.
@@ -7872,10 +8005,13 @@ def test_detach_subscription_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.PublisherRestInterceptor, "post_detach_subscription"
     ) as post, mock.patch.object(
+        transports.PublisherRestInterceptor, "post_detach_subscription_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.PublisherRestInterceptor, "pre_detach_subscription"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = pubsub.DetachSubscriptionRequest.pb(
             pubsub.DetachSubscriptionRequest()
         )
@@ -7888,6 +8024,7 @@ def test_detach_subscription_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = pubsub.DetachSubscriptionResponse.to_json(
             pubsub.DetachSubscriptionResponse()
         )
@@ -7900,6 +8037,7 @@ def test_detach_subscription_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = pubsub.DetachSubscriptionResponse()
+        post_with_metadata.return_value = pubsub.DetachSubscriptionResponse(), metadata
 
         client.detach_subscription(
             request,
@@ -7911,6 +8049,7 @@ def test_detach_subscription_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_iam_policy_rest_bad_request(
@@ -7936,6 +8075,7 @@ def test_get_iam_policy_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_iam_policy(request)
 
 
@@ -7966,6 +8106,7 @@ def test_get_iam_policy_rest(request_type):
         response_value.content = json_return_value.encode("UTF-8")
 
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         response = client.get_iam_policy(request)
 
@@ -7996,6 +8137,7 @@ def test_set_iam_policy_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.set_iam_policy(request)
 
 
@@ -8026,6 +8168,7 @@ def test_set_iam_policy_rest(request_type):
         response_value.content = json_return_value.encode("UTF-8")
 
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         response = client.set_iam_policy(request)
 
@@ -8056,6 +8199,7 @@ def test_test_iam_permissions_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.test_iam_permissions(request)
 
 
@@ -8086,6 +8230,7 @@ def test_test_iam_permissions_rest(request_type):
         response_value.content = json_return_value.encode("UTF-8")
 
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         response = client.test_iam_permissions(request)
 

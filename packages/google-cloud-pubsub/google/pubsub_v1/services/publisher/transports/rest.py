@@ -13,9 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import logging
+import json  # type: ignore
 
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
-import json  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import retry as retries
@@ -33,8 +34,6 @@ from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
 
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 from google.pubsub_v1.types import pubsub
 
@@ -47,6 +46,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -145,8 +152,8 @@ class PublisherRestInterceptor:
     """
 
     def pre_create_topic(
-        self, request: pubsub.Topic, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[pubsub.Topic, Sequence[Tuple[str, str]]]:
+        self, request: pubsub.Topic, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[pubsub.Topic, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_topic
 
         Override in a subclass to manipulate the request or metadata
@@ -157,15 +164,38 @@ class PublisherRestInterceptor:
     def post_create_topic(self, response: pubsub.Topic) -> pubsub.Topic:
         """Post-rpc interceptor for create_topic
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_topic_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Publisher server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_topic` interceptor runs
+        before the `post_create_topic_with_metadata` interceptor.
         """
         return response
 
+    def post_create_topic_with_metadata(
+        self, response: pubsub.Topic, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[pubsub.Topic, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_topic
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Publisher server but before it is returned to user code.
+
+        We recommend only using this `post_create_topic_with_metadata`
+        interceptor in new development instead of the `post_create_topic` interceptor.
+        When both interceptors are used, this `post_create_topic_with_metadata` interceptor runs after the
+        `post_create_topic` interceptor. The (possibly modified) response returned by
+        `post_create_topic` will be passed to
+        `post_create_topic_with_metadata`.
+        """
+        return response, metadata
+
     def pre_delete_topic(
-        self, request: pubsub.DeleteTopicRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[pubsub.DeleteTopicRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: pubsub.DeleteTopicRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[pubsub.DeleteTopicRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_topic
 
         Override in a subclass to manipulate the request or metadata
@@ -176,8 +206,10 @@ class PublisherRestInterceptor:
     def pre_detach_subscription(
         self,
         request: pubsub.DetachSubscriptionRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[pubsub.DetachSubscriptionRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        pubsub.DetachSubscriptionRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for detach_subscription
 
         Override in a subclass to manipulate the request or metadata
@@ -190,15 +222,42 @@ class PublisherRestInterceptor:
     ) -> pubsub.DetachSubscriptionResponse:
         """Post-rpc interceptor for detach_subscription
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_detach_subscription_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Publisher server but before
-        it is returned to user code.
+        it is returned to user code. This `post_detach_subscription` interceptor runs
+        before the `post_detach_subscription_with_metadata` interceptor.
         """
         return response
 
+    def post_detach_subscription_with_metadata(
+        self,
+        response: pubsub.DetachSubscriptionResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        pubsub.DetachSubscriptionResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for detach_subscription
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Publisher server but before it is returned to user code.
+
+        We recommend only using this `post_detach_subscription_with_metadata`
+        interceptor in new development instead of the `post_detach_subscription` interceptor.
+        When both interceptors are used, this `post_detach_subscription_with_metadata` interceptor runs after the
+        `post_detach_subscription` interceptor. The (possibly modified) response returned by
+        `post_detach_subscription` will be passed to
+        `post_detach_subscription_with_metadata`.
+        """
+        return response, metadata
+
     def pre_get_topic(
-        self, request: pubsub.GetTopicRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[pubsub.GetTopicRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: pubsub.GetTopicRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[pubsub.GetTopicRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_topic
 
         Override in a subclass to manipulate the request or metadata
@@ -209,15 +268,38 @@ class PublisherRestInterceptor:
     def post_get_topic(self, response: pubsub.Topic) -> pubsub.Topic:
         """Post-rpc interceptor for get_topic
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_topic_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Publisher server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_topic` interceptor runs
+        before the `post_get_topic_with_metadata` interceptor.
         """
         return response
 
+    def post_get_topic_with_metadata(
+        self, response: pubsub.Topic, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[pubsub.Topic, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_topic
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Publisher server but before it is returned to user code.
+
+        We recommend only using this `post_get_topic_with_metadata`
+        interceptor in new development instead of the `post_get_topic` interceptor.
+        When both interceptors are used, this `post_get_topic_with_metadata` interceptor runs after the
+        `post_get_topic` interceptor. The (possibly modified) response returned by
+        `post_get_topic` will be passed to
+        `post_get_topic_with_metadata`.
+        """
+        return response, metadata
+
     def pre_list_topics(
-        self, request: pubsub.ListTopicsRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[pubsub.ListTopicsRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: pubsub.ListTopicsRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[pubsub.ListTopicsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_topics
 
         Override in a subclass to manipulate the request or metadata
@@ -230,17 +312,42 @@ class PublisherRestInterceptor:
     ) -> pubsub.ListTopicsResponse:
         """Post-rpc interceptor for list_topics
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_topics_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Publisher server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_topics` interceptor runs
+        before the `post_list_topics_with_metadata` interceptor.
         """
         return response
+
+    def post_list_topics_with_metadata(
+        self,
+        response: pubsub.ListTopicsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[pubsub.ListTopicsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for list_topics
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Publisher server but before it is returned to user code.
+
+        We recommend only using this `post_list_topics_with_metadata`
+        interceptor in new development instead of the `post_list_topics` interceptor.
+        When both interceptors are used, this `post_list_topics_with_metadata` interceptor runs after the
+        `post_list_topics` interceptor. The (possibly modified) response returned by
+        `post_list_topics` will be passed to
+        `post_list_topics_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_topic_snapshots(
         self,
         request: pubsub.ListTopicSnapshotsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[pubsub.ListTopicSnapshotsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        pubsub.ListTopicSnapshotsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_topic_snapshots
 
         Override in a subclass to manipulate the request or metadata
@@ -253,17 +360,44 @@ class PublisherRestInterceptor:
     ) -> pubsub.ListTopicSnapshotsResponse:
         """Post-rpc interceptor for list_topic_snapshots
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_topic_snapshots_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Publisher server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_topic_snapshots` interceptor runs
+        before the `post_list_topic_snapshots_with_metadata` interceptor.
         """
         return response
+
+    def post_list_topic_snapshots_with_metadata(
+        self,
+        response: pubsub.ListTopicSnapshotsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        pubsub.ListTopicSnapshotsResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_topic_snapshots
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Publisher server but before it is returned to user code.
+
+        We recommend only using this `post_list_topic_snapshots_with_metadata`
+        interceptor in new development instead of the `post_list_topic_snapshots` interceptor.
+        When both interceptors are used, this `post_list_topic_snapshots_with_metadata` interceptor runs after the
+        `post_list_topic_snapshots` interceptor. The (possibly modified) response returned by
+        `post_list_topic_snapshots` will be passed to
+        `post_list_topic_snapshots_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_topic_subscriptions(
         self,
         request: pubsub.ListTopicSubscriptionsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[pubsub.ListTopicSubscriptionsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        pubsub.ListTopicSubscriptionsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_topic_subscriptions
 
         Override in a subclass to manipulate the request or metadata
@@ -276,15 +410,42 @@ class PublisherRestInterceptor:
     ) -> pubsub.ListTopicSubscriptionsResponse:
         """Post-rpc interceptor for list_topic_subscriptions
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_topic_subscriptions_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Publisher server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_topic_subscriptions` interceptor runs
+        before the `post_list_topic_subscriptions_with_metadata` interceptor.
         """
         return response
 
+    def post_list_topic_subscriptions_with_metadata(
+        self,
+        response: pubsub.ListTopicSubscriptionsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        pubsub.ListTopicSubscriptionsResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_topic_subscriptions
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Publisher server but before it is returned to user code.
+
+        We recommend only using this `post_list_topic_subscriptions_with_metadata`
+        interceptor in new development instead of the `post_list_topic_subscriptions` interceptor.
+        When both interceptors are used, this `post_list_topic_subscriptions_with_metadata` interceptor runs after the
+        `post_list_topic_subscriptions` interceptor. The (possibly modified) response returned by
+        `post_list_topic_subscriptions` will be passed to
+        `post_list_topic_subscriptions_with_metadata`.
+        """
+        return response, metadata
+
     def pre_publish(
-        self, request: pubsub.PublishRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[pubsub.PublishRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: pubsub.PublishRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[pubsub.PublishRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for publish
 
         Override in a subclass to manipulate the request or metadata
@@ -295,15 +456,40 @@ class PublisherRestInterceptor:
     def post_publish(self, response: pubsub.PublishResponse) -> pubsub.PublishResponse:
         """Post-rpc interceptor for publish
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_publish_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Publisher server but before
-        it is returned to user code.
+        it is returned to user code. This `post_publish` interceptor runs
+        before the `post_publish_with_metadata` interceptor.
         """
         return response
 
+    def post_publish_with_metadata(
+        self,
+        response: pubsub.PublishResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[pubsub.PublishResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for publish
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Publisher server but before it is returned to user code.
+
+        We recommend only using this `post_publish_with_metadata`
+        interceptor in new development instead of the `post_publish` interceptor.
+        When both interceptors are used, this `post_publish_with_metadata` interceptor runs after the
+        `post_publish` interceptor. The (possibly modified) response returned by
+        `post_publish` will be passed to
+        `post_publish_with_metadata`.
+        """
+        return response, metadata
+
     def pre_update_topic(
-        self, request: pubsub.UpdateTopicRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[pubsub.UpdateTopicRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: pubsub.UpdateTopicRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[pubsub.UpdateTopicRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_topic
 
         Override in a subclass to manipulate the request or metadata
@@ -314,17 +500,40 @@ class PublisherRestInterceptor:
     def post_update_topic(self, response: pubsub.Topic) -> pubsub.Topic:
         """Post-rpc interceptor for update_topic
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_topic_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Publisher server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_topic` interceptor runs
+        before the `post_update_topic_with_metadata` interceptor.
         """
         return response
+
+    def post_update_topic_with_metadata(
+        self, response: pubsub.Topic, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[pubsub.Topic, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_topic
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Publisher server but before it is returned to user code.
+
+        We recommend only using this `post_update_topic_with_metadata`
+        interceptor in new development instead of the `post_update_topic` interceptor.
+        When both interceptors are used, this `post_update_topic_with_metadata` interceptor runs after the
+        `post_update_topic` interceptor. The (possibly modified) response returned by
+        `post_update_topic` will be passed to
+        `post_update_topic_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_iam_policy(
         self,
         request: iam_policy_pb2.GetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -344,8 +553,10 @@ class PublisherRestInterceptor:
     def pre_set_iam_policy(
         self,
         request: iam_policy_pb2.SetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for set_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -365,8 +576,11 @@ class PublisherRestInterceptor:
     def pre_test_iam_permissions(
         self,
         request: iam_policy_pb2.TestIamPermissionsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[iam_policy_pb2.TestIamPermissionsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        iam_policy_pb2.TestIamPermissionsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the request or metadata
@@ -506,7 +720,7 @@ class PublisherRestTransport(_BasePublisherRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> pubsub.Topic:
             r"""Call the create topic method over HTTP.
 
@@ -516,8 +730,10 @@ class PublisherRestTransport(_BasePublisherRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.pubsub.Topic:
@@ -527,6 +743,7 @@ class PublisherRestTransport(_BasePublisherRestTransport):
             http_options = (
                 _BasePublisherRestTransport._BaseCreateTopic._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_topic(request, metadata)
             transcoded_request = (
                 _BasePublisherRestTransport._BaseCreateTopic._get_transcoded_request(
@@ -544,6 +761,33 @@ class PublisherRestTransport(_BasePublisherRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.pubsub_v1.PublisherClient.CreateTopic",
+                    extra={
+                        "serviceName": "google.pubsub.v1.Publisher",
+                        "rpcName": "CreateTopic",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = PublisherRestTransport._CreateTopic._get_response(
@@ -566,7 +810,33 @@ class PublisherRestTransport(_BasePublisherRestTransport):
             pb_resp = pubsub.Topic.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_topic(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_topic_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = pubsub.Topic.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.pubsub_v1.PublisherClient.create_topic",
+                    extra={
+                        "serviceName": "google.pubsub.v1.Publisher",
+                        "rpcName": "CreateTopic",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteTopic(_BasePublisherRestTransport._BaseDeleteTopic, PublisherRestStub):
@@ -601,7 +871,7 @@ class PublisherRestTransport(_BasePublisherRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete topic method over HTTP.
 
@@ -611,13 +881,16 @@ class PublisherRestTransport(_BasePublisherRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BasePublisherRestTransport._BaseDeleteTopic._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_topic(request, metadata)
             transcoded_request = (
                 _BasePublisherRestTransport._BaseDeleteTopic._get_transcoded_request(
@@ -631,6 +904,33 @@ class PublisherRestTransport(_BasePublisherRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.pubsub_v1.PublisherClient.DeleteTopic",
+                    extra={
+                        "serviceName": "google.pubsub.v1.Publisher",
+                        "rpcName": "DeleteTopic",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = PublisherRestTransport._DeleteTopic._get_response(
@@ -681,7 +981,7 @@ class PublisherRestTransport(_BasePublisherRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> pubsub.DetachSubscriptionResponse:
             r"""Call the detach subscription method over HTTP.
 
@@ -692,8 +992,10 @@ class PublisherRestTransport(_BasePublisherRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.pubsub.DetachSubscriptionResponse:
@@ -705,6 +1007,7 @@ class PublisherRestTransport(_BasePublisherRestTransport):
             http_options = (
                 _BasePublisherRestTransport._BaseDetachSubscription._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_detach_subscription(
                 request, metadata
             )
@@ -716,6 +1019,33 @@ class PublisherRestTransport(_BasePublisherRestTransport):
             query_params = _BasePublisherRestTransport._BaseDetachSubscription._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.pubsub_v1.PublisherClient.DetachSubscription",
+                    extra={
+                        "serviceName": "google.pubsub.v1.Publisher",
+                        "rpcName": "DetachSubscription",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = PublisherRestTransport._DetachSubscription._get_response(
@@ -737,7 +1067,35 @@ class PublisherRestTransport(_BasePublisherRestTransport):
             pb_resp = pubsub.DetachSubscriptionResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_detach_subscription(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_detach_subscription_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = pubsub.DetachSubscriptionResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.pubsub_v1.PublisherClient.detach_subscription",
+                    extra={
+                        "serviceName": "google.pubsub.v1.Publisher",
+                        "rpcName": "DetachSubscription",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetTopic(_BasePublisherRestTransport._BaseGetTopic, PublisherRestStub):
@@ -772,7 +1130,7 @@ class PublisherRestTransport(_BasePublisherRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> pubsub.Topic:
             r"""Call the get topic method over HTTP.
 
@@ -782,8 +1140,10 @@ class PublisherRestTransport(_BasePublisherRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.pubsub.Topic:
@@ -791,6 +1151,7 @@ class PublisherRestTransport(_BasePublisherRestTransport):
             """
 
             http_options = _BasePublisherRestTransport._BaseGetTopic._get_http_options()
+
             request, metadata = self._interceptor.pre_get_topic(request, metadata)
             transcoded_request = (
                 _BasePublisherRestTransport._BaseGetTopic._get_transcoded_request(
@@ -804,6 +1165,33 @@ class PublisherRestTransport(_BasePublisherRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.pubsub_v1.PublisherClient.GetTopic",
+                    extra={
+                        "serviceName": "google.pubsub.v1.Publisher",
+                        "rpcName": "GetTopic",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = PublisherRestTransport._GetTopic._get_response(
@@ -825,7 +1213,33 @@ class PublisherRestTransport(_BasePublisherRestTransport):
             pb_resp = pubsub.Topic.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_topic(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_topic_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = pubsub.Topic.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.pubsub_v1.PublisherClient.get_topic",
+                    extra={
+                        "serviceName": "google.pubsub.v1.Publisher",
+                        "rpcName": "GetTopic",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListTopics(_BasePublisherRestTransport._BaseListTopics, PublisherRestStub):
@@ -860,7 +1274,7 @@ class PublisherRestTransport(_BasePublisherRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> pubsub.ListTopicsResponse:
             r"""Call the list topics method over HTTP.
 
@@ -870,8 +1284,10 @@ class PublisherRestTransport(_BasePublisherRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.pubsub.ListTopicsResponse:
@@ -881,6 +1297,7 @@ class PublisherRestTransport(_BasePublisherRestTransport):
             http_options = (
                 _BasePublisherRestTransport._BaseListTopics._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_topics(request, metadata)
             transcoded_request = (
                 _BasePublisherRestTransport._BaseListTopics._get_transcoded_request(
@@ -894,6 +1311,33 @@ class PublisherRestTransport(_BasePublisherRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.pubsub_v1.PublisherClient.ListTopics",
+                    extra={
+                        "serviceName": "google.pubsub.v1.Publisher",
+                        "rpcName": "ListTopics",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = PublisherRestTransport._ListTopics._get_response(
@@ -915,7 +1359,33 @@ class PublisherRestTransport(_BasePublisherRestTransport):
             pb_resp = pubsub.ListTopicsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_topics(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_topics_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = pubsub.ListTopicsResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.pubsub_v1.PublisherClient.list_topics",
+                    extra={
+                        "serviceName": "google.pubsub.v1.Publisher",
+                        "rpcName": "ListTopics",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListTopicSnapshots(
@@ -952,7 +1422,7 @@ class PublisherRestTransport(_BasePublisherRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> pubsub.ListTopicSnapshotsResponse:
             r"""Call the list topic snapshots method over HTTP.
 
@@ -962,8 +1432,10 @@ class PublisherRestTransport(_BasePublisherRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.pubsub.ListTopicSnapshotsResponse:
@@ -973,6 +1445,7 @@ class PublisherRestTransport(_BasePublisherRestTransport):
             http_options = (
                 _BasePublisherRestTransport._BaseListTopicSnapshots._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_topic_snapshots(
                 request, metadata
             )
@@ -984,6 +1457,33 @@ class PublisherRestTransport(_BasePublisherRestTransport):
             query_params = _BasePublisherRestTransport._BaseListTopicSnapshots._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.pubsub_v1.PublisherClient.ListTopicSnapshots",
+                    extra={
+                        "serviceName": "google.pubsub.v1.Publisher",
+                        "rpcName": "ListTopicSnapshots",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = PublisherRestTransport._ListTopicSnapshots._get_response(
@@ -1005,7 +1505,35 @@ class PublisherRestTransport(_BasePublisherRestTransport):
             pb_resp = pubsub.ListTopicSnapshotsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_topic_snapshots(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_topic_snapshots_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = pubsub.ListTopicSnapshotsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.pubsub_v1.PublisherClient.list_topic_snapshots",
+                    extra={
+                        "serviceName": "google.pubsub.v1.Publisher",
+                        "rpcName": "ListTopicSnapshots",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListTopicSubscriptions(
@@ -1042,7 +1570,7 @@ class PublisherRestTransport(_BasePublisherRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> pubsub.ListTopicSubscriptionsResponse:
             r"""Call the list topic subscriptions method over HTTP.
 
@@ -1052,8 +1580,10 @@ class PublisherRestTransport(_BasePublisherRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.pubsub.ListTopicSubscriptionsResponse:
@@ -1063,6 +1593,7 @@ class PublisherRestTransport(_BasePublisherRestTransport):
             http_options = (
                 _BasePublisherRestTransport._BaseListTopicSubscriptions._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_topic_subscriptions(
                 request, metadata
             )
@@ -1074,6 +1605,33 @@ class PublisherRestTransport(_BasePublisherRestTransport):
             query_params = _BasePublisherRestTransport._BaseListTopicSubscriptions._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.pubsub_v1.PublisherClient.ListTopicSubscriptions",
+                    extra={
+                        "serviceName": "google.pubsub.v1.Publisher",
+                        "rpcName": "ListTopicSubscriptions",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = PublisherRestTransport._ListTopicSubscriptions._get_response(
@@ -1095,7 +1653,35 @@ class PublisherRestTransport(_BasePublisherRestTransport):
             pb_resp = pubsub.ListTopicSubscriptionsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_topic_subscriptions(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_topic_subscriptions_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = pubsub.ListTopicSubscriptionsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.pubsub_v1.PublisherClient.list_topic_subscriptions",
+                    extra={
+                        "serviceName": "google.pubsub.v1.Publisher",
+                        "rpcName": "ListTopicSubscriptions",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _Publish(_BasePublisherRestTransport._BasePublish, PublisherRestStub):
@@ -1131,7 +1717,7 @@ class PublisherRestTransport(_BasePublisherRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> pubsub.PublishResponse:
             r"""Call the publish method over HTTP.
 
@@ -1141,8 +1727,10 @@ class PublisherRestTransport(_BasePublisherRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.pubsub.PublishResponse:
@@ -1150,6 +1738,7 @@ class PublisherRestTransport(_BasePublisherRestTransport):
             """
 
             http_options = _BasePublisherRestTransport._BasePublish._get_http_options()
+
             request, metadata = self._interceptor.pre_publish(request, metadata)
             transcoded_request = (
                 _BasePublisherRestTransport._BasePublish._get_transcoded_request(
@@ -1167,6 +1756,33 @@ class PublisherRestTransport(_BasePublisherRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.pubsub_v1.PublisherClient.Publish",
+                    extra={
+                        "serviceName": "google.pubsub.v1.Publisher",
+                        "rpcName": "Publish",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = PublisherRestTransport._Publish._get_response(
@@ -1189,7 +1805,33 @@ class PublisherRestTransport(_BasePublisherRestTransport):
             pb_resp = pubsub.PublishResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_publish(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_publish_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = pubsub.PublishResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.pubsub_v1.PublisherClient.publish",
+                    extra={
+                        "serviceName": "google.pubsub.v1.Publisher",
+                        "rpcName": "Publish",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateTopic(_BasePublisherRestTransport._BaseUpdateTopic, PublisherRestStub):
@@ -1225,7 +1867,7 @@ class PublisherRestTransport(_BasePublisherRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> pubsub.Topic:
             r"""Call the update topic method over HTTP.
 
@@ -1235,8 +1877,10 @@ class PublisherRestTransport(_BasePublisherRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.pubsub.Topic:
@@ -1246,6 +1890,7 @@ class PublisherRestTransport(_BasePublisherRestTransport):
             http_options = (
                 _BasePublisherRestTransport._BaseUpdateTopic._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_topic(request, metadata)
             transcoded_request = (
                 _BasePublisherRestTransport._BaseUpdateTopic._get_transcoded_request(
@@ -1263,6 +1908,33 @@ class PublisherRestTransport(_BasePublisherRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.pubsub_v1.PublisherClient.UpdateTopic",
+                    extra={
+                        "serviceName": "google.pubsub.v1.Publisher",
+                        "rpcName": "UpdateTopic",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = PublisherRestTransport._UpdateTopic._get_response(
@@ -1285,7 +1957,33 @@ class PublisherRestTransport(_BasePublisherRestTransport):
             pb_resp = pubsub.Topic.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_topic(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_topic_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = pubsub.Topic.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.pubsub_v1.PublisherClient.update_topic",
+                    extra={
+                        "serviceName": "google.pubsub.v1.Publisher",
+                        "rpcName": "UpdateTopic",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property
@@ -1394,7 +2092,7 @@ class PublisherRestTransport(_BasePublisherRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> policy_pb2.Policy:
             r"""Call the get iam policy method over HTTP.
 
@@ -1404,8 +2102,10 @@ class PublisherRestTransport(_BasePublisherRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 policy_pb2.Policy: Response from GetIamPolicy method.
@@ -1414,6 +2114,7 @@ class PublisherRestTransport(_BasePublisherRestTransport):
             http_options = (
                 _BasePublisherRestTransport._BaseGetIamPolicy._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
             transcoded_request = (
                 _BasePublisherRestTransport._BaseGetIamPolicy._get_transcoded_request(
@@ -1427,6 +2128,33 @@ class PublisherRestTransport(_BasePublisherRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.pubsub_v1.PublisherClient.GetIamPolicy",
+                    extra={
+                        "serviceName": "google.pubsub.v1.Publisher",
+                        "rpcName": "GetIamPolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = PublisherRestTransport._GetIamPolicy._get_response(
@@ -1447,6 +2175,27 @@ class PublisherRestTransport(_BasePublisherRestTransport):
             resp = policy_pb2.Policy()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_iam_policy(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.pubsub_v1.PublisherAsyncClient.GetIamPolicy",
+                    extra={
+                        "serviceName": "google.pubsub.v1.Publisher",
+                        "rpcName": "GetIamPolicy",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -1488,7 +2237,7 @@ class PublisherRestTransport(_BasePublisherRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> policy_pb2.Policy:
             r"""Call the set iam policy method over HTTP.
 
@@ -1498,8 +2247,10 @@ class PublisherRestTransport(_BasePublisherRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 policy_pb2.Policy: Response from SetIamPolicy method.
@@ -1508,6 +2259,7 @@ class PublisherRestTransport(_BasePublisherRestTransport):
             http_options = (
                 _BasePublisherRestTransport._BaseSetIamPolicy._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
             transcoded_request = (
                 _BasePublisherRestTransport._BaseSetIamPolicy._get_transcoded_request(
@@ -1525,6 +2277,33 @@ class PublisherRestTransport(_BasePublisherRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.pubsub_v1.PublisherClient.SetIamPolicy",
+                    extra={
+                        "serviceName": "google.pubsub.v1.Publisher",
+                        "rpcName": "SetIamPolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = PublisherRestTransport._SetIamPolicy._get_response(
@@ -1546,6 +2325,27 @@ class PublisherRestTransport(_BasePublisherRestTransport):
             resp = policy_pb2.Policy()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_set_iam_policy(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.pubsub_v1.PublisherAsyncClient.SetIamPolicy",
+                    extra={
+                        "serviceName": "google.pubsub.v1.Publisher",
+                        "rpcName": "SetIamPolicy",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -1587,7 +2387,7 @@ class PublisherRestTransport(_BasePublisherRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> iam_policy_pb2.TestIamPermissionsResponse:
             r"""Call the test iam permissions method over HTTP.
 
@@ -1597,8 +2397,10 @@ class PublisherRestTransport(_BasePublisherRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 iam_policy_pb2.TestIamPermissionsResponse: Response from TestIamPermissions method.
@@ -1607,6 +2409,7 @@ class PublisherRestTransport(_BasePublisherRestTransport):
             http_options = (
                 _BasePublisherRestTransport._BaseTestIamPermissions._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_test_iam_permissions(
                 request, metadata
             )
@@ -1622,6 +2425,33 @@ class PublisherRestTransport(_BasePublisherRestTransport):
             query_params = _BasePublisherRestTransport._BaseTestIamPermissions._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.pubsub_v1.PublisherClient.TestIamPermissions",
+                    extra={
+                        "serviceName": "google.pubsub.v1.Publisher",
+                        "rpcName": "TestIamPermissions",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = PublisherRestTransport._TestIamPermissions._get_response(
@@ -1643,6 +2473,27 @@ class PublisherRestTransport(_BasePublisherRestTransport):
             resp = iam_policy_pb2.TestIamPermissionsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_test_iam_permissions(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.pubsub_v1.PublisherAsyncClient.TestIamPermissions",
+                    extra={
+                        "serviceName": "google.pubsub.v1.Publisher",
+                        "rpcName": "TestIamPermissions",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
