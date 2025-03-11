@@ -53,7 +53,7 @@ def json_set(
         >>> s = bpd.read_gbq("SELECT JSON '{\\\"a\\\": 1}' AS data")["data"]
         >>> bbq.json_set(s, json_path_value_pairs=[("$.a", 100), ("$.b", "hi")])
             0    {"a":100,"b":"hi"}
-            Name: data, dtype: dbjson
+            Name: data, dtype: extension<dbjson<JSONArrowType>>[pyarrow]
 
     Args:
         input (bigframes.series.Series):
@@ -253,7 +253,7 @@ def parse_json(
         dtype: string
         >>> bbq.parse_json(s)
         0    {"class":{"students":[{"id":5},{"id":12}]}}
-        dtype: dbjson
+        dtype: extension<dbjson<JSONArrowType>>[pyarrow]
 
     Args:
         input (bigframes.series.Series):

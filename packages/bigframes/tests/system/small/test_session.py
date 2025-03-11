@@ -22,7 +22,6 @@ from typing import List, Optional, Sequence
 import warnings
 
 import bigframes_vendored.pandas.io.gbq as vendored_pandas_gbq
-import db_dtypes  # type: ignore
 import google
 import google.cloud.bigquery as bigquery
 import numpy as np
@@ -759,13 +758,13 @@ def test_read_pandas_timedelta_index(session, write_engine):
 )
 def test_read_pandas_json_dataframes(session, write_engine):
     json_data = [
-        1,
+        "1",
         None,
-        ["1", "3", "5"],
-        {"a": 1, "b": ["x", "y"], "c": {"z": False, "x": []}},
+        '["1","3","5"]',
+        '{"a":1,"b":["x","y"],"c":{"x":[],"z":false}}',
     ]
     expected_df = pd.DataFrame(
-        {"my_col": pd.Series(json_data, dtype=db_dtypes.JSONDtype())}
+        {"my_col": pd.Series(json_data, dtype=bigframes.dtypes.JSON_DTYPE)}
     )
 
     actual_result = session.read_pandas(
@@ -783,12 +782,12 @@ def test_read_pandas_json_dataframes(session, write_engine):
 )
 def test_read_pandas_json_series(session, write_engine):
     json_data = [
-        1,
+        "1",
         None,
-        ["1", "3", "5"],
-        {"a": 1, "b": ["x", "y"], "c": {"z": False, "x": []}},
+        '["1","3","5"]',
+        '{"a":1,"b":["x","y"],"c":{"x":[],"z":false}}',
     ]
-    expected_series = pd.Series(json_data, dtype=db_dtypes.JSONDtype())
+    expected_series = pd.Series(json_data, dtype=bigframes.dtypes.JSON_DTYPE)
 
     actual_result = session.read_pandas(
         expected_series, write_engine=write_engine
@@ -807,12 +806,12 @@ def test_read_pandas_json_series(session, write_engine):
 )
 def test_read_pandas_json_index(session, write_engine):
     json_data = [
-        1,
+        "1",
         None,
-        ["1", "3", "5"],
-        {"a": 1, "b": ["x", "y"], "c": {"z": False, "x": []}},
+        '["1","3","5"]',
+        '{"a":1,"b":["x","y"],"c":{"x":[],"z":false}}',
     ]
-    expected_index = pd.Index(json_data, dtype=db_dtypes.JSONDtype())
+    expected_index: pd.Index = pd.Index(json_data, dtype=bigframes.dtypes.JSON_DTYPE)
     actual_result = session.read_pandas(
         expected_index, write_engine=write_engine
     ).to_pandas()

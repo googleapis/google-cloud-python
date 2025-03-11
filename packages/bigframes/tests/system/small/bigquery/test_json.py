@@ -12,30 +12,29 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import db_dtypes  # type: ignore
 import geopandas as gpd  # type: ignore
 import pandas as pd
 import pyarrow as pa
 import pytest
 
 import bigframes.bigquery as bbq
-import bigframes.dtypes
+import bigframes.dtypes as dtypes
 import bigframes.pandas as bpd
 
 
 @pytest.mark.parametrize(
     ("json_path", "expected_json"),
     [
-        pytest.param("$.a", [{"a": 10}], id="simple"),
-        pytest.param("$.a.b.c", [{"a": {"b": {"c": 10, "d": []}}}], id="nested"),
+        pytest.param("$.a", ['{"a": 10}'], id="simple"),
+        pytest.param("$.a.b.c", ['{"a": {"b": {"c": 10, "d": []}}}'], id="nested"),
     ],
 )
 def test_json_set_at_json_path(json_path, expected_json):
-    original_json = [{"a": {"b": {"c": "tester", "d": []}}}]
-    s = bpd.Series(original_json, dtype=db_dtypes.JSONDtype())
+    original_json = ['{"a": {"b": {"c": "tester", "d": []}}}']
+    s = bpd.Series(original_json, dtype=dtypes.JSON_DTYPE)
     actual = bbq.json_set(s, json_path_value_pairs=[(json_path, 10)])
 
-    expected = bpd.Series(expected_json, dtype=db_dtypes.JSONDtype())
+    expected = bpd.Series(expected_json, dtype=dtypes.JSON_DTYPE)
     pd.testing.assert_series_equal(
         actual.to_pandas(),
         expected.to_pandas(),
@@ -45,18 +44,20 @@ def test_json_set_at_json_path(json_path, expected_json):
 @pytest.mark.parametrize(
     ("json_value", "expected_json"),
     [
-        pytest.param(10, [{"a": {"b": 10}}, {"a": {"b": 10}}], id="int"),
-        pytest.param(0.333, [{"a": {"b": 0.333}}, {"a": {"b": 0.333}}], id="float"),
-        pytest.param("eng", [{"a": {"b": "eng"}}, {"a": {"b": "eng"}}], id="string"),
-        pytest.param([1, 2], [{"a": {"b": 1}}, {"a": {"b": 2}}], id="series"),
+        pytest.param(10, ['{"a": {"b": 10}}', '{"a": {"b": 10}}'], id="int"),
+        pytest.param(0.333, ['{"a": {"b": 0.333}}', '{"a": {"b": 0.333}}'], id="float"),
+        pytest.param(
+            "eng", ['{"a": {"b": "eng"}}', '{"a": {"b": "eng"}}'], id="string"
+        ),
+        pytest.param([1, 2], ['{"a": {"b": 1}}', '{"a": {"b": 2}}'], id="series"),
     ],
 )
 def test_json_set_at_json_value_type(json_value, expected_json):
-    original_json = [{"a": {"b": "dev"}}, {"a": {"b": [1, 2]}}]
-    s = bpd.Series(original_json, dtype=db_dtypes.JSONDtype())
+    original_json = ['{"a": {"b": "dev"}}', '{"a": {"b": [1, 2]}}']
+    s = bpd.Series(original_json, dtype=dtypes.JSON_DTYPE)
     actual = bbq.json_set(s, json_path_value_pairs=[("$.a.b", json_value)])
 
-    expected = bpd.Series(expected_json, dtype=db_dtypes.JSONDtype())
+    expected = bpd.Series(expected_json, dtype=dtypes.JSON_DTYPE)
     pd.testing.assert_series_equal(
         actual.to_pandas(),
         expected.to_pandas(),
@@ -64,14 +65,14 @@ def test_json_set_at_json_value_type(json_value, expected_json):
 
 
 def test_json_set_w_more_pairs():
-    original_json = [{"a": 2}, {"b": 5}, {"c": 1}]
-    s = bpd.Series(original_json, dtype=db_dtypes.JSONDtype())
+    original_json = ['{"a": 2}', '{"b": 5}', '{"c": 1}']
+    s = bpd.Series(original_json, dtype=dtypes.JSON_DTYPE)
     actual = bbq.json_set(
         s, json_path_value_pairs=[("$.a", 1), ("$.b", 2), ("$.a", [3, 4, 5])]
     )
 
-    expected_json = [{"a": 3, "b": 2}, {"a": 4, "b": 2}, {"a": 5, "b": 2, "c": 1}]
-    expected = bpd.Series(expected_json, dtype=db_dtypes.JSONDtype())
+    expected_json = ['{"a": 3, "b": 2}', '{"a": 4, "b": 2}', '{"a": 5, "b": 2, "c": 1}']
+    expected = bpd.Series(expected_json, dtype=dtypes.JSON_DTYPE)
     pd.testing.assert_series_equal(
         actual.to_pandas(),
         expected.to_pandas(),
@@ -79,13 +80,13 @@ def test_json_set_w_more_pairs():
 
 
 def test_json_set_w_invalid_json_path_value_pairs():
-    s = bpd.Series([{"a": 10}], dtype=db_dtypes.JSONDtype())
+    s = bpd.Series(['{"a": 10}'], dtype=dtypes.JSON_DTYPE)
     with pytest.raises(ValueError):
         bbq.json_set(s, json_path_value_pairs=[("$.a", 1, 100)])  # type: ignore
 
 
 def test_json_set_w_invalid_value_type():
-    s = bpd.Series([{"a": 10}], dtype=db_dtypes.JSONDtype())
+    s = bpd.Series(['{"a": 10}'], dtype=dtypes.JSON_DTYPE)
     with pytest.raises(TypeError):
         bbq.json_set(
             s,
@@ -101,17 +102,18 @@ def test_json_set_w_invalid_value_type():
 
 
 def test_json_set_w_invalid_series_type():
+    s = bpd.Series([1, 2])
     with pytest.raises(TypeError):
-        bbq.json_set(bpd.Series([1, 2]), json_path_value_pairs=[("$.a", 1)])
+        bbq.json_set(s, json_path_value_pairs=[("$.a", 1)])
 
 
 def test_json_extract_from_json():
     s = bpd.Series(
-        [{"a": {"b": [1, 2]}}, {"a": {"c": 1}}, {"a": {"b": 0}}],
-        dtype=db_dtypes.JSONDtype(),
+        ['{"a": {"b": [1, 2]}}', '{"a": {"c": 1}}', '{"a": {"b": 0}}'],
+        dtype=dtypes.JSON_DTYPE,
     )
     actual = bbq.json_extract(s, "$.a.b").to_pandas()
-    expected = bpd.Series([[1, 2], None, 0], dtype=db_dtypes.JSONDtype()).to_pandas()
+    expected = bpd.Series(["[1, 2]", None, "0"], dtype=dtypes.JSON_DTYPE).to_pandas()
     pd.testing.assert_series_equal(
         actual,
         expected,
@@ -132,14 +134,15 @@ def test_json_extract_from_string():
 
 
 def test_json_extract_w_invalid_series_type():
+    s = bpd.Series([1, 2])
     with pytest.raises(TypeError):
-        bbq.json_extract(bpd.Series([1, 2]), "$.a")
+        bbq.json_extract(s, "$.a")
 
 
 def test_json_extract_array_from_json():
     s = bpd.Series(
-        [{"a": ["ab", "2", "3 xy"]}, {"a": []}, {"a": ["4", "5"]}, {}],
-        dtype=db_dtypes.JSONDtype(),
+        ['{"a": ["ab", "2", "3 xy"]}', '{"a": []}', '{"a": ["4", "5"]}', "{}"],
+        dtype=dtypes.JSON_DTYPE,
     )
     actual = bbq.json_extract_array(s, "$.a")
 
@@ -225,7 +228,7 @@ def test_json_extract_string_array_from_array_strings():
 
 def test_json_extract_string_array_as_float_array_from_array_strings():
     s = bpd.Series(["[1, 2.5, 3]", "[]", "[4,5]"])
-    actual = bbq.json_extract_string_array(s, value_dtype=bigframes.dtypes.FLOAT_DTYPE)
+    actual = bbq.json_extract_string_array(s, value_dtype=dtypes.FLOAT_DTYPE)
     expected = bpd.Series([[1, 2.5, 3], [], [4, 5]])
     pd.testing.assert_series_equal(
         actual.to_pandas(),

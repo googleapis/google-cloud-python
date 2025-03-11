@@ -12,7 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import math
 from typing import Tuple
 
 import db_dtypes  # type:ignore
@@ -22,6 +21,7 @@ import pandas.testing
 import pyarrow as pa
 import pytest
 
+import bigframes.dtypes as dtypes
 from tests.system import utils
 
 try:
@@ -35,7 +35,6 @@ import typing
 from google.cloud import bigquery
 
 import bigframes
-from bigframes import dtypes
 import bigframes.dataframe
 import bigframes.features
 import bigframes.pandas as bpd
@@ -278,7 +277,7 @@ def test_to_arrow_override_global_option(scalars_df_index):
     assert scalars_df_index._query_job.destination.table_id == table_id
 
 
-def test_load_json_w_unboxed_py_value(session):
+def test_load_json_w_json_string_items(session):
     sql = """
         SELECT 0 AS id, JSON_OBJECT('boolean', True) AS json_col,
         UNION ALL
@@ -292,42 +291,43 @@ def test_load_json_w_unboxed_py_value(session):
         UNION ALL
         SELECT 5, JSON_OBJECT('null', null),
         UNION ALL
+        SELECT 6, JSON_OBJECT('b', 2, 'a', 1),
+        UNION ALL
         SELECT
-            6,
+            7,
             JSON_OBJECT(
                 'dict',
                 JSON_OBJECT(
                     'int', 1,
-                    'array', [JSON_OBJECT('bar', 'hello'), JSON_OBJECT('foo', 1)]
+                    'array', [JSON_OBJECT('foo', 1), JSON_OBJECT('bar', 'hello')]
                 )
             ),
     """
     df = session.read_gbq(sql, index_col="id")
 
-    assert df.dtypes["json_col"] == db_dtypes.JSONDtype()
-    assert isinstance(df["json_col"][0], dict)
+    assert df.dtypes["json_col"] == pd.ArrowDtype(db_dtypes.JSONArrowType())
 
-    assert df["json_col"][0]["boolean"]
-    assert df["json_col"][1]["int"] == 100
-    assert math.isclose(df["json_col"][2]["float"], 0.98)
-    assert df["json_col"][3]["string"] == "hello world"
-    assert df["json_col"][4]["array"] == [8, 9, 10]
-    assert df["json_col"][5]["null"] is None
-    assert df["json_col"][6]["dict"] == {
-        "int": 1,
-        "array": [{"bar": "hello"}, {"foo": 1}],
-    }
+    assert df["json_col"][0] == '{"boolean":true}'
+    assert df["json_col"][1] == '{"int":100}'
+    assert df["json_col"][2] == '{"float":0.98}'
+    assert df["json_col"][3] == '{"string":"hello world"}'
+    assert df["json_col"][4] == '{"array":[8,9,10]}'
+    assert df["json_col"][5] == '{"null":null}'
+
+    # Verifies JSON strings preserve array order, regardless of dictionary key order.
+    assert df["json_col"][6] == '{"a":1,"b":2}'
+    assert df["json_col"][7] == '{"dict":{"array":[{"foo":1},{"bar":"hello"}],"int":1}}'
 
 
 def test_load_json_to_pandas_has_correct_result(session):
     df = session.read_gbq("SELECT JSON_OBJECT('foo', 10, 'bar', TRUE) AS json_col")
-    assert df.dtypes["json_col"] == db_dtypes.JSONDtype()
+    assert df.dtypes["json_col"] == pd.ArrowDtype(db_dtypes.JSONArrowType())
     result = df.to_pandas()
 
-    # The order of keys within the JSON object shouldn't matter for equality checks.
+    # These JSON strings are compatible with BigQuery's JSON storage,
     pd_df = pd.DataFrame(
-        {"json_col": [{"bar": True, "foo": 10}]},
-        dtype=db_dtypes.JSONDtype(),
+        {"json_col": ['{"bar":true,"foo":10}']},
+        dtype=pd.ArrowDtype(db_dtypes.JSONArrowType()),
     )
     pd_df.index = pd_df.index.astype("Int64")
     pd.testing.assert_series_equal(result.dtypes, pd_df.dtypes)
@@ -355,7 +355,7 @@ def test_load_json_in_struct(session):
                 'dict',
                 JSON_OBJECT(
                     'int', 1,
-                    'array', [JSON_OBJECT('bar', 'hello'), JSON_OBJECT('foo', 1)]
+                    'array', [JSON_OBJECT('foo', 1), JSON_OBJECT('bar', 'hello')]
                 )
             ), 7),
     """
@@ -365,18 +365,15 @@ def test_load_json_in_struct(session):
     assert isinstance(df.dtypes["struct_col"].pyarrow_dtype, pa.StructType)
 
     data = df["struct_col"].struct.field("data")
-    assert data.dtype == db_dtypes.JSONDtype()
+    assert data.dtype == pd.ArrowDtype(db_dtypes.JSONArrowType())
 
-    assert data[0]["boolean"]
-    assert data[1]["int"] == 100
-    assert math.isclose(data[2]["float"], 0.98)
-    assert data[3]["string"] == "hello world"
-    assert data[4]["array"] == [8, 9, 10]
-    assert data[5]["null"] is None
-    assert data[6]["dict"] == {
-        "int": 1,
-        "array": [{"bar": "hello"}, {"foo": 1}],
-    }
+    assert data[0] == '{"boolean":true}'
+    assert data[1] == '{"int":100}'
+    assert data[2] == '{"float":0.98}'
+    assert data[3] == '{"string":"hello world"}'
+    assert data[4] == '{"array":[8,9,10]}'
+    assert data[5] == '{"null":null}'
+    assert data[6] == '{"dict":{"array":[{"foo":1},{"bar":"hello"}],"int":1}}'
 
 
 def test_load_json_in_array(session):
@@ -406,18 +403,15 @@ def test_load_json_in_array(session):
 
     data = df["array_col"].list
     assert data.len()[0] == 7
-    assert data[0].dtype == db_dtypes.JSONDtype()
+    assert data[0].dtype == pd.ArrowDtype(db_dtypes.JSONArrowType())
 
-    assert data[0][0]["boolean"]
-    assert data[1][0]["int"] == 100
-    assert math.isclose(data[2][0]["float"], 0.98)
-    assert data[3][0]["string"] == "hello world"
-    assert data[4][0]["array"] == [8, 9, 10]
-    assert data[5][0]["null"] is None
-    assert data[6][0]["dict"] == {
-        "int": 1,
-        "array": [{"bar": "hello"}, {"foo": 1}],
-    }
+    assert data[0][0] == '{"boolean":true}'
+    assert data[1][0] == '{"int":100}'
+    assert data[2][0] == '{"float":0.98}'
+    assert data[3][0] == '{"string":"hello world"}'
+    assert data[4][0] == '{"array":[8,9,10]}'
+    assert data[5][0] == '{"null":null}'
+    assert data[6][0] == '{"dict":{"array":[{"bar":"hello"},{"foo":1}],"int":1}}'
 
 
 def test_to_pandas_batches_w_correct_dtypes(scalars_df_default_index):
@@ -691,7 +685,8 @@ def test_to_gbq_w_json(bigquery_client):
     """Test the `to_gbq` API can get a JSON column."""
     s1 = bpd.Series([1, 2, 3, 4])
     s2 = bpd.Series(
-        ["a", 1, False, ["a", {"b": 1}], {"c": [1, 2, 3]}], dtype=db_dtypes.JSONDtype()
+        ['"a"', "1", "false", '["a", {"b": 1}]', '{"c": [1, 2, 3]}'],
+        dtype=dtypes.JSON_DTYPE,
     )
 
     df = bpd.DataFrame({"id": s1, "json_col": s2})

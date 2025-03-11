@@ -18,7 +18,6 @@ import typing
 from typing import Collection, Union
 
 import bigframes_vendored.constants as constants
-import db_dtypes  # type: ignore
 import geopandas  # type: ignore
 import numpy as np
 import pandas
@@ -125,8 +124,6 @@ def arrow_to_pandas(
             )
         elif isinstance(dtype, pandas.ArrowDtype):
             series = _arrow_to_pandas_arrowdtype(column, dtype)
-        elif isinstance(dtype, db_dtypes.JSONDtype):
-            series = db_dtypes.JSONArray(column)
         else:
             series = column.to_pandas(types_mapper=lambda _: dtype)
 

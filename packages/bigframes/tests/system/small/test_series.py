@@ -26,6 +26,7 @@ import pyarrow as pa  # type: ignore
 import pytest
 import shapely  # type: ignore
 
+import bigframes.dtypes as dtypes
 import bigframes.features
 import bigframes.pandas
 import bigframes.series as series
@@ -304,22 +305,21 @@ def test_series_construct_w_dtype_for_array_struct():
 
 def test_series_construct_w_dtype_for_json():
     data = [
-        1,
-        "str",
-        False,
-        ["a", {"b": 1}, None],
+        "1",
+        '"str"',
+        "false",
+        '["a", {"b": 1}, null]',
         None,
-        {"a": {"b": [1, 2, 3], "c": True}},
+        '{"a": {"b": [1, 2, 3], "c": true}}',
     ]
-    s = bigframes.pandas.Series(data, dtype=db_dtypes.JSONDtype())
+    s = bigframes.pandas.Series(data, dtype=dtypes.JSON_DTYPE)
 
-    assert s[0] == 1
-    assert s[1] == "str"
-    assert s[2] is False
-    assert s[3][0] == "a"
-    assert s[3][1]["b"] == 1
+    assert s[0] == "1"
+    assert s[1] == '"str"'
+    assert s[2] == "false"
+    assert s[3] == '["a",{"b":1},null]'
     assert pd.isna(s[4])
-    assert s[5]["a"] == {"b": [1, 2, 3], "c": True}
+    assert s[5] == '{"a":{"b":[1,2,3],"c":true}}'
 
 
 def test_series_keys(scalars_dfs):
@@ -383,7 +383,7 @@ def test_get_column(scalars_dfs, col_name, expected_dtype):
 def test_get_column_w_json(json_df, json_pandas_df):
     series = json_df["json_col"]
     series_pandas = series.to_pandas()
-    assert series.dtype == db_dtypes.JSONDtype()
+    assert series.dtype == pd.ArrowDtype(db_dtypes.JSONArrowType())
     assert series_pandas.shape[0] == json_pandas_df.shape[0]
 
 

@@ -75,7 +75,7 @@ BIDIRECTIONAL_MAPPINGS: Iterable[Tuple[IbisDtype, bigframes.dtypes.Dtype]] = (
         IBIS_GEO_TYPE,
         gpd.array.GeometryDtype(),
     ),
-    (ibis_dtypes.json, db_dtypes.JSONDtype()),
+    (ibis_dtypes.json, pd.ArrowDtype(db_dtypes.JSONArrowType())),
 )
 
 BIGFRAMES_TO_IBIS: Dict[bigframes.dtypes.Dtype, ibis_dtypes.DataType] = {
