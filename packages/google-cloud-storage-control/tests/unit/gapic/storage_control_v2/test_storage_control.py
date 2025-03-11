@@ -58,6 +58,8 @@ from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
 from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account
+from google.protobuf import duration_pb2  # type: ignore
+from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 
 from google.cloud.storage_control_v2.services.storage_control import (
@@ -4425,6 +4427,2250 @@ async def test_list_managed_folders_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        storage_control.CreateAnywhereCacheRequest,
+        dict,
+    ],
+)
+def test_create_anywhere_cache(request_type, transport: str = "grpc"):
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_anywhere_cache), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.create_anywhere_cache(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = storage_control.CreateAnywhereCacheRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_create_anywhere_cache_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = storage_control.CreateAnywhereCacheRequest(
+        parent="parent_value",
+        anywhere_cache_id="anywhere_cache_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_anywhere_cache), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.create_anywhere_cache(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == storage_control.CreateAnywhereCacheRequest(
+            parent="parent_value",
+            anywhere_cache_id="anywhere_cache_id_value",
+        )
+
+
+def test_create_anywhere_cache_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = StorageControlClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.create_anywhere_cache
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.create_anywhere_cache
+        ] = mock_rpc
+        request = {}
+        client.create_anywhere_cache(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods call wrapper_fn to build a cached
+        # client._transport.operations_client instance on first rpc call.
+        # Subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.create_anywhere_cache(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_create_anywhere_cache_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = StorageControlAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.create_anywhere_cache
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.create_anywhere_cache
+        ] = mock_rpc
+
+        request = {}
+        await client.create_anywhere_cache(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods call wrapper_fn to build a cached
+        # client._transport.operations_client instance on first rpc call.
+        # Subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        await client.create_anywhere_cache(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_create_anywhere_cache_async(
+    transport: str = "grpc_asyncio",
+    request_type=storage_control.CreateAnywhereCacheRequest,
+):
+    client = StorageControlAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_anywhere_cache), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.create_anywhere_cache(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = storage_control.CreateAnywhereCacheRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_create_anywhere_cache_async_from_dict():
+    await test_create_anywhere_cache_async(request_type=dict)
+
+
+def test_create_anywhere_cache_flattened():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_anywhere_cache), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.create_anywhere_cache(
+            parent="parent_value",
+            anywhere_cache=storage_control.AnywhereCache(name="name_value"),
+            anywhere_cache_id="anywhere_cache_id_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].anywhere_cache
+        mock_val = storage_control.AnywhereCache(name="name_value")
+        assert arg == mock_val
+        arg = args[0].anywhere_cache_id
+        mock_val = "anywhere_cache_id_value"
+        assert arg == mock_val
+
+
+def test_create_anywhere_cache_flattened_error():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_anywhere_cache(
+            storage_control.CreateAnywhereCacheRequest(),
+            parent="parent_value",
+            anywhere_cache=storage_control.AnywhereCache(name="name_value"),
+            anywhere_cache_id="anywhere_cache_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_anywhere_cache_flattened_async():
+    client = StorageControlAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_anywhere_cache), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.create_anywhere_cache(
+            parent="parent_value",
+            anywhere_cache=storage_control.AnywhereCache(name="name_value"),
+            anywhere_cache_id="anywhere_cache_id_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].anywhere_cache
+        mock_val = storage_control.AnywhereCache(name="name_value")
+        assert arg == mock_val
+        arg = args[0].anywhere_cache_id
+        mock_val = "anywhere_cache_id_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_create_anywhere_cache_flattened_error_async():
+    client = StorageControlAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.create_anywhere_cache(
+            storage_control.CreateAnywhereCacheRequest(),
+            parent="parent_value",
+            anywhere_cache=storage_control.AnywhereCache(name="name_value"),
+            anywhere_cache_id="anywhere_cache_id_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        storage_control.UpdateAnywhereCacheRequest,
+        dict,
+    ],
+)
+def test_update_anywhere_cache(request_type, transport: str = "grpc"):
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_anywhere_cache), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.update_anywhere_cache(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = storage_control.UpdateAnywhereCacheRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_update_anywhere_cache_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = storage_control.UpdateAnywhereCacheRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_anywhere_cache), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.update_anywhere_cache(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == storage_control.UpdateAnywhereCacheRequest()
+
+
+def test_update_anywhere_cache_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = StorageControlClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.update_anywhere_cache
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.update_anywhere_cache
+        ] = mock_rpc
+        request = {}
+        client.update_anywhere_cache(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods call wrapper_fn to build a cached
+        # client._transport.operations_client instance on first rpc call.
+        # Subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.update_anywhere_cache(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_update_anywhere_cache_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = StorageControlAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.update_anywhere_cache
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.update_anywhere_cache
+        ] = mock_rpc
+
+        request = {}
+        await client.update_anywhere_cache(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods call wrapper_fn to build a cached
+        # client._transport.operations_client instance on first rpc call.
+        # Subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        await client.update_anywhere_cache(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_update_anywhere_cache_async(
+    transport: str = "grpc_asyncio",
+    request_type=storage_control.UpdateAnywhereCacheRequest,
+):
+    client = StorageControlAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_anywhere_cache), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.update_anywhere_cache(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = storage_control.UpdateAnywhereCacheRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_update_anywhere_cache_async_from_dict():
+    await test_update_anywhere_cache_async(request_type=dict)
+
+
+def test_update_anywhere_cache_flattened():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_anywhere_cache), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.update_anywhere_cache(
+            anywhere_cache=storage_control.AnywhereCache(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].anywhere_cache
+        mock_val = storage_control.AnywhereCache(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+
+
+def test_update_anywhere_cache_flattened_error():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_anywhere_cache(
+            storage_control.UpdateAnywhereCacheRequest(),
+            anywhere_cache=storage_control.AnywhereCache(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_anywhere_cache_flattened_async():
+    client = StorageControlAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_anywhere_cache), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.update_anywhere_cache(
+            anywhere_cache=storage_control.AnywhereCache(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].anywhere_cache
+        mock_val = storage_control.AnywhereCache(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_update_anywhere_cache_flattened_error_async():
+    client = StorageControlAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.update_anywhere_cache(
+            storage_control.UpdateAnywhereCacheRequest(),
+            anywhere_cache=storage_control.AnywhereCache(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        storage_control.DisableAnywhereCacheRequest,
+        dict,
+    ],
+)
+def test_disable_anywhere_cache(request_type, transport: str = "grpc"):
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.disable_anywhere_cache), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = storage_control.AnywhereCache(
+            name="name_value",
+            zone="zone_value",
+            admission_policy="admission_policy_value",
+            state="state_value",
+            pending_update=True,
+        )
+        response = client.disable_anywhere_cache(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = storage_control.DisableAnywhereCacheRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, storage_control.AnywhereCache)
+    assert response.name == "name_value"
+    assert response.zone == "zone_value"
+    assert response.admission_policy == "admission_policy_value"
+    assert response.state == "state_value"
+    assert response.pending_update is True
+
+
+def test_disable_anywhere_cache_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = storage_control.DisableAnywhereCacheRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.disable_anywhere_cache), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.disable_anywhere_cache(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == storage_control.DisableAnywhereCacheRequest(
+            name="name_value",
+        )
+
+
+def test_disable_anywhere_cache_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = StorageControlClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.disable_anywhere_cache
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.disable_anywhere_cache
+        ] = mock_rpc
+        request = {}
+        client.disable_anywhere_cache(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.disable_anywhere_cache(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_disable_anywhere_cache_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = StorageControlAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.disable_anywhere_cache
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.disable_anywhere_cache
+        ] = mock_rpc
+
+        request = {}
+        await client.disable_anywhere_cache(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        await client.disable_anywhere_cache(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_disable_anywhere_cache_async(
+    transport: str = "grpc_asyncio",
+    request_type=storage_control.DisableAnywhereCacheRequest,
+):
+    client = StorageControlAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.disable_anywhere_cache), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            storage_control.AnywhereCache(
+                name="name_value",
+                zone="zone_value",
+                admission_policy="admission_policy_value",
+                state="state_value",
+                pending_update=True,
+            )
+        )
+        response = await client.disable_anywhere_cache(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = storage_control.DisableAnywhereCacheRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, storage_control.AnywhereCache)
+    assert response.name == "name_value"
+    assert response.zone == "zone_value"
+    assert response.admission_policy == "admission_policy_value"
+    assert response.state == "state_value"
+    assert response.pending_update is True
+
+
+@pytest.mark.asyncio
+async def test_disable_anywhere_cache_async_from_dict():
+    await test_disable_anywhere_cache_async(request_type=dict)
+
+
+def test_disable_anywhere_cache_flattened():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.disable_anywhere_cache), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = storage_control.AnywhereCache()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.disable_anywhere_cache(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_disable_anywhere_cache_flattened_error():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.disable_anywhere_cache(
+            storage_control.DisableAnywhereCacheRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_disable_anywhere_cache_flattened_async():
+    client = StorageControlAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.disable_anywhere_cache), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = storage_control.AnywhereCache()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            storage_control.AnywhereCache()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.disable_anywhere_cache(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_disable_anywhere_cache_flattened_error_async():
+    client = StorageControlAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.disable_anywhere_cache(
+            storage_control.DisableAnywhereCacheRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        storage_control.PauseAnywhereCacheRequest,
+        dict,
+    ],
+)
+def test_pause_anywhere_cache(request_type, transport: str = "grpc"):
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.pause_anywhere_cache), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = storage_control.AnywhereCache(
+            name="name_value",
+            zone="zone_value",
+            admission_policy="admission_policy_value",
+            state="state_value",
+            pending_update=True,
+        )
+        response = client.pause_anywhere_cache(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = storage_control.PauseAnywhereCacheRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, storage_control.AnywhereCache)
+    assert response.name == "name_value"
+    assert response.zone == "zone_value"
+    assert response.admission_policy == "admission_policy_value"
+    assert response.state == "state_value"
+    assert response.pending_update is True
+
+
+def test_pause_anywhere_cache_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = storage_control.PauseAnywhereCacheRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.pause_anywhere_cache), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.pause_anywhere_cache(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == storage_control.PauseAnywhereCacheRequest(
+            name="name_value",
+        )
+
+
+def test_pause_anywhere_cache_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = StorageControlClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.pause_anywhere_cache in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.pause_anywhere_cache
+        ] = mock_rpc
+        request = {}
+        client.pause_anywhere_cache(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.pause_anywhere_cache(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_pause_anywhere_cache_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = StorageControlAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.pause_anywhere_cache
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.pause_anywhere_cache
+        ] = mock_rpc
+
+        request = {}
+        await client.pause_anywhere_cache(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        await client.pause_anywhere_cache(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_pause_anywhere_cache_async(
+    transport: str = "grpc_asyncio",
+    request_type=storage_control.PauseAnywhereCacheRequest,
+):
+    client = StorageControlAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.pause_anywhere_cache), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            storage_control.AnywhereCache(
+                name="name_value",
+                zone="zone_value",
+                admission_policy="admission_policy_value",
+                state="state_value",
+                pending_update=True,
+            )
+        )
+        response = await client.pause_anywhere_cache(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = storage_control.PauseAnywhereCacheRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, storage_control.AnywhereCache)
+    assert response.name == "name_value"
+    assert response.zone == "zone_value"
+    assert response.admission_policy == "admission_policy_value"
+    assert response.state == "state_value"
+    assert response.pending_update is True
+
+
+@pytest.mark.asyncio
+async def test_pause_anywhere_cache_async_from_dict():
+    await test_pause_anywhere_cache_async(request_type=dict)
+
+
+def test_pause_anywhere_cache_flattened():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.pause_anywhere_cache), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = storage_control.AnywhereCache()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.pause_anywhere_cache(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_pause_anywhere_cache_flattened_error():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.pause_anywhere_cache(
+            storage_control.PauseAnywhereCacheRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_pause_anywhere_cache_flattened_async():
+    client = StorageControlAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.pause_anywhere_cache), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = storage_control.AnywhereCache()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            storage_control.AnywhereCache()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.pause_anywhere_cache(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_pause_anywhere_cache_flattened_error_async():
+    client = StorageControlAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.pause_anywhere_cache(
+            storage_control.PauseAnywhereCacheRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        storage_control.ResumeAnywhereCacheRequest,
+        dict,
+    ],
+)
+def test_resume_anywhere_cache(request_type, transport: str = "grpc"):
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.resume_anywhere_cache), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = storage_control.AnywhereCache(
+            name="name_value",
+            zone="zone_value",
+            admission_policy="admission_policy_value",
+            state="state_value",
+            pending_update=True,
+        )
+        response = client.resume_anywhere_cache(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = storage_control.ResumeAnywhereCacheRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, storage_control.AnywhereCache)
+    assert response.name == "name_value"
+    assert response.zone == "zone_value"
+    assert response.admission_policy == "admission_policy_value"
+    assert response.state == "state_value"
+    assert response.pending_update is True
+
+
+def test_resume_anywhere_cache_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = storage_control.ResumeAnywhereCacheRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.resume_anywhere_cache), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.resume_anywhere_cache(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == storage_control.ResumeAnywhereCacheRequest(
+            name="name_value",
+        )
+
+
+def test_resume_anywhere_cache_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = StorageControlClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.resume_anywhere_cache
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.resume_anywhere_cache
+        ] = mock_rpc
+        request = {}
+        client.resume_anywhere_cache(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.resume_anywhere_cache(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_resume_anywhere_cache_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = StorageControlAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.resume_anywhere_cache
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.resume_anywhere_cache
+        ] = mock_rpc
+
+        request = {}
+        await client.resume_anywhere_cache(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        await client.resume_anywhere_cache(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_resume_anywhere_cache_async(
+    transport: str = "grpc_asyncio",
+    request_type=storage_control.ResumeAnywhereCacheRequest,
+):
+    client = StorageControlAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.resume_anywhere_cache), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            storage_control.AnywhereCache(
+                name="name_value",
+                zone="zone_value",
+                admission_policy="admission_policy_value",
+                state="state_value",
+                pending_update=True,
+            )
+        )
+        response = await client.resume_anywhere_cache(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = storage_control.ResumeAnywhereCacheRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, storage_control.AnywhereCache)
+    assert response.name == "name_value"
+    assert response.zone == "zone_value"
+    assert response.admission_policy == "admission_policy_value"
+    assert response.state == "state_value"
+    assert response.pending_update is True
+
+
+@pytest.mark.asyncio
+async def test_resume_anywhere_cache_async_from_dict():
+    await test_resume_anywhere_cache_async(request_type=dict)
+
+
+def test_resume_anywhere_cache_flattened():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.resume_anywhere_cache), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = storage_control.AnywhereCache()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.resume_anywhere_cache(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_resume_anywhere_cache_flattened_error():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.resume_anywhere_cache(
+            storage_control.ResumeAnywhereCacheRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_resume_anywhere_cache_flattened_async():
+    client = StorageControlAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.resume_anywhere_cache), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = storage_control.AnywhereCache()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            storage_control.AnywhereCache()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.resume_anywhere_cache(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_resume_anywhere_cache_flattened_error_async():
+    client = StorageControlAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.resume_anywhere_cache(
+            storage_control.ResumeAnywhereCacheRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        storage_control.GetAnywhereCacheRequest,
+        dict,
+    ],
+)
+def test_get_anywhere_cache(request_type, transport: str = "grpc"):
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_anywhere_cache), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = storage_control.AnywhereCache(
+            name="name_value",
+            zone="zone_value",
+            admission_policy="admission_policy_value",
+            state="state_value",
+            pending_update=True,
+        )
+        response = client.get_anywhere_cache(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = storage_control.GetAnywhereCacheRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, storage_control.AnywhereCache)
+    assert response.name == "name_value"
+    assert response.zone == "zone_value"
+    assert response.admission_policy == "admission_policy_value"
+    assert response.state == "state_value"
+    assert response.pending_update is True
+
+
+def test_get_anywhere_cache_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = storage_control.GetAnywhereCacheRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_anywhere_cache), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.get_anywhere_cache(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == storage_control.GetAnywhereCacheRequest(
+            name="name_value",
+        )
+
+
+def test_get_anywhere_cache_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = StorageControlClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.get_anywhere_cache in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.get_anywhere_cache
+        ] = mock_rpc
+        request = {}
+        client.get_anywhere_cache(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.get_anywhere_cache(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_get_anywhere_cache_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = StorageControlAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.get_anywhere_cache
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.get_anywhere_cache
+        ] = mock_rpc
+
+        request = {}
+        await client.get_anywhere_cache(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        await client.get_anywhere_cache(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_get_anywhere_cache_async(
+    transport: str = "grpc_asyncio",
+    request_type=storage_control.GetAnywhereCacheRequest,
+):
+    client = StorageControlAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_anywhere_cache), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            storage_control.AnywhereCache(
+                name="name_value",
+                zone="zone_value",
+                admission_policy="admission_policy_value",
+                state="state_value",
+                pending_update=True,
+            )
+        )
+        response = await client.get_anywhere_cache(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = storage_control.GetAnywhereCacheRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, storage_control.AnywhereCache)
+    assert response.name == "name_value"
+    assert response.zone == "zone_value"
+    assert response.admission_policy == "admission_policy_value"
+    assert response.state == "state_value"
+    assert response.pending_update is True
+
+
+@pytest.mark.asyncio
+async def test_get_anywhere_cache_async_from_dict():
+    await test_get_anywhere_cache_async(request_type=dict)
+
+
+def test_get_anywhere_cache_flattened():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_anywhere_cache), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = storage_control.AnywhereCache()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.get_anywhere_cache(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_get_anywhere_cache_flattened_error():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_anywhere_cache(
+            storage_control.GetAnywhereCacheRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_anywhere_cache_flattened_async():
+    client = StorageControlAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_anywhere_cache), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = storage_control.AnywhereCache()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            storage_control.AnywhereCache()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.get_anywhere_cache(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_get_anywhere_cache_flattened_error_async():
+    client = StorageControlAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.get_anywhere_cache(
+            storage_control.GetAnywhereCacheRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        storage_control.ListAnywhereCachesRequest,
+        dict,
+    ],
+)
+def test_list_anywhere_caches(request_type, transport: str = "grpc"):
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_anywhere_caches), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = storage_control.ListAnywhereCachesResponse(
+            next_page_token="next_page_token_value",
+        )
+        response = client.list_anywhere_caches(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = storage_control.ListAnywhereCachesRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListAnywhereCachesPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_anywhere_caches_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = storage_control.ListAnywhereCachesRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_anywhere_caches), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.list_anywhere_caches(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == storage_control.ListAnywhereCachesRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+        )
+
+
+def test_list_anywhere_caches_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = StorageControlClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.list_anywhere_caches in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.list_anywhere_caches
+        ] = mock_rpc
+        request = {}
+        client.list_anywhere_caches(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.list_anywhere_caches(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_list_anywhere_caches_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = StorageControlAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.list_anywhere_caches
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.list_anywhere_caches
+        ] = mock_rpc
+
+        request = {}
+        await client.list_anywhere_caches(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        await client.list_anywhere_caches(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_list_anywhere_caches_async(
+    transport: str = "grpc_asyncio",
+    request_type=storage_control.ListAnywhereCachesRequest,
+):
+    client = StorageControlAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_anywhere_caches), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            storage_control.ListAnywhereCachesResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_anywhere_caches(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = storage_control.ListAnywhereCachesRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListAnywhereCachesAsyncPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.asyncio
+async def test_list_anywhere_caches_async_from_dict():
+    await test_list_anywhere_caches_async(request_type=dict)
+
+
+def test_list_anywhere_caches_flattened():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_anywhere_caches), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = storage_control.ListAnywhereCachesResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.list_anywhere_caches(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+def test_list_anywhere_caches_flattened_error():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_anywhere_caches(
+            storage_control.ListAnywhereCachesRequest(),
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_anywhere_caches_flattened_async():
+    client = StorageControlAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_anywhere_caches), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = storage_control.ListAnywhereCachesResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            storage_control.ListAnywhereCachesResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.list_anywhere_caches(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_list_anywhere_caches_flattened_error_async():
+    client = StorageControlAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.list_anywhere_caches(
+            storage_control.ListAnywhereCachesRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_anywhere_caches_pager(transport_name: str = "grpc"):
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_anywhere_caches), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            storage_control.ListAnywhereCachesResponse(
+                anywhere_caches=[
+                    storage_control.AnywhereCache(),
+                    storage_control.AnywhereCache(),
+                    storage_control.AnywhereCache(),
+                ],
+                next_page_token="abc",
+            ),
+            storage_control.ListAnywhereCachesResponse(
+                anywhere_caches=[],
+                next_page_token="def",
+            ),
+            storage_control.ListAnywhereCachesResponse(
+                anywhere_caches=[
+                    storage_control.AnywhereCache(),
+                ],
+                next_page_token="ghi",
+            ),
+            storage_control.ListAnywhereCachesResponse(
+                anywhere_caches=[
+                    storage_control.AnywhereCache(),
+                    storage_control.AnywhereCache(),
+                ],
+            ),
+            RuntimeError,
+        )
+
+        expected_metadata = ()
+        retry = retries.Retry()
+        timeout = 5
+        pager = client.list_anywhere_caches(request={}, retry=retry, timeout=timeout)
+
+        assert pager._metadata == expected_metadata
+        assert pager._retry == retry
+        assert pager._timeout == timeout
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, storage_control.AnywhereCache) for i in results)
+
+
+def test_list_anywhere_caches_pages(transport_name: str = "grpc"):
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_anywhere_caches), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            storage_control.ListAnywhereCachesResponse(
+                anywhere_caches=[
+                    storage_control.AnywhereCache(),
+                    storage_control.AnywhereCache(),
+                    storage_control.AnywhereCache(),
+                ],
+                next_page_token="abc",
+            ),
+            storage_control.ListAnywhereCachesResponse(
+                anywhere_caches=[],
+                next_page_token="def",
+            ),
+            storage_control.ListAnywhereCachesResponse(
+                anywhere_caches=[
+                    storage_control.AnywhereCache(),
+                ],
+                next_page_token="ghi",
+            ),
+            storage_control.ListAnywhereCachesResponse(
+                anywhere_caches=[
+                    storage_control.AnywhereCache(),
+                    storage_control.AnywhereCache(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = list(client.list_anywhere_caches(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.asyncio
+async def test_list_anywhere_caches_async_pager():
+    client = StorageControlAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_anywhere_caches),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            storage_control.ListAnywhereCachesResponse(
+                anywhere_caches=[
+                    storage_control.AnywhereCache(),
+                    storage_control.AnywhereCache(),
+                    storage_control.AnywhereCache(),
+                ],
+                next_page_token="abc",
+            ),
+            storage_control.ListAnywhereCachesResponse(
+                anywhere_caches=[],
+                next_page_token="def",
+            ),
+            storage_control.ListAnywhereCachesResponse(
+                anywhere_caches=[
+                    storage_control.AnywhereCache(),
+                ],
+                next_page_token="ghi",
+            ),
+            storage_control.ListAnywhereCachesResponse(
+                anywhere_caches=[
+                    storage_control.AnywhereCache(),
+                    storage_control.AnywhereCache(),
+                ],
+            ),
+            RuntimeError,
+        )
+        async_pager = await client.list_anywhere_caches(
+            request={},
+        )
+        assert async_pager.next_page_token == "abc"
+        responses = []
+        async for response in async_pager:  # pragma: no branch
+            responses.append(response)
+
+        assert len(responses) == 6
+        assert all(isinstance(i, storage_control.AnywhereCache) for i in responses)
+
+
+@pytest.mark.asyncio
+async def test_list_anywhere_caches_async_pages():
+    client = StorageControlAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_anywhere_caches),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            storage_control.ListAnywhereCachesResponse(
+                anywhere_caches=[
+                    storage_control.AnywhereCache(),
+                    storage_control.AnywhereCache(),
+                    storage_control.AnywhereCache(),
+                ],
+                next_page_token="abc",
+            ),
+            storage_control.ListAnywhereCachesResponse(
+                anywhere_caches=[],
+                next_page_token="def",
+            ),
+            storage_control.ListAnywhereCachesResponse(
+                anywhere_caches=[
+                    storage_control.AnywhereCache(),
+                ],
+                next_page_token="ghi",
+            ),
+            storage_control.ListAnywhereCachesResponse(
+                anywhere_caches=[
+                    storage_control.AnywhereCache(),
+                    storage_control.AnywhereCache(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = []
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
+            await client.list_anywhere_caches(request={})
+        ).pages:
+            pages.append(page_)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.StorageControlGrpcTransport(
@@ -4813,6 +7059,167 @@ def test_list_managed_folders_empty_call_grpc():
         assert args[0] == request_msg
 
 
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_anywhere_cache_empty_call_grpc():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_anywhere_cache), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.create_anywhere_cache(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = storage_control.CreateAnywhereCacheRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_anywhere_cache_empty_call_grpc():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_anywhere_cache), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.update_anywhere_cache(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = storage_control.UpdateAnywhereCacheRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_disable_anywhere_cache_empty_call_grpc():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.disable_anywhere_cache), "__call__"
+    ) as call:
+        call.return_value = storage_control.AnywhereCache()
+        client.disable_anywhere_cache(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = storage_control.DisableAnywhereCacheRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_pause_anywhere_cache_empty_call_grpc():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.pause_anywhere_cache), "__call__"
+    ) as call:
+        call.return_value = storage_control.AnywhereCache()
+        client.pause_anywhere_cache(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = storage_control.PauseAnywhereCacheRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_resume_anywhere_cache_empty_call_grpc():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.resume_anywhere_cache), "__call__"
+    ) as call:
+        call.return_value = storage_control.AnywhereCache()
+        client.resume_anywhere_cache(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = storage_control.ResumeAnywhereCacheRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_anywhere_cache_empty_call_grpc():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_anywhere_cache), "__call__"
+    ) as call:
+        call.return_value = storage_control.AnywhereCache()
+        client.get_anywhere_cache(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = storage_control.GetAnywhereCacheRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_anywhere_caches_empty_call_grpc():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_anywhere_caches), "__call__"
+    ) as call:
+        call.return_value = storage_control.ListAnywhereCachesResponse()
+        client.list_anywhere_caches(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = storage_control.ListAnywhereCachesRequest()
+
+        assert args[0] == request_msg
+
+
 def test_create_folder_routing_parameters_request_1_grpc():
     client = StorageControlClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -5141,6 +7548,212 @@ def test_list_managed_folders_routing_parameters_request_1_grpc():
         # clear UUID field so that the check below succeeds
         args[0].request_id = None
         request_msg = storage_control.ListManagedFoldersRequest(**{"parent": "sample1"})
+
+        assert args[0] == request_msg
+
+        expected_headers = {"bucket": "sample1"}
+        assert (
+            gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
+        )
+
+
+def test_create_anywhere_cache_routing_parameters_request_1_grpc():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_anywhere_cache), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.create_anywhere_cache(request={"parent": "sample1"})
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, kw = call.mock_calls[0]
+        request_msg = storage_control.CreateAnywhereCacheRequest(
+            **{"parent": "sample1"}
+        )
+
+        assert args[0] == request_msg
+
+        expected_headers = {"bucket": "sample1"}
+        assert (
+            gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
+        )
+
+
+def test_update_anywhere_cache_routing_parameters_request_1_grpc():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_anywhere_cache), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.update_anywhere_cache(
+            request={
+                "anywhere_cache": {"name": "projects/sample1/buckets/sample2/sample3"}
+            }
+        )
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, kw = call.mock_calls[0]
+        request_msg = storage_control.UpdateAnywhereCacheRequest(
+            **{"anywhere_cache": {"name": "projects/sample1/buckets/sample2/sample3"}}
+        )
+
+        assert args[0] == request_msg
+
+        expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
+        assert (
+            gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
+        )
+
+
+def test_disable_anywhere_cache_routing_parameters_request_1_grpc():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.disable_anywhere_cache), "__call__"
+    ) as call:
+        call.return_value = storage_control.AnywhereCache()
+        client.disable_anywhere_cache(
+            request={"name": "projects/sample1/buckets/sample2/sample3"}
+        )
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, kw = call.mock_calls[0]
+        request_msg = storage_control.DisableAnywhereCacheRequest(
+            **{"name": "projects/sample1/buckets/sample2/sample3"}
+        )
+
+        assert args[0] == request_msg
+
+        expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
+        assert (
+            gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
+        )
+
+
+def test_pause_anywhere_cache_routing_parameters_request_1_grpc():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.pause_anywhere_cache), "__call__"
+    ) as call:
+        call.return_value = storage_control.AnywhereCache()
+        client.pause_anywhere_cache(
+            request={"name": "projects/sample1/buckets/sample2/sample3"}
+        )
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, kw = call.mock_calls[0]
+        request_msg = storage_control.PauseAnywhereCacheRequest(
+            **{"name": "projects/sample1/buckets/sample2/sample3"}
+        )
+
+        assert args[0] == request_msg
+
+        expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
+        assert (
+            gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
+        )
+
+
+def test_resume_anywhere_cache_routing_parameters_request_1_grpc():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.resume_anywhere_cache), "__call__"
+    ) as call:
+        call.return_value = storage_control.AnywhereCache()
+        client.resume_anywhere_cache(
+            request={"name": "projects/sample1/buckets/sample2/sample3"}
+        )
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, kw = call.mock_calls[0]
+        request_msg = storage_control.ResumeAnywhereCacheRequest(
+            **{"name": "projects/sample1/buckets/sample2/sample3"}
+        )
+
+        assert args[0] == request_msg
+
+        expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
+        assert (
+            gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
+        )
+
+
+def test_get_anywhere_cache_routing_parameters_request_1_grpc():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_anywhere_cache), "__call__"
+    ) as call:
+        call.return_value = storage_control.AnywhereCache()
+        client.get_anywhere_cache(
+            request={"name": "projects/sample1/buckets/sample2/sample3"}
+        )
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, kw = call.mock_calls[0]
+        request_msg = storage_control.GetAnywhereCacheRequest(
+            **{"name": "projects/sample1/buckets/sample2/sample3"}
+        )
+
+        assert args[0] == request_msg
+
+        expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
+        assert (
+            gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
+        )
+
+
+def test_list_anywhere_caches_routing_parameters_request_1_grpc():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_anywhere_caches), "__call__"
+    ) as call:
+        call.return_value = storage_control.ListAnywhereCachesResponse()
+        client.list_anywhere_caches(request={"parent": "sample1"})
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, kw = call.mock_calls[0]
+        request_msg = storage_control.ListAnywhereCachesRequest(**{"parent": "sample1"})
 
         assert args[0] == request_msg
 
@@ -5499,6 +8112,221 @@ async def test_list_managed_folders_empty_call_grpc_asyncio():
         # clear UUID field so that the check below succeeds
         args[0].request_id = None
         request_msg = storage_control.ListManagedFoldersRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_create_anywhere_cache_empty_call_grpc_asyncio():
+    client = StorageControlAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_anywhere_cache), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.create_anywhere_cache(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = storage_control.CreateAnywhereCacheRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_update_anywhere_cache_empty_call_grpc_asyncio():
+    client = StorageControlAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_anywhere_cache), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.update_anywhere_cache(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = storage_control.UpdateAnywhereCacheRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_disable_anywhere_cache_empty_call_grpc_asyncio():
+    client = StorageControlAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.disable_anywhere_cache), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            storage_control.AnywhereCache(
+                name="name_value",
+                zone="zone_value",
+                admission_policy="admission_policy_value",
+                state="state_value",
+                pending_update=True,
+            )
+        )
+        await client.disable_anywhere_cache(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = storage_control.DisableAnywhereCacheRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_pause_anywhere_cache_empty_call_grpc_asyncio():
+    client = StorageControlAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.pause_anywhere_cache), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            storage_control.AnywhereCache(
+                name="name_value",
+                zone="zone_value",
+                admission_policy="admission_policy_value",
+                state="state_value",
+                pending_update=True,
+            )
+        )
+        await client.pause_anywhere_cache(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = storage_control.PauseAnywhereCacheRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_resume_anywhere_cache_empty_call_grpc_asyncio():
+    client = StorageControlAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.resume_anywhere_cache), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            storage_control.AnywhereCache(
+                name="name_value",
+                zone="zone_value",
+                admission_policy="admission_policy_value",
+                state="state_value",
+                pending_update=True,
+            )
+        )
+        await client.resume_anywhere_cache(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = storage_control.ResumeAnywhereCacheRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_anywhere_cache_empty_call_grpc_asyncio():
+    client = StorageControlAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_anywhere_cache), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            storage_control.AnywhereCache(
+                name="name_value",
+                zone="zone_value",
+                admission_policy="admission_policy_value",
+                state="state_value",
+                pending_update=True,
+            )
+        )
+        await client.get_anywhere_cache(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = storage_control.GetAnywhereCacheRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_anywhere_caches_empty_call_grpc_asyncio():
+    client = StorageControlAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_anywhere_caches), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            storage_control.ListAnywhereCachesResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        await client.list_anywhere_caches(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = storage_control.ListAnywhereCachesRequest()
 
         assert args[0] == request_msg
 
@@ -5898,6 +8726,266 @@ async def test_list_managed_folders_routing_parameters_request_1_grpc_asyncio():
         )
 
 
+@pytest.mark.asyncio
+async def test_create_anywhere_cache_routing_parameters_request_1_grpc_asyncio():
+    client = StorageControlAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_anywhere_cache), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.create_anywhere_cache(request={"parent": "sample1"})
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, kw = call.mock_calls[0]
+        request_msg = storage_control.CreateAnywhereCacheRequest(
+            **{"parent": "sample1"}
+        )
+
+        assert args[0] == request_msg
+
+        expected_headers = {"bucket": "sample1"}
+        assert (
+            gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_anywhere_cache_routing_parameters_request_1_grpc_asyncio():
+    client = StorageControlAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_anywhere_cache), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.update_anywhere_cache(
+            request={
+                "anywhere_cache": {"name": "projects/sample1/buckets/sample2/sample3"}
+            }
+        )
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, kw = call.mock_calls[0]
+        request_msg = storage_control.UpdateAnywhereCacheRequest(
+            **{"anywhere_cache": {"name": "projects/sample1/buckets/sample2/sample3"}}
+        )
+
+        assert args[0] == request_msg
+
+        expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
+        assert (
+            gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
+        )
+
+
+@pytest.mark.asyncio
+async def test_disable_anywhere_cache_routing_parameters_request_1_grpc_asyncio():
+    client = StorageControlAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.disable_anywhere_cache), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            storage_control.AnywhereCache(
+                name="name_value",
+                zone="zone_value",
+                admission_policy="admission_policy_value",
+                state="state_value",
+                pending_update=True,
+            )
+        )
+        await client.disable_anywhere_cache(
+            request={"name": "projects/sample1/buckets/sample2/sample3"}
+        )
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, kw = call.mock_calls[0]
+        request_msg = storage_control.DisableAnywhereCacheRequest(
+            **{"name": "projects/sample1/buckets/sample2/sample3"}
+        )
+
+        assert args[0] == request_msg
+
+        expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
+        assert (
+            gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
+        )
+
+
+@pytest.mark.asyncio
+async def test_pause_anywhere_cache_routing_parameters_request_1_grpc_asyncio():
+    client = StorageControlAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.pause_anywhere_cache), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            storage_control.AnywhereCache(
+                name="name_value",
+                zone="zone_value",
+                admission_policy="admission_policy_value",
+                state="state_value",
+                pending_update=True,
+            )
+        )
+        await client.pause_anywhere_cache(
+            request={"name": "projects/sample1/buckets/sample2/sample3"}
+        )
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, kw = call.mock_calls[0]
+        request_msg = storage_control.PauseAnywhereCacheRequest(
+            **{"name": "projects/sample1/buckets/sample2/sample3"}
+        )
+
+        assert args[0] == request_msg
+
+        expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
+        assert (
+            gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
+        )
+
+
+@pytest.mark.asyncio
+async def test_resume_anywhere_cache_routing_parameters_request_1_grpc_asyncio():
+    client = StorageControlAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.resume_anywhere_cache), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            storage_control.AnywhereCache(
+                name="name_value",
+                zone="zone_value",
+                admission_policy="admission_policy_value",
+                state="state_value",
+                pending_update=True,
+            )
+        )
+        await client.resume_anywhere_cache(
+            request={"name": "projects/sample1/buckets/sample2/sample3"}
+        )
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, kw = call.mock_calls[0]
+        request_msg = storage_control.ResumeAnywhereCacheRequest(
+            **{"name": "projects/sample1/buckets/sample2/sample3"}
+        )
+
+        assert args[0] == request_msg
+
+        expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
+        assert (
+            gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_anywhere_cache_routing_parameters_request_1_grpc_asyncio():
+    client = StorageControlAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_anywhere_cache), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            storage_control.AnywhereCache(
+                name="name_value",
+                zone="zone_value",
+                admission_policy="admission_policy_value",
+                state="state_value",
+                pending_update=True,
+            )
+        )
+        await client.get_anywhere_cache(
+            request={"name": "projects/sample1/buckets/sample2/sample3"}
+        )
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, kw = call.mock_calls[0]
+        request_msg = storage_control.GetAnywhereCacheRequest(
+            **{"name": "projects/sample1/buckets/sample2/sample3"}
+        )
+
+        assert args[0] == request_msg
+
+        expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
+        assert (
+            gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_anywhere_caches_routing_parameters_request_1_grpc_asyncio():
+    client = StorageControlAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_anywhere_caches), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            storage_control.ListAnywhereCachesResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        await client.list_anywhere_caches(request={"parent": "sample1"})
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, kw = call.mock_calls[0]
+        request_msg = storage_control.ListAnywhereCachesRequest(**{"parent": "sample1"})
+
+        assert args[0] == request_msg
+
+        expected_headers = {"bucket": "sample1"}
+        assert (
+            gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
+        )
+
+
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
     client = StorageControlClient(
@@ -5941,6 +9029,13 @@ def test_storage_control_base_transport():
         "delete_managed_folder",
         "get_managed_folder",
         "list_managed_folders",
+        "create_anywhere_cache",
+        "update_anywhere_cache",
+        "disable_anywhere_cache",
+        "pause_anywhere_cache",
+        "resume_anywhere_cache",
+        "get_anywhere_cache",
+        "list_anywhere_caches",
     )
     for method in methods:
         with pytest.raises(NotImplementedError):
@@ -6349,10 +9444,38 @@ def test_storage_control_grpc_lro_async_client():
     assert transport.operations_client is transport.operations_client
 
 
-def test_folder_path():
+def test_anywhere_cache_path():
     project = "squid"
     bucket = "clam"
-    folder = "whelk"
+    anywhere_cache = "whelk"
+    expected = (
+        "projects/{project}/buckets/{bucket}/anywhereCaches/{anywhere_cache}".format(
+            project=project,
+            bucket=bucket,
+            anywhere_cache=anywhere_cache,
+        )
+    )
+    actual = StorageControlClient.anywhere_cache_path(project, bucket, anywhere_cache)
+    assert expected == actual
+
+
+def test_parse_anywhere_cache_path():
+    expected = {
+        "project": "octopus",
+        "bucket": "oyster",
+        "anywhere_cache": "nudibranch",
+    }
+    path = StorageControlClient.anywhere_cache_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = StorageControlClient.parse_anywhere_cache_path(path)
+    assert expected == actual
+
+
+def test_folder_path():
+    project = "cuttlefish"
+    bucket = "mussel"
+    folder = "winkle"
     expected = "projects/{project}/buckets/{bucket}/folders/{folder}".format(
         project=project,
         bucket=bucket,
@@ -6364,9 +9487,9 @@ def test_folder_path():
 
 def test_parse_folder_path():
     expected = {
-        "project": "octopus",
-        "bucket": "oyster",
-        "folder": "nudibranch",
+        "project": "nautilus",
+        "bucket": "scallop",
+        "folder": "abalone",
     }
     path = StorageControlClient.folder_path(**expected)
 
@@ -6376,9 +9499,9 @@ def test_parse_folder_path():
 
 
 def test_managed_folder_path():
-    project = "cuttlefish"
-    bucket = "mussel"
-    managed_folder = "winkle"
+    project = "squid"
+    bucket = "clam"
+    managed_folder = "whelk"
     expected = (
         "projects/{project}/buckets/{bucket}/managedFolders/{managed_folder}".format(
             project=project,
@@ -6392,9 +9515,9 @@ def test_managed_folder_path():
 
 def test_parse_managed_folder_path():
     expected = {
-        "project": "nautilus",
-        "bucket": "scallop",
-        "managed_folder": "abalone",
+        "project": "octopus",
+        "bucket": "oyster",
+        "managed_folder": "nudibranch",
     }
     path = StorageControlClient.managed_folder_path(**expected)
 
@@ -6404,8 +9527,8 @@ def test_parse_managed_folder_path():
 
 
 def test_storage_layout_path():
-    project = "squid"
-    bucket = "clam"
+    project = "cuttlefish"
+    bucket = "mussel"
     expected = "projects/{project}/buckets/{bucket}/storageLayout".format(
         project=project,
         bucket=bucket,
@@ -6416,8 +9539,8 @@ def test_storage_layout_path():
 
 def test_parse_storage_layout_path():
     expected = {
-        "project": "whelk",
-        "bucket": "octopus",
+        "project": "winkle",
+        "bucket": "nautilus",
     }
     path = StorageControlClient.storage_layout_path(**expected)
 
@@ -6427,7 +9550,7 @@ def test_parse_storage_layout_path():
 
 
 def test_common_billing_account_path():
-    billing_account = "oyster"
+    billing_account = "scallop"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -6437,7 +9560,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "nudibranch",
+        "billing_account": "abalone",
     }
     path = StorageControlClient.common_billing_account_path(**expected)
 
@@ -6447,7 +9570,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "cuttlefish"
+    folder = "squid"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -6457,7 +9580,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "mussel",
+        "folder": "clam",
     }
     path = StorageControlClient.common_folder_path(**expected)
 
@@ -6467,7 +9590,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "winkle"
+    organization = "whelk"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -6477,7 +9600,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "nautilus",
+        "organization": "octopus",
     }
     path = StorageControlClient.common_organization_path(**expected)
 
@@ -6487,7 +9610,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "scallop"
+    project = "oyster"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -6497,7 +9620,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "abalone",
+        "project": "nudibranch",
     }
     path = StorageControlClient.common_project_path(**expected)
 
@@ -6507,8 +9630,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "squid"
-    location = "clam"
+    project = "cuttlefish"
+    location = "mussel"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -6519,8 +9642,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "whelk",
-        "location": "octopus",
+        "project": "winkle",
+        "location": "nautilus",
     }
     path = StorageControlClient.common_location_path(**expected)
 
