@@ -54,6 +54,7 @@ _STREAM_RESUMPTION_INTERNAL_ERROR_MESSAGES = (
 def _restart_on_unavailable(
     method,
     request,
+    metadata=None,
     trace_name=None,
     session=None,
     attributes=None,
@@ -98,8 +99,9 @@ def _restart_on_unavailable(
                     session,
                     attributes,
                     observability_options=observability_options,
+                    metadata=metadata,
                 ), MetricsCapture():
-                    iterator = method(request=request)
+                    iterator = method(request=request, metadata=metadata)
             for item in iterator:
                 item_buffer.append(item)
                 # Setting the transaction id because the transaction begin was inlined for first rpc.
@@ -121,6 +123,7 @@ def _restart_on_unavailable(
                 session,
                 attributes,
                 observability_options=observability_options,
+                metadata=metadata,
             ), MetricsCapture():
                 request.resume_token = resume_token
                 if transaction is not None:
@@ -141,6 +144,7 @@ def _restart_on_unavailable(
                 session,
                 attributes,
                 observability_options=observability_options,
+                metadata=metadata,
             ), MetricsCapture():
                 request.resume_token = resume_token
                 if transaction is not None:
@@ -342,6 +346,7 @@ class _SnapshotBase(_SessionWrapper):
                 iterator = _restart_on_unavailable(
                     restart,
                     request,
+                    metadata,
                     f"CloudSpanner.{type(self).__name__}.read",
                     self._session,
                     trace_attributes,
@@ -364,6 +369,7 @@ class _SnapshotBase(_SessionWrapper):
             iterator = _restart_on_unavailable(
                 restart,
                 request,
+                metadata,
                 f"CloudSpanner.{type(self).__name__}.read",
                 self._session,
                 trace_attributes,
@@ -573,6 +579,7 @@ class _SnapshotBase(_SessionWrapper):
                 return self._get_streamed_result_set(
                     restart,
                     request,
+                    metadata,
                     trace_attributes,
                     column_info,
                     observability_options,
@@ -582,6 +589,7 @@ class _SnapshotBase(_SessionWrapper):
             return self._get_streamed_result_set(
                 restart,
                 request,
+                metadata,
                 trace_attributes,
                 column_info,
                 observability_options,
@@ -592,6 +600,7 @@ class _SnapshotBase(_SessionWrapper):
         self,
         restart,
         request,
+        metadata,
         trace_attributes,
         column_info,
         observability_options=None,
@@ -600,6 +609,7 @@ class _SnapshotBase(_SessionWrapper):
         iterator = _restart_on_unavailable(
             restart,
             request,
+            metadata,
             f"CloudSpanner.{type(self).__name__}.execute_sql",
             self._session,
             trace_attributes,
@@ -706,6 +716,7 @@ class _SnapshotBase(_SessionWrapper):
             self._session,
             extra_attributes=trace_attributes,
             observability_options=getattr(database, "observability_options", None),
+            metadata=metadata,
         ), MetricsCapture():
             method = functools.partial(
                 api.partition_read,
@@ -809,6 +820,7 @@ class _SnapshotBase(_SessionWrapper):
             self._session,
             trace_attributes,
             observability_options=getattr(database, "observability_options", None),
+            metadata=metadata,
         ), MetricsCapture():
             method = functools.partial(
                 api.partition_query,
@@ -955,6 +967,7 @@ class Snapshot(_SnapshotBase):
             f"CloudSpanner.{type(self).__name__}.begin",
             self._session,
             observability_options=getattr(database, "observability_options", None),
+            metadata=metadata,
         ), MetricsCapture():
             method = functools.partial(
                 api.begin_transaction,

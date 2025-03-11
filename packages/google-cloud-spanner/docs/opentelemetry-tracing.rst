@@ -38,6 +38,10 @@ We also need to tell OpenTelemetry which exporter to use. To export Spanner trac
         # can modify it though using the environment variable
         # SPANNER_ENABLE_EXTENDED_TRACING=false.
         enable_extended_tracing=False,
+
+        # By default end to end tracing is set to False. Set to True 
+        # for getting spans for Spanner server.
+        enable_end_to_end_tracing=True,
     )
     spanner = spanner.NewClient(project_id, observability_options=observability_options)
 
@@ -71,3 +75,22 @@ leak. Sadly due to legacy behavior, we cannot simply turn off this behavior by d
     SPANNER_ENABLE_EXTENDED_TRACING=false
 
 to turn it off globally or when creating each SpannerClient, please set `observability_options.enable_extended_tracing=false`
+
+End to end tracing
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+In addition to client-side tracing, you can opt in for end-to-end tracing. End-to-end tracing helps you understand and debug latency issues that are specific to Spanner. Refer [here](https://cloud.google.com/spanner/docs/tracing-overview) for more information.
+
+To configure end-to-end tracing.
+
+1. Opt in for end-to-end tracing. You can opt-in by either:
+* Setting the environment variable `SPANNER_ENABLE_END_TO_END_TRACING=true` before your application is started
+* In code, by setting `observability_options.enable_end_to_end_tracing=true` when creating each SpannerClient. 
+
+2. Set the trace context propagation in OpenTelemetry.
+
+.. code:: python
+
+    from opentelemetry.propagate import set_global_textmap
+    from opentelemetry.trace.propagation.tracecontext import TraceContextTextMapPropagator
+    set_global_textmap(TraceContextTextMapPropagator())

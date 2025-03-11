@@ -309,7 +309,9 @@ class TestTransaction(OpenTelemetryBase):
         )
 
     def test_commit_not_begun(self):
-        session = _Session()
+        database = _Database()
+        database.spanner_api = self._make_spanner_api()
+        session = _Session(database)
         transaction = self._make_one(session)
         with self.assertRaises(ValueError):
             transaction.commit()
@@ -337,7 +339,9 @@ class TestTransaction(OpenTelemetryBase):
         assert got_span_events_statuses == want_span_events_statuses
 
     def test_commit_already_committed(self):
-        session = _Session()
+        database = _Database()
+        database.spanner_api = self._make_spanner_api()
+        session = _Session(database)
         transaction = self._make_one(session)
         transaction._transaction_id = self.TRANSACTION_ID
         transaction.committed = object()
@@ -367,7 +371,9 @@ class TestTransaction(OpenTelemetryBase):
         assert got_span_events_statuses == want_span_events_statuses
 
     def test_commit_already_rolled_back(self):
-        session = _Session()
+        database = _Database()
+        database.spanner_api = self._make_spanner_api()
+        session = _Session(database)
         transaction = self._make_one(session)
         transaction._transaction_id = self.TRANSACTION_ID
         transaction.rolled_back = True

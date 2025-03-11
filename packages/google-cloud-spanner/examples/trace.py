@@ -22,6 +22,8 @@ from opentelemetry.sdk.trace import TracerProvider
 from opentelemetry.sdk.trace.export import BatchSpanProcessor
 from opentelemetry.sdk.trace.sampling import ALWAYS_ON
 from opentelemetry import trace
+from opentelemetry.propagate import set_global_textmap
+from opentelemetry.trace.propagation.tracecontext import TraceContextTextMapPropagator
 
 
 def main():
@@ -36,10 +38,13 @@ def main():
     # Setup the Cloud Spanner Client.
     spanner_client = spanner.Client(
         project_id,
-        observability_options=dict(tracer_provider=tracer_provider, enable_extended_tracing=True),
+        observability_options=dict(tracer_provider=tracer_provider, enable_extended_tracing=True, enable_end_to_end_tracing=True),
     )
     instance = spanner_client.instance('test-instance')
     database = instance.database('test-db')
+    
+    # Set W3C Trace Context as the global propagator for end to end tracing.
+    set_global_textmap(TraceContextTextMapPropagator())
 
     # Retrieve a tracer from our custom tracer provider.
     tracer = tracer_provider.get_tracer('MyApp')

@@ -14,6 +14,7 @@
 
 
 import unittest
+from tests import _helpers as ot_helpers
 from unittest.mock import MagicMock
 from tests._helpers import (
     OpenTelemetryBase,
@@ -563,7 +564,10 @@ class TestMutationGroups(_BaseTest, OpenTelemetryBase):
         )
 
     def _test_batch_write_with_request_options(
-        self, request_options=None, exclude_txn_from_change_streams=False
+        self,
+        request_options=None,
+        exclude_txn_from_change_streams=False,
+        enable_end_to_end_tracing=False,
     ):
         import datetime
         from google.cloud.spanner_v1 import BatchWriteResponse
@@ -577,7 +581,7 @@ class TestMutationGroups(_BaseTest, OpenTelemetryBase):
         response = BatchWriteResponse(
             commit_timestamp=now_pb, indexes=[0], status=status_pb
         )
-        database = _Database()
+        database = _Database(enable_end_to_end_tracing=enable_end_to_end_tracing)
         api = database.spanner_api = _FauxSpannerAPI(_batch_write_response=[response])
         session = _Session(database)
         groups = self._make_one(session)
@@ -600,13 +604,22 @@ class TestMutationGroups(_BaseTest, OpenTelemetryBase):
         ) = api._batch_request
         self.assertEqual(session, self.SESSION_NAME)
         self.assertEqual(mutation_groups, groups._mutation_groups)
-        self.assertEqual(
-            metadata,
-            [
-                ("google-cloud-resource-prefix", database.name),
-                ("x-goog-spanner-route-to-leader", "true"),
-            ],
-        )
+        expected_metadata = [
+            ("google-cloud-resource-prefix", database.name),
+            ("x-goog-spanner-route-to-leader", "true"),
+        ]
+
+        if enable_end_to_end_tracing and ot_helpers.HAS_OPENTELEMETRY_INSTALLED:
+            expected_metadata.append(("x-goog-spanner-end-to-end-tracing", "true"))
+            self.assertTrue(
+                any(key == "traceparent" for key, _ in metadata),
+                "traceparent is missing in metadata",
+            )
+
+        # Remove traceparent from actual metadata for comparison
+        filtered_metadata = [item for item in metadata if item[0] != "traceparent"]
+
+        self.assertEqual(filtered_metadata, expected_metadata)
         if request_options is None:
             expected_request_options = RequestOptions()
         elif type(request_options) is dict:
@@ -626,6 +639,9 @@ class TestMutationGroups(_BaseTest, OpenTelemetryBase):
 
     def test_batch_write_no_request_options(self):
         self._test_batch_write_with_request_options()
+
+    def test_batch_write_end_to_end_tracing_enabled(self):
+        self._test_batch_write_with_request_options(enable_end_to_end_tracing=True)
 
     def test_batch_write_w_transaction_tag_success(self):
         self._test_batch_write_with_request_options(
@@ -656,8 +672,11 @@ class _Session(object):
 
 
 class _Database(object):
-    name = "testing"
-    _route_to_leader_enabled = True
+    def __init__(self, enable_end_to_end_tracing=False):
+        self.name = "testing"
+        self._route_to_leader_enabled = True
+        if enable_end_to_end_tracing:
+            self.observability_options = dict(enable_end_to_end_tracing=True)
 
 
 class _FauxSpannerAPI:

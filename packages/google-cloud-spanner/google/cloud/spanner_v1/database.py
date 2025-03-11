@@ -729,6 +729,7 @@ class Database(object):
                         method=method,
                         trace_name="CloudSpanner.ExecuteStreamingSql",
                         request=request,
+                        metadata=metadata,
                         transaction_selector=txn_selector,
                         observability_options=self.observability_options,
                     )

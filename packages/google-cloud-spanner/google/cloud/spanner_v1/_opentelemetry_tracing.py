@@ -20,6 +20,9 @@ import os
 
 from google.cloud.spanner_v1 import SpannerClient
 from google.cloud.spanner_v1 import gapic_version
+from google.cloud.spanner_v1._helpers import (
+    _metadata_with_span_context,
+)
 
 try:
     from opentelemetry import trace
@@ -40,6 +43,9 @@ TRACER_VERSION = gapic_version.__version__
 extended_tracing_globally_disabled = (
     os.getenv("SPANNER_ENABLE_EXTENDED_TRACING", "").lower() == "false"
 )
+end_to_end_tracing_globally_enabled = (
+    os.getenv("SPANNER_ENABLE_END_TO_END_TRACING", "").lower() == "true"
+)
 
 
 def get_tracer(tracer_provider=None):
@@ -58,7 +64,9 @@ def get_tracer(tracer_provider=None):
 
 
 @contextmanager
-def trace_call(name, session=None, extra_attributes=None, observability_options=None):
+def trace_call(
+    name, session=None, extra_attributes=None, observability_options=None, metadata=None
+):
     if session:
         session._last_use_time = datetime.now()
 
@@ -74,6 +82,8 @@ def trace_call(name, session=None, extra_attributes=None, observability_options=
     # on by default.
     enable_extended_tracing = True
 
+    enable_end_to_end_tracing = False
+
     db_name = ""
     if session and getattr(session, "_database", None):
         db_name = session._database.name
@@ -82,6 +92,9 @@ def trace_call(name, session=None, extra_attributes=None, observability_options=
         tracer_provider = observability_options.get("tracer_provider", None)
         enable_extended_tracing = observability_options.get(
             "enable_extended_tracing", enable_extended_tracing
+        )
+        enable_end_to_end_tracing = observability_options.get(
+            "enable_end_to_end_tracing", enable_end_to_end_tracing
         )
         db_name = observability_options.get("db_name", db_name)
 
@@ -110,11 +123,16 @@ def trace_call(name, session=None, extra_attributes=None, observability_options=
     if not enable_extended_tracing:
         attributes.pop("db.statement", False)
 
+    if end_to_end_tracing_globally_enabled:
+        enable_end_to_end_tracing = True
+
     with tracer.start_as_current_span(
         name, kind=trace.SpanKind.CLIENT, attributes=attributes
     ) as span:
         with MetricsCapture():
             try:
+                if enable_end_to_end_tracing:
+                    _metadata_with_span_context(metadata)
                 yield span
             except Exception as error:
                 span.set_status(Status(StatusCode.ERROR, str(error)))

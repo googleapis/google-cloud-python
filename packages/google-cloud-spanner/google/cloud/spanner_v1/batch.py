@@ -227,6 +227,7 @@ class Batch(_BatchBase):
             self._session,
             trace_attributes,
             observability_options=observability_options,
+            metadata=metadata,
         ), MetricsCapture():
             method = functools.partial(
                 api.commit,
@@ -349,6 +350,7 @@ class MutationGroups(_SessionWrapper):
             self._session,
             trace_attributes,
             observability_options=observability_options,
+            metadata=metadata,
         ), MetricsCapture():
             method = functools.partial(
                 api.batch_write,

@@ -160,6 +160,10 @@ class Client(ClientWithProject):
            Default `True`, please set it to `False` to turn it off
            or you can use the environment variable `SPANNER_ENABLE_EXTENDED_TRACING=<boolean>`
            to control it.
+           enable_end_to_end_tracing: :type:boolean when set to true will allow for spans from Spanner server side.
+           Default `False`, please set it to `True` to turn it on
+           or you can use the environment variable `SPANNER_ENABLE_END_TO_END_TRACING=<boolean>`
+           to control it.
 
     :raises: :class:`ValueError <exceptions.ValueError>` if both ``read_only``
              and ``admin`` are :data:`True`
