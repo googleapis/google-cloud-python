@@ -14,6 +14,18 @@ Older versions of this project were distributed as [pybigquery][0].
 [2]: https://pypi.org/project/pybigquery/#history
 
 
+## [1.13.0](https://github.com/googleapis/python-bigquery-sqlalchemy/compare/v1.12.1...v1.13.0) (2025-03-11)
+
+
+### Features
+
+* Support job_config at query level ([#1167](https://github.com/googleapis/python-bigquery-sqlalchemy/issues/1167)) ([ea849e0](https://github.com/googleapis/python-bigquery-sqlalchemy/commit/ea849e0bf288388c603f9d594c2a5042a6e16570))
+
+
+### Bug Fixes
+
+* Resolve issue where pre-release versions of dependencies are installed ([#1169](https://github.com/googleapis/python-bigquery-sqlalchemy/issues/1169)) ([8c27cca](https://github.com/googleapis/python-bigquery-sqlalchemy/commit/8c27cca5d2ed32662e3f23370692765b43c90de7))
+
 ## [1.12.1](https://github.com/googleapis/python-bigquery-sqlalchemy/compare/v1.12.0...v1.12.1) (2025-01-21)
 
 
