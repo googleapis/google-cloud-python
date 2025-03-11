@@ -17,10 +17,11 @@ import importlib.util
 import inspect
 import math  # must keep this at top level to test udf referring global import
 import os.path
+import re
 import shutil
-import sys
 import tempfile
 import textwrap
+import typing
 import warnings
 
 import google.api_core.exceptions
@@ -48,12 +49,6 @@ from tests.system.utils import (
 # remote functions
 _team_pi = "Team Pi"
 _team_euler = "Team Euler"
-
-
-pytestmark = pytest.mark.skipif(
-    sys.version_info >= (3, 13),
-    reason="Runtime 'python313' is not supported yet. Skip for now.",
-)
 
 
 def make_uniq_udf(udf):
@@ -1323,14 +1318,38 @@ def test_remote_function_via_session_custom_sa(scalars_dfs):
         )
 
 
-def test_remote_function_warns_default_cloud_function_service_account():
-    project = "bigframes-dev-perf"
-    rf_session = bigframes.Session(context=bigframes.BigQueryOptions(project=project))
+@pytest.mark.parametrize(
+    ("remote_function_args"),
+    [
+        pytest.param(
+            {},
+            id="no-set",
+        ),
+        pytest.param(
+            {"cloud_function_service_account": None},
+            id="set-none",
+        ),
+    ],
+)
+def test_remote_function_warns_default_cloud_function_service_account(
+    session, remote_function_args
+):
+    with pytest.warns(FutureWarning) as record:
+        session.remote_function(**remote_function_args)
 
-    with pytest.warns(FutureWarning, match="You have not explicitly set a"):
-        rf_session.remote_function(
-            cloud_function_service_account=None,  # Explicitly omit service account.
-        )
+    len(
+        [
+            warn
+            for warn in record
+            if re.search(
+                (
+                    "You have not explicitly set a user-managed.*Using the default Compute Engine.*service account"
+                ),
+                typing.cast(FutureWarning, warn.message).args[0],
+                re.DOTALL,
+            )
+        ]
+    ) == 1
 
 
 @pytest.mark.flaky(retries=2, delay=120)
@@ -2319,36 +2338,40 @@ def test_df_apply_axis_1_array_output(session, scalars_dfs):
 
 
 @pytest.mark.parametrize(
-    ("ingress_settings_args", "effective_ingress_settings", "expected_warning"),
+    (
+        "ingress_settings_args",
+        "effective_ingress_settings",
+        "expect_default_ingress_setting_warning",
+    ),
     [
         pytest.param(
             {},
             functions_v2.ServiceConfig.IngressSettings.ALLOW_ALL,
-            FutureWarning,
+            True,
             id="no-set",
         ),
         pytest.param(
             {"cloud_function_ingress_settings": None},
             functions_v2.ServiceConfig.IngressSettings.ALLOW_ALL,
-            FutureWarning,
+            True,
             id="set-none",
         ),
         pytest.param(
             {"cloud_function_ingress_settings": "all"},
             functions_v2.ServiceConfig.IngressSettings.ALLOW_ALL,
-            None,
+            False,
             id="set-all",
         ),
         pytest.param(
             {"cloud_function_ingress_settings": "internal-only"},
             functions_v2.ServiceConfig.IngressSettings.ALLOW_INTERNAL_ONLY,
-            None,
+            False,
             id="set-internal-only",
         ),
         pytest.param(
             {"cloud_function_ingress_settings": "internal-and-gclb"},
             functions_v2.ServiceConfig.IngressSettings.ALLOW_INTERNAL_AND_GCLB,
-            None,
+            False,
             id="set-internal-and-gclb",
         ),
     ],
@@ -2359,11 +2382,11 @@ def test_remote_function_ingress_settings(
     scalars_dfs,
     ingress_settings_args,
     effective_ingress_settings,
-    expected_warning,
+    expect_default_ingress_setting_warning,
 ):
     try:
         # Verify the function raises the expected security warning message.
-        with warnings.catch_warnings(record=True) as w:
+        with warnings.catch_warnings(record=True) as record:
 
             def square(x: int) -> int:
                 return x * x
@@ -2372,11 +2395,18 @@ def test_remote_function_ingress_settings(
                 reuse=False, **ingress_settings_args
             )(square)
 
-            if expected_warning is not None:
-                assert issubclass(w[0].category, FutureWarning)
-                assert "Consider using 'internal-only' for enhanced security." in str(
-                    w[0].message
-                )
+        default_ingress_setting_warnings = [
+            warn
+            for warn in record
+            if isinstance(warn.message, FutureWarning)
+            and "`cloud_function_ingress_settings` are set to 'all' by default"
+            in warn.message.args[0]
+            and "will change to 'internal-only' for enhanced security in future"
+            in warn.message.args[0]
+        ]
+        assert len(default_ingress_setting_warnings) == (
+            1 if expect_default_ingress_setting_warning else 0
+        )
 
         # Assert that the GCF is created with the intended maximum timeout
         gcf = session.cloudfunctionsclient.get_function(

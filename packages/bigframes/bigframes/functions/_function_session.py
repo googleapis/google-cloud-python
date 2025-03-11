@@ -47,7 +47,6 @@ from google.cloud import (
 )
 
 from bigframes import clients
-from bigframes import version as bigframes_version
 import bigframes.core.compile.ibis_types
 import bigframes.exceptions as bfe
 import bigframes.series as bf_series
@@ -458,16 +457,13 @@ class FunctionSession:
         msg = bfe.format_message(
             "You have not explicitly set a user-managed `cloud_function_service_account`. "
             "Using the default Compute Engine service account. "
-            "To use Bigframes 2.0, please explicitly set `cloud_function_service_account` "
+            "In BigFrames 2.0 onwards, you would have to explicitly set `cloud_function_service_account` "
             'either to a user-managed service account (preferred) or to `"default"` '
-            "to use the Compute Engine service account (discouraged). "
+            "to use the default Compute Engine service account (discouraged). "
             "See, https://cloud.google.com/functions/docs/securing/function-identity."
         )
 
-        if (
-            bigframes_version.__version__.startswith("1.")
-            and cloud_function_service_account is None
-        ):
+        if cloud_function_service_account is None:
             warnings.warn(msg, stacklevel=2, category=FutureWarning)
 
         if cloud_function_service_account == "default":
