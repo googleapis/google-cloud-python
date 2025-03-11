@@ -34,3 +34,7 @@ tests/data/user-key.json
 # Generated files
 pylintrc
 pylintrc.test
+
+# Test logs
+coverage.xml
+*sponge_log.xml

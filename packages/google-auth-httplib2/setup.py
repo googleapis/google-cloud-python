@@ -18,8 +18,10 @@ from setuptools import setup
 
 version = "0.2.0"
 
-DEPENDENCIES = ["google-auth", "httplib2 >= 0.19.0"]
-
+DEPENDENCIES = [
+    "google-auth >= 1.32.0,<3.0.0",
+    "httplib2 >= 0.19.0,<1.0.0",
+]
 
 with io.open("README.rst", "r") as fh:
     long_description = fh.read()
@@ -34,18 +36,19 @@ setup(
     long_description=long_description,
     url="https://github.com/GoogleCloudPlatform/google-auth-library-python-httplib2",
     py_modules=["google_auth_httplib2"],
+    python_requires=">=3.7",
     install_requires=DEPENDENCIES,
     license="Apache 2.0",
     keywords="google auth oauth client",
     classifiers=[
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
         "Programming Language :: Python :: 3.11",
         "Programming Language :: Python :: 3.12",
+        "Programming Language :: Python :: 3.13",
         "Development Status :: 3 - Alpha",
         "Intended Audience :: Developers",
         "License :: OSI Approved :: Apache Software License",

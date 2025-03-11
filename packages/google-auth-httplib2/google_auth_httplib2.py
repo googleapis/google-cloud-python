@@ -78,8 +78,6 @@ class Request(transport.Request):
     Args:
         http (httplib2.Http): The underlying http object to use to make
             requests.
-
-    .. automethod:: __call__
     """
 
     def __init__(self, http):
@@ -146,7 +144,7 @@ class AuthorizedHttp(object):
 
     This class implements :meth:`request` in the same way as
     :class:`httplib2.Http` and can usually be used just like any other
-    instance of :class:``httplib2.Http`.
+    instance of :class:`httplib2.Http`.
 
     The underlying :meth:`request` implementation handles adding the
     credentials' headers to the request and refreshing credentials as needed.
@@ -234,7 +232,6 @@ class AuthorizedHttp(object):
             response.status in self._refresh_status_codes
             and _credential_refresh_attempt < self._max_refresh_attempts
         ):
-
             _LOGGER.info(
                 "Refreshing credentials due to a %s response. Attempt %s/%s.",
                 response.status,
