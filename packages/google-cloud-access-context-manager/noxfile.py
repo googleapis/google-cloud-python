@@ -527,7 +527,7 @@ def core_deps_from_source(session, protobuf_implementation):
     # Install dependencies specified in `testing/constraints-X.txt`.
     session.install(*constraints_deps)
 
-    # TODO(hhttps://github.com/googleapis/gapic-generator-python/issues/2358): `grpcio` and
+    # TODO(https://github.com/googleapis/gapic-generator-python/issues/2358): `grpcio` and
     # `grpcio-status` should be added to the list below so that it is installed from source, rather than PyPI
     # TODO(https://github.com/googleapis/gapic-generator-python/issues/2357): `protobuf` should be
     # added to the list below so that it is installed from source, rather than PyPI
