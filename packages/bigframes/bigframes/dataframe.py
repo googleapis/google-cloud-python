@@ -778,15 +778,15 @@ class DataFrame(vendored_pandas_frame.DataFrame):
 
                 def obj_ref_rt_to_html(obj_ref_rt) -> str:
                     obj_ref_rt_json = json.loads(obj_ref_rt)
-                    gcs_metadata = obj_ref_rt_json["objectref"]["details"][
-                        "gcs_metadata"
-                    ]
-                    content_type = typing.cast(
-                        str, gcs_metadata.get("content_type", "")
-                    )
-                    if content_type.startswith("image"):
-                        url = obj_ref_rt_json["access_urls"]["read_url"]
-                        return f'<img src="{url}">'
+                    obj_ref_details = obj_ref_rt_json["objectref"]["details"]
+                    if "gcs_metadata" in obj_ref_details:
+                        gcs_metadata = obj_ref_details["gcs_metadata"]
+                        content_type = typing.cast(
+                            str, gcs_metadata.get("content_type", "")
+                        )
+                        if content_type.startswith("image"):
+                            url = obj_ref_rt_json["access_urls"]["read_url"]
+                            return f'<img src="{url}">'
 
                     return f'uri: {obj_ref_rt_json["objectref"]["uri"]}, authorizer: {obj_ref_rt_json["objectref"]["authorizer"]}'
 

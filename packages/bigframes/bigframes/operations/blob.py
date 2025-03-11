@@ -18,6 +18,7 @@ import os
 from typing import cast, Optional, Union
 
 import IPython.display as ipy_display
+import pandas as pd
 import requests
 
 from bigframes import clients
@@ -209,8 +210,15 @@ class BlobAccessor(base.SeriesMethods):
         else:
             df["content_type"] = df["blob_col"].blob.content_type()
 
-        def display_single_url(read_url: str, content_type: str):
-            content_type = content_type.casefold()
+        def display_single_url(
+            read_url: str, content_type: Union[str, pd._libs.missing.NAType]
+        ):
+            if content_type is pd.NA:  # display as raw data or error
+                response = requests.get(read_url)
+                ipy_display.display(response.content)
+                return
+
+            content_type = cast(str, content_type).casefold()
 
             if content_type.startswith("image"):
                 ipy_display.display(ipy_display.Image(url=read_url))
