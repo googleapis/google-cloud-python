@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery-storage/#history
 
+## [2.29.0](https://github.com/googleapis/python-bigquery-storage/compare/v2.28.0...v2.29.0) (2025-03-11)
+
+
+### Features
+
+* Add Connection class ([#888](https://github.com/googleapis/python-bigquery-storage/issues/888)) ([8d342ee](https://github.com/googleapis/python-bigquery-storage/commit/8d342eec2068c42ac7b5254f80cb20eabf374477))
+* Add REST Interceptors which support reading metadata ([#884](https://github.com/googleapis/python-bigquery-storage/issues/884)) ([50a37af](https://github.com/googleapis/python-bigquery-storage/commit/50a37af5057ec9526ffdab368067efe11d71d455))
+
+
+### Bug Fixes
+
+* Allow protobuf 6.x ([#905](https://github.com/googleapis/python-bigquery-storage/issues/905)) ([54e4802](https://github.com/googleapis/python-bigquery-storage/commit/54e480289a4c7271b64ddcc2b05209dccc6b3111))
+
 ## [2.28.0](https://github.com/googleapis/python-bigquery-storage/compare/v2.27.0...v2.28.0) (2025-01-28)
 
 
