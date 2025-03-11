@@ -121,6 +121,7 @@ from .datascans import (
     UpdateDataScanRequest,
 )
 from .logs import (
+    BusinessGlossaryEvent,
     DataQualityScanRuleResult,
     DataScanEvent,
     DiscoveryEvent,
@@ -299,6 +300,7 @@ __all__ = (
     "RunDataScanResponse",
     "UpdateDataScanRequest",
     "DataScanType",
+    "BusinessGlossaryEvent",
     "DataQualityScanRuleResult",
     "DataScanEvent",
     "DiscoveryEvent",
