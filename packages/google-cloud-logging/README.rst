@@ -14,7 +14,7 @@ Logging configuration.
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-logging.svg
    :target: https://pypi.org/project/google-cloud-logging/
 .. _Cloud Logging API: https://cloud.google.com/logging
-.. _Client Library Documentation: https://googleapis.dev/python/logging/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/logging/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/logging/docs
 .. _Setting Up Cloud Logging for Python: https://cloud.google.com/logging/docs/setup/python
 .. _Python's standard logging library: https://docs.python.org/2/library/logging.html
