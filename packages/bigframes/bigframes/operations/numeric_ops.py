@@ -124,9 +124,9 @@ class AddOp(base_ops.BinaryOp):
             return input_types[0]
 
         # Temporal addition.
-        if dtypes.is_datetime_like(left_type) and right_type is dtypes.TIMEDELTA_DTYPE:
+        if dtypes.is_datetime_like(left_type) and right_type == dtypes.TIMEDELTA_DTYPE:
             return left_type
-        if left_type is dtypes.TIMEDELTA_DTYPE and dtypes.is_datetime_like(right_type):
+        if left_type == dtypes.TIMEDELTA_DTYPE and dtypes.is_datetime_like(right_type):
             return right_type
 
         if left_type == dtypes.DATE_DTYPE and right_type == dtypes.TIMEDELTA_DTYPE:
@@ -135,7 +135,7 @@ class AddOp(base_ops.BinaryOp):
         if left_type == dtypes.TIMEDELTA_DTYPE and right_type == dtypes.DATE_DTYPE:
             return dtypes.DATETIME_DTYPE
 
-        if left_type is dtypes.TIMEDELTA_DTYPE and right_type is dtypes.TIMEDELTA_DTYPE:
+        if left_type == dtypes.TIMEDELTA_DTYPE and right_type == dtypes.TIMEDELTA_DTYPE:
             return dtypes.TIMEDELTA_DTYPE
 
         if (left_type is None or dtypes.is_numeric(left_type)) and (
@@ -164,13 +164,13 @@ class SubOp(base_ops.BinaryOp):
         if left_type == dtypes.DATE_DTYPE and right_type == dtypes.DATE_DTYPE:
             return dtypes.TIMEDELTA_DTYPE
 
-        if dtypes.is_datetime_like(left_type) and right_type is dtypes.TIMEDELTA_DTYPE:
+        if dtypes.is_datetime_like(left_type) and right_type == dtypes.TIMEDELTA_DTYPE:
             return left_type
 
         if left_type == dtypes.DATE_DTYPE and right_type == dtypes.TIMEDELTA_DTYPE:
             return dtypes.DATETIME_DTYPE
 
-        if left_type is dtypes.TIMEDELTA_DTYPE and right_type is dtypes.TIMEDELTA_DTYPE:
+        if left_type == dtypes.TIMEDELTA_DTYPE and right_type == dtypes.TIMEDELTA_DTYPE:
             return dtypes.TIMEDELTA_DTYPE
 
         if (left_type is None or dtypes.is_numeric(left_type)) and (
@@ -193,9 +193,9 @@ class MulOp(base_ops.BinaryOp):
         left_type = input_types[0]
         right_type = input_types[1]
 
-        if left_type is dtypes.TIMEDELTA_DTYPE and dtypes.is_numeric(right_type):
+        if left_type == dtypes.TIMEDELTA_DTYPE and dtypes.is_numeric(right_type):
             return dtypes.TIMEDELTA_DTYPE
-        if dtypes.is_numeric(left_type) and right_type is dtypes.TIMEDELTA_DTYPE:
+        if dtypes.is_numeric(left_type) and right_type == dtypes.TIMEDELTA_DTYPE:
             return dtypes.TIMEDELTA_DTYPE
 
         if (left_type is None or dtypes.is_numeric(left_type)) and (
@@ -217,10 +217,10 @@ class DivOp(base_ops.BinaryOp):
         left_type = input_types[0]
         right_type = input_types[1]
 
-        if left_type is dtypes.TIMEDELTA_DTYPE and dtypes.is_numeric(right_type):
+        if left_type == dtypes.TIMEDELTA_DTYPE and dtypes.is_numeric(right_type):
             return dtypes.TIMEDELTA_DTYPE
 
-        if left_type is dtypes.TIMEDELTA_DTYPE and right_type is dtypes.TIMEDELTA_DTYPE:
+        if left_type == dtypes.TIMEDELTA_DTYPE and right_type == dtypes.TIMEDELTA_DTYPE:
             return dtypes.FLOAT_DTYPE
 
         if (left_type is None or dtypes.is_numeric(left_type)) and (
@@ -244,10 +244,10 @@ class FloorDivOp(base_ops.BinaryOp):
         left_type = input_types[0]
         right_type = input_types[1]
 
-        if left_type is dtypes.TIMEDELTA_DTYPE and dtypes.is_numeric(right_type):
+        if left_type == dtypes.TIMEDELTA_DTYPE and dtypes.is_numeric(right_type):
             return dtypes.TIMEDELTA_DTYPE
 
-        if left_type is dtypes.TIMEDELTA_DTYPE and right_type is dtypes.TIMEDELTA_DTYPE:
+        if left_type == dtypes.TIMEDELTA_DTYPE and right_type == dtypes.TIMEDELTA_DTYPE:
             return dtypes.INT_DTYPE
 
         if (left_type is None or dtypes.is_numeric(left_type)) and (

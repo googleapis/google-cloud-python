@@ -142,7 +142,7 @@ class SumOp(UnaryAggregateOp):
     name: ClassVar[str] = "sum"
 
     def output_type(self, *input_types: dtypes.ExpressionType) -> dtypes.ExpressionType:
-        if input_types[0] is dtypes.TIMEDELTA_DTYPE:
+        if input_types[0] == dtypes.TIMEDELTA_DTYPE:
             return dtypes.TIMEDELTA_DTYPE
 
         if dtypes.is_numeric(input_types[0]):
@@ -185,7 +185,7 @@ class QuantileOp(UnaryAggregateOp):
         return True
 
     def output_type(self, *input_types: dtypes.ExpressionType) -> dtypes.ExpressionType:
-        if input_types[0] is dtypes.TIMEDELTA_DTYPE:
+        if input_types[0] == dtypes.TIMEDELTA_DTYPE:
             return dtypes.TIMEDELTA_DTYPE
         return signatures.UNARY_REAL_NUMERIC.output_type(input_types[0])
 
@@ -233,7 +233,7 @@ class MeanOp(UnaryAggregateOp):
     should_floor_result: bool = False
 
     def output_type(self, *input_types: dtypes.ExpressionType) -> dtypes.ExpressionType:
-        if input_types[0] is dtypes.TIMEDELTA_DTYPE:
+        if input_types[0] == dtypes.TIMEDELTA_DTYPE:
             return dtypes.TIMEDELTA_DTYPE
         return signatures.UNARY_REAL_NUMERIC.output_type(input_types[0])
 
@@ -275,7 +275,7 @@ class StdOp(UnaryAggregateOp):
     should_floor_result: bool = False
 
     def output_type(self, *input_types: dtypes.ExpressionType) -> dtypes.ExpressionType:
-        if input_types[0] is dtypes.TIMEDELTA_DTYPE:
+        if input_types[0] == dtypes.TIMEDELTA_DTYPE:
             return dtypes.TIMEDELTA_DTYPE
 
         return signatures.FixedOutputType(

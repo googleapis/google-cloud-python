@@ -46,7 +46,7 @@ class TimedeltaFloorOp(base_ops.UnaryOp):
 
     def output_type(self, *input_types: dtypes.ExpressionType) -> dtypes.ExpressionType:
         input_type = input_types[0]
-        if dtypes.is_numeric(input_type) or input_type is dtypes.TIMEDELTA_DTYPE:
+        if dtypes.is_numeric(input_type) or input_type == dtypes.TIMEDELTA_DTYPE:
             return dtypes.TIMEDELTA_DTYPE
         raise TypeError(f"unsupported type: {input_type}")
 
@@ -62,11 +62,11 @@ class TimestampAddOp(base_ops.BinaryOp):
         # timestamp + timedelta => timestamp
         if (
             dtypes.is_datetime_like(input_types[0])
-            and input_types[1] is dtypes.TIMEDELTA_DTYPE
+            and input_types[1] == dtypes.TIMEDELTA_DTYPE
         ):
             return input_types[0]
         # timedelta + timestamp => timestamp
-        if input_types[0] is dtypes.TIMEDELTA_DTYPE and dtypes.is_datetime_like(
+        if input_types[0] == dtypes.TIMEDELTA_DTYPE and dtypes.is_datetime_like(
             input_types[1]
         ):
             return input_types[1]
@@ -87,7 +87,7 @@ class TimestampSubOp(base_ops.BinaryOp):
         # timestamp - timedelta => timestamp
         if (
             dtypes.is_datetime_like(input_types[0])
-            and input_types[1] is dtypes.TIMEDELTA_DTYPE
+            and input_types[1] == dtypes.TIMEDELTA_DTYPE
         ):
             return input_types[0]
 
