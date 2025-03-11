@@ -53,6 +53,8 @@
         amount of time for the query to complete will not be cleared after the
         query is finished. By default, this information will be displayed but
         will be cleared after the query is finished.
+    * ``--graph`` (Optional[line argument]):
+        Visualizes the query result as a graph.
     * ``--use_geodataframe <params>`` (Optional[line argument]):
         Return the query result as a geopandas.GeoDataFrame.
         If present, the argument that follows the ``--use_geodataframe`` flag
@@ -61,7 +63,6 @@
 
         See geopandas.GeoDataFrame for details.
         The Coordinate Reference System will be set to “EPSG:4326”.
-
     * ``--params <params>`` (Optional[line argument]):
         If present, the argument following the ``--params`` flag must be
         either:
@@ -97,14 +98,15 @@ from __future__ import print_function
 import ast
 from concurrent import futures
 import copy
+import json
 import re
 import sys
+import threading
 import time
 from typing import Any, List, Tuple
 import warnings
 
 import IPython  # type: ignore
-from IPython import display  # type: ignore
 from IPython.core import magic_arguments  # type: ignore
 from IPython.core.getipython import get_ipython
 from google.api_core import client_info
@@ -114,10 +116,12 @@ from google.cloud.bigquery import exceptions
 from google.cloud.bigquery.dataset import DatasetReference
 from google.cloud.bigquery.dbapi import _helpers
 from google.cloud.bigquery.job import QueryJobConfig
+import pandas
 
 from bigquery_magics import line_arg_parser as lap
 import bigquery_magics._versions_helpers
 import bigquery_magics.config
+import bigquery_magics.graph_server as graph_server
 import bigquery_magics.line_arg_parser.exceptions
 import bigquery_magics.version
 
@@ -391,6 +395,12 @@ def _create_dataset_if_necessary(client, dataset_id):
         "Defaults to engine set in the query setting in console."
     ),
 )
+@magic_arguments.argument(
+    "--graph",
+    action="store_true",
+    default=False,
+    help=("Visualizes the query results as a graph"),
+)
 def _cell_magic(line, query):
     """Underlying function for bigquery cell magic
 
@@ -425,7 +435,7 @@ def _cell_magic(line, query):
 
 def _parse_magic_args(line: str) -> Tuple[List[Any], Any]:
     # The built-in parser does not recognize Python structures such as dicts, thus
-    # we extract the "--params" option and inteprpret it separately.
+    # we extract the "--params" option and interpret it separately.
     try:
         params_option_value, rest_of_args = _split_args_line(line)
 
@@ -586,6 +596,72 @@ def _handle_result(result, args):
     return result
 
 
+def _is_colab() -> bool:
+    """Check if code is running in Google Colab"""
+    try:
+        import google.colab  # noqa: F401
+
+        return True
+    except ImportError:
+        return False
+
+
+def _colab_callback(query: str, params: str):
+    return IPython.core.display.JSON(
+        graph_server.convert_graph_data(query_results=json.loads(params))
+    )
+
+
+singleton_server_thread: threading.Thread = None
+
+
+def _add_graph_widget(query_result):
+    try:
+        from spanner_graphs.graph_visualization import generate_visualization_html
+    except ImportError as err:
+        customized_error = ImportError(
+            "Use of --graph requires the spanner-graph-notebook package to be installed. Install it with `pip install 'bigquery-magics[spanner-graph-notebook]'`."
+        )
+        raise customized_error from err
+
+    # In Jupyter, create an http server to be invoked from the Javascript to populate the
+    # visualizer widget. In colab, we are not able to create an http server on a
+    # background thread, so we use a special colab-specific api to register a callback,
+    # to be invoked from Javascript.
+    if _is_colab():
+        from google.colab import output
+
+        output.register_callback("graph_visualization.Query", _colab_callback)
+    else:
+        global singleton_server_thread
+        alive = singleton_server_thread and singleton_server_thread.is_alive()
+        if not alive:
+            singleton_server_thread = graph_server.graph_server.init()
+
+    # Create html to invoke the graph server
+    html_content = generate_visualization_html(
+        query="placeholder query",
+        port=graph_server.graph_server.port,
+        params=query_result.to_json().replace("\\", "\\\\").replace('"', '\\"'),
+    )
+    IPython.display.display(IPython.core.display.HTML(html_content))
+
+
+def _is_valid_json(s: str):
+    try:
+        json.loads(s)
+        return True
+    except (json.JSONDecodeError, TypeError):
+        return False
+
+
+def _supports_graph_widget(query_result: pandas.DataFrame):
+    num_rows, num_columns = query_result.shape
+    if num_columns != 1:
+        return False
+    return query_result[query_result.columns[0]].apply(_is_valid_json).all()
+
+
 def _make_bq_query(
     query: str,
     args: Any,
@@ -634,7 +710,7 @@ def _make_bq_query(
         return
 
     if not args.verbose:
-        display.clear_output()
+        IPython.display.clear_output()
 
     if args.dry_run:
         # TODO(tswast): Use _handle_result() here, too, but perhaps change the
@@ -671,6 +747,8 @@ def _make_bq_query(
     else:
         result = result.to_dataframe(**dataframe_kwargs)
 
+    if args.graph and _supports_graph_widget(result):
+        _add_graph_widget(result)
     return _handle_result(result, args)
 
 

@@ -56,6 +56,11 @@ extras = {
     ],
     "bigframes": ["bigframes >= 1.17.0"],
     "geopandas": ["geopandas >= 1.0.1"],
+    "spanner-graph-notebook": [
+        "spanner-graph-notebook >= 1.1.1, <=1.1.1",
+        "networkx",
+        "portpicker",
+    ],
 }
 
 all_extras = []

@@ -66,7 +66,10 @@ UNIT_TEST_EXTRAS_BY_PYTHON: Dict[str, List[str]] = {
         "geopandas",
     ],
     "3.11": [],
-    "3.12": [],
+    "3.12": [
+        "bqstorage",
+        "spanner-graph-notebook",
+    ],
     "3.13": [
         "bqstorage",
         "bigframes",
@@ -102,7 +105,10 @@ SYSTEM_TEST_EXTRAS_BY_PYTHON: Dict[str, List[str]] = {
         "geopandas",
     ],
     "3.11": [],
-    "3.12": [],
+    "3.12": [
+        "bqstorage",
+        "spanner-graph-notebook",
+    ],
     "3.13": [
         "bqstorage",
         "bigframes",

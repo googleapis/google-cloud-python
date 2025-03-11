@@ -15,7 +15,9 @@
 from concurrent import futures
 import contextlib
 import copy
+import json
 import re
+import sys
 from unittest import mock
 import warnings
 
@@ -47,6 +49,11 @@ try:
     import bigframes.pandas as bpd
 except ImportError:
     bpd = None
+
+try:
+    import spanner_graphs.graph_visualization as graph_visualization
+except ImportError:
+    graph_visualization = None
 
 try:
     import geopandas as gpd
@@ -464,6 +471,492 @@ def test_bigquery_magic_without_optional_arguments(monkeypatch):
 
 
 @pytest.mark.usefixtures("ipython_interactive")
+@pytest.mark.skipif(
+    graph_visualization is not None or bigquery_storage is None,
+    reason="Requires `spanner-graph-notebook` to be missing and `google-cloud-bigquery-storage` to be present",
+)
+def test_bigquery_graph_spanner_graph_notebook_missing(monkeypatch):
+    ip = IPython.get_ipython()
+    ip.extension_manager.load_extension("bigquery_magics")
+    mock_credentials = mock.create_autospec(
+        google.auth.credentials.Credentials, instance=True
+    )
+
+    # Set up the context with monkeypatch so that it's reset for subsequent
+    # tests.
+    monkeypatch.setattr(bigquery_magics.context, "_credentials", mock_credentials)
+
+    # Mock out the BigQuery Storage API.
+    bqstorage_mock = mock.create_autospec(bigquery_storage.BigQueryReadClient)
+    bqstorage_instance_mock = mock.create_autospec(
+        bigquery_storage.BigQueryReadClient, instance=True
+    )
+    bqstorage_instance_mock._transport = mock.Mock()
+    bqstorage_mock.return_value = bqstorage_instance_mock
+    bqstorage_client_patch = mock.patch(
+        "google.cloud.bigquery_storage.BigQueryReadClient", bqstorage_mock
+    )
+    display_patch = mock.patch("IPython.display.display", autospec=True)
+
+    sql = "SELECT 3 AS result"
+    result = pandas.DataFrame(["abc"], columns=["s"])
+    run_query_patch = mock.patch("bigquery_magics.bigquery._run_query", autospec=True)
+    query_job_mock = mock.create_autospec(
+        google.cloud.bigquery.job.QueryJob, instance=True
+    )
+    query_job_mock.to_dataframe.return_value = result
+
+    with run_query_patch as run_query_mock, (
+        bqstorage_client_patch
+    ), display_patch as display_mock:
+        run_query_mock.return_value = query_job_mock
+        return_value = ip.run_cell_magic("bigquery", "--graph", sql)
+
+        # Since the query result is not valid JSON, the visualizer should not be displayed.
+        display_mock.assert_not_called()
+
+    assert bqstorage_mock.called  # BQ storage client was used
+    assert isinstance(return_value, pandas.DataFrame)
+    assert len(return_value) == len(result)  # verify row count
+    assert list(return_value) == list(result)  # verify column names
+
+
+@pytest.mark.usefixtures("ipython_interactive")
+@pytest.mark.skipif(
+    graph_visualization is None or bigquery_storage is None,
+    reason="Requires `spanner-graph-notebook` and `google-cloud-bigquery-storage`",
+)
+def test_bigquery_graph_int_result(monkeypatch):
+    ip = IPython.get_ipython()
+    ip.extension_manager.load_extension("bigquery_magics")
+    mock_credentials = mock.create_autospec(
+        google.auth.credentials.Credentials, instance=True
+    )
+
+    # Set up the context with monkeypatch so that it's reset for subsequent
+    # tests.
+    monkeypatch.setattr(bigquery_magics.context, "_credentials", mock_credentials)
+
+    # Mock out the BigQuery Storage API.
+    bqstorage_mock = mock.create_autospec(bigquery_storage.BigQueryReadClient)
+    bqstorage_instance_mock = mock.create_autospec(
+        bigquery_storage.BigQueryReadClient, instance=True
+    )
+    bqstorage_instance_mock._transport = mock.Mock()
+    bqstorage_mock.return_value = bqstorage_instance_mock
+    bqstorage_client_patch = mock.patch(
+        "google.cloud.bigquery_storage.BigQueryReadClient", bqstorage_mock
+    )
+    display_patch = mock.patch("IPython.display.display", autospec=True)
+
+    sql = "SELECT 3 AS result"
+    result = pandas.DataFrame(["abc"], columns=["s"])
+    run_query_patch = mock.patch("bigquery_magics.bigquery._run_query", autospec=True)
+    query_job_mock = mock.create_autospec(
+        google.cloud.bigquery.job.QueryJob, instance=True
+    )
+    query_job_mock.to_dataframe.return_value = result
+
+    with run_query_patch as run_query_mock, (
+        bqstorage_client_patch
+    ), display_patch as display_mock:
+        run_query_mock.return_value = query_job_mock
+        return_value = ip.run_cell_magic("bigquery", "--graph", sql)
+
+        # Since the query result is not valid JSON, the visualizer should not be displayed.
+        display_mock.assert_not_called()
+
+    assert bqstorage_mock.called  # BQ storage client was used
+    assert isinstance(return_value, pandas.DataFrame)
+    assert len(return_value) == len(result)  # verify row count
+    assert list(return_value) == list(result)  # verify column names
+
+
+@pytest.mark.usefixtures("ipython_interactive")
+@pytest.mark.skipif(
+    graph_visualization is None or bigquery_storage is None,
+    reason="Requires `spanner-graph-notebook` and `google-cloud-bigquery-storage`",
+)
+def test_bigquery_graph_str_result(monkeypatch):
+    ip = IPython.get_ipython()
+    ip.extension_manager.load_extension("bigquery_magics")
+    mock_credentials = mock.create_autospec(
+        google.auth.credentials.Credentials, instance=True
+    )
+
+    # Set up the context with monkeypatch so that it's reset for subsequent
+    # tests.
+    monkeypatch.setattr(bigquery_magics.context, "_credentials", mock_credentials)
+
+    # Mock out the BigQuery Storage API.
+    bqstorage_mock = mock.create_autospec(bigquery_storage.BigQueryReadClient)
+    bqstorage_instance_mock = mock.create_autospec(
+        bigquery_storage.BigQueryReadClient, instance=True
+    )
+    bqstorage_instance_mock._transport = mock.Mock()
+    bqstorage_mock.return_value = bqstorage_instance_mock
+    bqstorage_client_patch = mock.patch(
+        "google.cloud.bigquery_storage.BigQueryReadClient", bqstorage_mock
+    )
+    display_patch = mock.patch("IPython.display.display", autospec=True)
+
+    sql = "SELECT 'abc' AS s"
+    result = pandas.DataFrame(["abc"], columns=["s"])
+    run_query_patch = mock.patch("bigquery_magics.bigquery._run_query", autospec=True)
+    query_job_mock = mock.create_autospec(
+        google.cloud.bigquery.job.QueryJob, instance=True
+    )
+    query_job_mock.to_dataframe.return_value = result
+
+    with run_query_patch as run_query_mock, (
+        bqstorage_client_patch
+    ), display_patch as display_mock:
+        run_query_mock.return_value = query_job_mock
+        return_value = ip.run_cell_magic("bigquery", "--graph", sql)
+
+        # Since the query result is not valid JSON, the visualizer should not be displayed.
+        display_mock.assert_not_called()
+
+    assert bqstorage_mock.called  # BQ storage client was used
+    assert isinstance(return_value, pandas.DataFrame)
+    assert len(return_value) == len(result)  # verify row count
+    assert list(return_value) == list(result)  # verify column names
+
+
+@pytest.mark.usefixtures("ipython_interactive")
+@pytest.mark.skipif(
+    graph_visualization is None or bigquery_storage is None,
+    reason="Requires `spanner-graph-notebook` and `google-cloud-bigquery-storage`",
+)
+def test_bigquery_graph_json_json_result(monkeypatch):
+    ip = IPython.get_ipython()
+    ip.extension_manager.load_extension("bigquery_magics")
+    mock_credentials = mock.create_autospec(
+        google.auth.credentials.Credentials, instance=True
+    )
+
+    # Set up the context with monkeypatch so that it's reset for subsequent
+    # tests.
+    monkeypatch.setattr(bigquery_magics.context, "_credentials", mock_credentials)
+
+    # Mock out the BigQuery Storage API.
+    bqstorage_mock = mock.create_autospec(bigquery_storage.BigQueryReadClient)
+    bqstorage_instance_mock = mock.create_autospec(
+        bigquery_storage.BigQueryReadClient, instance=True
+    )
+    bqstorage_instance_mock._transport = mock.Mock()
+    bqstorage_mock.return_value = bqstorage_instance_mock
+    bqstorage_client_patch = mock.patch(
+        "google.cloud.bigquery_storage.BigQueryReadClient", bqstorage_mock
+    )
+    display_patch = mock.patch("IPython.display.display", autospec=True)
+
+    sql = "SELECT graph_json, graph_json AS graph_json2 FROM t"
+    graph_json_rows = [
+        """
+        [{"identifier":"mUZpbkdyYXBoLlBlcnNvbgB4kQI=","kind":"node","labels":["Person"],"properties":{"birthday":"1991-12-21T08:00:00Z","city":"Adelaide","country":"Australia","id":1,"name":"Alex"}},{"destination_node_identifier":"mUZpbkdyYXBoLkFjY291bnQAeJEO","identifier":"mUZpbkdyYXBoLlBlcnNvbk93bkFjY291bnQAeJECkQ6ZRmluR3JhcGguUGVyc29uAHiRAplGaW5HcmFwaC5BY2NvdW50AHiRDg==","kind":"edge","labels":["Owns"],"properties":{"account_id":7,"create_time":"2020-01-10T14:22:20.222Z","id":1},"source_node_identifier":"mUZpbkdyYXBoLlBlcnNvbgB4kQI="},{"identifier":"mUZpbkdyYXBoLkFjY291bnQAeJEO","kind":"node","labels":["Account"],"properties":{"create_time":"2020-01-10T14:22:20.222Z","id":7,"is_blocked":false,"nick_name":"Vacation Fund"}}]
+        """,
+        """
+        [{"identifier":"mUZpbkdyYXBoLlBlcnNvbgB4kQY=","kind":"node","labels":["Person"],"properties":{"birthday":"1986-12-07T08:00:00Z","city":"Kollam","country":"India","id":3,"name":"Lee"}},{"destination_node_identifier":"mUZpbkdyYXBoLkFjY291bnQAeJEg","identifier":"mUZpbkdyYXBoLlBlcnNvbk93bkFjY291bnQAeJEGkSCZRmluR3JhcGguUGVyc29uAHiRBplGaW5HcmFwaC5BY2NvdW50AHiRIA==","kind":"edge","labels":["Owns"],"properties":{"account_id":16,"create_time":"2020-02-18T13:44:20.655Z","id":3},"source_node_identifier":"mUZpbkdyYXBoLlBlcnNvbgB4kQY="},{"identifier":"mUZpbkdyYXBoLkFjY291bnQAeJEg","kind":"node","labels":["Account"],"properties":{"create_time":"2020-01-28T01:55:09.206Z","id":16,"is_blocked":true,"nick_name":"Vacation Fund"}}]
+        """,
+        """
+        [{"identifier":"mUZpbkdyYXBoLlBlcnNvbgB4kQQ=","kind":"node","labels":["Person"],"properties":{"birthday":"1980-10-31T08:00:00Z","city":"Moravia","country":"Czech_Republic","id":2,"name":"Dana"}},{"destination_node_identifier":"mUZpbkdyYXBoLkFjY291bnQAeJEo","identifier":"mUZpbkdyYXBoLlBlcnNvbk93bkFjY291bnQAeJEEkSiZRmluR3JhcGguUGVyc29uAHiRBJlGaW5HcmFwaC5BY2NvdW50AHiRKA==","kind":"edge","labels":["Owns"],"properties":{"account_id":20,"create_time":"2020-01-28T01:55:09.206Z","id":2},"source_node_identifier":"mUZpbkdyYXBoLlBlcnNvbgB4kQQ="},{"identifier":"mUZpbkdyYXBoLkFjY291bnQAeJEo","kind":"node","labels":["Account"],"properties":{"create_time":"2020-02-18T13:44:20.655Z","id":20,"is_blocked":false,"nick_name":"Rainy Day Fund"}}]
+        """,
+    ]
+    result = pandas.DataFrame(
+        {"graph_json": graph_json_rows, "graph_json2": graph_json_rows},
+        columns=["graph_json", "graph_json2"],
+    )
+    run_query_patch = mock.patch("bigquery_magics.bigquery._run_query", autospec=True)
+    query_job_mock = mock.create_autospec(
+        google.cloud.bigquery.job.QueryJob, instance=True
+    )
+    query_job_mock.to_dataframe.return_value = result
+
+    with run_query_patch as run_query_mock, (
+        bqstorage_client_patch
+    ), display_patch as display_mock:
+        run_query_mock.return_value = query_job_mock
+        return_value = ip.run_cell_magic("bigquery", "--graph", sql)
+
+        # As we only support visualization with single-column queries, the visualizer should not be launched.
+        display_mock.assert_not_called()
+
+    assert bqstorage_mock.called  # BQ storage client was used
+    assert isinstance(return_value, pandas.DataFrame)
+    assert len(return_value) == len(result)  # verify row count
+    assert list(return_value) == list(result)  # verify column names
+
+
+@pytest.mark.usefixtures("ipython_interactive")
+@pytest.mark.skipif(
+    graph_visualization is None or bigquery_storage is None,
+    reason="Requires `spanner-graph-notebook` and `google-cloud-bigquery-storage`",
+)
+def test_bigquery_graph_json_result(monkeypatch):
+    ip = IPython.get_ipython()
+    ip.extension_manager.load_extension("bigquery_magics")
+    mock_credentials = mock.create_autospec(
+        google.auth.credentials.Credentials, instance=True
+    )
+
+    # Set up the context with monkeypatch so that it's reset for subsequent
+    # tests.
+    monkeypatch.setattr(bigquery_magics.context, "_credentials", mock_credentials)
+
+    # Mock out the BigQuery Storage API.
+    bqstorage_mock = mock.create_autospec(bigquery_storage.BigQueryReadClient)
+    bqstorage_instance_mock = mock.create_autospec(
+        bigquery_storage.BigQueryReadClient, instance=True
+    )
+    bqstorage_instance_mock._transport = mock.Mock()
+    bqstorage_mock.return_value = bqstorage_instance_mock
+    bqstorage_client_patch = mock.patch(
+        "google.cloud.bigquery_storage.BigQueryReadClient", bqstorage_mock
+    )
+
+    sql = "SELECT graph_json FROM t"
+    graph_json_rows = [
+        """
+        [{"identifier":"mUZpbkdyYXBoLlBlcnNvbgB4kQI=","kind":"node","labels":["Person"],"properties":{"birthday":"1991-12-21T08:00:00Z","city":"Adelaide","country":"Australia","id":1,"name":"Alex"}},{"destination_node_identifier":"mUZpbkdyYXBoLkFjY291bnQAeJEO","identifier":"mUZpbkdyYXBoLlBlcnNvbk93bkFjY291bnQAeJECkQ6ZRmluR3JhcGguUGVyc29uAHiRAplGaW5HcmFwaC5BY2NvdW50AHiRDg==","kind":"edge","labels":["Owns"],"properties":{"account_id":7,"create_time":"2020-01-10T14:22:20.222Z","id":1},"source_node_identifier":"mUZpbkdyYXBoLlBlcnNvbgB4kQI="},{"identifier":"mUZpbkdyYXBoLkFjY291bnQAeJEO","kind":"node","labels":["Account"],"properties":{"create_time":"2020-01-10T14:22:20.222Z","id":7,"is_blocked":false,"nick_name":"Vacation Fund"}}]
+        """,
+        """
+        [{"identifier":"mUZpbkdyYXBoLlBlcnNvbgB4kQY=","kind":"node","labels":["Person"],"properties":{"birthday":"1986-12-07T08:00:00Z","city":"Kollam","country":"India","id":3,"name":"Lee"}},{"destination_node_identifier":"mUZpbkdyYXBoLkFjY291bnQAeJEg","identifier":"mUZpbkdyYXBoLlBlcnNvbk93bkFjY291bnQAeJEGkSCZRmluR3JhcGguUGVyc29uAHiRBplGaW5HcmFwaC5BY2NvdW50AHiRIA==","kind":"edge","labels":["Owns"],"properties":{"account_id":16,"create_time":"2020-02-18T13:44:20.655Z","id":3},"source_node_identifier":"mUZpbkdyYXBoLlBlcnNvbgB4kQY="},{"identifier":"mUZpbkdyYXBoLkFjY291bnQAeJEg","kind":"node","labels":["Account"],"properties":{"create_time":"2020-01-28T01:55:09.206Z","id":16,"is_blocked":true,"nick_name":"Vacation Fund"}}]
+        """,
+        """
+        [{"identifier":"mUZpbkdyYXBoLlBlcnNvbgB4kQQ=","kind":"node","labels":["Person"],"properties":{"birthday":"1980-10-31T08:00:00Z","city":"Moravia","country":"Czech_Republic","id":2,"name":"Dana"}},{"destination_node_identifier":"mUZpbkdyYXBoLkFjY291bnQAeJEo","identifier":"mUZpbkdyYXBoLlBlcnNvbk93bkFjY291bnQAeJEEkSiZRmluR3JhcGguUGVyc29uAHiRBJlGaW5HcmFwaC5BY2NvdW50AHiRKA==","kind":"edge","labels":["Owns"],"properties":{"account_id":20,"create_time":"2020-01-28T01:55:09.206Z","id":2},"source_node_identifier":"mUZpbkdyYXBoLlBlcnNvbgB4kQQ="},{"identifier":"mUZpbkdyYXBoLkFjY291bnQAeJEo","kind":"node","labels":["Account"],"properties":{"create_time":"2020-02-18T13:44:20.655Z","id":20,"is_blocked":false,"nick_name":"Rainy Day Fund"}}]
+        """,
+    ]
+    result = pandas.DataFrame(graph_json_rows, columns=["graph_json"])
+    run_query_patch = mock.patch("bigquery_magics.bigquery._run_query", autospec=True)
+    graph_server_init_patch = mock.patch(
+        "bigquery_magics.graph_server.GraphServer.init", autospec=True
+    )
+    display_patch = mock.patch("IPython.display.display", autospec=True)
+    query_job_mock = mock.create_autospec(
+        google.cloud.bigquery.job.QueryJob, instance=True
+    )
+    query_job_mock.to_dataframe.return_value = result
+
+    with run_query_patch as run_query_mock, (
+        bqstorage_client_patch
+    ), graph_server_init_patch as graph_server_init_mock, display_patch as display_mock:
+        graph_server_init_mock.return_value = mock.Mock()
+        graph_server_init_mock.return_value.is_alive = mock.Mock()
+        graph_server_init_mock.return_value.is_alive.return_value = True
+        run_query_mock.return_value = query_job_mock
+
+        return_value = ip.run_cell_magic("bigquery", "--graph", sql)
+
+        assert len(display_mock.call_args_list) == 1
+        assert len(display_mock.call_args_list[0]) == 2
+
+        # Sanity check that the HTML content looks like graph visualization. Minimal check
+        # to allow Spanner to change its implementation without breaking this test.
+        html_content = display_mock.call_args_list[0][0][0].data
+        assert "<script>" in html_content
+        assert "</script>" in html_content
+        # Verify that the query results are embedded into the HTML, allowing them to be visualized.
+        # Due to escaping, it is not possible check for graph_json_rows exactly, so we check for a few
+        # sentinel strings within the query results, instead.
+        assert (
+            "mUZpbkdyYXBoLlBlcnNvbgB4kQI=" in html_content
+        )  # identifier in 1st row of query result
+        assert (
+            "mUZpbkdyYXBoLlBlcnNvbgB4kQY=" in html_content
+        )  # identifier in 2nd row of query result
+        assert (
+            "mUZpbkdyYXBoLlBlcnNvbgB4kQQ=" in html_content
+        )  # identifier in 3rd row of query result
+
+        # Make sure we can run a second graph query, after the graph server is already running.
+        return_value = ip.run_cell_magic("bigquery", "--graph", sql)
+
+        # Sanity check that the HTML content looks like graph visualization. Minimal check
+        # to allow Spanner to change its implementation without breaking this test.
+        html_content = display_mock.call_args_list[0][0][0].data
+        assert "<script>" in html_content
+        assert "</script>" in html_content
+        # Verify that the query results are embedded into the HTML, allowing them to be visualized.
+        # Due to escaping, it is not possible check for graph_json_rows exactly, so we check for a few
+        # sentinel strings within the query results, instead.
+        assert (
+            "mUZpbkdyYXBoLlBlcnNvbgB4kQI=" in html_content
+        )  # identifier in 1st row of query result
+        assert (
+            "mUZpbkdyYXBoLlBlcnNvbgB4kQY=" in html_content
+        )  # identifier in 2nd row of query result
+        assert (
+            "mUZpbkdyYXBoLlBlcnNvbgB4kQQ=" in html_content
+        )  # identifier in 3rd row of query result
+
+    assert bqstorage_mock.called  # BQ storage client was used
+    assert isinstance(return_value, pandas.DataFrame)
+    assert len(return_value) == len(result)  # verify row count
+    assert list(return_value) == list(result)  # verify column names
+
+
+@pytest.mark.usefixtures("ipython_interactive")
+@pytest.mark.skipif(
+    graph_visualization is None or bigquery_storage is None,
+    reason="Requires `spanner-graph-notebook` and `google-cloud-bigquery-storage`",
+)
+def test_bigquery_graph_colab(monkeypatch):
+    # Mock the colab module so the code under test uses colab.register_callback(), rather than
+    # GraphServer.
+    sys.modules["google.colab"] = mock.Mock()
+
+    ip = IPython.get_ipython()
+    ip.extension_manager.load_extension("bigquery_magics")
+    mock_credentials = mock.create_autospec(
+        google.auth.credentials.Credentials, instance=True
+    )
+
+    # Set up the context with monkeypatch so that it's reset for subsequent
+    # tests.
+    monkeypatch.setattr(bigquery_magics.context, "_credentials", mock_credentials)
+
+    # Mock out the BigQuery Storage API.
+    bqstorage_mock = mock.create_autospec(bigquery_storage.BigQueryReadClient)
+    bqstorage_instance_mock = mock.create_autospec(
+        bigquery_storage.BigQueryReadClient, instance=True
+    )
+    bqstorage_instance_mock._transport = mock.Mock()
+    bqstorage_mock.return_value = bqstorage_instance_mock
+    bqstorage_client_patch = mock.patch(
+        "google.cloud.bigquery_storage.BigQueryReadClient", bqstorage_mock
+    )
+
+    sql = "SELECT graph_json FROM t"
+    graph_json_rows = [
+        """
+        [{"identifier":"mUZpbkdyYXBoLlBlcnNvbgB4kQI=","kind":"node","labels":["Person"],"properties":{"birthday":"1991-12-21T08:00:00Z","city":"Adelaide","country":"Australia","id":1,"name":"Alex"}},{"destination_node_identifier":"mUZpbkdyYXBoLkFjY291bnQAeJEO","identifier":"mUZpbkdyYXBoLlBlcnNvbk93bkFjY291bnQAeJECkQ6ZRmluR3JhcGguUGVyc29uAHiRAplGaW5HcmFwaC5BY2NvdW50AHiRDg==","kind":"edge","labels":["Owns"],"properties":{"account_id":7,"create_time":"2020-01-10T14:22:20.222Z","id":1},"source_node_identifier":"mUZpbkdyYXBoLlBlcnNvbgB4kQI="},{"identifier":"mUZpbkdyYXBoLkFjY291bnQAeJEO","kind":"node","labels":["Account"],"properties":{"create_time":"2020-01-10T14:22:20.222Z","id":7,"is_blocked":false,"nick_name":"Vacation Fund"}}]
+        """,
+        """
+        [{"identifier":"mUZpbkdyYXBoLlBlcnNvbgB4kQY=","kind":"node","labels":["Person"],"properties":{"birthday":"1986-12-07T08:00:00Z","city":"Kollam","country":"India","id":3,"name":"Lee"}},{"destination_node_identifier":"mUZpbkdyYXBoLkFjY291bnQAeJEg","identifier":"mUZpbkdyYXBoLlBlcnNvbk93bkFjY291bnQAeJEGkSCZRmluR3JhcGguUGVyc29uAHiRBplGaW5HcmFwaC5BY2NvdW50AHiRIA==","kind":"edge","labels":["Owns"],"properties":{"account_id":16,"create_time":"2020-02-18T13:44:20.655Z","id":3},"source_node_identifier":"mUZpbkdyYXBoLlBlcnNvbgB4kQY="},{"identifier":"mUZpbkdyYXBoLkFjY291bnQAeJEg","kind":"node","labels":["Account"],"properties":{"create_time":"2020-01-28T01:55:09.206Z","id":16,"is_blocked":true,"nick_name":"Vacation Fund"}}]
+        """,
+        """
+        [{"identifier":"mUZpbkdyYXBoLlBlcnNvbgB4kQQ=","kind":"node","labels":["Person"],"properties":{"birthday":"1980-10-31T08:00:00Z","city":"Moravia","country":"Czech_Republic","id":2,"name":"Dana"}},{"destination_node_identifier":"mUZpbkdyYXBoLkFjY291bnQAeJEo","identifier":"mUZpbkdyYXBoLlBlcnNvbk93bkFjY291bnQAeJEEkSiZRmluR3JhcGguUGVyc29uAHiRBJlGaW5HcmFwaC5BY2NvdW50AHiRKA==","kind":"edge","labels":["Owns"],"properties":{"account_id":20,"create_time":"2020-01-28T01:55:09.206Z","id":2},"source_node_identifier":"mUZpbkdyYXBoLlBlcnNvbgB4kQQ="},{"identifier":"mUZpbkdyYXBoLkFjY291bnQAeJEo","kind":"node","labels":["Account"],"properties":{"create_time":"2020-02-18T13:44:20.655Z","id":20,"is_blocked":false,"nick_name":"Rainy Day Fund"}}]
+        """,
+    ]
+    result = pandas.DataFrame(graph_json_rows, columns=["graph_json"])
+    run_query_patch = mock.patch("bigquery_magics.bigquery._run_query", autospec=True)
+    graph_server_init_patch = mock.patch(
+        "bigquery_magics.graph_server.GraphServer.init", autospec=True
+    )
+    display_patch = mock.patch("IPython.display.display", autospec=True)
+    query_job_mock = mock.create_autospec(
+        google.cloud.bigquery.job.QueryJob, instance=True
+    )
+    query_job_mock.to_dataframe.return_value = result
+
+    with run_query_patch as run_query_mock, (
+        bqstorage_client_patch
+    ), graph_server_init_patch as graph_server_init_mock, display_patch as display_mock:
+        run_query_mock.return_value = query_job_mock
+        graph_server_init_mock.return_value = None
+        return_value = ip.run_cell_magic("bigquery", "--graph", sql)
+
+        assert len(display_mock.call_args_list) == 1
+        assert len(display_mock.call_args_list[0]) == 2
+
+        # Sanity check that the HTML content looks like graph visualization. Minimal check
+        # to allow Spanner to change its implementation without breaking this test.
+        html_content = display_mock.call_args_list[0][0][0].data
+        assert "<script>" in html_content
+        assert "</script>" in html_content
+        # Verify that the query results are embedded into the HTML, allowing them to be visualized.
+        # Due to escaping, it is not possible check for graph_json_rows exactly, so we check for a few
+        # sentinel strings within the query results, instead.
+        assert (
+            "mUZpbkdyYXBoLlBlcnNvbgB4kQI=" in html_content
+        )  # identifier in 1st row of query result
+        assert (
+            "mUZpbkdyYXBoLlBlcnNvbgB4kQY=" in html_content
+        )  # identifier in 2nd row of query result
+        assert (
+            "mUZpbkdyYXBoLlBlcnNvbgB4kQQ=" in html_content
+        )  # identifier in 3rd row of query result
+
+        # Make sure we actually used colab path, not GraphServer path.
+        assert sys.modules["google.colab"].output.register_callback.called
+        assert not graph_server_init_mock.called
+
+    assert bqstorage_mock.called  # BQ storage client was used
+    assert isinstance(return_value, pandas.DataFrame)
+    assert len(return_value) == len(result)  # verify row count
+    assert list(return_value) == list(result)  # verify column names
+
+
+@pytest.mark.usefixtures("ipython_interactive")
+@pytest.mark.skipif(
+    graph_visualization is None or bigquery_storage is None,
+    reason="Requires `spanner-graph-notebook` and `google-cloud-bigquery-storage`",
+)
+def test_colab_callback():
+    result = bigquery_magics.bigquery._colab_callback(
+        "query", json.dumps({"result": {}})
+    )
+    assert result.data == {
+        "response": {
+            "edges": [],
+            "nodes": [],
+            "query_result": {"result": []},
+            "rows": [],
+            "schema": None,
+        }
+    }
+
+
+@pytest.mark.usefixtures("ipython_interactive")
+@pytest.mark.skipif(
+    graph_visualization is not None or bigquery_storage is None,
+    reason="Requires `spanner-graph-notebook` to be missing and `google-cloud-bigquery-storage` to be present",
+)
+def test_bigquery_graph_missing_spanner_deps(monkeypatch):
+    ip = IPython.get_ipython()
+    ip.extension_manager.load_extension("bigquery_magics")
+    mock_credentials = mock.create_autospec(
+        google.auth.credentials.Credentials, instance=True
+    )
+
+    # Set up the context with monkeypatch so that it's reset for subsequent
+    # tests.
+    monkeypatch.setattr(bigquery_magics.context, "_credentials", mock_credentials)
+
+    # Mock out the BigQuery Storage API.
+    bqstorage_mock = mock.create_autospec(bigquery_storage.BigQueryReadClient)
+    bqstorage_instance_mock = mock.create_autospec(
+        bigquery_storage.BigQueryReadClient, instance=True
+    )
+    bqstorage_instance_mock._transport = mock.Mock()
+    bqstorage_mock.return_value = bqstorage_instance_mock
+    bqstorage_client_patch = mock.patch(
+        "google.cloud.bigquery_storage.BigQueryReadClient", bqstorage_mock
+    )
+    sql = "SELECT graph_json FROM t"
+    result = pandas.DataFrame([], columns=["graph_json"])
+    run_query_patch = mock.patch("bigquery_magics.bigquery._run_query", autospec=True)
+    graph_server_init_patch = mock.patch(
+        "bigquery_magics.graph_server.GraphServer.init", autospec=True
+    )
+    display_patch = mock.patch("IPython.display.display", autospec=True)
+    query_job_mock = mock.create_autospec(
+        google.cloud.bigquery.job.QueryJob, instance=True
+    )
+    query_job_mock.to_dataframe.return_value = result
+
+    with run_query_patch as run_query_mock, (
+        bqstorage_client_patch
+    ), graph_server_init_patch as graph_server_init_mock, display_patch as display_mock:
+        run_query_mock.return_value = query_job_mock
+        graph_server_init_mock.return_value = None
+        with pytest.raises(ImportError):
+            ip.run_cell_magic("bigquery", "--graph", sql)
+        display_mock.assert_not_called()
+
+
+@pytest.mark.usefixtures("ipython_interactive")
 def test_bigquery_magic_default_connection_user_agent():
     ip = IPython.get_ipython()
     ip.extension_manager.load_extension("bigquery_magics")
@@ -545,7 +1038,7 @@ def test_bigquery_magic_does_not_clear_display_in_verbose_mode():
     )
 
     clear_patch = mock.patch(
-        "bigquery_magics.bigquery.display.clear_output",
+        "bigquery_magics.bigquery.IPython.display.clear_output",
         autospec=True,
     )
     run_query_patch = mock.patch("bigquery_magics.bigquery._run_query", autospec=True)
@@ -564,7 +1057,7 @@ def test_bigquery_magic_clears_display_in_non_verbose_mode():
     )
 
     clear_patch = mock.patch(
-        "bigquery_magics.bigquery.display.clear_output",
+        "bigquery_magics.bigquery.IPython.display.clear_output",
         autospec=True,
     )
     run_query_patch = mock.patch("bigquery_magics.bigquery._run_query", autospec=True)

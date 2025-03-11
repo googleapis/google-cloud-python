@@ -30,6 +30,7 @@ common = gcp.CommonTemplates()
 
 extras_storage = ["bqstorage"]
 extras_bf = ["bqstorage", "bigframes", "geopandas"]
+extras_spanner = ["spanner-graph-notebook"]
 extras_by_python = {
     "3.7": extras_storage,
     "3.8": extras_storage,
@@ -37,7 +38,7 @@ extras_by_python = {
     "3.10": extras_bf,
     # Use a middle version of Python to test when no extras are installed.
     "3.11": [],
-    "3.12": [],
+    "3.12": extras_storage + extras_spanner,
     "3.13": extras_bf,
 }
 templated_files = common.py_library(
