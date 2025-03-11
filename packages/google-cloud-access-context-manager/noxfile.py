@@ -458,10 +458,7 @@ def prerelease_deps(session, protobuf_implementation):
             "proto-plus": "proto",
         }
 
-        try:
-            version_namespace = package_namespaces[dep]
-        except KeyError:
-            version_namespace = None
+        version_namespace = package_namespaces.get(dep)
 
         print(f"Installed {dep}")
         if version_namespace:
