@@ -21,8 +21,10 @@ This is the base from which all interactions with the API occur.
 
 from __future__ import absolute_import
 
+from google.api_core import gapic_v1
 import google.api_core.gapic_v1.method
 
+from google.cloud.bigquery_storage_v1 import gapic_version as package_version
 from google.cloud.bigquery_storage_v1 import reader
 from google.cloud.bigquery_storage_v1.services import big_query_read, big_query_write
 
@@ -31,12 +33,21 @@ _SCOPES = (
     "https://www.googleapis.com/auth/cloud-platform",
 )
 
+VENEER_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    client_library_version=package_version.__version__
+)
+
 
 class BigQueryReadClient(big_query_read.BigQueryReadClient):
     """Client for interacting with BigQuery Storage API.
 
     The BigQuery storage API can be used to read data stored in BigQuery.
     """
+
+    def __init__(self, **kwargs):
+        if "client_info" not in kwargs:
+            kwargs["client_info"] = VENEER_CLIENT_INFO
+        super().__init__(**kwargs)
 
     def read_rows(
         self,
@@ -140,3 +151,8 @@ class BigQueryReadClient(big_query_read.BigQueryReadClient):
 
 class BigQueryWriteClient(big_query_write.BigQueryWriteClient):
     __doc__ = big_query_write.BigQueryWriteClient.__doc__
+
+    def __init__(self, **kwargs):
+        if "client_info" not in kwargs:
+            kwargs["client_info"] = VENEER_CLIENT_INFO
+        super().__init__(**kwargs)
