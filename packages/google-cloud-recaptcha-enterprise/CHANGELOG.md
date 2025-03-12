@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.27.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-recaptcha-enterprise-v1.27.0...google-cloud-recaptcha-enterprise-v1.27.1) (2025-03-12)
+
+
+### Bug Fixes
+
+* [Many APIs] Allow Protobuf 6.x ([7295cbb](https://github.com/googleapis/google-cloud-python/commit/7295cbb7c3122eeff1042c3c543bfc9b8b3ca913))
+
 ## [1.27.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-recaptcha-enterprise-v1.26.1...google-cloud-recaptcha-enterprise-v1.27.0) (2025-02-18)
 
 

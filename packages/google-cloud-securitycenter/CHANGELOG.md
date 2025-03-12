@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-securitycenter/#history
 
+## [1.38.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-securitycenter-v1.38.0...google-cloud-securitycenter-v1.38.1) (2025-03-12)
+
+
+### Bug Fixes
+
+* [Many APIs] Allow Protobuf 6.x ([784a3ca](https://github.com/googleapis/google-cloud-python/commit/784a3ca7a180453320521753f5bce71de329d65c))
+
 ## [1.38.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-securitycenter-v1.37.0...google-cloud-securitycenter-v1.38.0) (2025-02-18)
 
 

@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.23.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-secret-manager-v2.23.1...google-cloud-secret-manager-v2.23.2) (2025-03-12)
+
+
+### Bug Fixes
+
+* [Many APIs] Allow Protobuf 6.x ([784a3ca](https://github.com/googleapis/google-cloud-python/commit/784a3ca7a180453320521753f5bce71de329d65c))
+
 ## [2.23.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-secret-manager-v2.23.0...google-cloud-secret-manager-v2.23.1) (2025-02-18)
 
 
