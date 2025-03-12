@@ -1436,3 +1436,27 @@ def cleanup_cloud_functions(session, cloudfunctions_client, dataset_id_permanent
         #
         # Let's stop further clean up and leave it to later.
         traceback.print_exception(type(exc), exc, None)
+
+
+@pytest.fixture(scope="session")
+def images_gcs_path() -> str:
+    return "gs://bigframes_blob_test/images/*"
+
+
+@pytest.fixture(scope="session")
+def images_uris() -> list[str]:
+    return [
+        "gs://bigframes_blob_test/images/img0.jpg",
+        "gs://bigframes_blob_test/images/img1.jpg",
+    ]
+
+
+@pytest.fixture(scope="session")
+def images_mm_df(
+    images_gcs_path, session: bigframes.Session, bq_connection: str
+) -> bpd.DataFrame:
+    bigframes.options.experiments.blob = True
+
+    return session.from_glob_path(
+        images_gcs_path, name="blob_col", connection=bq_connection
+    )
