@@ -12,6 +12,7 @@ branchProtectionRules:
     - 'cla/google'
     - 'docs'
     - 'lint'
+    - 'mypy'
     - 'unit (3.9)'
     - 'unit (3.10)'
     - 'unit (3.11)'

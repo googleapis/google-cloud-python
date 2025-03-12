@@ -145,7 +145,12 @@ def lint(session):
     Returns a failure if the linters find linting errors or sufficiently
     serious code quality issues.
     """
-    session.install("flake8", BLACK_VERSION)
+    session.install("flake8", BLACK_VERSION, ISORT_VERSION)
+    session.run(
+        "isort",
+        "--check",
+        *LINT_PATHS,
+    )
     session.run(
         "black",
         "--check",
