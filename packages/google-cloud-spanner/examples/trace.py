@@ -18,6 +18,7 @@ import time
 
 import google.cloud.spanner as spanner
 from opentelemetry.exporter.cloud_trace import CloudTraceSpanExporter
+from opentelemetry.exporter.otlp.proto.grpc.trace_exporter import OTLPSpanExporter
 from opentelemetry.sdk.trace import TracerProvider
 from opentelemetry.sdk.trace.export import BatchSpanProcessor
 from opentelemetry.sdk.trace.sampling import ALWAYS_ON
@@ -25,11 +26,11 @@ from opentelemetry import trace
 from opentelemetry.propagate import set_global_textmap
 from opentelemetry.trace.propagation.tracecontext import TraceContextTextMapPropagator
 
+# Setup common variables that'll be used between Spanner and traces.
+project_id = os.environ.get('SPANNER_PROJECT_ID', 'test-project')
 
-def main():
-    # Setup common variables that'll be used between Spanner and traces.
-    project_id = os.environ.get('SPANNER_PROJECT_ID', 'test-project')
-
+def spanner_with_cloud_trace():
+    # [START spanner_opentelemetry_traces_cloudtrace_usage]
     # Setup OpenTelemetry, trace and Cloud Trace exporter.
     tracer_provider = TracerProvider(sampler=ALWAYS_ON)
     trace_exporter = CloudTraceSpanExporter(project_id=project_id)
@@ -40,6 +41,35 @@ def main():
         project_id,
         observability_options=dict(tracer_provider=tracer_provider, enable_extended_tracing=True, enable_end_to_end_tracing=True),
     )
+    
+    # [END spanner_opentelemetry_traces_cloudtrace_usage]
+    return spanner_client
+
+def spanner_with_otlp():
+    # [START spanner_opentelemetry_traces_otlp_usage]
+    # Setup OpenTelemetry, trace and OTLP exporter.
+    tracer_provider = TracerProvider(sampler=ALWAYS_ON)
+    otlp_exporter = OTLPSpanExporter(endpoint="http://localhost:4317")
+    tracer_provider.add_span_processor(BatchSpanProcessor(otlp_exporter))
+
+    # Setup the Cloud Spanner Client.
+    spanner_client = spanner.Client(
+        project_id,
+        observability_options=dict(tracer_provider=tracer_provider, enable_extended_tracing=True, enable_end_to_end_tracing=True),
+    )
+    # [END spanner_opentelemetry_traces_otlp_usage]
+    return spanner_client
+
+
+def main():
+    # Setup OpenTelemetry, trace and Cloud Trace exporter.
+    tracer_provider = TracerProvider(sampler=ALWAYS_ON)
+    trace_exporter = CloudTraceSpanExporter(project_id=project_id)
+    tracer_provider.add_span_processor(BatchSpanProcessor(trace_exporter))
+
+    # Setup the Cloud Spanner Client.
+    # Change to "spanner_client = spanner_with_otlp" to use OTLP exporter
+    spanner_client = spanner_with_cloud_trace()
     instance = spanner_client.instance('test-instance')
     database = instance.database('test-db')
     
