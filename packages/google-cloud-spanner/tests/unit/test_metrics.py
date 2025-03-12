@@ -21,21 +21,33 @@ from grpc._interceptor import _UnaryOutcome
 from google.cloud.spanner_v1.metrics.spanner_metrics_tracer_factory import (
     SpannerMetricsTracerFactory,
 )
+from opentelemetry import metrics
 
 pytest.importorskip("opentelemetry")
 # Skip if semconv attributes are not present, as tracing wont' be enabled either
 # pytest.importorskip("opentelemetry.semconv.attributes.otel_attributes")
 
 
-def test_metrics_emission_with_failure_attempt(monkeypatch):
+@pytest.fixture(autouse=True)
+def patched_client(monkeypatch):
     monkeypatch.setenv("SPANNER_ENABLE_BUILTIN_METRICS", "true")
+    metrics.set_meter_provider(metrics.NoOpMeterProvider())
 
     # Remove the Tracer factory to avoid previously disabled factory polluting from other tests
     if SpannerMetricsTracerFactory._metrics_tracer_factory is not None:
         SpannerMetricsTracerFactory._metrics_tracer_factory = None
 
     client = Client()
-    instance = client.instance("test-instance")
+    yield client
+
+    # Resetting
+    metrics.set_meter_provider(metrics.NoOpMeterProvider())
+    SpannerMetricsTracerFactory._metrics_tracer_factory = None
+    SpannerMetricsTracerFactory.current_metrics_tracer = None
+
+
+def test_metrics_emission_with_failure_attempt(patched_client):
+    instance = patched_client.instance("test-instance")
     database = instance.database("example-db")
     factory = SpannerMetricsTracerFactory()
 
