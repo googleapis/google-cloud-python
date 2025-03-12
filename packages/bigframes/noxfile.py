@@ -118,16 +118,8 @@ CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
 
 # Sessions are executed in the order so putting the smaller sessions
 # ahead to fail fast at presubmit running.
-# 'docfx' is excluded since it only needs to run in 'docs-presubmit'
 nox.options.sessions = [
-    "lint",
-    "lint_setup_py",
-    "mypy",
-    "format",
-    "docs",
-    "docfx",
     "unit",
-    "unit_noextras",
     "system-3.9",
     "system-3.12",
     "cover",
