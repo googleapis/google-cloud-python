@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.11.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-vm-migration-v1.11.1...google-cloud-vm-migration-v1.11.2) (2025-03-12)
+
+
+### Bug Fixes
+
+* [Many APIs] Allow Protobuf 6.x ([4757dae](https://github.com/googleapis/google-cloud-python/commit/4757daede978618382ba46f4aa91bb9cfd9b937b))
+
 ## [1.11.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-vm-migration-v1.11.0...google-cloud-vm-migration-v1.11.1) (2025-02-18)
 
 

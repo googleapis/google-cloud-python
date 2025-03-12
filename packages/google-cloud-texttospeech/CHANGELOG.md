@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-texttospeech/#history
 
+## [2.25.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-texttospeech-v2.25.0...google-cloud-texttospeech-v2.25.1) (2025-03-12)
+
+
+### Bug Fixes
+
+* [Many APIs] Allow Protobuf 6.x ([4757dae](https://github.com/googleapis/google-cloud-python/commit/4757daede978618382ba46f4aa91bb9cfd9b937b))
+
 ## [2.25.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-texttospeech-v2.24.0...google-cloud-texttospeech-v2.25.0) (2025-02-12)
 
 
