@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.6.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-logging-v1.6.1...google-cloud-bigquery-logging-v1.6.2) (2025-03-12)
+
+
+### Bug Fixes
+
+* [Many APIs] Allow Protobuf 6.x ([1e43e75](https://github.com/googleapis/google-cloud-python/commit/1e43e75e99445373785b11381e0e859fa14bb485))
+
 ## [1.6.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-logging-v1.6.0...google-cloud-bigquery-logging-v1.6.1) (2025-02-18)
 
 

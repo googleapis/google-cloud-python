@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.11.14](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-migration-v0.11.13...google-cloud-bigquery-migration-v0.11.14) (2025-03-12)
+
+
+### Bug Fixes
+
+* [Many APIs] Allow Protobuf 6.x ([1e43e75](https://github.com/googleapis/google-cloud-python/commit/1e43e75e99445373785b11381e0e859fa14bb485))
+
 ## [0.11.13](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-migration-v0.11.12...google-cloud-bigquery-migration-v0.11.13) (2025-02-12)
 
 

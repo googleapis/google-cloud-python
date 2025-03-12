@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery-datatransfer/#history
 
+## [3.19.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-datatransfer-v3.19.0...google-cloud-bigquery-datatransfer-v3.19.1) (2025-03-12)
+
+
+### Bug Fixes
+
+* [Many APIs] Allow Protobuf 6.x ([1e43e75](https://github.com/googleapis/google-cloud-python/commit/1e43e75e99445373785b11381e0e859fa14bb485))
+
 ## [3.19.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-datatransfer-v3.18.0...google-cloud-bigquery-datatransfer-v3.19.0) (2025-02-12)
 
 
