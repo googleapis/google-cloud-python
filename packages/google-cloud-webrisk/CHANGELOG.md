@@ -3,6 +3,13 @@
 [PyPI History][1]
 
 [1]: https://pypi.org/project/google-cloud-webrisk/#history
+## [1.17.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-webrisk-v1.17.0...google-cloud-webrisk-v1.17.1) (2025-03-12)
+
+
+### Bug Fixes
+
+* [Many APIs] Allow Protobuf 6.x ([4757dae](https://github.com/googleapis/google-cloud-python/commit/4757daede978618382ba46f4aa91bb9cfd9b937b))
+
 ## [1.17.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-webrisk-v1.16.0...google-cloud-webrisk-v1.17.0) (2025-02-12)
 
 

@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.9](https://github.com/googleapis/google-cloud-python/compare/google-maps-fleetengine-v0.2.8...google-maps-fleetengine-v0.2.9) (2025-03-12)
+
+
+### Bug Fixes
+
+* [Many APIs] Allow Protobuf 6.x ([25ced24](https://github.com/googleapis/google-cloud-python/commit/25ced2444528a1dc6a22daa32b82b844961f1b75))
+
 ## [0.2.8](https://github.com/googleapis/google-cloud-python/compare/google-maps-fleetengine-v0.2.7...google-maps-fleetengine-v0.2.8) (2025-03-03)
 
 
