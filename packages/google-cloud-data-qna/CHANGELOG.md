@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.10.16](https://github.com/googleapis/google-cloud-python/compare/google-cloud-data-qna-v0.10.15...google-cloud-data-qna-v0.10.16) (2025-03-12)
+
+
+### Bug Fixes
+
+* [Many APIs] Allow Protobuf 6.x ([feb5353](https://github.com/googleapis/google-cloud-python/commit/feb53532240bb70a94b359b519f0f41f95875a33))
+
 ## [0.10.15](https://github.com/googleapis/google-cloud-python/compare/google-cloud-data-qna-v0.10.14...google-cloud-data-qna-v0.10.15) (2025-02-12)
 
 

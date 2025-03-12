@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-datacatalog/#history
 
+## [3.25.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-datacatalog-v3.25.1...google-cloud-datacatalog-v3.25.2) (2025-03-12)
+
+
+### Bug Fixes
+
+* [Many APIs] Allow Protobuf 6.x ([feb5353](https://github.com/googleapis/google-cloud-python/commit/feb53532240bb70a94b359b519f0f41f95875a33))
+
 ## [3.25.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-datacatalog-v3.25.0...google-cloud-datacatalog-v3.25.1) (2025-02-18)
 
 

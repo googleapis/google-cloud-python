@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.13.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-datastream-v1.13.1...google-cloud-datastream-v1.13.2) (2025-03-12)
+
+
+### Bug Fixes
+
+* [Many APIs] Allow Protobuf 6.x ([feb5353](https://github.com/googleapis/google-cloud-python/commit/feb53532240bb70a94b359b519f0f41f95875a33))
+
 ## [1.13.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-datastream-v1.13.0...google-cloud-datastream-v1.13.1) (2025-02-18)
 
 
