@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-parametermanager-v0.1.1...google-cloud-parametermanager-v0.1.2) (2025-03-12)
+
+
+### Bug Fixes
+
+* [Many APIs] Allow Protobuf 6.x ([7295cbb](https://github.com/googleapis/google-cloud-python/commit/7295cbb7c3122eeff1042c3c543bfc9b8b3ca913))
+
 ## [0.1.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-parametermanager-v0.1.0...google-cloud-parametermanager-v0.1.1) (2025-02-18)
 
 

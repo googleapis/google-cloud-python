@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.17](https://github.com/googleapis/google-cloud-python/compare/google-cloud-public-ca-v0.3.16...google-cloud-public-ca-v0.3.17) (2025-03-12)
+
+
+### Bug Fixes
+
+* [Many APIs] Allow Protobuf 6.x ([7295cbb](https://github.com/googleapis/google-cloud-python/commit/7295cbb7c3122eeff1042c3c543bfc9b8b3ca913))
+
 ## [0.3.16](https://github.com/googleapis/google-cloud-python/compare/google-cloud-public-ca-v0.3.15...google-cloud-public-ca-v0.3.16) (2025-02-18)
 
 
