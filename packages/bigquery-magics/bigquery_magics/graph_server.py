@@ -56,45 +56,37 @@ def convert_graph_data(query_results: Dict[str, Dict[str, str]]):
     )
 
     try:
-        column_name = None
-        column_value = None
-        for key, value in query_results.items():
-            if column_name is None:
-                if not isinstance(key, str):
-                    raise ValueError(f"Expected outer key to be str, got {type(key)}")
-                if not isinstance(value, dict):
-                    raise ValueError(
-                        f"Expected outer value to be dict, got {type(value)}"
-                    )
-                column_name = key
-                column_value = value
-            else:
-                # TODO: Implement multi-column support.
-                raise ValueError(
-                    "Query has multiple columns - graph visualization not supported"
-                )
-        if column_name is None or column_value is None:
-            raise ValueError(
-                "query result with no columns is not supported for graph visualization"
-            )
-
-        fields: List[StructType.Field] = [
-            StructType.Field(name=column_name, type=Type(code=TypeCode.JSON))
-        ]
-        data = {column_name: []}
+        fields: List[StructType.Field] = []
+        data = {}
         rows = []
-        for value_key, value_value in column_value.items():
-            if not isinstance(value_key, str):
-                raise ValueError(f"Expected inner key to be str, got {type(value_key)}")
-            if not isinstance(value_value, str):
-                raise ValueError(
-                    f"Expected inner value to be str, got {type(value_value)}"
-                )
-            row_json = json.loads(value_value)
+        for key, value in query_results.items():
+            column_name = None
+            column_value = None
+            if not isinstance(key, str):
+                raise ValueError(f"Expected outer key to be str, got {type(key)}")
+            if not isinstance(value, dict):
+                raise ValueError(f"Expected outer value to be dict, got {type(value)}")
+            column_name = key
+            column_value = value
 
-            if row_json is not None:
-                data[column_name].append(row_json)
-            rows.append([row_json])
+            fields.append(
+                StructType.Field(name=column_name, type=Type(code=TypeCode.JSON))
+            )
+            data[column_name] = []
+            for value_key, value_value in column_value.items():
+                if not isinstance(value_key, str):
+                    raise ValueError(
+                        f"Expected inner key to be str, got {type(value_key)}"
+                    )
+                if not isinstance(value_value, str):
+                    raise ValueError(
+                        f"Expected inner value to be str, got {type(value_value)}"
+                    )
+                row_json = json.loads(value_value)
+
+                if row_json is not None:
+                    data[column_name].append(row_json)
+                rows.append([row_json])
 
         d, ignored_columns = columns_to_native_numpy(data, fields)
 
@@ -112,10 +104,13 @@ def convert_graph_data(query_results: Dict[str, Dict[str, str]]):
 
         return {
             "response": {
+                # These fields populate the graph result view.
                 "nodes": nodes,
                 "edges": edges,
+                # This populates the visualizer's schema view, but not yet implemented on the
+                # BigQuery side.
                 "schema": None,
-                "rows": rows,
+                # This field is used to populate the visualizer's tabular view.
                 "query_result": data,
             }
         }

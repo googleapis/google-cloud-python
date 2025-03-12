@@ -39,6 +39,7 @@ import test_utils.imports  # google-cloud-testutils
 
 import bigquery_magics
 import bigquery_magics.bigquery as magics
+import bigquery_magics.graph_server as graph_server
 
 try:
     import google.cloud.bigquery_storage as bigquery_storage
@@ -677,10 +678,12 @@ def test_bigquery_graph_json_json_result(monkeypatch):
         bqstorage_client_patch
     ), display_patch as display_mock:
         run_query_mock.return_value = query_job_mock
-        return_value = ip.run_cell_magic("bigquery", "--graph", sql)
+        try:
+            return_value = ip.run_cell_magic("bigquery", "--graph", sql)
+        finally:
+            graph_server.graph_server.stop_server()
 
-        # As we only support visualization with single-column queries, the visualizer should not be launched.
-        display_mock.assert_not_called()
+        display_mock.assert_called()
 
     assert bqstorage_mock.called  # BQ storage client was used
     assert isinstance(return_value, pandas.DataFrame)
@@ -729,9 +732,6 @@ def test_bigquery_graph_json_result(monkeypatch):
     ]
     result = pandas.DataFrame(graph_json_rows, columns=["graph_json"])
     run_query_patch = mock.patch("bigquery_magics.bigquery._run_query", autospec=True)
-    graph_server_init_patch = mock.patch(
-        "bigquery_magics.graph_server.GraphServer.init", autospec=True
-    )
     display_patch = mock.patch("IPython.display.display", autospec=True)
     query_job_mock = mock.create_autospec(
         google.cloud.bigquery.job.QueryJob, instance=True
@@ -740,10 +740,7 @@ def test_bigquery_graph_json_result(monkeypatch):
 
     with run_query_patch as run_query_mock, (
         bqstorage_client_patch
-    ), graph_server_init_patch as graph_server_init_mock, display_patch as display_mock:
-        graph_server_init_mock.return_value = mock.Mock()
-        graph_server_init_mock.return_value.is_alive = mock.Mock()
-        graph_server_init_mock.return_value.is_alive.return_value = True
+    ), display_patch as display_mock:
         run_query_mock.return_value = query_job_mock
 
         return_value = ip.run_cell_magic("bigquery", "--graph", sql)
@@ -770,7 +767,10 @@ def test_bigquery_graph_json_result(monkeypatch):
         )  # identifier in 3rd row of query result
 
         # Make sure we can run a second graph query, after the graph server is already running.
-        return_value = ip.run_cell_magic("bigquery", "--graph", sql)
+        try:
+            return_value = ip.run_cell_magic("bigquery", "--graph", sql)
+        finally:
+            graph_server.graph_server.stop_server()
 
         # Sanity check that the HTML content looks like graph visualization. Minimal check
         # to allow Spanner to change its implementation without breaking this test.
@@ -841,9 +841,6 @@ def test_bigquery_graph_colab(monkeypatch):
     ]
     result = pandas.DataFrame(graph_json_rows, columns=["graph_json"])
     run_query_patch = mock.patch("bigquery_magics.bigquery._run_query", autospec=True)
-    graph_server_init_patch = mock.patch(
-        "bigquery_magics.graph_server.GraphServer.init", autospec=True
-    )
     display_patch = mock.patch("IPython.display.display", autospec=True)
     query_job_mock = mock.create_autospec(
         google.cloud.bigquery.job.QueryJob, instance=True
@@ -852,10 +849,12 @@ def test_bigquery_graph_colab(monkeypatch):
 
     with run_query_patch as run_query_mock, (
         bqstorage_client_patch
-    ), graph_server_init_patch as graph_server_init_mock, display_patch as display_mock:
+    ), display_patch as display_mock:
         run_query_mock.return_value = query_job_mock
-        graph_server_init_mock.return_value = None
-        return_value = ip.run_cell_magic("bigquery", "--graph", sql)
+        try:
+            return_value = ip.run_cell_magic("bigquery", "--graph", sql)
+        finally:
+            graph_server.graph_server.stop_server()
 
         assert len(display_mock.call_args_list) == 1
         assert len(display_mock.call_args_list[0]) == 2
@@ -880,7 +879,6 @@ def test_bigquery_graph_colab(monkeypatch):
 
         # Make sure we actually used colab path, not GraphServer path.
         assert sys.modules["google.colab"].output.register_callback.called
-        assert not graph_server_init_mock.called
 
     assert bqstorage_mock.called  # BQ storage client was used
     assert isinstance(return_value, pandas.DataFrame)
@@ -902,7 +900,6 @@ def test_colab_callback():
             "edges": [],
             "nodes": [],
             "query_result": {"result": []},
-            "rows": [],
             "schema": None,
         }
     }
@@ -937,9 +934,6 @@ def test_bigquery_graph_missing_spanner_deps(monkeypatch):
     sql = "SELECT graph_json FROM t"
     result = pandas.DataFrame([], columns=["graph_json"])
     run_query_patch = mock.patch("bigquery_magics.bigquery._run_query", autospec=True)
-    graph_server_init_patch = mock.patch(
-        "bigquery_magics.graph_server.GraphServer.init", autospec=True
-    )
     display_patch = mock.patch("IPython.display.display", autospec=True)
     query_job_mock = mock.create_autospec(
         google.cloud.bigquery.job.QueryJob, instance=True
@@ -948,11 +942,13 @@ def test_bigquery_graph_missing_spanner_deps(monkeypatch):
 
     with run_query_patch as run_query_mock, (
         bqstorage_client_patch
-    ), graph_server_init_patch as graph_server_init_mock, display_patch as display_mock:
+    ), display_patch as display_mock:
         run_query_mock.return_value = query_job_mock
-        graph_server_init_mock.return_value = None
         with pytest.raises(ImportError):
-            ip.run_cell_magic("bigquery", "--graph", sql)
+            try:
+                ip.run_cell_magic("bigquery", "--graph", sql)
+            finally:
+                graph_server.graph_server.stop_server()
         display_mock.assert_not_called()
 
 

@@ -657,9 +657,10 @@ def _is_valid_json(s: str):
 
 def _supports_graph_widget(query_result: pandas.DataFrame):
     num_rows, num_columns = query_result.shape
-    if num_columns != 1:
-        return False
-    return query_result[query_result.columns[0]].apply(_is_valid_json).all()
+    for column in query_result.columns:
+        if not query_result[column].apply(_is_valid_json).all():
+            return False
+    return True
 
 
 def _make_bq_query(

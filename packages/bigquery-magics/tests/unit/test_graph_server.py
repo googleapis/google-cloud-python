@@ -140,7 +140,6 @@ def test_convert_one_column_no_rows():
             "edges": [],
             "nodes": [],
             "query_result": {"result": []},
-            "rows": [],
             "schema": None,
         }
     }
@@ -164,7 +163,6 @@ def test_convert_one_column_one_row_one_column():
     _validate_nodes_and_edges(result)
 
     assert result["response"]["query_result"] == {"result": [row_alex_owns_account]}
-    assert result["response"]["rows"] == [[row_alex_owns_account]]
     assert result["response"]["schema"] is None
 
 
@@ -185,11 +183,6 @@ def test_convert_one_column_one_row_one_column_null_json():
             "edges": [],
             "nodes": [],
             "query_result": {"result": []},
-            "rows": [
-                [
-                    None,
-                ]
-            ],
             "schema": None,
         },
     }
@@ -218,10 +211,34 @@ def test_convert_one_column_two_rows():
     assert result["response"]["query_result"] == {
         "result": [row_alex_owns_account, row_lee_owns_account]
     }
-    assert result["response"]["rows"] == [
-        [row_alex_owns_account],
-        [row_lee_owns_account],
-    ]
+    assert result["response"]["schema"] is None
+
+
+@pytest.mark.skipif(
+    graph_visualization is None, reason="Requires `spanner-graph-notebook`"
+)
+def test_convert_one_row_two_columns():
+    result = graph_server.convert_graph_data(
+        {
+            "col1": {
+                "0": json.dumps(row_alex_owns_account),
+            },
+            "col2": {
+                "0": json.dumps(row_lee_owns_account),
+            },
+        }
+    )
+    print(json.dumps(result))
+
+    assert len(result["response"]["nodes"]) == 4
+    assert len(result["response"]["edges"]) == 2
+
+    _validate_nodes_and_edges(result)
+
+    assert result["response"]["query_result"] == {
+        "col1": [row_alex_owns_account],
+        "col2": [row_lee_owns_account],
+    }
     assert result["response"]["schema"] is None
 
 
@@ -243,7 +260,6 @@ def test_convert_nongraph_json():
     assert len(result["response"]["edges"]) == 0
 
     assert result["response"]["query_result"] == {"result": [{"foo": 1, "bar": 2}]}
-    assert result["response"]["rows"] == [[{"foo": 1, "bar": 2}]]
     assert result["response"]["schema"] is None
 
 
@@ -300,29 +316,15 @@ def test_convert_inner_value_not_string():
 @pytest.mark.skipif(
     graph_visualization is None, reason="Requires `spanner-graph-notebook`"
 )
-def test_convert_one_column_one_row_two_columns():
-    result = graph_server.convert_graph_data(
-        {
-            "result1": {
-                "0": json.dumps(row_alex_owns_account),
-            },
-            "result2": {
-                "0": json.dumps(row_alex_owns_account),
-            },
-        }
-    )
-    assert result == {
-        "error": "Query has multiple columns - graph visualization not supported"
-    }
-
-
-@pytest.mark.skipif(
-    graph_visualization is None, reason="Requires `spanner-graph-notebook`"
-)
 def test_convert_empty_dict():
     result = graph_server.convert_graph_data({})
     assert result == {
-        "error": "query result with no columns is not supported for graph visualization"
+        "response": {
+            "nodes": [],
+            "edges": [],
+            "schema": None,
+            "query_result": {},
+        }
     }
 
 
@@ -411,7 +413,6 @@ class TestGraphServer(unittest.TestCase):
         self.assertEqual(
             response_data["query_result"], {"result": [row_alex_owns_account]}
         )
-        self.assertEqual(response_data["rows"], [[row_alex_owns_account]])
         self.assertIsNone(response_data["schema"])
 
 
