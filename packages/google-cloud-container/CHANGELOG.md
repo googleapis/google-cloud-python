@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-container/#history
 
+## [2.56.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-container-v2.56.0...google-cloud-container-v2.56.1) (2025-03-12)
+
+
+### Bug Fixes
+
+* [Many APIs] Allow Protobuf 6.x ([1e43e75](https://github.com/googleapis/google-cloud-python/commit/1e43e75e99445373785b11381e0e859fa14bb485))
+
 ## [2.56.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-container-v2.55.1...google-cloud-container-v2.56.0) (2025-02-12)
 
 

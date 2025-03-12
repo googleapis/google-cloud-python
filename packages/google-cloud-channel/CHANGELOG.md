@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.22.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-channel-v1.22.0...google-cloud-channel-v1.22.1) (2025-03-12)
+
+
+### Bug Fixes
+
+* [Many APIs] Allow Protobuf 6.x ([1e43e75](https://github.com/googleapis/google-cloud-python/commit/1e43e75e99445373785b11381e0e859fa14bb485))
+
 ## [1.22.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-channel-v1.21.0...google-cloud-channel-v1.22.0) (2025-02-12)
 
 
