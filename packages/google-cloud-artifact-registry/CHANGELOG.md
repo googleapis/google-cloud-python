@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.15.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-artifact-registry-v1.15.1...google-cloud-artifact-registry-v1.15.2) (2025-03-12)
+
+
+### Bug Fixes
+
+* [Many APIs] Allow Protobuf 6.x ([3a85796](https://github.com/googleapis/google-cloud-python/commit/3a85796774ebf728cbc9e82dc536316530ac78c1))
+
 ## [1.15.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-artifact-registry-v1.15.0...google-cloud-artifact-registry-v1.15.1) (2025-02-18)
 
 

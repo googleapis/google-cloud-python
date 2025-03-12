@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.12.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-apigee-connect-v1.12.0...google-cloud-apigee-connect-v1.12.1) (2025-03-12)
+
+
+### Bug Fixes
+
+* [Many APIs] Allow Protobuf 6.x ([a1b9294](https://github.com/googleapis/google-cloud-python/commit/a1b9294d0bf6e27c2a951d6df7faf7807dc5420b))
+
 ## [1.12.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-apigee-connect-v1.11.0...google-cloud-apigee-connect-v1.12.0) (2025-02-12)
 
 

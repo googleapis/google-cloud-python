@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-asset/#history
 
+## [3.29.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-asset-v3.29.1...google-cloud-asset-v3.29.2) (2025-03-12)
+
+
+### Bug Fixes
+
+* [Many APIs] Allow Protobuf 6.x ([3a85796](https://github.com/googleapis/google-cloud-python/commit/3a85796774ebf728cbc9e82dc536316530ac78c1))
+
 ## [3.29.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-asset-v3.29.0...google-cloud-asset-v3.29.1) (2025-02-18)
 
 

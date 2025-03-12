@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.8](https://github.com/googleapis/google-cloud-python/compare/google-cloud-apphub-v0.1.7...google-cloud-apphub-v0.1.8) (2025-03-12)
+
+
+### Bug Fixes
+
+* [Many APIs] Allow Protobuf 6.x ([3a85796](https://github.com/googleapis/google-cloud-python/commit/3a85796774ebf728cbc9e82dc536316530ac78c1))
+
 ## [0.1.7](https://github.com/googleapis/google-cloud-python/compare/google-cloud-apphub-v0.1.6...google-cloud-apphub-v0.1.7) (2025-02-18)
 
 

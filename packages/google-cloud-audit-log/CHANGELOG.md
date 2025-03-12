@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.3.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-audit-log-v0.3.1...google-cloud-audit-log-v0.3.2) (2025-03-12)
+
+
+### Bug Fixes
+
+* Allow protobuf 6.x ([b4d4551](https://github.com/googleapis/google-cloud-python/commit/b4d45514e4ab630334a54eb4201576062ecc1958))
+* resolve issue where pre-release versions of dependencies are installed ([b4d4551](https://github.com/googleapis/google-cloud-python/commit/b4d45514e4ab630334a54eb4201576062ecc1958))
+
 ## [0.3.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-audit-log-v0.3.0...google-cloud-audit-log-v0.3.1) (2025-03-06)
 
 
