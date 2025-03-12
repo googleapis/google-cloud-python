@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.7.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-connectivity-v2.7.1...google-cloud-network-connectivity-v2.7.2) (2025-03-12)
+
+
+### Bug Fixes
+
+* [Many APIs] Allow Protobuf 6.x ([c8bbf32](https://github.com/googleapis/google-cloud-python/commit/c8bbf32606e790b559b261bf96700c76b6e2bfce))
+
 ## [2.7.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-connectivity-v2.7.0...google-cloud-network-connectivity-v2.7.1) (2025-02-18)
 
 

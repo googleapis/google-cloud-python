@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.13.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-notebooks-v1.13.1...google-cloud-notebooks-v1.13.2) (2025-03-12)
+
+
+### Bug Fixes
+
+* [Many APIs] Allow Protobuf 6.x ([c8bbf32](https://github.com/googleapis/google-cloud-python/commit/c8bbf32606e790b559b261bf96700c76b6e2bfce))
+
 ## [1.13.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-notebooks-v1.13.0...google-cloud-notebooks-v1.13.1) (2025-02-18)
 
 

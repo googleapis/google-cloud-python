@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-modelarmor-v0.2.0...google-cloud-modelarmor-v0.2.1) (2025-03-12)
+
+
+### Bug Fixes
+
+* [Many APIs] Allow Protobuf 6.x ([c8bbf32](https://github.com/googleapis/google-cloud-python/commit/c8bbf32606e790b559b261bf96700c76b6e2bfce))
+
 ## [0.2.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-modelarmor-v0.1.1...google-cloud-modelarmor-v0.2.0) (2025-03-06)
 
 

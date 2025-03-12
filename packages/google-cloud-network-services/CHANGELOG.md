@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.20](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-services-v0.5.19...google-cloud-network-services-v0.5.20) (2025-03-12)
+
+
+### Bug Fixes
+
+* [Many APIs] Allow Protobuf 6.x ([c8bbf32](https://github.com/googleapis/google-cloud-python/commit/c8bbf32606e790b559b261bf96700c76b6e2bfce))
+
 ## [0.5.19](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-services-v0.5.18...google-cloud-network-services-v0.5.19) (2025-02-18)
 
 

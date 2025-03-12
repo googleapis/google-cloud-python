@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.11.16](https://github.com/googleapis/google-cloud-python/compare/google-cloud-media-translation-v0.11.15...google-cloud-media-translation-v0.11.16) (2025-03-12)
+
+
+### Bug Fixes
+
+* [Many APIs] Allow Protobuf 6.x ([c8bbf32](https://github.com/googleapis/google-cloud-python/commit/c8bbf32606e790b559b261bf96700c76b6e2bfce))
+
 ## [0.11.15](https://github.com/googleapis/google-cloud-python/compare/google-cloud-media-translation-v0.11.14...google-cloud-media-translation-v0.11.15) (2025-02-12)
 
 

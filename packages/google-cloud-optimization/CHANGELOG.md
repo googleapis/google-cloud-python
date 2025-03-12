@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.11.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-optimization-v1.11.0...google-cloud-optimization-v1.11.1) (2025-03-12)
+
+
+### Bug Fixes
+
+* [Many APIs] Allow Protobuf 6.x ([c8bbf32](https://github.com/googleapis/google-cloud-python/commit/c8bbf32606e790b559b261bf96700c76b6e2bfce))
+
 ## [1.11.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-optimization-v1.10.0...google-cloud-optimization-v1.11.0) (2025-02-12)
 
 
