@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.18.18](https://github.com/googleapis/google-cloud-python/compare/google-analytics-data-v0.18.17...google-analytics-data-v0.18.18) (2025-03-12)
+
+
+### Bug Fixes
+
+* [Many APIs] Allow Protobuf 6.x ([a1b9294](https://github.com/googleapis/google-cloud-python/commit/a1b9294d0bf6e27c2a951d6df7faf7807dc5420b))
+
 ## [0.18.17](https://github.com/googleapis/google-cloud-python/compare/google-analytics-data-v0.18.16...google-analytics-data-v0.18.17) (2025-02-12)
 
 

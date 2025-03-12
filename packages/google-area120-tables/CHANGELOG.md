@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.11.16](https://github.com/googleapis/google-cloud-python/compare/google-area120-tables-v0.11.15...google-area120-tables-v0.11.16) (2025-03-12)
+
+
+### Bug Fixes
+
+* [Many APIs] Allow Protobuf 6.x ([a1b9294](https://github.com/googleapis/google-cloud-python/commit/a1b9294d0bf6e27c2a951d6df7faf7807dc5420b))
+
 ## [0.11.15](https://github.com/googleapis/google-cloud-python/compare/google-area120-tables-v0.11.14...google-area120-tables-v0.11.15) (2025-02-12)
 
 

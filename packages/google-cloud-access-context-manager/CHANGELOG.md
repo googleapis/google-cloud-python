@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.2.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-access-context-manager-v0.2.1...google-cloud-access-context-manager-v0.2.2) (2025-03-12)
+
+
+### Bug Fixes
+
+* Allow protobuf 6.x ([b4d4551](https://github.com/googleapis/google-cloud-python/commit/b4d45514e4ab630334a54eb4201576062ecc1958))
+* resolve issue where pre-release versions of dependencies are installed ([b4d4551](https://github.com/googleapis/google-cloud-python/commit/b4d45514e4ab630334a54eb4201576062ecc1958))
+
 ## [0.2.1](https://github.com/googleapis/python-access-context-manager/compare/v0.2.0...v0.2.1) (2024-08-14)
 
 
