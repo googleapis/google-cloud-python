@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.7.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-source-context-v1.7.0...google-cloud-source-context-v1.7.1) (2025-03-12)
+
+
+### Bug Fixes
+
+* [Many APIs] Allow Protobuf 6.x ([784a3ca](https://github.com/googleapis/google-cloud-python/commit/784a3ca7a180453320521753f5bce71de329d65c))
+
 ## [1.7.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-source-context-v1.6.0...google-cloud-source-context-v1.7.0) (2025-02-12)
 
 

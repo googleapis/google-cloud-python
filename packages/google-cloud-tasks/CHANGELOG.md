@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-tasks/#history
 
+## [2.19.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-tasks-v2.19.1...google-cloud-tasks-v2.19.2) (2025-03-12)
+
+
+### Bug Fixes
+
+* [Many APIs] Allow Protobuf 6.x ([4757dae](https://github.com/googleapis/google-cloud-python/commit/4757daede978618382ba46f4aa91bb9cfd9b937b))
+
 ## [2.19.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-tasks-v2.19.0...google-cloud-tasks-v2.19.1) (2025-02-18)
 
 

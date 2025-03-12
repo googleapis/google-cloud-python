@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.12.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-shell-v1.12.0...google-cloud-shell-v1.12.1) (2025-03-12)
+
+
+### Bug Fixes
+
+* [Many APIs] Allow Protobuf 6.x ([784a3ca](https://github.com/googleapis/google-cloud-python/commit/784a3ca7a180453320521753f5bce71de329d65c))
+
 ## [1.12.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-shell-v1.11.0...google-cloud-shell-v1.12.0) (2025-02-12)
 
 

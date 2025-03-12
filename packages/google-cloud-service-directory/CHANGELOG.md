@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.14.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-service-directory-v1.14.1...google-cloud-service-directory-v1.14.2) (2025-03-12)
+
+
+### Bug Fixes
+
+* [Many APIs] Allow Protobuf 6.x ([784a3ca](https://github.com/googleapis/google-cloud-python/commit/784a3ca7a180453320521753f5bce71de329d65c))
+
 ## [1.14.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-service-directory-v1.14.0...google-cloud-service-directory-v1.14.1) (2025-02-18)
 
 
