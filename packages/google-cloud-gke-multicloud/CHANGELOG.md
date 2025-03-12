@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.20](https://github.com/googleapis/google-cloud-python/compare/google-cloud-gke-multicloud-v0.6.19...google-cloud-gke-multicloud-v0.6.20) (2025-03-12)
+
+
+### Bug Fixes
+
+* [Many APIs] Allow Protobuf 6.x ([e06ee32](https://github.com/googleapis/google-cloud-python/commit/e06ee325de4125cdfcaf040a77dc9ccc82843260))
+
 ## [0.6.19](https://github.com/googleapis/google-cloud-python/compare/google-cloud-gke-multicloud-v0.6.18...google-cloud-gke-multicloud-v0.6.19) (2025-02-12)
 
 

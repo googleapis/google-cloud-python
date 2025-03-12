@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.10.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-ids-v1.10.0...google-cloud-ids-v1.10.1) (2025-03-12)
+
+
+### Bug Fixes
+
+* [Many APIs] Allow Protobuf 6.x ([e06ee32](https://github.com/googleapis/google-cloud-python/commit/e06ee325de4125cdfcaf040a77dc9ccc82843260))
+
 ## [1.10.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-ids-v1.9.0...google-cloud-ids-v1.10.0) (2025-02-12)
 
 

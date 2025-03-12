@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.9.17](https://github.com/googleapis/google-cloud-python/compare/google-cloud-life-sciences-v0.9.16...google-cloud-life-sciences-v0.9.17) (2025-03-12)
+
+
+### Bug Fixes
+
+* [Many APIs] Allow Protobuf 6.x ([c8bbf32](https://github.com/googleapis/google-cloud-python/commit/c8bbf32606e790b559b261bf96700c76b6e2bfce))
+
 ## [0.9.16](https://github.com/googleapis/google-cloud-python/compare/google-cloud-life-sciences-v0.9.15...google-cloud-life-sciences-v0.9.16) (2025-02-12)
 
 

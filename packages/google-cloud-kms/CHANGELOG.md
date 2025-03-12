@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-kms/#history
 
+## [3.4.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-kms-v3.4.0...google-cloud-kms-v3.4.1) (2025-03-12)
+
+
+### Bug Fixes
+
+* [Many APIs] Allow Protobuf 6.x ([e06ee32](https://github.com/googleapis/google-cloud-python/commit/e06ee325de4125cdfcaf040a77dc9ccc82843260))
+
 ## [3.4.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-kms-v3.3.1...google-cloud-kms-v3.4.0) (2025-02-24)
 
 

@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.8](https://github.com/googleapis/google-cloud-python/compare/google-cloud-managedkafka-v0.1.7...google-cloud-managedkafka-v0.1.8) (2025-03-12)
+
+
+### Bug Fixes
+
+* [Many APIs] Allow Protobuf 6.x ([c8bbf32](https://github.com/googleapis/google-cloud-python/commit/c8bbf32606e790b559b261bf96700c76b6e2bfce))
+
 ## [0.1.7](https://github.com/googleapis/google-cloud-python/compare/google-cloud-managedkafka-v0.1.6...google-cloud-managedkafka-v0.1.7) (2025-02-12)
 
 

@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-language/#history
 
+## [2.17.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-language-v2.17.0...google-cloud-language-v2.17.1) (2025-03-12)
+
+
+### Bug Fixes
+
+* [Many APIs] Allow Protobuf 6.x ([c8bbf32](https://github.com/googleapis/google-cloud-python/commit/c8bbf32606e790b559b261bf96700c76b6e2bfce))
+
 ## [2.17.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-language-v2.16.0...google-cloud-language-v2.17.0) (2025-02-12)
 
 
