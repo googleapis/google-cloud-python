@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.13.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-filestore-v1.13.0...google-cloud-filestore-v1.13.1) (2025-03-12)
+
+
+### Bug Fixes
+
+* [Many APIs] Allow Protobuf 6.x ([e06ee32](https://github.com/googleapis/google-cloud-python/commit/e06ee325de4125cdfcaf040a77dc9ccc82843260))
+
 ## [1.13.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-filestore-v1.12.0...google-cloud-filestore-v1.13.0) (2025-03-06)
 
 

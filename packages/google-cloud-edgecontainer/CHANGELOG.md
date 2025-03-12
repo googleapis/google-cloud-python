@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.17](https://github.com/googleapis/google-cloud-python/compare/google-cloud-edgecontainer-v0.5.16...google-cloud-edgecontainer-v0.5.17) (2025-03-12)
+
+
+### Bug Fixes
+
+* [Many APIs] Allow Protobuf 6.x ([feb5353](https://github.com/googleapis/google-cloud-python/commit/feb53532240bb70a94b359b519f0f41f95875a33))
+
 ## [0.5.16](https://github.com/googleapis/google-cloud-python/compare/google-cloud-edgecontainer-v0.5.15...google-cloud-edgecontainer-v0.5.16) (2025-02-12)
 
 
