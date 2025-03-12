@@ -223,30 +223,6 @@ replacements:
     after: "`gs://my-bucket/dir/configs/*`"
     count: 1
   - paths: [
-      packages/google-cloud-dialogflow-cx/google/cloud/dialogflowcx_v3beta1/types/tool.py,
-    ]
-    before: |
-      For instance a certificate can be self-signed
-      \                    using the following command,    openssl x509
-      \                    -req -days 200 -in example.com.csr \\\
-      \                    -signkey example.com.key \\\
-      \                         -out example.com.crt \\\
-      \                         -extfile \<\(printf
-      \                    \"\\nsubjectAltName=\'DNS:www.example.com\'\"\)
-    after: |
-      For instance a certificate can be self-signed
-                          using the following command:
-
-                          ::
-
-                              openssl x509
-                              -req -days 200 -in example.com.csr \
-                              -signkey example.com.key \
-                              -out example.com.crt \
-                              -extfile <(printf
-                              "\\nsubjectAltName='DNS:www.example.com'")\n
-    count: 1
-  - paths: [
       packages/google-cloud-dms/google/cloud/clouddms_v1/types/conversionworkspace_resources.py,
     ]
     before: |
