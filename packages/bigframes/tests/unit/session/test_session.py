@@ -25,10 +25,10 @@ import google.cloud.bigquery.table
 import pytest
 
 import bigframes
+from bigframes import version
 import bigframes.enums
 import bigframes.exceptions
-
-from .. import resources
+from tests.unit import resources
 
 TABLE_REFERENCE = {
     "projectId": "my-project",
@@ -443,3 +443,18 @@ def test_session_init_fails_with_no_project():
                 credentials=mock.Mock(spec=google.auth.credentials.Credentials)
             )
         )
+
+
+def test_session_init_warns_if_bf_version_is_too_old(monkeypatch):
+    release_date = datetime.datetime.strptime(version.__release_date__, "%Y-%m-%d")
+    current_date = release_date + datetime.timedelta(days=366)
+
+    class FakeDatetime(datetime.datetime):
+        @classmethod
+        def today(cls):
+            return current_date
+
+    monkeypatch.setattr(datetime, "datetime", FakeDatetime)
+
+    with pytest.warns(bigframes.exceptions.ObsoleteVersionWarning):
+        resources.create_bigquery_session()

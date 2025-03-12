@@ -91,6 +91,10 @@ class BadIndexerKeyWarning(Warning):
     """The indexer key is not used correctly."""
 
 
+class ObsoleteVersionWarning(Warning):
+    """The BigFrames version is too old."""
+
+
 class ColorFormatter:
     WARNING = "\033[93m"
     ENDC = "\033[0m"

@@ -16,6 +16,7 @@
 
 from __future__ import annotations
 
+import datetime
 import logging
 import os
 import secrets
@@ -54,6 +55,8 @@ from pandas._typing import (
 )
 import pyarrow as pa
 
+from bigframes import exceptions as bfe
+from bigframes import version
 import bigframes._config.bigquery_options as bigquery_options
 import bigframes.clients
 import bigframes.core.blocks as blocks
@@ -65,8 +68,6 @@ import bigframes.core.pruning
 # to register new and replacement ops with the Ibis BigQuery backend.
 import bigframes.dataframe
 import bigframes.dtypes
-import bigframes.exceptions
-import bigframes.exceptions as bfe
 import bigframes.functions._function_session as bff_session
 import bigframes.functions.function as bff
 import bigframes.session._io.bigquery as bf_io_bigquery
@@ -77,7 +78,6 @@ import bigframes.session.metrics
 import bigframes.session.planner
 import bigframes.session.temp_storage
 import bigframes.session.validation
-import bigframes.version
 
 # Avoid circular imports.
 if typing.TYPE_CHECKING:
@@ -147,6 +147,8 @@ class Session(
         context: Optional[bigquery_options.BigQueryOptions] = None,
         clients_provider: Optional[bigframes.session.clients.ClientsProvider] = None,
     ):
+        _warn_if_bf_version_is_obsolete()
+
         if context is None:
             context = bigquery_options.BigQueryOptions()
 
@@ -1813,3 +1815,11 @@ class Session(
 
 def connect(context: Optional[bigquery_options.BigQueryOptions] = None) -> Session:
     return Session(context)
+
+
+def _warn_if_bf_version_is_obsolete():
+    today = datetime.datetime.today()
+    release_date = datetime.datetime.strptime(version.__release_date__, "%Y-%m-%d")
+    if today - release_date > datetime.timedelta(days=365):
+        msg = f"Your BigFrames version {version.__version__} is more than 1 year old. Please update to the lastest version."
+        warnings.warn(msg, bfe.ObsoleteVersionWarning)
