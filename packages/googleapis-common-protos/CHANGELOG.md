@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.69.2](https://github.com/googleapis/google-cloud-python/compare/googleapis-common-protos-v1.69.1...googleapis-common-protos-v1.69.2) (2025-03-12)
+
+
+### Bug Fixes
+
+* Allow protobuf 6.x ([b4d4551](https://github.com/googleapis/google-cloud-python/commit/b4d45514e4ab630334a54eb4201576062ecc1958))
+* resolve issue where pre-release versions of dependencies are installed ([b4d4551](https://github.com/googleapis/google-cloud-python/commit/b4d45514e4ab630334a54eb4201576062ecc1958))
+
 ## [1.69.1](https://github.com/googleapis/google-cloud-python/compare/googleapis-common-protos-v1.69.0...googleapis-common-protos-v1.69.1) (2025-03-06)
 
 

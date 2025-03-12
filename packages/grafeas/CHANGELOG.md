@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/grafeas/#history
 
+## [1.14.1](https://github.com/googleapis/google-cloud-python/compare/grafeas-v1.14.0...grafeas-v1.14.1) (2025-03-12)
+
+
+### Bug Fixes
+
+* [Many APIs] Allow Protobuf 6.x ([36e8ba1](https://github.com/googleapis/google-cloud-python/commit/36e8ba12eac92dd221ac3ddf1061da3845135791))
+
 ## [1.14.0](https://github.com/googleapis/google-cloud-python/compare/grafeas-v1.13.0...grafeas-v1.14.0) (2025-02-18)
 
 
