@@ -16,6 +16,7 @@
 import functools
 import threading
 from google.protobuf.struct_pb2 import Struct
+from typing import Optional
 
 from google.cloud.spanner_v1._helpers import (
     _make_value_pb,
@@ -24,6 +25,7 @@ from google.cloud.spanner_v1._helpers import (
     _metadata_with_leader_aware_routing,
     _retry,
     _check_rst_stream_error,
+    _merge_Transaction_Options,
 )
 from google.cloud.spanner_v1 import CommitRequest
 from google.cloud.spanner_v1 import ExecuteBatchDmlRequest
@@ -37,7 +39,7 @@ from google.cloud.spanner_v1 import RequestOptions
 from google.cloud.spanner_v1.metrics.metrics_capture import MetricsCapture
 from google.api_core import gapic_v1
 from google.api_core.exceptions import InternalServerError
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Any
 
 
@@ -59,6 +61,7 @@ class Transaction(_SnapshotBase, _BatchBase):
     _lock = threading.Lock()
     _read_only = False
     exclude_txn_from_change_streams = False
+    isolation_level = TransactionOptions.IsolationLevel.ISOLATION_LEVEL_UNSPECIFIED
 
     def __init__(self, session):
         if session._transaction is not None:
@@ -89,12 +92,17 @@ class Transaction(_SnapshotBase, _BatchBase):
         self._check_state()
 
         if self._transaction_id is None:
-            return TransactionSelector(
-                begin=TransactionOptions(
-                    read_write=TransactionOptions.ReadWrite(),
-                    exclude_txn_from_change_streams=self.exclude_txn_from_change_streams,
-                )
+            txn_options = TransactionOptions(
+                read_write=TransactionOptions.ReadWrite(),
+                exclude_txn_from_change_streams=self.exclude_txn_from_change_streams,
+                isolation_level=self.isolation_level,
             )
+
+            txn_options = _merge_Transaction_Options(
+                self._session._database.default_transaction_options.default_read_write_transaction_options,
+                txn_options,
+            )
+            return TransactionSelector(begin=txn_options)
         else:
             return TransactionSelector(id=self._transaction_id)
 
@@ -160,6 +168,11 @@ class Transaction(_SnapshotBase, _BatchBase):
         txn_options = TransactionOptions(
             read_write=TransactionOptions.ReadWrite(),
             exclude_txn_from_change_streams=self.exclude_txn_from_change_streams,
+            isolation_level=self.isolation_level,
+        )
+        txn_options = _merge_Transaction_Options(
+            database.default_transaction_options.default_read_write_transaction_options,
+            txn_options,
         )
         observability_options = getattr(database, "observability_options", None)
         with trace_call(
@@ -661,3 +674,22 @@ class BatchTransactionId:
     transaction_id: str
     session_id: str
     read_timestamp: Any
+
+
+@dataclass
+class DefaultTransactionOptions:
+    isolation_level: str = TransactionOptions.IsolationLevel.ISOLATION_LEVEL_UNSPECIFIED
+    _defaultReadWriteTransactionOptions: Optional[TransactionOptions] = field(
+        init=False, repr=False
+    )
+
+    def __post_init__(self):
+        """Initialize _defaultReadWriteTransactionOptions automatically"""
+        self._defaultReadWriteTransactionOptions = TransactionOptions(
+            isolation_level=self.isolation_level
+        )
+
+    @property
+    def default_read_write_transaction_options(self) -> TransactionOptions:
+        """Public accessor for _defaultReadWriteTransactionOptions"""
+        return self._defaultReadWriteTransactionOptions

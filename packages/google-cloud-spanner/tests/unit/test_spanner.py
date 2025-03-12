@@ -32,6 +32,7 @@ from google.cloud.spanner_v1 import (
     ExecuteBatchDmlRequest,
     ExecuteBatchDmlResponse,
     param_types,
+    DefaultTransactionOptions,
 )
 from google.cloud.spanner_v1.types import transaction as transaction_type
 from google.cloud.spanner_v1.keyset import KeySet
@@ -138,6 +139,7 @@ class TestTransaction(OpenTelemetryBase):
         count=0,
         query_options=None,
         exclude_txn_from_change_streams=False,
+        isolation_level=TransactionOptions.IsolationLevel.ISOLATION_LEVEL_UNSPECIFIED,
     ):
         stats_pb = ResultSetStats(row_count_exact=1)
 
@@ -147,6 +149,7 @@ class TestTransaction(OpenTelemetryBase):
 
         transaction.transaction_tag = self.TRANSACTION_TAG
         transaction.exclude_txn_from_change_streams = exclude_txn_from_change_streams
+        transaction.isolation_level = isolation_level
         transaction._execute_sql_count = count
 
         row_count = transaction.execute_update(
@@ -168,12 +171,14 @@ class TestTransaction(OpenTelemetryBase):
         begin=True,
         count=0,
         exclude_txn_from_change_streams=False,
+        isolation_level=TransactionOptions.IsolationLevel.ISOLATION_LEVEL_UNSPECIFIED,
     ):
         if begin is True:
             expected_transaction = TransactionSelector(
                 begin=TransactionOptions(
                     read_write=TransactionOptions.ReadWrite(),
                     exclude_txn_from_change_streams=exclude_txn_from_change_streams,
+                    isolation_level=isolation_level,
                 )
             )
         else:
@@ -584,6 +589,32 @@ class TestTransaction(OpenTelemetryBase):
         api.execute_sql.assert_called_once_with(
             request=self._execute_update_expected_request(
                 database=database, exclude_txn_from_change_streams=True
+            ),
+            retry=RETRY,
+            timeout=TIMEOUT,
+            metadata=[
+                ("google-cloud-resource-prefix", database.name),
+                ("x-goog-spanner-route-to-leader", "true"),
+            ],
+        )
+
+    def test_transaction_should_include_begin_w_isolation_level_with_first_update(
+        self,
+    ):
+        database = _Database()
+        session = _Session(database)
+        api = database.spanner_api = self._make_spanner_api()
+        transaction = self._make_one(session)
+        self._execute_update_helper(
+            transaction=transaction,
+            api=api,
+            isolation_level=TransactionOptions.IsolationLevel.REPEATABLE_READ,
+        )
+
+        api.execute_sql.assert_called_once_with(
+            request=self._execute_update_expected_request(
+                database=database,
+                isolation_level=TransactionOptions.IsolationLevel.REPEATABLE_READ,
             ),
             retry=RETRY,
             timeout=TIMEOUT,
@@ -1060,6 +1091,7 @@ class _Client(object):
 
         self._query_options = ExecuteSqlRequest.QueryOptions(optimizer_version="1")
         self.directed_read_options = None
+        self.default_transaction_options = DefaultTransactionOptions()
 
 
 class _Instance(object):
@@ -1073,6 +1105,7 @@ class _Database(object):
         self._instance = _Instance()
         self._route_to_leader_enabled = True
         self._directed_read_options = None
+        self.default_transaction_options = DefaultTransactionOptions()
 
 
 class _Session(object):

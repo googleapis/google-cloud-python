@@ -14,6 +14,7 @@
 
 import unittest
 import mock
+from google.cloud.spanner_v1 import DefaultTransactionOptions
 
 
 class TestInstance(unittest.TestCase):
@@ -1019,6 +1020,7 @@ class _Client(object):
         self.timeout_seconds = timeout_seconds
         self.route_to_leader_enabled = True
         self.directed_read_options = None
+        self.default_transaction_options = DefaultTransactionOptions()
 
     def copy(self):
         from copy import deepcopy

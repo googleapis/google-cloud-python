@@ -15,6 +15,7 @@
 
 import unittest
 import mock
+from google.cloud.spanner_v1 import TransactionOptions
 
 
 class Test_merge_query_options(unittest.TestCase):
@@ -955,3 +956,83 @@ class Test_metadata_with_leader_aware_routing(unittest.TestCase):
         self.assertEqual(
             metadata, ("x-goog-spanner-route-to-leader", str(value).lower())
         )
+
+
+class Test_merge_transaction_options(unittest.TestCase):
+    def _callFUT(self, *args, **kw):
+        from google.cloud.spanner_v1._helpers import _merge_Transaction_Options
+
+        return _merge_Transaction_Options(*args, **kw)
+
+    def test_default_none_and_merge_none(self):
+        default = merge = None
+        result = self._callFUT(default, merge)
+        self.assertIsNone(result)
+
+    def test_default_options_and_merge_none(self):
+        default = TransactionOptions(
+            isolation_level=TransactionOptions.IsolationLevel.REPEATABLE_READ
+        )
+        merge = None
+        result = self._callFUT(default, merge)
+        expected = default
+        self.assertEqual(result, expected)
+
+    def test_default_none_and_merge_options(self):
+        default = None
+        merge = TransactionOptions(
+            isolation_level=TransactionOptions.IsolationLevel.SERIALIZABLE
+        )
+        expected = merge
+        result = self._callFUT(default, merge)
+        self.assertEqual(result, expected)
+
+    def test_default_and_merge_isolation_options(self):
+        default = TransactionOptions(
+            isolation_level=TransactionOptions.IsolationLevel.SERIALIZABLE,
+            read_write=TransactionOptions.ReadWrite(),
+        )
+        merge = TransactionOptions(
+            isolation_level=TransactionOptions.IsolationLevel.REPEATABLE_READ,
+            exclude_txn_from_change_streams=True,
+        )
+        expected = TransactionOptions(
+            isolation_level=TransactionOptions.IsolationLevel.REPEATABLE_READ,
+            read_write=TransactionOptions.ReadWrite(),
+            exclude_txn_from_change_streams=True,
+        )
+        result = self._callFUT(default, merge)
+        self.assertEqual(result, expected)
+
+    def test_default_isolation_and_merge_options(self):
+        default = TransactionOptions(
+            isolation_level=TransactionOptions.IsolationLevel.SERIALIZABLE
+        )
+        merge = TransactionOptions(
+            read_write=TransactionOptions.ReadWrite(),
+            exclude_txn_from_change_streams=True,
+        )
+        expected = TransactionOptions(
+            isolation_level=TransactionOptions.IsolationLevel.SERIALIZABLE,
+            read_write=TransactionOptions.ReadWrite(),
+            exclude_txn_from_change_streams=True,
+        )
+        result = self._callFUT(default, merge)
+        self.assertEqual(result, expected)
+
+    def test_default_isolation_and_merge_options_isolation_unspecified(self):
+        default = TransactionOptions(
+            isolation_level=TransactionOptions.IsolationLevel.SERIALIZABLE
+        )
+        merge = TransactionOptions(
+            read_write=TransactionOptions.ReadWrite(),
+            exclude_txn_from_change_streams=True,
+            isolation_level=TransactionOptions.IsolationLevel.ISOLATION_LEVEL_UNSPECIFIED,
+        )
+        expected = TransactionOptions(
+            isolation_level=TransactionOptions.IsolationLevel.SERIALIZABLE,
+            read_write=TransactionOptions.ReadWrite(),
+            exclude_txn_from_change_streams=True,
+        )
+        result = self._callFUT(default, merge)
+        self.assertEqual(result, expected)

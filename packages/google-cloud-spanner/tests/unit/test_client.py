@@ -16,7 +16,7 @@ import unittest
 
 import os
 import mock
-from google.cloud.spanner_v1 import DirectedReadOptions
+from google.cloud.spanner_v1 import DirectedReadOptions, DefaultTransactionOptions
 
 
 def _make_credentials():
@@ -53,6 +53,9 @@ class TestClient(unittest.TestCase):
             "auto_failover_disabled": True,
         },
     }
+    DEFAULT_TRANSACTION_OPTIONS = DefaultTransactionOptions(
+        isolation_level="SERIALIZABLE"
+    )
 
     def _get_target_class(self):
         from google.cloud import spanner
@@ -73,6 +76,7 @@ class TestClient(unittest.TestCase):
         expected_query_options=None,
         route_to_leader_enabled=True,
         directed_read_options=None,
+        default_transaction_options=None,
     ):
         import google.api_core.client_options
         from google.cloud.spanner_v1 import client as MUT
@@ -99,6 +103,7 @@ class TestClient(unittest.TestCase):
             credentials=creds,
             query_options=query_options,
             directed_read_options=directed_read_options,
+            default_transaction_options=default_transaction_options,
             **kwargs
         )
 
@@ -129,6 +134,10 @@ class TestClient(unittest.TestCase):
             self.assertFalse(client.route_to_leader_enabled)
         if directed_read_options is not None:
             self.assertEqual(client.directed_read_options, directed_read_options)
+        if default_transaction_options is not None:
+            self.assertEqual(
+                client.default_transaction_options, default_transaction_options
+            )
 
     @mock.patch("google.cloud.spanner_v1.client._get_spanner_emulator_host")
     @mock.patch("warnings.warn")
@@ -260,6 +269,17 @@ class TestClient(unittest.TestCase):
         creds = _make_credentials()
         self._constructor_test_helper(
             expected_scopes, creds, route_to_leader_enabled=False
+        )
+
+    def test_constructor_w_default_transaction_options(self):
+        from google.cloud.spanner_v1 import client as MUT
+
+        expected_scopes = (MUT.SPANNER_ADMIN_SCOPE,)
+        creds = _make_credentials()
+        self._constructor_test_helper(
+            expected_scopes,
+            creds,
+            default_transaction_options=self.DEFAULT_TRANSACTION_OPTIONS,
         )
 
     @mock.patch("google.cloud.spanner_v1.client._get_spanner_emulator_host")

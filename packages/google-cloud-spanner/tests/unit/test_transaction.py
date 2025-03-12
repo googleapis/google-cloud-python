@@ -16,6 +16,7 @@
 import mock
 
 from google.cloud.spanner_v1 import RequestOptions
+from google.cloud.spanner_v1 import DefaultTransactionOptions
 from google.cloud.spanner_v1 import Type
 from google.cloud.spanner_v1 import TypeCode
 from google.api_core.retry import Retry
@@ -1021,6 +1022,7 @@ class _Database(object):
         self._instance = _Instance()
         self._route_to_leader_enabled = True
         self._directed_read_options = None
+        self.default_transaction_options = DefaultTransactionOptions()
 
 
 class _Session(object):

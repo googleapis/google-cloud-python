@@ -32,6 +32,7 @@ from google.cloud._helpers import _date_from_iso8601_date
 from google.cloud.spanner_v1 import TypeCode
 from google.cloud.spanner_v1 import ExecuteSqlRequest
 from google.cloud.spanner_v1 import JsonObject
+from google.cloud.spanner_v1 import TransactionOptions
 from google.cloud.spanner_v1.request_id_header import with_request_id
 from google.rpc.error_details_pb2 import RetryInfo
 
@@ -690,3 +691,38 @@ class AtomicCounter:
 
 def _metadata_with_request_id(*args, **kwargs):
     return with_request_id(*args, **kwargs)
+
+
+def _merge_Transaction_Options(
+    defaultTransactionOptions: TransactionOptions,
+    mergeTransactionOptions: TransactionOptions,
+) -> TransactionOptions:
+    """Merges two TransactionOptions objects.
+
+    - Values from `mergeTransactionOptions` take precedence if set.
+    - Values from `defaultTransactionOptions` are used only if missing.
+
+    Args:
+        defaultTransactionOptions (TransactionOptions): The default transaction options (fallback values).
+        mergeTransactionOptions (TransactionOptions): The main transaction options (overrides when set).
+
+    Returns:
+        TransactionOptions: A merged TransactionOptions object.
+    """
+
+    if defaultTransactionOptions is None:
+        return mergeTransactionOptions
+
+    if mergeTransactionOptions is None:
+        return defaultTransactionOptions
+
+    merged_pb = TransactionOptions()._pb  # Create a new protobuf object
+
+    # Merge defaultTransactionOptions first
+    merged_pb.MergeFrom(defaultTransactionOptions._pb)
+
+    # Merge transactionOptions, ensuring it overrides default values
+    merged_pb.MergeFrom(mergeTransactionOptions._pb)
+
+    # Convert protobuf object back into a TransactionOptions instance
+    return TransactionOptions(merged_pb)
