@@ -98,33 +98,6 @@ assert 1 == s.replace(  # MANIFEST.in
     "recursive-include third_party/bigframes_vendored *\nrecursive-include bigframes",
 )
 
-# Even though BigQuery DataFrames isn't technically a client library, we are
-# opting into Cloud RAD for docs hosting.
-assert 1 == s.replace(  # common.cfg
-    [".kokoro/docs/common.cfg"],
-    re.escape('value: "docs-staging-v2-dev"'),
-    'value: "docs-staging-v2"',
-)
-
-# Use a custom table of contents since the default one isn't organized well
-# enough for the number of classes we have.
-assert 1 == s.replace(  # publish-docs.sh
-    [".kokoro/publish-docs.sh"],
-    (
-        re.escape("# upload docs")
-        + "\n"
-        + re.escape(
-            'python3.10 -m docuploader upload docs/_build/html/docfx_yaml --metadata-file docs.metadata --destination-prefix docfx --staging-bucket "${V2_STAGING_BUCKET}"'
-        )
-    ),
-    (
-        "# Replace toc.yml template file\n"
-        + "mv docs/templates/toc.yml docs/_build/html/docfx_yaml/toc.yml\n\n"
-        + "# upload docs\n"
-        + 'python3.10 -m docuploader upload docs/_build/html/docfx_yaml --metadata-file docs.metadata --destination-prefix docfx --staging-bucket "${V2_STAGING_BUCKET}"'
-    ),
-)
-
 # Fixup the documentation.
 assert 1 == s.replace(  # docs/conf.py
     ["docs/conf.py"],
