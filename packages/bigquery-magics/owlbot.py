@@ -59,6 +59,7 @@ s.move(
         # Multi-processing note isn't relevant, as bigquery-magics is responsible for
         # creating clients, not the end user.
         "docs/multiprocessing.rst",
+        "noxfile.py",
         "README.rst",
         ".github/workflows/unittest.yml",
     ],
