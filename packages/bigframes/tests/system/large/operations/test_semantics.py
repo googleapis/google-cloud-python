@@ -20,9 +20,10 @@ import pandas.testing
 import pytest
 
 import bigframes
-from bigframes import dataframe, dtypes, exceptions
+from bigframes import dataframe, dtypes, exceptions, series
 
-EXPERIMENT_OPTION = "experiments.semantic_operators"
+SEM_OP_EXP_OPTION = "experiments.semantic_operators"
+BLOB_EXP_OPTION = "experiments.blob"
 THRESHOLD_OPTION = "compute.semantic_ops_confirmation_threshold"
 
 
@@ -31,7 +32,7 @@ def test_semantics_experiment_off_raise_error():
         {"country": ["USA", "Germany"], "city": ["Seattle", "Berlin"]}
     )
 
-    with bigframes.option_context(EXPERIMENT_OPTION, False), pytest.raises(
+    with bigframes.option_context(SEM_OP_EXP_OPTION, False), pytest.raises(
         NotImplementedError
     ):
         df.semantics
@@ -68,7 +69,7 @@ def test_agg(session, gemini_flash_model, max_agg_rows, cluster_column):
     instruction = "Find the shared first name of actors in {Movies}. One word answer."
 
     with bigframes.option_context(
-        EXPERIMENT_OPTION,
+        SEM_OP_EXP_OPTION,
         True,
         THRESHOLD_OPTION,
         50,
@@ -114,7 +115,7 @@ def test_agg_with_confirmation(session, gemini_flash_model, reply, monkeypatch):
     monkeypatch.setattr("builtins.input", lambda: reply)
 
     with bigframes.option_context(
-        EXPERIMENT_OPTION,
+        SEM_OP_EXP_OPTION,
         True,
         THRESHOLD_OPTION,
         0,
@@ -139,7 +140,7 @@ def test_agg_w_int_column(session, gemini_flash_model):
     instruction = "Find the {Years} Leonardo DiCaprio acted in the most movies. Answer with the year only."
 
     with bigframes.option_context(
-        EXPERIMENT_OPTION,
+        SEM_OP_EXP_OPTION,
         True,
         THRESHOLD_OPTION,
         10,
@@ -187,7 +188,7 @@ def test_agg_invalid_instruction_raise_error(instruction, gemini_flash_model):
     )
 
     with bigframes.option_context(
-        EXPERIMENT_OPTION,
+        SEM_OP_EXP_OPTION,
         True,
         THRESHOLD_OPTION,
         10,
@@ -222,7 +223,7 @@ def test_agg_invalid_cluster_column_raise_error(gemini_flash_model, cluster_colu
     instruction = "Find the shared first name of actors in {Movies}. One word answer."
 
     with bigframes.option_context(
-        EXPERIMENT_OPTION,
+        SEM_OP_EXP_OPTION,
         True,
         THRESHOLD_OPTION,
         10,
@@ -257,7 +258,7 @@ def test_cluster_by(session, text_embedding_generator, n_clusters):
     output_column = "cluster id"
 
     with bigframes.option_context(
-        EXPERIMENT_OPTION,
+        SEM_OP_EXP_OPTION,
         True,
         THRESHOLD_OPTION,
         10,
@@ -305,7 +306,7 @@ def test_cluster_by_with_confirmation(
     monkeypatch.setattr("builtins.input", lambda: reply)
 
     with bigframes.option_context(
-        EXPERIMENT_OPTION,
+        SEM_OP_EXP_OPTION,
         True,
         THRESHOLD_OPTION,
         0,
@@ -326,7 +327,7 @@ def test_cluster_by_invalid_column(session, text_embedding_generator):
     output_column = "cluster id"
 
     with bigframes.option_context(
-        EXPERIMENT_OPTION,
+        SEM_OP_EXP_OPTION,
         True,
         THRESHOLD_OPTION,
         10,
@@ -347,7 +348,7 @@ def test_cluster_by_invalid_model(session, gemini_flash_model):
     output_column = "cluster id"
 
     with bigframes.option_context(
-        EXPERIMENT_OPTION,
+        SEM_OP_EXP_OPTION,
         True,
         THRESHOLD_OPTION,
         10,
@@ -371,7 +372,7 @@ def test_filter(session, gemini_flash_model):
     )
 
     with bigframes.option_context(
-        EXPERIMENT_OPTION,
+        SEM_OP_EXP_OPTION,
         True,
         THRESHOLD_OPTION,
         10,
@@ -386,6 +387,29 @@ def test_filter(session, gemini_flash_model):
     pandas.testing.assert_frame_equal(
         actual_df, expected_df, check_dtype=False, check_index_type=False
     )
+
+
+def test_filter_multi_model(session, gemini_flash_model):
+    with bigframes.option_context(
+        SEM_OP_EXP_OPTION,
+        True,
+        BLOB_EXP_OPTION,
+        True,
+        THRESHOLD_OPTION,
+        10,
+    ):
+        df = session.from_glob_path(
+            "gs://bigframes-dev-testing/a_multimodel/images/*", name="image"
+        )
+        df["prey"] = series.Series(
+            ["building", "cross road", "rock", "squirrel", "rabbit"], session=session
+        )
+        result = df.semantics.filter(
+            "The object in {image} feeds on {prey}",
+            gemini_flash_model,
+        ).to_pandas()
+
+    assert len(result) <= len(df)
 
 
 @pytest.mark.parametrize(
@@ -409,7 +433,7 @@ def test_filter_with_confirmation(session, gemini_flash_model, reply, monkeypatc
     monkeypatch.setattr("builtins.input", lambda: reply)
 
     with bigframes.option_context(
-        EXPERIMENT_OPTION,
+        SEM_OP_EXP_OPTION,
         True,
         THRESHOLD_OPTION,
         0,
@@ -426,7 +450,7 @@ def test_filter_single_column_reference(session, gemini_flash_model):
     )
 
     with bigframes.option_context(
-        EXPERIMENT_OPTION,
+        SEM_OP_EXP_OPTION,
         True,
         THRESHOLD_OPTION,
         10,
@@ -465,7 +489,7 @@ def test_filter_invalid_instruction_raise_error(instruction, gemini_flash_model)
     df = dataframe.DataFrame({"id": [1, 2], "city": ["Seattle", "Berlin"]})
 
     with bigframes.option_context(
-        EXPERIMENT_OPTION,
+        SEM_OP_EXP_OPTION,
         True,
         THRESHOLD_OPTION,
         10,
@@ -479,7 +503,7 @@ def test_filter_invalid_model_raise_error():
     )
 
     with bigframes.option_context(
-        EXPERIMENT_OPTION,
+        SEM_OP_EXP_OPTION,
         True,
         THRESHOLD_OPTION,
         10,
@@ -498,7 +522,7 @@ def test_map(session, gemini_flash_model):
     )
 
     with bigframes.option_context(
-        EXPERIMENT_OPTION,
+        SEM_OP_EXP_OPTION,
         True,
         THRESHOLD_OPTION,
         10,
@@ -528,6 +552,30 @@ def test_map(session, gemini_flash_model):
     )
 
 
+def test_map_multimodel(session, gemini_flash_model):
+    with bigframes.option_context(
+        SEM_OP_EXP_OPTION,
+        True,
+        BLOB_EXP_OPTION,
+        True,
+        THRESHOLD_OPTION,
+        10,
+    ):
+        df = session.from_glob_path(
+            "gs://bigframes-dev-testing/a_multimodel/images/*", name="image"
+        )
+        df["scenario"] = series.Series(
+            ["building", "cross road", "tree", "squirrel", "rabbit"], session=session
+        )
+        result = df.semantics.map(
+            "What is the object in {image} combined with {scenario}? One word only.",
+            "object",
+            gemini_flash_model,
+        ).to_pandas()
+
+    assert len(result) == len(df)
+
+
 @pytest.mark.parametrize(
     ("reply"),
     [
@@ -549,7 +597,7 @@ def test_map_with_confirmation(session, gemini_flash_model, reply, monkeypatch):
     monkeypatch.setattr("builtins.input", lambda: reply)
 
     with bigframes.option_context(
-        EXPERIMENT_OPTION,
+        SEM_OP_EXP_OPTION,
         True,
         THRESHOLD_OPTION,
         0,
@@ -591,7 +639,7 @@ def test_map_invalid_instruction_raise_error(instruction, gemini_flash_model):
     )
 
     with bigframes.option_context(
-        EXPERIMENT_OPTION,
+        SEM_OP_EXP_OPTION,
         True,
         THRESHOLD_OPTION,
         10,
@@ -608,7 +656,7 @@ def test_map_invalid_model_raise_error():
     )
 
     with bigframes.option_context(
-        EXPERIMENT_OPTION,
+        SEM_OP_EXP_OPTION,
         True,
         THRESHOLD_OPTION,
         10,
@@ -647,7 +695,7 @@ def test_join(instruction, session, gemini_flash_model):
     )
 
     with bigframes.option_context(
-        EXPERIMENT_OPTION,
+        SEM_OP_EXP_OPTION,
         True,
         THRESHOLD_OPTION,
         10,
@@ -696,7 +744,7 @@ def test_join_with_confirmation(session, gemini_flash_model, reply, monkeypatch)
     monkeypatch.setattr("builtins.input", lambda: reply)
 
     with bigframes.option_context(
-        EXPERIMENT_OPTION,
+        SEM_OP_EXP_OPTION,
         True,
         THRESHOLD_OPTION,
         0,
@@ -717,7 +765,7 @@ def test_self_join(session, gemini_flash_model):
     )
 
     with bigframes.option_context(
-        EXPERIMENT_OPTION,
+        SEM_OP_EXP_OPTION,
         True,
         THRESHOLD_OPTION,
         10,
@@ -779,7 +827,7 @@ def test_join_invalid_instruction_raise_error(
     )
 
     with bigframes.option_context(
-        EXPERIMENT_OPTION,
+        SEM_OP_EXP_OPTION,
         True,
         THRESHOLD_OPTION,
         10,
@@ -792,7 +840,7 @@ def test_join_invalid_model_raise_error():
     countries = dataframe.DataFrame({"country": ["USA", "UK", "Germany"]})
 
     with bigframes.option_context(
-        EXPERIMENT_OPTION,
+        SEM_OP_EXP_OPTION,
         True,
         THRESHOLD_OPTION,
         10,
@@ -814,7 +862,7 @@ def test_search(session, text_embedding_generator, score_column):
     )
 
     with bigframes.option_context(
-        EXPERIMENT_OPTION,
+        SEM_OP_EXP_OPTION,
         True,
         THRESHOLD_OPTION,
         10,
@@ -862,7 +910,7 @@ def test_search_with_confirmation(
     monkeypatch.setattr("builtins.input", lambda: reply)
 
     with bigframes.option_context(
-        EXPERIMENT_OPTION,
+        SEM_OP_EXP_OPTION,
         True,
         THRESHOLD_OPTION,
         0,
@@ -882,7 +930,7 @@ def test_search_invalid_column_raises_error(session, text_embedding_generator):
     )
 
     with bigframes.option_context(
-        EXPERIMENT_OPTION,
+        SEM_OP_EXP_OPTION,
         True,
         THRESHOLD_OPTION,
         10,
@@ -899,7 +947,7 @@ def test_search_invalid_model_raises_error(session):
     )
 
     with bigframes.option_context(
-        EXPERIMENT_OPTION,
+        SEM_OP_EXP_OPTION,
         True,
         THRESHOLD_OPTION,
         10,
@@ -914,7 +962,7 @@ def test_search_invalid_top_k_raises_error(session, text_embedding_generator):
     )
 
     with bigframes.option_context(
-        EXPERIMENT_OPTION,
+        SEM_OP_EXP_OPTION,
         True,
         THRESHOLD_OPTION,
         10,
@@ -942,7 +990,7 @@ def test_sim_join(session, text_embedding_generator, score_column):
     )
 
     with bigframes.option_context(
-        EXPERIMENT_OPTION,
+        SEM_OP_EXP_OPTION,
         True,
         THRESHOLD_OPTION,
         10,
@@ -995,7 +1043,7 @@ def test_sim_join_with_confirmation(
     monkeypatch.setattr("builtins.input", lambda: reply)
 
     with bigframes.option_context(
-        EXPERIMENT_OPTION,
+        SEM_OP_EXP_OPTION,
         True,
         THRESHOLD_OPTION,
         0,
@@ -1029,7 +1077,7 @@ def test_sim_join_invalid_column_raises_error(
     )
 
     with bigframes.option_context(
-        EXPERIMENT_OPTION,
+        SEM_OP_EXP_OPTION,
         True,
         THRESHOLD_OPTION,
         10,
@@ -1050,7 +1098,7 @@ def test_sim_join_invalid_model_raises_error(session):
     )
 
     with bigframes.option_context(
-        EXPERIMENT_OPTION,
+        SEM_OP_EXP_OPTION,
         True,
         THRESHOLD_OPTION,
         10,
@@ -1071,7 +1119,7 @@ def test_sim_join_invalid_top_k_raises_error(session, text_embedding_generator):
     )
 
     with bigframes.option_context(
-        EXPERIMENT_OPTION,
+        SEM_OP_EXP_OPTION,
         True,
         THRESHOLD_OPTION,
         10,
@@ -1096,7 +1144,7 @@ def test_sim_join_data_too_large_raises_error(session, text_embedding_generator)
     )
 
     with bigframes.option_context(
-        EXPERIMENT_OPTION,
+        SEM_OP_EXP_OPTION,
         True,
         THRESHOLD_OPTION,
         10,
@@ -1145,7 +1193,7 @@ def test_top_k_invalid_instruction_raise_error(instruction, gemini_flash_model):
     )
 
     with bigframes.option_context(
-        EXPERIMENT_OPTION,
+        SEM_OP_EXP_OPTION,
         True,
         THRESHOLD_OPTION,
         10,
@@ -1157,7 +1205,7 @@ def test_top_k_invalid_k_raise_error(gemini_flash_model):
     df = dataframe.DataFrame({"Animals": ["Dog", "Cat", "Bird", "Horse"]})
 
     with bigframes.option_context(
-        EXPERIMENT_OPTION,
+        SEM_OP_EXP_OPTION,
         True,
         THRESHOLD_OPTION,
         10,
@@ -1174,7 +1222,7 @@ def test_confirm_operation__below_threshold_do_not_confirm(mock_input):
     df = dataframe.DataFrame({})
 
     with bigframes.option_context(
-        EXPERIMENT_OPTION,
+        SEM_OP_EXP_OPTION,
         True,
         THRESHOLD_OPTION,
         3,
@@ -1189,7 +1237,7 @@ def test_confirm_operation__threshold_is_none_do_not_confirm(mock_input):
     df = dataframe.DataFrame({})
 
     with bigframes.option_context(
-        EXPERIMENT_OPTION,
+        SEM_OP_EXP_OPTION,
         True,
         THRESHOLD_OPTION,
         None,
@@ -1204,7 +1252,7 @@ def test_confirm_operation__threshold_autofail_do_not_confirm(mock_input):
     df = dataframe.DataFrame({})
 
     with bigframes.option_context(
-        EXPERIMENT_OPTION,
+        SEM_OP_EXP_OPTION,
         True,
         THRESHOLD_OPTION,
         1,
@@ -1231,7 +1279,7 @@ def test_confirm_operation__above_threshold_confirm(reply, expectation, monkeypa
     df = dataframe.DataFrame({})
 
     with bigframes.option_context(
-        EXPERIMENT_OPTION,
+        SEM_OP_EXP_OPTION,
         True,
         THRESHOLD_OPTION,
         3,

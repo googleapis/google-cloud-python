@@ -381,21 +381,42 @@ class Semantics:
         self._confirm_operation(len(self._df))
 
         df: bigframes.dataframe.DataFrame = self._df[columns].copy()
+        has_blob_column = False
         for column in columns:
+            if df[column].dtype == dtypes.OBJ_REF_DTYPE:
+                # Don't cast blob columns to string
+                has_blob_column = True
+                continue
+
             if df[column].dtype != dtypes.STRING_DTYPE:
                 df[column] = df[column].astype(dtypes.STRING_DTYPE)
 
         user_instruction = self._format_instruction(instruction, columns)
         output_instruction = "Based on the provided context, reply to the following claim by only True or False:"
 
-        results = typing.cast(
-            bigframes.dataframe.DataFrame,
-            model.predict(
-                self._make_prompt(df, columns, user_instruction, output_instruction),
-                temperature=0.0,
-                ground_with_google_search=ground_with_google_search,
-            ),
-        )
+        if has_blob_column:
+            results = typing.cast(
+                bigframes.dataframe.DataFrame,
+                model.predict(
+                    df,
+                    prompt=self._make_multimodel_prompt(
+                        df, columns, user_instruction, output_instruction
+                    ),
+                    temperature=0.0,
+                    ground_with_google_search=ground_with_google_search,
+                ),
+            )
+        else:
+            results = typing.cast(
+                bigframes.dataframe.DataFrame,
+                model.predict(
+                    self._make_text_prompt(
+                        df, columns, user_instruction, output_instruction
+                    ),
+                    temperature=0.0,
+                    ground_with_google_search=ground_with_google_search,
+                ),
+            )
 
         return self._df[
             results["ml_generate_text_llm_result"].str.lower().str.contains("true")
@@ -480,7 +501,13 @@ class Semantics:
         self._confirm_operation(len(self._df))
 
         df: bigframes.dataframe.DataFrame = self._df[columns].copy()
+        has_blob_column = False
         for column in columns:
+            if df[column].dtype == dtypes.OBJ_REF_DTYPE:
+                # Don't cast blob columns to string
+                has_blob_column = True
+                continue
+
             if df[column].dtype != dtypes.STRING_DTYPE:
                 df[column] = df[column].astype(dtypes.STRING_DTYPE)
 
@@ -489,14 +516,29 @@ class Semantics:
             "Based on the provided contenxt, answer the following instruction:"
         )
 
-        results = typing.cast(
-            bigframes.series.Series,
-            model.predict(
-                self._make_prompt(df, columns, user_instruction, output_instruction),
-                temperature=0.0,
-                ground_with_google_search=ground_with_google_search,
-            )["ml_generate_text_llm_result"],
-        )
+        if has_blob_column:
+            results = typing.cast(
+                bigframes.series.Series,
+                model.predict(
+                    df,
+                    prompt=self._make_multimodel_prompt(
+                        df, columns, user_instruction, output_instruction
+                    ),
+                    temperature=0.0,
+                    ground_with_google_search=ground_with_google_search,
+                )["ml_generate_text_llm_result"],
+            )
+        else:
+            results = typing.cast(
+                bigframes.series.Series,
+                model.predict(
+                    self._make_text_prompt(
+                        df, columns, user_instruction, output_instruction
+                    ),
+                    temperature=0.0,
+                    ground_with_google_search=ground_with_google_search,
+                )["ml_generate_text_llm_result"],
+            )
 
         from bigframes.core.reshape.api import concat
 
@@ -1060,8 +1102,19 @@ class Semantics:
         result_df[embedding_column] = embeddings
         return result_df
 
-    def _make_prompt(
-        self, prompt_df, columns, user_instruction: str, output_instruction: str
+    @staticmethod
+    def _make_multimodel_prompt(
+        prompt_df, columns, user_instruction: str, output_instruction: str
+    ):
+        prompt = [f"{output_instruction}\n{user_instruction}\nContext: "]
+        for col in columns:
+            prompt.extend([f"{col} is ", prompt_df[col]])
+
+        return prompt
+
+    @staticmethod
+    def _make_text_prompt(
+        prompt_df, columns, user_instruction: str, output_instruction: str
     ):
         prompt_df["prompt"] = f"{output_instruction}\n{user_instruction}\nContext: "
 
@@ -1071,7 +1124,8 @@ class Semantics:
 
         return prompt_df["prompt"]
 
-    def _parse_columns(self, instruction: str) -> List[str]:
+    @staticmethod
+    def _parse_columns(instruction: str) -> List[str]:
         """Extracts column names enclosed in curly braces from the user instruction.
         For example, _parse_columns("{city} is in {continent}") == ["city", "continent"]
         """
