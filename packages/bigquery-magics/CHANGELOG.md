@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.8.0](https://github.com/googleapis/python-bigquery-magics/compare/v0.7.0...v0.8.0) (2025-03-13)
+
+
+### Features
+
+* Fix graph visualization to work with latest spanner-graph-notebook code; also, allow visualization when only some columns are json. ([#102](https://github.com/googleapis/python-bigquery-magics/issues/102)) ([c33297c](https://github.com/googleapis/python-bigquery-magics/commit/c33297cf2a1db9a0bd2e8c078be1e06239122459))
+* Support multiple columns in graph visualization ([#100](https://github.com/googleapis/python-bigquery-magics/issues/100)) ([dbb6442](https://github.com/googleapis/python-bigquery-magics/commit/dbb64426dd617697785bccf15d98c32f8217c33e))
+
 ## [0.7.0](https://github.com/googleapis/python-bigquery-magics/compare/v0.6.0...v0.7.0) (2025-03-11)
 
 
