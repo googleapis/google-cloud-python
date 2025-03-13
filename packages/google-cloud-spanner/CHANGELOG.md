@@ -4,6 +4,82 @@
 
 [1]: https://pypi.org/project/google-cloud-spanner/#history
 
+## [3.53.0](https://github.com/googleapis/python-spanner/compare/v3.52.0...v3.53.0) (2025-03-12)
+
+
+### Features
+
+* Add AddSplitPoints API ([7a5afba](https://github.com/googleapis/python-spanner/commit/7a5afba28b20ac94f3eec799f4b572c95af60b94))
+* Add Attempt, Operation and GFE Metrics ([#1302](https://github.com/googleapis/python-spanner/issues/1302)) ([fb21d9a](https://github.com/googleapis/python-spanner/commit/fb21d9acf2545cf7b8e9e21b65eabf21a7bf895f))
+* Add REST Interceptors which support reading metadata ([7a5afba](https://github.com/googleapis/python-spanner/commit/7a5afba28b20ac94f3eec799f4b572c95af60b94))
+* Add support for opt-in debug logging ([7a5afba](https://github.com/googleapis/python-spanner/commit/7a5afba28b20ac94f3eec799f4b572c95af60b94))
+* Add support for reading selective GAPIC generation methods from service YAML ([7a5afba](https://github.com/googleapis/python-spanner/commit/7a5afba28b20ac94f3eec799f4b572c95af60b94))
+* Add the last statement option to ExecuteSqlRequest and ExecuteBatchDmlRequest ([7a5afba](https://github.com/googleapis/python-spanner/commit/7a5afba28b20ac94f3eec799f4b572c95af60b94))
+* Add UUID in Spanner TypeCode enum ([7a5afba](https://github.com/googleapis/python-spanner/commit/7a5afba28b20ac94f3eec799f4b572c95af60b94))
+* End to end tracing ([#1315](https://github.com/googleapis/python-spanner/issues/1315)) ([aa5d0e6](https://github.com/googleapis/python-spanner/commit/aa5d0e6c1d3e5b0e4b0578e80c21e7c523c30fb5))
+* Exposing FreeInstanceAvailability in InstanceConfig ([7a5afba](https://github.com/googleapis/python-spanner/commit/7a5afba28b20ac94f3eec799f4b572c95af60b94))
+* Exposing FreeInstanceMetadata in Instance configuration (to define the metadata related to FREE instance type) ([7a5afba](https://github.com/googleapis/python-spanner/commit/7a5afba28b20ac94f3eec799f4b572c95af60b94))
+* Exposing InstanceType in Instance configuration (to define PROVISIONED or FREE spanner instance) ([7a5afba](https://github.com/googleapis/python-spanner/commit/7a5afba28b20ac94f3eec799f4b572c95af60b94))
+* Exposing QuorumType in InstanceConfig ([7a5afba](https://github.com/googleapis/python-spanner/commit/7a5afba28b20ac94f3eec799f4b572c95af60b94))
+* Exposing storage_limit_per_processing_unit in InstanceConfig ([7a5afba](https://github.com/googleapis/python-spanner/commit/7a5afba28b20ac94f3eec799f4b572c95af60b94))
+* Snapshot isolation ([#1318](https://github.com/googleapis/python-spanner/issues/1318)) ([992fcae](https://github.com/googleapis/python-spanner/commit/992fcae2d4fd2b47380d159a3416b8d6d6e1c937))
+* **spanner:** A new enum `IsolationLevel` is added ([#1224](https://github.com/googleapis/python-spanner/issues/1224)) ([7a5afba](https://github.com/googleapis/python-spanner/commit/7a5afba28b20ac94f3eec799f4b572c95af60b94))
+
+
+### Bug Fixes
+
+* Allow Protobuf 6.x ([#1320](https://github.com/googleapis/python-spanner/issues/1320)) ([1faab91](https://github.com/googleapis/python-spanner/commit/1faab91790ae3e2179fbab11b69bb02254ab048a))
+* Cleanup after metric integration test ([#1322](https://github.com/googleapis/python-spanner/issues/1322)) ([d7cf8b9](https://github.com/googleapis/python-spanner/commit/d7cf8b968dfc2b98d3b1d7ae8a025da55bec0767))
+* **deps:** Require grpc-google-iam-v1&gt;=0.14.0 ([7a5afba](https://github.com/googleapis/python-spanner/commit/7a5afba28b20ac94f3eec799f4b572c95af60b94))
+* Fix typing issue with gRPC metadata when key ends in -bin ([7a5afba](https://github.com/googleapis/python-spanner/commit/7a5afba28b20ac94f3eec799f4b572c95af60b94))
+
+
+### Performance Improvements
+
+* Add option for last_statement ([#1313](https://github.com/googleapis/python-spanner/issues/1313)) ([19ab6ef](https://github.com/googleapis/python-spanner/commit/19ab6ef0d58262ebb19183e700db6cf124f9b3c5))
+
+
+### Documentation
+
+* A comment for enum `DefaultBackupScheduleType` is changed ([7a5afba](https://github.com/googleapis/python-spanner/commit/7a5afba28b20ac94f3eec799f4b572c95af60b94))
+* A comment for enum value `AUTOMATIC` in enum `DefaultBackupScheduleType` is changed ([7a5afba](https://github.com/googleapis/python-spanner/commit/7a5afba28b20ac94f3eec799f4b572c95af60b94))
+* A comment for enum value `GOOGLE_MANAGED` in enum `Type` is changed ([7a5afba](https://github.com/googleapis/python-spanner/commit/7a5afba28b20ac94f3eec799f4b572c95af60b94))
+* A comment for enum value `NONE` in enum `DefaultBackupScheduleType` is changed ([7a5afba](https://github.com/googleapis/python-spanner/commit/7a5afba28b20ac94f3eec799f4b572c95af60b94))
+* A comment for enum value `USER_MANAGED` in enum `Type` is changed ([7a5afba](https://github.com/googleapis/python-spanner/commit/7a5afba28b20ac94f3eec799f4b572c95af60b94))
+* A comment for field `base_config` in message `.google.spanner.admin.instance.v1.InstanceConfig` is changed ([7a5afba](https://github.com/googleapis/python-spanner/commit/7a5afba28b20ac94f3eec799f4b572c95af60b94))
+* A comment for field `default_backup_schedule_type` in message `.google.spanner.admin.instance.v1.Instance` is changed ([7a5afba](https://github.com/googleapis/python-spanner/commit/7a5afba28b20ac94f3eec799f4b572c95af60b94))
+* A comment for field `filter` in message `.google.spanner.admin.instance.v1.ListInstanceConfigOperationsRequest` is changed ([7a5afba](https://github.com/googleapis/python-spanner/commit/7a5afba28b20ac94f3eec799f4b572c95af60b94))
+* A comment for field `filter` in message `.google.spanner.admin.instance.v1.ListInstancePartitionOperationsRequest` is changed ([7a5afba](https://github.com/googleapis/python-spanner/commit/7a5afba28b20ac94f3eec799f4b572c95af60b94))
+* A comment for field `instance_config` in message `.google.spanner.admin.instance.v1.CreateInstanceConfigRequest` is changed ([7a5afba](https://github.com/googleapis/python-spanner/commit/7a5afba28b20ac94f3eec799f4b572c95af60b94))
+* A comment for field `instance_partition_deadline` in message `.google.spanner.admin.instance.v1.ListInstancePartitionOperationsRequest` is changed ([7a5afba](https://github.com/googleapis/python-spanner/commit/7a5afba28b20ac94f3eec799f4b572c95af60b94))
+* A comment for field `location` in message `.google.spanner.admin.instance.v1.ReplicaInfo` is changed ([7a5afba](https://github.com/googleapis/python-spanner/commit/7a5afba28b20ac94f3eec799f4b572c95af60b94))
+* A comment for field `node_count` in message `.google.spanner.admin.instance.v1.Instance` is changed ([7a5afba](https://github.com/googleapis/python-spanner/commit/7a5afba28b20ac94f3eec799f4b572c95af60b94))
+* A comment for field `node_count` in message `.google.spanner.admin.instance.v1.InstancePartition` is changed ([7a5afba](https://github.com/googleapis/python-spanner/commit/7a5afba28b20ac94f3eec799f4b572c95af60b94))
+* A comment for field `operations` in message `.google.spanner.admin.instance.v1.ListInstanceConfigOperationsResponse` is changed ([7a5afba](https://github.com/googleapis/python-spanner/commit/7a5afba28b20ac94f3eec799f4b572c95af60b94))
+* A comment for field `operations` in message `.google.spanner.admin.instance.v1.ListInstancePartitionOperationsResponse` is changed ([7a5afba](https://github.com/googleapis/python-spanner/commit/7a5afba28b20ac94f3eec799f4b572c95af60b94))
+* A comment for field `optional_replicas` in message `.google.spanner.admin.instance.v1.InstanceConfig` is changed ([7a5afba](https://github.com/googleapis/python-spanner/commit/7a5afba28b20ac94f3eec799f4b572c95af60b94))
+* A comment for field `parent` in message `.google.spanner.admin.instance.v1.ListInstancePartitionsRequest` is changed ([7a5afba](https://github.com/googleapis/python-spanner/commit/7a5afba28b20ac94f3eec799f4b572c95af60b94))
+* A comment for field `processing_units` in message `.google.spanner.admin.instance.v1.Instance` is changed ([7a5afba](https://github.com/googleapis/python-spanner/commit/7a5afba28b20ac94f3eec799f4b572c95af60b94))
+* A comment for field `processing_units` in message `.google.spanner.admin.instance.v1.InstancePartition` is changed ([7a5afba](https://github.com/googleapis/python-spanner/commit/7a5afba28b20ac94f3eec799f4b572c95af60b94))
+* A comment for field `referencing_backups` in message `.google.spanner.admin.instance.v1.InstancePartition` is changed ([7a5afba](https://github.com/googleapis/python-spanner/commit/7a5afba28b20ac94f3eec799f4b572c95af60b94))
+* A comment for field `replicas` in message `.google.spanner.admin.instance.v1.InstanceConfig` is changed ([7a5afba](https://github.com/googleapis/python-spanner/commit/7a5afba28b20ac94f3eec799f4b572c95af60b94))
+* A comment for field `storage_utilization_percent` in message `.google.spanner.admin.instance.v1.AutoscalingConfig` is changed ([7a5afba](https://github.com/googleapis/python-spanner/commit/7a5afba28b20ac94f3eec799f4b572c95af60b94))
+* A comment for field `unreachable` in message `.google.spanner.admin.instance.v1.ListInstancePartitionsResponse` is changed ([7a5afba](https://github.com/googleapis/python-spanner/commit/7a5afba28b20ac94f3eec799f4b572c95af60b94))
+* A comment for message `CreateInstanceConfigRequest` is changed ([7a5afba](https://github.com/googleapis/python-spanner/commit/7a5afba28b20ac94f3eec799f4b572c95af60b94))
+* A comment for message `DeleteInstanceConfigRequest` is changed ([7a5afba](https://github.com/googleapis/python-spanner/commit/7a5afba28b20ac94f3eec799f4b572c95af60b94))
+* A comment for message `UpdateInstanceConfigRequest` is changed ([7a5afba](https://github.com/googleapis/python-spanner/commit/7a5afba28b20ac94f3eec799f4b572c95af60b94))
+* A comment for method `CreateInstance` in service `InstanceAdmin` is changed ([7a5afba](https://github.com/googleapis/python-spanner/commit/7a5afba28b20ac94f3eec799f4b572c95af60b94))
+* A comment for method `CreateInstanceConfig` in service `InstanceAdmin` is changed ([7a5afba](https://github.com/googleapis/python-spanner/commit/7a5afba28b20ac94f3eec799f4b572c95af60b94))
+* A comment for method `CreateInstancePartition` in service `InstanceAdmin` is changed ([7a5afba](https://github.com/googleapis/python-spanner/commit/7a5afba28b20ac94f3eec799f4b572c95af60b94))
+* A comment for method `ListInstanceConfigOperations` in service `InstanceAdmin` is changed ([7a5afba](https://github.com/googleapis/python-spanner/commit/7a5afba28b20ac94f3eec799f4b572c95af60b94))
+* A comment for method `ListInstanceConfigs` in service `InstanceAdmin` is changed ([7a5afba](https://github.com/googleapis/python-spanner/commit/7a5afba28b20ac94f3eec799f4b572c95af60b94))
+* A comment for method `ListInstancePartitionOperations` in service `InstanceAdmin` is changed ([7a5afba](https://github.com/googleapis/python-spanner/commit/7a5afba28b20ac94f3eec799f4b572c95af60b94))
+* A comment for method `MoveInstance` in service `InstanceAdmin` is changed ([7a5afba](https://github.com/googleapis/python-spanner/commit/7a5afba28b20ac94f3eec799f4b572c95af60b94))
+* A comment for method `UpdateInstance` in service `InstanceAdmin` is changed ([7a5afba](https://github.com/googleapis/python-spanner/commit/7a5afba28b20ac94f3eec799f4b572c95af60b94))
+* A comment for method `UpdateInstanceConfig` in service `InstanceAdmin` is changed ([7a5afba](https://github.com/googleapis/python-spanner/commit/7a5afba28b20ac94f3eec799f4b572c95af60b94))
+* A comment for method `UpdateInstancePartition` in service `InstanceAdmin` is changed ([7a5afba](https://github.com/googleapis/python-spanner/commit/7a5afba28b20ac94f3eec799f4b572c95af60b94))
+* Fix typo timzeone -&gt; timezone ([7a5afba](https://github.com/googleapis/python-spanner/commit/7a5afba28b20ac94f3eec799f4b572c95af60b94))
+
 ## [3.52.0](https://github.com/googleapis/python-spanner/compare/v3.51.0...v3.52.0) (2025-02-19)
 
 
