@@ -56,6 +56,14 @@ ML_GENERATE_EMBEDDING_OUTPUT = [
     "ml_generate_embedding_status",
     "content",
 ]
+ML_MULTIMODAL_GENERATE_EMBEDDING_OUTPUT = [
+    "ml_generate_embedding_result",
+    "ml_generate_embedding_status",
+    # start and end sec depend on input format. Images and videos input will contain these 2.
+    "ml_generate_embedding_start_sec",
+    "ml_generate_embedding_end_sec",
+    "content",
+]
 
 
 def skip_legacy_pandas(test):
