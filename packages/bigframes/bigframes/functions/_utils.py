@@ -30,6 +30,7 @@ import pyarrow
 
 import bigframes.core.compile.ibis_types
 import bigframes.dtypes
+import bigframes.formatting_helpers as bf_formatting
 
 # Naming convention for the function artifacts
 _BIGFRAMES_FUNCTION_PREFIX = "bigframes"
@@ -276,8 +277,8 @@ def get_bigframes_metadata(*, python_output_type: Optional[type] = None) -> str:
         get_python_output_type_from_bigframes_metadata(metadata_ser)
         != python_output_type
     ):
-        raise ValueError(
-            f"python_output_type {python_output_type} is not serializable."
+        raise bf_formatting.create_exception_with_feedback_link(
+            ValueError, f"python_output_type {python_output_type} is not serializable."
         )
 
     return metadata_ser

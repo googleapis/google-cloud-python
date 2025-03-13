@@ -26,9 +26,9 @@ import textwrap
 import types
 from typing import cast, Tuple, TYPE_CHECKING
 
-from bigframes_vendored import constants
 import requests
 
+import bigframes.formatting_helpers as bf_formatting
 import bigframes.functions.function_template as bff_template
 
 if TYPE_CHECKING:
@@ -366,10 +366,9 @@ class FunctionClient:
                     headers={"content-type": "application/zip"},
                 )
                 if response.status_code != 200:
-                    raise RuntimeError(
-                        "Failed to upload user code. code={}, reason={}, text={}".format(
-                            response.status_code, response.reason, response.text
-                        )
+                    raise bf_formatting.create_exception_with_feedback_link(
+                        RuntimeError,
+                        f"Failed to upload user code. code={response.status_code}, reason={response.reason}, text={response.text}",
                     )
 
             # Deploy Cloud Function
@@ -399,10 +398,11 @@ class FunctionClient:
                 function.service_config.available_memory = f"{memory_mib}Mi"
             if timeout_seconds is not None:
                 if timeout_seconds > 1200:
-                    raise ValueError(
+                    raise bf_formatting.create_exception_with_feedback_link(
+                        ValueError,
                         "BigQuery remote function can wait only up to 20 minutes"
                         ", see for more details "
-                        "https://cloud.google.com/bigquery/quotas#remote_function_limits."
+                        "https://cloud.google.com/bigquery/quotas#remote_function_limits.",
                     )
                 function.service_config.timeout_seconds = timeout_seconds
             if max_instance_count is not None:
@@ -413,10 +413,9 @@ class FunctionClient:
                 self._cloud_function_service_account
             )
             if ingress_settings not in _INGRESS_SETTINGS_MAP:
-                raise ValueError(
-                    "'{}' not one of the supported ingress settings values: {}".format(
-                        ingress_settings, list(_INGRESS_SETTINGS_MAP)
-                    )
+                raise bf_formatting.create_exception_with_feedback_link(
+                    ValueError,
+                    f"'{ingress_settings}' not one of the supported ingress settings values: {list(_INGRESS_SETTINGS_MAP)}",
                 )
             function.service_config.ingress_settings = cast(
                 functions_v2.ServiceConfig.IngressSettings,
@@ -447,8 +446,8 @@ class FunctionClient:
         # Fetch the endpoint of the just created function
         endpoint = self.get_cloud_function_endpoint(cf_name)
         if not endpoint:
-            raise ValueError(
-                f"Couldn't fetch the http endpoint. {constants.FEEDBACK_LINK}"
+            raise bf_formatting.create_exception_with_feedback_link(
+                ValueError, "Couldn't fetch the http endpoint."
             )
 
         logger.info(
@@ -541,8 +540,9 @@ class FunctionClient:
         ):
             input_args = inspect.getargs(def_.__code__).args
             if len(input_args) != len(input_types):
-                raise ValueError(
-                    "Exactly one type should be provided for every input arg."
+                raise bf_formatting.create_exception_with_feedback_link(
+                    ValueError,
+                    "Exactly one type should be provided for every input arg.",
                 )
             self.create_bq_remote_function(
                 input_args,

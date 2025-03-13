@@ -17,7 +17,7 @@
 
 import datetime
 import random
-from typing import Any, Optional, Union
+from typing import Any, Optional, Type, Union
 
 import bigframes_vendored.constants as constants
 import google.api_core.exceptions as api_core_exceptions
@@ -46,6 +46,16 @@ def add_feedback_link(
     ]
 ):
     exception.message = exception.message + f" {constants.FEEDBACK_LINK}"
+
+
+def create_exception_with_feedback_link(
+    exception: Type[Exception],
+    arg: str = "",
+):
+    if arg:
+        return exception(arg + f" {constants.FEEDBACK_LINK}")
+
+    return exception(constants.FEEDBACK_LINK)
 
 
 def repr_query_job_html(query_job: Optional[bigquery.QueryJob]):

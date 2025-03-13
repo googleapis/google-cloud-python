@@ -16,6 +16,7 @@ import inspect
 import re
 import textwrap
 
+import bigframes_vendored.constants as constants
 import google.api_core.exceptions
 from google.cloud import bigquery
 import pandas as pd
@@ -1090,7 +1091,7 @@ def test_df_apply_scalar_func(session, scalars_dfs):
         "BigFrames DataFrame '.apply()' does not support remote function for "
         "column-wise (i.e. with axis=0) operations, please use a regular python "
         "function instead. For element-wise operations of the remote function, "
-        "please use '.map()'."
+        f"please use '.map()'. {constants.FEEDBACK_LINK}"
     )
 
 
@@ -1104,7 +1105,7 @@ def test_read_gbq_function_multiple_inputs_not_a_row_processor(session):
         )
     assert str(context.value) == (
         "A multi-input function cannot be a row processor. A row processor function "
-        "takes in a single input representing the row."
+        f"takes in a single input representing the row. {constants.FEEDBACK_LINK}"
     )
 
 

@@ -4234,11 +4234,12 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         # At this point column-wise or element-wise remote function operation will
         # be performed (not supported).
         if hasattr(func, "bigframes_remote_function"):
-            raise NotImplementedError(
+            raise formatter.create_exception_with_feedback_link(
+                NotImplementedError,
                 "BigFrames DataFrame '.apply()' does not support remote function "
                 "for column-wise (i.e. with axis=0) operations, please use a "
                 "regular python function instead. For element-wise operations of "
-                "the remote function, please use '.map()'."
+                "the remote function, please use '.map()'.",
             )
 
         # Per-column apply

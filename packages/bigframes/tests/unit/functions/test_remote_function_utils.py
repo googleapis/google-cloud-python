@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import bigframes_vendored.constants as constants
 import pytest
 
 import bigframes.dtypes
@@ -73,7 +74,7 @@ def test_get_bigframes_metadata_array_type_not_serializable(output_type):
     with pytest.raises(ValueError) as context:
         _utils.get_bigframes_metadata(python_output_type=output_type)
     assert str(context.value) == (
-        f"python_output_type {output_type} is not serializable."
+        f"python_output_type {output_type} is not serializable. {constants.FEEDBACK_LINK}"
     )
 
 
