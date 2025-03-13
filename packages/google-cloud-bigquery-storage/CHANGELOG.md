@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery-storage/#history
 
+## [2.29.1](https://github.com/googleapis/python-bigquery-storage/compare/v2.29.0...v2.29.1) (2025-03-13)
+
+
+### Bug Fixes
+
+* Correct user agent header to track calls as veneer instead of gapic ([#909](https://github.com/googleapis/python-bigquery-storage/issues/909)) ([eabe4ba](https://github.com/googleapis/python-bigquery-storage/commit/eabe4ba14ffe6a709a65e648b371891880558a5c))
+
 ## [2.29.0](https://github.com/googleapis/python-bigquery-storage/compare/v2.28.0...v2.29.0) (2025-03-11)
 
 
