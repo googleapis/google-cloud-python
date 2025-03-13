@@ -233,6 +233,11 @@ class InstancesTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.report_host_as_faulty: gapic_v1.method.wrap_method(
+                self.report_host_as_faulty,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.reset: gapic_v1.method.wrap_method(
                 self.reset,
                 default_timeout=None,
@@ -568,6 +573,15 @@ class InstancesTransport(abc.ABC):
         self,
     ) -> Callable[
         [compute.RemoveResourcePoliciesInstanceRequest],
+        Union[compute.Operation, Awaitable[compute.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def report_host_as_faulty(
+        self,
+    ) -> Callable[
+        [compute.ReportHostAsFaultyInstanceRequest],
         Union[compute.Operation, Awaitable[compute.Operation]],
     ]:
         raise NotImplementedError()
