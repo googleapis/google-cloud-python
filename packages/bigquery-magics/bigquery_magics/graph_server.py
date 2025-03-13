@@ -20,6 +20,10 @@ import threading
 from typing import Dict, List
 
 
+def execute_node_expansion(params, request):
+    return {"error": "Node expansion not yet implemented"}
+
+
 def convert_graph_data(query_results: Dict[str, Dict[str, str]]):
     """
     Converts graph data to the form expected by the visualization framework.
@@ -49,16 +53,12 @@ def convert_graph_data(query_results: Dict[str, Dict[str, str]]):
     # does not even get called unless spanner_graphs has already been confirmed
     # to exist upstream.
     from google.cloud.spanner_v1.types import StructType, Type, TypeCode
-    import networkx
-    from spanner_graphs.conversion import (
-        columns_to_native_numpy,
-        prepare_data_for_graphing,
-    )
+    from spanner_graphs.conversion import get_nodes_edges
 
     try:
         fields: List[StructType.Field] = []
         data = {}
-        rows = []
+        tabular_data = {}
         for key, value in query_results.items():
             column_name = None
             column_value = None
@@ -73,45 +73,39 @@ def convert_graph_data(query_results: Dict[str, Dict[str, str]]):
                 StructType.Field(name=column_name, type=Type(code=TypeCode.JSON))
             )
             data[column_name] = []
+            tabular_data[column_name] = []
             for value_key, value_value in column_value.items():
-                if not isinstance(value_key, str):
-                    raise ValueError(
-                        f"Expected inner key to be str, got {type(value_key)}"
-                    )
-                if not isinstance(value_value, str):
-                    raise ValueError(
-                        f"Expected inner value to be str, got {type(value_value)}"
-                    )
-                row_json = json.loads(value_value)
-
-                if row_json is not None:
+                try:
+                    row_json = json.loads(value_value)
                     data[column_name].append(row_json)
-                rows.append([row_json])
+                    tabular_data[column_name].append(row_json)
+                except (ValueError, TypeError):
+                    # Non-JSON columns cannot be visualized, but we still want them
+                    # in the tabular view.
+                    tabular_data[column_name].append(str(value_value))
 
-        d, ignored_columns = columns_to_native_numpy(data, fields)
+        nodes, edges = get_nodes_edges(data, fields, schema_json=None)
 
-        graph: networkx.classes.DiGraph = prepare_data_for_graphing(
-            incoming=d, schema_json=None
-        )
-
-        nodes = []
-        for node_id, node in graph.nodes(data=True):
-            nodes.append(node)
-
-        edges = []
-        for from_id, to_id, edge in graph.edges(data=True):
-            edges.append(edge)
+        # Convert nodes and edges to json objects.
+        # (Unfortunately, the code coverage tooling does not allow this
+        #  to be expressed as list comprehension).
+        nodes_json = []
+        for node in nodes:
+            nodes_json.append(node.to_json())
+        edges_json = []
+        for edge in edges:
+            edges_json.append(edge.to_json())
 
         return {
             "response": {
                 # These fields populate the graph result view.
-                "nodes": nodes,
-                "edges": edges,
+                "nodes": nodes_json,
+                "edges": edges_json,
                 # This populates the visualizer's schema view, but not yet implemented on the
                 # BigQuery side.
                 "schema": None,
                 # This field is used to populate the visualizer's tabular view.
-                "query_result": data,
+                "query_result": tabular_data,
             }
         }
     except Exception as e:
@@ -133,6 +127,7 @@ class GraphServer:
     endpoints = {
         "get_ping": "/get_ping",
         "post_ping": "/post_ping",
+        "post_node_expansion": "/post_node_expansion",
         "post_query": "/post_query",
     }
 
@@ -228,6 +223,24 @@ class GraphServerHandler(http.server.SimpleHTTPRequestHandler):
         response = convert_graph_data(query_results=json.loads(data["params"]))
         self.do_data_response(response)
 
+    def handle_post_node_expansion(self):
+        """Handle POST requests for node expansion.
+
+        Expects a JSON payload with:
+        - params: A JSON string containing connection parameters (project, instance, database, graph)
+        - request: A dictionary with node details (uid, node_labels, node_properties, direction, edge_label)
+        """
+        data = self.parse_post_data()
+
+        # Execute node expansion with:
+        # - params_str: JSON string with connection parameters (project, instance, database, graph)
+        # - request: Dict with node details (uid, node_labels, node_properties, direction, edge_label)
+        self.do_data_response(
+            execute_node_expansion(
+                params=data.get("params"), request=data.get("request")
+            )
+        )
+
     def do_GET(self):
         assert self.path == GraphServer.endpoints["get_ping"]
         self.handle_get_ping()
@@ -235,6 +248,8 @@ class GraphServerHandler(http.server.SimpleHTTPRequestHandler):
     def do_POST(self):
         if self.path == GraphServer.endpoints["post_ping"]:
             self.handle_post_ping()
+        elif self.path == GraphServer.endpoints["post_node_expansion"]:
+            self.handle_post_node_expansion()
         else:
             assert self.path == GraphServer.endpoints["post_query"]
             self.handle_post_query()

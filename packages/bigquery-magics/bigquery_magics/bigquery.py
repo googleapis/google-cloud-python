@@ -596,19 +596,31 @@ def _handle_result(result, args):
     return result
 
 
-def _is_colab() -> bool:
-    """Check if code is running in Google Colab"""
-    try:
-        import google.colab  # noqa: F401
-
-        return True
-    except ImportError:
-        return False
-
-
-def _colab_callback(query: str, params: str):
+def _colab_query_callback(query: str, params: str):
     return IPython.core.display.JSON(
         graph_server.convert_graph_data(query_results=json.loads(params))
+    )
+
+
+def _colab_node_expansion_callback(request: dict, params_str: str):
+    """Handle node expansion requests in Google Colab environment
+
+    Args:
+        request: A dictionary containing node expansion details including:
+            - uid: str - Unique identifier of the node to expand
+            - node_labels: List[str] - Labels of the node
+            - node_properties: List[Dict] - Properties of the node with key, value, and type
+            - direction: str - Direction of expansion ("INCOMING" or "OUTGOING")
+            - edge_label: Optional[str] - Label of edges to filter by
+        params_str: A JSON string containing connection parameters
+
+    Returns:
+        JSON: A JSON-serialized response containing either:
+            - The query results with nodes and edges
+            - An error message if the request failed
+    """
+    return IPython.core.display.JSON(
+        graph_server.execute_node_expansion(params_str, request)
     )
 
 
@@ -628,20 +640,30 @@ def _add_graph_widget(query_result):
     # visualizer widget. In colab, we are not able to create an http server on a
     # background thread, so we use a special colab-specific api to register a callback,
     # to be invoked from Javascript.
-    if _is_colab():
+    port = None
+    try:
         from google.colab import output
 
-        output.register_callback("graph_visualization.Query", _colab_callback)
-    else:
+        output.register_callback("graph_visualization.Query", _colab_query_callback)
+        output.register_callback(
+            "graph_visualization.NodeExpansion", _colab_node_expansion_callback
+        )
+
+        # In colab mode, the Javascript doesn't use the port value we pass in, as there is no
+        # graph server, but it still has to be set to avoid triggering an exception.
+        # TODO: Clean this up when the Javascript is fixed on the spanner-graph-notebook side.
+        port = 0
+    except ImportError:
         global singleton_server_thread
         alive = singleton_server_thread and singleton_server_thread.is_alive()
         if not alive:
             singleton_server_thread = graph_server.graph_server.init()
+        port = graph_server.graph_server.port
 
     # Create html to invoke the graph server
     html_content = generate_visualization_html(
         query="placeholder query",
-        port=graph_server.graph_server.port,
+        port=port,
         params=query_result.to_json().replace("\\", "\\\\").replace('"', '\\"'),
     )
     IPython.display.display(IPython.core.display.HTML(html_content))
@@ -656,11 +678,13 @@ def _is_valid_json(s: str):
 
 
 def _supports_graph_widget(query_result: pandas.DataFrame):
-    num_rows, num_columns = query_result.shape
+    # Visualization is supported if we have any json items to display.
+    # (Non-json items are excluded from visualization, but we still want to bring up
+    #  the visualizer for the json items.)
     for column in query_result.columns:
-        if not query_result[column].apply(_is_valid_json).all():
-            return False
-    return True
+        if query_result[column].apply(_is_valid_json).any():
+            return True
+    return False
 
 
 def _make_bq_query(

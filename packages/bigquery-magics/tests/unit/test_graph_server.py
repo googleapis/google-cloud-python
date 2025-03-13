@@ -116,18 +116,17 @@ row_lee_owns_account = [
 
 def _validate_nodes_and_edges(result):
     for edge in result["response"]["edges"]:
-        assert "id" in edge
-        assert edge["label"] == "Owns"
-        assert "source" in edge
-        assert "target" in edge
+        assert "source_node_identifier" in edge
+        assert "destination_node_identifier" in edge
+        assert "identifier" in edge
+        assert "Owns" in edge["labels"]
         assert "properties" in edge
 
+    print(result["response"]["nodes"])
     for node in result["response"]["nodes"]:
-        assert "id" in node
-        assert "key_property_names" in node
-        assert node["label"] in ("Account", "Person")
+        assert "identifier" in node
+        assert "Account" in node["labels"] or "Person" in node["labels"]
         assert "properties" in node
-        assert "value" in node
 
 
 @pytest.mark.skipif(
@@ -169,23 +168,26 @@ def test_convert_one_column_one_row_one_column():
 @pytest.mark.skipif(
     graph_visualization is None, reason="Requires `spanner-graph-notebook`"
 )
-def test_convert_one_column_one_row_one_column_null_json():
+def test_convert_one_column_two_rows_one_column_null_json():
     result = graph_server.convert_graph_data(
         {
             "result": {
                 "0": json.dumps(None),
+                "1": json.dumps(row_alex_owns_account),
             }
         }
     )
 
-    assert result == {
-        "response": {
-            "edges": [],
-            "nodes": [],
-            "query_result": {"result": []},
-            "schema": None,
-        },
+    # Null JSON element should be ignored in visualization, but should still be present in tabular view.
+    assert len(result["response"]["nodes"]) == 2
+    assert len(result["response"]["edges"]) == 1
+
+    _validate_nodes_and_edges(result)
+
+    assert result["response"]["query_result"] == {
+        "result": [None, row_alex_owns_account]
     }
+    assert result["response"]["schema"] is None
 
     _validate_nodes_and_edges(result)
 
@@ -228,7 +230,6 @@ def test_convert_one_row_two_columns():
             },
         }
     )
-    print(json.dumps(result))
 
     assert len(result["response"]["nodes"]) == 4
     assert len(result["response"]["edges"]) == 2
@@ -288,29 +289,29 @@ def test_convert_outer_value_not_dict():
 @pytest.mark.skipif(
     graph_visualization is None, reason="Requires `spanner-graph-notebook`"
 )
-def test_convert_inner_key_not_string():
-    result = graph_server.convert_graph_data(
-        {
-            "result": {
-                0: json.dumps({"foo": 1, "bar": 2}),
-            }
-        }
-    )
-    assert result == {"error": "Expected inner key to be str, got <class 'int'>"}
-
-
-@pytest.mark.skipif(
-    graph_visualization is None, reason="Requires `spanner-graph-notebook`"
-)
 def test_convert_inner_value_not_string():
     result = graph_server.convert_graph_data(
         {
-            "result": {
-                "0": 1,
-            }
+            "col1": {
+                "0": json.dumps(row_alex_owns_account),
+            },
+            "col2": {
+                "0": 12345,
+            },
         }
     )
-    assert result == {"error": "Expected inner value to be str, got <class 'int'>"}
+
+    # Non-JSON column should be ignored in visualizer view, but still appear in tabular view.
+    assert len(result["response"]["nodes"]) == 2
+    assert len(result["response"]["edges"]) == 1
+
+    _validate_nodes_and_edges(result)
+
+    assert result["response"]["query_result"] == {
+        "col1": [row_alex_owns_account],
+        "col2": ["12345"],
+    }
+    assert result["response"]["schema"] is None
 
 
 @pytest.mark.skipif(
@@ -414,6 +415,45 @@ class TestGraphServer(unittest.TestCase):
             response_data["query_result"], {"result": [row_alex_owns_account]}
         )
         self.assertIsNone(response_data["schema"])
+
+    @pytest.mark.skipif(
+        graph_visualization is None, reason="Requires `spanner-graph-notebook`"
+    )
+    def test_post_node_expansion(self):
+        self.assertTrue(self.server_thread.is_alive())
+        route = graph_server.graph_server.build_route(
+            graph_server.GraphServer.endpoints["post_node_expansion"]
+        )
+        request = {
+            "request": {
+                "uid": "test_uid",
+                "node_labels": ["label1, label2"],
+                "node_properites": {},
+                "direction": "INCOMING",
+                "edge_label": None,
+            },
+            "params": "{}",
+        }
+        response = requests.post(route, json={"params": json.dumps(request)})
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            response.json(), {"error": "Node expansion not yet implemented"}
+        )
+
+    @pytest.mark.skipif(
+        graph_visualization is None, reason="Requires `spanner-graph-notebook`"
+    )
+    def test_post_node_expansion_invalid_request(self):
+        self.assertTrue(self.server_thread.is_alive())
+        route = graph_server.graph_server.build_route(
+            graph_server.GraphServer.endpoints["post_node_expansion"]
+        )
+        request = {}
+        response = requests.post(route, json={"params": json.dumps(request)})
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            response.json(), {"error": "Node expansion not yet implemented"}
+        )
 
 
 def test_stop_server_never_started():
