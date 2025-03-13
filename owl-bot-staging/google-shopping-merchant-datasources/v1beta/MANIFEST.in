@@ -1,2 +1,0 @@
-recursive-include google/shopping/merchant_datasources *.py
-recursive-include google/shopping/merchant_datasources_v1beta *.py
