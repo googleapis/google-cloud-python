@@ -1859,7 +1859,7 @@ class SoftwareConfig(proto.Message):
             If unspecified, the field defaults to ``PLUGINS_ENABLED``.
 
             This field is supported for Cloud Composer environments in
-            versions composer-3.\ *.*-airflow-*.*.\* and newer.
+            versions composer-3-airflow-\ *.*.\ *-build.* and newer.
     """
 
     class WebServerPluginsMode(proto.Enum):
@@ -2151,7 +2151,7 @@ class NodeConfig(proto.Message):
             projects/{project}/regions/{region}/networkAttachments/{networkAttachment}.
 
             This field is supported for Cloud Composer environments in
-            versions composer-3.\ *.*-airflow-*.*.\* and newer.
+            versions composer-3-airflow-\ *.*.\ *-build.* and newer.
         composer_internal_ipv4_cidr_block (str):
             Optional. The IP range in CIDR notation to use internally by
             Cloud Composer. IP addresses are not reserved - and the same
@@ -2162,7 +2162,7 @@ class NodeConfig(proto.Message):
             used.
 
             This field is supported for Cloud Composer environments in
-            versions composer-3.\ *.*-airflow-*.*.\* and newer.
+            versions composer-3-airflow-\ *.*.\ *-build.* and newer.
     """
 
     location: str = proto.Field(
@@ -2315,7 +2315,7 @@ class PrivateEnvironmentConfig(proto.Message):
             internet.
 
             This field is supported for Cloud Composer environments in
-            versions composer-3.\ *.*-airflow-*.*.\* and newer.
+            versions composer-3-airflow-\ *.*.\ *-build.* and newer.
         private_cluster_config (google.cloud.orchestration.airflow.service_v1.types.PrivateClusterConfig):
             Optional. Configuration for the private GKE
             cluster for a Private IP Cloud Composer
@@ -2439,7 +2439,7 @@ class WorkloadsConfig(proto.Message):
             Optional. Resources used by Airflow DAG processors.
 
             This field is supported for Cloud Composer environments in
-            versions composer-3.\ *.*-airflow-*.*.\* and newer.
+            versions composer-3-airflow-\ *.*.\ *-build.* and newer.
     """
 
     class SchedulerResource(proto.Message):
@@ -2577,7 +2577,7 @@ class WorkloadsConfig(proto.Message):
         r"""Configuration for resources used by Airflow DAG processors.
 
         This field is supported for Cloud Composer environments in versions
-        composer-3.\ *.*-airflow-*.*.\* and newer.
+        composer-3-airflow-\ *.*.\ *-build.* and newer.
 
         Attributes:
             cpu (float):
