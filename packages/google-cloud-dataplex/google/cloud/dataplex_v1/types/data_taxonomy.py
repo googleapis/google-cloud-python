@@ -393,10 +393,7 @@ class CreateDataTaxonomyRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The resource name of the data taxonomy location,
-            of the form:
-            projects/{project_number}/locations/{location_id} where
-            ``location_id`` refers to a GCP region.
+
         data_taxonomy_id (str):
             Required. DataTaxonomy identifier.
 
@@ -466,8 +463,7 @@ class GetDataTaxonomyRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The resource name of the DataTaxonomy:
-            projects/{project_number}/locations/{location_id}/dataTaxonomies/{data_taxonomy_id}
+
     """
 
     name: str = proto.Field(

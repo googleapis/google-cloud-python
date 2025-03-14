@@ -138,6 +138,7 @@ from .types.datascans import (
     UpdateDataScanRequest,
 )
 from .types.logs import (
+    BusinessGlossaryEvent,
     DataQualityScanRuleResult,
     DataScanEvent,
     DiscoveryEvent,
@@ -227,6 +228,7 @@ __all__ = (
     "AspectType",
     "Asset",
     "AssetStatus",
+    "BusinessGlossaryEvent",
     "CancelJobRequest",
     "CancelMetadataJobRequest",
     "CatalogServiceClient",
