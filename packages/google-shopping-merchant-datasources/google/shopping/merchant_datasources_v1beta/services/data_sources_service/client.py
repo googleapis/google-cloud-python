@@ -986,7 +986,6 @@ class DataSourcesServiceClient(metaclass=DataSourcesServiceClientMeta):
 
                 # Initialize request argument(s)
                 data_source = merchant_datasources_v1beta.DataSource()
-                data_source.primary_product_data_source.channel = "PRODUCTS"
                 data_source.display_name = "display_name_value"
 
                 request = merchant_datasources_v1beta.CreateDataSourceRequest(
@@ -1109,7 +1108,6 @@ class DataSourcesServiceClient(metaclass=DataSourcesServiceClientMeta):
 
                 # Initialize request argument(s)
                 data_source = merchant_datasources_v1beta.DataSource()
-                data_source.primary_product_data_source.channel = "PRODUCTS"
                 data_source.display_name = "display_name_value"
 
                 request = merchant_datasources_v1beta.UpdateDataSourceRequest(
