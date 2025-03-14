@@ -115,8 +115,10 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
 class DataCatalogGrpcTransport(DataCatalogTransport):
     """gRPC backend transport for DataCatalog.
 
-    Data Catalog API service allows you to discover, understand,
-    and manage your data.
+    Deprecated: Please use Dataplex Catalog instead.
+
+    Data Catalog API service allows you to discover, understand, and
+    manage your data.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
