@@ -90,7 +90,7 @@ class AppendRowsStream(object):
         initial_request_template: gapic_types.AppendRowsRequest,
         *,
         metadata: Sequence[Tuple[str, str]] = (),
-    ):
+    ) -> None:
         """Construct a stream manager.
 
         Args:
@@ -106,154 +106,45 @@ class AppendRowsStream(object):
                 Extra headers to include when sending the streaming request.
         """
         self._client = client
-        self._closing = threading.Lock()
         self._closed = False
         self._close_callbacks = []
-        self._futures_queue = queue.Queue()
         self._metadata = metadata
+        self._thread_lock = threading.RLock()
+        self._closed_connection = {}
+
+        self._stream_name = None
 
         # Make a deepcopy of the template and clear the proto3-only fields
         self._initial_request_template = _process_request_template(
             initial_request_template
         )
 
-        # Only one call to `send()` should attempt to open the RPC.
-        self._opening = threading.Lock()
-
-        self._rpc = None
-        self._stream_name = None
-
-        # The threads created in ``._open()``.
-        self._consumer = None
+        self._connection = _Connection(
+            client=client,
+            writer=self,
+            metadata=metadata,
+        )
 
     @property
     def is_active(self) -> bool:
-        """bool: True if this manager is actively streaming.
+        """bool: True if this manager is actively streaming. It is recommended
+        to call this property inside a thread lock to avoid any race conditions.
 
         Note that ``False`` does not indicate this is complete shut down,
         just that it stopped getting new messages.
         """
-        return self._consumer is not None and self._consumer.is_active
+        return self._connection is not None and self._connection.is_active
 
-    def add_close_callback(self, callback: Callable):
+    def add_close_callback(self, callback: Callable) -> None:
         """Schedules a callable when the manager closes.
         Args:
             callback (Callable): The method to call.
         """
         self._close_callbacks.append(callback)
 
-    def _open(
-        self,
-        initial_request: gapic_types.AppendRowsRequest,
-        timeout: float = _DEFAULT_TIMEOUT,
-    ) -> "AppendRowsFuture":
-        """Open an append rows stream.
-
-        This is automatically called by the first call to the
-        :attr:`google.cloud.bigquery_storage_v1.writer.AppendRowsStream.send`
-        method.
-
-        Args:
-            initial_request:
-                The initial request to start the stream. Must have
-                :attr:`google.cloud.bigquery_storage_v1.types.AppendRowsRequest.write_stream`
-                and ``proto_rows.writer_schema.proto_descriptor`` and
-                properties populated.
-            timeout:
-                How long (in seconds) to wait for the stream to be ready.
-
-        Returns:
-            A future, which can be used to process the response to the initial
-            request when it arrives.
-        """
-        if self.is_active:
-            raise ValueError("This manager is already open.")
-
-        if self._closed:
-            raise bqstorage_exceptions.StreamClosedError(
-                "This manager has been closed and can not be re-used."
-            )
-
-        start_time = time.monotonic()
-        request = gapic_types.AppendRowsRequest()
-        gapic_types.AppendRowsRequest.copy_from(request, self._initial_request_template)
-        request._pb.MergeFrom(initial_request._pb)
-        self._stream_name = request.write_stream
-        if initial_request.trace_id:
-            request.trace_id = f"python-writer:{package_version.__version__} {initial_request.trace_id}"
-        else:
-            request.trace_id = f"python-writer:{package_version.__version__}"
-
-        inital_response_future = AppendRowsFuture(self)
-        self._futures_queue.put(inital_response_future)
-
-        self._rpc = bidi.BidiRpc(
-            self._client.append_rows,
-            initial_request=request,
-            # TODO: pass in retry and timeout. Blocked by
-            # https://github.com/googleapis/python-api-core/issues/262
-            metadata=tuple(
-                itertools.chain(
-                    self._metadata,
-                    # This header is required so that the BigQuery Storage API
-                    # knows which region to route the request to.
-                    (("x-goog-request-params", f"write_stream={self._stream_name}"),),
-                )
-            ),
-        )
-        self._rpc.add_done_callback(self._on_rpc_done)
-
-        self._consumer = bidi.BackgroundConsumer(self._rpc, self._on_response)
-        self._consumer.start()
-
-        # Make sure RPC has started before returning.
-        # Without this, consumers may get:
-        #
-        # ValueError: Can not send() on an RPC that has never been open()ed.
-        #
-        # when they try to send a request.
-        try:
-            while not self._rpc.is_active and self._consumer.is_active:
-                # Avoid 100% CPU while waiting for RPC to be ready.
-                time.sleep(_WRITE_OPEN_INTERVAL)
-
-                # TODO: Check retry.deadline instead of (per-request) timeout.
-                # Blocked by
-                # https://github.com/googleapis/python-api-core/issues/262
-                if timeout is None:
-                    continue
-                current_time = time.monotonic()
-                if current_time - start_time > timeout:
-                    break
-        except AttributeError:
-            # Handle the AttributeError which can occur if the stream is
-            # unable to be opened. In that case, self._rpc or self._consumer
-            # may be None.
-            pass
-
-        try:
-            is_consumer_active = self._consumer.is_active
-        except AttributeError:
-            # Handle the AttributeError which can occur if the stream is
-            # unable to be opened. In that case, self._consumer
-            # may be None.
-            is_consumer_active = False
-
-        # Something went wrong when opening the RPC.
-        if not is_consumer_active:
-            # TODO: Share the exception from _rpc.open(). Blocked by
-            # https://github.com/googleapis/python-api-core/issues/268
-            request_exception = exceptions.Unknown(
-                "There was a problem opening the stream. "
-                "Try turning on DEBUG level logs to see the error."
-            )
-            self.close(reason=request_exception)
-            raise request_exception
-
-        return inital_response_future
-
-    def send(self, request: gapic_types.AppendRowsRequest) -> "AppendRowsFuture":
-        """Send an append rows request to the open stream.
+    def send(self, request: gapic_types.AppendRowsRequest) -> AppendRowsFuture:
+        """Send an append rows request to the open stream. The name of the
+        stream is extracted from the first request and cannot be changed.
 
         Args:
             request:
@@ -263,50 +154,17 @@ class AppendRowsStream(object):
             A future, which can be used to process the response when it
             arrives.
         """
-        if self._closed:
-            raise bqstorage_exceptions.StreamClosedError(
-                "This manager has been closed and can not be used."
+        if self._stream_name is None:
+            self._stream_name = request.write_stream
+        elif request.write_stream != self._stream_name:
+            raise ValueError(
+                "Stream name is already set by the original request as "
+                f"{self._stream_name}, different from {request.write_stream} "
+                "in this request. Please use the same name or open a new stream."
             )
+        return self._connection.send(request)
 
-        # If the manager hasn't been openned yet, automatically open it. Only
-        # one call to `send()` should attempt to open the RPC. After `_open()`,
-        # the stream is active, unless something went wrong with the first call
-        # to open, in which case this send will fail anyway due to a closed
-        # RPC.
-        with self._opening:
-            if not self.is_active:
-                return self._open(request)
-
-        # For each request, we expect exactly one response (in order). Add a
-        # future to the queue so that when the response comes, the callback can
-        # pull it off and notify completion.
-        future = AppendRowsFuture(self)
-        self._futures_queue.put(future)
-        self._rpc.send(request)
-        return future
-
-    def _on_response(self, response: gapic_types.AppendRowsResponse):
-        """Process a response from a consumer callback."""
-        # If the stream has closed, but somehow we still got a response message
-        # back, discard it. The response futures queue has been drained, with
-        # an exception reported.
-        if self._closed:
-            raise bqstorage_exceptions.StreamClosedError(
-                f"Stream closed before receiving response: {response}"
-            )
-
-        # Since we have 1 response per request, if we get here from a response
-        # callback, the queue should never be empty.
-        future: AppendRowsFuture = self._futures_queue.get_nowait()
-        if response.error.code:
-            exc = exceptions.from_grpc_status(
-                response.error.code, response.error.message, response=response
-            )
-            future.set_exception(exc)
-        else:
-            future.set_result(response)
-
-    def close(self, reason: Optional[Exception] = None):
+    def close(self, reason: Optional[Exception] = None) -> None:
         """Stop consuming messages and shutdown all helper threads.
 
         This method is idempotent. Additional calls will have no effect.
@@ -316,64 +174,51 @@ class AppendRowsStream(object):
                 an "intentional" shutdown. This is passed to the callbacks
                 specified via :meth:`add_close_callback`.
         """
-        self._shutdown(reason=reason)
-
-    def _shutdown(self, reason: Optional[Exception] = None):
-        """Run the actual shutdown sequence (stop the stream and all helper threads).
-
-        Args:
-            reason:
-                The reason to close the stream. If ``None``, this is
-                considered an "intentional" shutdown.
-        """
-        with self._closing:
-            if self._closed:
-                return
-
-            # Stop consuming messages.
+        with self._thread_lock:
             if self.is_active:
-                _LOGGER.debug("Stopping consumer.")
-                self._consumer.stop()
-            self._consumer = None
+                self._connection.close(reason=reason)
+            else:
+                raise bqstorage_exceptions.StreamClosedError(
+                    "Cannot close again when the connection is already closed."
+                )
+        for callback in self._close_callbacks:
+            callback(self, reason)
 
-            if self._rpc is not None:
-                self._rpc.close()
-            self._closed = True
-            _LOGGER.debug("Finished stopping manager.")
+        self._closed = True
 
-            # We know that no new items will be added to the queue because
-            # we've marked the stream as closed.
-            while not self._futures_queue.empty():
-                # Mark each future as failed. Since the consumer thread has
-                # stopped (or at least is attempting to stop), we won't get
-                # response callbacks to populate the remaining futures.
-                future = self._futures_queue.get_nowait()
-                if reason is None:
-                    exc = bqstorage_exceptions.StreamClosedError(
-                        "Stream closed before receiving a response."
-                    )
-                else:
-                    exc = reason
-                future.set_exception(exc)
-
-            for callback in self._close_callbacks:
-                callback(self, reason)
-
-    def _on_rpc_done(self, future):
-        """Triggered whenever the underlying RPC terminates without recovery.
-
-        This is typically triggered from one of two threads: the background
-        consumer thread (when calling ``recv()`` produces a non-recoverable
-        error) or the grpc management thread (when cancelling the RPC).
-
-        This method is *non-blocking*. It will start another thread to deal
-        with shutting everything down. This is to prevent blocking in the
-        background consumer and preventing it from being ``joined()``.
+    def _renew_connection(self, reason: Optional[Exception] = None) -> None:
+        """Helper function that is called when the RPC connection is closed
+        without recovery. It first creates a new Connection instance in an
+        atomic manner, and then cleans up the failed connection. Note that a
+        new RPC connection is not established by instantiating _Connection,
+        but only when `send()` is called for the first time.
         """
-        _LOGGER.info("RPC termination has signaled streaming pull manager shutdown.")
-        error = _wrap_as_exception(future)
+        # Creates a new Connection instance, but doesn't establish a new RPC
+        # connection. New connection is only started when `send()` is called
+        # again, in order to save resource if the stream is idle. This action
+        # is atomic.
+        with self._thread_lock:
+            _closed_connection = self._connection
+            self._connection = _Connection(
+                client=self._client,
+                writer=self,
+                metadata=self._metadata,
+            )
+
+        # Cleanup, and marks futures as failed. To minimize the length of the
+        # critical section, this step is not guaranteed to be atomic.
+        _closed_connection._shutdown(reason=reason)
+
+    def _on_rpc_done(self, reason: Optional[Exception] = None) -> None:
+        """Callback passecd to _Connection. It's called when the RPC connection
+        is closed without recovery. Spins up a new thread to call the helper
+        function `_renew_connection()`, which creates a new connection and
+        cleans up the current one.
+        """
         thread = threading.Thread(
-            name=_RPC_ERROR_THREAD_NAME, target=self._shutdown, kwargs={"reason": error}
+            name=_RPC_ERROR_THREAD_NAME,
+            target=self._renew_connection,
+            kwargs={"reason": reason},
         )
         thread.daemon = True
         thread.start()
@@ -661,7 +506,8 @@ class _Connection(object):
         Calls the callback from AppendRowsStream to handle the cleanup and
         possible retries.
         """
-        self._writer._on_rpc_done(future)
+        error = _wrap_as_exception(future)
+        self._writer._on_rpc_done(reason=error)
 
 
 class AppendRowsFuture(polling_future.PollingFuture):

@@ -24,8 +24,23 @@ from google.cloud.bigquery_storage_v1.writer import AppendRowsStream
 from .resources import person_pb2
 
 
-@pytest.fixture
-def table(project_id, dataset, bq_client):
+def _make_request(row_data):
+    # row_data format: [("first_name", "last_name", 1), ...]
+    request = gapic_types.AppendRowsRequest()
+    proto_data = gapic_types.AppendRowsRequest.ProtoData()
+    proto_rows = gapic_types.ProtoRows()
+    for first_name, last_name, age in row_data:
+        row = person_pb2.PersonProto()
+        row.first_name = first_name
+        row.last_name = last_name
+        row.age = age
+        proto_rows.serialized_rows.append(row.SerializeToString())
+    proto_data.rows = proto_rows
+    request.proto_rows = proto_data
+    return request
+
+
+def _make_table(project_id, dataset, bq_client, table_prefix):
     from google.cloud import bigquery
 
     schema = [
@@ -35,13 +50,18 @@ def table(project_id, dataset, bq_client):
     ]
 
     unique_suffix = str(uuid.uuid4()).replace("-", "_")
-    table_id = "users_" + unique_suffix
+    table_id = table_prefix + unique_suffix
     table_id_full = f"{project_id}.{dataset.dataset_id}.{table_id}"
     bq_table = bigquery.Table(table_id_full, schema=schema)
     created_table = bq_client.create_table(bq_table)
 
-    yield created_table
+    return created_table
 
+
+@pytest.fixture(scope="function")
+def table(project_id, dataset, bq_client, table_prefix="users_"):
+    created_table = _make_table(project_id, dataset, bq_client, table_prefix)
+    yield created_table
     bq_client.delete_table(created_table)
 
 
@@ -52,8 +72,7 @@ def bqstorage_write_client(credentials):
     return bigquery_storage_v1.BigQueryWriteClient(credentials=credentials)
 
 
-@pytest.fixture(scope="function")
-def append_rows_stream(bqstorage_write_client, table):
+def _make_stream(bqstorage_write_client, table):
     person_pb = person_pb2.PersonProto()
 
     stream_name = f"projects/{table.project}/datasets/{table.dataset_id}/tables/{table.table_id}/_default"
@@ -77,6 +96,11 @@ def append_rows_stream(bqstorage_write_client, table):
     return append_rows_stream
 
 
+@pytest.fixture(scope="function")
+def append_rows_stream(bqstorage_write_client, table):
+    return _make_stream(bqstorage_write_client, table)
+
+
 def test_append_rows_with_invalid_stream_name_fails_fast(bqstorage_write_client):
     bad_request = gapic_types.AppendRowsRequest()
     bad_request.write_stream = "this-is-an-invalid-stream-resource-path"
@@ -85,21 +109,19 @@ def test_append_rows_with_invalid_stream_name_fails_fast(bqstorage_write_client)
         bqstorage_write_client.append_rows(bad_request)
 
 
-def test_append_rows_with_proto3(append_rows_stream):
-    request = gapic_types.AppendRowsRequest()
-    proto_data = gapic_types.AppendRowsRequest.ProtoData()
-    proto_rows = gapic_types.ProtoRows()
-    row = person_pb2.PersonProto()
-    row.first_name = "fn"
-    row.last_name = "ln"
-    row.age = 20
-    proto_rows.serialized_rows.append(row.SerializeToString())
-    proto_data.rows = proto_rows
-    request.proto_rows = proto_data
+@pytest.mark.parametrize(
+    "test_name,row_data",
+    [
+        ("single_row", [("fn1", "ln1", 20)]),
+        ("multi_row", [("fn1", "ln1", 1), ("fn2", "ln2", 2)]),
+    ],
+)
+def test_append_rows_with_proto3(append_rows_stream, test_name, row_data):
+    request = _make_request(row_data)
     response_future = append_rows_stream.send(request)
 
-    assert response_future.result()
-    # The request should success
+    # The request should succeed
+    response_future.result()
 
 
 def test_append_rows_with_proto3_got_response_on_failure(append_rows_stream):
@@ -124,3 +146,42 @@ def test_append_rows_with_proto3_got_response_on_failure(append_rows_stream):
         response_future.result()
 
     assert isinstance(excinfo.value.response, gapic_types.AppendRowsResponse)
+
+
+def test_flaky_connection(project_id, dataset, bq_client, bqstorage_write_client):
+    from google.api_core import exceptions
+    from .conftest import _make_dataset
+
+    # Create dataset, table and stream.
+    dataset = _make_dataset(project_id, bq_client, location="us-east7")
+    flaky_table = _make_table(
+        project_id, dataset, bq_client, table_prefix="reconnect_on_close_"
+    )
+    stream = _make_stream(bqstorage_write_client, flaky_table)
+
+    try:
+        # Send data, first 10 requests should succeed.
+        for i in range(10):
+            row_data = [("fn", "ln", i + 1)]
+            request = _make_request(row_data)
+            response_future = stream.send(request)
+            response_future.result()
+
+        # The server will shut down the connection after the 10th request, so
+        # the 11th request will fail.
+        row_data = [("fn", "ln", 11)]
+        request = _make_request(row_data)
+        response_future = stream.send(request)
+        with pytest.raises(
+            exceptions.Aborted, match="Closing the stream on request intervals: 10"
+        ):
+            response_future.result()
+
+        # The client will created a new connection for any new request.
+        for i in range(11, 15):
+            row_data = [("fn", "ln", i + 1)]
+            request = _make_request(row_data)
+            response_future = stream.send(request)
+            response_future.result()
+    finally:
+        bq_client.delete_table(flaky_table)

@@ -92,20 +92,25 @@ def local_shakespeare_table_reference(project_id, use_mtls):
     return _TABLE_FORMAT.format(project_id, "public_samples_copy", "shakespeare")
 
 
-@pytest.fixture(scope="session")
-def dataset(project_id, bq_client):
+def _make_dataset(project_id, bq_client, location):
     from google.cloud import bigquery
 
     dataset_name = prefixer.create_prefix()
 
     dataset_id = "{}.{}".format(project_id, dataset_name)
     dataset = bigquery.Dataset(dataset_id)
-    dataset.location = "US"
+    dataset.location = location
     created_dataset = bq_client.create_dataset(dataset)
 
+    return created_dataset
+
+
+@pytest.fixture(scope="session")
+def dataset(project_id, bq_client):
+    created_dataset = _make_dataset(project_id, bq_client, location="US")
     yield created_dataset
 
-    bq_client.delete_dataset(dataset, delete_contents=True)
+    bq_client.delete_dataset(created_dataset, delete_contents=True)
 
 
 @pytest.fixture(scope="session")
