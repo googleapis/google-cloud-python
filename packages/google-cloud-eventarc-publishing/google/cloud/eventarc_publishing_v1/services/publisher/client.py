@@ -116,7 +116,8 @@ class PublisherClient(metaclass=PublisherClientMeta):
     A partner is a third-party event provider that is integrated
     with Eventarc.
 
-    A subscriber is a GCP customer interested in receiving events.
+    A subscriber is a Google Cloud customer interested in receiving
+    events.
 
     Channel is a first-class Eventarc resource that is created and
     managed by the subscriber in their Google Cloud project. A

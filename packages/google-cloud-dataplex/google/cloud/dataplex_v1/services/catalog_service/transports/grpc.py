@@ -841,11 +841,6 @@ class CatalogServiceGrpcTransport(CatalogServiceTransport):
 
         Gets an Entry.
 
-        **Caution**: The BigQuery metadata that is stored in Dataplex
-        Catalog is changing. For more information, see `Changes to
-        BigQuery metadata stored in Dataplex
-        Catalog <https://cloud.google.com/dataplex/docs/biqquery-metadata-changes>`__.
-
         Returns:
             Callable[[~.GetEntryRequest],
                     ~.Entry]:
@@ -868,13 +863,8 @@ class CatalogServiceGrpcTransport(CatalogServiceTransport):
     def lookup_entry(self) -> Callable[[catalog.LookupEntryRequest], catalog.Entry]:
         r"""Return a callable for the lookup entry method over gRPC.
 
-        Looks up a single Entry by name using the permission on the
+        Looks up an entry by name using the permission on the
         source system.
-
-        **Caution**: The BigQuery metadata that is stored in Dataplex
-        Catalog is changing. For more information, see `Changes to
-        BigQuery metadata stored in Dataplex
-        Catalog <https://cloud.google.com/dataplex/docs/biqquery-metadata-changes>`__.
 
         Returns:
             Callable[[~.LookupEntryRequest],

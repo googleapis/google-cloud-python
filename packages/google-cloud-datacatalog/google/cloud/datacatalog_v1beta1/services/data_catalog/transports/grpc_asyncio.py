@@ -120,8 +120,10 @@ class _LoggingClientAIOInterceptor(
 class DataCatalogGrpcAsyncIOTransport(DataCatalogTransport):
     """gRPC AsyncIO backend transport for DataCatalog.
 
-    Data Catalog API service allows clients to discover,
-    understand, and manage their data.
+    Deprecated: Please use Dataplex Catalog instead.
+
+    Data Catalog API service allows clients to discover, understand,
+    and manage their data.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation

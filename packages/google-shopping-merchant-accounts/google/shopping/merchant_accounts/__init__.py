@@ -42,6 +42,12 @@ from google.shopping.merchant_accounts_v1beta.services.autofeed_settings_service
 from google.shopping.merchant_accounts_v1beta.services.autofeed_settings_service.client import (
     AutofeedSettingsServiceClient,
 )
+from google.shopping.merchant_accounts_v1beta.services.automatic_improvements_service.async_client import (
+    AutomaticImprovementsServiceAsyncClient,
+)
+from google.shopping.merchant_accounts_v1beta.services.automatic_improvements_service.client import (
+    AutomaticImprovementsServiceClient,
+)
 from google.shopping.merchant_accounts_v1beta.services.business_identity_service.async_client import (
     BusinessIdentityServiceAsyncClient,
 )
@@ -139,6 +145,14 @@ from google.shopping.merchant_accounts_v1beta.types.autofeedsettings import (
     AutofeedSettings,
     GetAutofeedSettingsRequest,
     UpdateAutofeedSettingsRequest,
+)
+from google.shopping.merchant_accounts_v1beta.types.automaticimprovements import (
+    AutomaticImageImprovements,
+    AutomaticImprovements,
+    AutomaticItemUpdates,
+    AutomaticShippingImprovements,
+    GetAutomaticImprovementsRequest,
+    UpdateAutomaticImprovementsRequest,
 )
 from google.shopping.merchant_accounts_v1beta.types.businessidentity import (
     BusinessIdentity,
@@ -250,6 +264,8 @@ __all__ = (
     "AccountTaxServiceAsyncClient",
     "AutofeedSettingsServiceClient",
     "AutofeedSettingsServiceAsyncClient",
+    "AutomaticImprovementsServiceClient",
+    "AutomaticImprovementsServiceAsyncClient",
     "BusinessIdentityServiceClient",
     "BusinessIdentityServiceAsyncClient",
     "BusinessInfoServiceClient",
@@ -294,6 +310,12 @@ __all__ = (
     "AutofeedSettings",
     "GetAutofeedSettingsRequest",
     "UpdateAutofeedSettingsRequest",
+    "AutomaticImageImprovements",
+    "AutomaticImprovements",
+    "AutomaticItemUpdates",
+    "AutomaticShippingImprovements",
+    "GetAutomaticImprovementsRequest",
+    "UpdateAutomaticImprovementsRequest",
     "BusinessIdentity",
     "GetBusinessIdentityRequest",
     "UpdateBusinessIdentityRequest",

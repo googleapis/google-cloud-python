@@ -168,6 +168,7 @@ from google.cloud.dataplex_v1.types.datascans import (
     UpdateDataScanRequest,
 )
 from google.cloud.dataplex_v1.types.logs import (
+    BusinessGlossaryEvent,
     DataQualityScanRuleResult,
     DataScanEvent,
     DiscoveryEvent,
@@ -365,6 +366,7 @@ __all__ = (
     "RunDataScanResponse",
     "UpdateDataScanRequest",
     "DataScanType",
+    "BusinessGlossaryEvent",
     "DataQualityScanRuleResult",
     "DataScanEvent",
     "DiscoveryEvent",

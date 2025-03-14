@@ -45,10 +45,11 @@ class DataProfileSpec(proto.Message):
 
             100.
         row_filter (str):
-            Optional. A filter applied to all rows in a
-            single DataScan job. The filter needs to be a
-            valid SQL expression for a WHERE clause in
-            BigQuery standard SQL syntax.
+            Optional. A filter applied to all rows in a single DataScan
+            job. The filter needs to be a valid SQL expression for a
+            `WHERE clause in GoogleSQL
+            syntax <https://cloud.google.com/bigquery/docs/reference/standard-sql/query-syntax#where_clause>`__.
+
             Example: col1 >= 0 AND col2 < 10
         post_scan_actions (google.cloud.dataplex_v1.types.DataProfileSpec.PostScanActions):
             Optional. Actions to take upon job

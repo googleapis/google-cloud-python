@@ -261,6 +261,55 @@
         }
       }
     },
+    "AutomaticImprovementsService": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "AutomaticImprovementsServiceClient",
+          "rpcs": {
+            "GetAutomaticImprovements": {
+              "methods": [
+                "get_automatic_improvements"
+              ]
+            },
+            "UpdateAutomaticImprovements": {
+              "methods": [
+                "update_automatic_improvements"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "AutomaticImprovementsServiceAsyncClient",
+          "rpcs": {
+            "GetAutomaticImprovements": {
+              "methods": [
+                "get_automatic_improvements"
+              ]
+            },
+            "UpdateAutomaticImprovements": {
+              "methods": [
+                "update_automatic_improvements"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "AutomaticImprovementsServiceClient",
+          "rpcs": {
+            "GetAutomaticImprovements": {
+              "methods": [
+                "get_automatic_improvements"
+              ]
+            },
+            "UpdateAutomaticImprovements": {
+              "methods": [
+                "update_automatic_improvements"
+              ]
+            }
+          }
+        }
+      }
+    },
     "BusinessIdentityService": {
       "clients": {
         "grpc": {

@@ -43,6 +43,14 @@ from .autofeedsettings import (
     GetAutofeedSettingsRequest,
     UpdateAutofeedSettingsRequest,
 )
+from .automaticimprovements import (
+    AutomaticImageImprovements,
+    AutomaticImprovements,
+    AutomaticItemUpdates,
+    AutomaticShippingImprovements,
+    GetAutomaticImprovementsRequest,
+    UpdateAutomaticImprovementsRequest,
+)
 from .businessidentity import (
     BusinessIdentity,
     GetBusinessIdentityRequest,
@@ -161,6 +169,12 @@ __all__ = (
     "AutofeedSettings",
     "GetAutofeedSettingsRequest",
     "UpdateAutofeedSettingsRequest",
+    "AutomaticImageImprovements",
+    "AutomaticImprovements",
+    "AutomaticItemUpdates",
+    "AutomaticShippingImprovements",
+    "GetAutomaticImprovementsRequest",
+    "UpdateAutomaticImprovementsRequest",
     "BusinessIdentity",
     "GetBusinessIdentityRequest",
     "UpdateBusinessIdentityRequest",
