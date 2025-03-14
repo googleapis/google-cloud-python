@@ -41,7 +41,7 @@ class TestBase(unittest.TestCase):
                 self.DEFAULT_PROJECT
             )
         )
-        self.DISK_IMAGE = "projects/debian-cloud/global/images/family/debian-10"
+        self.DISK_IMAGE = "projects/debian-cloud/global/images/family/debian-11"
 
     @staticmethod
     def get_unique_name(placeholder=""):
