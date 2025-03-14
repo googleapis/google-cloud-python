@@ -32,7 +32,7 @@ def test_progress_bar_dataframe(
     capsys.readouterr()  # clear output
 
     with bf.option_context("display.progress_bar", "terminal"):
-        penguins_df_default_index.to_pandas()
+        penguins_df_default_index.to_pandas(allow_large_results=True)
 
     assert_loading_msg_exist(capsys.readouterr().out)
     assert penguins_df_default_index.query_job is not None
@@ -43,7 +43,7 @@ def test_progress_bar_series(penguins_df_default_index: bf.dataframe.DataFrame, 
     capsys.readouterr()  # clear output
 
     with bf.option_context("display.progress_bar", "terminal"):
-        series.to_pandas()
+        series.to_pandas(allow_large_results=True)
 
     assert_loading_msg_exist(capsys.readouterr().out)
     assert series.query_job is not None

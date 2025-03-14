@@ -24,6 +24,13 @@ import bigframes.pandas as bpd
 from tests.system import utils
 
 
+# Until b/401630655 is resolved, ML apis return json, not compatible with allow_large_results=False
+@pytest.fixture(scope="module", autouse=True)
+def always_create_table():
+    with bigframes.option_context("bigquery.allow_large_results", True):
+        yield
+
+
 def test_create_load_text_generator_model(
     palm2_text_generator_model, dataset_id, bq_connection
 ):

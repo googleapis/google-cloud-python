@@ -53,9 +53,10 @@ def test_struct_from_dataframe(columns_arg):
     srs = series.Series(
         columns_arg,
     )
+    # Use allow_large_results=True, due to b/403028465
     pd.testing.assert_series_equal(
-        srs.to_pandas(),
-        bbq.struct(srs.struct.explode()).to_pandas(),
+        srs.to_pandas(allow_large_results=True),
+        bbq.struct(srs.struct.explode()).to_pandas(allow_large_results=True),
         check_index_type=False,
         check_dtype=False,
     )

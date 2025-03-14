@@ -55,31 +55,33 @@ def test_blob_version(images_mm_df: bpd.DataFrame):
 
 
 def test_blob_metadata(images_mm_df: bpd.DataFrame):
-    bigframes.options.experiments.blob = True
+    # allow_large_result=False incompatible with json b/401630655
+    with bigframes.option_context(
+        "bigquery.allow_large_results", True, "experiments.blob", True
+    ):
+        actual = images_mm_df["blob_col"].blob.metadata().to_pandas()
+        expected = pd.Series(
+            [
+                {
+                    "content_type": "image/jpeg",
+                    "md5_hash": "e130ad042261a1883cd2cc06831cf748",
+                    "size": 338390,
+                    "updated": 1739574332000000,
+                },
+                {
+                    "content_type": "image/jpeg",
+                    "md5_hash": "e2ae3191ff2b809fd0935f01a537c650",
+                    "size": 43333,
+                    "updated": 1739574332000000,
+                },
+            ],
+            name="metadata",
+            dtype=db_dtypes.JSONDtype(),
+        )
 
-    actual = images_mm_df["blob_col"].blob.metadata().to_pandas()
-    expected = pd.Series(
-        [
-            {
-                "content_type": "image/jpeg",
-                "md5_hash": "e130ad042261a1883cd2cc06831cf748",
-                "size": 338390,
-                "updated": 1739574332000000,
-            },
-            {
-                "content_type": "image/jpeg",
-                "md5_hash": "e2ae3191ff2b809fd0935f01a537c650",
-                "size": 43333,
-                "updated": 1739574332000000,
-            },
-        ],
-        name="metadata",
-        dtype=db_dtypes.JSONDtype(),
-    )
-
-    pd.testing.assert_series_equal(
-        actual, expected, check_dtype=False, check_index_type=False
-    )
+        pd.testing.assert_series_equal(
+            actual, expected, check_dtype=False, check_index_type=False
+        )
 
 
 def test_blob_content_type(images_mm_df: bpd.DataFrame):

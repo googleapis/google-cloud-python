@@ -11,22 +11,25 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+import bigframes
 
 
 def test_to_pandas_override_global_option(scalars_df_index):
-    bf_series = scalars_df_index["int64_col"]
+    with bigframes.option_context("bigquery.allow_large_results", True):
 
-    # Direct call to_pandas uses global default setting (allow_large_results=True),
-    # table has 'bqdf' prefix.
-    bf_series.to_pandas()
-    table_id = bf_series._query_job.destination.table_id
-    assert table_id.startswith("bqdf")
+        bf_series = scalars_df_index["int64_col"]
 
-    session = bf_series._block.session
-    execution_count = session._metrics.execution_count
+        # Direct call to_pandas uses global default setting (allow_large_results=True),
+        # table has 'bqdf' prefix.
+        bf_series.to_pandas()
+        table_id = bf_series._query_job.destination.table_id
+        assert table_id.startswith("bqdf")
 
-    # When allow_large_results=False, a query_job object should not be created.
-    # Therefore, the table_id should remain unchanged.
-    bf_series.to_pandas(allow_large_results=False)
-    assert bf_series._query_job.destination.table_id == table_id
-    assert session._metrics.execution_count - execution_count == 1
+        session = bf_series._block.session
+        execution_count = session._metrics.execution_count
+
+        # When allow_large_results=False, a query_job object should not be created.
+        # Therefore, the table_id should remain unchanged.
+        bf_series.to_pandas(allow_large_results=False)
+        assert bf_series._query_job.destination.table_id == table_id
+        assert session._metrics.execution_count - execution_count == 1

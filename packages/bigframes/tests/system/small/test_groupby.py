@@ -546,8 +546,7 @@ def test_dataframe_groupby_nonnumeric_with_mean():
     )
     pd_result = df.groupby(["key1", "key2"]).mean()
 
-    with bpd.option_context("bigquery.location", "US"):
-        bf_result = bpd.DataFrame(df).groupby(["key1", "key2"]).mean().to_pandas()
+    bf_result = bpd.DataFrame(df).groupby(["key1", "key2"]).mean().to_pandas()
 
     pd.testing.assert_frame_equal(
         pd_result, bf_result, check_index_type=False, check_dtype=False

@@ -38,7 +38,7 @@ def test_unordered_mode_sql_no_hash(unordered_session):
 def test_unordered_mode_job_label(unordered_session):
     pd_df = pd.DataFrame({"a": [1, 2, 3], "b": [4, 5, 6]}, dtype=pd.Int64Dtype())
     df = bpd.DataFrame(pd_df, session=unordered_session)
-    df.to_pandas()
+    df.to_gbq()
     job_labels = df.query_job.labels  # type:ignore
     assert "bigframes-mode" in job_labels
     assert job_labels["bigframes-mode"] == "unordered"

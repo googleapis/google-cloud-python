@@ -26,15 +26,6 @@ import bigframes.core.global_session
 import bigframes.pandas as bpd
 
 
-@pytest.fixture(autouse=True)
-def reset_default_session_and_location():
-    # Note: This starts a thread-local session and closes it once the test
-    # finishes.
-    with bpd.option_context("bigquery.location", None):
-        bpd.options.bigquery.location = None
-        yield
-
-
 @pytest.mark.parametrize(
     ("read_method", "query_prefix"),
     [
@@ -58,7 +49,9 @@ def test_read_gbq_start_sets_session_location(
     dataset_id_permanent,
     read_method,
     query_prefix,
+    reset_default_session_and_location,
 ):
+
     # Form query as a table name or a SQL depending on the test scenario
     query_tokyo = test_data_tables_tokyo["scalars"]
     query = test_data_tables["scalars"]
@@ -138,6 +131,7 @@ def test_read_gbq_after_session_start_must_comply_with_default_location(
     dataset_id_permanent_tokyo,
     read_method,
     query_prefix,
+    reset_default_session_and_location,
 ):
     # Form query as a table name or a SQL depending on the test scenario
     query_tokyo = test_data_tables_tokyo["scalars"]
@@ -191,6 +185,7 @@ def test_read_gbq_must_comply_with_set_location_US(
     dataset_id_permanent_tokyo,
     read_method,
     query_prefix,
+    reset_default_session_and_location,
 ):
     # Form query as a table name or a SQL depending on the test scenario
     query_tokyo = test_data_tables_tokyo["scalars"]
@@ -241,6 +236,7 @@ def test_read_gbq_must_comply_with_set_location_non_US(
     dataset_id_permanent,
     read_method,
     query_prefix,
+    reset_default_session_and_location,
 ):
     # Form query as a table name or a SQL depending on the test scenario
     query_tokyo = test_data_tables_tokyo["scalars"]
@@ -269,7 +265,9 @@ def test_read_gbq_must_comply_with_set_location_non_US(
     assert df is not None
 
 
-def test_credentials_need_reauthentication(monkeypatch):
+def test_credentials_need_reauthentication(
+    monkeypatch, reset_default_session_and_location
+):
     # Use a simple test query to verify that default session works to interact
     # with BQ.
     test_query = "SELECT 1"

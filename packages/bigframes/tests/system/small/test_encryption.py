@@ -41,6 +41,7 @@ def bq_cmek() -> str:
 
 @pytest.fixture(scope="module")
 def session_with_bq_cmek(bq_cmek) -> bigframes.Session:
+    # allow_large_results = False might not create table, and therefore no encryption config
     session = bigframes.Session(bigframes.BigQueryOptions(kms_key_name=bq_cmek))
 
     return session
@@ -52,7 +53,7 @@ def _assert_bq_table_is_encrypted(
     session: bigframes.Session,
 ):
     # Materialize the data in BQ
-    repr(df)
+    df.to_gbq()
 
     # The df should be backed by a query job with intended encryption on the result table
     assert df.query_job is not None

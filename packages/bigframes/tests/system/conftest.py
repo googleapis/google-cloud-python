@@ -139,9 +139,7 @@ def resourcemanager_client(
 
 @pytest.fixture(scope="session")
 def session() -> Generator[bigframes.Session, None, None]:
-    context = bigframes.BigQueryOptions(
-        location="US",
-    )
+    context = bigframes.BigQueryOptions(location="US", allow_large_results=False)
     session = bigframes.Session(context=context)
     yield session
     session.close()  # close generated session at cleanup time
@@ -157,7 +155,9 @@ def session_load() -> Generator[bigframes.Session, None, None]:
 
 @pytest.fixture(scope="session", params=["strict", "partial"])
 def maybe_ordered_session(request) -> Generator[bigframes.Session, None, None]:
-    context = bigframes.BigQueryOptions(location="US", ordering_mode=request.param)
+    context = bigframes.BigQueryOptions(
+        location="US", ordering_mode=request.param, allow_large_results=False
+    )
     session = bigframes.Session(context=context)
     yield session
     session.close()  # close generated session at cleanup type
@@ -165,7 +165,9 @@ def maybe_ordered_session(request) -> Generator[bigframes.Session, None, None]:
 
 @pytest.fixture(scope="session")
 def unordered_session() -> Generator[bigframes.Session, None, None]:
-    context = bigframes.BigQueryOptions(location="US", ordering_mode="partial")
+    context = bigframes.BigQueryOptions(
+        location="US", ordering_mode="partial", allow_large_results=False
+    )
     session = bigframes.Session(context=context)
     yield session
     session.close()  # close generated session at cleanup type
@@ -1379,6 +1381,12 @@ def floats_product_bf(session, floats_product_pd):
 
 
 @pytest.fixture(scope="session", autouse=True)
+def use_fast_query_path():
+    with bpd.option_context("bigquery.allow_large_results", False):
+        yield
+
+
+@pytest.fixture(scope="session", autouse=True)
 def cleanup_cloud_functions(session, cloudfunctions_client, dataset_id_permanent):
     """Clean up stale cloud functions."""
     permanent_endpoints = tests.system.utils.get_remote_function_endpoints(
@@ -1460,3 +1468,12 @@ def images_mm_df(
     return session.from_glob_path(
         images_gcs_path, name="blob_col", connection=bq_connection
     )
+
+
+@pytest.fixture()
+def reset_default_session_and_location():
+    bpd.close_session()
+    with bpd.option_context("bigquery.location", None):
+        yield
+    bpd.close_session()
+    bpd.options.bigquery.location = None

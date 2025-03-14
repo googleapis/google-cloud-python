@@ -254,27 +254,31 @@ def test_to_pandas_array_struct_correct_result(session):
 def test_to_pandas_override_global_option(scalars_df_index):
     # Direct call to_pandas uses global default setting (allow_large_results=True),
     # table has 'bqdf' prefix.
-    scalars_df_index.to_pandas()
-    table_id = scalars_df_index._query_job.destination.table_id
-    assert table_id.startswith("bqdf")
+    with bigframes.option_context("bigquery.allow_large_results", True):
 
-    # When allow_large_results=False, a query_job object should not be created.
-    # Therefore, the table_id should remain unchanged.
-    scalars_df_index.to_pandas(allow_large_results=False)
-    assert scalars_df_index._query_job.destination.table_id == table_id
+        scalars_df_index.to_pandas()
+        table_id = scalars_df_index._query_job.destination.table_id
+        assert table_id.startswith("bqdf")
+
+        # When allow_large_results=False, a query_job object should not be created.
+        # Therefore, the table_id should remain unchanged.
+        scalars_df_index.to_pandas(allow_large_results=False)
+        assert scalars_df_index._query_job.destination.table_id == table_id
 
 
 def test_to_arrow_override_global_option(scalars_df_index):
     # Direct call to_arrow uses global default setting (allow_large_results=True),
     # table has 'bqdf' prefix.
-    scalars_df_index.to_arrow()
-    table_id = scalars_df_index._query_job.destination.table_id
-    assert table_id.startswith("bqdf")
+    with bigframes.option_context("bigquery.allow_large_results", True):
 
-    # When allow_large_results=False, a query_job object should not be created.
-    # Therefore, the table_id should remain unchanged.
-    scalars_df_index.to_arrow(allow_large_results=False)
-    assert scalars_df_index._query_job.destination.table_id == table_id
+        scalars_df_index.to_arrow()
+        table_id = scalars_df_index._query_job.destination.table_id
+        assert table_id.startswith("bqdf")
+
+        # When allow_large_results=False, a query_job object should not be created.
+        # Therefore, the table_id should remain unchanged.
+        scalars_df_index.to_arrow(allow_large_results=False)
+        assert scalars_df_index._query_job.destination.table_id == table_id
 
 
 def test_load_json_w_json_string_items(session):

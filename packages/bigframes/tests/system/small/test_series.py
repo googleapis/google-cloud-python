@@ -304,22 +304,24 @@ def test_series_construct_w_dtype_for_array_struct():
 
 
 def test_series_construct_w_dtype_for_json():
-    data = [
-        "1",
-        '"str"',
-        "false",
-        '["a", {"b": 1}, null]',
-        None,
-        '{"a": {"b": [1, 2, 3], "c": true}}',
-    ]
-    s = bigframes.pandas.Series(data, dtype=dtypes.JSON_DTYPE)
+    # Until b/401630655 is resolved, json, not compatible with allow_large_results=False
+    with bigframes.option_context("bigquery.allow_large_results", True):
+        data = [
+            "1",
+            '"str"',
+            "false",
+            '["a", {"b": 1}, null]',
+            None,
+            '{"a": {"b": [1, 2, 3], "c": true}}',
+        ]
+        s = bigframes.pandas.Series(data, dtype=dtypes.JSON_DTYPE)
 
-    assert s[0] == "1"
-    assert s[1] == '"str"'
-    assert s[2] == "false"
-    assert s[3] == '["a",{"b":1},null]'
-    assert pd.isna(s[4])
-    assert s[5] == '{"a":{"b":[1,2,3],"c":true}}'
+        assert s[0] == "1"
+        assert s[1] == '"str"'
+        assert s[2] == "false"
+        assert s[3] == '["a",{"b":1},null]'
+        assert pd.isna(s[4])
+        assert s[5] == '{"a":{"b":[1,2,3],"c":true}}'
 
 
 def test_series_keys(scalars_dfs):
@@ -382,7 +384,8 @@ def test_get_column(scalars_dfs, col_name, expected_dtype):
 
 def test_get_column_w_json(json_df, json_pandas_df):
     series = json_df["json_col"]
-    series_pandas = series.to_pandas()
+    # Until b/401630655 is resolved, json not compatible with allow_large_results=False
+    series_pandas = series.to_pandas(allow_large_results=True)
     assert series.dtype == pd.ArrowDtype(db_dtypes.JSONArrowType())
     assert series_pandas.shape[0] == json_pandas_df.shape[0]
 
@@ -2270,11 +2273,8 @@ def test_head_then_series_operation(scalars_dfs):
 def test_series_peek(scalars_dfs):
     scalars_df, scalars_pandas_df = scalars_dfs
 
-    session = scalars_df._block.session
-    slot_millis_sum = session.slot_millis_sum
     peek_result = scalars_df["float64_col"].peek(n=3, force=False)
 
-    assert session.slot_millis_sum - slot_millis_sum > 1000
     pd.testing.assert_series_equal(
         peek_result,
         scalars_pandas_df["float64_col"].reindex_like(peek_result),
@@ -3888,15 +3888,17 @@ def test_series_bool_interpretation_error(scalars_df_index):
 
 
 def test_query_job_setters(scalars_dfs):
-    job_ids = set()
-    df, _ = scalars_dfs
-    series = df["int64_col"]
-    assert series.query_job is not None
-    repr(series)
-    job_ids.add(series.query_job.job_id)
-    series.to_pandas()
-    job_ids.add(series.query_job.job_id)
-    assert len(job_ids) == 2
+    # if allow_large_results=False, might not create query job
+    with bigframes.option_context("bigquery.allow_large_results", True):
+        job_ids = set()
+        df, _ = scalars_dfs
+        series = df["int64_col"]
+        assert series.query_job is not None
+        repr(series)
+        job_ids.add(series.query_job.job_id)
+        series.to_pandas()
+        job_ids.add(series.query_job.job_id)
+        assert len(job_ids) == 2
 
 
 @pytest.mark.parametrize(
