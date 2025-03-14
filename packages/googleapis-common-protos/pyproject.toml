@@ -51,4 +51,4 @@ Repository = "https://github.com/googleapis/google-cloud-python/tree/main/packag
 grpc = ["grpcio >= 1.44.0, < 2.0.0"]
 
 [tool.setuptools.packages.find]
-exclude = ["tests*", "testing*", "docs*"]
+include = ["google*"]
