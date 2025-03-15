@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.4.17](https://github.com/googleapis/google-cloud-python/compare/google-cloud-beyondcorp-appconnectors-v0.4.16...google-cloud-beyondcorp-appconnectors-v0.4.17) (2025-03-15)
+
+
+### Bug Fixes
+
+* [Many APIs] Allow Protobuf 6.x ([3a85796](https://github.com/googleapis/google-cloud-python/commit/3a85796774ebf728cbc9e82dc536316530ac78c1))
+* remove setup.cfg configuration for creating universal wheels ([#13659](https://github.com/googleapis/google-cloud-python/issues/13659)) ([59bfd42](https://github.com/googleapis/google-cloud-python/commit/59bfd42cf8a2eaeed696a7504890bce5aae815ce))
+
 ## [0.4.16](https://github.com/googleapis/google-cloud-python/compare/google-cloud-beyondcorp-appconnectors-v0.4.15...google-cloud-beyondcorp-appconnectors-v0.4.16) (2025-02-18)
 
 
