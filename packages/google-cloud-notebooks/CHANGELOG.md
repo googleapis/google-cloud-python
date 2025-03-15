@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.13.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-notebooks-v1.13.1...google-cloud-notebooks-v1.13.2) (2025-03-15)
+
+
+### Bug Fixes
+
+* [Many APIs] Allow Protobuf 6.x ([c8bbf32](https://github.com/googleapis/google-cloud-python/commit/c8bbf32606e790b559b261bf96700c76b6e2bfce))
+* remove setup.cfg configuration for creating universal wheels ([#13659](https://github.com/googleapis/google-cloud-python/issues/13659)) ([59bfd42](https://github.com/googleapis/google-cloud-python/commit/59bfd42cf8a2eaeed696a7504890bce5aae815ce))
+
 ## [1.13.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-notebooks-v1.13.0...google-cloud-notebooks-v1.13.1) (2025-02-18)
 
 

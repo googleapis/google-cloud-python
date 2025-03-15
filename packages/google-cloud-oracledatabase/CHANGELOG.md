@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.6](https://github.com/googleapis/google-cloud-python/compare/google-cloud-oracledatabase-v0.1.5...google-cloud-oracledatabase-v0.1.6) (2025-03-15)
+
+
+### Bug Fixes
+
+* [Many APIs] Allow Protobuf 6.x ([c8bbf32](https://github.com/googleapis/google-cloud-python/commit/c8bbf32606e790b559b261bf96700c76b6e2bfce))
+
 ## [0.1.5](https://github.com/googleapis/google-cloud-python/compare/google-cloud-oracledatabase-v0.1.4...google-cloud-oracledatabase-v0.1.5) (2025-02-12)
 
 
