@@ -1,0 +1,2 @@
+recursive-include google/cloud/oracledatabase *.py
+recursive-include google/cloud/oracledatabase_v1 *.py
