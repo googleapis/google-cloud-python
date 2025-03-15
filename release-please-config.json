@@ -2483,21 +2483,6 @@
             ],
             "release-type": "python"
         },
-        "packages/google-cloud-resource-settings": {
-            "bump-minor-pre-major": true,
-            "bump-patch-for-minor-pre-major": true,
-            "component": "google-cloud-resource-settings",
-            "extra-files": [
-                "google/cloud/resourcesettings/gapic_version.py",
-                "google/cloud/resourcesettings_v1/gapic_version.py",
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.resourcesettings.v1.json",
-                    "type": "json"
-                }
-            ],
-            "release-type": "python"
-        },
         "packages/google-cloud-retail": {
             "bump-minor-pre-major": true,
             "bump-patch-for-minor-pre-major": true,
