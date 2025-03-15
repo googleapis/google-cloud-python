@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.3.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-storage-control-v1.3.0...google-cloud-storage-control-v1.3.1) (2025-03-15)
+
+
+### Bug Fixes
+
+* [Many APIs] Allow Protobuf 6.x ([784a3ca](https://github.com/googleapis/google-cloud-python/commit/784a3ca7a180453320521753f5bce71de329d65c))
+* Allow Protobuf 6.x ([#13651](https://github.com/googleapis/google-cloud-python/issues/13651)) ([1b8080e](https://github.com/googleapis/google-cloud-python/commit/1b8080e7069c9d0776e293bab06db54adf157aef))
+
 ## [1.3.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-storage-control-v1.2.0...google-cloud-storage-control-v1.3.0) (2025-02-12)
 
 
