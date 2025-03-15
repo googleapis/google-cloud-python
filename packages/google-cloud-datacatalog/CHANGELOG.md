@@ -4,6 +4,25 @@
 
 [1]: https://pypi.org/project/google-cloud-datacatalog/#history
 
+## [3.26.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-datacatalog-v3.25.1...google-cloud-datacatalog-v3.26.0) (2025-03-15)
+
+
+### Features
+
+* [google-cloud-datacatalog] mark DataCatalog service deprecated, use Dataplex Catalog instead ([#13642](https://github.com/googleapis/google-cloud-python/issues/13642)) ([cc49cd3](https://github.com/googleapis/google-cloud-python/commit/cc49cd3b29b1a6ed73eb765978bb59ef65b247f0))
+
+
+### Bug Fixes
+
+* [Many APIs] Allow Protobuf 6.x ([feb5353](https://github.com/googleapis/google-cloud-python/commit/feb53532240bb70a94b359b519f0f41f95875a33))
+* remove setup.cfg configuration for creating universal wheels ([#13659](https://github.com/googleapis/google-cloud-python/issues/13659)) ([59bfd42](https://github.com/googleapis/google-cloud-python/commit/59bfd42cf8a2eaeed696a7504890bce5aae815ce))
+
+
+### Documentation
+
+* [google-cloud-datacatalog] Mark DataCatalog v1beta1 service and ([cc49cd3](https://github.com/googleapis/google-cloud-python/commit/cc49cd3b29b1a6ed73eb765978bb59ef65b247f0))
+* fix a few typos ([cc49cd3](https://github.com/googleapis/google-cloud-python/commit/cc49cd3b29b1a6ed73eb765978bb59ef65b247f0))
+
 ## [3.25.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-datacatalog-v3.25.0...google-cloud-datacatalog-v3.25.1) (2025-02-18)
 
 

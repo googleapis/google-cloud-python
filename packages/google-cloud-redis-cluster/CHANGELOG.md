@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.15](https://github.com/googleapis/google-cloud-python/compare/google-cloud-redis-cluster-v0.1.14...google-cloud-redis-cluster-v0.1.15) (2025-03-15)
+
+
+### Bug Fixes
+
+* [Many APIs] Allow Protobuf 6.x ([7295cbb](https://github.com/googleapis/google-cloud-python/commit/7295cbb7c3122eeff1042c3c543bfc9b8b3ca913))
+
 ## [0.1.14](https://github.com/googleapis/google-cloud-python/compare/google-cloud-redis-cluster-v0.1.13...google-cloud-redis-cluster-v0.1.14) (2025-02-18)
 
 

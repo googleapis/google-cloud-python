@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.14](https://github.com/googleapis/google-cloud-python/compare/google-apps-script-type-v0.3.13...google-apps-script-type-v0.3.14) (2025-03-15)
+
+
+### Bug Fixes
+
+* [Many APIs] Allow Protobuf 6.x ([a1b9294](https://github.com/googleapis/google-cloud-python/commit/a1b9294d0bf6e27c2a951d6df7faf7807dc5420b))
+
 ## [0.3.13](https://github.com/googleapis/google-cloud-python/compare/google-apps-script-type-v0.3.12...google-apps-script-type-v0.3.13) (2025-02-12)
 
 

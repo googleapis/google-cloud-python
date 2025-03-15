@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.8](https://github.com/googleapis/google-cloud-python/compare/google-cloud-developerconnect-v0.1.7...google-cloud-developerconnect-v0.1.8) (2025-03-15)
+
+
+### Bug Fixes
+
+* [Many APIs] Allow Protobuf 6.x ([feb5353](https://github.com/googleapis/google-cloud-python/commit/feb53532240bb70a94b359b519f0f41f95875a33))
+
 ## [0.1.7](https://github.com/googleapis/google-cloud-python/compare/google-cloud-developerconnect-v0.1.6...google-cloud-developerconnect-v0.1.7) (2025-02-12)
 
 

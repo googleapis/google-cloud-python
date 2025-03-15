@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.13](https://github.com/googleapis/google-cloud-python/compare/google-cloud-policysimulator-v0.1.12...google-cloud-policysimulator-v0.1.13) (2025-03-15)
+
+
+### Bug Fixes
+
+* [Many APIs] Allow Protobuf 6.x ([7295cbb](https://github.com/googleapis/google-cloud-python/commit/7295cbb7c3122eeff1042c3c543bfc9b8b3ca913))
+
 ## [0.1.12](https://github.com/googleapis/google-cloud-python/compare/google-cloud-policysimulator-v0.1.11...google-cloud-policysimulator-v0.1.12) (2025-02-18)
 
 

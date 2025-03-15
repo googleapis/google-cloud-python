@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.21](https://github.com/googleapis/google-cloud-python/compare/google-cloud-securitycentermanagement-v0.1.20...google-cloud-securitycentermanagement-v0.1.21) (2025-03-15)
+
+
+### Bug Fixes
+
+* [Many APIs] Allow Protobuf 6.x ([784a3ca](https://github.com/googleapis/google-cloud-python/commit/784a3ca7a180453320521753f5bce71de329d65c))
+
 ## [0.1.20](https://github.com/googleapis/google-cloud-python/compare/google-cloud-securitycentermanagement-v0.1.19...google-cloud-securitycentermanagement-v0.1.20) (2025-02-18)
 
 

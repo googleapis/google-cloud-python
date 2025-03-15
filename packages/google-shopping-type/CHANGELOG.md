@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.11](https://github.com/googleapis/google-cloud-python/compare/google-shopping-type-v0.1.10...google-shopping-type-v0.1.11) (2025-03-15)
+
+
+### Bug Fixes
+
+* [Many APIs] Allow Protobuf 6.x ([36e8ba1](https://github.com/googleapis/google-cloud-python/commit/36e8ba12eac92dd221ac3ddf1061da3845135791))
+
 ## [0.1.10](https://github.com/googleapis/google-cloud-python/compare/google-shopping-type-v0.1.9...google-shopping-type-v0.1.10) (2025-02-18)
 
 

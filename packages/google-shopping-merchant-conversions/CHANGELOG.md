@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.8](https://github.com/googleapis/google-cloud-python/compare/google-shopping-merchant-conversions-v0.1.7...google-shopping-merchant-conversions-v0.1.8) (2025-03-15)
+
+
+### Bug Fixes
+
+* [Many APIs] Allow Protobuf 6.x ([25ced24](https://github.com/googleapis/google-cloud-python/commit/25ced2444528a1dc6a22daa32b82b844961f1b75))
+
 ## [0.1.7](https://github.com/googleapis/google-cloud-python/compare/google-shopping-merchant-conversions-v0.1.6...google-shopping-merchant-conversions-v0.1.7) (2025-02-18)
 
 

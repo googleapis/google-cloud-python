@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.5](https://github.com/googleapis/google-cloud-python/compare/google-maps-areainsights-v0.1.4...google-maps-areainsights-v0.1.5) (2025-03-15)
+
+
+### Bug Fixes
+
+* [Many APIs] Allow Protobuf 6.x ([25ced24](https://github.com/googleapis/google-cloud-python/commit/25ced2444528a1dc6a22daa32b82b844961f1b75))
+
 ## [0.1.4](https://github.com/googleapis/google-cloud-python/compare/google-maps-areainsights-v0.1.3...google-maps-areainsights-v0.1.4) (2025-02-12)
 
 

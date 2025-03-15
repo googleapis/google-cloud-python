@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-build/#history
 
+## [3.31.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-build-v3.31.0...google-cloud-build-v3.31.1) (2025-03-15)
+
+
+### Bug Fixes
+
+* [Many APIs] Allow Protobuf 6.x ([1e43e75](https://github.com/googleapis/google-cloud-python/commit/1e43e75e99445373785b11381e0e859fa14bb485))
+* remove setup.cfg configuration for creating universal wheels ([#13659](https://github.com/googleapis/google-cloud-python/issues/13659)) ([59bfd42](https://github.com/googleapis/google-cloud-python/commit/59bfd42cf8a2eaeed696a7504890bce5aae815ce))
+
 ## [3.31.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-build-v3.30.0...google-cloud-build-v3.31.0) (2025-02-18)
 
 

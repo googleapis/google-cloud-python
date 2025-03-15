@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/grafeas/#history
 
+## [1.14.1](https://github.com/googleapis/google-cloud-python/compare/grafeas-v1.14.0...grafeas-v1.14.1) (2025-03-15)
+
+
+### Bug Fixes
+
+* [Many APIs] Allow Protobuf 6.x ([36e8ba1](https://github.com/googleapis/google-cloud-python/commit/36e8ba12eac92dd221ac3ddf1061da3845135791))
+* remove setup.cfg configuration for creating universal wheels ([#13659](https://github.com/googleapis/google-cloud-python/issues/13659)) ([59bfd42](https://github.com/googleapis/google-cloud-python/commit/59bfd42cf8a2eaeed696a7504890bce5aae815ce))
+
 ## [1.14.0](https://github.com/googleapis/google-cloud-python/compare/grafeas-v1.13.0...grafeas-v1.14.0) (2025-02-18)
 
 
