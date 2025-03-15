@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.10.17](https://github.com/googleapis/google-cloud-python/compare/google-cloud-recommendations-ai-v0.10.16...google-cloud-recommendations-ai-v0.10.17) (2025-03-15)
+
+
+### Bug Fixes
+
+* [Many APIs] Allow Protobuf 6.x ([7295cbb](https://github.com/googleapis/google-cloud-python/commit/7295cbb7c3122eeff1042c3c543bfc9b8b3ca913))
+* remove setup.cfg configuration for creating universal wheels ([#13659](https://github.com/googleapis/google-cloud-python/issues/13659)) ([59bfd42](https://github.com/googleapis/google-cloud-python/commit/59bfd42cf8a2eaeed696a7504890bce5aae815ce))
+
 ## [0.10.16](https://github.com/googleapis/google-cloud-python/compare/google-cloud-recommendations-ai-v0.10.15...google-cloud-recommendations-ai-v0.10.16) (2025-02-18)
 
 
