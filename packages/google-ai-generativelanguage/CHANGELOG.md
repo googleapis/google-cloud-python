@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.17](https://github.com/googleapis/google-cloud-python/compare/google-ai-generativelanguage-v0.6.16...google-ai-generativelanguage-v0.6.17) (2025-03-15)
+
+
+### Bug Fixes
+
+* [Many APIs] Allow Protobuf 6.x ([a1b9294](https://github.com/googleapis/google-cloud-python/commit/a1b9294d0bf6e27c2a951d6df7faf7807dc5420b))
+
 ## [0.6.16](https://github.com/googleapis/google-cloud-python/compare/google-ai-generativelanguage-v0.6.15...google-ai-generativelanguage-v0.6.16) (2025-02-12)
 
 
