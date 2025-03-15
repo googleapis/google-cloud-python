@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.14](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-biglake-v0.4.13...google-cloud-bigquery-biglake-v0.4.14) (2025-03-15)
+
+
+### Bug Fixes
+
+* [Many APIs] Allow Protobuf 6.x ([3a85796](https://github.com/googleapis/google-cloud-python/commit/3a85796774ebf728cbc9e82dc536316530ac78c1))
+
 ## [0.4.13](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-biglake-v0.4.12...google-cloud-bigquery-biglake-v0.4.13) (2025-02-12)
 
 
