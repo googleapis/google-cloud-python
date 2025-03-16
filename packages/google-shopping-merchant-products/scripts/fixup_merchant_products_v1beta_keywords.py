@@ -43,6 +43,7 @@ class merchant_productsCallTransformer(cst.CSTTransformer):
         'get_product': ('name', ),
         'insert_product_input': ('parent', 'product_input', 'data_source', ),
         'list_products': ('parent', 'page_size', 'page_token', ),
+        'update_product_input': ('product_input', 'data_source', 'update_mask', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:

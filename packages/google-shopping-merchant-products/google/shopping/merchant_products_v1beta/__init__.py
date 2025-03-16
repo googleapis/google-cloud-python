@@ -27,6 +27,7 @@ from .types.productinputs import (
     DeleteProductInputRequest,
     InsertProductInputRequest,
     ProductInput,
+    UpdateProductInputRequest,
 )
 from .types.products import (
     GetProductRequest,
@@ -47,6 +48,7 @@ from .types.products_common import (
     ProductStatus,
     ProductStructuredDescription,
     ProductStructuredTitle,
+    ProductSustainabilityIncentive,
     ProductWeight,
     Shipping,
     ShippingDimension,
@@ -81,6 +83,7 @@ __all__ = (
     "ProductStatus",
     "ProductStructuredDescription",
     "ProductStructuredTitle",
+    "ProductSustainabilityIncentive",
     "ProductWeight",
     "ProductsServiceClient",
     "Shipping",
@@ -91,4 +94,5 @@ __all__ = (
     "Tax",
     "UnitPricingBaseMeasure",
     "UnitPricingMeasure",
+    "UpdateProductInputRequest",
 )
