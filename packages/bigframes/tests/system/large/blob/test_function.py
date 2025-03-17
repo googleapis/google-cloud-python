@@ -26,24 +26,24 @@ from bigframes import dtypes
 import bigframes.pandas as bpd
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture(scope="function")
 def images_output_folder() -> Generator[str, None, None]:
     id = uuid.uuid4().hex
-    folder = os.path.join("gs://bigframes_blob_test/", id)
+    folder = os.path.join("gs://bigframes_blob_test/output/", id)
     yield folder
 
     # clean up
     try:
         cloud_storage_client = storage.Client()
         bucket = cloud_storage_client.bucket("bigframes_blob_test")
-        blobs = bucket.list_blobs(prefix=id)
+        blobs = bucket.list_blobs(prefix="output/" + id)
         for blob in blobs:
             blob.delete()
     except Exception as exc:
         traceback.print_exception(type(exc), exc, None)
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture(scope="function")
 def images_output_uris(images_output_folder: str) -> list[str]:
     return [
         os.path.join(images_output_folder, "img0.jpg"),
@@ -119,6 +119,162 @@ def test_blob_image_blur_to_bq(images_mm_df: bpd.DataFrame, bq_connection: str):
     bigframes.options.experiments.blob = True
 
     actual = images_mm_df["blob_col"].blob.image_blur((8, 8), connection=bq_connection)
+
+    assert isinstance(actual, bpd.Series)
+    assert len(actual) == 2
+    assert actual.dtype == dtypes.BYTES_DTYPE
+
+
+def test_blob_image_resize_to_series(
+    images_mm_df: bpd.DataFrame,
+    bq_connection: str,
+    images_output_uris: list[str],
+    session: bigframes.Session,
+):
+    bigframes.options.experiments.blob = True
+
+    series = bpd.Series(images_output_uris, session=session).str.to_blob(
+        connection=bq_connection
+    )
+
+    actual = images_mm_df["blob_col"].blob.image_resize(
+        (200, 300), dst=series, connection=bq_connection
+    )
+    expected_df = pd.DataFrame(
+        {
+            "uri": images_output_uris,
+            "version": [None, None],
+            "authorizer": [bq_connection.casefold(), bq_connection.casefold()],
+            "details": [None, None],
+        }
+    )
+    pd.testing.assert_frame_equal(
+        actual.struct.explode().to_pandas(),
+        expected_df,
+        check_dtype=False,
+        check_index_type=False,
+    )
+
+    # verify the files exist
+    assert not actual.blob.size().isna().any()
+
+
+def test_blob_image_resize_to_folder(
+    images_mm_df: bpd.DataFrame,
+    bq_connection: str,
+    images_output_folder: str,
+    images_output_uris: list[str],
+):
+    bigframes.options.experiments.blob = True
+
+    actual = images_mm_df["blob_col"].blob.image_resize(
+        (200, 300), dst=images_output_folder, connection=bq_connection
+    )
+    expected_df = pd.DataFrame(
+        {
+            "uri": images_output_uris,
+            "version": [None, None],
+            "authorizer": [bq_connection.casefold(), bq_connection.casefold()],
+            "details": [None, None],
+        }
+    )
+    pd.testing.assert_frame_equal(
+        actual.struct.explode().to_pandas(),
+        expected_df,
+        check_dtype=False,
+        check_index_type=False,
+    )
+
+    # verify the files exist
+    assert not actual.blob.size().isna().any()
+
+
+def test_blob_image_resize_to_bq(images_mm_df: bpd.DataFrame, bq_connection: str):
+    bigframes.options.experiments.blob = True
+
+    actual = images_mm_df["blob_col"].blob.image_resize(
+        (200, 300), connection=bq_connection
+    )
+
+    assert isinstance(actual, bpd.Series)
+    assert len(actual) == 2
+    assert actual.dtype == dtypes.BYTES_DTYPE
+
+
+def test_blob_image_normalize_to_series(
+    images_mm_df: bpd.DataFrame,
+    bq_connection: str,
+    images_output_uris: list[str],
+    session: bigframes.Session,
+):
+    bigframes.options.experiments.blob = True
+
+    series = bpd.Series(images_output_uris, session=session).str.to_blob(
+        connection=bq_connection
+    )
+
+    actual = images_mm_df["blob_col"].blob.image_normalize(
+        alpha=50.0, beta=150.0, norm_type="minmax", dst=series, connection=bq_connection
+    )
+    expected_df = pd.DataFrame(
+        {
+            "uri": images_output_uris,
+            "version": [None, None],
+            "authorizer": [bq_connection.casefold(), bq_connection.casefold()],
+            "details": [None, None],
+        }
+    )
+    pd.testing.assert_frame_equal(
+        actual.struct.explode().to_pandas(),
+        expected_df,
+        check_dtype=False,
+        check_index_type=False,
+    )
+
+    # verify the files exist
+    assert not actual.blob.size().isna().any()
+
+
+def test_blob_image_normalize_to_folder(
+    images_mm_df: bpd.DataFrame,
+    bq_connection: str,
+    images_output_folder: str,
+    images_output_uris: list[str],
+):
+    bigframes.options.experiments.blob = True
+
+    actual = images_mm_df["blob_col"].blob.image_normalize(
+        alpha=50.0,
+        beta=150.0,
+        norm_type="minmax",
+        dst=images_output_folder,
+        connection=bq_connection,
+    )
+    expected_df = pd.DataFrame(
+        {
+            "uri": images_output_uris,
+            "version": [None, None],
+            "authorizer": [bq_connection.casefold(), bq_connection.casefold()],
+            "details": [None, None],
+        }
+    )
+    pd.testing.assert_frame_equal(
+        actual.struct.explode().to_pandas(),
+        expected_df,
+        check_dtype=False,
+        check_index_type=False,
+    )
+
+    # verify the files exist
+    assert not actual.blob.size().isna().any()
+
+
+def test_blob_image_normalize_to_bq(images_mm_df: bpd.DataFrame, bq_connection: str):
+    bigframes.options.experiments.blob = True
+
+    actual = images_mm_df["blob_col"].blob.image_normalize(
+        alpha=50.0, beta=150.0, norm_type="minmax", connection=bq_connection
+    )
 
     assert isinstance(actual, bpd.Series)
     assert len(actual) == 2
