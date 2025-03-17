@@ -49,7 +49,7 @@ def check(session):
     session.run("python", f"{HERE}/scripts/check_crc32c_extension.py", *session.posargs)
 
 
-@nox.session(python="3.9")
+@nox.session(python="3.13")
 def mypy(session):
     """Verify type hints are mypy compatible."""
     session.install("-e", ".")
