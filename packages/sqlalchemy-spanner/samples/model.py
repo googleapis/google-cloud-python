@@ -31,8 +31,7 @@ from sqlalchemy import (
     ForeignKeyConstraint,
     Sequence,
     TextClause,
-    func,
-    FetchedValue,
+    Index,
 )
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 
@@ -44,6 +43,10 @@ class Base(DeclarativeBase):
 # Most models in this sample use a client-side generated UUID as primary key.
 # This allows inserts to use Batch DML, as the primary key value does not need
 # to be returned from Spanner using a THEN RETURN clause.
+#
+# The Venue model uses a standard auto-generated integer primary key. This uses
+# an IDENTITY column in Spanner. IDENTITY columns use a backing bit-reversed
+# sequence to generate unique values that are safe to use for primary keys.
 #
 # The TicketSale model uses a bit-reversed sequence for primary key generation.
 # This is achieved by creating a bit-reversed sequence and assigning the id
@@ -117,7 +120,11 @@ Track.__table__.add_is_dependent_on(Album.__table__)
 
 class Venue(Base):
     __tablename__ = "venues"
-    code: Mapped[str] = mapped_column(String(10), primary_key=True)
+    __table_args__ = (Index("venues_code_unique", "code", unique=True),)
+    # Venue uses a standard auto-generated primary key.
+    # This translates to an IDENTITY column in Spanner.
+    id: Mapped[int] = mapped_column(primary_key=True)
+    code: Mapped[str] = mapped_column(String(10))
     name: Mapped[str] = mapped_column(String(200), nullable=False)
     description: Mapped[str] = mapped_column(JSON, nullable=True)
     active: Mapped[bool] = mapped_column(Boolean, nullable=False)

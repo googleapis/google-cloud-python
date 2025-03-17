@@ -23,6 +23,11 @@ def hello_world(session):
 
 
 @nox.session()
+def auto_generated_primary_key(session):
+    _sample(session)
+
+
+@nox.session()
 def bit_reversed_sequence(session):
     _sample(session)
 

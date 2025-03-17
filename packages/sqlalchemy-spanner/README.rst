@@ -293,29 +293,23 @@ This, however, may require to manually repeat a long list of operations, execute
 
 In ``AUTOCOMMIT`` mode automatic transactions retry mechanism is disabled, as every operation is committed just in time, and there is no way an ``Aborted`` exception can happen.
 
-Auto-incremented IDs
-~~~~~~~~~~~~~~~~~~~~
+Auto-increment primary keys
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Cloud Spanner doesn't support autoincremented IDs mechanism due to
-performance reasons (`see for more
-details <https://cloud.google.com/spanner/docs/schema-design#primary-key-prevent-hotspots>`__).
-We recommend that you use the Python
-`uuid <https://docs.python.org/3/library/uuid.html>`__ module to
-generate primary key fields to avoid creating monotonically increasing
-keys.
+Spanner uses IDENTITY columns for auto-increment primary key values.
+IDENTITY columns use a backing bit-reversed sequence to generate unique
+values that are safe to use as primary values in Spanner. These values
+work the same as standard auto-increment values, except that they are
+not monotonically increasing. This prevents hot-spotting for tables that
+receive a large number of writes.
 
-Though it's not encouraged to do so, in case you *need* the feature, you
-can simulate it manually as follows:
+`See this documentation page for more details <https://cloud.google.com/spanner/docs/schema-design#primary-key-prevent-hotspots>`__.
 
-.. code:: python
-
-   with engine.begin() as connection:
-       top_id = connection.execute(
-           select([user.c.user_id]).order_by(user.c.user_id.desc()).limit(1)
-       ).fetchone()
-       next_id = top_id[0] + 1 if top_id else 1
-
-       connection.execute(user.insert(), {"user_id": next_id})
+Auto-generated primary keys must be returned by Spanner after each insert
+statement using a ``THEN RETURN`` clause. ``THEN RETURN`` clauses are not
+supported with `Batch DML <https://cloud.google.com/spanner/docs/dml-tasks#use-batch>`__.
+It is therefore recommended to use for example client-side generated UUIDs
+as primary key values instead.
 
 Query hints
 ~~~~~~~~~~~

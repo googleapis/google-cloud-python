@@ -24,10 +24,11 @@ from sqlalchemy import (
     MetaData,
     Boolean,
     BIGINT,
+    select,
 )
 from sqlalchemy.orm import Session, DeclarativeBase, Mapped, mapped_column
 from sqlalchemy.types import REAL
-from sqlalchemy.testing import eq_
+from sqlalchemy.testing import eq_, is_true
 from sqlalchemy.testing.plugin.plugin_base import fixtures
 
 
@@ -50,6 +51,12 @@ class TestBasics(fixtures.TablesTest):
             numbers.c.prime.desc(),
             spanner_storing=[numbers.c.alternative_name],
         )
+        Table(
+            "users",
+            metadata,
+            Column("ID", Integer, primary_key=True),
+            Column("name", String(20)),
+        )
 
     def test_hello_world(self, connection):
         greeting = connection.execute(text("select 'Hello World'"))
@@ -69,7 +76,7 @@ class TestBasics(fixtures.TablesTest):
         engine = connection.engine
         meta: MetaData = MetaData()
         meta.reflect(bind=engine)
-        eq_(1, len(meta.tables))
+        eq_(2, len(meta.tables))
         table = meta.tables["numbers"]
         eq_(5, len(table.columns))
         eq_("number", table.columns[0].name)
@@ -127,6 +134,11 @@ class TestBasics(fixtures.TablesTest):
             prime: Mapped[bool] = mapped_column(Boolean)
             ln: Mapped[float] = mapped_column(REAL)
 
+        class User(Base):
+            __tablename__ = "users"
+            ID: Mapped[int] = mapped_column(primary_key=True)
+            name: Mapped[str] = mapped_column(String(20))
+
         engine = connection.engine
         with Session(engine) as session:
             number = Number(
@@ -134,3 +146,13 @@ class TestBasics(fixtures.TablesTest):
             )
             session.add(number)
             session.commit()
+
+        with Session(engine) as session:
+            user = User(name="Test")
+            session.add(user)
+            session.commit()
+
+            statement = select(User).filter_by(name="Test")
+            users = session.scalars(statement).all()
+            eq_(1, len(users))
+            is_true(users[0].ID > 0)
