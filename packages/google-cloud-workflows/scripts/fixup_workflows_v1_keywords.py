@@ -42,6 +42,7 @@ class workflowsCallTransformer(cst.CSTTransformer):
         'create_workflow': ('parent', 'workflow', 'workflow_id', ),
         'delete_workflow': ('name', ),
         'get_workflow': ('name', 'revision_id', ),
+        'list_workflow_revisions': ('name', 'page_size', 'page_token', ),
         'list_workflows': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
         'update_workflow': ('workflow', 'update_mask', ),
     }

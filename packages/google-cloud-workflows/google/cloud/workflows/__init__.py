@@ -25,7 +25,10 @@ from google.cloud.workflows_v1.services.workflows.client import WorkflowsClient
 from google.cloud.workflows_v1.types.workflows import (
     CreateWorkflowRequest,
     DeleteWorkflowRequest,
+    ExecutionHistoryLevel,
     GetWorkflowRequest,
+    ListWorkflowRevisionsRequest,
+    ListWorkflowRevisionsResponse,
     ListWorkflowsRequest,
     ListWorkflowsResponse,
     OperationMetadata,
@@ -39,9 +42,12 @@ __all__ = (
     "CreateWorkflowRequest",
     "DeleteWorkflowRequest",
     "GetWorkflowRequest",
+    "ListWorkflowRevisionsRequest",
+    "ListWorkflowRevisionsResponse",
     "ListWorkflowsRequest",
     "ListWorkflowsResponse",
     "OperationMetadata",
     "UpdateWorkflowRequest",
     "Workflow",
+    "ExecutionHistoryLevel",
 )
