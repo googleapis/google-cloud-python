@@ -36,15 +36,15 @@ else:
     release_status = "Development Status :: 5 - Production/Stable"
 
 dependencies = [
-    "grpcio >= 1.51.3, < 2.0dev",  # https://github.com/googleapis/python-pubsub/issues/609
+    "grpcio >= 1.51.3, < 2.0.0",  # https://github.com/googleapis/python-pubsub/issues/609
     # google-api-core >= 1.34.0 is allowed in order to support google-api-core 1.x
-    "google-auth >= 2.14.1, <3.0.0dev",
-    "google-api-core[grpc] >= 1.34.0, <3.0.0dev,!=2.0.*,!=2.1.*,!=2.2.*,!=2.3.*,!=2.4.*,!=2.5.*,!=2.6.*,!=2.7.*,!=2.8.*,!=2.9.*,!=2.10.*",
-    "proto-plus >= 1.22.0, <2.0.0dev",
-    "proto-plus >= 1.22.2, <2.0.0dev; python_version>='3.11'",
-    "proto-plus >= 1.25.0, < 2.0.0dev; python_version >= '3.13'",
-    "protobuf>=3.20.2,<6.0.0dev,!=4.21.0,!=4.21.1,!=4.21.2,!=4.21.3,!=4.21.4,!=4.21.5",
-    "grpc-google-iam-v1 >= 0.12.4, < 1.0.0dev",
+    "google-auth >= 2.14.1, <3.0.0",
+    "google-api-core[grpc] >= 1.34.0, <3.0.0,!=2.0.*,!=2.1.*,!=2.2.*,!=2.3.*,!=2.4.*,!=2.5.*,!=2.6.*,!=2.7.*,!=2.8.*,!=2.9.*,!=2.10.*",
+    "proto-plus >= 1.22.0, <2.0.0",
+    "proto-plus >= 1.22.2, <2.0.0; python_version>='3.11'",
+    "proto-plus >= 1.25.0, < 2.0.0; python_version >= '3.13'",
+    "protobuf>=3.20.2,<7.0.0,!=4.21.0,!=4.21.1,!=4.21.2,!=4.21.3,!=4.21.4,!=4.21.5",
+    "grpc-google-iam-v1 >= 0.12.4, < 1.0.0",
     "grpcio-status >= 1.33.2",
     "opentelemetry-api <= 1.22.0; python_version<='3.7'",
     "opentelemetry-api >= 1.27.0; python_version>='3.8'",
