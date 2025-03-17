@@ -319,15 +319,6 @@ replacements:
                   20 - represents time slot 20:00 - 23:59 UTC
     count: 1
   - paths: [
-      packages/google-cloud-oracledatabase/google/cloud/oracledatabase_v1/types/exadata_infra.py,
-    ]
-    before: |
-      Optional. Cloud CloudExadataInfrastructure
-      \            node patching method, either "ROLLING"
-      \             or "NONROLLING". Default value is ROLLING.
-    after: "Optional. Cloud CloudExadataInfrastructure\n            node patching method, either \"ROLLING\"\n            or \"NONROLLING\". Default value is ROLLING.\n"
-    count: 1
-  - paths: [
       packages/google-cloud-service-control/google/cloud/servicecontrol_v1/types/service_controller.py,
     ]
     before: |
