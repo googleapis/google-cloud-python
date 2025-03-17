@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.14.2](https://github.com/googleapis/google-cloud-python/compare/grpc-google-iam-v1-v0.14.1...grpc-google-iam-v1-v0.14.2) (2025-03-15)
+
+
+### Bug Fixes
+
+* Allow protobuf 6.x ([b4d4551](https://github.com/googleapis/google-cloud-python/commit/b4d45514e4ab630334a54eb4201576062ecc1958))
+* remove setup.cfg configuration for creating universal wheels ([#13659](https://github.com/googleapis/google-cloud-python/issues/13659)) ([59bfd42](https://github.com/googleapis/google-cloud-python/commit/59bfd42cf8a2eaeed696a7504890bce5aae815ce))
+* resolve issue where pre-release versions of dependencies are installed ([b4d4551](https://github.com/googleapis/google-cloud-python/commit/b4d45514e4ab630334a54eb4201576062ecc1958))
+* resolve issue where pre-release versions of dependencies are installed ([#13653](https://github.com/googleapis/google-cloud-python/issues/13653)) ([ae9565a](https://github.com/googleapis/google-cloud-python/commit/ae9565abe1003be49e335692d9f747a8a5de8b9b))
+
 ## [0.14.1](https://github.com/googleapis/google-cloud-python/compare/grpc-google-iam-v1-v0.14.0...grpc-google-iam-v1-v0.14.1) (2025-03-03)
 
 

@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.17.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-gke-hub-v1.17.1...google-cloud-gke-hub-v1.17.2) (2025-03-15)
+
+
+### Bug Fixes
+
+* [Many APIs] Allow Protobuf 6.x ([e06ee32](https://github.com/googleapis/google-cloud-python/commit/e06ee325de4125cdfcaf040a77dc9ccc82843260))
+* remove setup.cfg configuration for creating universal wheels ([#13659](https://github.com/googleapis/google-cloud-python/issues/13659)) ([59bfd42](https://github.com/googleapis/google-cloud-python/commit/59bfd42cf8a2eaeed696a7504890bce5aae815ce))
+
 ## [1.17.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-gke-hub-v1.17.0...google-cloud-gke-hub-v1.17.1) (2025-02-18)
 
 

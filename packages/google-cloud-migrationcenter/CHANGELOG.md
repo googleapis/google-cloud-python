@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.14](https://github.com/googleapis/google-cloud-python/compare/google-cloud-migrationcenter-v0.1.13...google-cloud-migrationcenter-v0.1.14) (2025-03-15)
+
+
+### Bug Fixes
+
+* [Many APIs] Allow Protobuf 6.x ([c8bbf32](https://github.com/googleapis/google-cloud-python/commit/c8bbf32606e790b559b261bf96700c76b6e2bfce))
+
 ## [0.1.13](https://github.com/googleapis/google-cloud-python/compare/google-cloud-migrationcenter-v0.1.12...google-cloud-migrationcenter-v0.1.13) (2025-02-12)
 
 

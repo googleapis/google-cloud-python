@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.5](https://github.com/googleapis/google-cloud-python/compare/google-ads-marketingplatform-admin-v0.1.4...google-ads-marketingplatform-admin-v0.1.5) (2025-03-15)
+
+
+### Bug Fixes
+
+* [Many APIs] Allow Protobuf 6.x ([a1b9294](https://github.com/googleapis/google-cloud-python/commit/a1b9294d0bf6e27c2a951d6df7faf7807dc5420b))
+
 ## [0.1.4](https://github.com/googleapis/google-cloud-python/compare/google-ads-marketingplatform-admin-v0.1.3...google-ads-marketingplatform-admin-v0.1.4) (2025-02-12)
 
 

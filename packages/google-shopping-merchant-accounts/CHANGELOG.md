@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.3.1](https://github.com/googleapis/google-cloud-python/compare/google-shopping-merchant-accounts-v0.3.0...google-shopping-merchant-accounts-v0.3.1) (2025-03-15)
+
+
+### Features
+
+* [google-shopping-merchant-accounts] Add AutomaticImprovements service ([#13654](https://github.com/googleapis/google-cloud-python/issues/13654)) ([de91574](https://github.com/googleapis/google-cloud-python/commit/de91574cdaeb557fcfce2dde03e633df96392012))
+
+
+### Bug Fixes
+
+* [Many APIs] Allow Protobuf 6.x ([25ced24](https://github.com/googleapis/google-cloud-python/commit/25ced2444528a1dc6a22daa32b82b844961f1b75))
+
 ## [0.3.0](https://github.com/googleapis/google-cloud-python/compare/google-shopping-merchant-accounts-v0.2.4...google-shopping-merchant-accounts-v0.3.0) (2025-03-06)
 
 

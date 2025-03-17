@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.2](https://github.com/googleapis/google-cloud-python/compare/google-shopping-merchant-products-v0.2.1...google-shopping-merchant-products-v0.2.2) (2025-03-15)
+
+
+### Bug Fixes
+
+* [Many APIs] Allow Protobuf 6.x ([25ced24](https://github.com/googleapis/google-cloud-python/commit/25ced2444528a1dc6a22daa32b82b844961f1b75))
+
 ## [0.2.1](https://github.com/googleapis/google-cloud-python/compare/google-shopping-merchant-products-v0.2.0...google-shopping-merchant-products-v0.2.1) (2025-02-18)
 
 

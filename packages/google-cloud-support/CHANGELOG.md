@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.14](https://github.com/googleapis/google-cloud-python/compare/google-cloud-support-v0.1.13...google-cloud-support-v0.1.14) (2025-03-15)
+
+
+### Bug Fixes
+
+* [Many APIs] Allow Protobuf 6.x ([4757dae](https://github.com/googleapis/google-cloud-python/commit/4757daede978618382ba46f4aa91bb9cfd9b937b))
+
 ## [0.1.13](https://github.com/googleapis/google-cloud-python/compare/google-cloud-support-v0.1.12...google-cloud-support-v0.1.13) (2025-02-12)
 
 

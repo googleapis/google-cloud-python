@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.7](https://github.com/googleapis/google-cloud-python/compare/google-apps-events-subscriptions-v0.1.6...google-apps-events-subscriptions-v0.1.7) (2025-03-15)
+
+
+### Bug Fixes
+
+* [Many APIs] Allow Protobuf 6.x ([a1b9294](https://github.com/googleapis/google-cloud-python/commit/a1b9294d0bf6e27c2a951d6df7faf7807dc5420b))
+
 ## [0.1.6](https://github.com/googleapis/google-cloud-python/compare/google-apps-events-subscriptions-v0.1.5...google-apps-events-subscriptions-v0.1.6) (2025-02-12)
 
 

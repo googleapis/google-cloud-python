@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.9](https://github.com/googleapis/google-cloud-python/compare/google-cloud-alloydb-connectors-v0.1.8...google-cloud-alloydb-connectors-v0.1.9) (2025-03-15)
+
+
+### Bug Fixes
+
+* [Many APIs] Allow Protobuf 6.x ([a1b9294](https://github.com/googleapis/google-cloud-python/commit/a1b9294d0bf6e27c2a951d6df7faf7807dc5420b))
+
 ## [0.1.8](https://github.com/googleapis/google-cloud-python/compare/google-cloud-alloydb-connectors-v0.1.7...google-cloud-alloydb-connectors-v0.1.8) (2025-02-12)
 
 
