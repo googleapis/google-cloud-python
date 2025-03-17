@@ -43,8 +43,6 @@ fi
 mkdir -p ${CRC32C_INSTALL_PREFIX}
 mkdir -p ${CRC32C_INSTALL_PREFIX}/lib
 
-# Make sure we have an updated `pip`.
-${PY_BIN} -m pip install --upgrade pip --user
 # Create a virtualenv where we can install `cmake`.
 VENV=${REPO_ROOT}/venv_build_libcrc32c
 ${PY_BIN} -m venv ${VENV}

@@ -19,8 +19,8 @@ VERSION=$(awk "/version \= ([0-9.]+)/" setup.cfg)
 PACKAGE_VERSION=${VERSION:10}
 
 # ``readlink -f`` is not our friend on OS X. This relies on **some**
-# ``python`` being installed.
-SCRIPT_FI=$(python -c "import os; print(os.path.realpath('${0}'))")
+# ``python3`` being installed.
+SCRIPT_FI=$(python3 -c "import os; print(os.path.realpath('${0}'))")
 OSX_DIR=$(dirname ${SCRIPT_FI})
 SCRIPTS_DIR=$(dirname ${OSX_DIR})
 export REPO_ROOT=$(dirname ${SCRIPTS_DIR})
@@ -30,7 +30,7 @@ eval "$(pyenv init -)"
 eval "$(pyenv init --path)"
 ls ${REPO_ROOT}/wheels
 
-SUPPORTED_PYTHON_VERSIONS=("3.9" "3.10" "3.11" "3.12")
+SUPPORTED_PYTHON_VERSIONS=("3.9" "3.10" "3.11" "3.12" "3.13")
 
 for PYTHON_VERSION in ${SUPPORTED_PYTHON_VERSIONS[@]}; do
     PYTHON="python${PYTHON_VERSION}"
@@ -44,7 +44,7 @@ for PYTHON_VERSION in ${SUPPORTED_PYTHON_VERSIONS[@]}; do
     ${PYTHON} -m venv ${VIRTUALENV}
 
     OS_VERSION_STR="12_0"
-    if [ "${PYTHON_VERSION}" == "3.12" ]; then
+    if [ "${PYTHON_VERSION}" == "3.12" ] || [ "${PYTHON_VERSION}" == "3.13" ]; then
         OS_VERSION_STR="14.0"
     fi
 
