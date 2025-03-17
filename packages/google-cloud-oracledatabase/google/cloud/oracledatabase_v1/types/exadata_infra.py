@@ -377,8 +377,8 @@ class MaintenanceWindow(proto.Message):
             4.
         patching_mode (google.cloud.oracledatabase_v1.types.MaintenanceWindow.PatchingMode):
             Optional. Cloud CloudExadataInfrastructure
-            node patching method, either "ROLLING"
-            or "NONROLLING". Default value is ROLLING.
+            node patching method, either "ROLLING" or
+            "NONROLLING". Default value is ROLLING.
         custom_action_timeout_mins (int):
             Optional. Determines the amount of time the
             system will wait before the start of each
