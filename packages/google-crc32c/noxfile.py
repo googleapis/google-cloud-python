@@ -24,7 +24,7 @@ import nox
 
 HERE = os.path.dirname(__file__)
 
-@nox.session(python=["3.9", "3.10", "3.11", "3.12"])
+@nox.session(python=["3.9", "3.10", "3.11", "3.12", "3.13"])
 def build_libcrc32c(session):
     session.env["PY_BIN"] = f"python{session.python}"
     session.env["REPO_ROOT"] = HERE
@@ -39,7 +39,7 @@ def build_libcrc32c(session):
         raise Exception("Unsupported")
 
 
-@nox.session(python=["3.9", "3.10", "3.11", "3.12"])
+@nox.session(python=["3.9", "3.10", "3.11", "3.12", "3.13"])
 def check(session):
     session.install("pytest")
     session.install("--no-index", f"--find-links={HERE}/wheels", "google-crc32c")
