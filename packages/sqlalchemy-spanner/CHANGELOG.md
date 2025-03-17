@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.10.0](https://github.com/googleapis/python-spanner-sqlalchemy/compare/v1.9.0...v1.10.0) (2025-03-17)
+
+
+### Features
+
+* Support AUTO_INCREMENT and IDENTITY columns ([#610](https://github.com/googleapis/python-spanner-sqlalchemy/issues/610)) ([f67ebe8](https://github.com/googleapis/python-spanner-sqlalchemy/commit/f67ebe888ef4da8d94ff6d1e1d7f4cd5de37616c))
+
 ## [1.9.0](https://github.com/googleapis/python-spanner-sqlalchemy/compare/v1.8.0...v1.9.0) (2025-02-21)
 
 
