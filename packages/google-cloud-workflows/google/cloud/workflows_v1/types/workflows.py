@@ -612,9 +612,8 @@ class ListWorkflowRevisionsRequest(proto.Message):
             The maximum number of revisions to return per
             page. If a value is not specified, a default
             value of 20 is used. The maximum permitted value
-            is
-            100. Values greater than 100 are coerced down to
-                100.
+            is 100. Values greater than 100 are coerced down
+            to 100.
         page_token (str):
             The page token, received from a previous
             ListWorkflowRevisions call. Provide this to
