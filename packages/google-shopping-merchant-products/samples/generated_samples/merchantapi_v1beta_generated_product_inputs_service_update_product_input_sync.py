@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for InsertProductInput
+# Snippet for UpdateProductInput
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,7 +23,7 @@
 #   python3 -m pip install google-shopping-merchant-products
 
 
-# [START merchantapi_v1beta_generated_ProductInputsService_InsertProductInput_async]
+# [START merchantapi_v1beta_generated_ProductInputsService_UpdateProductInput_sync]
 # This snippet has been automatically generated and should be regarded as a
 # code template only.
 # It will require modifications to work:
@@ -34,9 +34,9 @@
 from google.shopping import merchant_products_v1beta
 
 
-async def sample_insert_product_input():
+def sample_update_product_input():
     # Create a client
-    client = merchant_products_v1beta.ProductInputsServiceAsyncClient()
+    client = merchant_products_v1beta.ProductInputsServiceClient()
 
     # Initialize request argument(s)
     product_input = merchant_products_v1beta.ProductInput()
@@ -44,16 +44,15 @@ async def sample_insert_product_input():
     product_input.content_language = "content_language_value"
     product_input.feed_label = "feed_label_value"
 
-    request = merchant_products_v1beta.InsertProductInputRequest(
-        parent="parent_value",
+    request = merchant_products_v1beta.UpdateProductInputRequest(
         product_input=product_input,
         data_source="data_source_value",
     )
 
     # Make the request
-    response = await client.insert_product_input(request=request)
+    response = client.update_product_input(request=request)
 
     # Handle the response
     print(response)
 
-# [END merchantapi_v1beta_generated_ProductInputsService_InsertProductInput_async]
+# [END merchantapi_v1beta_generated_ProductInputsService_UpdateProductInput_sync]

@@ -17,6 +17,7 @@ from .productinputs import (
     DeleteProductInputRequest,
     InsertProductInputRequest,
     ProductInput,
+    UpdateProductInputRequest,
 )
 from .products import (
     GetProductRequest,
@@ -37,6 +38,7 @@ from .products_common import (
     ProductStatus,
     ProductStructuredDescription,
     ProductStructuredTitle,
+    ProductSustainabilityIncentive,
     ProductWeight,
     Shipping,
     ShippingDimension,
@@ -52,6 +54,7 @@ __all__ = (
     "DeleteProductInputRequest",
     "InsertProductInputRequest",
     "ProductInput",
+    "UpdateProductInputRequest",
     "GetProductRequest",
     "ListProductsRequest",
     "ListProductsResponse",
@@ -68,6 +71,7 @@ __all__ = (
     "ProductStatus",
     "ProductStructuredDescription",
     "ProductStructuredTitle",
+    "ProductSustainabilityIncentive",
     "ProductWeight",
     "Shipping",
     "ShippingDimension",
