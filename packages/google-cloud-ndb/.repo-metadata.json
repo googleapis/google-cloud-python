@@ -9,6 +9,6 @@
     "repo": "googleapis/python-ndb",
     "distribution_name": "google-cloud-ndb",
     "default_version": "",
-    "codeowner_team": "@googleapis/firestore-dpe @googleapis/cloud-storage-dpe",
+    "codeowner_team": "@googleapis/firestore-dpe @googleapis/gcs-sdk-team",
     "api_shortname": "datastore"
 }
