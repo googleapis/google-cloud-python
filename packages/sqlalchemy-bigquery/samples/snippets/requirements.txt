@@ -10,7 +10,7 @@ google-cloud-core==2.4.3
 google-crc32c===1.5.0; python_version == '3.8'
 google-crc32c==1.6.0; python_version >= '3.9'
 google-resumable-media==2.7.2
-googleapis-common-protos==1.69.1
+googleapis-common-protos==1.69.2
 greenlet==3.1.1
 grpcio===1.68.0; python_version == '3.8'
 grpcio==1.71.0; python_version >= '3.9'
