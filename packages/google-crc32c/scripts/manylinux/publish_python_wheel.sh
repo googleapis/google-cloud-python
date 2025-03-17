@@ -21,9 +21,7 @@ python3.9 -m pip install "setuptools<71"
 python3.9 -m pip install --require-hashes -r ${REPO_ROOT}/.kokoro/requirements.txt
 python3.9 -m releasetool publish-reporter-script > /tmp/publisher-script; source /tmp/publisher-script
 
-# Disable buffering, so that the logs stream through.
-export PYTHONUNBUFFERED=1
-
-# Move into the package, build the distribution and upload.
+# Disable logging
+set +x
 TWINE_PASSWORD=$(cat "${KOKORO_KEYSTORE_DIR}/73713_google-cloud-pypi-token-keystore-3")
 python3.9 -m twine upload --skip-existing --username __token__ --password "${TWINE_PASSWORD}" ${REPO_ROOT}/wheels/*
