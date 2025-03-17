@@ -387,11 +387,18 @@ def test_merge_series(scalars_dfs, merge_how):
     assert_pandas_df_equal(bf_result, pd_result, ignore_order=True)
 
 
-def test_cut(scalars_dfs):
+@pytest.mark.parametrize(
+    ("right"),
+    [
+        pytest.param(True),
+        pytest.param(False),
+    ],
+)
+def test_cut(scalars_dfs, right):
     scalars_df, scalars_pandas_df = scalars_dfs
 
-    pd_result = pd.cut(scalars_pandas_df["float64_col"], 5, labels=False)
-    bf_result = bpd.cut(scalars_df["float64_col"], 5, labels=False)
+    pd_result = pd.cut(scalars_pandas_df["float64_col"], 5, labels=False, right=right)
+    bf_result = bpd.cut(scalars_df["float64_col"], 5, labels=False, right=right)
 
     # make sure the result is a supported dtype
     assert bf_result.dtype == bpd.Int64Dtype()
@@ -399,21 +406,33 @@ def test_cut(scalars_dfs):
     pd.testing.assert_series_equal(bf_result.to_pandas(), pd_result)
 
 
-def test_cut_default_labels(scalars_dfs):
+@pytest.mark.parametrize(
+    ("right"),
+    [
+        pytest.param(True),
+        pytest.param(False),
+    ],
+)
+def test_cut_default_labels(scalars_dfs, right):
     scalars_df, scalars_pandas_df = scalars_dfs
 
-    pd_result = pd.cut(scalars_pandas_df["float64_col"], 5)
-    bf_result = bpd.cut(scalars_df["float64_col"], 5).to_pandas()
+    pd_result = pd.cut(scalars_pandas_df["float64_col"], 5, right=right)
+    bf_result = bpd.cut(scalars_df["float64_col"], 5, right=right).to_pandas()
 
     # Convert to match data format
+    pd_interval = pd_result.cat.categories[pd_result.cat.codes]
+    if pd_interval.closed == "left":
+        left_key = "left_inclusive"
+        right_key = "right_exclusive"
+    else:
+        left_key = "left_exclusive"
+        right_key = "right_inclusive"
     pd_result_converted = pd.Series(
         [
-            {"left_exclusive": interval.left, "right_inclusive": interval.right}
+            {left_key: interval.left, right_key: interval.right}
             if pd.notna(val)
             else pd.NA
-            for val, interval in zip(
-                pd_result, pd_result.cat.categories[pd_result.cat.codes]
-            )
+            for val, interval in zip(pd_result, pd_interval)
         ],
         name=pd_result.name,
     )
@@ -424,28 +443,35 @@ def test_cut_default_labels(scalars_dfs):
 
 
 @pytest.mark.parametrize(
-    ("breaks",),
+    ("breaks", "right"),
     [
-        ([0, 5, 10, 15, 20, 100, 1000],),  # ints
-        ([0.5, 10.5, 15.5, 20.5, 100.5, 1000.5],),  # floats
-        ([0, 5, 10.5, 15.5, 20, 100, 1000.5],),  # mixed
+        pytest.param([0, 5, 10, 15, 20, 100, 1000], True, id="int_right"),
+        pytest.param([0, 5, 10, 15, 20, 100, 1000], False, id="int_left"),
+        pytest.param([0.5, 10.5, 15.5, 20.5, 100.5, 1000.5], False, id="float_left"),
+        pytest.param([0, 5, 10.5, 15.5, 20, 100, 1000.5], True, id="mixed_right"),
     ],
 )
-def test_cut_numeric_breaks(scalars_dfs, breaks):
+def test_cut_numeric_breaks(scalars_dfs, breaks, right):
     scalars_df, scalars_pandas_df = scalars_dfs
 
-    pd_result = pd.cut(scalars_pandas_df["float64_col"], breaks)
-    bf_result = bpd.cut(scalars_df["float64_col"], breaks).to_pandas()
+    pd_result = pd.cut(scalars_pandas_df["float64_col"], breaks, right=right)
+    bf_result = bpd.cut(scalars_df["float64_col"], breaks, right=right).to_pandas()
 
     # Convert to match data format
+    pd_interval = pd_result.cat.categories[pd_result.cat.codes]
+    if pd_interval.closed == "left":
+        left_key = "left_inclusive"
+        right_key = "right_exclusive"
+    else:
+        left_key = "left_exclusive"
+        right_key = "right_inclusive"
+
     pd_result_converted = pd.Series(
         [
-            {"left_exclusive": interval.left, "right_inclusive": interval.right}
+            {left_key: interval.left, right_key: interval.right}
             if pd.notna(val)
             else pd.NA
-            for val, interval in zip(
-                pd_result, pd_result.cat.categories[pd_result.cat.codes]
-            )
+            for val, interval in zip(pd_result, pd_interval)
         ],
         name=pd_result.name,
     )
@@ -476,29 +502,47 @@ def test_cut_errors(scalars_dfs, bins):
 
 
 @pytest.mark.parametrize(
-    ("bins",),
+    ("bins", "right"),
     [
-        ([(-5, 2), (2, 3), (-3000, -10)],),
-        (pd.IntervalIndex.from_tuples([(1, 2), (2, 3), (4, 5)]),),
+        pytest.param([(-5, 2), (2, 3), (-3000, -10)], True, id="tuple_right"),
+        pytest.param([(-5, 2), (2, 3), (-3000, -10)], False, id="tuple_left"),
+        pytest.param(
+            pd.IntervalIndex.from_tuples([(1, 2), (2, 3), (4, 5)]),
+            True,
+            id="interval_right",
+        ),
+        pytest.param(
+            pd.IntervalIndex.from_tuples([(1, 2), (2, 3), (4, 5)]),
+            False,
+            id="interval_left",
+        ),
     ],
 )
-def test_cut_with_interval(scalars_dfs, bins):
+def test_cut_with_interval(scalars_dfs, bins, right):
     scalars_df, scalars_pandas_df = scalars_dfs
-    bf_result = bpd.cut(scalars_df["int64_too"], bins, labels=False).to_pandas()
+    bf_result = bpd.cut(
+        scalars_df["int64_too"], bins, labels=False, right=right
+    ).to_pandas()
 
     if isinstance(bins, list):
         bins = pd.IntervalIndex.from_tuples(bins)
-    pd_result = pd.cut(scalars_pandas_df["int64_too"], bins, labels=False)
+    pd_result = pd.cut(scalars_pandas_df["int64_too"], bins, labels=False, right=right)
 
     # Convert to match data format
+    pd_interval = pd_result.cat.categories[pd_result.cat.codes]
+    if pd_interval.closed == "left":
+        left_key = "left_inclusive"
+        right_key = "right_exclusive"
+    else:
+        left_key = "left_exclusive"
+        right_key = "right_inclusive"
+
     pd_result_converted = pd.Series(
         [
-            {"left_exclusive": interval.left, "right_inclusive": interval.right}
+            {left_key: interval.left, right_key: interval.right}
             if pd.notna(val)
             else pd.NA
-            for val, interval in zip(
-                pd_result, pd_result.cat.categories[pd_result.cat.codes]
-            )
+            for val, interval in zip(pd_result, pd_interval)
         ],
         name=pd_result.name,
     )

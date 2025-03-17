@@ -364,8 +364,12 @@ def _(
 
         if op.labels is False:
             for this_bin in range(op.bins - 1):
+                if op.right:
+                    case_expr = x <= (col_min + (this_bin + 1) * bin_width)
+                else:
+                    case_expr = x < (col_min + (this_bin + 1) * bin_width)
                 out = out.when(
-                    x <= (col_min + (this_bin + 1) * bin_width),
+                    case_expr,
                     compile_ibis_types.literal_to_ibis_scalar(
                         this_bin, force_dtype=pd.Int64Dtype()
                     ),
@@ -375,32 +379,49 @@ def _(
             interval_struct = None
             adj = (col_max - col_min) * 0.001
             for this_bin in range(op.bins):
-                left_edge = (
-                    col_min + this_bin * bin_width - (0 if this_bin > 0 else adj)
-                )
-                right_edge = col_min + (this_bin + 1) * bin_width
-                interval_struct = ibis_types.struct(
-                    {
-                        "left_exclusive": left_edge,
-                        "right_inclusive": right_edge,
-                    }
-                )
+                left_edge_adj = adj if this_bin == 0 and op.right else 0
+                right_edge_adj = adj if this_bin == op.bins - 1 and not op.right else 0
+
+                left_edge = col_min + this_bin * bin_width - left_edge_adj
+                right_edge = col_min + (this_bin + 1) * bin_width + right_edge_adj
+
+                if op.right:
+                    interval_struct = ibis_types.struct(
+                        {
+                            "left_exclusive": left_edge,
+                            "right_inclusive": right_edge,
+                        }
+                    )
+                else:
+                    interval_struct = ibis_types.struct(
+                        {
+                            "left_inclusive": left_edge,
+                            "right_exclusive": right_edge,
+                        }
+                    )
 
                 if this_bin < op.bins - 1:
-                    out = out.when(
-                        x <= (col_min + (this_bin + 1) * bin_width),
-                        interval_struct,
-                    )
+                    if op.right:
+                        case_expr = x <= (col_min + (this_bin + 1) * bin_width)
+                    else:
+                        case_expr = x < (col_min + (this_bin + 1) * bin_width)
+                    out = out.when(case_expr, interval_struct)
                 else:
                     out = out.when(x.notnull(), interval_struct)
     else:  # Interpret as intervals
         for interval in op.bins:
             left = compile_ibis_types.literal_to_ibis_scalar(interval[0])
             right = compile_ibis_types.literal_to_ibis_scalar(interval[1])
-            condition = (x > left) & (x <= right)
-            interval_struct = ibis_types.struct(
-                {"left_exclusive": left, "right_inclusive": right}
-            )
+            if op.right:
+                condition = (x > left) & (x <= right)
+                interval_struct = ibis_types.struct(
+                    {"left_exclusive": left, "right_inclusive": right}
+                )
+            else:
+                condition = (x >= left) & (x < right)
+                interval_struct = ibis_types.struct(
+                    {"left_inclusive": left, "right_exclusive": right}
+                )
             out = out.when(condition, interval_struct)
     return out.end()
 

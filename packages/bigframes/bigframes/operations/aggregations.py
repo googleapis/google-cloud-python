@@ -339,6 +339,7 @@ class ArrayAggOp(UnaryAggregateOp):
 class CutOp(UnaryWindowOp):
     # TODO: Unintuitive, refactor into multiple ops?
     bins: typing.Union[int, Iterable]
+    right: Optional[bool]
     labels: Optional[bool]
 
     @property
@@ -357,10 +358,19 @@ class CutOp(UnaryWindowOp):
             )
             pa_type = pa.struct(
                 [
-                    pa.field("left_exclusive", interval_dtype, nullable=True),
-                    pa.field("right_inclusive", interval_dtype, nullable=True),
+                    pa.field(
+                        "left_exclusive" if self.right else "left_inclusive",
+                        interval_dtype,
+                        nullable=True,
+                    ),
+                    pa.field(
+                        "right_inclusive" if self.right else "right_exclusive",
+                        interval_dtype,
+                        nullable=True,
+                    ),
                 ]
             )
+
             return pd.ArrowDtype(pa_type)
 
     @property

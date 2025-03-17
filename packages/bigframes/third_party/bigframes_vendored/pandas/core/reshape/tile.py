@@ -4,14 +4,23 @@ Quantilization functions and related routines
 """
 from __future__ import annotations
 
-from bigframes import constants
+import typing
+
+import pandas as pd
+
+from bigframes import constants, series
 
 
 def cut(
-    x,
-    bins,
+    x: series.Series,
+    bins: typing.Union[
+        int,
+        pd.IntervalIndex,
+        typing.Iterable,
+    ],
     *,
-    labels=None,
+    right: bool = True,
+    labels: typing.Union[typing.Iterable[str], bool, None] = None,
 ):
     """
     Bin values into discrete intervals.
@@ -87,6 +96,16 @@ def cut(
         3    {'left_exclusive': 5, 'right_inclusive': 20}
         dtype: struct<left_exclusive: int64, right_inclusive: int64>[pyarrow]
 
+    Cut with an interable of ints, where intervals are left-inclusive and right-exclusive.
+
+        >>> bins_ints = [0, 1, 5, 20]
+        >>> bpd.cut(s, bins=bins_ints, right=False)
+        0     {'left_inclusive': 0, 'right_exclusive': 1}
+        1     {'left_inclusive': 1, 'right_exclusive': 5}
+        2    {'left_inclusive': 5, 'right_exclusive': 20}
+        3    {'left_inclusive': 5, 'right_exclusive': 20}
+        dtype: struct<left_inclusive: int64, right_exclusive: int64>[pyarrow]
+
     Args:
         x (Series):
             The input Series to be binned. Must be 1-dimensional.
@@ -103,7 +122,12 @@ def cut(
             Iterable of numerics: Defines the exact bins by using the interval
             between each item and its following item. The items must be monotonically
             increasing.
-        labels (None):
+        right (bool, default True):
+            Indicates whether `bins` includes the rightmost edge or not. If
+            ``right == True`` (the default), then the `bins` ``[1, 2, 3, 4]``
+            indicate (1,2], (2,3], (3,4]. This argument is ignored when
+            `bins` is an IntervalIndex.
+        labels (default None):
             Specifies the labels for the returned bins. Must be the same length as
             the resulting bins. If False, returns only integer indicators of the
             bins. This affects the type of the output container.

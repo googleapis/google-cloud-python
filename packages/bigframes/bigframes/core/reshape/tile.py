@@ -15,7 +15,6 @@
 from __future__ import annotations
 
 import typing
-from typing import Iterable, Optional, Union
 
 import bigframes_vendored.constants as constants
 import bigframes_vendored.pandas.core.reshape.tile as vendored_pandas_tile
@@ -33,26 +32,34 @@ import bigframes.series
 
 def cut(
     x: bigframes.series.Series,
-    bins: Union[
+    bins: typing.Union[
         int,
         pd.IntervalIndex,
-        Iterable,
+        typing.Iterable,
     ],
     *,
-    labels: Union[Iterable[str], bool, None] = None,
+    right: typing.Optional[bool] = True,
+    labels: typing.Union[typing.Iterable[str], bool, None] = None,
 ) -> bigframes.series.Series:
     if isinstance(bins, int) and bins <= 0:
         raise ValueError("`bins` should be a positive integer.")
 
-    if isinstance(bins, Iterable):
+    # TODO: Check `right` does not apply for IntervalIndex.
+
+    if isinstance(bins, typing.Iterable):
         if isinstance(bins, pd.IntervalIndex):
+            # TODO: test an empty internval index
             as_index: pd.IntervalIndex = bins
             bins = tuple((bin.left.item(), bin.right.item()) for bin in bins)
+            # To maintain consistency with pandas' behavior
+            right = True
         elif len(list(bins)) == 0:
             raise ValueError("`bins` iterable should have at least one item")
         elif isinstance(list(bins)[0], tuple):
             as_index = pd.IntervalIndex.from_tuples(list(bins))
             bins = tuple(bins)
+            # To maintain consistency with pandas' behavior
+            right = True
         elif pd.api.types.is_number(list(bins)[0]):
             bins_list = list(bins)
             if len(bins_list) < 2:
@@ -82,7 +89,8 @@ def cut(
         )
 
     return x._apply_window_op(
-        agg_ops.CutOp(bins, labels=labels), window_spec=window_specs.unbound()
+        agg_ops.CutOp(bins, right=right, labels=labels),
+        window_spec=window_specs.unbound(),
     )
 
 
@@ -93,7 +101,7 @@ def qcut(
     x: bigframes.series.Series,
     q: typing.Union[int, typing.Sequence[float]],
     *,
-    labels: Optional[bool] = None,
+    labels: typing.Optional[bool] = None,
     duplicates: typing.Literal["drop", "error"] = "error",
 ) -> bigframes.series.Series:
     if isinstance(q, int) and q <= 0:
