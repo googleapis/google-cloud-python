@@ -38,14 +38,14 @@ else:
     release_status = "Development Status :: 5 - Production/Stable"
 
 dependencies = [
-    "google-cloud-logging>=1.14.0, <4.0.0dev",
+    "google-cloud-logging>=1.14.0, <4.0.0",
     # Exclude incompatible versions of `google-auth`
     # See https://github.com/googleapis/google-cloud-python/issues/12364
-    "google-auth >= 2.14.1, <3.0.0dev,!=2.24.0,!=2.25.0",
-    "google-api-core[grpc] >= 1.34.0, <3.0.0dev,!=2.0.*,!=2.1.*,!=2.2.*,!=2.3.*,!=2.4.*,!=2.5.*,!=2.6.*,!=2.7.*,!=2.8.*,!=2.9.*,!=2.10.*",
-    "proto-plus >= 1.22.0, <2.0.0dev",
-    "proto-plus >= 1.22.2, <2.0.0dev; python_version>='3.11'",
-    "protobuf>=3.20.2,<6.0.0dev,!=4.21.0,!=4.21.1,!=4.21.2,!=4.21.3,!=4.21.4,!=4.21.5",
+    "google-auth >= 2.14.1, <3.0.0,!=2.24.0,!=2.25.0",
+    "google-api-core[grpc] >= 1.34.0, <3.0.0,!=2.0.*,!=2.1.*,!=2.2.*,!=2.3.*,!=2.4.*,!=2.5.*,!=2.6.*,!=2.7.*,!=2.8.*,!=2.9.*,!=2.10.*",
+    "proto-plus >= 1.22.0, <2.0.0",
+    "proto-plus >= 1.22.2, <2.0.0; python_version>='3.11'",
+    "protobuf>=3.20.2,<7.0.0,!=4.21.0,!=4.21.1,!=4.21.2,!=4.21.3,!=4.21.4,!=4.21.5",
 ]
 url = "https://github.com/googleapis/python-error-reporting"
 
