@@ -606,9 +606,10 @@ class GbqDataLoader:
                 time_travel_timestamp=None,
             )
 
+        # No cluster candidates as user query might not be clusterable (eg because of ORDER BY clause)
         destination, query_job = self._query_to_destination(
             query,
-            index_cols,
+            cluster_candidates=[],
             api_name=api_name,
             configuration=configuration,
         )
@@ -645,7 +646,7 @@ class GbqDataLoader:
     def _query_to_destination(
         self,
         query: str,
-        index_cols: List[str],
+        cluster_candidates: List[str],
         api_name: str,
         configuration: dict = {"query": {"useQueryCache": True}},
         do_clustering=True,
@@ -668,7 +669,7 @@ class GbqDataLoader:
         assert schema is not None
         if do_clustering:
             cluster_cols = bf_io_bigquery.select_cluster_cols(
-                schema, cluster_candidates=index_cols
+                schema, cluster_candidates=cluster_candidates
             )
         else:
             cluster_cols = []

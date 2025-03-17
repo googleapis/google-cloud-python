@@ -132,9 +132,10 @@ def test_read_gbq_w_unknown_index_col(
                 CONCAT(t.string_col, "_2") AS my_strings,
                 t.int64_col > 0 AS my_bools,
             FROM `{scalars_table_id}` AS t
+            ORDER BY my_strings
             """,
             ["my_strings"],
-            id="string_index",
+            id="string_index_w_order_by",
         ),
         pytest.param(
             "SELECT GENERATE_UUID() AS uuid, 0 AS my_value FROM UNNEST(GENERATE_ARRAY(1, 20))",
