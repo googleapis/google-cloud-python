@@ -482,6 +482,35 @@ class WorkflowsGrpcTransport(WorkflowsTransport):
             )
         return self._stubs["update_workflow"]
 
+    @property
+    def list_workflow_revisions(
+        self,
+    ) -> Callable[
+        [workflows.ListWorkflowRevisionsRequest],
+        workflows.ListWorkflowRevisionsResponse,
+    ]:
+        r"""Return a callable for the list workflow revisions method over gRPC.
+
+        Lists revisions for a given workflow.
+
+        Returns:
+            Callable[[~.ListWorkflowRevisionsRequest],
+                    ~.ListWorkflowRevisionsResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_workflow_revisions" not in self._stubs:
+            self._stubs["list_workflow_revisions"] = self._logged_channel.unary_unary(
+                "/google.cloud.workflows.v1.Workflows/ListWorkflowRevisions",
+                request_serializer=workflows.ListWorkflowRevisionsRequest.serialize,
+                response_deserializer=workflows.ListWorkflowRevisionsResponse.deserialize,
+            )
+        return self._stubs["list_workflow_revisions"]
+
     def close(self):
         self._logged_channel.close()
 

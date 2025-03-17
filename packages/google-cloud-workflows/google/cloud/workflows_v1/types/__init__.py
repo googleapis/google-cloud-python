@@ -16,7 +16,10 @@
 from .workflows import (
     CreateWorkflowRequest,
     DeleteWorkflowRequest,
+    ExecutionHistoryLevel,
     GetWorkflowRequest,
+    ListWorkflowRevisionsRequest,
+    ListWorkflowRevisionsResponse,
     ListWorkflowsRequest,
     ListWorkflowsResponse,
     OperationMetadata,
@@ -28,9 +31,12 @@ __all__ = (
     "CreateWorkflowRequest",
     "DeleteWorkflowRequest",
     "GetWorkflowRequest",
+    "ListWorkflowRevisionsRequest",
+    "ListWorkflowRevisionsResponse",
     "ListWorkflowsRequest",
     "ListWorkflowsResponse",
     "OperationMetadata",
     "UpdateWorkflowRequest",
     "Workflow",
+    "ExecutionHistoryLevel",
 )
