@@ -4108,7 +4108,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         )
 
     def apply(self, func, *, axis=0, args: typing.Tuple = (), **kwargs):
-        # In Bigframes remote function, DataFrame '.apply' method is specifically
+        # In Bigframes BigQuery function, DataFrame '.apply' method is specifically
         # designed to work with row-wise or column-wise operations, where the input
         # to the applied function should be a Series, not a scalar.
 
@@ -4116,24 +4116,18 @@ class DataFrame(vendored_pandas_frame.DataFrame):
             msg = bfe.format_message("axis=1 scenario is in preview.")
             warnings.warn(msg, category=bfe.PreviewWarning)
 
-            # TODO(jialuo): Deprecate the "bigframes_remote_function" attribute.
-            # We have some tests using pre-defined remote_function that were
-            # defined based on "bigframes_remote_function" instead of
-            # "bigframes_bigquery_function". So we need to fix those pre-defined
-            # remote functions before deprecating the "bigframes_remote_function"
-            # attribute. Check if the function is a remote function.
-            if not hasattr(func, "bigframes_remote_function") and not hasattr(
-                func, "bigframes_bigquery_function"
-            ):
-                raise ValueError("For axis=1 a bigframes function must be used.")
+            if not hasattr(func, "bigframes_bigquery_function"):
+                raise ValueError(
+                    "For axis=1 a BigFrames BigQuery function must be used."
+                )
 
             is_row_processor = getattr(func, "is_row_processor")
             if is_row_processor:
                 # Early check whether the dataframe dtypes are currently supported
-                # in the remote function
+                # in the bigquery function
                 # NOTE: Keep in sync with the value converters used in the gcf code
                 # generated in function_template.py
-                remote_function_supported_dtypes = (
+                bigquery_function_supported_dtypes = (
                     bigframes.dtypes.INT_DTYPE,
                     bigframes.dtypes.FLOAT_DTYPE,
                     bigframes.dtypes.BOOL_DTYPE,
@@ -4142,18 +4136,18 @@ class DataFrame(vendored_pandas_frame.DataFrame):
                 )
                 supported_dtypes_types = tuple(
                     type(dtype)
-                    for dtype in remote_function_supported_dtypes
+                    for dtype in bigquery_function_supported_dtypes
                     if not isinstance(dtype, pandas.ArrowDtype)
                 )
                 # Check ArrowDtype separately since multiple BigQuery types map to
                 # ArrowDtype, including BYTES and TIMESTAMP.
                 supported_arrow_types = tuple(
                     dtype.pyarrow_dtype
-                    for dtype in remote_function_supported_dtypes
+                    for dtype in bigquery_function_supported_dtypes
                     if isinstance(dtype, pandas.ArrowDtype)
                 )
                 supported_dtypes_hints = tuple(
-                    str(dtype) for dtype in remote_function_supported_dtypes
+                    str(dtype) for dtype in bigquery_function_supported_dtypes
                 )
 
                 for dtype in self.dtypes:
@@ -4186,10 +4180,11 @@ class DataFrame(vendored_pandas_frame.DataFrame):
                 )
             else:
                 # This is a special case where we are providing not-pandas-like
-                # extension. If the remote function can take one or more params
-                # then we assume that here the user intention is to use the
-                # column values of the dataframe as arguments to the function.
-                # For this to work the following condition must be true:
+                # extension. If the bigquery function can take one or more
+                # params then we assume that here the user intention is to use
+                # the column values of the dataframe as arguments to the
+                # function. For this to work the following condition must be
+                # true:
                 #   1. The number or input params in the function must be same
                 #      as the number of columns in the dataframe
                 #   2. The dtypes of the columns in the dataframe must be
@@ -4231,15 +4226,16 @@ class DataFrame(vendored_pandas_frame.DataFrame):
 
             return result_series
 
-        # At this point column-wise or element-wise remote function operation will
+        # At this point column-wise or element-wise bigquery function operation will
         # be performed (not supported).
-        if hasattr(func, "bigframes_remote_function"):
+        if hasattr(func, "bigframes_bigquery_function"):
             raise formatter.create_exception_with_feedback_link(
                 NotImplementedError,
-                "BigFrames DataFrame '.apply()' does not support remote function "
-                "for column-wise (i.e. with axis=0) operations, please use a "
-                "regular python function instead. For element-wise operations of "
-                "the remote function, please use '.map()'.",
+                "BigFrames DataFrame '.apply()' does not support BigFrames "
+                "BigQuery function for column-wise (i.e. with axis=0) "
+                "operations, please use a regular python function instead. For "
+                "element-wise operations of the BigFrames BigQuery function, "
+                "please use '.map()'.",
             )
 
         # Per-column apply

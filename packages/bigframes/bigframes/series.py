@@ -68,9 +68,9 @@ LevelType = typing.Union[str, int]
 LevelsType = typing.Union[LevelType, typing.Sequence[LevelType]]
 
 
-_remote_function_recommendation_message = (
+_bigquery_function_recommendation_message = (
     "Your functions could not be applied directly to the Series."
-    " Try converting it to a remote function."
+    " Try converting it to a BigFrames BigQuery function."
 )
 
 _list = list  # Type alias to escape Series.list property
@@ -1530,25 +1530,20 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
 
         if not callable(func):
             raise ValueError(
-                "Only a ufunc (a function that applies to the entire Series) or a remote function that only works on single values are supported."
+                "Only a ufunc (a function that applies to the entire Series) or"
+                " a BigFrames BigQuery function that only works on single values"
+                " are supported."
             )
 
-        # TODO(jialuo): Deprecate the "bigframes_remote_function" attribute.
-        # We have some tests using pre-defined remote_function that were defined
-        # based on "bigframes_remote_function" instead of
-        # "bigframes_bigquery_function". So we need to fix those pre-defined
-        # remote functions before deprecating the "bigframes_remote_function"
-        # attribute.
-        if not hasattr(func, "bigframes_remote_function") and not hasattr(
-            func, "bigframes_bigquery_function"
-        ):
+        if not hasattr(func, "bigframes_bigquery_function"):
             # It is neither a remote function nor a managed function.
             # Then it must be a vectorized function that applies to the Series
             # as a whole.
             if by_row:
                 raise ValueError(
-                    "A vectorized non-remote function can be provided only with by_row=False."
-                    " For element-wise operation it must be a remote function."
+                    "A vectorized non-BigFrames BigQuery function can be "
+                    "provided only with by_row=False. For element-wise operation "
+                    "it must be a BigFrames BigQuery function."
                 )
 
             try:
@@ -1556,12 +1551,12 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
             except Exception as ex:
                 # This could happen if any of the operators in func is not
                 # supported on a Series. Let's guide the customer to use a
-                # remote function instead
+                # bigquery function instead
                 if hasattr(ex, "message"):
-                    ex.message += f"\n{_remote_function_recommendation_message}"
+                    ex.message += f"\n{_bigquery_function_recommendation_message}"
                 raise
 
-        # We are working with remote function at this point
+        # We are working with bigquery function at this point
         result_series = self._apply_unary_op(
             ops.RemoteFunctionOp(func=func, apply_on_null=True)
         )
@@ -1590,21 +1585,21 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
     ) -> Series:
         if not callable(func):
             raise ValueError(
-                "Only a ufunc (a function that applies to the entire Series) or a remote function that only works on single values are supported."
+                "Only a ufunc (a function that applies to the entire Series) or"
+                " a BigFrames BigQuery function that only works on single values"
+                " are supported."
             )
 
-        if not hasattr(func, "bigframes_remote_function") and not hasattr(
-            func, "bigframes_bigquery_function"
-        ):
+        if not hasattr(func, "bigframes_bigquery_function"):
             # Keep this in sync with .apply
             try:
                 return func(self, other)
             except Exception as ex:
                 # This could happen if any of the operators in func is not
                 # supported on a Series. Let's guide the customer to use a
-                # remote function instead
+                # bigquery function instead
                 if hasattr(ex, "message"):
-                    ex.message += f"\n{_remote_function_recommendation_message}"
+                    ex.message += f"\n{_bigquery_function_recommendation_message}"
                 raise
 
         result_series = self._apply_binary_op(
@@ -1749,10 +1744,10 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
 
     def mask(self, cond, other=None) -> Series:
         if callable(cond):
-            if hasattr(cond, "bigframes_remote_function"):
+            if hasattr(cond, "bigframes_bigquery_function"):
                 cond = self.apply(cond)
             else:
-                # For non-remote function assume that it is applicable on Series
+                # For non-BigQuery function assume that it is applicable on Series
                 cond = self.apply(cond, by_row=False)
 
         if not isinstance(cond, Series):

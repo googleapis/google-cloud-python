@@ -741,7 +741,7 @@ class FunctionSession:
             # with that name and would directly manage their lifecycle.
             if created_new and (not name):
                 self._update_temp_artifacts(
-                    func.bigframes_remote_function, func.bigframes_cloud_function
+                    func.bigframes_bigquery_function, func.bigframes_cloud_function
                 )
             return func
 

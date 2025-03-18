@@ -882,6 +882,7 @@ def test_remote_function_with_explicit_name(
 
         # The remote function should reflect the explicitly provided name
         assert square_remote.bigframes_remote_function == expected_remote_function
+        assert square_remote.bigframes_bigquery_function == expected_remote_function
 
         # Now the expected BQ remote function should exist
         session.bqclient.get_routine(expected_remote_function)
@@ -1013,6 +1014,7 @@ def test_remote_function_with_explicit_name_reuse(
 
         # The remote function should reflect the explicitly provided name
         assert square_remote1.bigframes_remote_function == expected_remote_function
+        assert square_remote1.bigframes_bigquery_function == expected_remote_function
 
         # Now the expected BQ remote function should exist
         routine = session.bqclient.get_routine(expected_remote_function)
@@ -1037,6 +1039,7 @@ def test_remote_function_with_explicit_name_reuse(
 
         # The new remote function should still reflect the explicitly provided name
         assert square_remote2.bigframes_remote_function == expected_remote_function
+        assert square_remote2.bigframes_bigquery_function == expected_remote_function
 
         # The expected BQ remote function should still exist
         routine = session.bqclient.get_routine(expected_remote_function)
@@ -1080,6 +1083,7 @@ def test_remote_function_with_explicit_name_reuse(
 
         # The new remote function should still reflect the explicitly provided name
         assert plusone_remote.bigframes_remote_function == expected_remote_function
+        assert plusone_remote.bigframes_bigquery_function == expected_remote_function
 
         # The expected BQ remote function should still exist
         routine = session.bqclient.get_routine(expected_remote_function)
@@ -1234,7 +1238,7 @@ def test_remote_function_anonymous_dataset(session, scalars_dfs):
             return x * x
 
         assert (
-            bigquery.Routine(square.bigframes_remote_function).dataset_id
+            bigquery.Routine(square.bigframes_bigquery_function).dataset_id
             == session._anonymous_dataset.dataset_id
         )
 
@@ -1495,7 +1499,7 @@ def test_remote_function_max_batching_rows(session, scalars_dfs, max_batching_ro
         )(square)
 
         bq_routine = session.bqclient.get_routine(
-            square_remote.bigframes_remote_function
+            square_remote.bigframes_bigquery_function
         )
         assert bq_routine.remote_function_options.max_batching_rows == max_batching_rows
 
@@ -1642,7 +1646,7 @@ def test_df_apply_axis_1(session, scalars_dfs):
 
         # Let's make sure the read_gbq_function path works for this function
         serialize_row_reuse = session.read_gbq_function(
-            serialize_row_remote.bigframes_remote_function, is_row_processor=True
+            serialize_row_remote.bigframes_bigquery_function, is_row_processor=True
         )
         bf_result = scalars_df[columns].apply(serialize_row_reuse, axis=1).to_pandas()
         pandas.testing.assert_series_equal(pd_result, bf_result, check_dtype=False)
@@ -1950,6 +1954,8 @@ def test_remote_function_unnamed_removed_w_session_cleanup():
     # ensure that remote function artifacts are created
     assert foo.bigframes_remote_function is not None
     session.bqclient.get_routine(foo.bigframes_remote_function) is not None
+    assert foo.bigframes_bigquery_function is not None
+    session.bqclient.get_routine(foo.bigframes_bigquery_function) is not None
     assert foo.bigframes_cloud_function is not None
     session.cloudfunctionsclient.get_function(
         name=foo.bigframes_cloud_function
@@ -1960,7 +1966,7 @@ def test_remote_function_unnamed_removed_w_session_cleanup():
 
     # ensure that the bq remote function is deleted
     with pytest.raises(google.cloud.exceptions.NotFound):
-        session.bqclient.get_routine(foo.bigframes_remote_function)
+        session.bqclient.get_routine(foo.bigframes_bigquery_function)
 
     # the deletion of cloud function happens in a non-blocking way, ensure that
     # it either exists in a being-deleted state, or is already deleted
@@ -1990,6 +1996,8 @@ def test_remote_function_named_perists_w_session_cleanup():
         # ensure that remote function artifacts are created
         assert foo.bigframes_remote_function is not None
         session.bqclient.get_routine(foo.bigframes_remote_function) is not None
+        assert foo.bigframes_bigquery_function is not None
+        session.bqclient.get_routine(foo.bigframes_bigquery_function) is not None
         assert foo.bigframes_cloud_function is not None
         session.cloudfunctionsclient.get_function(
             name=foo.bigframes_cloud_function
@@ -1999,7 +2007,7 @@ def test_remote_function_named_perists_w_session_cleanup():
         session.close()
 
         # ensure that the bq remote function still exists
-        session.bqclient.get_routine(foo.bigframes_remote_function) is not None
+        session.bqclient.get_routine(foo.bigframes_bigquery_function) is not None
 
         # the deletion of cloud function happens in a non-blocking way, ensure
         # that it was not deleted and still exists in active state
@@ -2038,6 +2046,8 @@ def test_remote_function_clean_up_by_session_id():
         for foo in [foo_unnamed, foo_named]:
             assert foo.bigframes_remote_function is not None
             session.bqclient.get_routine(foo.bigframes_remote_function) is not None
+            assert foo.bigframes_bigquery_function is not None
+            session.bqclient.get_routine(foo.bigframes_bigquery_function) is not None
             assert foo.bigframes_cloud_function is not None
             session.cloudfunctionsclient.get_function(
                 name=foo.bigframes_cloud_function
@@ -2051,7 +2061,7 @@ def test_remote_function_clean_up_by_session_id():
         # ensure that the unnamed bq remote function is deleted along with its
         # corresponding cloud function
         with pytest.raises(google.cloud.exceptions.NotFound):
-            session.bqclient.get_routine(foo_unnamed.bigframes_remote_function)
+            session.bqclient.get_routine(foo_unnamed.bigframes_bigquery_function)
         try:
             gcf = session.cloudfunctionsclient.get_function(
                 name=foo_unnamed.bigframes_cloud_function
@@ -2062,7 +2072,7 @@ def test_remote_function_clean_up_by_session_id():
 
         # ensure that the named bq remote function still exists along with its
         # corresponding cloud function
-        session.bqclient.get_routine(foo_named.bigframes_remote_function) is not None
+        session.bqclient.get_routine(foo_named.bigframes_bigquery_function) is not None
         gcf = session.cloudfunctionsclient.get_function(
             name=foo_named.bigframes_cloud_function
         )
@@ -2139,7 +2149,7 @@ def test_df_apply_axis_1_multiple_params(session):
         )
 
         # Let's make sure the read_gbq_function path works for this function
-        foo_reuse = session.read_gbq_function(foo.bigframes_remote_function)
+        foo_reuse = session.read_gbq_function(foo.bigframes_bigquery_function)
         bf_result = bf_df.apply(foo_reuse, axis=1).to_pandas()
         pandas.testing.assert_series_equal(
             expected_result, bf_result, check_dtype=False, check_index_type=False
@@ -2225,7 +2235,7 @@ def test_df_apply_axis_1_multiple_params_array_output(session):
         )
 
         # Let's make sure the read_gbq_function path works for this function
-        foo_reuse = session.read_gbq_function(foo.bigframes_remote_function)
+        foo_reuse = session.read_gbq_function(foo.bigframes_bigquery_function)
         bf_result = bf_df.apply(foo_reuse, axis=1).to_pandas()
         pandas.testing.assert_series_equal(
             expected_result, bf_result, check_dtype=False, check_index_type=False
@@ -2325,7 +2335,7 @@ def test_df_apply_axis_1_array_output(session, scalars_dfs):
 
         # Let's make sure the read_gbq_function path works for this function
         generate_stats_reuse = session.read_gbq_function(
-            generate_stats.bigframes_remote_function,
+            generate_stats.bigframes_bigquery_function,
             is_row_processor=True,
         )
         bf_result = scalars_df[columns].apply(generate_stats_reuse, axis=1).to_pandas()
@@ -2468,7 +2478,7 @@ def test_remote_function_w_context_manager_unnamed(
             )(add_one)
 
             temporary_bigquery_remote_function = (
-                add_one_remote_temp.bigframes_remote_function
+                add_one_remote_temp.bigframes_bigquery_function
             )
             assert temporary_bigquery_remote_function is not None
             assert (
@@ -2545,7 +2555,7 @@ def test_remote_function_w_context_manager_named(
             )(add_one)
 
             persistent_bigquery_remote_function = (
-                add_one_remote_persist.bigframes_remote_function
+                add_one_remote_persist.bigframes_bigquery_function
             )
             assert persistent_bigquery_remote_function is not None
             assert (
@@ -2626,7 +2636,7 @@ def test_remote_function_array_output(
 
         # Let's make sure the read_gbq_function path works for this function
         featurize_reuse = session.read_gbq_function(
-            featurize.bigframes_remote_function  # type: ignore
+            featurize.bigframes_bigquery_function  # type: ignore
         )
         bf_result = scalars_df["int64_too"].apply(featurize_reuse).to_pandas()
         pandas.testing.assert_series_equal(pd_result, bf_result, check_dtype=False)
@@ -2664,7 +2674,7 @@ def test_remote_function_array_output_partial_ordering_mode(
 
         # Let's make sure the read_gbq_function path works for this function
         featurize_reuse = unordered_session.read_gbq_function(
-            featurize.bigframes_remote_function  # type: ignore
+            featurize.bigframes_bigquery_function  # type: ignore
         )
         bf_int64_col = scalars_df["float64_col"].dropna()
         bf_result = bf_int64_col.apply(featurize_reuse).to_pandas()

@@ -18,6 +18,7 @@ import pytest
 
 import bigframes.exceptions
 from bigframes.functions import _function_session as bff_session
+from bigframes.functions import function as bff
 from bigframes.functions._utils import get_python_version
 from bigframes.pandas import udf
 import bigframes.pandas as bpd
@@ -44,6 +45,7 @@ bpd.options.experiments.udf = True
     ],
 )
 def test_managed_function_series_apply(
+    session,
     typ,
     scalars_dfs,
     dataset_id_permanent,
@@ -79,6 +81,22 @@ def test_managed_function_series_apply(
     pd_result = scalars_pandas_df["int64_too"].to_frame().assign(result=pd_result_col)
 
     assert_pandas_df_equal(bf_result, pd_result, check_dtype=False)
+
+    # Make sure the read_gbq_function path works for this function.
+    foo_ref = bff.read_gbq_function(
+        function_name=foo.bigframes_bigquery_function,  # type: ignore
+        session=session,
+    )
+    assert hasattr(foo_ref, "bigframes_bigquery_function")
+    assert not hasattr(foo_ref, "bigframes_remote_function")
+    assert foo.bigframes_bigquery_function == foo_ref.bigframes_bigquery_function  # type: ignore
+
+    bf_result_col_gbq = scalars_df["int64_too"].apply(foo_ref)
+    bf_result_gbq = (
+        scalars_df["int64_too"].to_frame().assign(result=bf_result_col_gbq).to_pandas()
+    )
+
+    assert_pandas_df_equal(bf_result_gbq, pd_result, check_dtype=False)
 
 
 def test_managed_function_series_combine(dataset_id_permanent, scalars_dfs):
@@ -164,7 +182,9 @@ def test_managed_function_series_apply_list_output(
     assert_pandas_df_equal(bf_result, pd_result, check_dtype=False)
 
 
-def test_managed_function_series_combine_list_output(dataset_id_permanent, scalars_dfs):
+def test_managed_function_series_combine_list_output(
+    session, dataset_id_permanent, scalars_dfs
+):
     def add_list(x: int, y: int) -> list[int]:
         return [x, y]
 
@@ -197,6 +217,31 @@ def test_managed_function_series_combine_list_output(dataset_id_permanent, scala
 
     # Ignore any dtype difference.
     pd.testing.assert_series_equal(pd_result, bf_result, check_dtype=False)
+
+    # Make sure the read_gbq_function path works for this function.
+    add_list_managed_func_ref = bff.read_gbq_function(
+        function_name=add_list_managed_func.bigframes_bigquery_function,  # type: ignore
+        session=session,
+    )
+
+    assert hasattr(add_list_managed_func_ref, "bigframes_bigquery_function")
+    assert not hasattr(add_list_managed_func_ref, "bigframes_remote_function")
+    assert (
+        add_list_managed_func_ref.bigframes_bigquery_function
+        == add_list_managed_func.bigframes_bigquery_function
+    )
+
+    # Test on the function from read_gbq_function.
+    got = add_list_managed_func_ref(10, 38)
+    assert got == [10, 38]
+
+    bf_result_gbq = (
+        bf_df[bf_filter][int_col_name_with_nulls]
+        .combine(bf_df[bf_filter][int_col_name_no_nulls], add_list_managed_func_ref)
+        .to_pandas()
+    )
+
+    pd.testing.assert_series_equal(bf_result_gbq, pd_result, check_dtype=False)
 
 
 def test_managed_function_dataframe_map(scalars_dfs, dataset_id_permanent):
@@ -266,7 +311,9 @@ def test_managed_function_dataframe_apply_axis_1(
     )
 
 
-def test_managed_function_dataframe_map_list_output(scalars_dfs, dataset_id_permanent):
+def test_managed_function_dataframe_map_list_output(
+    session, scalars_dfs, dataset_id_permanent
+):
     def add_one_list(x):
         return [x + 1] * 3
 
@@ -290,6 +337,15 @@ def test_managed_function_dataframe_map_list_output(scalars_dfs, dataset_id_perm
 
     # Ignore any dtype difference.
     assert_pandas_df_equal(bf_result, pd_result, check_dtype=False)
+
+    # Make sure the read_gbq_function path works for this function.
+    mf_add_one_list_ref = bff.read_gbq_function(
+        function_name=mf_add_one_list.bigframes_bigquery_function,  # type: ignore
+        session=session,
+    )
+
+    bf_result_gbq = bf_int64_df_filtered.map(mf_add_one_list_ref).to_pandas()
+    assert_pandas_df_equal(bf_result_gbq, pd_result, check_dtype=False)
 
 
 def test_managed_function_dataframe_apply_axis_1_list_output(
@@ -326,3 +382,27 @@ def test_managed_function_dataframe_apply_axis_1_list_output(
 
     # Ignore any dtype difference.
     pd.testing.assert_series_equal(pd_result, bf_result, check_dtype=False)
+
+    # Make sure the read_gbq_function path works for this function.
+    add_ints_list_mf_ref = bff.read_gbq_function(
+        function_name=add_ints_list_mf.bigframes_bigquery_function,  # type: ignore
+        session=session,
+    )
+    assert hasattr(add_ints_list_mf_ref, "bigframes_bigquery_function")
+    assert not hasattr(add_ints_list_mf_ref, "bigframes_remote_function")
+    assert (
+        add_ints_list_mf_ref.bigframes_bigquery_function
+        == add_ints_list_mf.bigframes_bigquery_function
+    )
+
+    with pytest.warns(
+        bigframes.exceptions.PreviewWarning,
+        match="axis=1 scenario is in preview.",
+    ):
+        bf_result_gbq = (
+            bpd.DataFrame({"x": series, "y": series})
+            .apply(add_ints_list_mf_ref, axis=1)
+            .to_pandas()
+        )
+
+    pd.testing.assert_series_equal(bf_result_gbq, pd_result, check_dtype=False)

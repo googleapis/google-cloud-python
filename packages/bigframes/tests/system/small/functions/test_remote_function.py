@@ -125,6 +125,7 @@ def test_remote_function_direct_no_session_param(
 
     # Function should have extra metadata attached for remote execution.
     assert hasattr(square, "bigframes_remote_function")
+    assert hasattr(square, "bigframes_bigquery_function")
     assert hasattr(square, "bigframes_cloud_function")
     assert hasattr(square, "ibis_node")
 
@@ -666,7 +667,7 @@ def test_read_gbq_function_like_original(
     assert square1(2) == 4
 
     square2 = bff.read_gbq_function(
-        function_name=square1.bigframes_remote_function,  # type: ignore
+        function_name=square1.bigframes_bigquery_function,  # type: ignore
         session=session,
     )
 
@@ -674,13 +675,17 @@ def test_read_gbq_function_like_original(
     # cloud function associated with it, while the read-back version (square2)
     # should only have a remote function.
     assert square1.bigframes_remote_function  # type: ignore
+    assert square1.bigframes_bigquery_function  # type: ignore
     assert square1.bigframes_cloud_function  # type: ignore
 
     assert square2.bigframes_remote_function
+    assert square2.bigframes_bigquery_function
     assert not hasattr(square2, "bigframes_cloud_function")
 
     # They should point to the same function.
     assert square1.bigframes_remote_function == square2.bigframes_remote_function  # type: ignore
+    assert square1.bigframes_bigquery_function == square2.bigframes_bigquery_function  # type: ignore
+    assert square2.bigframes_remote_function == square2.bigframes_bigquery_function  # type: ignore
 
     # The result of applying them should be the same.
     int64_col = scalars_df_index["int64_col"]
@@ -854,7 +859,7 @@ def test_read_gbq_function_reads_udfs(session, bigquery_client, dataset_id):
         )
 
         # It should point to the named routine and yield the expected results.
-        assert square.bigframes_remote_function == str(routine.reference)
+        assert square.bigframes_bigquery_function == str(routine.reference)
         assert square.input_dtypes == (bigframes.dtypes.INT_DTYPE,)
         assert square.output_dtype == bigframes.dtypes.INT_DTYPE
         assert (
@@ -1088,10 +1093,11 @@ def test_df_apply_scalar_func(session, scalars_dfs):
     with pytest.raises(NotImplementedError) as context:
         bdf.apply(func_ref)
     assert str(context.value) == (
-        "BigFrames DataFrame '.apply()' does not support remote function for "
-        "column-wise (i.e. with axis=0) operations, please use a regular python "
-        "function instead. For element-wise operations of the remote function, "
-        f"please use '.map()'. {constants.FEEDBACK_LINK}"
+        "BigFrames DataFrame '.apply()' does not support BigFrames BigQuery "
+        "function for column-wise (i.e. with axis=0) operations, please use a "
+        "regular python function instead. For element-wise operations of the "
+        "BigFrames BigQuery function, please use '.map()'. "
+        f"{constants.FEEDBACK_LINK}"
     )
 
 
@@ -1135,6 +1141,7 @@ def test_df_apply_axis_1(session, scalars_dfs, dataset_id_permanent):
             name=get_function_name(add_ints, is_row_processor=True),
         )(add_ints)
         assert add_ints_remote.bigframes_remote_function  # type: ignore
+        assert add_ints_remote.bigframes_bigquery_function  # type: ignore
         assert add_ints_remote.bigframes_cloud_function  # type: ignore
 
     with pytest.warns(
@@ -1156,11 +1163,13 @@ def test_df_apply_axis_1(session, scalars_dfs, dataset_id_permanent):
 
     # Read back the deployed BQ remote function using read_gbq_function.
     func_ref = session.read_gbq_function(
-        function_name=add_ints_remote.bigframes_remote_function,  # type: ignore
+        function_name=add_ints_remote.bigframes_bigquery_function,  # type: ignore
         is_row_processor=True,
     )
 
     assert func_ref.bigframes_remote_function == add_ints_remote.bigframes_remote_function  # type: ignore
+    assert func_ref.bigframes_bigquery_function == add_ints_remote.bigframes_bigquery_function  # type: ignore
+    assert func_ref.bigframes_remote_function == func_ref.bigframes_bigquery_function  # type: ignore
 
     bf_result_gbq = scalars_df[columns].apply(func_ref, axis=1).to_pandas()
     pd.testing.assert_series_equal(
@@ -1248,7 +1257,7 @@ def test_df_apply_axis_1_unsupported_callable(scalars_dfs):
     scalars_pandas_df.apply(add_ints, axis=1)
 
     with pytest.raises(
-        ValueError, match="For axis=1 a bigframes function must be used."
+        ValueError, match="For axis=1 a BigFrames BigQuery function must be used."
     ):
         scalars_df[columns].apply(add_ints, axis=1)
 
