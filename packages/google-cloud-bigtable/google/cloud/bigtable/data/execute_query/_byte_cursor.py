@@ -12,24 +12,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from typing import Any, Generic, Optional, TypeVar
+from typing import List, Optional
 
+from google.cloud.bigtable.data.execute_query._checksum import _CRC32C
 from google.cloud.bigtable_v2 import ExecuteQueryResponse
-from google.cloud.bigtable.data.execute_query.metadata import (
-    Metadata,
-    _pb_metadata_to_metadata_types,
-)
-
-MT = TypeVar("MT", bound=Metadata)  # metadata type
 
 
-class _ByteCursor(Generic[MT]):
+class _ByteCursor:
     """
     Buffers bytes from `ExecuteQuery` responses until resume_token is received or end-of-stream
     is reached. :class:`google.cloud.bigtable_v2.types.bigtable.ExecuteQueryResponse` obtained from
-    the server should be passed to ``consume`` or ``consume_metadata`` methods and its non-None
-    results should be passed to appropriate
-    :class:`google.cloud.bigtable.execute_query_reader._Reader` for parsing gathered bytes.
+    the server should be passed to the ``consume`` method and its non-None results should be passed
+    to appropriate :class:`google.cloud.bigtable.execute_query_reader._Reader` for parsing gathered
+    bytes.
 
     This class consumes data obtained externally to be usable in both sync and async clients.
 
@@ -37,19 +32,13 @@ class _ByteCursor(Generic[MT]):
     """
 
     def __init__(self):
-        self._metadata: Optional[MT] = None
-        self._buffer = bytearray()
+        self._batch_buffer = bytearray()
+        self._batches: List[bytes] = []
         self._resume_token = None
-        self._last_response_results_field = None
 
-    @property
-    def metadata(self) -> Optional[MT]:
-        """
-        Returns:
-            Metadata or None: Metadata read from the first response of the stream
-                or None if no response was consumed yet.
-        """
-        return self._metadata
+    def reset(self):
+        self._batch_buffer = bytearray()
+        self._batches = []
 
     def prepare_for_new_request(self):
         """
@@ -67,40 +56,15 @@ class _ByteCursor(Generic[MT]):
         Returns:
             bytes: Last received resume_token.
         """
-        self._buffer = bytearray()
-        # metadata is sent in the first response in a stream,
-        # if we've already received one, but it was not already commited
-        # by a subsequent resume_token, then we should clear it as well.
-        if not self._resume_token:
-            self._metadata = None
-
+        # The first response of any retried stream will always contain reset, so
+        # this isn't actually necessary, but we do it for safety
+        self.reset()
         return self._resume_token
 
-    def consume_metadata(self, response: ExecuteQueryResponse) -> None:
-        """
-        Reads metadata from first response of ``ExecuteQuery`` responses stream.
-        Should be called only once.
+    def empty(self) -> bool:
+        return not self._batch_buffer and not self._batches
 
-        Args:
-            response (google.cloud.bigtable_v2.types.bigtable.ExecuteQueryResponse): First response
-                from the stream.
-
-        Raises:
-            ValueError: If this method was already called or if metadata received from the server
-                cannot be parsed.
-        """
-        if self._metadata is not None:
-            raise ValueError("Invalid state - metadata already consumed")
-
-        if "metadata" in response:
-            metadata: Any = _pb_metadata_to_metadata_types(response.metadata)
-            self._metadata = metadata
-        else:
-            raise ValueError("Invalid parameter - response without metadata")
-
-        return None
-
-    def consume(self, response: ExecuteQueryResponse) -> Optional[bytes]:
+    def consume(self, response: ExecuteQueryResponse) -> Optional[List[bytes]]:
         """
         Reads results bytes from an ``ExecuteQuery`` response and adds them to a buffer.
 
@@ -116,7 +80,8 @@ class _ByteCursor(Generic[MT]):
                 Response obtained from the stream.
 
         Returns:
-            bytes or None: bytes if buffers were flushed or None otherwise.
+            bytes or None: List of bytes if buffers were flushed or None otherwise.
+            Each element in the list represents the bytes of a `ProtoRows` message.
 
         Raises:
             ValueError: If provided ``ExecuteQueryResponse`` is not valid
@@ -127,18 +92,32 @@ class _ByteCursor(Generic[MT]):
 
         if response_pb.HasField("results"):
             results = response_pb.results
+            if results.reset:
+                self.reset()
             if results.HasField("proto_rows_batch"):
-                self._buffer.extend(results.proto_rows_batch.batch_data)
+                self._batch_buffer.extend(results.proto_rows_batch.batch_data)
+                # Note that 0 is a valid checksum so we must check for field presence
+                if results.HasField("batch_checksum"):
+                    expected_checksum = results.batch_checksum
+                    checksum = _CRC32C.checksum(self._batch_buffer)
+                    if expected_checksum != checksum:
+                        raise ValueError(
+                            f"Unexpected checksum mismatch. Expected: {expected_checksum}, got: {checksum}"
+                        )
+                    # We have a complete batch so we move it to batches and reset the
+                    # batch_buffer
+                    self._batches.append(memoryview(self._batch_buffer))
+                    self._batch_buffer = bytearray()
 
             if results.resume_token:
                 self._resume_token = results.resume_token
 
-                if self._buffer:
-                    return_value = memoryview(self._buffer)
-                    self._buffer = bytearray()
+                if self._batches:
+                    if self._batch_buffer:
+                        raise ValueError("Unexpected resume_token without checksum")
+                    return_value = self._batches
+                    self._batches = []
                     return return_value
-        elif response_pb.HasField("metadata"):
-            self.consume_metadata(response)
         else:
-            raise ValueError(f"Invalid ExecuteQueryResponse: {response}")
+            raise ValueError(f"Unexpected ExecuteQueryResponse: {response}")
         return None

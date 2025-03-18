@@ -28,7 +28,7 @@ from google.api_core.datetime_helpers import DatetimeWithNanoseconds
 
 import datetime
 
-from ._testing import TYPE_INT
+from tests.unit.data.execute_query.sql_helpers import int64_type
 
 TYPE_BYTES = {"bytes_type": {}}
 TYPE_TIMESTAMP = {"timestamp_type": {}}
@@ -38,7 +38,7 @@ class TestQueryResultParsingUtils:
     @pytest.mark.parametrize(
         "type_dict,value_dict,expected_metadata_type,expected_value",
         [
-            (TYPE_INT, {"int_value": 1}, SqlType.Int64, 1),
+            (int64_type(), {"int_value": 1}, SqlType.Int64, 1),
             (
                 {"string_type": {}},
                 {"string_value": "test"},
@@ -87,7 +87,7 @@ class TestQueryResultParsingUtils:
 
     # Larger test cases were extracted for readability
     def test__array(self):
-        _type = PBType({"array_type": {"element_type": TYPE_INT}})
+        _type = PBType({"array_type": {"element_type": int64_type()}})
         metadata_type = _pb_type_to_metadata_type(_type)
         assert type(metadata_type) is SqlType.Array
         assert type(metadata_type.element_type) is SqlType.Int64
@@ -112,7 +112,7 @@ class TestQueryResultParsingUtils:
                     "fields": [
                         {
                             "field_name": "field1",
-                            "type_": TYPE_INT,
+                            "type_": int64_type(),
                         },
                         {
                             "field_name": None,
@@ -120,7 +120,7 @@ class TestQueryResultParsingUtils:
                         },
                         {
                             "field_name": "field3",
-                            "type_": {"array_type": {"element_type": TYPE_INT}},
+                            "type_": {"array_type": {"element_type": int64_type()}},
                         },
                         {
                             "field_name": "field3",
@@ -186,7 +186,7 @@ class TestQueryResultParsingUtils:
                             "fields": [
                                 {
                                     "field_name": "field1",
-                                    "type_": TYPE_INT,
+                                    "type_": int64_type(),
                                 },
                                 {
                                     "field_name": None,
@@ -282,7 +282,7 @@ class TestQueryResultParsingUtils:
         _type = PBType(
             {
                 "map_type": {
-                    "key_type": TYPE_INT,
+                    "key_type": int64_type(),
                     "value_type": {"string_type": {}},
                 }
             }
@@ -348,7 +348,7 @@ class TestQueryResultParsingUtils:
         _type = PBType(
             {
                 "map_type": {
-                    "key_type": TYPE_INT,
+                    "key_type": int64_type(),
                     "value_type": {"string_type": {}},
                 }
             },
@@ -398,7 +398,7 @@ class TestQueryResultParsingUtils:
         _type = PBType(
             {
                 "map_type": {
-                    "key_type": TYPE_INT,
+                    "key_type": int64_type(),
                     "value_type": {
                         "map_type": {
                             "key_type": {"string_type": {}},
@@ -407,7 +407,7 @@ class TestQueryResultParsingUtils:
                                     "fields": [
                                         {
                                             "field_name": "field1",
-                                            "type_": TYPE_INT,
+                                            "type_": int64_type(),
                                         },
                                         {
                                             "field_name": "field2",

@@ -334,3 +334,7 @@ class InvalidExecuteQueryResponse(core_exceptions.GoogleAPICallError):
 
 class ParameterTypeInferenceFailed(ValueError):
     """Exception raised when query parameter types were not provided and cannot be inferred."""
+
+
+class EarlyMetadataCallError(RuntimeError):
+    """Execption raised when metadata is request from an ExecuteQueryIterator before the first row has been read, or the query has completed"""

@@ -20,12 +20,13 @@ from google.api_core.datetime_helpers import DatetimeWithNanoseconds
 from google.cloud.bigtable.data.exceptions import ParameterTypeInferenceFailed
 from google.cloud.bigtable.data.execute_query.metadata import SqlType
 from google.cloud.bigtable.data.execute_query.values import ExecuteQueryValueType
+from google.cloud.bigtable_v2.types.data import Value
 
 
 def _format_execute_query_params(
     params: Optional[Dict[str, ExecuteQueryValueType]],
     parameter_types: Optional[Dict[str, SqlType.Type]],
-) -> Any:
+) -> Dict[str, Value]:
     """
     Takes a dictionary of param_name -> param_value and optionally parameter types.
     If the parameters types are not provided, this function tries to infer them.
@@ -68,6 +69,31 @@ def _format_execute_query_params(
         result_values[key] = value_pb_dict
 
     return result_values
+
+
+def _to_param_types(
+    params: Optional[Dict[str, ExecuteQueryValueType]],
+    param_types: Optional[Dict[str, SqlType.Type]],
+) -> Dict[str, Dict[str, Any]]:
+    """
+    Takes the params and user supplied types and creates a param_type dict for the PrepareQuery api
+
+    Args:
+        params: Dict of param name to param value
+        param_types: Dict of param name to param type for params with types that cannot be inferred
+
+    Returns:
+        Dict containing the param name and type for each parameter
+    """
+    if params is None:
+        return {}
+    formatted_types = {}
+    for param_key, param_value in params.items():
+        if param_types and param_key in param_types:
+            formatted_types[param_key] = param_types[param_key]._to_type_pb_dict()
+        else:
+            formatted_types[param_key] = _detect_type(param_value)._to_type_pb_dict()
+    return formatted_types
 
 
 def _convert_value_to_pb_value_dict(
