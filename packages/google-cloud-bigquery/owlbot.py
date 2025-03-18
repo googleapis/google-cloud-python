@@ -55,6 +55,9 @@ templated_files = common.py_library(
         "geopandas": "https://geopandas.org/",
         "pandas": "https://pandas.pydata.org/pandas-docs/stable/",
     },
+    system_test_python_versions=["3.9", "3.13"],
+    unit_test_python_versions=["3.9", "3.10", "3.11", "3.12", "3.13"],
+    default_python_version="3.9",
 )
 
 # BigQuery has a custom multiprocessing note
@@ -86,41 +89,13 @@ s.replace(
 python3.9 -m pip install --upgrade --quiet nox virtualenv==20.26.6""",
     "python3.9 -m pip install --upgrade --quiet nox virtualenv",
 )
-s.replace(
-    "CONTRIBUTING.rst",
-    "3.7, 3.8, 3.9, 3.10, 3.11, 3.12 and 3.13 on both UNIX and Windows.",
-    "3.9, 3.10, 3.11, 3.12 and 3.13 on both UNIX and Windows.",
-)
-s.replace(
-    "CONTRIBUTING.rst",
-    r"   \$ nox -s system-3.8 -- -k <name of test>",
-    r"   $ nox -s system-3.9 -- -k <name of test>",
-)
-s.replace(
-    "CONTRIBUTING.rst",
-    r"""System tests are only configured to run under Python 3.8.
-      For expediency, we do not run them in older versions of Python 3.""",
-    r"System tests are configured to run under Python 3.9, 3.11, 3.12.",
-)
+
 s.replace(
     "CONTRIBUTING.rst",
     r"\$ nox -s py-3.8",
     r"$ nox -s py-3.9",
 )
-s.replace(
-    "CONTRIBUTING.rst",
-    r"""-  `Python 3.7`_
--  `Python 3.8`_
-""",
-    r"",
-)
-s.replace(
-    "CONTRIBUTING.rst",
-    r""".. _Python 3.7: https://docs.python.org/3.7/
-.. _Python 3.8: https://docs.python.org/3.8/
-""",
-    r"",
-)
+
 s.replace(
     "scripts/readme-gen/templates/install_deps.tmpl.rst",
     r"Samples are compatible with Python 3.7",

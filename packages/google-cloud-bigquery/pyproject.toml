@@ -37,17 +37,18 @@ classifiers = [
   "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
   "Operating System :: OS Independent",
   "Topic :: Internet",
 ]
 dependencies = [
-  "google-api-core[grpc] >= 2.11.1, < 3.0.0dev",
-  "google-auth >= 2.14.1, < 3.0.0dev",
-  "google-cloud-core >= 2.4.1, < 3.0.0dev",
-  "google-resumable-media >= 2.0.0, < 3.0dev",
+  "google-api-core[grpc] >= 2.11.1, < 3.0.0",
+  "google-auth >= 2.14.1, < 3.0.0",
+  "google-cloud-core >= 2.4.1, < 3.0.0",
+  "google-resumable-media >= 2.0.0, < 3.0.0",
   "packaging >= 24.2.0",
-  "python-dateutil >= 2.8.2, < 3.0dev",
-  "requests >= 2.21.0, < 3.0.0dev",
+  "python-dateutil >= 2.8.2, < 3.0.0",
+  "requests >= 2.21.0, < 3.0.0",
 ]
 dynamic = ["version"]
 
@@ -59,37 +60,37 @@ Repository = "https://github.com/googleapis/python-bigquery"
 # moved back to optional due to bloat.  See
 # https://github.com/googleapis/python-bigquery/issues/1196 for more background.
 bqstorage = [
-  "google-cloud-bigquery-storage >= 2.18.0, < 3.0.0dev",
+  "google-cloud-bigquery-storage >= 2.18.0, < 3.0.0",
   # Due to an issue in pip's dependency resolver, the `grpc` extra is not
   # installed, even though `google-cloud-bigquery-storage` specifies it
   # as `google-api-core[grpc]`. We thus need to explicitly specify it here.
   # See: https://github.com/googleapis/python-bigquery/issues/83 The
   # grpc.Channel.close() method isn't added until 1.32.0.
   # https://github.com/grpc/grpc/pull/15254
-  "grpcio >= 1.47.0, < 2.0dev",
-  "grpcio >= 1.49.1, < 2.0dev; python_version >= '3.11'",
+  "grpcio >= 1.47.0, < 2.0.0",
+  "grpcio >= 1.49.1, < 2.0.0; python_version >= '3.11'",
   "pyarrow >= 4.0.0",
 ]
 pandas = [
   "pandas >= 1.1.4",
-  "pandas-gbq >= 0.26.1; python_version >= '3.8'",
-  "grpcio >= 1.47.0, < 2.0dev",
-  "grpcio >= 1.49.1, < 2.0dev; python_version >= '3.11'",
+  "pandas-gbq >= 0.26.1",
+  "grpcio >= 1.47.0, < 2.0.0",
+  "grpcio >= 1.49.1, < 2.0.0; python_version >= '3.11'",
   "pyarrow >= 3.0.0",
-  "db-dtypes >= 1.0.4, < 2.0.0dev",
+  "db-dtypes >= 1.0.4, < 2.0.0",
 ]
 ipywidgets = ["ipywidgets >= 7.7.1", "ipykernel >= 6.2.0"]
-geopandas = ["geopandas >= 0.9.0, < 2.0dev", "Shapely >= 1.8.4, < 3.0.0dev"]
+geopandas = ["geopandas >= 0.9.0, < 2.0.0", "Shapely >= 1.8.4, < 3.0.0"]
 ipython = ["ipython >= 7.23.1", "bigquery-magics >= 0.6.0"]
-tqdm = ["tqdm >= 4.7.4, < 5.0.0dev"]
+tqdm = ["tqdm >= 4.7.4, < 5.0.0"]
 opentelemetry = [
   "opentelemetry-api >= 1.1.0",
   "opentelemetry-sdk >= 1.1.0",
   "opentelemetry-instrumentation >= 0.20b0",
 ]
 bigquery_v2 = [
-  "proto-plus >= 1.22.3, < 2.0.0dev",
-  "protobuf >= 3.20.2, < 6.0.0dev, != 4.21.0, != 4.21.1, != 4.21.2, != 4.21.3, != 4.21.4, != 4.21.5", # For the legacy proto-based types.
+  "proto-plus >= 1.22.3, < 2.0.0",
+  "protobuf >= 3.20.2, < 7.0.0, != 4.21.0, != 4.21.1, != 4.21.2, != 4.21.3, != 4.21.4, != 4.21.5", # For the legacy proto-based types.
 ]
 all = [
   "google-cloud-bigquery[bqstorage,pandas,ipywidgets,geopandas,ipython,tqdm,opentelemetry,bigquery_v2]",

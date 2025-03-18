@@ -38,8 +38,8 @@ BLACK_PATHS = (
 )
 
 DEFAULT_PYTHON_VERSION = "3.9"
-SYSTEM_TEST_PYTHON_VERSIONS = ["3.9", "3.11", "3.12"]
-UNIT_TEST_PYTHON_VERSIONS = ["3.9", "3.11", "3.12"]
+SYSTEM_TEST_PYTHON_VERSIONS = ["3.9", "3.11", "3.12", "3.13"]
+UNIT_TEST_PYTHON_VERSIONS = ["3.9", "3.11", "3.12", "3.13"]
 CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
 
 
@@ -362,6 +362,40 @@ def prerelease_deps(session):
 
     https://github.com/googleapis/python-bigquery/issues/95
     """
+    # Because we test minimum dependency versions on the minimum Python
+    # version, the first version we test with in the unit tests sessions has a
+    # constraints file containing all dependencies and extras.
+    with open(
+        CURRENT_DIRECTORY
+        / "testing"
+        / f"constraints-{UNIT_TEST_PYTHON_VERSIONS[0]}.txt",
+        encoding="utf-8",
+    ) as constraints_file:
+        constraints_text = constraints_file.read()
+
+    # Ignore leading whitespace and comment lines.
+    deps = [
+        match.group(1)
+        for match in re.finditer(
+            r"^\s*(\S+)(?===\S+)", constraints_text, flags=re.MULTILINE
+        )
+    ]
+
+    session.install(*deps)
+
+    session.install(
+        "--pre",
+        "--upgrade",
+        "freezegun",
+        "google-cloud-datacatalog",
+        "google-cloud-resource-manager",
+        "google-cloud-storage",
+        "google-cloud-testutils",
+        "psutil",
+        "pytest",
+        "pytest-cov",
+    )
+
     # PyArrow prerelease packages are published to an alternative PyPI host.
     # https://arrow.apache.org/docs/python/install.html#installing-nightly-packages
     session.install(
@@ -386,48 +420,18 @@ def prerelease_deps(session):
     session.install(
         "--pre",
         "--upgrade",
+        "--no-deps",
         "google-api-core",
         "google-cloud-bigquery-storage",
         "google-cloud-core",
         "google-resumable-media",
         "db-dtypes",
-        # Exclude version 1.49.0rc1 which has a known issue. See https://github.com/grpc/grpc/pull/30642
-        "grpcio!=1.49.0rc1",
-    )
-    session.install(
-        "freezegun",
-        "google-cloud-datacatalog",
-        "google-cloud-resource-manager",
-        "google-cloud-storage",
-        "google-cloud-testutils",
-        "psutil",
-        "pytest",
-        "pytest-cov",
+        "grpcio",
+        "protobuf",
     )
 
-    # Because we test minimum dependency versions on the minimum Python
-    # version, the first version we test with in the unit tests sessions has a
-    # constraints file containing all dependencies and extras.
-    with open(
-        CURRENT_DIRECTORY
-        / "testing"
-        / f"constraints-{UNIT_TEST_PYTHON_VERSIONS[0]}.txt",
-        encoding="utf-8",
-    ) as constraints_file:
-        constraints_text = constraints_file.read()
-
-    # Ignore leading whitespace and comment lines.
-    deps = [
-        match.group(1)
-        for match in re.finditer(
-            r"^\s*(\S+)(?===\S+)", constraints_text, flags=re.MULTILINE
-        )
-    ]
-
-    # We use --no-deps to ensure that pre-release versions aren't overwritten
-    # by the version ranges in setup.py.
-    session.install(*deps)
-    session.install("--no-deps", "-e", ".[all]")
+    # Ensure that this library is installed from source
+    session.install("-e", ".", "--no-deps")
 
     # Print out prerelease package versions.
     session.run("python", "-m", "pip", "freeze")
