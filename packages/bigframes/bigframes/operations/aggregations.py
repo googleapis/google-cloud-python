@@ -351,11 +351,12 @@ class CutOp(UnaryWindowOp):
             return dtypes.INT_DTYPE
         else:
             # Assumption: buckets use same numeric type
-            interval_dtype = (
-                pa.float64()
-                if isinstance(self.bins, int)
-                else dtypes.infer_literal_arrow_type(list(self.bins)[0][0])
-            )
+            if isinstance(self.bins, int):
+                interval_dtype = pa.float64()
+            elif len(list(self.bins)) == 0:
+                interval_dtype = pa.int64()
+            else:
+                interval_dtype = dtypes.infer_literal_arrow_type(list(self.bins)[0][0])
             pa_type = pa.struct(
                 [
                     pa.field(

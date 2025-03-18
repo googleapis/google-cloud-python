@@ -101,14 +101,20 @@ def test_cut_raises_with_labels():
 
 
 @pytest.mark.parametrize(
-    ("bins",),
-    (
-        (0,),
-        (-1,),
-    ),
+    ("bins", "error_message"),
+    [
+        pytest.param(1.5, "`bins` must be an integer or interable.", id="float"),
+        pytest.param(0, "`bins` should be a positive integer.", id="zero_int"),
+        pytest.param(-1, "`bins` should be a positive integer.", id="neg_int"),
+        pytest.param(
+            ["notabreak"],
+            "`bins` iterable should contain tuples or numerics",
+            id="iterable_w_wrong_type",
+        ),
+    ],
 )
-def test_cut_raises_with_invalid_bins(bins: int):
-    with pytest.raises(ValueError, match="`bins` should be a positive integer."):
+def test_cut_raises_with_invalid_bins(bins: int, error_message: str):
+    with pytest.raises(ValueError, match=error_message):
         mock_series = mock.create_autospec(bigframes.pandas.Series, instance=True)
         bigframes.pandas.cut(mock_series, bins, labels=False)
 
