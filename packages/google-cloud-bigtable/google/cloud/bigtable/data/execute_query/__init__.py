@@ -20,7 +20,6 @@ from google.cloud.bigtable.data.execute_query._sync_autogen.execute_query_iterat
 )
 from google.cloud.bigtable.data.execute_query.metadata import (
     Metadata,
-    ProtoMetadata,
     SqlType,
 )
 from google.cloud.bigtable.data.execute_query.values import (
@@ -39,7 +38,6 @@ __all__ = [
     "QueryResultRow",
     "Struct",
     "Metadata",
-    "ProtoMetadata",
     "ExecuteQueryIteratorAsync",
     "ExecuteQueryIterator",
 ]

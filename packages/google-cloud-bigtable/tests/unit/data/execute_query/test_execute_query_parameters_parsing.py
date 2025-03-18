@@ -20,6 +20,7 @@ import pytest
 
 from google.cloud.bigtable.data.execute_query._parameters_formatting import (
     _format_execute_query_params,
+    _to_param_types,
 )
 from google.cloud.bigtable.data.execute_query.metadata import SqlType
 from google.cloud.bigtable.data.execute_query.values import Struct
@@ -292,3 +293,21 @@ def test_array_params_enforce_element_type():
         )
     assert "Expected query parameter of type str, got int" in str(e1.value.__cause__)
     assert "Expected query parameter of type int, got str" in str(e2.value.__cause__)
+
+
+def test_to_params_types():
+    results = _to_param_types(
+        {"a": 1, "s": "str", "b": b"bytes", "array": ["foo", "bar"]},
+        {"array": SqlType.Array(SqlType.String())},
+    )
+    assert results == {
+        "a": SqlType.Int64()._to_type_pb_dict(),
+        "s": SqlType.String()._to_type_pb_dict(),
+        "b": SqlType.Bytes()._to_type_pb_dict(),
+        "array": SqlType.Array(SqlType.String())._to_type_pb_dict(),
+    }
+
+
+def test_to_param_types_empty():
+    results = _to_param_types({}, {})
+    assert results == {}

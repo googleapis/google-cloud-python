@@ -136,7 +136,7 @@ def _get_timeouts(
         attempt: The timeout value to use for each attempt, in seconds.
         table: The table to use for default values.
     Returns:
-        typle[float, float]: A tuple of (operation_timeout, attempt_timeout)
+        tuple[float, float]: A tuple of (operation_timeout, attempt_timeout)
     """
     # load table defaults if necessary
     if operation == TABLE_DEFAULT.DEFAULT:
@@ -154,15 +154,33 @@ def _get_timeouts(
     elif attempt == TABLE_DEFAULT.MUTATE_ROWS:
         attempt = table.default_mutate_rows_attempt_timeout
 
+    return _align_timeouts(final_operation, attempt)
+
+
+def _align_timeouts(operation: float, attempt: float | None) -> tuple[float, float]:
+    """
+    Convert passed in timeout values to floats.
+
+    attempt will use operation value if None, or if larger than operation.
+
+    Will call _validate_timeouts on the outputs, and raise ValueError if the
+    resulting timeouts are invalid.
+
+    Args:
+        operation: The timeout value to use for the entire operation, in seconds.
+        attempt: The timeout value to use for each attempt, in seconds.
+    Returns:
+        tuple[float, float]: A tuple of (operation_timeout, attempt_timeout)
+    """
     if attempt is None:
         # no timeout specified, use operation timeout for both
-        final_attempt = final_operation
+        final_attempt = operation
     else:
         # cap attempt timeout at operation timeout
-        final_attempt = min(attempt, final_operation) if final_operation else attempt
+        final_attempt = min(attempt, operation) if operation else attempt
 
-    _validate_timeouts(final_operation, final_attempt, allow_none=False)
-    return final_operation, final_attempt
+    _validate_timeouts(operation, final_attempt, allow_none=False)
+    return operation, final_attempt
 
 
 def _validate_timeouts(

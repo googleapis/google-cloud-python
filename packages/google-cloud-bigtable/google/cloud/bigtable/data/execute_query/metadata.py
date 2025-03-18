@@ -299,14 +299,6 @@ class SqlType:
 
 class Metadata:
     """
-    Base class for metadata returned by the ExecuteQuery operation.
-    """
-
-    pass
-
-
-class ProtoMetadata(Metadata):
-    """
     Metadata class for the ExecuteQuery operation.
 
     Args:
@@ -335,7 +327,7 @@ class ProtoMetadata(Metadata):
     def __init__(
         self, columns: Optional[List[Tuple[Optional[str], SqlType.Type]]] = None
     ):
-        self._columns: List[ProtoMetadata.Column] = []
+        self._columns: List[Metadata.Column] = []
         self._column_indexes: Dict[str, List[int]] = defaultdict(list)
         self._duplicate_names: Set[str] = set()
 
@@ -345,7 +337,7 @@ class ProtoMetadata(Metadata):
                     if column_name in self._column_indexes:
                         self._duplicate_names.add(column_name)
                     self._column_indexes[column_name].append(len(self._columns))
-                self._columns.append(ProtoMetadata.Column(column_name, column_type))
+                self._columns.append(Metadata.Column(column_name, column_type))
 
     def __getitem__(self, index_or_name: Union[str, int]) -> Column:
         if isinstance(index_or_name, str):
@@ -381,7 +373,7 @@ def _pb_metadata_to_metadata_types(
             fields.append(
                 (column_metadata.name, _pb_type_to_metadata_type(column_metadata.type))
             )
-        return ProtoMetadata(fields)
+        return Metadata(fields)
     raise ValueError("Invalid ResultSetMetadata object received.")
 
 

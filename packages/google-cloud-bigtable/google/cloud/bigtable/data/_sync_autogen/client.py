@@ -26,9 +26,13 @@ import concurrent.futures
 from functools import partial
 from grpc import Channel
 from google.cloud.bigtable.data.execute_query.values import ExecuteQueryValueType
-from google.cloud.bigtable.data.execute_query.metadata import SqlType
+from google.cloud.bigtable.data.execute_query.metadata import (
+    SqlType,
+    _pb_metadata_to_metadata_types,
+)
 from google.cloud.bigtable.data.execute_query._parameters_formatting import (
     _format_execute_query_params,
+    _to_param_types,
 )
 from google.cloud.bigtable_v2.services.bigtable.transports.base import (
     DEFAULT_CLIENT_INFO,
@@ -48,7 +52,7 @@ from google.cloud.bigtable.data.row import Row
 from google.cloud.bigtable.data.read_rows_query import ReadRowsQuery
 from google.cloud.bigtable.data.exceptions import FailedQueryShardError
 from google.cloud.bigtable.data.exceptions import ShardedReadRowsExceptionGroup
-from google.cloud.bigtable.data._helpers import TABLE_DEFAULT
+from google.cloud.bigtable.data._helpers import TABLE_DEFAULT, _align_timeouts
 from google.cloud.bigtable.data._helpers import _WarmedInstanceKey
 from google.cloud.bigtable.data._helpers import _CONCURRENCY_LIMIT
 from google.cloud.bigtable.data._helpers import _retry_exception_factory
@@ -404,12 +408,22 @@ class BigtableDataClient(ClientWithProject):
             ServiceUnavailable,
             Aborted,
         ),
+        prepare_operation_timeout: float = 60,
+        prepare_attempt_timeout: float | None = 20,
+        prepare_retryable_errors: Sequence[type[Exception]] = (
+            DeadlineExceeded,
+            ServiceUnavailable,
+        ),
     ) -> "ExecuteQueryIterator":
         """Executes an SQL query on an instance.
         Returns an iterator to asynchronously stream back columns from selected rows.
 
         Failed requests within operation_timeout will be retried based on the
         retryable_errors list until operation_timeout is reached.
+
+        Note that this makes two requests, one to ``PrepareQuery`` and one to ``ExecuteQuery``.
+        These have separate retry configurations. ``ExecuteQuery`` is where the bulk of the
+        work happens.
 
         Args:
             query: Query to be run on Bigtable instance. The query can use ``@param``
@@ -427,16 +441,26 @@ class BigtableDataClient(ClientWithProject):
                 an empty dict).
             app_profile_id: The app profile to associate with requests.
                 https://cloud.google.com/bigtable/docs/app-profiles
-            operation_timeout: the time budget for the entire operation, in seconds.
+            operation_timeout: the time budget for the entire executeQuery operation, in seconds.
                 Failed requests will be retried within the budget.
                 Defaults to 600 seconds.
-            attempt_timeout: the time budget for an individual network request, in seconds.
+            attempt_timeout: the time budget for an individual executeQuery network request, in seconds.
                 If it takes longer than this time to complete, the request will be cancelled with
                 a DeadlineExceeded exception, and a retry will be attempted.
                 Defaults to the 20 seconds.
                 If None, defaults to operation_timeout.
-            retryable_errors: a list of errors that will be retried if encountered.
+            retryable_errors: a list of errors that will be retried if encountered during executeQuery.
                 Defaults to 4 (DeadlineExceeded), 14 (ServiceUnavailable), and 10 (Aborted)
+            prepare_operation_timeout: the time budget for the entire prepareQuery operation, in seconds.
+                Failed requests will be retried within the budget.
+                Defaults to 60 seconds.
+            prepare_attempt_timeout: the time budget for an individual prepareQuery network request, in seconds.
+                If it takes longer than this time to complete, the request will be cancelled with
+                a DeadlineExceeded exception, and a retry will be attempted.
+                Defaults to the 20 seconds.
+                If None, defaults to prepare_operation_timeout.
+            prepare_retryable_errors: a list of errors that will be retried if encountered during prepareQuery.
+                Defaults to 4 (DeadlineExceeded) and 14 (ServiceUnavailable)
         Returns:
             ExecuteQueryIterator: an asynchronous iterator that yields rows returned by the query
         Raises:
@@ -447,25 +471,53 @@ class BigtableDataClient(ClientWithProject):
             google.cloud.bigtable.data.exceptions.ParameterTypeInferenceFailed: Raised if
                 a parameter is passed without an explicit type, and the type cannot be infered
         """
-        warnings.warn(
-            "ExecuteQuery is in preview and may change in the future.",
-            category=RuntimeWarning,
+        instance_name = self._gapic_client.instance_path(self.project, instance_id)
+        converted_param_types = _to_param_types(parameters, parameter_types)
+        prepare_request = {
+            "instance_name": instance_name,
+            "query": query,
+            "app_profile_id": app_profile_id,
+            "param_types": converted_param_types,
+            "proto_format": {},
+        }
+        prepare_predicate = retries.if_exception_type(
+            *[_get_error_type(e) for e in prepare_retryable_errors]
         )
+        (prepare_operation_timeout, prepare_attempt_timeout) = _align_timeouts(
+            prepare_operation_timeout, prepare_attempt_timeout
+        )
+        prepare_sleep_generator = retries.exponential_sleep_generator(0.01, 2, 60)
+        target = partial(
+            self._gapic_client.prepare_query,
+            request=prepare_request,
+            timeout=prepare_attempt_timeout,
+            retry=None,
+        )
+        prepare_result = CrossSync._Sync_Impl.retry_target(
+            target,
+            prepare_predicate,
+            prepare_sleep_generator,
+            prepare_operation_timeout,
+            exception_factory=_retry_exception_factory,
+        )
+        prepare_metadata = _pb_metadata_to_metadata_types(prepare_result.metadata)
         retryable_excs = [_get_error_type(e) for e in retryable_errors]
         pb_params = _format_execute_query_params(parameters, parameter_types)
-        instance_name = self._gapic_client.instance_path(self.project, instance_id)
         request_body = {
             "instance_name": instance_name,
             "app_profile_id": app_profile_id,
-            "query": query,
+            "prepared_query": prepare_result.prepared_query,
             "params": pb_params,
-            "proto_format": {},
         }
+        (operation_timeout, attempt_timeout) = _align_timeouts(
+            operation_timeout, attempt_timeout
+        )
         return CrossSync._Sync_Impl.ExecuteQueryIterator(
             self,
             instance_id,
             app_profile_id,
             request_body,
+            prepare_metadata,
             attempt_timeout,
             operation_timeout,
             retryable_excs=retryable_excs,

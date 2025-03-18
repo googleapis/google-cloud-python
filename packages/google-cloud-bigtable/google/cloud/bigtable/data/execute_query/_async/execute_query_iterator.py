@@ -29,15 +29,19 @@ from google.cloud.bigtable.data._helpers import (
     _attempt_timeout_generator,
     _retry_exception_factory,
 )
-from google.cloud.bigtable.data.exceptions import InvalidExecuteQueryResponse
+from google.cloud.bigtable.data.exceptions import (
+    EarlyMetadataCallError,
+    InvalidExecuteQueryResponse,
+)
 from google.cloud.bigtable.data.execute_query.values import QueryResultRow
-from google.cloud.bigtable.data.execute_query.metadata import Metadata, ProtoMetadata
+from google.cloud.bigtable.data.execute_query.metadata import Metadata
 from google.cloud.bigtable.data.execute_query._reader import (
     _QueryResultRowReader,
     _Reader,
 )
 from google.cloud.bigtable_v2.types.bigtable import (
     ExecuteQueryRequest as ExecuteQueryRequestPB,
+    ExecuteQueryResponse,
 )
 
 from google.cloud.bigtable.data._cross_sync import CrossSync
@@ -51,6 +55,14 @@ if TYPE_CHECKING:
 __CROSS_SYNC_OUTPUT__ = (
     "google.cloud.bigtable.data.execute_query._sync_autogen.execute_query_iterator"
 )
+
+
+def _has_resume_token(response: ExecuteQueryResponse) -> bool:
+    response_pb = response._pb  # proto-plus attribute retrieval is slow.
+    if response_pb.HasField("results"):
+        results = response_pb.results
+        return len(results.resume_token) > 0
+    return False
 
 
 @CrossSync.convert_class(sync_name="ExecuteQueryIterator")
@@ -70,6 +82,7 @@ class ExecuteQueryIteratorAsync:
         instance_id: str,
         app_profile_id: Optional[str],
         request_body: Dict[str, Any],
+        prepare_metadata: Metadata,
         attempt_timeout: float | None,
         operation_timeout: float,
         req_metadata: Sequence[Tuple[str, str]] = (),
@@ -77,6 +90,9 @@ class ExecuteQueryIteratorAsync:
     ) -> None:
         """
         Collects responses from ExecuteQuery requests and parses them into QueryResultRows.
+
+        **Please Note** this is not meant to be constructed directly by applications. It should always
+        be created via the client. The constructor is subject to change.
 
         It is **not thread-safe**. It should not be used by multiple {TASK_OR_THREAD}.
 
@@ -93,13 +109,17 @@ class ExecuteQueryIteratorAsync:
             retryable_excs: a list of errors that will be retried if encountered.
         Raises:
             {NO_LOOP}
+            :class:`ValueError <exceptions.ValueError>` as a safeguard if data is processed in an unexpected state
         """
         self._table_name = None
         self._app_profile_id = app_profile_id
         self._client = client
         self._instance_id = instance_id
-        self._byte_cursor = _ByteCursor[ProtoMetadata]()
-        self._reader: _Reader[QueryResultRow] = _QueryResultRowReader(self._byte_cursor)
+        self._prepare_metadata = prepare_metadata
+        self._final_metadata = None
+        self._byte_cursor = _ByteCursor()
+        self._reader: _Reader[QueryResultRow] = _QueryResultRowReader()
+        self.has_received_token = False
         self._result_generator = self._next_impl()
         self._register_instance_task = None
         self._is_closed = False
@@ -118,7 +138,7 @@ class ExecuteQueryIteratorAsync:
         try:
             self._register_instance_task = CrossSync.create_task(
                 self._client._register_instance,
-                instance_id,
+                self._instance_id,
                 self,
                 sync_executor=self._client._executor,
             )
@@ -161,31 +181,28 @@ class ExecuteQueryIteratorAsync:
             retry=None,
         )
 
-    @CrossSync.convert(replace_symbols={"__anext__": "__next__"})
-    async def _fetch_metadata(self) -> None:
-        """
-        If called before the first response was recieved, the first response
-        is retrieved as part of this call.
-        """
-        if self._byte_cursor.metadata is None:
-            metadata_msg = await self._stream.__anext__()
-            self._byte_cursor.consume_metadata(metadata_msg)
-
     @CrossSync.convert
     async def _next_impl(self) -> CrossSync.Iterator[QueryResultRow]:
         """
         Generator wrapping the response stream which parses the stream results
         and returns full `QueryResultRow`s.
         """
-        await self._fetch_metadata()
-
         async for response in self._stream:
             try:
-                bytes_to_parse = self._byte_cursor.consume(response)
-                if bytes_to_parse is None:
-                    continue
+                # we've received a resume token, so we can finalize the metadata
+                if self._final_metadata is None and _has_resume_token(response):
+                    self._finalize_metadata()
 
-                results = self._reader.consume(bytes_to_parse)
+                batches_to_parse = self._byte_cursor.consume(response)
+                if not batches_to_parse:
+                    continue
+                # metadata must be set at this point since there must be a resume_token
+                # for byte_cursor to yield data
+                if not self.metadata:
+                    raise ValueError(
+                        "Error parsing response before finalizing metadata"
+                    )
+                results = self._reader.consume(batches_to_parse, self.metadata)
                 if results is None:
                     continue
 
@@ -196,10 +213,19 @@ class ExecuteQueryIteratorAsync:
 
             for result in results:
                 yield result
+        # this means the stream has finished with no responses. In that case we know the
+        # latest_prepare_reponses was used successfully so we can finalize the metadata
+        if self._final_metadata is None:
+            self._finalize_metadata()
         await self.close()
 
     @CrossSync.convert(sync_name="__next__", replace_symbols={"__anext__": "__next__"})
     async def __anext__(self) -> QueryResultRow:
+        """
+        Yields QueryResultRows representing the results of the query.
+
+        :raises: :class:`ValueError <exceptions.ValueError>` as a safeguard if data is processed in an unexpected state
+        """
         if self._is_closed:
             raise CrossSync.StopIteration
         return await self._result_generator.__anext__()
@@ -209,28 +235,56 @@ class ExecuteQueryIteratorAsync:
         return self
 
     @CrossSync.convert
-    async def metadata(self) -> Optional[Metadata]:
+    def _finalize_metadata(self) -> None:
         """
-        Returns query metadata from the server or None if the iterator was
-        explicitly closed.
+        Sets _final_metadata to the metadata of the latest prepare_response.
+        The iterator should call this after either the first resume token is received or the
+        stream completes succesfully with no responses.
+
+        This can't be set on init because the metadata will be able to change due to plan refresh.
+        Plan refresh isn't implemented yet, but we want functionality to stay the same when it is.
+
+        For example the following scenario for query "SELECT * FROM table":
+          - Make a request, table has one column family 'cf'
+          - Return an incomplete batch
+          - request fails with transient error
+          - Meanwhile the table has had a second column family added 'cf2'
+          - Retry the request, get an error indicating the `prepared_query` has expired
+          - Refresh the prepared_query and retry the request, the new prepared_query
+            contains both 'cf' & 'cf2'
+          - It sends a new incomplete batch and resets the old outdated batch
+          - It send the next chunk with a checksum and resume_token, closing the batch.
+        In this we need to use the updated schema from the refreshed prepare request.
         """
-        if self._is_closed:
-            return None
-        # Metadata should be present in the first response in a stream.
-        if self._byte_cursor.metadata is None:
-            try:
-                await self._fetch_metadata()
-            except CrossSync.StopIteration:
-                return None
-        return self._byte_cursor.metadata
+        self._final_metadata = self._prepare_metadata
+
+    @property
+    def metadata(self) -> Metadata:
+        """
+        Returns query metadata from the server or None if the iterator has been closed
+        or if metadata has not been set yet.
+
+        Metadata will not be set until the first row has been yielded or response with no rows
+        completes.
+
+        raises: :class:`EarlyMetadataCallError` when called before the first row has been returned
+        or the iterator has completed with no rows in the response.
+        """
+        if not self._final_metadata:
+            raise EarlyMetadataCallError()
+        return self._final_metadata
 
     @CrossSync.convert
     async def close(self) -> None:
         """
         Cancel all background tasks. Should be called all rows were processed.
+
+        :raises: :class:`ValueError <exceptions.ValueError>` if called in an invalid state
         """
         if self._is_closed:
             return
+        if not self._byte_cursor.empty():
+            raise ValueError("Unexpected buffered data at end of executeQuery reqest")
         self._is_closed = True
         if self._register_instance_task is not None:
             self._register_instance_task.cancel()
