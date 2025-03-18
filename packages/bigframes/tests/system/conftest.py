@@ -91,9 +91,12 @@ def gcs_folder(gcs_client: storage.Client):
     prefix = prefixer.create_prefix()
     path = f"gs://{bucket}/{prefix}/"
     yield path
-    for blob in gcs_client.list_blobs(bucket, prefix=prefix):
-        blob = typing.cast(storage.Blob, blob)
-        blob.delete()
+    try:
+        for blob in gcs_client.list_blobs(bucket, prefix=prefix):
+            blob = typing.cast(storage.Blob, blob)
+            blob.delete()
+    except Exception as exc:
+        traceback.print_exception(type(exc), exc, None)
 
 
 @pytest.fixture(scope="session")
