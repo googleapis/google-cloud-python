@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-cloud-bigtable/#history
 
+## [2.30.0](https://github.com/googleapis/python-bigtable/compare/v2.29.0...v2.30.0) (2025-03-18)
+
+
+### Features
+
+* Update ExecuteQuery to use Prepare ([#1100](https://github.com/googleapis/python-bigtable/issues/1100)) ([8a7abc1](https://github.com/googleapis/python-bigtable/commit/8a7abc1e9c34a9122b2d648e8a358a7097ed3a5d))
+
+
+### Bug Fixes
+
+* Allow protobuf 6.x ([#1092](https://github.com/googleapis/python-bigtable/issues/1092)) ([1015fa8](https://github.com/googleapis/python-bigtable/commit/1015fa83c505487f09820e3a37f76690bd00ab5d))
+* Remove setup.cfg configuration for creating universal wheels ([#1097](https://github.com/googleapis/python-bigtable/issues/1097)) ([95f4b82](https://github.com/googleapis/python-bigtable/commit/95f4b8233cba2a18633e64c5e0bc177e23767a83))
+
 ## [2.29.0](https://github.com/googleapis/python-bigtable/compare/v2.28.1...v2.29.0) (2025-02-26)
 
 
