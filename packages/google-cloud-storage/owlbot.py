@@ -26,12 +26,6 @@ common = gcp.CommonTemplates()
 templated_files = common.py_library(
     cov_level=100,
     split_system_tests=True,
-    system_test_external_dependencies=[
-        "google-cloud-iam",
-        "google-cloud-pubsub < 2.0.0",
-        # See: https://github.com/googleapis/python-storage/issues/226
-        "google-cloud-kms < 2.0dev",
-    ],
     intersphinx_dependencies={
         # python-requests url temporary change related to
         # https://github.com/psf/requests/issues/6140#issuecomment-1135071992
@@ -48,7 +42,8 @@ s.move(
         "README.rst",
         ".kokoro/continuous/continuous.cfg",
         ".kokoro/presubmit/system-3.8.cfg",
-        ".kokoro/samples/python3.6", # remove python 3.6 support
+        ".kokoro/presubmit/prerelease-deps.cfg",
+        ".kokoro/continuous/prerelease-deps.cfg",
         ".github/blunderbuss.yml", # blunderbuss assignment to python squad
         ".github/workflows", # exclude gh actions as credentials are needed for tests
         ".github/release-please.yml", # special support for a python2 branch in this repo
@@ -83,12 +78,6 @@ s.replace(
     "omit =",
     """omit =
   .nox/*""")
-
-s.replace(
-    ".kokoro/release/common.cfg",
-    'value: "releasetool-publish-reporter-app,releasetool-publish-reporter-googleapis-installation,releasetool-publish-reporter-pem"',
-    'value: "releasetool-publish-reporter-app,releasetool-publish-reporter-googleapis-installation,releasetool-publish-reporter-pem, client-library-test-universe-domain-credential"'
-)
 
 python.py_samples(skip_readmes=True)
 

@@ -59,14 +59,14 @@ def topic_path(storage_client, topic_name):
 
 @pytest.fixture(scope="session")
 def notification_topic(storage_client, publisher_client, topic_path, no_mtls):
-    _helpers.retry_429(publisher_client.create_topic)(topic_path)
-    policy = publisher_client.get_iam_policy(topic_path)
+    _helpers.retry_429(publisher_client.create_topic)(request={"name": topic_path})
+    policy = publisher_client.get_iam_policy(request={"resource": topic_path})
     binding = policy.bindings.add()
     binding.role = "roles/pubsub.publisher"
     binding.members.append(
         f"serviceAccount:{storage_client.get_service_account_email()}"
     )
-    publisher_client.set_iam_policy(topic_path, policy)
+    publisher_client.set_iam_policy(request={"resource": topic_path, "policy": policy})
 
 
 def test_notification_create_minimal(
