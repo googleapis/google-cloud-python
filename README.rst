@@ -571,12 +571,6 @@ Libraries
      - `API Issues <https://issuetracker.google.com/savedsearches/559757>`_
      - `File an API Issue <https://issuetracker.google.com/issues/new?component=187210>`_
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
-   * - `Resource Settings <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-resource-settings>`_
-     - stable
-     - |PyPI-google-cloud-resource-settings|
-     -
-     -
-     - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Retail <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-retail>`_
      - stable
      - |PyPI-google-cloud-retail|
@@ -1644,8 +1638,6 @@ Libraries
      :target: https://pypi.org/project/google-cloud-redis
 .. |PyPI-google-cloud-resource-manager| image:: https://img.shields.io/pypi/v/google-cloud-resource-manager.svg
      :target: https://pypi.org/project/google-cloud-resource-manager
-.. |PyPI-google-cloud-resource-settings| image:: https://img.shields.io/pypi/v/google-cloud-resource-settings.svg
-     :target: https://pypi.org/project/google-cloud-resource-settings
 .. |PyPI-google-cloud-retail| image:: https://img.shields.io/pypi/v/google-cloud-retail.svg
      :target: https://pypi.org/project/google-cloud-retail
 .. |PyPI-google-cloud-scheduler| image:: https://img.shields.io/pypi/v/google-cloud-scheduler.svg
