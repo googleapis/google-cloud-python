@@ -2260,7 +2260,7 @@ class NetworkingConfig(proto.Message):
     Attributes:
         connection_type (google.cloud.orchestration.airflow.service_v1.types.NetworkingConfig.ConnectionType):
             Optional. Indicates the user requested
-            specifc connection type between Tenant and
+            specific connection type between Tenant and
             Customer projects. You cannot set networking
             connection type in public IP environment.
     """
