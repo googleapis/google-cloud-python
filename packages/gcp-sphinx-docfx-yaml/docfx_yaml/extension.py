@@ -2167,7 +2167,7 @@ def build_finished(app, exception):
             {
                 "name": f"{app.env.library_shortname} APIs",
                 "items": [
-                    {"name": "Overview", "href": "summary_overview.md"},
+                    {"name": "API overview", "href": "summary_overview.md"},
                     {"name": "Classes", "href": "summary_class.yml"},
                     {"name": "Methods", "href": "summary_method.yml"},
                     {"name": "Properties and Attributes", "href": "summary_property.yml"},
