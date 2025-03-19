@@ -4698,7 +4698,7 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
 
         Returns:
             google.cloud.deploy_v1.services.cloud_deploy.pagers.ListRolloutsPager:
-                ListRolloutsResponse is the response object reutrned by
+                ListRolloutsResponse is the response object returned by
                 ListRollouts.
 
                 Iterating over this object will yield results and
