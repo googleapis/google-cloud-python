@@ -8316,7 +8316,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             Returns:
                 ~.cloud_deploy.ListRolloutsResponse:
-                    ListRolloutsResponse is the response object reutrned by
+                    ListRolloutsResponse is the response object returned by
                 ``ListRollouts``.
 
             """
