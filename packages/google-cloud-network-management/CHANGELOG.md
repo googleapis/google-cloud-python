@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.25.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-management-v1.25.2...google-cloud-network-management-v1.25.3) (2025-03-19)
+
+
+### Documentation
+
+* [google-cloud-network-management] Update comments for Connectivity Test ([#13669](https://github.com/googleapis/google-cloud-python/issues/13669)) ([9321997](https://github.com/googleapis/google-cloud-python/commit/932199775d19958b932b39b0178caaa5c83ad2ee))
+
 ## [1.25.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-management-v1.25.1...google-cloud-network-management-v1.25.2) (2025-03-15)
 
 

@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.28.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-recaptcha-enterprise-v1.28.0...google-cloud-recaptcha-enterprise-v1.28.1) (2025-03-19)
+
+
+### Documentation
+
+* [google-cloud-recaptcha-enterprise] fix typo in ([4247899](https://github.com/googleapis/google-cloud-python/commit/424789974b4aba88918035cc14e158839da931e8))
+
 ## [1.28.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-recaptcha-enterprise-v1.27.0...google-cloud-recaptcha-enterprise-v1.28.0) (2025-03-15)
 
 

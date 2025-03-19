@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-iam/#history
 
+## [2.18.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-iam-v2.18.2...google-cloud-iam-v2.18.3) (2025-03-19)
+
+
+### Documentation
+
+* Update suggested source of IAM samples ([#13666](https://github.com/googleapis/google-cloud-python/issues/13666)) ([9b5ba99](https://github.com/googleapis/google-cloud-python/commit/9b5ba99b6e8a0d4af6a8c3a9333e8a27a8a4a6c4))
+
 ## [2.18.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-iam-v2.18.1...google-cloud-iam-v2.18.2) (2025-03-15)
 
 
