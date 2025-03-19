@@ -149,18 +149,21 @@ async def retry_target(
 
     deadline = time.monotonic() + timeout if timeout is not None else None
     error_list: list[Exception] = []
+    sleep_iter = iter(sleep_generator)
 
-    for sleep in sleep_generator:
+    # continue trying until an attempt completes, or a terminal exception is raised in _retry_error_helper
+    # TODO: support max_attempts argument: https://github.com/googleapis/python-api-core/issues/535
+    while True:
         try:
             return await target()
         # pylint: disable=broad-except
         # This function explicitly must deal with broad exceptions.
         except Exception as exc:
             # defer to shared logic for handling errors
-            _retry_error_helper(
+            next_sleep = _retry_error_helper(
                 exc,
                 deadline,
-                sleep,
+                sleep_iter,
                 error_list,
                 predicate,
                 on_error,
@@ -168,9 +171,7 @@ async def retry_target(
                 timeout,
             )
             # if exception not raised, sleep before next attempt
-            await asyncio.sleep(sleep)
-
-    raise ValueError("Sleep generator stopped yielding sleep values.")
+            await asyncio.sleep(next_sleep)
 
 
 class AsyncRetry(_BaseRetry):

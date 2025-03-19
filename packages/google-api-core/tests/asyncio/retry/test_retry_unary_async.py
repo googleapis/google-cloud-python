@@ -136,9 +136,34 @@ async def test_retry_target_timeout_exceeded(monotonic, sleep, use_deadline_arg)
 @pytest.mark.asyncio
 async def test_retry_target_bad_sleep_generator():
     with pytest.raises(ValueError, match="Sleep generator"):
+        await retry_async.retry_target(mock.sentinel.target, lambda x: True, [], None)
+
+
+@mock.patch("asyncio.sleep", autospec=True)
+@pytest.mark.asyncio
+async def test_retry_target_dynamic_backoff(sleep):
+    """
+    sleep_generator should be iterated after on_error, to support dynamic backoff
+    """
+    sleep.side_effect = RuntimeError("stop after sleep")
+    # start with empty sleep generator; values are added after exception in push_sleep_value
+    sleep_values = []
+    exception = ValueError("trigger retry")
+    error_target = mock.Mock(side_effect=exception)
+    inserted_sleep = 99
+
+    def push_sleep_value(err):
+        sleep_values.append(inserted_sleep)
+
+    with pytest.raises(RuntimeError):
         await retry_async.retry_target(
-            mock.sentinel.target, mock.sentinel.predicate, [], None
+            error_target,
+            predicate=lambda x: True,
+            sleep_generator=sleep_values,
+            on_error=push_sleep_value,
         )
+    assert sleep.call_count == 1
+    sleep.assert_called_once_with(inserted_sleep)
 
 
 class TestAsyncRetry(Test_BaseRetry):

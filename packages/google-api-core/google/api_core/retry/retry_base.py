@@ -25,7 +25,7 @@ import random
 import time
 
 from enum import Enum
-from typing import Any, Callable, Optional, TYPE_CHECKING
+from typing import Any, Callable, Optional, Iterator, TYPE_CHECKING
 
 import requests.exceptions
 
@@ -174,7 +174,7 @@ def build_retry_error(
 def _retry_error_helper(
     exc: Exception,
     deadline: float | None,
-    next_sleep: float,
+    sleep_iterator: Iterator[float],
     error_list: list[Exception],
     predicate_fn: Callable[[Exception], bool],
     on_error_fn: Callable[[Exception], None] | None,
@@ -183,7 +183,7 @@ def _retry_error_helper(
         tuple[Exception, Exception | None],
     ],
     original_timeout: float | None,
-):
+) -> float:
     """
     Shared logic for handling an error for all retry implementations
 
@@ -194,13 +194,15 @@ def _retry_error_helper(
     Args:
        - exc: the exception that was raised
        - deadline: the deadline for the retry, calculated as a diff from time.monotonic()
-       - next_sleep: the next sleep interval
+       - sleep_iterator: iterator to draw the next backoff value from
        - error_list: the list of exceptions that have been raised so far
        - predicate_fn: takes `exc` and returns true if the operation should be retried
        - on_error_fn: callback to execute when a retryable error occurs
        - exc_factory_fn: callback used to build the exception to be raised on terminal failure
        - original_timeout_val: the original timeout value for the retry (in seconds),
            to be passed to the exception factory for building an error message
+    Returns:
+        - the sleep value chosen before the next attempt
     """
     error_list.append(exc)
     if not predicate_fn(exc):
@@ -212,6 +214,12 @@ def _retry_error_helper(
         raise final_exc from source_exc
     if on_error_fn is not None:
         on_error_fn(exc)
+    # next_sleep is fetched after the on_error callback, to allow clients
+    # to update sleep_iterator values dynamically in response to errors
+    try:
+        next_sleep = next(sleep_iterator)
+    except StopIteration:
+        raise ValueError("Sleep generator stopped yielding sleep values.") from exc
     if deadline is not None and time.monotonic() + next_sleep > deadline:
         final_exc, source_exc = exc_factory_fn(
             error_list,
@@ -222,6 +230,7 @@ def _retry_error_helper(
     _LOGGER.debug(
         "Retrying due to {}, sleeping {:.1f}s ...".format(error_list[-1], next_sleep)
     )
+    return next_sleep
 
 
 class _BaseRetry(object):

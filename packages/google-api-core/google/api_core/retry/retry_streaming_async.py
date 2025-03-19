@@ -109,9 +109,12 @@ async def retry_target_stream(
     deadline = time.monotonic() + timeout if timeout else None
     # keep track of retryable exceptions we encounter to pass in to exception_factory
     error_list: list[Exception] = []
+    sleep_iter = iter(sleep_generator)
     target_is_generator: bool | None = None
 
-    for sleep in sleep_generator:
+    # continue trying until an attempt completes, or a terminal exception is raised in _retry_error_helper
+    # TODO: support max_attempts argument: https://github.com/googleapis/python-api-core/issues/535
+    while True:
         # Start a new retry loop
         try:
             # Note: in the future, we can add a ResumptionStrategy object
@@ -174,10 +177,10 @@ async def retry_target_stream(
         # This function explicitly must deal with broad exceptions.
         except Exception as exc:
             # defer to shared logic for handling errors
-            _retry_error_helper(
+            next_sleep = _retry_error_helper(
                 exc,
                 deadline,
-                sleep,
+                sleep_iter,
                 error_list,
                 predicate,
                 on_error,
@@ -185,11 +188,11 @@ async def retry_target_stream(
                 timeout,
             )
             # if exception not raised, sleep before next attempt
-            await asyncio.sleep(sleep)
+            await asyncio.sleep(next_sleep)
+
         finally:
             if target_is_generator and target_iterator is not None:
                 await cast(AsyncGenerator["_Y", None], target_iterator).aclose()
-    raise ValueError("Sleep generator stopped yielding sleep values.")
 
 
 class AsyncStreamingRetry(_BaseRetry):

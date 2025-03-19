@@ -107,8 +107,11 @@ def retry_target_stream(
         time.monotonic() + timeout if timeout is not None else None
     )
     error_list: list[Exception] = []
+    sleep_iter = iter(sleep_generator)
 
-    for sleep in sleep_generator:
+    # continue trying until an attempt completes, or a terminal exception is raised in _retry_error_helper
+    # TODO: support max_attempts argument: https://github.com/googleapis/python-api-core/issues/535
+    while True:
         # Start a new retry loop
         try:
             # Note: in the future, we can add a ResumptionStrategy object
@@ -121,10 +124,10 @@ def retry_target_stream(
         # This function explicitly must deal with broad exceptions.
         except Exception as exc:
             # defer to shared logic for handling errors
-            _retry_error_helper(
+            next_sleep = _retry_error_helper(
                 exc,
                 deadline,
-                sleep,
+                sleep_iter,
                 error_list,
                 predicate,
                 on_error,
@@ -132,9 +135,7 @@ def retry_target_stream(
                 timeout,
             )
             # if exception not raised, sleep before next attempt
-            time.sleep(sleep)
-
-    raise ValueError("Sleep generator stopped yielding sleep values.")
+            time.sleep(next_sleep)
 
 
 class StreamingRetry(_BaseRetry):
