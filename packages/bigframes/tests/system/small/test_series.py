@@ -1543,6 +1543,23 @@ def test_indexing_using_selected_series(scalars_dfs):
     )
 
 
+@pytest.mark.parametrize(
+    ("indices"),
+    [
+        ([1, 3, 5]),
+        ([5, -3, -5, -6]),
+        ([-2, -4, -6]),
+    ],
+)
+def test_take(scalars_dfs, indices):
+    scalars_df, scalars_pandas_df = scalars_dfs
+
+    bf_result = scalars_df.take(indices).to_pandas()
+    pd_result = scalars_pandas_df.take(indices)
+
+    assert_pandas_df_equal(bf_result, pd_result)
+
+
 def test_nested_filter(scalars_dfs):
     scalars_df, scalars_pandas_df = scalars_dfs
     string_col = scalars_df["string_col"]

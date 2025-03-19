@@ -1652,6 +1652,13 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
     def add_suffix(self, suffix: str, axis: int | str | None = None) -> Series:
         return Series(self._get_block().add_suffix(suffix))
 
+    def take(
+        self, indices: typing.Sequence[int], axis: int | str | None = 0, **kwargs
+    ) -> Series:
+        if not utils.is_list_like(indices):
+            raise ValueError("indices should be a list-like object.")
+        return typing.cast(Series, self.iloc[indices])
+
     def filter(
         self,
         items: typing.Optional[typing.Iterable] = None,

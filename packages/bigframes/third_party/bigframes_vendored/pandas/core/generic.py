@@ -910,6 +910,29 @@ class NDFrame(indexing.IndexingMixin):
 
     notnull = notna
 
+    def take(self, indices, axis=0, **kwargs) -> NDFrame:
+        """Return the elements in the given positional indices along an axis.
+
+        This means that we are not indexing according to actual values in the index
+        attribute of the object. We are indexing according to the actual position of
+        the element in the object.
+
+        Args:
+            indices (list-like):
+                An array of ints indicating which positions to take.
+            axis ({0 or 'index', 1 or 'columns', None}, default 0):
+                The axis on which to select elements. 0 means that we are selecting rows,
+                1 means that we are selecting columns. For Series this parameter is
+                unused and defaults to 0.
+            **kwargs:
+                For compatibility with numpy.take(). Has no effect on the output.
+
+        Returns:
+            bigframes.pandas.DataFrame or bigframes.pandas.Series:
+                Same type as input object.
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
     def filter(
         self,
         items=None,

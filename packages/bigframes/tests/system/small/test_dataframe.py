@@ -807,6 +807,24 @@ def test_get_df_column_name_duplicate(scalars_dfs):
     pd.testing.assert_index_equal(bf_result.columns, pd_result.columns)
 
 
+@pytest.mark.parametrize(
+    ("indices", "axis"),
+    [
+        ([1, 3, 5], 0),
+        ([2, 4, 6], 1),
+        ([1, -3, -5, -6], "index"),
+        ([-2, -4, -6], "columns"),
+    ],
+)
+def test_take_df(scalars_dfs, indices, axis):
+    scalars_df, scalars_pandas_df = scalars_dfs
+
+    bf_result = scalars_df.take(indices, axis=axis).to_pandas()
+    pd_result = scalars_pandas_df.take(indices, axis=axis)
+
+    assert_pandas_df_equal(bf_result, pd_result)
+
+
 def test_filter_df(scalars_dfs):
     scalars_df, scalars_pandas_df = scalars_dfs
 
