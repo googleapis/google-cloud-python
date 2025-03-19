@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -445,6 +445,10 @@ class DlpServiceAsyncClient:
         this request, the system will automatically choose what
         detectors to run. By default this may be all types, but
         may change over time as detectors are updated.
+
+        Only the first frame of each multiframe image is
+        redacted. Metadata and other frames are omitted in the
+        response.
 
         .. code-block:: python
 
