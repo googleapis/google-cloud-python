@@ -1,2 +1,0 @@
-recursive-include google/cloud/oslogin *.py
-recursive-include google/cloud/oslogin_v1 *.py
