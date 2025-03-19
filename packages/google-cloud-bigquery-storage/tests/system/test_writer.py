@@ -150,6 +150,7 @@ def test_append_rows_with_proto3_got_response_on_failure(append_rows_stream):
 
 def test_flaky_connection(project_id, dataset, bq_client, bqstorage_write_client):
     from google.api_core import exceptions
+
     from .conftest import _make_dataset
 
     # Create dataset, table and stream.
