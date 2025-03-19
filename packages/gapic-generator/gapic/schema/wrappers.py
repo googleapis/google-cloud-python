@@ -1499,11 +1499,14 @@ class Method:
         return getattr(self.method_pb, name)
 
     @property
-    def safe_name(self) -> str:
-        # Used to prevent collisions with python keywords at the client level
+    def client_method_name(self) -> str:
+        """Returns the name of the generated method name.
 
-        name = self.name
-        return name + "_" if name.lower() in keyword.kwlist else name
+        This is used to prevent collisions with Python keywords at the
+        client level, as well as prefix internal method names with underscore.
+        """
+        name = self.name + "_" if self.name.lower() in keyword.kwlist else self.name
+        return make_private(name) if self.is_internal else name
 
     @property
     def transport_safe_name(self) -> str:
@@ -1532,14 +1535,6 @@ class Method:
         return (
             self.output.is_extended_operation
             and self.options.Extensions[ex_ops_pb2.operation_polling_method]
-        )
-
-    @utils.cached_property
-    def name(self):
-        return (
-            make_private(self.method_pb.name)
-            if self.is_internal
-            else self.method_pb.name
         )
 
     @utils.cached_property
@@ -2435,17 +2430,10 @@ class Service:
             Service: A version of this `Service` with `Method` objects corresponding to methods
                 not in `public_methods` marked as internal.
         """
-
-        # Internal methods need to be keyed with underscore prefixed method names
-        # (e.g. google.Service.Method -> google.Service._Method) in order for
-        # samplegen to work properly.
         return dataclasses.replace(
             self,
             methods={
-                meth.name: meth
-                for meth in (
-                    meth.with_internal_methods(public_methods=public_methods)
-                    for meth in self.methods.values()
-                )
+                k: v.with_internal_methods(public_methods=public_methods)
+                for k, v in self.methods.items()
             },
         )

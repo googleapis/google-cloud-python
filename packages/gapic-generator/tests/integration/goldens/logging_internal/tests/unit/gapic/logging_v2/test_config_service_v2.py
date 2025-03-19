@@ -2940,7 +2940,7 @@ def test__list_views(request_type, transport: str = 'grpc'):
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._list_views),
+            type(client.transport.list_views),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = logging_config.ListViewsResponse(
@@ -2955,7 +2955,7 @@ def test__list_views(request_type, transport: str = 'grpc'):
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers._ListViewsPager)
+    assert isinstance(response, pagers.ListViewsPager)
     assert response.next_page_token == 'next_page_token_value'
 
 
@@ -2977,7 +2977,7 @@ def test__list_views_non_empty_request_with_auto_populated_field():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._list_views),
+            type(client.transport.list_views),
             '__call__') as call:
         call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client._list_views(request=request)
@@ -3002,12 +3002,12 @@ def test__list_views_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert client._transport._list_views in client._transport._wrapped_methods
+        assert client._transport.list_views in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
         mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
-        client._transport._wrapped_methods[client._transport._list_views] = mock_rpc
+        client._transport._wrapped_methods[client._transport.list_views] = mock_rpc
         request = {}
         client._list_views(request)
 
@@ -3035,12 +3035,12 @@ async def test__list_views_async_use_cached_wrapped_rpc(transport: str = "grpc_a
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert client._client._transport._list_views in client._client._transport._wrapped_methods
+        assert client._client._transport.list_views in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[client._client._transport._list_views] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.list_views] = mock_rpc
 
         request = {}
         await client._list_views(request)
@@ -3067,7 +3067,7 @@ async def test__list_views_async(transport: str = 'grpc_asyncio', request_type=l
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._list_views),
+            type(client.transport.list_views),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(logging_config.ListViewsResponse(
@@ -3082,7 +3082,7 @@ async def test__list_views_async(transport: str = 'grpc_asyncio', request_type=l
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers._ListViewsAsyncPager)
+    assert isinstance(response, pagers.ListViewsAsyncPager)
     assert response.next_page_token == 'next_page_token_value'
 
 
@@ -3103,7 +3103,7 @@ def test__list_views_field_headers():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._list_views),
+            type(client.transport.list_views),
             '__call__') as call:
         call.return_value = logging_config.ListViewsResponse()
         client._list_views(request)
@@ -3135,7 +3135,7 @@ async def test__list_views_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._list_views),
+            type(client.transport.list_views),
             '__call__') as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(logging_config.ListViewsResponse())
         await client._list_views(request)
@@ -3160,7 +3160,7 @@ def test__list_views_flattened():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._list_views),
+            type(client.transport.list_views),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = logging_config.ListViewsResponse()
@@ -3200,7 +3200,7 @@ async def test__list_views_flattened_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._list_views),
+            type(client.transport.list_views),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = logging_config.ListViewsResponse()
@@ -3243,7 +3243,7 @@ def test__list_views_pager(transport_name: str = "grpc"):
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._list_views),
+            type(client.transport.list_views),
             '__call__') as call:
         # Set the response to a series of pages.
         call.side_effect = (
@@ -3300,7 +3300,7 @@ def test__list_views_pages(transport_name: str = "grpc"):
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._list_views),
+            type(client.transport.list_views),
             '__call__') as call:
         # Set the response to a series of pages.
         call.side_effect = (
@@ -3342,7 +3342,7 @@ async def test__list_views_async_pager():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._list_views),
+            type(client.transport.list_views),
             '__call__', new_callable=mock.AsyncMock) as call:
         # Set the response to a series of pages.
         call.side_effect = (
@@ -3391,7 +3391,7 @@ async def test__list_views_async_pages():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._list_views),
+            type(client.transport.list_views),
             '__call__', new_callable=mock.AsyncMock) as call:
         # Set the response to a series of pages.
         call.side_effect = (
@@ -3447,7 +3447,7 @@ def test__get_view(request_type, transport: str = 'grpc'):
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._get_view),
+            type(client.transport.get_view),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = logging_config.LogView(
@@ -3487,7 +3487,7 @@ def test__get_view_non_empty_request_with_auto_populated_field():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._get_view),
+            type(client.transport.get_view),
             '__call__') as call:
         call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client._get_view(request=request)
@@ -3511,12 +3511,12 @@ def test__get_view_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert client._transport._get_view in client._transport._wrapped_methods
+        assert client._transport.get_view in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
         mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
-        client._transport._wrapped_methods[client._transport._get_view] = mock_rpc
+        client._transport._wrapped_methods[client._transport.get_view] = mock_rpc
         request = {}
         client._get_view(request)
 
@@ -3544,12 +3544,12 @@ async def test__get_view_async_use_cached_wrapped_rpc(transport: str = "grpc_asy
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert client._client._transport._get_view in client._client._transport._wrapped_methods
+        assert client._client._transport.get_view in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[client._client._transport._get_view] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.get_view] = mock_rpc
 
         request = {}
         await client._get_view(request)
@@ -3576,7 +3576,7 @@ async def test__get_view_async(transport: str = 'grpc_asyncio', request_type=log
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._get_view),
+            type(client.transport.get_view),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(logging_config.LogView(
@@ -3616,7 +3616,7 @@ def test__get_view_field_headers():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._get_view),
+            type(client.transport.get_view),
             '__call__') as call:
         call.return_value = logging_config.LogView()
         client._get_view(request)
@@ -3648,7 +3648,7 @@ async def test__get_view_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._get_view),
+            type(client.transport.get_view),
             '__call__') as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(logging_config.LogView())
         await client._get_view(request)
@@ -3682,7 +3682,7 @@ def test__create_view(request_type, transport: str = 'grpc'):
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._create_view),
+            type(client.transport.create_view),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = logging_config.LogView(
@@ -3723,7 +3723,7 @@ def test__create_view_non_empty_request_with_auto_populated_field():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._create_view),
+            type(client.transport.create_view),
             '__call__') as call:
         call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client._create_view(request=request)
@@ -3748,12 +3748,12 @@ def test__create_view_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert client._transport._create_view in client._transport._wrapped_methods
+        assert client._transport.create_view in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
         mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
-        client._transport._wrapped_methods[client._transport._create_view] = mock_rpc
+        client._transport._wrapped_methods[client._transport.create_view] = mock_rpc
         request = {}
         client._create_view(request)
 
@@ -3781,12 +3781,12 @@ async def test__create_view_async_use_cached_wrapped_rpc(transport: str = "grpc_
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert client._client._transport._create_view in client._client._transport._wrapped_methods
+        assert client._client._transport.create_view in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[client._client._transport._create_view] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.create_view] = mock_rpc
 
         request = {}
         await client._create_view(request)
@@ -3813,7 +3813,7 @@ async def test__create_view_async(transport: str = 'grpc_asyncio', request_type=
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._create_view),
+            type(client.transport.create_view),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(logging_config.LogView(
@@ -3853,7 +3853,7 @@ def test__create_view_field_headers():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._create_view),
+            type(client.transport.create_view),
             '__call__') as call:
         call.return_value = logging_config.LogView()
         client._create_view(request)
@@ -3885,7 +3885,7 @@ async def test__create_view_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._create_view),
+            type(client.transport.create_view),
             '__call__') as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(logging_config.LogView())
         await client._create_view(request)
@@ -3919,7 +3919,7 @@ def test__update_view(request_type, transport: str = 'grpc'):
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._update_view),
+            type(client.transport.update_view),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = logging_config.LogView(
@@ -3959,7 +3959,7 @@ def test__update_view_non_empty_request_with_auto_populated_field():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._update_view),
+            type(client.transport.update_view),
             '__call__') as call:
         call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client._update_view(request=request)
@@ -3983,12 +3983,12 @@ def test__update_view_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert client._transport._update_view in client._transport._wrapped_methods
+        assert client._transport.update_view in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
         mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
-        client._transport._wrapped_methods[client._transport._update_view] = mock_rpc
+        client._transport._wrapped_methods[client._transport.update_view] = mock_rpc
         request = {}
         client._update_view(request)
 
@@ -4016,12 +4016,12 @@ async def test__update_view_async_use_cached_wrapped_rpc(transport: str = "grpc_
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert client._client._transport._update_view in client._client._transport._wrapped_methods
+        assert client._client._transport.update_view in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[client._client._transport._update_view] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.update_view] = mock_rpc
 
         request = {}
         await client._update_view(request)
@@ -4048,7 +4048,7 @@ async def test__update_view_async(transport: str = 'grpc_asyncio', request_type=
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._update_view),
+            type(client.transport.update_view),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(logging_config.LogView(
@@ -4088,7 +4088,7 @@ def test__update_view_field_headers():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._update_view),
+            type(client.transport.update_view),
             '__call__') as call:
         call.return_value = logging_config.LogView()
         client._update_view(request)
@@ -4120,7 +4120,7 @@ async def test__update_view_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._update_view),
+            type(client.transport.update_view),
             '__call__') as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(logging_config.LogView())
         await client._update_view(request)
@@ -4154,7 +4154,7 @@ def test__delete_view(request_type, transport: str = 'grpc'):
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._delete_view),
+            type(client.transport.delete_view),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = None
@@ -4187,7 +4187,7 @@ def test__delete_view_non_empty_request_with_auto_populated_field():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._delete_view),
+            type(client.transport.delete_view),
             '__call__') as call:
         call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client._delete_view(request=request)
@@ -4211,12 +4211,12 @@ def test__delete_view_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert client._transport._delete_view in client._transport._wrapped_methods
+        assert client._transport.delete_view in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
         mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
-        client._transport._wrapped_methods[client._transport._delete_view] = mock_rpc
+        client._transport._wrapped_methods[client._transport.delete_view] = mock_rpc
         request = {}
         client._delete_view(request)
 
@@ -4244,12 +4244,12 @@ async def test__delete_view_async_use_cached_wrapped_rpc(transport: str = "grpc_
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert client._client._transport._delete_view in client._client._transport._wrapped_methods
+        assert client._client._transport.delete_view in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[client._client._transport._delete_view] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.delete_view] = mock_rpc
 
         request = {}
         await client._delete_view(request)
@@ -4276,7 +4276,7 @@ async def test__delete_view_async(transport: str = 'grpc_asyncio', request_type=
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._delete_view),
+            type(client.transport.delete_view),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
@@ -4309,7 +4309,7 @@ def test__delete_view_field_headers():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._delete_view),
+            type(client.transport.delete_view),
             '__call__') as call:
         call.return_value = None
         client._delete_view(request)
@@ -4341,7 +4341,7 @@ async def test__delete_view_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._delete_view),
+            type(client.transport.delete_view),
             '__call__') as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
         await client._delete_view(request)
@@ -4375,7 +4375,7 @@ def test__list_sinks(request_type, transport: str = 'grpc'):
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._list_sinks),
+            type(client.transport.list_sinks),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = logging_config.ListSinksResponse(
@@ -4390,7 +4390,7 @@ def test__list_sinks(request_type, transport: str = 'grpc'):
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers._ListSinksPager)
+    assert isinstance(response, pagers.ListSinksPager)
     assert response.next_page_token == 'next_page_token_value'
 
 
@@ -4412,7 +4412,7 @@ def test__list_sinks_non_empty_request_with_auto_populated_field():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._list_sinks),
+            type(client.transport.list_sinks),
             '__call__') as call:
         call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client._list_sinks(request=request)
@@ -4437,12 +4437,12 @@ def test__list_sinks_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert client._transport._list_sinks in client._transport._wrapped_methods
+        assert client._transport.list_sinks in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
         mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
-        client._transport._wrapped_methods[client._transport._list_sinks] = mock_rpc
+        client._transport._wrapped_methods[client._transport.list_sinks] = mock_rpc
         request = {}
         client._list_sinks(request)
 
@@ -4470,12 +4470,12 @@ async def test__list_sinks_async_use_cached_wrapped_rpc(transport: str = "grpc_a
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert client._client._transport._list_sinks in client._client._transport._wrapped_methods
+        assert client._client._transport.list_sinks in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[client._client._transport._list_sinks] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.list_sinks] = mock_rpc
 
         request = {}
         await client._list_sinks(request)
@@ -4502,7 +4502,7 @@ async def test__list_sinks_async(transport: str = 'grpc_asyncio', request_type=l
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._list_sinks),
+            type(client.transport.list_sinks),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(logging_config.ListSinksResponse(
@@ -4517,7 +4517,7 @@ async def test__list_sinks_async(transport: str = 'grpc_asyncio', request_type=l
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers._ListSinksAsyncPager)
+    assert isinstance(response, pagers.ListSinksAsyncPager)
     assert response.next_page_token == 'next_page_token_value'
 
 
@@ -4538,7 +4538,7 @@ def test__list_sinks_field_headers():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._list_sinks),
+            type(client.transport.list_sinks),
             '__call__') as call:
         call.return_value = logging_config.ListSinksResponse()
         client._list_sinks(request)
@@ -4570,7 +4570,7 @@ async def test__list_sinks_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._list_sinks),
+            type(client.transport.list_sinks),
             '__call__') as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(logging_config.ListSinksResponse())
         await client._list_sinks(request)
@@ -4595,7 +4595,7 @@ def test__list_sinks_flattened():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._list_sinks),
+            type(client.transport.list_sinks),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = logging_config.ListSinksResponse()
@@ -4635,7 +4635,7 @@ async def test__list_sinks_flattened_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._list_sinks),
+            type(client.transport.list_sinks),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = logging_config.ListSinksResponse()
@@ -4678,7 +4678,7 @@ def test__list_sinks_pager(transport_name: str = "grpc"):
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._list_sinks),
+            type(client.transport.list_sinks),
             '__call__') as call:
         # Set the response to a series of pages.
         call.side_effect = (
@@ -4735,7 +4735,7 @@ def test__list_sinks_pages(transport_name: str = "grpc"):
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._list_sinks),
+            type(client.transport.list_sinks),
             '__call__') as call:
         # Set the response to a series of pages.
         call.side_effect = (
@@ -4777,7 +4777,7 @@ async def test__list_sinks_async_pager():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._list_sinks),
+            type(client.transport.list_sinks),
             '__call__', new_callable=mock.AsyncMock) as call:
         # Set the response to a series of pages.
         call.side_effect = (
@@ -4826,7 +4826,7 @@ async def test__list_sinks_async_pages():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._list_sinks),
+            type(client.transport.list_sinks),
             '__call__', new_callable=mock.AsyncMock) as call:
         # Set the response to a series of pages.
         call.side_effect = (
@@ -4882,7 +4882,7 @@ def test__get_sink(request_type, transport: str = 'grpc'):
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._get_sink),
+            type(client.transport.get_sink),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = logging_config.LogSink(
@@ -4932,7 +4932,7 @@ def test__get_sink_non_empty_request_with_auto_populated_field():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._get_sink),
+            type(client.transport.get_sink),
             '__call__') as call:
         call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client._get_sink(request=request)
@@ -4956,12 +4956,12 @@ def test__get_sink_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert client._transport._get_sink in client._transport._wrapped_methods
+        assert client._transport.get_sink in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
         mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
-        client._transport._wrapped_methods[client._transport._get_sink] = mock_rpc
+        client._transport._wrapped_methods[client._transport.get_sink] = mock_rpc
         request = {}
         client._get_sink(request)
 
@@ -4989,12 +4989,12 @@ async def test__get_sink_async_use_cached_wrapped_rpc(transport: str = "grpc_asy
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert client._client._transport._get_sink in client._client._transport._wrapped_methods
+        assert client._client._transport.get_sink in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[client._client._transport._get_sink] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.get_sink] = mock_rpc
 
         request = {}
         await client._get_sink(request)
@@ -5021,7 +5021,7 @@ async def test__get_sink_async(transport: str = 'grpc_asyncio', request_type=log
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._get_sink),
+            type(client.transport.get_sink),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(logging_config.LogSink(
@@ -5071,7 +5071,7 @@ def test__get_sink_field_headers():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._get_sink),
+            type(client.transport.get_sink),
             '__call__') as call:
         call.return_value = logging_config.LogSink()
         client._get_sink(request)
@@ -5103,7 +5103,7 @@ async def test__get_sink_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._get_sink),
+            type(client.transport.get_sink),
             '__call__') as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(logging_config.LogSink())
         await client._get_sink(request)
@@ -5128,7 +5128,7 @@ def test__get_sink_flattened():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._get_sink),
+            type(client.transport.get_sink),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = logging_config.LogSink()
@@ -5168,7 +5168,7 @@ async def test__get_sink_flattened_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._get_sink),
+            type(client.transport.get_sink),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = logging_config.LogSink()
@@ -5219,7 +5219,7 @@ def test__create_sink(request_type, transport: str = 'grpc'):
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._create_sink),
+            type(client.transport.create_sink),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = logging_config.LogSink(
@@ -5269,7 +5269,7 @@ def test__create_sink_non_empty_request_with_auto_populated_field():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._create_sink),
+            type(client.transport.create_sink),
             '__call__') as call:
         call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client._create_sink(request=request)
@@ -5293,12 +5293,12 @@ def test__create_sink_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert client._transport._create_sink in client._transport._wrapped_methods
+        assert client._transport.create_sink in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
         mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
-        client._transport._wrapped_methods[client._transport._create_sink] = mock_rpc
+        client._transport._wrapped_methods[client._transport.create_sink] = mock_rpc
         request = {}
         client._create_sink(request)
 
@@ -5326,12 +5326,12 @@ async def test__create_sink_async_use_cached_wrapped_rpc(transport: str = "grpc_
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert client._client._transport._create_sink in client._client._transport._wrapped_methods
+        assert client._client._transport.create_sink in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[client._client._transport._create_sink] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.create_sink] = mock_rpc
 
         request = {}
         await client._create_sink(request)
@@ -5358,7 +5358,7 @@ async def test__create_sink_async(transport: str = 'grpc_asyncio', request_type=
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._create_sink),
+            type(client.transport.create_sink),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(logging_config.LogSink(
@@ -5408,7 +5408,7 @@ def test__create_sink_field_headers():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._create_sink),
+            type(client.transport.create_sink),
             '__call__') as call:
         call.return_value = logging_config.LogSink()
         client._create_sink(request)
@@ -5440,7 +5440,7 @@ async def test__create_sink_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._create_sink),
+            type(client.transport.create_sink),
             '__call__') as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(logging_config.LogSink())
         await client._create_sink(request)
@@ -5465,7 +5465,7 @@ def test__create_sink_flattened():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._create_sink),
+            type(client.transport.create_sink),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = logging_config.LogSink()
@@ -5510,7 +5510,7 @@ async def test__create_sink_flattened_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._create_sink),
+            type(client.transport.create_sink),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = logging_config.LogSink()
@@ -5566,7 +5566,7 @@ def test__update_sink(request_type, transport: str = 'grpc'):
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._update_sink),
+            type(client.transport.update_sink),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = logging_config.LogSink(
@@ -5616,7 +5616,7 @@ def test__update_sink_non_empty_request_with_auto_populated_field():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._update_sink),
+            type(client.transport.update_sink),
             '__call__') as call:
         call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client._update_sink(request=request)
@@ -5640,12 +5640,12 @@ def test__update_sink_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert client._transport._update_sink in client._transport._wrapped_methods
+        assert client._transport.update_sink in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
         mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
-        client._transport._wrapped_methods[client._transport._update_sink] = mock_rpc
+        client._transport._wrapped_methods[client._transport.update_sink] = mock_rpc
         request = {}
         client._update_sink(request)
 
@@ -5673,12 +5673,12 @@ async def test__update_sink_async_use_cached_wrapped_rpc(transport: str = "grpc_
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert client._client._transport._update_sink in client._client._transport._wrapped_methods
+        assert client._client._transport.update_sink in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[client._client._transport._update_sink] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.update_sink] = mock_rpc
 
         request = {}
         await client._update_sink(request)
@@ -5705,7 +5705,7 @@ async def test__update_sink_async(transport: str = 'grpc_asyncio', request_type=
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._update_sink),
+            type(client.transport.update_sink),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(logging_config.LogSink(
@@ -5755,7 +5755,7 @@ def test__update_sink_field_headers():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._update_sink),
+            type(client.transport.update_sink),
             '__call__') as call:
         call.return_value = logging_config.LogSink()
         client._update_sink(request)
@@ -5787,7 +5787,7 @@ async def test__update_sink_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._update_sink),
+            type(client.transport.update_sink),
             '__call__') as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(logging_config.LogSink())
         await client._update_sink(request)
@@ -5812,7 +5812,7 @@ def test__update_sink_flattened():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._update_sink),
+            type(client.transport.update_sink),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = logging_config.LogSink()
@@ -5862,7 +5862,7 @@ async def test__update_sink_flattened_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._update_sink),
+            type(client.transport.update_sink),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = logging_config.LogSink()
@@ -5923,7 +5923,7 @@ def test__delete_sink(request_type, transport: str = 'grpc'):
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._delete_sink),
+            type(client.transport.delete_sink),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = None
@@ -5956,7 +5956,7 @@ def test__delete_sink_non_empty_request_with_auto_populated_field():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._delete_sink),
+            type(client.transport.delete_sink),
             '__call__') as call:
         call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client._delete_sink(request=request)
@@ -5980,12 +5980,12 @@ def test__delete_sink_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert client._transport._delete_sink in client._transport._wrapped_methods
+        assert client._transport.delete_sink in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
         mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
-        client._transport._wrapped_methods[client._transport._delete_sink] = mock_rpc
+        client._transport._wrapped_methods[client._transport.delete_sink] = mock_rpc
         request = {}
         client._delete_sink(request)
 
@@ -6013,12 +6013,12 @@ async def test__delete_sink_async_use_cached_wrapped_rpc(transport: str = "grpc_
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert client._client._transport._delete_sink in client._client._transport._wrapped_methods
+        assert client._client._transport.delete_sink in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[client._client._transport._delete_sink] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.delete_sink] = mock_rpc
 
         request = {}
         await client._delete_sink(request)
@@ -6045,7 +6045,7 @@ async def test__delete_sink_async(transport: str = 'grpc_asyncio', request_type=
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._delete_sink),
+            type(client.transport.delete_sink),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
@@ -6078,7 +6078,7 @@ def test__delete_sink_field_headers():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._delete_sink),
+            type(client.transport.delete_sink),
             '__call__') as call:
         call.return_value = None
         client._delete_sink(request)
@@ -6110,7 +6110,7 @@ async def test__delete_sink_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._delete_sink),
+            type(client.transport.delete_sink),
             '__call__') as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
         await client._delete_sink(request)
@@ -6135,7 +6135,7 @@ def test__delete_sink_flattened():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._delete_sink),
+            type(client.transport.delete_sink),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = None
@@ -6175,7 +6175,7 @@ async def test__delete_sink_flattened_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._delete_sink),
+            type(client.transport.delete_sink),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = None
@@ -6226,7 +6226,7 @@ def test__create_link(request_type, transport: str = 'grpc'):
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._create_link),
+            type(client.transport.create_link),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name='operations/spam')
@@ -6260,7 +6260,7 @@ def test__create_link_non_empty_request_with_auto_populated_field():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._create_link),
+            type(client.transport.create_link),
             '__call__') as call:
         call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client._create_link(request=request)
@@ -6285,12 +6285,12 @@ def test__create_link_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert client._transport._create_link in client._transport._wrapped_methods
+        assert client._transport.create_link in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
         mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
-        client._transport._wrapped_methods[client._transport._create_link] = mock_rpc
+        client._transport._wrapped_methods[client._transport.create_link] = mock_rpc
         request = {}
         client._create_link(request)
 
@@ -6323,12 +6323,12 @@ async def test__create_link_async_use_cached_wrapped_rpc(transport: str = "grpc_
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert client._client._transport._create_link in client._client._transport._wrapped_methods
+        assert client._client._transport.create_link in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[client._client._transport._create_link] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.create_link] = mock_rpc
 
         request = {}
         await client._create_link(request)
@@ -6360,7 +6360,7 @@ async def test__create_link_async(transport: str = 'grpc_asyncio', request_type=
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._create_link),
+            type(client.transport.create_link),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
@@ -6395,7 +6395,7 @@ def test__create_link_field_headers():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._create_link),
+            type(client.transport.create_link),
             '__call__') as call:
         call.return_value = operations_pb2.Operation(name='operations/op')
         client._create_link(request)
@@ -6427,7 +6427,7 @@ async def test__create_link_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._create_link),
+            type(client.transport.create_link),
             '__call__') as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name='operations/op'))
         await client._create_link(request)
@@ -6452,7 +6452,7 @@ def test__create_link_flattened():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._create_link),
+            type(client.transport.create_link),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name='operations/op')
@@ -6502,7 +6502,7 @@ async def test__create_link_flattened_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._create_link),
+            type(client.transport.create_link),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name='operations/op')
@@ -6565,7 +6565,7 @@ def test__delete_link(request_type, transport: str = 'grpc'):
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._delete_link),
+            type(client.transport.delete_link),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name='operations/spam')
@@ -6598,7 +6598,7 @@ def test__delete_link_non_empty_request_with_auto_populated_field():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._delete_link),
+            type(client.transport.delete_link),
             '__call__') as call:
         call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client._delete_link(request=request)
@@ -6622,12 +6622,12 @@ def test__delete_link_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert client._transport._delete_link in client._transport._wrapped_methods
+        assert client._transport.delete_link in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
         mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
-        client._transport._wrapped_methods[client._transport._delete_link] = mock_rpc
+        client._transport._wrapped_methods[client._transport.delete_link] = mock_rpc
         request = {}
         client._delete_link(request)
 
@@ -6660,12 +6660,12 @@ async def test__delete_link_async_use_cached_wrapped_rpc(transport: str = "grpc_
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert client._client._transport._delete_link in client._client._transport._wrapped_methods
+        assert client._client._transport.delete_link in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[client._client._transport._delete_link] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.delete_link] = mock_rpc
 
         request = {}
         await client._delete_link(request)
@@ -6697,7 +6697,7 @@ async def test__delete_link_async(transport: str = 'grpc_asyncio', request_type=
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._delete_link),
+            type(client.transport.delete_link),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
@@ -6732,7 +6732,7 @@ def test__delete_link_field_headers():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._delete_link),
+            type(client.transport.delete_link),
             '__call__') as call:
         call.return_value = operations_pb2.Operation(name='operations/op')
         client._delete_link(request)
@@ -6764,7 +6764,7 @@ async def test__delete_link_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._delete_link),
+            type(client.transport.delete_link),
             '__call__') as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name='operations/op'))
         await client._delete_link(request)
@@ -6789,7 +6789,7 @@ def test__delete_link_flattened():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._delete_link),
+            type(client.transport.delete_link),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name='operations/op')
@@ -6829,7 +6829,7 @@ async def test__delete_link_flattened_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._delete_link),
+            type(client.transport.delete_link),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name='operations/op')
@@ -6882,7 +6882,7 @@ def test__list_links(request_type, transport: str = 'grpc'):
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._list_links),
+            type(client.transport.list_links),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = logging_config.ListLinksResponse(
@@ -6897,7 +6897,7 @@ def test__list_links(request_type, transport: str = 'grpc'):
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers._ListLinksPager)
+    assert isinstance(response, pagers.ListLinksPager)
     assert response.next_page_token == 'next_page_token_value'
 
 
@@ -6919,7 +6919,7 @@ def test__list_links_non_empty_request_with_auto_populated_field():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._list_links),
+            type(client.transport.list_links),
             '__call__') as call:
         call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client._list_links(request=request)
@@ -6944,12 +6944,12 @@ def test__list_links_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert client._transport._list_links in client._transport._wrapped_methods
+        assert client._transport.list_links in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
         mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
-        client._transport._wrapped_methods[client._transport._list_links] = mock_rpc
+        client._transport._wrapped_methods[client._transport.list_links] = mock_rpc
         request = {}
         client._list_links(request)
 
@@ -6977,12 +6977,12 @@ async def test__list_links_async_use_cached_wrapped_rpc(transport: str = "grpc_a
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert client._client._transport._list_links in client._client._transport._wrapped_methods
+        assert client._client._transport.list_links in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[client._client._transport._list_links] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.list_links] = mock_rpc
 
         request = {}
         await client._list_links(request)
@@ -7009,7 +7009,7 @@ async def test__list_links_async(transport: str = 'grpc_asyncio', request_type=l
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._list_links),
+            type(client.transport.list_links),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(logging_config.ListLinksResponse(
@@ -7024,7 +7024,7 @@ async def test__list_links_async(transport: str = 'grpc_asyncio', request_type=l
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers._ListLinksAsyncPager)
+    assert isinstance(response, pagers.ListLinksAsyncPager)
     assert response.next_page_token == 'next_page_token_value'
 
 
@@ -7045,7 +7045,7 @@ def test__list_links_field_headers():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._list_links),
+            type(client.transport.list_links),
             '__call__') as call:
         call.return_value = logging_config.ListLinksResponse()
         client._list_links(request)
@@ -7077,7 +7077,7 @@ async def test__list_links_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._list_links),
+            type(client.transport.list_links),
             '__call__') as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(logging_config.ListLinksResponse())
         await client._list_links(request)
@@ -7102,7 +7102,7 @@ def test__list_links_flattened():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._list_links),
+            type(client.transport.list_links),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = logging_config.ListLinksResponse()
@@ -7142,7 +7142,7 @@ async def test__list_links_flattened_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._list_links),
+            type(client.transport.list_links),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = logging_config.ListLinksResponse()
@@ -7185,7 +7185,7 @@ def test__list_links_pager(transport_name: str = "grpc"):
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._list_links),
+            type(client.transport.list_links),
             '__call__') as call:
         # Set the response to a series of pages.
         call.side_effect = (
@@ -7242,7 +7242,7 @@ def test__list_links_pages(transport_name: str = "grpc"):
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._list_links),
+            type(client.transport.list_links),
             '__call__') as call:
         # Set the response to a series of pages.
         call.side_effect = (
@@ -7284,7 +7284,7 @@ async def test__list_links_async_pager():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._list_links),
+            type(client.transport.list_links),
             '__call__', new_callable=mock.AsyncMock) as call:
         # Set the response to a series of pages.
         call.side_effect = (
@@ -7333,7 +7333,7 @@ async def test__list_links_async_pages():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._list_links),
+            type(client.transport.list_links),
             '__call__', new_callable=mock.AsyncMock) as call:
         # Set the response to a series of pages.
         call.side_effect = (
@@ -7389,7 +7389,7 @@ def test__get_link(request_type, transport: str = 'grpc'):
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._get_link),
+            type(client.transport.get_link),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = logging_config.Link(
@@ -7429,7 +7429,7 @@ def test__get_link_non_empty_request_with_auto_populated_field():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._get_link),
+            type(client.transport.get_link),
             '__call__') as call:
         call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client._get_link(request=request)
@@ -7453,12 +7453,12 @@ def test__get_link_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert client._transport._get_link in client._transport._wrapped_methods
+        assert client._transport.get_link in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
         mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
-        client._transport._wrapped_methods[client._transport._get_link] = mock_rpc
+        client._transport._wrapped_methods[client._transport.get_link] = mock_rpc
         request = {}
         client._get_link(request)
 
@@ -7486,12 +7486,12 @@ async def test__get_link_async_use_cached_wrapped_rpc(transport: str = "grpc_asy
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert client._client._transport._get_link in client._client._transport._wrapped_methods
+        assert client._client._transport.get_link in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[client._client._transport._get_link] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.get_link] = mock_rpc
 
         request = {}
         await client._get_link(request)
@@ -7518,7 +7518,7 @@ async def test__get_link_async(transport: str = 'grpc_asyncio', request_type=log
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._get_link),
+            type(client.transport.get_link),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(logging_config.Link(
@@ -7558,7 +7558,7 @@ def test__get_link_field_headers():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._get_link),
+            type(client.transport.get_link),
             '__call__') as call:
         call.return_value = logging_config.Link()
         client._get_link(request)
@@ -7590,7 +7590,7 @@ async def test__get_link_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._get_link),
+            type(client.transport.get_link),
             '__call__') as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(logging_config.Link())
         await client._get_link(request)
@@ -7615,7 +7615,7 @@ def test__get_link_flattened():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._get_link),
+            type(client.transport.get_link),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = logging_config.Link()
@@ -7655,7 +7655,7 @@ async def test__get_link_flattened_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._get_link),
+            type(client.transport.get_link),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = logging_config.Link()
@@ -7706,7 +7706,7 @@ def test__list_exclusions(request_type, transport: str = 'grpc'):
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._list_exclusions),
+            type(client.transport.list_exclusions),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = logging_config.ListExclusionsResponse(
@@ -7721,7 +7721,7 @@ def test__list_exclusions(request_type, transport: str = 'grpc'):
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers._ListExclusionsPager)
+    assert isinstance(response, pagers.ListExclusionsPager)
     assert response.next_page_token == 'next_page_token_value'
 
 
@@ -7743,7 +7743,7 @@ def test__list_exclusions_non_empty_request_with_auto_populated_field():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._list_exclusions),
+            type(client.transport.list_exclusions),
             '__call__') as call:
         call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client._list_exclusions(request=request)
@@ -7768,12 +7768,12 @@ def test__list_exclusions_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert client._transport._list_exclusions in client._transport._wrapped_methods
+        assert client._transport.list_exclusions in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
         mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
-        client._transport._wrapped_methods[client._transport._list_exclusions] = mock_rpc
+        client._transport._wrapped_methods[client._transport.list_exclusions] = mock_rpc
         request = {}
         client._list_exclusions(request)
 
@@ -7801,12 +7801,12 @@ async def test__list_exclusions_async_use_cached_wrapped_rpc(transport: str = "g
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert client._client._transport._list_exclusions in client._client._transport._wrapped_methods
+        assert client._client._transport.list_exclusions in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[client._client._transport._list_exclusions] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.list_exclusions] = mock_rpc
 
         request = {}
         await client._list_exclusions(request)
@@ -7833,7 +7833,7 @@ async def test__list_exclusions_async(transport: str = 'grpc_asyncio', request_t
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._list_exclusions),
+            type(client.transport.list_exclusions),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(logging_config.ListExclusionsResponse(
@@ -7848,7 +7848,7 @@ async def test__list_exclusions_async(transport: str = 'grpc_asyncio', request_t
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers._ListExclusionsAsyncPager)
+    assert isinstance(response, pagers.ListExclusionsAsyncPager)
     assert response.next_page_token == 'next_page_token_value'
 
 
@@ -7869,7 +7869,7 @@ def test__list_exclusions_field_headers():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._list_exclusions),
+            type(client.transport.list_exclusions),
             '__call__') as call:
         call.return_value = logging_config.ListExclusionsResponse()
         client._list_exclusions(request)
@@ -7901,7 +7901,7 @@ async def test__list_exclusions_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._list_exclusions),
+            type(client.transport.list_exclusions),
             '__call__') as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(logging_config.ListExclusionsResponse())
         await client._list_exclusions(request)
@@ -7926,7 +7926,7 @@ def test__list_exclusions_flattened():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._list_exclusions),
+            type(client.transport.list_exclusions),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = logging_config.ListExclusionsResponse()
@@ -7966,7 +7966,7 @@ async def test__list_exclusions_flattened_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._list_exclusions),
+            type(client.transport.list_exclusions),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = logging_config.ListExclusionsResponse()
@@ -8009,7 +8009,7 @@ def test__list_exclusions_pager(transport_name: str = "grpc"):
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._list_exclusions),
+            type(client.transport.list_exclusions),
             '__call__') as call:
         # Set the response to a series of pages.
         call.side_effect = (
@@ -8066,7 +8066,7 @@ def test__list_exclusions_pages(transport_name: str = "grpc"):
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._list_exclusions),
+            type(client.transport.list_exclusions),
             '__call__') as call:
         # Set the response to a series of pages.
         call.side_effect = (
@@ -8108,7 +8108,7 @@ async def test__list_exclusions_async_pager():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._list_exclusions),
+            type(client.transport.list_exclusions),
             '__call__', new_callable=mock.AsyncMock) as call:
         # Set the response to a series of pages.
         call.side_effect = (
@@ -8157,7 +8157,7 @@ async def test__list_exclusions_async_pages():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._list_exclusions),
+            type(client.transport.list_exclusions),
             '__call__', new_callable=mock.AsyncMock) as call:
         # Set the response to a series of pages.
         call.side_effect = (
@@ -8213,7 +8213,7 @@ def test__get_exclusion(request_type, transport: str = 'grpc'):
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._get_exclusion),
+            type(client.transport.get_exclusion),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = logging_config.LogExclusion(
@@ -8255,7 +8255,7 @@ def test__get_exclusion_non_empty_request_with_auto_populated_field():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._get_exclusion),
+            type(client.transport.get_exclusion),
             '__call__') as call:
         call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client._get_exclusion(request=request)
@@ -8279,12 +8279,12 @@ def test__get_exclusion_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert client._transport._get_exclusion in client._transport._wrapped_methods
+        assert client._transport.get_exclusion in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
         mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
-        client._transport._wrapped_methods[client._transport._get_exclusion] = mock_rpc
+        client._transport._wrapped_methods[client._transport.get_exclusion] = mock_rpc
         request = {}
         client._get_exclusion(request)
 
@@ -8312,12 +8312,12 @@ async def test__get_exclusion_async_use_cached_wrapped_rpc(transport: str = "grp
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert client._client._transport._get_exclusion in client._client._transport._wrapped_methods
+        assert client._client._transport.get_exclusion in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[client._client._transport._get_exclusion] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.get_exclusion] = mock_rpc
 
         request = {}
         await client._get_exclusion(request)
@@ -8344,7 +8344,7 @@ async def test__get_exclusion_async(transport: str = 'grpc_asyncio', request_typ
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._get_exclusion),
+            type(client.transport.get_exclusion),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(logging_config.LogExclusion(
@@ -8386,7 +8386,7 @@ def test__get_exclusion_field_headers():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._get_exclusion),
+            type(client.transport.get_exclusion),
             '__call__') as call:
         call.return_value = logging_config.LogExclusion()
         client._get_exclusion(request)
@@ -8418,7 +8418,7 @@ async def test__get_exclusion_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._get_exclusion),
+            type(client.transport.get_exclusion),
             '__call__') as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(logging_config.LogExclusion())
         await client._get_exclusion(request)
@@ -8443,7 +8443,7 @@ def test__get_exclusion_flattened():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._get_exclusion),
+            type(client.transport.get_exclusion),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = logging_config.LogExclusion()
@@ -8483,7 +8483,7 @@ async def test__get_exclusion_flattened_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._get_exclusion),
+            type(client.transport.get_exclusion),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = logging_config.LogExclusion()
@@ -8534,7 +8534,7 @@ def test__create_exclusion(request_type, transport: str = 'grpc'):
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._create_exclusion),
+            type(client.transport.create_exclusion),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = logging_config.LogExclusion(
@@ -8576,7 +8576,7 @@ def test__create_exclusion_non_empty_request_with_auto_populated_field():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._create_exclusion),
+            type(client.transport.create_exclusion),
             '__call__') as call:
         call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client._create_exclusion(request=request)
@@ -8600,12 +8600,12 @@ def test__create_exclusion_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert client._transport._create_exclusion in client._transport._wrapped_methods
+        assert client._transport.create_exclusion in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
         mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
-        client._transport._wrapped_methods[client._transport._create_exclusion] = mock_rpc
+        client._transport._wrapped_methods[client._transport.create_exclusion] = mock_rpc
         request = {}
         client._create_exclusion(request)
 
@@ -8633,12 +8633,12 @@ async def test__create_exclusion_async_use_cached_wrapped_rpc(transport: str = "
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert client._client._transport._create_exclusion in client._client._transport._wrapped_methods
+        assert client._client._transport.create_exclusion in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[client._client._transport._create_exclusion] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.create_exclusion] = mock_rpc
 
         request = {}
         await client._create_exclusion(request)
@@ -8665,7 +8665,7 @@ async def test__create_exclusion_async(transport: str = 'grpc_asyncio', request_
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._create_exclusion),
+            type(client.transport.create_exclusion),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(logging_config.LogExclusion(
@@ -8707,7 +8707,7 @@ def test__create_exclusion_field_headers():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._create_exclusion),
+            type(client.transport.create_exclusion),
             '__call__') as call:
         call.return_value = logging_config.LogExclusion()
         client._create_exclusion(request)
@@ -8739,7 +8739,7 @@ async def test__create_exclusion_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._create_exclusion),
+            type(client.transport.create_exclusion),
             '__call__') as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(logging_config.LogExclusion())
         await client._create_exclusion(request)
@@ -8764,7 +8764,7 @@ def test__create_exclusion_flattened():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._create_exclusion),
+            type(client.transport.create_exclusion),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = logging_config.LogExclusion()
@@ -8809,7 +8809,7 @@ async def test__create_exclusion_flattened_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._create_exclusion),
+            type(client.transport.create_exclusion),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = logging_config.LogExclusion()
@@ -8865,7 +8865,7 @@ def test__update_exclusion(request_type, transport: str = 'grpc'):
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._update_exclusion),
+            type(client.transport.update_exclusion),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = logging_config.LogExclusion(
@@ -8907,7 +8907,7 @@ def test__update_exclusion_non_empty_request_with_auto_populated_field():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._update_exclusion),
+            type(client.transport.update_exclusion),
             '__call__') as call:
         call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client._update_exclusion(request=request)
@@ -8931,12 +8931,12 @@ def test__update_exclusion_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert client._transport._update_exclusion in client._transport._wrapped_methods
+        assert client._transport.update_exclusion in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
         mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
-        client._transport._wrapped_methods[client._transport._update_exclusion] = mock_rpc
+        client._transport._wrapped_methods[client._transport.update_exclusion] = mock_rpc
         request = {}
         client._update_exclusion(request)
 
@@ -8964,12 +8964,12 @@ async def test__update_exclusion_async_use_cached_wrapped_rpc(transport: str = "
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert client._client._transport._update_exclusion in client._client._transport._wrapped_methods
+        assert client._client._transport.update_exclusion in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[client._client._transport._update_exclusion] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.update_exclusion] = mock_rpc
 
         request = {}
         await client._update_exclusion(request)
@@ -8996,7 +8996,7 @@ async def test__update_exclusion_async(transport: str = 'grpc_asyncio', request_
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._update_exclusion),
+            type(client.transport.update_exclusion),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(logging_config.LogExclusion(
@@ -9038,7 +9038,7 @@ def test__update_exclusion_field_headers():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._update_exclusion),
+            type(client.transport.update_exclusion),
             '__call__') as call:
         call.return_value = logging_config.LogExclusion()
         client._update_exclusion(request)
@@ -9070,7 +9070,7 @@ async def test__update_exclusion_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._update_exclusion),
+            type(client.transport.update_exclusion),
             '__call__') as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(logging_config.LogExclusion())
         await client._update_exclusion(request)
@@ -9095,7 +9095,7 @@ def test__update_exclusion_flattened():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._update_exclusion),
+            type(client.transport.update_exclusion),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = logging_config.LogExclusion()
@@ -9145,7 +9145,7 @@ async def test__update_exclusion_flattened_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._update_exclusion),
+            type(client.transport.update_exclusion),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = logging_config.LogExclusion()
@@ -9206,7 +9206,7 @@ def test__delete_exclusion(request_type, transport: str = 'grpc'):
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._delete_exclusion),
+            type(client.transport.delete_exclusion),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = None
@@ -9239,7 +9239,7 @@ def test__delete_exclusion_non_empty_request_with_auto_populated_field():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._delete_exclusion),
+            type(client.transport.delete_exclusion),
             '__call__') as call:
         call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client._delete_exclusion(request=request)
@@ -9263,12 +9263,12 @@ def test__delete_exclusion_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert client._transport._delete_exclusion in client._transport._wrapped_methods
+        assert client._transport.delete_exclusion in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
         mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
-        client._transport._wrapped_methods[client._transport._delete_exclusion] = mock_rpc
+        client._transport._wrapped_methods[client._transport.delete_exclusion] = mock_rpc
         request = {}
         client._delete_exclusion(request)
 
@@ -9296,12 +9296,12 @@ async def test__delete_exclusion_async_use_cached_wrapped_rpc(transport: str = "
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert client._client._transport._delete_exclusion in client._client._transport._wrapped_methods
+        assert client._client._transport.delete_exclusion in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[client._client._transport._delete_exclusion] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.delete_exclusion] = mock_rpc
 
         request = {}
         await client._delete_exclusion(request)
@@ -9328,7 +9328,7 @@ async def test__delete_exclusion_async(transport: str = 'grpc_asyncio', request_
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._delete_exclusion),
+            type(client.transport.delete_exclusion),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
@@ -9361,7 +9361,7 @@ def test__delete_exclusion_field_headers():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._delete_exclusion),
+            type(client.transport.delete_exclusion),
             '__call__') as call:
         call.return_value = None
         client._delete_exclusion(request)
@@ -9393,7 +9393,7 @@ async def test__delete_exclusion_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._delete_exclusion),
+            type(client.transport.delete_exclusion),
             '__call__') as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
         await client._delete_exclusion(request)
@@ -9418,7 +9418,7 @@ def test__delete_exclusion_flattened():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._delete_exclusion),
+            type(client.transport.delete_exclusion),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = None
@@ -9458,7 +9458,7 @@ async def test__delete_exclusion_flattened_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._delete_exclusion),
+            type(client.transport.delete_exclusion),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = None
@@ -9509,7 +9509,7 @@ def test__get_cmek_settings(request_type, transport: str = 'grpc'):
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._get_cmek_settings),
+            type(client.transport.get_cmek_settings),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = logging_config.CmekSettings(
@@ -9551,7 +9551,7 @@ def test__get_cmek_settings_non_empty_request_with_auto_populated_field():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._get_cmek_settings),
+            type(client.transport.get_cmek_settings),
             '__call__') as call:
         call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client._get_cmek_settings(request=request)
@@ -9575,12 +9575,12 @@ def test__get_cmek_settings_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert client._transport._get_cmek_settings in client._transport._wrapped_methods
+        assert client._transport.get_cmek_settings in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
         mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
-        client._transport._wrapped_methods[client._transport._get_cmek_settings] = mock_rpc
+        client._transport._wrapped_methods[client._transport.get_cmek_settings] = mock_rpc
         request = {}
         client._get_cmek_settings(request)
 
@@ -9608,12 +9608,12 @@ async def test__get_cmek_settings_async_use_cached_wrapped_rpc(transport: str = 
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert client._client._transport._get_cmek_settings in client._client._transport._wrapped_methods
+        assert client._client._transport.get_cmek_settings in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[client._client._transport._get_cmek_settings] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.get_cmek_settings] = mock_rpc
 
         request = {}
         await client._get_cmek_settings(request)
@@ -9640,7 +9640,7 @@ async def test__get_cmek_settings_async(transport: str = 'grpc_asyncio', request
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._get_cmek_settings),
+            type(client.transport.get_cmek_settings),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(logging_config.CmekSettings(
@@ -9682,7 +9682,7 @@ def test__get_cmek_settings_field_headers():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._get_cmek_settings),
+            type(client.transport.get_cmek_settings),
             '__call__') as call:
         call.return_value = logging_config.CmekSettings()
         client._get_cmek_settings(request)
@@ -9714,7 +9714,7 @@ async def test__get_cmek_settings_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._get_cmek_settings),
+            type(client.transport.get_cmek_settings),
             '__call__') as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(logging_config.CmekSettings())
         await client._get_cmek_settings(request)
@@ -9748,7 +9748,7 @@ def test__update_cmek_settings(request_type, transport: str = 'grpc'):
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._update_cmek_settings),
+            type(client.transport.update_cmek_settings),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = logging_config.CmekSettings(
@@ -9790,7 +9790,7 @@ def test__update_cmek_settings_non_empty_request_with_auto_populated_field():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._update_cmek_settings),
+            type(client.transport.update_cmek_settings),
             '__call__') as call:
         call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client._update_cmek_settings(request=request)
@@ -9814,12 +9814,12 @@ def test__update_cmek_settings_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert client._transport._update_cmek_settings in client._transport._wrapped_methods
+        assert client._transport.update_cmek_settings in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
         mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
-        client._transport._wrapped_methods[client._transport._update_cmek_settings] = mock_rpc
+        client._transport._wrapped_methods[client._transport.update_cmek_settings] = mock_rpc
         request = {}
         client._update_cmek_settings(request)
 
@@ -9847,12 +9847,12 @@ async def test__update_cmek_settings_async_use_cached_wrapped_rpc(transport: str
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert client._client._transport._update_cmek_settings in client._client._transport._wrapped_methods
+        assert client._client._transport.update_cmek_settings in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[client._client._transport._update_cmek_settings] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.update_cmek_settings] = mock_rpc
 
         request = {}
         await client._update_cmek_settings(request)
@@ -9879,7 +9879,7 @@ async def test__update_cmek_settings_async(transport: str = 'grpc_asyncio', requ
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._update_cmek_settings),
+            type(client.transport.update_cmek_settings),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(logging_config.CmekSettings(
@@ -9921,7 +9921,7 @@ def test__update_cmek_settings_field_headers():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._update_cmek_settings),
+            type(client.transport.update_cmek_settings),
             '__call__') as call:
         call.return_value = logging_config.CmekSettings()
         client._update_cmek_settings(request)
@@ -9953,7 +9953,7 @@ async def test__update_cmek_settings_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._update_cmek_settings),
+            type(client.transport.update_cmek_settings),
             '__call__') as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(logging_config.CmekSettings())
         await client._update_cmek_settings(request)
@@ -9987,7 +9987,7 @@ def test__get_settings(request_type, transport: str = 'grpc'):
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._get_settings),
+            type(client.transport.get_settings),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = logging_config.Settings(
@@ -10031,7 +10031,7 @@ def test__get_settings_non_empty_request_with_auto_populated_field():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._get_settings),
+            type(client.transport.get_settings),
             '__call__') as call:
         call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client._get_settings(request=request)
@@ -10055,12 +10055,12 @@ def test__get_settings_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert client._transport._get_settings in client._transport._wrapped_methods
+        assert client._transport.get_settings in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
         mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
-        client._transport._wrapped_methods[client._transport._get_settings] = mock_rpc
+        client._transport._wrapped_methods[client._transport.get_settings] = mock_rpc
         request = {}
         client._get_settings(request)
 
@@ -10088,12 +10088,12 @@ async def test__get_settings_async_use_cached_wrapped_rpc(transport: str = "grpc
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert client._client._transport._get_settings in client._client._transport._wrapped_methods
+        assert client._client._transport.get_settings in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[client._client._transport._get_settings] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.get_settings] = mock_rpc
 
         request = {}
         await client._get_settings(request)
@@ -10120,7 +10120,7 @@ async def test__get_settings_async(transport: str = 'grpc_asyncio', request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._get_settings),
+            type(client.transport.get_settings),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(logging_config.Settings(
@@ -10164,7 +10164,7 @@ def test__get_settings_field_headers():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._get_settings),
+            type(client.transport.get_settings),
             '__call__') as call:
         call.return_value = logging_config.Settings()
         client._get_settings(request)
@@ -10196,7 +10196,7 @@ async def test__get_settings_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._get_settings),
+            type(client.transport.get_settings),
             '__call__') as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(logging_config.Settings())
         await client._get_settings(request)
@@ -10221,7 +10221,7 @@ def test__get_settings_flattened():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._get_settings),
+            type(client.transport.get_settings),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = logging_config.Settings()
@@ -10261,7 +10261,7 @@ async def test__get_settings_flattened_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._get_settings),
+            type(client.transport.get_settings),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = logging_config.Settings()
@@ -10312,7 +10312,7 @@ def test__update_settings(request_type, transport: str = 'grpc'):
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._update_settings),
+            type(client.transport.update_settings),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = logging_config.Settings(
@@ -10356,7 +10356,7 @@ def test__update_settings_non_empty_request_with_auto_populated_field():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._update_settings),
+            type(client.transport.update_settings),
             '__call__') as call:
         call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client._update_settings(request=request)
@@ -10380,12 +10380,12 @@ def test__update_settings_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert client._transport._update_settings in client._transport._wrapped_methods
+        assert client._transport.update_settings in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
         mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
-        client._transport._wrapped_methods[client._transport._update_settings] = mock_rpc
+        client._transport._wrapped_methods[client._transport.update_settings] = mock_rpc
         request = {}
         client._update_settings(request)
 
@@ -10413,12 +10413,12 @@ async def test__update_settings_async_use_cached_wrapped_rpc(transport: str = "g
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert client._client._transport._update_settings in client._client._transport._wrapped_methods
+        assert client._client._transport.update_settings in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[client._client._transport._update_settings] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.update_settings] = mock_rpc
 
         request = {}
         await client._update_settings(request)
@@ -10445,7 +10445,7 @@ async def test__update_settings_async(transport: str = 'grpc_asyncio', request_t
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._update_settings),
+            type(client.transport.update_settings),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(logging_config.Settings(
@@ -10489,7 +10489,7 @@ def test__update_settings_field_headers():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._update_settings),
+            type(client.transport.update_settings),
             '__call__') as call:
         call.return_value = logging_config.Settings()
         client._update_settings(request)
@@ -10521,7 +10521,7 @@ async def test__update_settings_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._update_settings),
+            type(client.transport.update_settings),
             '__call__') as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(logging_config.Settings())
         await client._update_settings(request)
@@ -10546,7 +10546,7 @@ def test__update_settings_flattened():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._update_settings),
+            type(client.transport.update_settings),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = logging_config.Settings()
@@ -10591,7 +10591,7 @@ async def test__update_settings_flattened_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._update_settings),
+            type(client.transport.update_settings),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = logging_config.Settings()
@@ -10647,7 +10647,7 @@ def test__copy_log_entries(request_type, transport: str = 'grpc'):
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._copy_log_entries),
+            type(client.transport.copy_log_entries),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name='operations/spam')
@@ -10682,7 +10682,7 @@ def test__copy_log_entries_non_empty_request_with_auto_populated_field():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._copy_log_entries),
+            type(client.transport.copy_log_entries),
             '__call__') as call:
         call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client._copy_log_entries(request=request)
@@ -10708,12 +10708,12 @@ def test__copy_log_entries_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert client._transport._copy_log_entries in client._transport._wrapped_methods
+        assert client._transport.copy_log_entries in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
         mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
-        client._transport._wrapped_methods[client._transport._copy_log_entries] = mock_rpc
+        client._transport._wrapped_methods[client._transport.copy_log_entries] = mock_rpc
         request = {}
         client._copy_log_entries(request)
 
@@ -10746,12 +10746,12 @@ async def test__copy_log_entries_async_use_cached_wrapped_rpc(transport: str = "
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert client._client._transport._copy_log_entries in client._client._transport._wrapped_methods
+        assert client._client._transport.copy_log_entries in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[client._client._transport._copy_log_entries] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.copy_log_entries] = mock_rpc
 
         request = {}
         await client._copy_log_entries(request)
@@ -10783,7 +10783,7 @@ async def test__copy_log_entries_async(transport: str = 'grpc_asyncio', request_
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._copy_log_entries),
+            type(client.transport.copy_log_entries),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
@@ -11101,7 +11101,7 @@ def test__list_views_empty_call_grpc():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport._list_views),
+            type(client.transport.list_views),
             '__call__') as call:
         call.return_value = logging_config.ListViewsResponse()
         client._list_views(request=None)
@@ -11124,7 +11124,7 @@ def test__get_view_empty_call_grpc():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport._get_view),
+            type(client.transport.get_view),
             '__call__') as call:
         call.return_value = logging_config.LogView()
         client._get_view(request=None)
@@ -11147,7 +11147,7 @@ def test__create_view_empty_call_grpc():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport._create_view),
+            type(client.transport.create_view),
             '__call__') as call:
         call.return_value = logging_config.LogView()
         client._create_view(request=None)
@@ -11170,7 +11170,7 @@ def test__update_view_empty_call_grpc():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport._update_view),
+            type(client.transport.update_view),
             '__call__') as call:
         call.return_value = logging_config.LogView()
         client._update_view(request=None)
@@ -11193,7 +11193,7 @@ def test__delete_view_empty_call_grpc():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport._delete_view),
+            type(client.transport.delete_view),
             '__call__') as call:
         call.return_value = None
         client._delete_view(request=None)
@@ -11216,7 +11216,7 @@ def test__list_sinks_empty_call_grpc():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport._list_sinks),
+            type(client.transport.list_sinks),
             '__call__') as call:
         call.return_value = logging_config.ListSinksResponse()
         client._list_sinks(request=None)
@@ -11239,7 +11239,7 @@ def test__get_sink_empty_call_grpc():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport._get_sink),
+            type(client.transport.get_sink),
             '__call__') as call:
         call.return_value = logging_config.LogSink()
         client._get_sink(request=None)
@@ -11262,7 +11262,7 @@ def test__create_sink_empty_call_grpc():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport._create_sink),
+            type(client.transport.create_sink),
             '__call__') as call:
         call.return_value = logging_config.LogSink()
         client._create_sink(request=None)
@@ -11285,7 +11285,7 @@ def test__update_sink_empty_call_grpc():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport._update_sink),
+            type(client.transport.update_sink),
             '__call__') as call:
         call.return_value = logging_config.LogSink()
         client._update_sink(request=None)
@@ -11308,7 +11308,7 @@ def test__delete_sink_empty_call_grpc():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport._delete_sink),
+            type(client.transport.delete_sink),
             '__call__') as call:
         call.return_value = None
         client._delete_sink(request=None)
@@ -11331,7 +11331,7 @@ def test__create_link_empty_call_grpc():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport._create_link),
+            type(client.transport.create_link),
             '__call__') as call:
         call.return_value = operations_pb2.Operation(name='operations/op')
         client._create_link(request=None)
@@ -11354,7 +11354,7 @@ def test__delete_link_empty_call_grpc():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport._delete_link),
+            type(client.transport.delete_link),
             '__call__') as call:
         call.return_value = operations_pb2.Operation(name='operations/op')
         client._delete_link(request=None)
@@ -11377,7 +11377,7 @@ def test__list_links_empty_call_grpc():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport._list_links),
+            type(client.transport.list_links),
             '__call__') as call:
         call.return_value = logging_config.ListLinksResponse()
         client._list_links(request=None)
@@ -11400,7 +11400,7 @@ def test__get_link_empty_call_grpc():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport._get_link),
+            type(client.transport.get_link),
             '__call__') as call:
         call.return_value = logging_config.Link()
         client._get_link(request=None)
@@ -11423,7 +11423,7 @@ def test__list_exclusions_empty_call_grpc():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport._list_exclusions),
+            type(client.transport.list_exclusions),
             '__call__') as call:
         call.return_value = logging_config.ListExclusionsResponse()
         client._list_exclusions(request=None)
@@ -11446,7 +11446,7 @@ def test__get_exclusion_empty_call_grpc():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport._get_exclusion),
+            type(client.transport.get_exclusion),
             '__call__') as call:
         call.return_value = logging_config.LogExclusion()
         client._get_exclusion(request=None)
@@ -11469,7 +11469,7 @@ def test__create_exclusion_empty_call_grpc():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport._create_exclusion),
+            type(client.transport.create_exclusion),
             '__call__') as call:
         call.return_value = logging_config.LogExclusion()
         client._create_exclusion(request=None)
@@ -11492,7 +11492,7 @@ def test__update_exclusion_empty_call_grpc():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport._update_exclusion),
+            type(client.transport.update_exclusion),
             '__call__') as call:
         call.return_value = logging_config.LogExclusion()
         client._update_exclusion(request=None)
@@ -11515,7 +11515,7 @@ def test__delete_exclusion_empty_call_grpc():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport._delete_exclusion),
+            type(client.transport.delete_exclusion),
             '__call__') as call:
         call.return_value = None
         client._delete_exclusion(request=None)
@@ -11538,7 +11538,7 @@ def test__get_cmek_settings_empty_call_grpc():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport._get_cmek_settings),
+            type(client.transport.get_cmek_settings),
             '__call__') as call:
         call.return_value = logging_config.CmekSettings()
         client._get_cmek_settings(request=None)
@@ -11561,7 +11561,7 @@ def test__update_cmek_settings_empty_call_grpc():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport._update_cmek_settings),
+            type(client.transport.update_cmek_settings),
             '__call__') as call:
         call.return_value = logging_config.CmekSettings()
         client._update_cmek_settings(request=None)
@@ -11584,7 +11584,7 @@ def test__get_settings_empty_call_grpc():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport._get_settings),
+            type(client.transport.get_settings),
             '__call__') as call:
         call.return_value = logging_config.Settings()
         client._get_settings(request=None)
@@ -11607,7 +11607,7 @@ def test__update_settings_empty_call_grpc():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport._update_settings),
+            type(client.transport.update_settings),
             '__call__') as call:
         call.return_value = logging_config.Settings()
         client._update_settings(request=None)
@@ -11630,7 +11630,7 @@ def test__copy_log_entries_empty_call_grpc():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport._copy_log_entries),
+            type(client.transport.copy_log_entries),
             '__call__') as call:
         call.return_value = operations_pb2.Operation(name='operations/op')
         client._copy_log_entries(request=None)
@@ -11899,7 +11899,7 @@ async def test__list_views_empty_call_grpc_asyncio():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport._list_views),
+            type(client.transport.list_views),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(logging_config.ListViewsResponse(
@@ -11926,7 +11926,7 @@ async def test__get_view_empty_call_grpc_asyncio():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport._get_view),
+            type(client.transport.get_view),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(logging_config.LogView(
@@ -11955,7 +11955,7 @@ async def test__create_view_empty_call_grpc_asyncio():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport._create_view),
+            type(client.transport.create_view),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(logging_config.LogView(
@@ -11984,7 +11984,7 @@ async def test__update_view_empty_call_grpc_asyncio():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport._update_view),
+            type(client.transport.update_view),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(logging_config.LogView(
@@ -12013,7 +12013,7 @@ async def test__delete_view_empty_call_grpc_asyncio():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport._delete_view),
+            type(client.transport.delete_view),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
@@ -12038,7 +12038,7 @@ async def test__list_sinks_empty_call_grpc_asyncio():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport._list_sinks),
+            type(client.transport.list_sinks),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(logging_config.ListSinksResponse(
@@ -12065,7 +12065,7 @@ async def test__get_sink_empty_call_grpc_asyncio():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport._get_sink),
+            type(client.transport.get_sink),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(logging_config.LogSink(
@@ -12099,7 +12099,7 @@ async def test__create_sink_empty_call_grpc_asyncio():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport._create_sink),
+            type(client.transport.create_sink),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(logging_config.LogSink(
@@ -12133,7 +12133,7 @@ async def test__update_sink_empty_call_grpc_asyncio():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport._update_sink),
+            type(client.transport.update_sink),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(logging_config.LogSink(
@@ -12167,7 +12167,7 @@ async def test__delete_sink_empty_call_grpc_asyncio():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport._delete_sink),
+            type(client.transport.delete_sink),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
@@ -12192,7 +12192,7 @@ async def test__create_link_empty_call_grpc_asyncio():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport._create_link),
+            type(client.transport.create_link),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
@@ -12219,7 +12219,7 @@ async def test__delete_link_empty_call_grpc_asyncio():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport._delete_link),
+            type(client.transport.delete_link),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
@@ -12246,7 +12246,7 @@ async def test__list_links_empty_call_grpc_asyncio():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport._list_links),
+            type(client.transport.list_links),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(logging_config.ListLinksResponse(
@@ -12273,7 +12273,7 @@ async def test__get_link_empty_call_grpc_asyncio():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport._get_link),
+            type(client.transport.get_link),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(logging_config.Link(
@@ -12302,7 +12302,7 @@ async def test__list_exclusions_empty_call_grpc_asyncio():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport._list_exclusions),
+            type(client.transport.list_exclusions),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(logging_config.ListExclusionsResponse(
@@ -12329,7 +12329,7 @@ async def test__get_exclusion_empty_call_grpc_asyncio():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport._get_exclusion),
+            type(client.transport.get_exclusion),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(logging_config.LogExclusion(
@@ -12359,7 +12359,7 @@ async def test__create_exclusion_empty_call_grpc_asyncio():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport._create_exclusion),
+            type(client.transport.create_exclusion),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(logging_config.LogExclusion(
@@ -12389,7 +12389,7 @@ async def test__update_exclusion_empty_call_grpc_asyncio():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport._update_exclusion),
+            type(client.transport.update_exclusion),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(logging_config.LogExclusion(
@@ -12419,7 +12419,7 @@ async def test__delete_exclusion_empty_call_grpc_asyncio():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport._delete_exclusion),
+            type(client.transport.delete_exclusion),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
@@ -12444,7 +12444,7 @@ async def test__get_cmek_settings_empty_call_grpc_asyncio():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport._get_cmek_settings),
+            type(client.transport.get_cmek_settings),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(logging_config.CmekSettings(
@@ -12474,7 +12474,7 @@ async def test__update_cmek_settings_empty_call_grpc_asyncio():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport._update_cmek_settings),
+            type(client.transport.update_cmek_settings),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(logging_config.CmekSettings(
@@ -12504,7 +12504,7 @@ async def test__get_settings_empty_call_grpc_asyncio():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport._get_settings),
+            type(client.transport.get_settings),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(logging_config.Settings(
@@ -12535,7 +12535,7 @@ async def test__update_settings_empty_call_grpc_asyncio():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport._update_settings),
+            type(client.transport.update_settings),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(logging_config.Settings(
@@ -12566,7 +12566,7 @@ async def test__copy_log_entries_empty_call_grpc_asyncio():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport._copy_log_entries),
+            type(client.transport.copy_log_entries),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
@@ -12620,30 +12620,30 @@ def test_config_service_v2_base_transport():
         'update_bucket',
         'delete_bucket',
         'undelete_bucket',
-        '_list_views',
-        '_get_view',
-        '_create_view',
-        '_update_view',
-        '_delete_view',
-        '_list_sinks',
-        '_get_sink',
-        '_create_sink',
-        '_update_sink',
-        '_delete_sink',
-        '_create_link',
-        '_delete_link',
-        '_list_links',
-        '_get_link',
-        '_list_exclusions',
-        '_get_exclusion',
-        '_create_exclusion',
-        '_update_exclusion',
-        '_delete_exclusion',
-        '_get_cmek_settings',
-        '_update_cmek_settings',
-        '_get_settings',
-        '_update_settings',
-        '_copy_log_entries',
+        'list_views',
+        'get_view',
+        'create_view',
+        'update_view',
+        'delete_view',
+        'list_sinks',
+        'get_sink',
+        'create_sink',
+        'update_sink',
+        'delete_sink',
+        'create_link',
+        'delete_link',
+        'list_links',
+        'get_link',
+        'list_exclusions',
+        'get_exclusion',
+        'create_exclusion',
+        'update_exclusion',
+        'delete_exclusion',
+        'get_cmek_settings',
+        'update_cmek_settings',
+        'get_settings',
+        'update_settings',
+        'copy_log_entries',
         'get_operation',
         'cancel_operation',
         'list_operations',

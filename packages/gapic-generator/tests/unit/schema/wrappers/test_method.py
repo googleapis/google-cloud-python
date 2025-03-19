@@ -960,18 +960,32 @@ def test_transport_safe_name():
         assert method.transport_safe_name == f"{name}_"
 
 
-def test_safe_name():
+def test_client_method_name():
     unsafe_methods = {
         name: make_method(name=name) for name in ["import", "Import", "Raise"]
     }
 
     safe_methods = {name: make_method(name=name) for name in ["Call", "Put", "Hold"]}
 
+    internal_unsafe_methods = {
+        k: dataclasses.replace(v, is_internal=True) for k, v in unsafe_methods.items()
+    }
+
+    internal_safe_methods = {
+        k: dataclasses.replace(v, is_internal=True) for k, v in safe_methods.items()
+    }
+
     for name, method in safe_methods.items():
-        assert method.safe_name == name
+        assert method.client_method_name == name
 
     for name, method in unsafe_methods.items():
-        assert method.safe_name == f"{name}_"
+        assert method.client_method_name == f"{name}_"
+
+    for name, method in internal_safe_methods.items():
+        assert method.client_method_name == f"_{name}"
+
+    for name, method in internal_unsafe_methods.items():
+        assert method.client_method_name == f"_{name}_"
 
 
 def test_mixin_rule():

@@ -561,7 +561,7 @@ class ConfigServiceV2GrpcTransport(ConfigServiceV2Transport):
         return self._stubs['undelete_bucket']
 
     @property
-    def _list_views(self) -> Callable[
+    def list_views(self) -> Callable[
             [logging_config.ListViewsRequest],
             logging_config.ListViewsResponse]:
         r"""Return a callable for the list views method over gRPC.
@@ -578,16 +578,16 @@ class ConfigServiceV2GrpcTransport(ConfigServiceV2Transport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if '_list_views' not in self._stubs:
-            self._stubs['_list_views'] = self._logged_channel.unary_unary(
-                '/google.logging.v2.ConfigServiceV2/_ListViews',
+        if 'list_views' not in self._stubs:
+            self._stubs['list_views'] = self._logged_channel.unary_unary(
+                '/google.logging.v2.ConfigServiceV2/ListViews',
                 request_serializer=logging_config.ListViewsRequest.serialize,
                 response_deserializer=logging_config.ListViewsResponse.deserialize,
             )
-        return self._stubs['_list_views']
+        return self._stubs['list_views']
 
     @property
-    def _get_view(self) -> Callable[
+    def get_view(self) -> Callable[
             [logging_config.GetViewRequest],
             logging_config.LogView]:
         r"""Return a callable for the get view method over gRPC.
@@ -604,16 +604,16 @@ class ConfigServiceV2GrpcTransport(ConfigServiceV2Transport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if '_get_view' not in self._stubs:
-            self._stubs['_get_view'] = self._logged_channel.unary_unary(
-                '/google.logging.v2.ConfigServiceV2/_GetView',
+        if 'get_view' not in self._stubs:
+            self._stubs['get_view'] = self._logged_channel.unary_unary(
+                '/google.logging.v2.ConfigServiceV2/GetView',
                 request_serializer=logging_config.GetViewRequest.serialize,
                 response_deserializer=logging_config.LogView.deserialize,
             )
-        return self._stubs['_get_view']
+        return self._stubs['get_view']
 
     @property
-    def _create_view(self) -> Callable[
+    def create_view(self) -> Callable[
             [logging_config.CreateViewRequest],
             logging_config.LogView]:
         r"""Return a callable for the create view method over gRPC.
@@ -631,16 +631,16 @@ class ConfigServiceV2GrpcTransport(ConfigServiceV2Transport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if '_create_view' not in self._stubs:
-            self._stubs['_create_view'] = self._logged_channel.unary_unary(
-                '/google.logging.v2.ConfigServiceV2/_CreateView',
+        if 'create_view' not in self._stubs:
+            self._stubs['create_view'] = self._logged_channel.unary_unary(
+                '/google.logging.v2.ConfigServiceV2/CreateView',
                 request_serializer=logging_config.CreateViewRequest.serialize,
                 response_deserializer=logging_config.LogView.deserialize,
             )
-        return self._stubs['_create_view']
+        return self._stubs['create_view']
 
     @property
-    def _update_view(self) -> Callable[
+    def update_view(self) -> Callable[
             [logging_config.UpdateViewRequest],
             logging_config.LogView]:
         r"""Return a callable for the update view method over gRPC.
@@ -661,16 +661,16 @@ class ConfigServiceV2GrpcTransport(ConfigServiceV2Transport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if '_update_view' not in self._stubs:
-            self._stubs['_update_view'] = self._logged_channel.unary_unary(
-                '/google.logging.v2.ConfigServiceV2/_UpdateView',
+        if 'update_view' not in self._stubs:
+            self._stubs['update_view'] = self._logged_channel.unary_unary(
+                '/google.logging.v2.ConfigServiceV2/UpdateView',
                 request_serializer=logging_config.UpdateViewRequest.serialize,
                 response_deserializer=logging_config.LogView.deserialize,
             )
-        return self._stubs['_update_view']
+        return self._stubs['update_view']
 
     @property
-    def _delete_view(self) -> Callable[
+    def delete_view(self) -> Callable[
             [logging_config.DeleteViewRequest],
             empty_pb2.Empty]:
         r"""Return a callable for the delete view method over gRPC.
@@ -690,16 +690,16 @@ class ConfigServiceV2GrpcTransport(ConfigServiceV2Transport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if '_delete_view' not in self._stubs:
-            self._stubs['_delete_view'] = self._logged_channel.unary_unary(
-                '/google.logging.v2.ConfigServiceV2/_DeleteView',
+        if 'delete_view' not in self._stubs:
+            self._stubs['delete_view'] = self._logged_channel.unary_unary(
+                '/google.logging.v2.ConfigServiceV2/DeleteView',
                 request_serializer=logging_config.DeleteViewRequest.serialize,
                 response_deserializer=empty_pb2.Empty.FromString,
             )
-        return self._stubs['_delete_view']
+        return self._stubs['delete_view']
 
     @property
-    def _list_sinks(self) -> Callable[
+    def list_sinks(self) -> Callable[
             [logging_config.ListSinksRequest],
             logging_config.ListSinksResponse]:
         r"""Return a callable for the list sinks method over gRPC.
@@ -716,16 +716,16 @@ class ConfigServiceV2GrpcTransport(ConfigServiceV2Transport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if '_list_sinks' not in self._stubs:
-            self._stubs['_list_sinks'] = self._logged_channel.unary_unary(
-                '/google.logging.v2.ConfigServiceV2/_ListSinks',
+        if 'list_sinks' not in self._stubs:
+            self._stubs['list_sinks'] = self._logged_channel.unary_unary(
+                '/google.logging.v2.ConfigServiceV2/ListSinks',
                 request_serializer=logging_config.ListSinksRequest.serialize,
                 response_deserializer=logging_config.ListSinksResponse.deserialize,
             )
-        return self._stubs['_list_sinks']
+        return self._stubs['list_sinks']
 
     @property
-    def _get_sink(self) -> Callable[
+    def get_sink(self) -> Callable[
             [logging_config.GetSinkRequest],
             logging_config.LogSink]:
         r"""Return a callable for the get sink method over gRPC.
@@ -742,16 +742,16 @@ class ConfigServiceV2GrpcTransport(ConfigServiceV2Transport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if '_get_sink' not in self._stubs:
-            self._stubs['_get_sink'] = self._logged_channel.unary_unary(
-                '/google.logging.v2.ConfigServiceV2/_GetSink',
+        if 'get_sink' not in self._stubs:
+            self._stubs['get_sink'] = self._logged_channel.unary_unary(
+                '/google.logging.v2.ConfigServiceV2/GetSink',
                 request_serializer=logging_config.GetSinkRequest.serialize,
                 response_deserializer=logging_config.LogSink.deserialize,
             )
-        return self._stubs['_get_sink']
+        return self._stubs['get_sink']
 
     @property
-    def _create_sink(self) -> Callable[
+    def create_sink(self) -> Callable[
             [logging_config.CreateSinkRequest],
             logging_config.LogSink]:
         r"""Return a callable for the create sink method over gRPC.
@@ -772,16 +772,16 @@ class ConfigServiceV2GrpcTransport(ConfigServiceV2Transport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if '_create_sink' not in self._stubs:
-            self._stubs['_create_sink'] = self._logged_channel.unary_unary(
-                '/google.logging.v2.ConfigServiceV2/_CreateSink',
+        if 'create_sink' not in self._stubs:
+            self._stubs['create_sink'] = self._logged_channel.unary_unary(
+                '/google.logging.v2.ConfigServiceV2/CreateSink',
                 request_serializer=logging_config.CreateSinkRequest.serialize,
                 response_deserializer=logging_config.LogSink.deserialize,
             )
-        return self._stubs['_create_sink']
+        return self._stubs['create_sink']
 
     @property
-    def _update_sink(self) -> Callable[
+    def update_sink(self) -> Callable[
             [logging_config.UpdateSinkRequest],
             logging_config.LogSink]:
         r"""Return a callable for the update sink method over gRPC.
@@ -803,16 +803,16 @@ class ConfigServiceV2GrpcTransport(ConfigServiceV2Transport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if '_update_sink' not in self._stubs:
-            self._stubs['_update_sink'] = self._logged_channel.unary_unary(
-                '/google.logging.v2.ConfigServiceV2/_UpdateSink',
+        if 'update_sink' not in self._stubs:
+            self._stubs['update_sink'] = self._logged_channel.unary_unary(
+                '/google.logging.v2.ConfigServiceV2/UpdateSink',
                 request_serializer=logging_config.UpdateSinkRequest.serialize,
                 response_deserializer=logging_config.LogSink.deserialize,
             )
-        return self._stubs['_update_sink']
+        return self._stubs['update_sink']
 
     @property
-    def _delete_sink(self) -> Callable[
+    def delete_sink(self) -> Callable[
             [logging_config.DeleteSinkRequest],
             empty_pb2.Empty]:
         r"""Return a callable for the delete sink method over gRPC.
@@ -830,16 +830,16 @@ class ConfigServiceV2GrpcTransport(ConfigServiceV2Transport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if '_delete_sink' not in self._stubs:
-            self._stubs['_delete_sink'] = self._logged_channel.unary_unary(
-                '/google.logging.v2.ConfigServiceV2/_DeleteSink',
+        if 'delete_sink' not in self._stubs:
+            self._stubs['delete_sink'] = self._logged_channel.unary_unary(
+                '/google.logging.v2.ConfigServiceV2/DeleteSink',
                 request_serializer=logging_config.DeleteSinkRequest.serialize,
                 response_deserializer=empty_pb2.Empty.FromString,
             )
-        return self._stubs['_delete_sink']
+        return self._stubs['delete_sink']
 
     @property
-    def _create_link(self) -> Callable[
+    def create_link(self) -> Callable[
             [logging_config.CreateLinkRequest],
             operations_pb2.Operation]:
         r"""Return a callable for the create link method over gRPC.
@@ -859,16 +859,16 @@ class ConfigServiceV2GrpcTransport(ConfigServiceV2Transport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if '_create_link' not in self._stubs:
-            self._stubs['_create_link'] = self._logged_channel.unary_unary(
-                '/google.logging.v2.ConfigServiceV2/_CreateLink',
+        if 'create_link' not in self._stubs:
+            self._stubs['create_link'] = self._logged_channel.unary_unary(
+                '/google.logging.v2.ConfigServiceV2/CreateLink',
                 request_serializer=logging_config.CreateLinkRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
-        return self._stubs['_create_link']
+        return self._stubs['create_link']
 
     @property
-    def _delete_link(self) -> Callable[
+    def delete_link(self) -> Callable[
             [logging_config.DeleteLinkRequest],
             operations_pb2.Operation]:
         r"""Return a callable for the delete link method over gRPC.
@@ -886,16 +886,16 @@ class ConfigServiceV2GrpcTransport(ConfigServiceV2Transport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if '_delete_link' not in self._stubs:
-            self._stubs['_delete_link'] = self._logged_channel.unary_unary(
-                '/google.logging.v2.ConfigServiceV2/_DeleteLink',
+        if 'delete_link' not in self._stubs:
+            self._stubs['delete_link'] = self._logged_channel.unary_unary(
+                '/google.logging.v2.ConfigServiceV2/DeleteLink',
                 request_serializer=logging_config.DeleteLinkRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
-        return self._stubs['_delete_link']
+        return self._stubs['delete_link']
 
     @property
-    def _list_links(self) -> Callable[
+    def list_links(self) -> Callable[
             [logging_config.ListLinksRequest],
             logging_config.ListLinksResponse]:
         r"""Return a callable for the list links method over gRPC.
@@ -912,16 +912,16 @@ class ConfigServiceV2GrpcTransport(ConfigServiceV2Transport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if '_list_links' not in self._stubs:
-            self._stubs['_list_links'] = self._logged_channel.unary_unary(
-                '/google.logging.v2.ConfigServiceV2/_ListLinks',
+        if 'list_links' not in self._stubs:
+            self._stubs['list_links'] = self._logged_channel.unary_unary(
+                '/google.logging.v2.ConfigServiceV2/ListLinks',
                 request_serializer=logging_config.ListLinksRequest.serialize,
                 response_deserializer=logging_config.ListLinksResponse.deserialize,
             )
-        return self._stubs['_list_links']
+        return self._stubs['list_links']
 
     @property
-    def _get_link(self) -> Callable[
+    def get_link(self) -> Callable[
             [logging_config.GetLinkRequest],
             logging_config.Link]:
         r"""Return a callable for the get link method over gRPC.
@@ -938,16 +938,16 @@ class ConfigServiceV2GrpcTransport(ConfigServiceV2Transport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if '_get_link' not in self._stubs:
-            self._stubs['_get_link'] = self._logged_channel.unary_unary(
-                '/google.logging.v2.ConfigServiceV2/_GetLink',
+        if 'get_link' not in self._stubs:
+            self._stubs['get_link'] = self._logged_channel.unary_unary(
+                '/google.logging.v2.ConfigServiceV2/GetLink',
                 request_serializer=logging_config.GetLinkRequest.serialize,
                 response_deserializer=logging_config.Link.deserialize,
             )
-        return self._stubs['_get_link']
+        return self._stubs['get_link']
 
     @property
-    def _list_exclusions(self) -> Callable[
+    def list_exclusions(self) -> Callable[
             [logging_config.ListExclusionsRequest],
             logging_config.ListExclusionsResponse]:
         r"""Return a callable for the list exclusions method over gRPC.
@@ -965,16 +965,16 @@ class ConfigServiceV2GrpcTransport(ConfigServiceV2Transport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if '_list_exclusions' not in self._stubs:
-            self._stubs['_list_exclusions'] = self._logged_channel.unary_unary(
-                '/google.logging.v2.ConfigServiceV2/_ListExclusions',
+        if 'list_exclusions' not in self._stubs:
+            self._stubs['list_exclusions'] = self._logged_channel.unary_unary(
+                '/google.logging.v2.ConfigServiceV2/ListExclusions',
                 request_serializer=logging_config.ListExclusionsRequest.serialize,
                 response_deserializer=logging_config.ListExclusionsResponse.deserialize,
             )
-        return self._stubs['_list_exclusions']
+        return self._stubs['list_exclusions']
 
     @property
-    def _get_exclusion(self) -> Callable[
+    def get_exclusion(self) -> Callable[
             [logging_config.GetExclusionRequest],
             logging_config.LogExclusion]:
         r"""Return a callable for the get exclusion method over gRPC.
@@ -991,16 +991,16 @@ class ConfigServiceV2GrpcTransport(ConfigServiceV2Transport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if '_get_exclusion' not in self._stubs:
-            self._stubs['_get_exclusion'] = self._logged_channel.unary_unary(
-                '/google.logging.v2.ConfigServiceV2/_GetExclusion',
+        if 'get_exclusion' not in self._stubs:
+            self._stubs['get_exclusion'] = self._logged_channel.unary_unary(
+                '/google.logging.v2.ConfigServiceV2/GetExclusion',
                 request_serializer=logging_config.GetExclusionRequest.serialize,
                 response_deserializer=logging_config.LogExclusion.deserialize,
             )
-        return self._stubs['_get_exclusion']
+        return self._stubs['get_exclusion']
 
     @property
-    def _create_exclusion(self) -> Callable[
+    def create_exclusion(self) -> Callable[
             [logging_config.CreateExclusionRequest],
             logging_config.LogExclusion]:
         r"""Return a callable for the create exclusion method over gRPC.
@@ -1019,16 +1019,16 @@ class ConfigServiceV2GrpcTransport(ConfigServiceV2Transport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if '_create_exclusion' not in self._stubs:
-            self._stubs['_create_exclusion'] = self._logged_channel.unary_unary(
-                '/google.logging.v2.ConfigServiceV2/_CreateExclusion',
+        if 'create_exclusion' not in self._stubs:
+            self._stubs['create_exclusion'] = self._logged_channel.unary_unary(
+                '/google.logging.v2.ConfigServiceV2/CreateExclusion',
                 request_serializer=logging_config.CreateExclusionRequest.serialize,
                 response_deserializer=logging_config.LogExclusion.deserialize,
             )
-        return self._stubs['_create_exclusion']
+        return self._stubs['create_exclusion']
 
     @property
-    def _update_exclusion(self) -> Callable[
+    def update_exclusion(self) -> Callable[
             [logging_config.UpdateExclusionRequest],
             logging_config.LogExclusion]:
         r"""Return a callable for the update exclusion method over gRPC.
@@ -1046,16 +1046,16 @@ class ConfigServiceV2GrpcTransport(ConfigServiceV2Transport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if '_update_exclusion' not in self._stubs:
-            self._stubs['_update_exclusion'] = self._logged_channel.unary_unary(
-                '/google.logging.v2.ConfigServiceV2/_UpdateExclusion',
+        if 'update_exclusion' not in self._stubs:
+            self._stubs['update_exclusion'] = self._logged_channel.unary_unary(
+                '/google.logging.v2.ConfigServiceV2/UpdateExclusion',
                 request_serializer=logging_config.UpdateExclusionRequest.serialize,
                 response_deserializer=logging_config.LogExclusion.deserialize,
             )
-        return self._stubs['_update_exclusion']
+        return self._stubs['update_exclusion']
 
     @property
-    def _delete_exclusion(self) -> Callable[
+    def delete_exclusion(self) -> Callable[
             [logging_config.DeleteExclusionRequest],
             empty_pb2.Empty]:
         r"""Return a callable for the delete exclusion method over gRPC.
@@ -1072,16 +1072,16 @@ class ConfigServiceV2GrpcTransport(ConfigServiceV2Transport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if '_delete_exclusion' not in self._stubs:
-            self._stubs['_delete_exclusion'] = self._logged_channel.unary_unary(
-                '/google.logging.v2.ConfigServiceV2/_DeleteExclusion',
+        if 'delete_exclusion' not in self._stubs:
+            self._stubs['delete_exclusion'] = self._logged_channel.unary_unary(
+                '/google.logging.v2.ConfigServiceV2/DeleteExclusion',
                 request_serializer=logging_config.DeleteExclusionRequest.serialize,
                 response_deserializer=empty_pb2.Empty.FromString,
             )
-        return self._stubs['_delete_exclusion']
+        return self._stubs['delete_exclusion']
 
     @property
-    def _get_cmek_settings(self) -> Callable[
+    def get_cmek_settings(self) -> Callable[
             [logging_config.GetCmekSettingsRequest],
             logging_config.CmekSettings]:
         r"""Return a callable for the get cmek settings method over gRPC.
@@ -1107,16 +1107,16 @@ class ConfigServiceV2GrpcTransport(ConfigServiceV2Transport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if '_get_cmek_settings' not in self._stubs:
-            self._stubs['_get_cmek_settings'] = self._logged_channel.unary_unary(
-                '/google.logging.v2.ConfigServiceV2/_GetCmekSettings',
+        if 'get_cmek_settings' not in self._stubs:
+            self._stubs['get_cmek_settings'] = self._logged_channel.unary_unary(
+                '/google.logging.v2.ConfigServiceV2/GetCmekSettings',
                 request_serializer=logging_config.GetCmekSettingsRequest.serialize,
                 response_deserializer=logging_config.CmekSettings.deserialize,
             )
-        return self._stubs['_get_cmek_settings']
+        return self._stubs['get_cmek_settings']
 
     @property
-    def _update_cmek_settings(self) -> Callable[
+    def update_cmek_settings(self) -> Callable[
             [logging_config.UpdateCmekSettingsRequest],
             logging_config.CmekSettings]:
         r"""Return a callable for the update cmek settings method over gRPC.
@@ -1147,16 +1147,16 @@ class ConfigServiceV2GrpcTransport(ConfigServiceV2Transport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if '_update_cmek_settings' not in self._stubs:
-            self._stubs['_update_cmek_settings'] = self._logged_channel.unary_unary(
-                '/google.logging.v2.ConfigServiceV2/_UpdateCmekSettings',
+        if 'update_cmek_settings' not in self._stubs:
+            self._stubs['update_cmek_settings'] = self._logged_channel.unary_unary(
+                '/google.logging.v2.ConfigServiceV2/UpdateCmekSettings',
                 request_serializer=logging_config.UpdateCmekSettingsRequest.serialize,
                 response_deserializer=logging_config.CmekSettings.deserialize,
             )
-        return self._stubs['_update_cmek_settings']
+        return self._stubs['update_cmek_settings']
 
     @property
-    def _get_settings(self) -> Callable[
+    def get_settings(self) -> Callable[
             [logging_config.GetSettingsRequest],
             logging_config.Settings]:
         r"""Return a callable for the get settings method over gRPC.
@@ -1183,16 +1183,16 @@ class ConfigServiceV2GrpcTransport(ConfigServiceV2Transport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if '_get_settings' not in self._stubs:
-            self._stubs['_get_settings'] = self._logged_channel.unary_unary(
-                '/google.logging.v2.ConfigServiceV2/_GetSettings',
+        if 'get_settings' not in self._stubs:
+            self._stubs['get_settings'] = self._logged_channel.unary_unary(
+                '/google.logging.v2.ConfigServiceV2/GetSettings',
                 request_serializer=logging_config.GetSettingsRequest.serialize,
                 response_deserializer=logging_config.Settings.deserialize,
             )
-        return self._stubs['_get_settings']
+        return self._stubs['get_settings']
 
     @property
-    def _update_settings(self) -> Callable[
+    def update_settings(self) -> Callable[
             [logging_config.UpdateSettingsRequest],
             logging_config.Settings]:
         r"""Return a callable for the update settings method over gRPC.
@@ -1226,16 +1226,16 @@ class ConfigServiceV2GrpcTransport(ConfigServiceV2Transport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if '_update_settings' not in self._stubs:
-            self._stubs['_update_settings'] = self._logged_channel.unary_unary(
-                '/google.logging.v2.ConfigServiceV2/_UpdateSettings',
+        if 'update_settings' not in self._stubs:
+            self._stubs['update_settings'] = self._logged_channel.unary_unary(
+                '/google.logging.v2.ConfigServiceV2/UpdateSettings',
                 request_serializer=logging_config.UpdateSettingsRequest.serialize,
                 response_deserializer=logging_config.Settings.deserialize,
             )
-        return self._stubs['_update_settings']
+        return self._stubs['update_settings']
 
     @property
-    def _copy_log_entries(self) -> Callable[
+    def copy_log_entries(self) -> Callable[
             [logging_config.CopyLogEntriesRequest],
             operations_pb2.Operation]:
         r"""Return a callable for the copy log entries method over gRPC.
@@ -1253,13 +1253,13 @@ class ConfigServiceV2GrpcTransport(ConfigServiceV2Transport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if '_copy_log_entries' not in self._stubs:
-            self._stubs['_copy_log_entries'] = self._logged_channel.unary_unary(
-                '/google.logging.v2.ConfigServiceV2/_CopyLogEntries',
+        if 'copy_log_entries' not in self._stubs:
+            self._stubs['copy_log_entries'] = self._logged_channel.unary_unary(
+                '/google.logging.v2.ConfigServiceV2/CopyLogEntries',
                 request_serializer=logging_config.CopyLogEntriesRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
-        return self._stubs['_copy_log_entries']
+        return self._stubs['copy_log_entries']
 
     def close(self):
         self._logged_channel.close()

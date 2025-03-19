@@ -257,7 +257,7 @@ class BaseMetricsServiceV2AsyncClient:
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> pagers._ListLogMetricsAsyncPager:
+            ) -> pagers.ListLogMetricsAsyncPager:
         r"""Lists logs-based metrics.
 
         .. code-block:: python
@@ -271,7 +271,7 @@ class BaseMetricsServiceV2AsyncClient:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import logging_v2
 
-            async def sample__list_log_metrics():
+            async def sample_list_log_metrics():
                 # Create a client
                 client = logging_v2.BaseMetricsServiceV2AsyncClient()
 
@@ -310,7 +310,7 @@ class BaseMetricsServiceV2AsyncClient:
                 be of type `bytes`.
 
         Returns:
-            google.cloud.logging_v2.services.metrics_service_v2.pagers._ListLogMetricsAsyncPager:
+            google.cloud.logging_v2.services.metrics_service_v2.pagers.ListLogMetricsAsyncPager:
                 Result returned from ListLogMetrics.
 
                 Iterating over this object will yield
@@ -339,7 +339,7 @@ class BaseMetricsServiceV2AsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[self._client._transport._list_log_metrics]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_log_metrics]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -362,7 +362,7 @@ class BaseMetricsServiceV2AsyncClient:
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__aiter__` convenience method.
-        response = pagers._ListLogMetricsAsyncPager(
+        response = pagers.ListLogMetricsAsyncPager(
             method=rpc,
             request=request,
             response=response,
@@ -395,7 +395,7 @@ class BaseMetricsServiceV2AsyncClient:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import logging_v2
 
-            async def sample__get_log_metric():
+            async def sample_get_log_metric():
                 # Create a client
                 client = logging_v2.BaseMetricsServiceV2AsyncClient()
 
@@ -468,7 +468,7 @@ class BaseMetricsServiceV2AsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[self._client._transport._get_log_metric]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_log_metric]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -514,7 +514,7 @@ class BaseMetricsServiceV2AsyncClient:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import logging_v2
 
-            async def sample__create_log_metric():
+            async def sample_create_log_metric():
                 # Create a client
                 client = logging_v2.BaseMetricsServiceV2AsyncClient()
 
@@ -605,7 +605,7 @@ class BaseMetricsServiceV2AsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[self._client._transport._create_log_metric]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_log_metric]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -651,7 +651,7 @@ class BaseMetricsServiceV2AsyncClient:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import logging_v2
 
-            async def sample__update_log_metric():
+            async def sample_update_log_metric():
                 # Create a client
                 client = logging_v2.BaseMetricsServiceV2AsyncClient()
 
@@ -741,7 +741,7 @@ class BaseMetricsServiceV2AsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[self._client._transport._update_log_metric]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_log_metric]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -786,7 +786,7 @@ class BaseMetricsServiceV2AsyncClient:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import logging_v2
 
-            async def sample__delete_log_metric():
+            async def sample_delete_log_metric():
                 # Create a client
                 client = logging_v2.BaseMetricsServiceV2AsyncClient()
 
@@ -840,7 +840,7 @@ class BaseMetricsServiceV2AsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[self._client._transport._delete_log_metric]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_log_metric]
 
         # Certain fields should be provided within the metadata header;
         # add these here.

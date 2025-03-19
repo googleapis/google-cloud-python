@@ -165,33 +165,33 @@ class ConfigServiceV2Transport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self._list_views: gapic_v1.method.wrap_method(
-                self._list_views,
+            self.list_views: gapic_v1.method.wrap_method(
+                self.list_views,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self._get_view: gapic_v1.method.wrap_method(
-                self._get_view,
+            self.get_view: gapic_v1.method.wrap_method(
+                self.get_view,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self._create_view: gapic_v1.method.wrap_method(
-                self._create_view,
+            self.create_view: gapic_v1.method.wrap_method(
+                self.create_view,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self._update_view: gapic_v1.method.wrap_method(
-                self._update_view,
+            self.update_view: gapic_v1.method.wrap_method(
+                self.update_view,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self._delete_view: gapic_v1.method.wrap_method(
-                self._delete_view,
+            self.delete_view: gapic_v1.method.wrap_method(
+                self.delete_view,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self._list_sinks: gapic_v1.method.wrap_method(
-                self._list_sinks,
+            self.list_sinks: gapic_v1.method.wrap_method(
+                self.list_sinks,
                 default_retry=retries.Retry(
                     initial=0.1,
                     maximum=60.0,
@@ -206,8 +206,8 @@ class ConfigServiceV2Transport(abc.ABC):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self._get_sink: gapic_v1.method.wrap_method(
-                self._get_sink,
+            self.get_sink: gapic_v1.method.wrap_method(
+                self.get_sink,
                 default_retry=retries.Retry(
                     initial=0.1,
                     maximum=60.0,
@@ -222,13 +222,13 @@ class ConfigServiceV2Transport(abc.ABC):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self._create_sink: gapic_v1.method.wrap_method(
-                self._create_sink,
+            self.create_sink: gapic_v1.method.wrap_method(
+                self.create_sink,
                 default_timeout=120.0,
                 client_info=client_info,
             ),
-            self._update_sink: gapic_v1.method.wrap_method(
-                self._update_sink,
+            self.update_sink: gapic_v1.method.wrap_method(
+                self.update_sink,
                 default_retry=retries.Retry(
                     initial=0.1,
                     maximum=60.0,
@@ -243,8 +243,8 @@ class ConfigServiceV2Transport(abc.ABC):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self._delete_sink: gapic_v1.method.wrap_method(
-                self._delete_sink,
+            self.delete_sink: gapic_v1.method.wrap_method(
+                self.delete_sink,
                 default_retry=retries.Retry(
                     initial=0.1,
                     maximum=60.0,
@@ -259,28 +259,28 @@ class ConfigServiceV2Transport(abc.ABC):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self._create_link: gapic_v1.method.wrap_method(
-                self._create_link,
+            self.create_link: gapic_v1.method.wrap_method(
+                self.create_link,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self._delete_link: gapic_v1.method.wrap_method(
-                self._delete_link,
+            self.delete_link: gapic_v1.method.wrap_method(
+                self.delete_link,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self._list_links: gapic_v1.method.wrap_method(
-                self._list_links,
+            self.list_links: gapic_v1.method.wrap_method(
+                self.list_links,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self._get_link: gapic_v1.method.wrap_method(
-                self._get_link,
+            self.get_link: gapic_v1.method.wrap_method(
+                self.get_link,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self._list_exclusions: gapic_v1.method.wrap_method(
-                self._list_exclusions,
+            self.list_exclusions: gapic_v1.method.wrap_method(
+                self.list_exclusions,
                 default_retry=retries.Retry(
                     initial=0.1,
                     maximum=60.0,
@@ -295,8 +295,8 @@ class ConfigServiceV2Transport(abc.ABC):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self._get_exclusion: gapic_v1.method.wrap_method(
-                self._get_exclusion,
+            self.get_exclusion: gapic_v1.method.wrap_method(
+                self.get_exclusion,
                 default_retry=retries.Retry(
                     initial=0.1,
                     maximum=60.0,
@@ -311,18 +311,18 @@ class ConfigServiceV2Transport(abc.ABC):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self._create_exclusion: gapic_v1.method.wrap_method(
-                self._create_exclusion,
+            self.create_exclusion: gapic_v1.method.wrap_method(
+                self.create_exclusion,
                 default_timeout=120.0,
                 client_info=client_info,
             ),
-            self._update_exclusion: gapic_v1.method.wrap_method(
-                self._update_exclusion,
+            self.update_exclusion: gapic_v1.method.wrap_method(
+                self.update_exclusion,
                 default_timeout=120.0,
                 client_info=client_info,
             ),
-            self._delete_exclusion: gapic_v1.method.wrap_method(
-                self._delete_exclusion,
+            self.delete_exclusion: gapic_v1.method.wrap_method(
+                self.delete_exclusion,
                 default_retry=retries.Retry(
                     initial=0.1,
                     maximum=60.0,
@@ -337,28 +337,28 @@ class ConfigServiceV2Transport(abc.ABC):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self._get_cmek_settings: gapic_v1.method.wrap_method(
-                self._get_cmek_settings,
+            self.get_cmek_settings: gapic_v1.method.wrap_method(
+                self.get_cmek_settings,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self._update_cmek_settings: gapic_v1.method.wrap_method(
-                self._update_cmek_settings,
+            self.update_cmek_settings: gapic_v1.method.wrap_method(
+                self.update_cmek_settings,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self._get_settings: gapic_v1.method.wrap_method(
-                self._get_settings,
+            self.get_settings: gapic_v1.method.wrap_method(
+                self.get_settings,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self._update_settings: gapic_v1.method.wrap_method(
-                self._update_settings,
+            self.update_settings: gapic_v1.method.wrap_method(
+                self.update_settings,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self._copy_log_entries: gapic_v1.method.wrap_method(
-                self._copy_log_entries,
+            self.copy_log_entries: gapic_v1.method.wrap_method(
+                self.copy_log_entries,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -466,7 +466,7 @@ class ConfigServiceV2Transport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def _list_views(self) -> Callable[
+    def list_views(self) -> Callable[
             [logging_config.ListViewsRequest],
             Union[
                 logging_config.ListViewsResponse,
@@ -475,7 +475,7 @@ class ConfigServiceV2Transport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def _get_view(self) -> Callable[
+    def get_view(self) -> Callable[
             [logging_config.GetViewRequest],
             Union[
                 logging_config.LogView,
@@ -484,7 +484,7 @@ class ConfigServiceV2Transport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def _create_view(self) -> Callable[
+    def create_view(self) -> Callable[
             [logging_config.CreateViewRequest],
             Union[
                 logging_config.LogView,
@@ -493,7 +493,7 @@ class ConfigServiceV2Transport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def _update_view(self) -> Callable[
+    def update_view(self) -> Callable[
             [logging_config.UpdateViewRequest],
             Union[
                 logging_config.LogView,
@@ -502,7 +502,7 @@ class ConfigServiceV2Transport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def _delete_view(self) -> Callable[
+    def delete_view(self) -> Callable[
             [logging_config.DeleteViewRequest],
             Union[
                 empty_pb2.Empty,
@@ -511,7 +511,7 @@ class ConfigServiceV2Transport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def _list_sinks(self) -> Callable[
+    def list_sinks(self) -> Callable[
             [logging_config.ListSinksRequest],
             Union[
                 logging_config.ListSinksResponse,
@@ -520,7 +520,7 @@ class ConfigServiceV2Transport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def _get_sink(self) -> Callable[
+    def get_sink(self) -> Callable[
             [logging_config.GetSinkRequest],
             Union[
                 logging_config.LogSink,
@@ -529,7 +529,7 @@ class ConfigServiceV2Transport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def _create_sink(self) -> Callable[
+    def create_sink(self) -> Callable[
             [logging_config.CreateSinkRequest],
             Union[
                 logging_config.LogSink,
@@ -538,7 +538,7 @@ class ConfigServiceV2Transport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def _update_sink(self) -> Callable[
+    def update_sink(self) -> Callable[
             [logging_config.UpdateSinkRequest],
             Union[
                 logging_config.LogSink,
@@ -547,7 +547,7 @@ class ConfigServiceV2Transport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def _delete_sink(self) -> Callable[
+    def delete_sink(self) -> Callable[
             [logging_config.DeleteSinkRequest],
             Union[
                 empty_pb2.Empty,
@@ -556,7 +556,7 @@ class ConfigServiceV2Transport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def _create_link(self) -> Callable[
+    def create_link(self) -> Callable[
             [logging_config.CreateLinkRequest],
             Union[
                 operations_pb2.Operation,
@@ -565,7 +565,7 @@ class ConfigServiceV2Transport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def _delete_link(self) -> Callable[
+    def delete_link(self) -> Callable[
             [logging_config.DeleteLinkRequest],
             Union[
                 operations_pb2.Operation,
@@ -574,7 +574,7 @@ class ConfigServiceV2Transport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def _list_links(self) -> Callable[
+    def list_links(self) -> Callable[
             [logging_config.ListLinksRequest],
             Union[
                 logging_config.ListLinksResponse,
@@ -583,7 +583,7 @@ class ConfigServiceV2Transport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def _get_link(self) -> Callable[
+    def get_link(self) -> Callable[
             [logging_config.GetLinkRequest],
             Union[
                 logging_config.Link,
@@ -592,7 +592,7 @@ class ConfigServiceV2Transport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def _list_exclusions(self) -> Callable[
+    def list_exclusions(self) -> Callable[
             [logging_config.ListExclusionsRequest],
             Union[
                 logging_config.ListExclusionsResponse,
@@ -601,7 +601,7 @@ class ConfigServiceV2Transport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def _get_exclusion(self) -> Callable[
+    def get_exclusion(self) -> Callable[
             [logging_config.GetExclusionRequest],
             Union[
                 logging_config.LogExclusion,
@@ -610,7 +610,7 @@ class ConfigServiceV2Transport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def _create_exclusion(self) -> Callable[
+    def create_exclusion(self) -> Callable[
             [logging_config.CreateExclusionRequest],
             Union[
                 logging_config.LogExclusion,
@@ -619,7 +619,7 @@ class ConfigServiceV2Transport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def _update_exclusion(self) -> Callable[
+    def update_exclusion(self) -> Callable[
             [logging_config.UpdateExclusionRequest],
             Union[
                 logging_config.LogExclusion,
@@ -628,7 +628,7 @@ class ConfigServiceV2Transport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def _delete_exclusion(self) -> Callable[
+    def delete_exclusion(self) -> Callable[
             [logging_config.DeleteExclusionRequest],
             Union[
                 empty_pb2.Empty,
@@ -637,7 +637,7 @@ class ConfigServiceV2Transport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def _get_cmek_settings(self) -> Callable[
+    def get_cmek_settings(self) -> Callable[
             [logging_config.GetCmekSettingsRequest],
             Union[
                 logging_config.CmekSettings,
@@ -646,7 +646,7 @@ class ConfigServiceV2Transport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def _update_cmek_settings(self) -> Callable[
+    def update_cmek_settings(self) -> Callable[
             [logging_config.UpdateCmekSettingsRequest],
             Union[
                 logging_config.CmekSettings,
@@ -655,7 +655,7 @@ class ConfigServiceV2Transport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def _get_settings(self) -> Callable[
+    def get_settings(self) -> Callable[
             [logging_config.GetSettingsRequest],
             Union[
                 logging_config.Settings,
@@ -664,7 +664,7 @@ class ConfigServiceV2Transport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def _update_settings(self) -> Callable[
+    def update_settings(self) -> Callable[
             [logging_config.UpdateSettingsRequest],
             Union[
                 logging_config.Settings,
@@ -673,7 +673,7 @@ class ConfigServiceV2Transport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def _copy_log_entries(self) -> Callable[
+    def copy_log_entries(self) -> Callable[
             [logging_config.CopyLogEntriesRequest],
             Union[
                 operations_pb2.Operation,

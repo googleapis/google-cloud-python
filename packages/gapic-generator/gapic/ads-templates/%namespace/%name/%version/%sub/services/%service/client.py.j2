@@ -345,7 +345,7 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
     {% if method.operation_service %}{# Extended Operations LRO #}
     def {{ method.name|snake_case }}_unary(self,
     {% else %}
-    def {{ method.safe_name|snake_case }}(self,
+    def {{ method.client_method_name|snake_case }}(self,
     {% endif %}{# Extended Operations LRO #}
             {% if not method.client_streaming %}
             request: Optional[Union[{{ method.input.ident }}, dict]] = None,

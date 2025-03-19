@@ -687,7 +687,7 @@ class API:
                 transport.library_client = client_name
                 for method in methods:
                     method_desc = transport.rpcs.get_or_create(method.name)
-                    method_desc.methods.append(to_snake_case(method.name))
+                    method_desc.methods.append(to_snake_case(method.client_method_name))
 
         return gm
 

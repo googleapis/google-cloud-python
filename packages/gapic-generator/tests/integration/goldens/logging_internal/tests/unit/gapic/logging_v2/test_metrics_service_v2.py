@@ -768,7 +768,7 @@ def test__list_log_metrics(request_type, transport: str = 'grpc'):
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._list_log_metrics),
+            type(client.transport.list_log_metrics),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = logging_metrics.ListLogMetricsResponse(
@@ -783,7 +783,7 @@ def test__list_log_metrics(request_type, transport: str = 'grpc'):
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers._ListLogMetricsPager)
+    assert isinstance(response, pagers.ListLogMetricsPager)
     assert response.next_page_token == 'next_page_token_value'
 
 
@@ -805,7 +805,7 @@ def test__list_log_metrics_non_empty_request_with_auto_populated_field():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._list_log_metrics),
+            type(client.transport.list_log_metrics),
             '__call__') as call:
         call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client._list_log_metrics(request=request)
@@ -830,12 +830,12 @@ def test__list_log_metrics_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert client._transport._list_log_metrics in client._transport._wrapped_methods
+        assert client._transport.list_log_metrics in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
         mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
-        client._transport._wrapped_methods[client._transport._list_log_metrics] = mock_rpc
+        client._transport._wrapped_methods[client._transport.list_log_metrics] = mock_rpc
         request = {}
         client._list_log_metrics(request)
 
@@ -863,12 +863,12 @@ async def test__list_log_metrics_async_use_cached_wrapped_rpc(transport: str = "
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert client._client._transport._list_log_metrics in client._client._transport._wrapped_methods
+        assert client._client._transport.list_log_metrics in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[client._client._transport._list_log_metrics] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.list_log_metrics] = mock_rpc
 
         request = {}
         await client._list_log_metrics(request)
@@ -895,7 +895,7 @@ async def test__list_log_metrics_async(transport: str = 'grpc_asyncio', request_
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._list_log_metrics),
+            type(client.transport.list_log_metrics),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(logging_metrics.ListLogMetricsResponse(
@@ -910,7 +910,7 @@ async def test__list_log_metrics_async(transport: str = 'grpc_asyncio', request_
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers._ListLogMetricsAsyncPager)
+    assert isinstance(response, pagers.ListLogMetricsAsyncPager)
     assert response.next_page_token == 'next_page_token_value'
 
 
@@ -931,7 +931,7 @@ def test__list_log_metrics_field_headers():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._list_log_metrics),
+            type(client.transport.list_log_metrics),
             '__call__') as call:
         call.return_value = logging_metrics.ListLogMetricsResponse()
         client._list_log_metrics(request)
@@ -963,7 +963,7 @@ async def test__list_log_metrics_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._list_log_metrics),
+            type(client.transport.list_log_metrics),
             '__call__') as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(logging_metrics.ListLogMetricsResponse())
         await client._list_log_metrics(request)
@@ -988,7 +988,7 @@ def test__list_log_metrics_flattened():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._list_log_metrics),
+            type(client.transport.list_log_metrics),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = logging_metrics.ListLogMetricsResponse()
@@ -1028,7 +1028,7 @@ async def test__list_log_metrics_flattened_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._list_log_metrics),
+            type(client.transport.list_log_metrics),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = logging_metrics.ListLogMetricsResponse()
@@ -1071,7 +1071,7 @@ def test__list_log_metrics_pager(transport_name: str = "grpc"):
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._list_log_metrics),
+            type(client.transport.list_log_metrics),
             '__call__') as call:
         # Set the response to a series of pages.
         call.side_effect = (
@@ -1128,7 +1128,7 @@ def test__list_log_metrics_pages(transport_name: str = "grpc"):
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._list_log_metrics),
+            type(client.transport.list_log_metrics),
             '__call__') as call:
         # Set the response to a series of pages.
         call.side_effect = (
@@ -1170,7 +1170,7 @@ async def test__list_log_metrics_async_pager():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._list_log_metrics),
+            type(client.transport.list_log_metrics),
             '__call__', new_callable=mock.AsyncMock) as call:
         # Set the response to a series of pages.
         call.side_effect = (
@@ -1219,7 +1219,7 @@ async def test__list_log_metrics_async_pages():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._list_log_metrics),
+            type(client.transport.list_log_metrics),
             '__call__', new_callable=mock.AsyncMock) as call:
         # Set the response to a series of pages.
         call.side_effect = (
@@ -1275,7 +1275,7 @@ def test__get_log_metric(request_type, transport: str = 'grpc'):
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._get_log_metric),
+            type(client.transport.get_log_metric),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = logging_metrics.LogMetric(
@@ -1323,7 +1323,7 @@ def test__get_log_metric_non_empty_request_with_auto_populated_field():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._get_log_metric),
+            type(client.transport.get_log_metric),
             '__call__') as call:
         call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client._get_log_metric(request=request)
@@ -1347,12 +1347,12 @@ def test__get_log_metric_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert client._transport._get_log_metric in client._transport._wrapped_methods
+        assert client._transport.get_log_metric in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
         mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
-        client._transport._wrapped_methods[client._transport._get_log_metric] = mock_rpc
+        client._transport._wrapped_methods[client._transport.get_log_metric] = mock_rpc
         request = {}
         client._get_log_metric(request)
 
@@ -1380,12 +1380,12 @@ async def test__get_log_metric_async_use_cached_wrapped_rpc(transport: str = "gr
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert client._client._transport._get_log_metric in client._client._transport._wrapped_methods
+        assert client._client._transport.get_log_metric in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[client._client._transport._get_log_metric] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.get_log_metric] = mock_rpc
 
         request = {}
         await client._get_log_metric(request)
@@ -1412,7 +1412,7 @@ async def test__get_log_metric_async(transport: str = 'grpc_asyncio', request_ty
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._get_log_metric),
+            type(client.transport.get_log_metric),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(logging_metrics.LogMetric(
@@ -1460,7 +1460,7 @@ def test__get_log_metric_field_headers():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._get_log_metric),
+            type(client.transport.get_log_metric),
             '__call__') as call:
         call.return_value = logging_metrics.LogMetric()
         client._get_log_metric(request)
@@ -1492,7 +1492,7 @@ async def test__get_log_metric_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._get_log_metric),
+            type(client.transport.get_log_metric),
             '__call__') as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(logging_metrics.LogMetric())
         await client._get_log_metric(request)
@@ -1517,7 +1517,7 @@ def test__get_log_metric_flattened():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._get_log_metric),
+            type(client.transport.get_log_metric),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = logging_metrics.LogMetric()
@@ -1557,7 +1557,7 @@ async def test__get_log_metric_flattened_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._get_log_metric),
+            type(client.transport.get_log_metric),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = logging_metrics.LogMetric()
@@ -1608,7 +1608,7 @@ def test__create_log_metric(request_type, transport: str = 'grpc'):
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._create_log_metric),
+            type(client.transport.create_log_metric),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = logging_metrics.LogMetric(
@@ -1656,7 +1656,7 @@ def test__create_log_metric_non_empty_request_with_auto_populated_field():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._create_log_metric),
+            type(client.transport.create_log_metric),
             '__call__') as call:
         call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client._create_log_metric(request=request)
@@ -1680,12 +1680,12 @@ def test__create_log_metric_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert client._transport._create_log_metric in client._transport._wrapped_methods
+        assert client._transport.create_log_metric in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
         mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
-        client._transport._wrapped_methods[client._transport._create_log_metric] = mock_rpc
+        client._transport._wrapped_methods[client._transport.create_log_metric] = mock_rpc
         request = {}
         client._create_log_metric(request)
 
@@ -1713,12 +1713,12 @@ async def test__create_log_metric_async_use_cached_wrapped_rpc(transport: str = 
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert client._client._transport._create_log_metric in client._client._transport._wrapped_methods
+        assert client._client._transport.create_log_metric in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[client._client._transport._create_log_metric] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.create_log_metric] = mock_rpc
 
         request = {}
         await client._create_log_metric(request)
@@ -1745,7 +1745,7 @@ async def test__create_log_metric_async(transport: str = 'grpc_asyncio', request
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._create_log_metric),
+            type(client.transport.create_log_metric),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(logging_metrics.LogMetric(
@@ -1793,7 +1793,7 @@ def test__create_log_metric_field_headers():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._create_log_metric),
+            type(client.transport.create_log_metric),
             '__call__') as call:
         call.return_value = logging_metrics.LogMetric()
         client._create_log_metric(request)
@@ -1825,7 +1825,7 @@ async def test__create_log_metric_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._create_log_metric),
+            type(client.transport.create_log_metric),
             '__call__') as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(logging_metrics.LogMetric())
         await client._create_log_metric(request)
@@ -1850,7 +1850,7 @@ def test__create_log_metric_flattened():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._create_log_metric),
+            type(client.transport.create_log_metric),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = logging_metrics.LogMetric()
@@ -1895,7 +1895,7 @@ async def test__create_log_metric_flattened_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._create_log_metric),
+            type(client.transport.create_log_metric),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = logging_metrics.LogMetric()
@@ -1951,7 +1951,7 @@ def test__update_log_metric(request_type, transport: str = 'grpc'):
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._update_log_metric),
+            type(client.transport.update_log_metric),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = logging_metrics.LogMetric(
@@ -1999,7 +1999,7 @@ def test__update_log_metric_non_empty_request_with_auto_populated_field():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._update_log_metric),
+            type(client.transport.update_log_metric),
             '__call__') as call:
         call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client._update_log_metric(request=request)
@@ -2023,12 +2023,12 @@ def test__update_log_metric_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert client._transport._update_log_metric in client._transport._wrapped_methods
+        assert client._transport.update_log_metric in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
         mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
-        client._transport._wrapped_methods[client._transport._update_log_metric] = mock_rpc
+        client._transport._wrapped_methods[client._transport.update_log_metric] = mock_rpc
         request = {}
         client._update_log_metric(request)
 
@@ -2056,12 +2056,12 @@ async def test__update_log_metric_async_use_cached_wrapped_rpc(transport: str = 
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert client._client._transport._update_log_metric in client._client._transport._wrapped_methods
+        assert client._client._transport.update_log_metric in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[client._client._transport._update_log_metric] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.update_log_metric] = mock_rpc
 
         request = {}
         await client._update_log_metric(request)
@@ -2088,7 +2088,7 @@ async def test__update_log_metric_async(transport: str = 'grpc_asyncio', request
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._update_log_metric),
+            type(client.transport.update_log_metric),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(logging_metrics.LogMetric(
@@ -2136,7 +2136,7 @@ def test__update_log_metric_field_headers():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._update_log_metric),
+            type(client.transport.update_log_metric),
             '__call__') as call:
         call.return_value = logging_metrics.LogMetric()
         client._update_log_metric(request)
@@ -2168,7 +2168,7 @@ async def test__update_log_metric_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._update_log_metric),
+            type(client.transport.update_log_metric),
             '__call__') as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(logging_metrics.LogMetric())
         await client._update_log_metric(request)
@@ -2193,7 +2193,7 @@ def test__update_log_metric_flattened():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._update_log_metric),
+            type(client.transport.update_log_metric),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = logging_metrics.LogMetric()
@@ -2238,7 +2238,7 @@ async def test__update_log_metric_flattened_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._update_log_metric),
+            type(client.transport.update_log_metric),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = logging_metrics.LogMetric()
@@ -2294,7 +2294,7 @@ def test__delete_log_metric(request_type, transport: str = 'grpc'):
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._delete_log_metric),
+            type(client.transport.delete_log_metric),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = None
@@ -2327,7 +2327,7 @@ def test__delete_log_metric_non_empty_request_with_auto_populated_field():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._delete_log_metric),
+            type(client.transport.delete_log_metric),
             '__call__') as call:
         call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client._delete_log_metric(request=request)
@@ -2351,12 +2351,12 @@ def test__delete_log_metric_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert client._transport._delete_log_metric in client._transport._wrapped_methods
+        assert client._transport.delete_log_metric in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
         mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
-        client._transport._wrapped_methods[client._transport._delete_log_metric] = mock_rpc
+        client._transport._wrapped_methods[client._transport.delete_log_metric] = mock_rpc
         request = {}
         client._delete_log_metric(request)
 
@@ -2384,12 +2384,12 @@ async def test__delete_log_metric_async_use_cached_wrapped_rpc(transport: str = 
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert client._client._transport._delete_log_metric in client._client._transport._wrapped_methods
+        assert client._client._transport.delete_log_metric in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[client._client._transport._delete_log_metric] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.delete_log_metric] = mock_rpc
 
         request = {}
         await client._delete_log_metric(request)
@@ -2416,7 +2416,7 @@ async def test__delete_log_metric_async(transport: str = 'grpc_asyncio', request
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._delete_log_metric),
+            type(client.transport.delete_log_metric),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
@@ -2449,7 +2449,7 @@ def test__delete_log_metric_field_headers():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._delete_log_metric),
+            type(client.transport.delete_log_metric),
             '__call__') as call:
         call.return_value = None
         client._delete_log_metric(request)
@@ -2481,7 +2481,7 @@ async def test__delete_log_metric_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._delete_log_metric),
+            type(client.transport.delete_log_metric),
             '__call__') as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
         await client._delete_log_metric(request)
@@ -2506,7 +2506,7 @@ def test__delete_log_metric_flattened():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._delete_log_metric),
+            type(client.transport.delete_log_metric),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = None
@@ -2546,7 +2546,7 @@ async def test__delete_log_metric_flattened_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport._delete_log_metric),
+            type(client.transport.delete_log_metric),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = None
@@ -2692,7 +2692,7 @@ def test__list_log_metrics_empty_call_grpc():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport._list_log_metrics),
+            type(client.transport.list_log_metrics),
             '__call__') as call:
         call.return_value = logging_metrics.ListLogMetricsResponse()
         client._list_log_metrics(request=None)
@@ -2715,7 +2715,7 @@ def test__get_log_metric_empty_call_grpc():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport._get_log_metric),
+            type(client.transport.get_log_metric),
             '__call__') as call:
         call.return_value = logging_metrics.LogMetric()
         client._get_log_metric(request=None)
@@ -2738,7 +2738,7 @@ def test__create_log_metric_empty_call_grpc():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport._create_log_metric),
+            type(client.transport.create_log_metric),
             '__call__') as call:
         call.return_value = logging_metrics.LogMetric()
         client._create_log_metric(request=None)
@@ -2761,7 +2761,7 @@ def test__update_log_metric_empty_call_grpc():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport._update_log_metric),
+            type(client.transport.update_log_metric),
             '__call__') as call:
         call.return_value = logging_metrics.LogMetric()
         client._update_log_metric(request=None)
@@ -2784,7 +2784,7 @@ def test__delete_log_metric_empty_call_grpc():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport._delete_log_metric),
+            type(client.transport.delete_log_metric),
             '__call__') as call:
         call.return_value = None
         client._delete_log_metric(request=None)
@@ -2823,7 +2823,7 @@ async def test__list_log_metrics_empty_call_grpc_asyncio():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport._list_log_metrics),
+            type(client.transport.list_log_metrics),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(logging_metrics.ListLogMetricsResponse(
@@ -2850,7 +2850,7 @@ async def test__get_log_metric_empty_call_grpc_asyncio():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport._get_log_metric),
+            type(client.transport.get_log_metric),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(logging_metrics.LogMetric(
@@ -2883,7 +2883,7 @@ async def test__create_log_metric_empty_call_grpc_asyncio():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport._create_log_metric),
+            type(client.transport.create_log_metric),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(logging_metrics.LogMetric(
@@ -2916,7 +2916,7 @@ async def test__update_log_metric_empty_call_grpc_asyncio():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport._update_log_metric),
+            type(client.transport.update_log_metric),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(logging_metrics.LogMetric(
@@ -2949,7 +2949,7 @@ async def test__delete_log_metric_empty_call_grpc_asyncio():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport._delete_log_metric),
+            type(client.transport.delete_log_metric),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
@@ -2993,11 +2993,11 @@ def test_metrics_service_v2_base_transport():
     # Every method on the transport should just blindly
     # raise NotImplementedError.
     methods = (
-        '_list_log_metrics',
-        '_get_log_metric',
-        '_create_log_metric',
-        '_update_log_metric',
-        '_delete_log_metric',
+        'list_log_metrics',
+        'get_log_metric',
+        'create_log_metric',
+        'update_log_metric',
+        'delete_log_metric',
         'get_operation',
         'cancel_operation',
         'list_operations',

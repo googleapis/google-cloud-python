@@ -311,7 +311,7 @@ class MetricsServiceV2GrpcTransport(MetricsServiceV2Transport):
         return self._grpc_channel
 
     @property
-    def _list_log_metrics(self) -> Callable[
+    def list_log_metrics(self) -> Callable[
             [logging_metrics.ListLogMetricsRequest],
             logging_metrics.ListLogMetricsResponse]:
         r"""Return a callable for the list log metrics method over gRPC.
@@ -328,16 +328,16 @@ class MetricsServiceV2GrpcTransport(MetricsServiceV2Transport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if '_list_log_metrics' not in self._stubs:
-            self._stubs['_list_log_metrics'] = self._logged_channel.unary_unary(
-                '/google.logging.v2.MetricsServiceV2/_ListLogMetrics',
+        if 'list_log_metrics' not in self._stubs:
+            self._stubs['list_log_metrics'] = self._logged_channel.unary_unary(
+                '/google.logging.v2.MetricsServiceV2/ListLogMetrics',
                 request_serializer=logging_metrics.ListLogMetricsRequest.serialize,
                 response_deserializer=logging_metrics.ListLogMetricsResponse.deserialize,
             )
-        return self._stubs['_list_log_metrics']
+        return self._stubs['list_log_metrics']
 
     @property
-    def _get_log_metric(self) -> Callable[
+    def get_log_metric(self) -> Callable[
             [logging_metrics.GetLogMetricRequest],
             logging_metrics.LogMetric]:
         r"""Return a callable for the get log metric method over gRPC.
@@ -354,16 +354,16 @@ class MetricsServiceV2GrpcTransport(MetricsServiceV2Transport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if '_get_log_metric' not in self._stubs:
-            self._stubs['_get_log_metric'] = self._logged_channel.unary_unary(
-                '/google.logging.v2.MetricsServiceV2/_GetLogMetric',
+        if 'get_log_metric' not in self._stubs:
+            self._stubs['get_log_metric'] = self._logged_channel.unary_unary(
+                '/google.logging.v2.MetricsServiceV2/GetLogMetric',
                 request_serializer=logging_metrics.GetLogMetricRequest.serialize,
                 response_deserializer=logging_metrics.LogMetric.deserialize,
             )
-        return self._stubs['_get_log_metric']
+        return self._stubs['get_log_metric']
 
     @property
-    def _create_log_metric(self) -> Callable[
+    def create_log_metric(self) -> Callable[
             [logging_metrics.CreateLogMetricRequest],
             logging_metrics.LogMetric]:
         r"""Return a callable for the create log metric method over gRPC.
@@ -380,16 +380,16 @@ class MetricsServiceV2GrpcTransport(MetricsServiceV2Transport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if '_create_log_metric' not in self._stubs:
-            self._stubs['_create_log_metric'] = self._logged_channel.unary_unary(
-                '/google.logging.v2.MetricsServiceV2/_CreateLogMetric',
+        if 'create_log_metric' not in self._stubs:
+            self._stubs['create_log_metric'] = self._logged_channel.unary_unary(
+                '/google.logging.v2.MetricsServiceV2/CreateLogMetric',
                 request_serializer=logging_metrics.CreateLogMetricRequest.serialize,
                 response_deserializer=logging_metrics.LogMetric.deserialize,
             )
-        return self._stubs['_create_log_metric']
+        return self._stubs['create_log_metric']
 
     @property
-    def _update_log_metric(self) -> Callable[
+    def update_log_metric(self) -> Callable[
             [logging_metrics.UpdateLogMetricRequest],
             logging_metrics.LogMetric]:
         r"""Return a callable for the update log metric method over gRPC.
@@ -406,16 +406,16 @@ class MetricsServiceV2GrpcTransport(MetricsServiceV2Transport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if '_update_log_metric' not in self._stubs:
-            self._stubs['_update_log_metric'] = self._logged_channel.unary_unary(
-                '/google.logging.v2.MetricsServiceV2/_UpdateLogMetric',
+        if 'update_log_metric' not in self._stubs:
+            self._stubs['update_log_metric'] = self._logged_channel.unary_unary(
+                '/google.logging.v2.MetricsServiceV2/UpdateLogMetric',
                 request_serializer=logging_metrics.UpdateLogMetricRequest.serialize,
                 response_deserializer=logging_metrics.LogMetric.deserialize,
             )
-        return self._stubs['_update_log_metric']
+        return self._stubs['update_log_metric']
 
     @property
-    def _delete_log_metric(self) -> Callable[
+    def delete_log_metric(self) -> Callable[
             [logging_metrics.DeleteLogMetricRequest],
             empty_pb2.Empty]:
         r"""Return a callable for the delete log metric method over gRPC.
@@ -432,13 +432,13 @@ class MetricsServiceV2GrpcTransport(MetricsServiceV2Transport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if '_delete_log_metric' not in self._stubs:
-            self._stubs['_delete_log_metric'] = self._logged_channel.unary_unary(
-                '/google.logging.v2.MetricsServiceV2/_DeleteLogMetric',
+        if 'delete_log_metric' not in self._stubs:
+            self._stubs['delete_log_metric'] = self._logged_channel.unary_unary(
+                '/google.logging.v2.MetricsServiceV2/DeleteLogMetric',
                 request_serializer=logging_metrics.DeleteLogMetricRequest.serialize,
                 response_deserializer=empty_pb2.Empty.FromString,
             )
-        return self._stubs['_delete_log_metric']
+        return self._stubs['delete_log_metric']
 
     def close(self):
         self._logged_channel.close()

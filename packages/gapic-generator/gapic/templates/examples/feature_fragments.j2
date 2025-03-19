@@ -235,10 +235,10 @@ await{{ " "}}
 {%- endif -%}
 {% if calling_form in [calling_form_enum.RequestStreamingBidi,
                        calling_form_enum.RequestStreamingClient] %}
-client.{{ sample.rpc|snake_case }}(requests=request_generator())
+client.{{ render_method_name(sample)|trim }}(requests=request_generator())
 {% else %}{# TODO: deal with flattening #}
 {# TODO: set up client streaming once some questions are answered #}
-client.{{ sample.rpc|snake_case }}({{ render_request_params_unary(sample.request)|trim }})
+client.{{ render_method_name(sample)|trim }}({{ render_request_params_unary(sample.request)|trim }})
 {% endif %}
 {% endmacro %}
 
@@ -305,11 +305,15 @@ response = {{ operation_text|trim }}.result()
 {% endif %}
 {% endmacro %}
 
-{% macro render_method_name(method_name) %}
-{{ method_name|snake_case }}
+{% macro render_method_name(sample) %}
+{% if sample.is_internal %}
+_{{ sample.rpc|snake_case }}
+{% else %}
+{{ sample.rpc|snake_case }}
+{% endif %}
 {% endmacro %}
 
-{% macro render_main_block(method_name, full_request) %}
+{% macro render_main_block(sample, full_request) %}
 def main():
     import argparse
 
@@ -330,7 +334,7 @@ def main():
 {% endfor %}
     args = parser.parse_args()
 
-    sample_{{ render_method_name(method_name)|trim }}({{ arg_list|join(", ") }})
+    sample_{{ render_method_name(sample)|trim }}({{ arg_list|join(", ") }})
 
 
 if __name__ == "__main__":

@@ -1063,8 +1063,9 @@ def generate_sample_specs(
                 # [{START|END} ${apishortname}_${apiVersion}_generated_${serviceName}_${rpcName}_{sync|async|rest}]
                 region_tag = f"{api_short_name}_{api_version}_generated_{service_name}_{rpc_name}_{sync_or_async}"
 
-                # We assume that the only methods that start with an underscore are internal methods.
-                is_internal = rpc_name.startswith("_")
+                is_internal = api_schema.all_methods[
+                    f"{api_schema.naming.proto_package}.{service_name}.{rpc_name}"
+                ].is_internal
                 if is_internal:
                     region_tag += "_internal"
 
@@ -1119,7 +1120,9 @@ def _fill_sample_metadata(sample: dict, api_schema: api.API):
 
     # Client Method
     setattr(snippet_metadata.client_method, "async", async_)
-    snippet_metadata.client_method.short_name = utils.to_snake_case(method.name)
+    snippet_metadata.client_method.short_name = utils.to_snake_case(
+        method.client_method_name
+    )
     snippet_metadata.client_method.full_name = f"{snippet_metadata.client_method.client.full_name}.{snippet_metadata.client_method.short_name}"
 
     if not method.void:
@@ -1217,6 +1220,7 @@ def generate_sample(
         )
 
     calling_form = types.CallingForm.method_default(rpc)
+    sample["is_internal"] = rpc.is_internal
 
     v = Validator(rpc, api_schema)
     # Tweak some small aspects of the sample to set defaults for optional

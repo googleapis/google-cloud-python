@@ -1422,7 +1422,7 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> pagers._ListViewsPager:
+            ) -> pagers.ListViewsPager:
         r"""Lists views on a log bucket.
 
         .. code-block:: python
@@ -1436,7 +1436,7 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import logging_v2
 
-            def sample__list_views():
+            def sample_list_views():
                 # Create a client
                 client = logging_v2.BaseConfigServiceV2Client()
 
@@ -1474,7 +1474,7 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
                 be of type `bytes`.
 
         Returns:
-            google.cloud.logging_v2.services.config_service_v2.pagers._ListViewsPager:
+            google.cloud.logging_v2.services.config_service_v2.pagers.ListViewsPager:
                 The response from ListViews.
 
                 Iterating over this object will yield
@@ -1502,7 +1502,7 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport._list_views]
+        rpc = self._transport._wrapped_methods[self._transport.list_views]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1525,7 +1525,7 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
-        response = pagers._ListViewsPager(
+        response = pagers.ListViewsPager(
             method=rpc,
             request=request,
             response=response,
@@ -1557,7 +1557,7 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import logging_v2
 
-            def sample__get_view():
+            def sample_get_view():
                 # Create a client
                 client = logging_v2.BaseConfigServiceV2Client()
 
@@ -1597,7 +1597,7 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport._get_view]
+        rpc = self._transport._wrapped_methods[self._transport.get_view]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1642,7 +1642,7 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import logging_v2
 
-            def sample__create_view():
+            def sample_create_view():
                 # Create a client
                 client = logging_v2.BaseConfigServiceV2Client()
 
@@ -1683,7 +1683,7 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport._create_view]
+        rpc = self._transport._wrapped_methods[self._transport.create_view]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1731,7 +1731,7 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import logging_v2
 
-            def sample__update_view():
+            def sample_update_view():
                 # Create a client
                 client = logging_v2.BaseConfigServiceV2Client()
 
@@ -1771,7 +1771,7 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport._update_view]
+        rpc = self._transport._wrapped_methods[self._transport.update_view]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1818,7 +1818,7 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import logging_v2
 
-            def sample__delete_view():
+            def sample_delete_view():
                 # Create a client
                 client = logging_v2.BaseConfigServiceV2Client()
 
@@ -1849,7 +1849,7 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport._delete_view]
+        rpc = self._transport._wrapped_methods[self._transport.delete_view]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1877,7 +1877,7 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> pagers._ListSinksPager:
+            ) -> pagers.ListSinksPager:
         r"""Lists sinks.
 
         .. code-block:: python
@@ -1891,7 +1891,7 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import logging_v2
 
-            def sample__list_sinks():
+            def sample_list_sinks():
                 # Create a client
                 client = logging_v2.BaseConfigServiceV2Client()
 
@@ -1933,7 +1933,7 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
                 be of type `bytes`.
 
         Returns:
-            google.cloud.logging_v2.services.config_service_v2.pagers._ListSinksPager:
+            google.cloud.logging_v2.services.config_service_v2.pagers.ListSinksPager:
                 Result returned from ListSinks.
 
                 Iterating over this object will yield results and
@@ -1960,7 +1960,7 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport._list_sinks]
+        rpc = self._transport._wrapped_methods[self._transport.list_sinks]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1983,7 +1983,7 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
-        response = pagers._ListSinksPager(
+        response = pagers.ListSinksPager(
             method=rpc,
             request=request,
             response=response,
@@ -2016,7 +2016,7 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import logging_v2
 
-            def sample__get_sink():
+            def sample_get_sink():
                 # Create a client
                 client = logging_v2.BaseConfigServiceV2Client()
 
@@ -2092,7 +2092,7 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport._get_sink]
+        rpc = self._transport._wrapped_methods[self._transport.get_sink]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2142,7 +2142,7 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import logging_v2
 
-            def sample__create_sink():
+            def sample_create_sink():
                 # Create a client
                 client = logging_v2.BaseConfigServiceV2Client()
 
@@ -2232,7 +2232,7 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport._create_sink]
+        rpc = self._transport._wrapped_methods[self._transport.create_sink]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2284,7 +2284,7 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import logging_v2
 
-            def sample__update_sink():
+            def sample_update_sink():
                 # Create a client
                 client = logging_v2.BaseConfigServiceV2Client()
 
@@ -2399,7 +2399,7 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport._update_sink]
+        rpc = self._transport._wrapped_methods[self._transport.update_sink]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2445,7 +2445,7 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import logging_v2
 
-            def sample__delete_sink():
+            def sample_delete_sink():
                 # Create a client
                 client = logging_v2.BaseConfigServiceV2Client()
 
@@ -2506,7 +2506,7 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport._delete_sink]
+        rpc = self._transport._wrapped_methods[self._transport.delete_sink]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2553,7 +2553,7 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import logging_v2
 
-            def sample__create_link():
+            def sample_create_link():
                 # Create a client
                 client = logging_v2.BaseConfigServiceV2Client()
 
@@ -2644,7 +2644,7 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport._create_link]
+        rpc = self._transport._wrapped_methods[self._transport.create_link]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2698,7 +2698,7 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import logging_v2
 
-            def sample__delete_link():
+            def sample_delete_link():
                 # Create a client
                 client = logging_v2.BaseConfigServiceV2Client()
 
@@ -2775,7 +2775,7 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport._delete_link]
+        rpc = self._transport._wrapped_methods[self._transport.delete_link]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2814,7 +2814,7 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> pagers._ListLinksPager:
+            ) -> pagers.ListLinksPager:
         r"""Lists links.
 
         .. code-block:: python
@@ -2828,7 +2828,7 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import logging_v2
 
-            def sample__list_links():
+            def sample_list_links():
                 # Create a client
                 client = logging_v2.BaseConfigServiceV2Client()
 
@@ -2868,7 +2868,7 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
                 be of type `bytes`.
 
         Returns:
-            google.cloud.logging_v2.services.config_service_v2.pagers._ListLinksPager:
+            google.cloud.logging_v2.services.config_service_v2.pagers.ListLinksPager:
                 The response from ListLinks.
 
                 Iterating over this object will yield
@@ -2896,7 +2896,7 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport._list_links]
+        rpc = self._transport._wrapped_methods[self._transport.list_links]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2919,7 +2919,7 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
-        response = pagers._ListLinksPager(
+        response = pagers.ListLinksPager(
             method=rpc,
             request=request,
             response=response,
@@ -2952,7 +2952,7 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import logging_v2
 
-            def sample__get_link():
+            def sample_get_link():
                 # Create a client
                 client = logging_v2.BaseConfigServiceV2Client()
 
@@ -3015,7 +3015,7 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport._get_link]
+        rpc = self._transport._wrapped_methods[self._transport.get_link]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3046,7 +3046,7 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> pagers._ListExclusionsPager:
+            ) -> pagers.ListExclusionsPager:
         r"""Lists all the exclusions on the \_Default sink in a parent
         resource.
 
@@ -3061,7 +3061,7 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import logging_v2
 
-            def sample__list_exclusions():
+            def sample_list_exclusions():
                 # Create a client
                 client = logging_v2.BaseConfigServiceV2Client()
 
@@ -3103,7 +3103,7 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
                 be of type `bytes`.
 
         Returns:
-            google.cloud.logging_v2.services.config_service_v2.pagers._ListExclusionsPager:
+            google.cloud.logging_v2.services.config_service_v2.pagers.ListExclusionsPager:
                 Result returned from ListExclusions.
 
                 Iterating over this object will yield results and
@@ -3130,7 +3130,7 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport._list_exclusions]
+        rpc = self._transport._wrapped_methods[self._transport.list_exclusions]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3153,7 +3153,7 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
-        response = pagers._ListExclusionsPager(
+        response = pagers.ListExclusionsPager(
             method=rpc,
             request=request,
             response=response,
@@ -3186,7 +3186,7 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import logging_v2
 
-            def sample__get_exclusion():
+            def sample_get_exclusion():
                 # Create a client
                 client = logging_v2.BaseConfigServiceV2Client()
 
@@ -3260,7 +3260,7 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport._get_exclusion]
+        rpc = self._transport._wrapped_methods[self._transport.get_exclusion]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3308,7 +3308,7 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import logging_v2
 
-            def sample__create_exclusion():
+            def sample_create_exclusion():
                 # Create a client
                 client = logging_v2.BaseConfigServiceV2Client()
 
@@ -3399,7 +3399,7 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport._create_exclusion]
+        rpc = self._transport._wrapped_methods[self._transport.create_exclusion]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3447,7 +3447,7 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import logging_v2
 
-            def sample__update_exclusion():
+            def sample_update_exclusion():
                 # Create a client
                 client = logging_v2.BaseConfigServiceV2Client()
 
@@ -3552,7 +3552,7 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport._update_exclusion]
+        rpc = self._transport._wrapped_methods[self._transport.update_exclusion]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3597,7 +3597,7 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import logging_v2
 
-            def sample__delete_exclusion():
+            def sample_delete_exclusion():
                 # Create a client
                 client = logging_v2.BaseConfigServiceV2Client()
 
@@ -3658,7 +3658,7 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport._delete_exclusion]
+        rpc = self._transport._wrapped_methods[self._transport.delete_exclusion]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3708,7 +3708,7 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import logging_v2
 
-            def sample__get_cmek_settings():
+            def sample_get_cmek_settings():
                 # Create a client
                 client = logging_v2.BaseConfigServiceV2Client()
 
@@ -3763,7 +3763,7 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport._get_cmek_settings]
+        rpc = self._transport._wrapped_methods[self._transport.get_cmek_settings]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3821,7 +3821,7 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import logging_v2
 
-            def sample__update_cmek_settings():
+            def sample_update_cmek_settings():
                 # Create a client
                 client = logging_v2.BaseConfigServiceV2Client()
 
@@ -3876,7 +3876,7 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport._update_cmek_settings]
+        rpc = self._transport._wrapped_methods[self._transport.update_cmek_settings]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3931,7 +3931,7 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import logging_v2
 
-            def sample__get_settings():
+            def sample_get_settings():
                 # Create a client
                 client = logging_v2.BaseConfigServiceV2Client()
 
@@ -4013,7 +4013,7 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport._get_settings]
+        rpc = self._transport._wrapped_methods[self._transport.get_settings]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -4076,7 +4076,7 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import logging_v2
 
-            def sample__update_settings():
+            def sample_update_settings():
                 # Create a client
                 client = logging_v2.BaseConfigServiceV2Client()
 
@@ -4160,7 +4160,7 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport._update_settings]
+        rpc = self._transport._wrapped_methods[self._transport.update_settings]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -4205,7 +4205,7 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import logging_v2
 
-            def sample__copy_log_entries():
+            def sample_copy_log_entries():
                 # Create a client
                 client = logging_v2.BaseConfigServiceV2Client()
 
@@ -4254,7 +4254,7 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport._copy_log_entries]
+        rpc = self._transport._wrapped_methods[self._transport.copy_log_entries]
 
         # Validate the universe domain.
         self._validate_universe_domain()

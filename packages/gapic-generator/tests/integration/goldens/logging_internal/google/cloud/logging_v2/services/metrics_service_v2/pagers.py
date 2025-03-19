@@ -27,8 +27,8 @@ except AttributeError:  # pragma: NO COVER
 from google.cloud.logging_v2.types import logging_metrics
 
 
-class _ListLogMetricsPager:
-    """A pager for iterating through ``_list_log_metrics`` requests.
+class ListLogMetricsPager:
+    """A pager for iterating through ``list_log_metrics`` requests.
 
     This class thinly wraps an initial
     :class:`google.cloud.logging_v2.types.ListLogMetricsResponse` object, and
@@ -36,7 +36,7 @@ class _ListLogMetricsPager:
     ``metrics`` field.
 
     If there are more pages, the ``__iter__`` method will make additional
-    ``_ListLogMetrics`` requests and continue to iterate
+    ``ListLogMetrics`` requests and continue to iterate
     through the ``metrics`` field on the
     corresponding responses.
 
@@ -95,8 +95,8 @@ class _ListLogMetricsPager:
         return '{0}<{1!r}>'.format(self.__class__.__name__, self._response)
 
 
-class _ListLogMetricsAsyncPager:
-    """A pager for iterating through ``_list_log_metrics`` requests.
+class ListLogMetricsAsyncPager:
+    """A pager for iterating through ``list_log_metrics`` requests.
 
     This class thinly wraps an initial
     :class:`google.cloud.logging_v2.types.ListLogMetricsResponse` object, and
@@ -104,7 +104,7 @@ class _ListLogMetricsAsyncPager:
     ``metrics`` field.
 
     If there are more pages, the ``__aiter__`` method will make additional
-    ``_ListLogMetrics`` requests and continue to iterate
+    ``ListLogMetrics`` requests and continue to iterate
     through the ``metrics`` field on the
     corresponding responses.
 

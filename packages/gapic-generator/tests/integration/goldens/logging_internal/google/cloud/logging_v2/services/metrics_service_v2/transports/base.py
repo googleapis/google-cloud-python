@@ -125,8 +125,8 @@ class MetricsServiceV2Transport(abc.ABC):
     def _prep_wrapped_messages(self, client_info):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
-            self._list_log_metrics: gapic_v1.method.wrap_method(
-                self._list_log_metrics,
+            self.list_log_metrics: gapic_v1.method.wrap_method(
+                self.list_log_metrics,
                 default_retry=retries.Retry(
                     initial=0.1,
                     maximum=60.0,
@@ -141,8 +141,8 @@ class MetricsServiceV2Transport(abc.ABC):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self._get_log_metric: gapic_v1.method.wrap_method(
-                self._get_log_metric,
+            self.get_log_metric: gapic_v1.method.wrap_method(
+                self.get_log_metric,
                 default_retry=retries.Retry(
                     initial=0.1,
                     maximum=60.0,
@@ -157,13 +157,13 @@ class MetricsServiceV2Transport(abc.ABC):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self._create_log_metric: gapic_v1.method.wrap_method(
-                self._create_log_metric,
+            self.create_log_metric: gapic_v1.method.wrap_method(
+                self.create_log_metric,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self._update_log_metric: gapic_v1.method.wrap_method(
-                self._update_log_metric,
+            self.update_log_metric: gapic_v1.method.wrap_method(
+                self.update_log_metric,
                 default_retry=retries.Retry(
                     initial=0.1,
                     maximum=60.0,
@@ -178,8 +178,8 @@ class MetricsServiceV2Transport(abc.ABC):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self._delete_log_metric: gapic_v1.method.wrap_method(
-                self._delete_log_metric,
+            self.delete_log_metric: gapic_v1.method.wrap_method(
+                self.delete_log_metric,
                 default_retry=retries.Retry(
                     initial=0.1,
                     maximum=60.0,
@@ -221,7 +221,7 @@ class MetricsServiceV2Transport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def _list_log_metrics(self) -> Callable[
+    def list_log_metrics(self) -> Callable[
             [logging_metrics.ListLogMetricsRequest],
             Union[
                 logging_metrics.ListLogMetricsResponse,
@@ -230,7 +230,7 @@ class MetricsServiceV2Transport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def _get_log_metric(self) -> Callable[
+    def get_log_metric(self) -> Callable[
             [logging_metrics.GetLogMetricRequest],
             Union[
                 logging_metrics.LogMetric,
@@ -239,7 +239,7 @@ class MetricsServiceV2Transport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def _create_log_metric(self) -> Callable[
+    def create_log_metric(self) -> Callable[
             [logging_metrics.CreateLogMetricRequest],
             Union[
                 logging_metrics.LogMetric,
@@ -248,7 +248,7 @@ class MetricsServiceV2Transport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def _update_log_metric(self) -> Callable[
+    def update_log_metric(self) -> Callable[
             [logging_metrics.UpdateLogMetricRequest],
             Union[
                 logging_metrics.LogMetric,
@@ -257,7 +257,7 @@ class MetricsServiceV2Transport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def _delete_log_metric(self) -> Callable[
+    def delete_log_metric(self) -> Callable[
             [logging_metrics.DeleteLogMetricRequest],
             Union[
                 empty_pb2.Empty,

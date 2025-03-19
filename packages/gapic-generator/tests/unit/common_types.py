@@ -23,6 +23,8 @@ from google.protobuf import descriptor_pb2
 from gapic.schema import metadata
 from gapic.schema import wrappers
 
+from test_utils.test_utils import make_method
+
 # Injected dummy test types
 
 
@@ -40,6 +42,11 @@ class DummyMethod:
     client_output: bool = False
     client_output_async: bool = False
     is_internal: bool = False
+
+    @property
+    def client_method_name(self):
+        method_wrapper = make_method(name=self.name, is_internal=self.is_internal)
+        return method_wrapper.client_method_name
 
 
 DummyIdent = namedtuple("DummyIdent", ["name", "sphinx"])

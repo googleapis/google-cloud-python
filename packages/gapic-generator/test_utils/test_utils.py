@@ -178,6 +178,7 @@ def make_method(
     signatures: typing.Sequence[str] = (),
     is_deprecated: bool = False,
     routing_rule: routing_pb2.RoutingRule = None,
+    is_internal: bool = False,
     **kwargs,
 ) -> wrappers.Method:
     # Use default input and output messages if they are not provided.
@@ -225,6 +226,7 @@ def make_method(
                 parent=(f"{name}Service",),
             )
         ),
+        is_internal=is_internal,
     )
 
 

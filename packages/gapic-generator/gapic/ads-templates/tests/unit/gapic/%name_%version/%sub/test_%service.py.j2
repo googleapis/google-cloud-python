@@ -516,7 +516,7 @@ def test_{{ service.client_name|snake_case }}_create_channel_credentials_file(cl
 {% endif %}
 
 
-{% for method in service.methods.values() if 'grpc' in opts.transport %}{% with method_name = method.name|snake_case + "_unary" if method.operation_service else method.safe_name|snake_case %}
+{% for method in service.methods.values() if 'grpc' in opts.transport %}{% with method_name = method.name|snake_case + "_unary" if method.operation_service else method.client_method_name|snake_case %}
 @pytest.mark.parametrize("request_type", [
   {{ method.input.ident }},
   dict,
@@ -579,7 +579,7 @@ def test_{{ method_name }}(request_type, transport: str = 'grpc'):
         )
         {% endif %}
         {% if method.client_streaming %}
-        response = client.{{ method.safe_name|snake_case }}(iter(requests))
+        response = client.{{ method.client_method_name|snake_case }}(iter(requests))
         {% else %}
         response = client.{{ method_name }}(request)
         {% endif %}
@@ -1053,7 +1053,7 @@ def test_{{ method_name }}_raw_page_lro():
 
 {% endfor %} {# method in methods for grpc #}
 
-{% for method in service.methods.values() if 'rest' in opts.transport %}{% with method_name = method.name|snake_case + "_unary" if method.operation_service else method.safe_name|snake_case %}{% if method.http_options %}
+{% for method in service.methods.values() if 'rest' in opts.transport %}{% with method_name = method.name|snake_case + "_unary" if method.operation_service else method.client_method_name|snake_case %}{% if method.http_options %}
 {# TODO(kbandes): remove this if condition when client streaming are supported. #}
 {% if not method.client_streaming %}
 @pytest.mark.parametrize("request_type", [
@@ -1252,7 +1252,7 @@ def test_{{ method.name|snake_case }}_rest(request_type):
         req.return_value = response_value
         req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         {% if method.client_streaming %}
-        response = client.{{ method.safe_name|snake_case }}(iter(requests))
+        response = client.{{ method.client_method_name|snake_case }}(iter(requests))
         {% elif method.server_streaming %}
         with mock.patch.object(response_value, 'iter_content') as iter_content:
             iter_content.return_value = iter(json_return_value)
@@ -1550,7 +1550,7 @@ def test_{{ method_name }}_rest_bad_request(transport: str = 'rest', request_typ
         req.return_value = response_value
         req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         {% if method.client_streaming %}
-        client.{{ method.safe_name|snake_case }}(iter(requests))
+        client.{{ method.client_method_name|snake_case }}(iter(requests))
         {% else %}
         client.{{ method_name }}(request)
         {% endif %}
@@ -1818,7 +1818,7 @@ def test_{{ method_name }}_rest_no_http_options():
 {% endfor -%} {#- method in methods for rest #}
 
 {% for method in service.methods.values() if 'rest' in opts.transport and
-    not method.http_options %}{% with method_name = method.name|snake_case + "_unary" if method.operation_service else method.safe_name|snake_case %}
+    not method.http_options %}{% with method_name = method.name|snake_case + "_unary" if method.operation_service else method.client_method_name|snake_case %}
 def test_{{ method_name }}_rest_error():
     client = {{ service.client_name }}(
         credentials=ga_credentials.AnonymousCredentials(),

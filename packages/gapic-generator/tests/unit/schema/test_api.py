@@ -2186,6 +2186,155 @@ def test_gapic_metadata():
     assert expected == actual
 
 
+def test_gapic_metadata_internal_method():
+    # Only have squid.Ramshorn as an internal method.
+    service_yaml = get_service_yaml_for_selective_gapic_tests(
+        apis=[
+            "animalia.mollusca.v1.Squid",
+            "animalia.mollusca.v1.Octopus",
+        ],
+        version="animalia.mollusca.v1",
+        methods=[
+            "animalia.mollusca.v1.Squid.Humboldt",
+            "animalia.mollusca.v1.Squid.Giant",
+            "animalia.mollusca.v1.Octopus.GiantPacific",
+            "animalia.mollusca.v1.Octopus.BlueSpot",
+        ],
+        generate_omitted_as_internal=True,
+    )
+
+    api_schema = api.API.build(
+        file_descriptors=[
+            descriptor_pb2.FileDescriptorProto(
+                name="cephalopod.proto",
+                package="animalia.mollusca.v1",
+                message_type=[
+                    descriptor_pb2.DescriptorProto(
+                        name="MolluscRequest",
+                    ),
+                    descriptor_pb2.DescriptorProto(
+                        name="Mollusc",
+                    ),
+                ],
+                service=[
+                    descriptor_pb2.ServiceDescriptorProto(
+                        name="Squid",
+                        method=[
+                            descriptor_pb2.MethodDescriptorProto(
+                                name="Ramshorn",
+                                input_type="animalia.mollusca.v1.MolluscRequest",
+                                output_type="animalia.mollusca.v1.Mollusc",
+                            ),
+                            descriptor_pb2.MethodDescriptorProto(
+                                name="Humboldt",
+                                input_type="animalia.mollusca.v1.MolluscRequest",
+                                output_type="animalia.mollusca.v1.Mollusc",
+                            ),
+                            descriptor_pb2.MethodDescriptorProto(
+                                name="Giant",
+                                input_type="animalia.mollusca.v1.MolluscRequest",
+                                output_type="animalia.mollusca.v1.Mollusc",
+                            ),
+                        ],
+                    ),
+                    descriptor_pb2.ServiceDescriptorProto(
+                        name="Octopus",
+                        method=[
+                            descriptor_pb2.MethodDescriptorProto(
+                                name="GiantPacific",
+                                input_type="animalia.mollusca.v1.MolluscRequest",
+                                output_type="animalia.mollusca.v1.Mollusc",
+                            ),
+                            descriptor_pb2.MethodDescriptorProto(
+                                name="BlueSpot",
+                                input_type="animalia.mollusca.v1.MolluscRequest",
+                                output_type="animalia.mollusca.v1.Mollusc",
+                            ),
+                        ],
+                    ),
+                ],
+            )
+        ],
+        package="animalia.mollusca.v1",
+        opts=Options(service_yaml_config=service_yaml),
+    )
+
+    opts = Options.build("transport=grpc")
+    expected = gapic_metadata_pb2.GapicMetadata(
+        schema="1.0",
+        comment="This file maps proto services/RPCs to the corresponding library clients/methods",
+        language="python",
+        proto_package="animalia.mollusca.v1",
+        library_package="animalia.mollusca_v1",
+        services={
+            "Octopus": gapic_metadata_pb2.GapicMetadata.ServiceForTransport(
+                clients={
+                    "grpc": gapic_metadata_pb2.GapicMetadata.ServiceAsClient(
+                        library_client="OctopusClient",
+                        rpcs={
+                            "BlueSpot": gapic_metadata_pb2.GapicMetadata.MethodList(
+                                methods=["blue_spot"]
+                            ),
+                            "GiantPacific": gapic_metadata_pb2.GapicMetadata.MethodList(
+                                methods=["giant_pacific"]
+                            ),
+                        },
+                    ),
+                    "grpc-async": gapic_metadata_pb2.GapicMetadata.ServiceAsClient(
+                        library_client="OctopusAsyncClient",
+                        rpcs={
+                            "BlueSpot": gapic_metadata_pb2.GapicMetadata.MethodList(
+                                methods=["blue_spot"]
+                            ),
+                            "GiantPacific": gapic_metadata_pb2.GapicMetadata.MethodList(
+                                methods=["giant_pacific"]
+                            ),
+                        },
+                    ),
+                }
+            ),
+            "Squid": gapic_metadata_pb2.GapicMetadata.ServiceForTransport(
+                clients={
+                    "grpc": gapic_metadata_pb2.GapicMetadata.ServiceAsClient(
+                        library_client="BaseSquidClient",
+                        rpcs={
+                            "Giant": gapic_metadata_pb2.GapicMetadata.MethodList(
+                                methods=["giant"]
+                            ),
+                            "Humboldt": gapic_metadata_pb2.GapicMetadata.MethodList(
+                                methods=["humboldt"]
+                            ),
+                            "Ramshorn": gapic_metadata_pb2.GapicMetadata.MethodList(
+                                methods=["_ramshorn"]
+                            ),
+                        },
+                    ),
+                    "grpc-async": gapic_metadata_pb2.GapicMetadata.ServiceAsClient(
+                        library_client="BaseSquidAsyncClient",
+                        rpcs={
+                            "Giant": gapic_metadata_pb2.GapicMetadata.MethodList(
+                                methods=["giant"]
+                            ),
+                            "Humboldt": gapic_metadata_pb2.GapicMetadata.MethodList(
+                                methods=["humboldt"]
+                            ),
+                            "Ramshorn": gapic_metadata_pb2.GapicMetadata.MethodList(
+                                methods=["_ramshorn"]
+                            ),
+                        },
+                    ),
+                }
+            ),
+        },
+    )
+
+    actual = api_schema.gapic_metadata(opts)
+    assert expected == actual
+    expected = MessageToJson(expected, sort_keys=True)
+    actual = api_schema.gapic_metadata_json(opts)
+    assert expected == actual
+
+
 def test_http_options(fs):
     fd = (
         make_file_pb2(
@@ -3060,6 +3209,7 @@ def test_python_settings_selective_gapic_version_mismatch_method_raises_error():
 
 def get_service_yaml_for_selective_gapic_tests(
     apis: Sequence[str] = ["google.example.v1.FooService"],
+    version: str = "google.example.v1",
     methods=["google.example.v1.FooService.GetFoo"],
     generate_omitted_as_internal=False,
 ) -> Dict[str, Any]:
@@ -3068,7 +3218,7 @@ def get_service_yaml_for_selective_gapic_tests(
         "publishing": {
             "library_settings": [
                 {
-                    "version": "google.example.v1",
+                    "version": version,
                     "python_settings": {
                         "experimental_features": {"rest_async_io_enabled": True},
                         "common": {
@@ -3957,13 +4107,12 @@ def test_selective_gapic_api_build_generate_omitted_as_internal():
 
     assert "google.example.v1.ServiceOne" in api_schema.services
     assert "google.example.v1.ServiceTwo" in api_schema.services
-    assert "google.example.v1.ServiceOne.InternalMethod" not in api_schema.all_methods
-    assert "google.example.v1.ServiceOne._InternalMethod" in api_schema.all_methods
+    assert "google.example.v1.ServiceOne.InternalMethod" in api_schema.all_methods
 
     assert api_schema.services["google.example.v1.ServiceOne"].is_internal
     assert not api_schema.services["google.example.v1.ServiceTwo"].is_internal
     assert api_schema.all_methods[
-        "google.example.v1.ServiceOne._InternalMethod"
+        "google.example.v1.ServiceOne.InternalMethod"
     ].is_internal
     assert not api_schema.all_methods[
         "google.example.v1.ServiceOne.NonInternalMethod"
@@ -3981,7 +4130,9 @@ def test_selective_gapic_api_build_generate_omitted_as_internal():
         == "BaseServiceOneAsyncClient"
     )
     assert (
-        api_schema.all_methods["google.example.v1.ServiceOne._InternalMethod"].name
+        api_schema.all_methods[
+            "google.example.v1.ServiceOne.InternalMethod"
+        ].client_method_name
         == "_InternalMethod"
     )
 

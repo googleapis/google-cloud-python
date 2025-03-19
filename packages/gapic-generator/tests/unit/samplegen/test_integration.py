@@ -547,6 +547,132 @@ def test_generate_sample_void_method():
     }
 
 
+def test_generate_sample_basic_internal():
+    # Note: the sample integration tests are needfully large
+    # and difficult to eyeball parse. They are intended to be integration tests
+    # that catch errors in behavior that is emergent from combining smaller features
+    # or in features that are sufficiently small and trivial that it doesn't make sense
+    # to have standalone tests.
+
+    classify_target_field = DummyField(
+        name="classify_target",
+        type=DummyMessageTypePB(name="ClassifyTarget"),
+        message=DummyMessage(
+            type="CLASSIFY TYPE",
+            fields={
+                "video": DummyField(
+                    type=DummyMessageTypePB(name="Video"),
+                    message=DummyMessage(type="VIDEO TYPE"),
+                ),
+                "location_annotation": DummyField(
+                    type=DummyMessageTypePB(name="Location"),
+                    message=DummyMessage(type="LOCATION TYPE"),
+                ),
+            },
+        ),
+        ident=DummyIdent(sphinx="molluscs_v1.ClassifyTarget"),
+    )
+
+    input_type = DummyMessage(
+        type="REQUEST TYPE",
+        fields={"classify_target": classify_target_field},
+        ident=DummyIdent(
+            name="molluscs.v1.ClassifyRequest", sphinx="molluscs_v1.classify_request"
+        ),
+    )
+
+    output_type = DummyMessage(
+        type="RESPONSE TYPE",
+        fields={
+            "classification": DummyField(
+                type=DummyMessageTypePB(name="Classification"),
+            )
+        },
+        ident=DummyIdent(sphinx="molluscs_v1.classification"),
+    )
+
+    api_naming = naming.NewNaming(name="MolluscClient", namespace=("molluscs", "v1"))
+    service = wrappers.Service(
+        service_pb=namedtuple("service_pb", ["name"])("MolluscService"),
+        methods={
+            "Classify": DummyMethod(
+                name="Classify",
+                input=input_type,
+                output=message_factory("$resp.taxonomy"),
+                client_output=output_type,
+                flattened_fields={"classify_target": classify_target_field},
+                is_internal=True,
+            )
+        },
+        visible_resources={},
+    )
+
+    schema = DummyApiSchema(
+        services={"animalia.mollusca.v1.Mollusc": service},
+        naming=api_naming,
+    )
+
+    sample = {
+        "service": "animalia.mollusca.v1.Mollusc",
+        "region_tag": "molluscs_generated_molluscs_v1_Mollusc_Classify_sync_internal",
+        "rpc": "Classify",
+        "id": "mollusc_classify_sync_internal",
+        "description": "Determine the full taxonomy of input mollusc",
+        "request": [
+            {
+                "field": "classify_target.video",
+                "value": "path/to/mollusc/video.mkv",
+                "input_parameter": "video",
+                "value_is_file": True,
+            },
+            {
+                "field": "classify_target.location_annotation",
+                "value": "New Zealand",
+                "input_parameter": "location",
+            },
+        ],
+        "response": [{"print": ['Mollusc is a "%s"', "$resp.taxonomy"]}],
+    }
+
+    sample_str, metadata = samplegen.generate_sample(
+        sample, schema, env.get_template("examples/sample.py.j2")
+    )
+
+    assert sample_str == golden_snippet("sample_basic_internal.py")
+
+    assert json_format.MessageToDict(metadata) == {
+        "regionTag": "molluscs_generated_molluscs_v1_Mollusc_Classify_sync_internal",
+        "description": "Sample for Classify",
+        "language": "PYTHON",
+        "clientMethod": {
+            "shortName": "_classify",
+            "fullName": "molluscs.v1.molluscclient.BaseMolluscServiceClient._classify",
+            "parameters": [
+                {"type": "molluscs_v1.classify_request", "name": "request"},
+                {"type": "molluscs_v1.ClassifyTarget", "name": "classify_target"},
+                {"type": "google.api_core.retry.Retry", "name": "retry"},
+                {"type": "float", "name": "timeout"},
+                {"type": "Sequence[Tuple[str, Union[str, bytes]]]", "name": "metadata"},
+            ],
+            "resultType": "molluscs_v1.classification",
+            "client": {
+                "shortName": "BaseMolluscServiceClient",
+                "fullName": "molluscs.v1.molluscclient.BaseMolluscServiceClient",
+            },
+            "method": {
+                "shortName": "Classify",
+                "fullName": ".MolluscService.Classify",
+                "service": {
+                    "shortName": "MolluscService",
+                    "fullName": ".MolluscService",
+                },
+            },
+        },
+        "canonical": True,
+        "origin": "API_DEFINITION",
+    }
+
+
 def test_generate_sample_service_not_found():
     schema = DummyApiSchema({}, DummyNaming("pkg_name"))
     sample = {"service": "Mollusc"}

@@ -972,7 +972,10 @@ def test_render_method_call_basic():
     check_template(
         """
         {% import "feature_fragments.j2" as frags %}
-        {{ frags.render_method_call({"rpc": "CategorizeMollusc", "request": request},
+        {{ frags.render_method_call({"rpc": "CategorizeMollusc",
+                                     "request": request,
+                                     "is_internal": False,
+                                    },
                                   calling_form, calling_form_enum, transport) }}
         """,
         """
@@ -995,30 +998,10 @@ def test_render_method_call_basic_async():
     check_template(
         """
         {% import "feature_fragments.j2" as frags %}
-        {{ frags.render_method_call({"rpc": "CategorizeMollusc", "request": request},
-                                  calling_form, calling_form_enum, transport) }}
-        """,
-        """
-        await client.categorize_mollusc(request=request)
-        """,
-        request=samplegen.FullRequest(
-            request_list=[
-                samplegen.TransformedRequest(base="video", body=True, single=None),
-                samplegen.TransformedRequest(base="audio", body=True, single=None),
-                samplegen.TransformedRequest(base="guess", body=True, single=None),
-            ],
-        ),
-        calling_form_enum=CallingForm,
-        calling_form=CallingForm.Request,
-        transport="grpc-async",
-    )
-
-
-def test_render_method_call_basic_async():
-    check_template(
-        """
-        {% import "feature_fragments.j2" as frags %}
-        {{ frags.render_method_call({"rpc": "CategorizeMollusc", "request": request},
+        {{ frags.render_method_call({"rpc": "CategorizeMollusc",
+                                     "request": request,
+                                     "is_internal": False,
+                                    },
                                   calling_form, calling_form_enum, transport) }}
         """,
         """
@@ -1041,7 +1024,10 @@ def test_render_method_call_basic_flattenable():
     check_template(
         """
         {% import "feature_fragments.j2" as frags %}
-        {{ frags.render_method_call({"rpc": "CategorizeMollusc", "request": request},
+        {{ frags.render_method_call({"rpc": "CategorizeMollusc",
+                                     "request": request,
+                                     "is_internal": False,
+                                    },
                                   calling_form, calling_form_enum, transport) }}
         """,
         """
@@ -1065,7 +1051,10 @@ def test_render_method_call_bidi():
     check_template(
         """
         {% import "feature_fragments.j2" as frags %}
-        {{ frags.render_method_call({"rpc": "CategorizeMollusc", "request": request},
+        {{ frags.render_method_call({"rpc": "CategorizeMollusc",
+                                     "request": request,
+                                     "is_internal": False,
+                                    },
                                   calling_form, calling_form_enum, transport) }}
         """,
         """
@@ -1086,7 +1075,10 @@ def test_render_method_call_bidi_async():
     check_template(
         """
         {% import "feature_fragments.j2" as frags %}
-        {{ frags.render_method_call({"rpc": "CategorizeMollusc", "request": request},
+        {{ frags.render_method_call({"rpc": "CategorizeMollusc",
+                                     "request": request,
+                                     "is_internal": False,
+                                    },
                                   calling_form, calling_form_enum, transport) }}
         """,
         """
@@ -1107,7 +1099,10 @@ def test_render_method_call_client():
     check_template(
         """
         {% import "feature_fragments.j2" as frags %}
-        {{ frags.render_method_call({"rpc": "CategorizeMollusc", "request": request},
+        {{ frags.render_method_call({"rpc": "CategorizeMollusc",
+                                     "request": request,
+                                     "is_internal": False,
+                                    },
         calling_form, calling_form_enum, transport) }}
         """,
         """
@@ -1128,11 +1123,189 @@ def test_render_method_call_client_async():
     check_template(
         """
         {% import "feature_fragments.j2" as frags %}
-        {{ frags.render_method_call({"rpc": "CategorizeMollusc", "request": request},
+        {{ frags.render_method_call({"rpc": "CategorizeMollusc",
+                                     "request": request,
+                                     "is_internal": False,
+                                    },
         calling_form, calling_form_enum, transport) }}
         """,
         """
         await client.categorize_mollusc(requests=request_generator())
+        """,
+        request=samplegen.FullRequest(
+            request_list=[
+                samplegen.TransformedRequest(base="video", body=True, single=None)
+            ]
+        ),
+        calling_form_enum=CallingForm,
+        calling_form=CallingForm.RequestStreamingClient,
+        transport="grpc-async",
+    )
+
+
+def test_render_method_call_basic_internal():
+    check_template(
+        """
+        {% import "feature_fragments.j2" as frags %}
+        {{ frags.render_method_call({"rpc": "CategorizeMollusc",
+                                     "request": request,
+                                     "is_internal": True,
+                                    },
+                                  calling_form, calling_form_enum, transport) }}
+        """,
+        """
+        client._categorize_mollusc(request=request)
+        """,
+        request=samplegen.FullRequest(
+            request_list=[
+                samplegen.TransformedRequest(base="video", body=True, single=None),
+                samplegen.TransformedRequest(base="audio", body=True, single=None),
+                samplegen.TransformedRequest(base="guess", body=True, single=None),
+            ],
+        ),
+        calling_form_enum=CallingForm,
+        calling_form=CallingForm.Request,
+        transport="grpc",
+    )
+
+
+def test_render_method_call_basic_async_internal():
+    check_template(
+        """
+        {% import "feature_fragments.j2" as frags %}
+        {{ frags.render_method_call({"rpc": "CategorizeMollusc",
+                                     "request": request,
+                                     "is_internal": True,
+                                    },
+                                  calling_form, calling_form_enum, transport) }}
+        """,
+        """
+        await client._categorize_mollusc(request=request)
+        """,
+        request=samplegen.FullRequest(
+            request_list=[
+                samplegen.TransformedRequest(base="video", body=True, single=None),
+                samplegen.TransformedRequest(base="audio", body=True, single=None),
+                samplegen.TransformedRequest(base="guess", body=True, single=None),
+            ],
+        ),
+        calling_form_enum=CallingForm,
+        calling_form=CallingForm.Request,
+        transport="grpc-async",
+    )
+
+
+def test_render_method_call_basic_flattenable_internal():
+    check_template(
+        """
+        {% import "feature_fragments.j2" as frags %}
+        {{ frags.render_method_call({"rpc": "CategorizeMollusc",
+                                     "request": request,
+                                     "is_internal": True,
+                                    },
+                                  calling_form, calling_form_enum, transport) }}
+        """,
+        """
+        client._categorize_mollusc(video=video, audio=audio, guess=guess)
+        """,
+        request=samplegen.FullRequest(
+            request_list=[
+                samplegen.TransformedRequest(base="video", body=True, single=None),
+                samplegen.TransformedRequest(base="audio", body=True, single=None),
+                samplegen.TransformedRequest(base="guess", body=True, single=None),
+            ],
+            flattenable=True,
+        ),
+        calling_form_enum=CallingForm,
+        calling_form=CallingForm.Request,
+        transport="grpc",
+    )
+
+
+def test_render_method_call_bidi_internal():
+    check_template(
+        """
+        {% import "feature_fragments.j2" as frags %}
+        {{ frags.render_method_call({"rpc": "CategorizeMollusc",
+                                     "request": request,
+                                     "is_internal": True,
+                                    },
+                                  calling_form, calling_form_enum, transport) }}
+        """,
+        """
+        client._categorize_mollusc(requests=request_generator())
+        """,
+        request=samplegen.FullRequest(
+            request_list=[
+                samplegen.TransformedRequest(base="video", body=True, single=None)
+            ]
+        ),
+        calling_form_enum=CallingForm,
+        calling_form=CallingForm.RequestStreamingBidi,
+        transport="grpc",
+    )
+
+
+def test_render_method_call_bidi_async_internal():
+    check_template(
+        """
+        {% import "feature_fragments.j2" as frags %}
+        {{ frags.render_method_call({"rpc": "CategorizeMollusc",
+                                     "request": request,
+                                     "is_internal": True,
+                                    },
+                                  calling_form, calling_form_enum, transport) }}
+        """,
+        """
+        await client._categorize_mollusc(requests=request_generator())
+        """,
+        request=samplegen.FullRequest(
+            request_list=[
+                samplegen.TransformedRequest(base="video", body=True, single=None)
+            ]
+        ),
+        calling_form_enum=CallingForm,
+        calling_form=CallingForm.RequestStreamingBidi,
+        transport="grpc-async",
+    )
+
+
+def test_render_method_call_client_internal():
+    check_template(
+        """
+        {% import "feature_fragments.j2" as frags %}
+        {{ frags.render_method_call({"rpc": "CategorizeMollusc",
+                                     "request": request,
+                                     "is_internal": True,
+                                    },
+        calling_form, calling_form_enum, transport) }}
+        """,
+        """
+        client._categorize_mollusc(requests=request_generator())
+        """,
+        request=samplegen.FullRequest(
+            request_list=[
+                samplegen.TransformedRequest(base="video", body=True, single=None)
+            ]
+        ),
+        calling_form_enum=CallingForm,
+        calling_form=CallingForm.RequestStreamingClient,
+        transport="grpc",
+    )
+
+
+def test_render_method_call_client_async_internal():
+    check_template(
+        """
+        {% import "feature_fragments.j2" as frags %}
+        {{ frags.render_method_call({"rpc": "CategorizeMollusc",
+                                     "request": request,
+                                     "is_internal": True,
+                                    },
+        calling_form, calling_form_enum, transport) }}
+        """,
+        """
+        await client._categorize_mollusc(requests=request_generator())
         """,
         request=samplegen.FullRequest(
             request_list=[
@@ -1186,7 +1359,8 @@ def test_main_block():
     check_template(
         """
         {% import "feature_fragments.j2" as frags %}
-        {{ frags.render_main_block("ListMolluscs", request) }}
+        {{ frags.render_main_block({"rpc": "ListMolluscs", "is_internal": False},
+                                   request) }}
         """,
         """
         def main():

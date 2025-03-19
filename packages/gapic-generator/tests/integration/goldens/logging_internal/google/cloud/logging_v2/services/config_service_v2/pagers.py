@@ -166,8 +166,8 @@ class ListBucketsAsyncPager:
         return '{0}<{1!r}>'.format(self.__class__.__name__, self._response)
 
 
-class _ListViewsPager:
-    """A pager for iterating through ``_list_views`` requests.
+class ListViewsPager:
+    """A pager for iterating through ``list_views`` requests.
 
     This class thinly wraps an initial
     :class:`google.cloud.logging_v2.types.ListViewsResponse` object, and
@@ -175,7 +175,7 @@ class _ListViewsPager:
     ``views`` field.
 
     If there are more pages, the ``__iter__`` method will make additional
-    ``_ListViews`` requests and continue to iterate
+    ``ListViews`` requests and continue to iterate
     through the ``views`` field on the
     corresponding responses.
 
@@ -234,8 +234,8 @@ class _ListViewsPager:
         return '{0}<{1!r}>'.format(self.__class__.__name__, self._response)
 
 
-class _ListViewsAsyncPager:
-    """A pager for iterating through ``_list_views`` requests.
+class ListViewsAsyncPager:
+    """A pager for iterating through ``list_views`` requests.
 
     This class thinly wraps an initial
     :class:`google.cloud.logging_v2.types.ListViewsResponse` object, and
@@ -243,7 +243,7 @@ class _ListViewsAsyncPager:
     ``views`` field.
 
     If there are more pages, the ``__aiter__`` method will make additional
-    ``_ListViews`` requests and continue to iterate
+    ``ListViews`` requests and continue to iterate
     through the ``views`` field on the
     corresponding responses.
 
@@ -305,8 +305,8 @@ class _ListViewsAsyncPager:
         return '{0}<{1!r}>'.format(self.__class__.__name__, self._response)
 
 
-class _ListSinksPager:
-    """A pager for iterating through ``_list_sinks`` requests.
+class ListSinksPager:
+    """A pager for iterating through ``list_sinks`` requests.
 
     This class thinly wraps an initial
     :class:`google.cloud.logging_v2.types.ListSinksResponse` object, and
@@ -314,7 +314,7 @@ class _ListSinksPager:
     ``sinks`` field.
 
     If there are more pages, the ``__iter__`` method will make additional
-    ``_ListSinks`` requests and continue to iterate
+    ``ListSinks`` requests and continue to iterate
     through the ``sinks`` field on the
     corresponding responses.
 
@@ -373,8 +373,8 @@ class _ListSinksPager:
         return '{0}<{1!r}>'.format(self.__class__.__name__, self._response)
 
 
-class _ListSinksAsyncPager:
-    """A pager for iterating through ``_list_sinks`` requests.
+class ListSinksAsyncPager:
+    """A pager for iterating through ``list_sinks`` requests.
 
     This class thinly wraps an initial
     :class:`google.cloud.logging_v2.types.ListSinksResponse` object, and
@@ -382,7 +382,7 @@ class _ListSinksAsyncPager:
     ``sinks`` field.
 
     If there are more pages, the ``__aiter__`` method will make additional
-    ``_ListSinks`` requests and continue to iterate
+    ``ListSinks`` requests and continue to iterate
     through the ``sinks`` field on the
     corresponding responses.
 
@@ -444,8 +444,8 @@ class _ListSinksAsyncPager:
         return '{0}<{1!r}>'.format(self.__class__.__name__, self._response)
 
 
-class _ListLinksPager:
-    """A pager for iterating through ``_list_links`` requests.
+class ListLinksPager:
+    """A pager for iterating through ``list_links`` requests.
 
     This class thinly wraps an initial
     :class:`google.cloud.logging_v2.types.ListLinksResponse` object, and
@@ -453,7 +453,7 @@ class _ListLinksPager:
     ``links`` field.
 
     If there are more pages, the ``__iter__`` method will make additional
-    ``_ListLinks`` requests and continue to iterate
+    ``ListLinks`` requests and continue to iterate
     through the ``links`` field on the
     corresponding responses.
 
@@ -512,8 +512,8 @@ class _ListLinksPager:
         return '{0}<{1!r}>'.format(self.__class__.__name__, self._response)
 
 
-class _ListLinksAsyncPager:
-    """A pager for iterating through ``_list_links`` requests.
+class ListLinksAsyncPager:
+    """A pager for iterating through ``list_links`` requests.
 
     This class thinly wraps an initial
     :class:`google.cloud.logging_v2.types.ListLinksResponse` object, and
@@ -521,7 +521,7 @@ class _ListLinksAsyncPager:
     ``links`` field.
 
     If there are more pages, the ``__aiter__`` method will make additional
-    ``_ListLinks`` requests and continue to iterate
+    ``ListLinks`` requests and continue to iterate
     through the ``links`` field on the
     corresponding responses.
 
@@ -583,8 +583,8 @@ class _ListLinksAsyncPager:
         return '{0}<{1!r}>'.format(self.__class__.__name__, self._response)
 
 
-class _ListExclusionsPager:
-    """A pager for iterating through ``_list_exclusions`` requests.
+class ListExclusionsPager:
+    """A pager for iterating through ``list_exclusions`` requests.
 
     This class thinly wraps an initial
     :class:`google.cloud.logging_v2.types.ListExclusionsResponse` object, and
@@ -592,7 +592,7 @@ class _ListExclusionsPager:
     ``exclusions`` field.
 
     If there are more pages, the ``__iter__`` method will make additional
-    ``_ListExclusions`` requests and continue to iterate
+    ``ListExclusions`` requests and continue to iterate
     through the ``exclusions`` field on the
     corresponding responses.
 
@@ -651,8 +651,8 @@ class _ListExclusionsPager:
         return '{0}<{1!r}>'.format(self.__class__.__name__, self._response)
 
 
-class _ListExclusionsAsyncPager:
-    """A pager for iterating through ``_list_exclusions`` requests.
+class ListExclusionsAsyncPager:
+    """A pager for iterating through ``list_exclusions`` requests.
 
     This class thinly wraps an initial
     :class:`google.cloud.logging_v2.types.ListExclusionsResponse` object, and
@@ -660,7 +660,7 @@ class _ListExclusionsAsyncPager:
     ``exclusions`` field.
 
     If there are more pages, the ``__aiter__`` method will make additional
-    ``_ListExclusions`` requests and continue to iterate
+    ``ListExclusions`` requests and continue to iterate
     through the ``exclusions`` field on the
     corresponding responses.
 

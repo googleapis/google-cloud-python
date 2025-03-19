@@ -2300,18 +2300,18 @@ def test_generate_sample_spec_internal_method():
             "description": "Snippet for bighead",
         },
         {
+            "rpc": "NotRamshorn",
+            "transport": "rest",
+            "service": "animalia.mollusca.v1.Squid",
+            "region_tag": "example_v1_generated_Squid_NotRamshorn_sync_internal",
+            "description": "Snippet for not_ramshorn",
+        },
+        {
             "rpc": "Ramshorn",
             "transport": "rest",
             "service": "animalia.mollusca.v1.Squid",
             "region_tag": "example_v1_generated_Squid_Ramshorn_sync",
             "description": "Snippet for ramshorn",
-        },
-        {
-            "rpc": "_NotRamshorn",
-            "transport": "rest",
-            "service": "animalia.mollusca.v1.Squid",
-            "region_tag": "example_v1_generated_Squid__NotRamshorn_sync_internal",
-            "description": "Snippet for _not_ramshorn",
         },
     ]
 

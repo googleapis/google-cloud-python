@@ -316,7 +316,7 @@ class MetricsServiceV2GrpcAsyncIOTransport(MetricsServiceV2Transport):
         return self._grpc_channel
 
     @property
-    def _list_log_metrics(self) -> Callable[
+    def list_log_metrics(self) -> Callable[
             [logging_metrics.ListLogMetricsRequest],
             Awaitable[logging_metrics.ListLogMetricsResponse]]:
         r"""Return a callable for the list log metrics method over gRPC.
@@ -333,16 +333,16 @@ class MetricsServiceV2GrpcAsyncIOTransport(MetricsServiceV2Transport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if '_list_log_metrics' not in self._stubs:
-            self._stubs['_list_log_metrics'] = self._logged_channel.unary_unary(
-                '/google.logging.v2.MetricsServiceV2/_ListLogMetrics',
+        if 'list_log_metrics' not in self._stubs:
+            self._stubs['list_log_metrics'] = self._logged_channel.unary_unary(
+                '/google.logging.v2.MetricsServiceV2/ListLogMetrics',
                 request_serializer=logging_metrics.ListLogMetricsRequest.serialize,
                 response_deserializer=logging_metrics.ListLogMetricsResponse.deserialize,
             )
-        return self._stubs['_list_log_metrics']
+        return self._stubs['list_log_metrics']
 
     @property
-    def _get_log_metric(self) -> Callable[
+    def get_log_metric(self) -> Callable[
             [logging_metrics.GetLogMetricRequest],
             Awaitable[logging_metrics.LogMetric]]:
         r"""Return a callable for the get log metric method over gRPC.
@@ -359,16 +359,16 @@ class MetricsServiceV2GrpcAsyncIOTransport(MetricsServiceV2Transport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if '_get_log_metric' not in self._stubs:
-            self._stubs['_get_log_metric'] = self._logged_channel.unary_unary(
-                '/google.logging.v2.MetricsServiceV2/_GetLogMetric',
+        if 'get_log_metric' not in self._stubs:
+            self._stubs['get_log_metric'] = self._logged_channel.unary_unary(
+                '/google.logging.v2.MetricsServiceV2/GetLogMetric',
                 request_serializer=logging_metrics.GetLogMetricRequest.serialize,
                 response_deserializer=logging_metrics.LogMetric.deserialize,
             )
-        return self._stubs['_get_log_metric']
+        return self._stubs['get_log_metric']
 
     @property
-    def _create_log_metric(self) -> Callable[
+    def create_log_metric(self) -> Callable[
             [logging_metrics.CreateLogMetricRequest],
             Awaitable[logging_metrics.LogMetric]]:
         r"""Return a callable for the create log metric method over gRPC.
@@ -385,16 +385,16 @@ class MetricsServiceV2GrpcAsyncIOTransport(MetricsServiceV2Transport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if '_create_log_metric' not in self._stubs:
-            self._stubs['_create_log_metric'] = self._logged_channel.unary_unary(
-                '/google.logging.v2.MetricsServiceV2/_CreateLogMetric',
+        if 'create_log_metric' not in self._stubs:
+            self._stubs['create_log_metric'] = self._logged_channel.unary_unary(
+                '/google.logging.v2.MetricsServiceV2/CreateLogMetric',
                 request_serializer=logging_metrics.CreateLogMetricRequest.serialize,
                 response_deserializer=logging_metrics.LogMetric.deserialize,
             )
-        return self._stubs['_create_log_metric']
+        return self._stubs['create_log_metric']
 
     @property
-    def _update_log_metric(self) -> Callable[
+    def update_log_metric(self) -> Callable[
             [logging_metrics.UpdateLogMetricRequest],
             Awaitable[logging_metrics.LogMetric]]:
         r"""Return a callable for the update log metric method over gRPC.
@@ -411,16 +411,16 @@ class MetricsServiceV2GrpcAsyncIOTransport(MetricsServiceV2Transport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if '_update_log_metric' not in self._stubs:
-            self._stubs['_update_log_metric'] = self._logged_channel.unary_unary(
-                '/google.logging.v2.MetricsServiceV2/_UpdateLogMetric',
+        if 'update_log_metric' not in self._stubs:
+            self._stubs['update_log_metric'] = self._logged_channel.unary_unary(
+                '/google.logging.v2.MetricsServiceV2/UpdateLogMetric',
                 request_serializer=logging_metrics.UpdateLogMetricRequest.serialize,
                 response_deserializer=logging_metrics.LogMetric.deserialize,
             )
-        return self._stubs['_update_log_metric']
+        return self._stubs['update_log_metric']
 
     @property
-    def _delete_log_metric(self) -> Callable[
+    def delete_log_metric(self) -> Callable[
             [logging_metrics.DeleteLogMetricRequest],
             Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete log metric method over gRPC.
@@ -437,19 +437,19 @@ class MetricsServiceV2GrpcAsyncIOTransport(MetricsServiceV2Transport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if '_delete_log_metric' not in self._stubs:
-            self._stubs['_delete_log_metric'] = self._logged_channel.unary_unary(
-                '/google.logging.v2.MetricsServiceV2/_DeleteLogMetric',
+        if 'delete_log_metric' not in self._stubs:
+            self._stubs['delete_log_metric'] = self._logged_channel.unary_unary(
+                '/google.logging.v2.MetricsServiceV2/DeleteLogMetric',
                 request_serializer=logging_metrics.DeleteLogMetricRequest.serialize,
                 response_deserializer=empty_pb2.Empty.FromString,
             )
-        return self._stubs['_delete_log_metric']
+        return self._stubs['delete_log_metric']
 
     def _prep_wrapped_messages(self, client_info):
         """ Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
-            self._list_log_metrics: self._wrap_method(
-                self._list_log_metrics,
+            self.list_log_metrics: self._wrap_method(
+                self.list_log_metrics,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
                     maximum=60.0,
@@ -464,8 +464,8 @@ class MetricsServiceV2GrpcAsyncIOTransport(MetricsServiceV2Transport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self._get_log_metric: self._wrap_method(
-                self._get_log_metric,
+            self.get_log_metric: self._wrap_method(
+                self.get_log_metric,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
                     maximum=60.0,
@@ -480,13 +480,13 @@ class MetricsServiceV2GrpcAsyncIOTransport(MetricsServiceV2Transport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self._create_log_metric: self._wrap_method(
-                self._create_log_metric,
+            self.create_log_metric: self._wrap_method(
+                self.create_log_metric,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self._update_log_metric: self._wrap_method(
-                self._update_log_metric,
+            self.update_log_metric: self._wrap_method(
+                self.update_log_metric,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
                     maximum=60.0,
@@ -501,8 +501,8 @@ class MetricsServiceV2GrpcAsyncIOTransport(MetricsServiceV2Transport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self._delete_log_metric: self._wrap_method(
-                self._delete_log_metric,
+            self.delete_log_metric: self._wrap_method(
+                self.delete_log_metric,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
                     maximum=60.0,
