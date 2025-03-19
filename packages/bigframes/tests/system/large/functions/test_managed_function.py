@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import google.api_core.exceptions
 import pandas
 import pyarrow
 import pytest
@@ -117,53 +118,7 @@ def test_managed_function_stringify_with_ibis(
         )
     finally:
         # clean up the gcp assets created for the managed function.
-        cleanup_function_assets(
-            bigquery_client, session.cloudfunctionsclient, stringify
-        )
-
-
-def test_managed_function_binop(session, scalars_dfs, dataset_id):
-    try:
-
-        def func(x, y):
-            return x * abs(y % 4)
-
-        managed_func = session.udf(
-            input_types=[str, int],
-            output_type=str,
-            dataset=dataset_id,
-        )(func)
-
-        scalars_df, scalars_pandas_df = scalars_dfs
-
-        scalars_df = scalars_df.dropna()
-        scalars_pandas_df = scalars_pandas_df.dropna()
-        pd_result = scalars_pandas_df["string_col"].combine(
-            scalars_pandas_df["int64_col"], func
-        )
-        bf_result = (
-            scalars_df["string_col"]
-            .combine(scalars_df["int64_col"], managed_func)
-            .to_pandas()
-        )
-        pandas.testing.assert_series_equal(bf_result, pd_result)
-
-        # Make sure the read_gbq_function path works for this function.
-        managed_func_ref = session.read_gbq_function(
-            managed_func.bigframes_bigquery_function
-        )
-        bf_result_gbq = (
-            scalars_df["string_col"]
-            .combine(scalars_df["int64_col"], managed_func_ref)
-            .to_pandas()
-        )
-        pandas.testing.assert_series_equal(bf_result_gbq, pd_result)
-
-    finally:
-        # clean up the gcp assets created for the managed function.
-        cleanup_function_assets(
-            session.bqclient, session.cloudfunctionsclient, managed_func
-        )
+        cleanup_function_assets(stringify, bigquery_client)
 
 
 @pytest.mark.parametrize(
@@ -212,44 +167,343 @@ def test_managed_function_array_output(session, scalars_dfs, dataset_id, array_d
 
     finally:
         # Clean up the gcp assets created for the managed function.
-        cleanup_function_assets(
-            featurize, session.bqclient, session.cloudfunctionsclient
-        )
+        cleanup_function_assets(featurize, session.bqclient)
 
 
-def test_managed_function_binop_array_output(session, scalars_dfs, dataset_id):
+@pytest.mark.parametrize(
+    ("typ",),
+    [
+        pytest.param(int),
+        pytest.param(float),
+        pytest.param(bool),
+        pytest.param(str),
+        pytest.param(bytes),
+    ],
+)
+def test_managed_function_series_apply(
+    session,
+    typ,
+    scalars_dfs,
+):
     try:
 
-        def func(x, y):
-            return [len(x), abs(y % 4)]
+        @session.udf()
+        def foo(x: int) -> typ:  # type:ignore
+            # The bytes() constructor expects a non-negative interger as its arg.
+            return typ(abs(x))
 
-        managed_func = session.udf(
-            input_types=[str, int],
-            output_type=list[int],
-            dataset=dataset_id,
-        )(func)
+        # Function should still work normally.
+        assert foo(-2) == typ(2)
+
+        assert hasattr(foo, "bigframes_bigquery_function")
+        assert hasattr(foo, "ibis_node")
+        assert hasattr(foo, "input_dtypes")
+        assert hasattr(foo, "output_dtype")
+        assert hasattr(foo, "bigframes_bigquery_function_output_dtype")
 
         scalars_df, scalars_pandas_df = scalars_dfs
 
-        scalars_df = scalars_df.dropna()
-        scalars_pandas_df = scalars_pandas_df.dropna()
+        bf_result_col = scalars_df["int64_too"].apply(foo)
         bf_result = (
-            scalars_df["string_col"]
-            .combine(scalars_df["int64_col"], managed_func)
+            scalars_df["int64_too"].to_frame().assign(result=bf_result_col).to_pandas()
+        )
+
+        pd_result_col = scalars_pandas_df["int64_too"].apply(foo)
+        pd_result = (
+            scalars_pandas_df["int64_too"].to_frame().assign(result=pd_result_col)
+        )
+
+        pandas.testing.assert_frame_equal(bf_result, pd_result, check_dtype=False)
+
+        # Make sure the read_gbq_function path works for this function.
+        foo_ref = session.read_gbq_function(
+            function_name=foo.bigframes_bigquery_function,  # type: ignore
+        )
+        assert hasattr(foo_ref, "bigframes_bigquery_function")
+        assert not hasattr(foo_ref, "bigframes_remote_function")
+        assert foo.bigframes_bigquery_function == foo_ref.bigframes_bigquery_function  # type: ignore
+
+        bf_result_col_gbq = scalars_df["int64_too"].apply(foo_ref)
+        bf_result_gbq = (
+            scalars_df["int64_too"]
+            .to_frame()
+            .assign(result=bf_result_col_gbq)
             .to_pandas()
         )
-        pd_result = scalars_pandas_df["string_col"].combine(
-            scalars_pandas_df["int64_col"], func
+
+        pandas.testing.assert_frame_equal(bf_result_gbq, pd_result, check_dtype=False)
+    finally:
+        # Clean up the gcp assets created for the managed function.
+        cleanup_function_assets(foo, session.bqclient)
+
+
+@pytest.mark.parametrize(
+    ("typ",),
+    [
+        pytest.param(int),
+        pytest.param(float),
+        pytest.param(bool),
+        pytest.param(str),
+    ],
+)
+def test_managed_function_series_apply_array_output(
+    session,
+    typ,
+    scalars_dfs,
+):
+    try:
+
+        @session.udf()
+        def foo_list(x: int) -> list[typ]:  # type:ignore
+            # The bytes() constructor expects a non-negative interger as its arg.
+            return [typ(abs(x)), typ(abs(x) + 1)]
+
+        scalars_df, scalars_pandas_df = scalars_dfs
+
+        bf_result_col = scalars_df["int64_too"].apply(foo_list)
+        bf_result = (
+            scalars_df["int64_too"].to_frame().assign(result=bf_result_col).to_pandas()
+        )
+
+        pd_result_col = scalars_pandas_df["int64_too"].apply(foo_list)
+        pd_result = (
+            scalars_pandas_df["int64_too"].to_frame().assign(result=pd_result_col)
+        )
+
+        # Ignore any dtype difference.
+        pandas.testing.assert_frame_equal(bf_result, pd_result, check_dtype=False)
+    finally:
+        # Clean up the gcp assets created for the managed function.
+        cleanup_function_assets(foo_list, session.bqclient)
+
+
+def test_managed_function_series_combine(session, scalars_dfs):
+    try:
+        # This function is deliberately written to not work with NA input.
+        def add(x: int, y: int) -> int:
+            return x + y
+
+        scalars_df, scalars_pandas_df = scalars_dfs
+        int_col_name_with_nulls = "int64_col"
+        int_col_name_no_nulls = "int64_too"
+        bf_df = scalars_df[[int_col_name_with_nulls, int_col_name_no_nulls]]
+        pd_df = scalars_pandas_df[[int_col_name_with_nulls, int_col_name_no_nulls]]
+
+        # make sure there are NA values in the test column.
+        assert any([pandas.isna(val) for val in bf_df[int_col_name_with_nulls]])
+
+        add_managed_func = session.udf()(add)
+
+        # with nulls in the series the managed function application would fail.
+        with pytest.raises(
+            google.api_core.exceptions.BadRequest, match="unsupported operand"
+        ):
+            bf_df[int_col_name_with_nulls].combine(
+                bf_df[int_col_name_no_nulls], add_managed_func
+            ).to_pandas()
+
+        # after filtering out nulls the managed function application should work
+        # similar to pandas.
+        pd_filter = pd_df[int_col_name_with_nulls].notnull()
+        pd_result = pd_df[pd_filter][int_col_name_with_nulls].combine(
+            pd_df[pd_filter][int_col_name_no_nulls], add
+        )
+        bf_filter = bf_df[int_col_name_with_nulls].notnull()
+        bf_result = (
+            bf_df[bf_filter][int_col_name_with_nulls]
+            .combine(bf_df[bf_filter][int_col_name_no_nulls], add_managed_func)
+            .to_pandas()
+        )
+
+        # ignore any dtype difference.
+        pandas.testing.assert_series_equal(pd_result, bf_result, check_dtype=False)
+
+        # Make sure the read_gbq_function path works for this function.
+        add_managed_func_ref = session.read_gbq_function(
+            add_managed_func.bigframes_bigquery_function
+        )
+        bf_result = (
+            bf_df[bf_filter][int_col_name_with_nulls]
+            .combine(bf_df[bf_filter][int_col_name_no_nulls], add_managed_func_ref)
+            .to_pandas()
         )
         pandas.testing.assert_series_equal(bf_result, pd_result, check_dtype=False)
     finally:
         # Clean up the gcp assets created for the managed function.
-        cleanup_function_assets(
-            managed_func, session.bqclient, session.cloudfunctionsclient
+        cleanup_function_assets(add_managed_func, session.bqclient)
+
+
+def test_managed_function_series_combine_array_output(session, scalars_dfs):
+    try:
+
+        def add_list(x: int, y: int) -> list[int]:
+            return [x, y]
+
+        scalars_df, scalars_pandas_df = scalars_dfs
+        int_col_name_with_nulls = "int64_col"
+        int_col_name_no_nulls = "int64_too"
+        bf_df = scalars_df[[int_col_name_with_nulls, int_col_name_no_nulls]]
+        pd_df = scalars_pandas_df[[int_col_name_with_nulls, int_col_name_no_nulls]]
+
+        # Make sure there are NA values in the test column.
+        assert any([pandas.isna(val) for val in bf_df[int_col_name_with_nulls]])
+
+        add_list_managed_func = session.udf()(add_list)
+
+        # After filtering out nulls the managed function application should work
+        # similar to pandas.
+        pd_filter = pd_df[int_col_name_with_nulls].notnull()
+        pd_result = pd_df[pd_filter][int_col_name_with_nulls].combine(
+            pd_df[pd_filter][int_col_name_no_nulls], add_list
+        )
+        bf_filter = bf_df[int_col_name_with_nulls].notnull()
+        bf_result = (
+            bf_df[bf_filter][int_col_name_with_nulls]
+            .combine(bf_df[bf_filter][int_col_name_no_nulls], add_list_managed_func)
+            .to_pandas()
         )
 
+        # Ignore any dtype difference.
+        pandas.testing.assert_series_equal(pd_result, bf_result, check_dtype=False)
 
-def test_manage_function_df_apply_axis_1_array_output(session):
+        # Make sure the read_gbq_function path works for this function.
+        add_list_managed_func_ref = session.read_gbq_function(
+            function_name=add_list_managed_func.bigframes_bigquery_function,  # type: ignore
+        )
+
+        assert hasattr(add_list_managed_func_ref, "bigframes_bigquery_function")
+        assert not hasattr(add_list_managed_func_ref, "bigframes_remote_function")
+        assert (
+            add_list_managed_func_ref.bigframes_bigquery_function
+            == add_list_managed_func.bigframes_bigquery_function
+        )
+
+        # Test on the function from read_gbq_function.
+        got = add_list_managed_func_ref(10, 38)
+        assert got == [10, 38]
+
+        bf_result_gbq = (
+            bf_df[bf_filter][int_col_name_with_nulls]
+            .combine(bf_df[bf_filter][int_col_name_no_nulls], add_list_managed_func_ref)
+            .to_pandas()
+        )
+
+        pandas.testing.assert_series_equal(bf_result_gbq, pd_result, check_dtype=False)
+    finally:
+        # Clean up the gcp assets created for the managed function.
+        cleanup_function_assets(add_list_managed_func, session.bqclient)
+
+
+def test_managed_function_dataframe_map(session, scalars_dfs):
+    try:
+
+        def add_one(x):
+            return x + 1
+
+        mf_add_one = session.udf(
+            input_types=[int],
+            output_type=int,
+        )(add_one)
+
+        scalars_df, scalars_pandas_df = scalars_dfs
+        int64_cols = ["int64_col", "int64_too"]
+
+        bf_int64_df = scalars_df[int64_cols]
+        bf_int64_df_filtered = bf_int64_df.dropna()
+        bf_result = bf_int64_df_filtered.map(mf_add_one).to_pandas()
+
+        pd_int64_df = scalars_pandas_df[int64_cols]
+        pd_int64_df_filtered = pd_int64_df.dropna()
+        pd_result = pd_int64_df_filtered.map(add_one)
+        # TODO(shobs): Figure why pandas .map() changes the dtype, i.e.
+        # pd_int64_df_filtered.dtype is Int64Dtype()
+        # pd_int64_df_filtered.map(lambda x: x).dtype is int64.
+        # For this test let's force the pandas dtype to be same as input.
+        for col in pd_result:
+            pd_result[col] = pd_result[col].astype(pd_int64_df_filtered[col].dtype)
+
+        pandas.testing.assert_frame_equal(bf_result, pd_result)
+    finally:
+        # Clean up the gcp assets created for the managed function.
+        cleanup_function_assets(mf_add_one, session.bqclient)
+
+
+def test_managed_function_dataframe_map_array_output(
+    session, scalars_dfs, dataset_id_permanent
+):
+    try:
+
+        def add_one_list(x):
+            return [x + 1] * 3
+
+        mf_add_one_list = session.udf(
+            input_types=[int],
+            output_type=list[int],
+        )(add_one_list)
+
+        scalars_df, scalars_pandas_df = scalars_dfs
+        int64_cols = ["int64_col", "int64_too"]
+
+        bf_int64_df = scalars_df[int64_cols]
+        bf_int64_df_filtered = bf_int64_df.dropna()
+        bf_result = bf_int64_df_filtered.map(mf_add_one_list).to_pandas()
+
+        pd_int64_df = scalars_pandas_df[int64_cols]
+        pd_int64_df_filtered = pd_int64_df.dropna()
+        pd_result = pd_int64_df_filtered.map(add_one_list)
+
+        # Ignore any dtype difference.
+        pandas.testing.assert_frame_equal(bf_result, pd_result, check_dtype=False)
+
+        # Make sure the read_gbq_function path works for this function.
+        mf_add_one_list_ref = session.read_gbq_function(
+            function_name=mf_add_one_list.bigframes_bigquery_function,  # type: ignore
+        )
+
+        bf_result_gbq = bf_int64_df_filtered.map(mf_add_one_list_ref).to_pandas()
+        pandas.testing.assert_frame_equal(bf_result_gbq, pd_result, check_dtype=False)
+    finally:
+        # Clean up the gcp assets created for the managed function.
+        cleanup_function_assets(mf_add_one_list, session.bqclient)
+
+
+def test_managed_function_dataframe_apply_axis_1(session, scalars_dfs):
+    try:
+        scalars_df, scalars_pandas_df = scalars_dfs
+        series = scalars_df["int64_too"]
+        series_pandas = scalars_pandas_df["int64_too"]
+
+        def add_ints(x, y):
+            return x + y
+
+        add_ints_mf = session.udf(
+            input_types=[int, int],
+            output_type=int,
+        )(add_ints)
+        assert add_ints_mf.bigframes_bigquery_function  # type: ignore
+
+        with pytest.warns(
+            bigframes.exceptions.PreviewWarning, match="axis=1 scenario is in preview."
+        ):
+            bf_result = (
+                bpd.DataFrame({"x": series, "y": series})
+                .apply(add_ints_mf, axis=1)
+                .to_pandas()
+            )
+
+        pd_result = pandas.DataFrame({"x": series_pandas, "y": series_pandas}).apply(
+            lambda row: add_ints(row["x"], row["y"]), axis=1
+        )
+
+        pandas.testing.assert_series_equal(
+            pd_result, bf_result, check_dtype=False, check_exact=True
+        )
+    finally:
+        # Clean up the gcp assets created for the managed function.
+        cleanup_function_assets(add_ints_mf, session.bqclient)
+
+
+def test_managed_function_dataframe_apply_axis_1_array_output(session):
     bf_df = bigframes.dataframe.DataFrame(
         {
             "Id": [1, 2, 3],
@@ -308,7 +562,11 @@ def test_manage_function_df_apply_axis_1_array_output(session):
 
         # Successfully applies to dataframe with matching number of columns.
         # and their datatypes.
-        bf_result = bf_df.apply(foo, axis=1).to_pandas()
+        with pytest.warns(
+            bigframes.exceptions.PreviewWarning,
+            match="axis=1 scenario is in preview.",
+        ):
+            bf_result = bf_df.apply(foo, axis=1).to_pandas()
 
         # Since this scenario is not pandas-like, let's handcraft the
         # expected result.
@@ -335,11 +593,16 @@ def test_manage_function_df_apply_axis_1_array_output(session):
         got = foo_ref(10, 38, "hello")
         assert got == ["10", "38.0", "hello"]
 
-        bf_result_gbq = bf_df.apply(foo_ref, axis=1).to_pandas()
+        with pytest.warns(
+            bigframes.exceptions.PreviewWarning,
+            match="axis=1 scenario is in preview.",
+        ):
+            bf_result_gbq = bf_df.apply(foo_ref, axis=1).to_pandas()
+
         pandas.testing.assert_series_equal(
             bf_result_gbq, expected_result, check_dtype=False, check_index_type=False
         )
 
     finally:
         # Clean up the gcp assets created for the managed function.
-        cleanup_function_assets(foo, session.bqclient, session.cloudfunctionsclient)
+        cleanup_function_assets(foo, session.bqclient)
