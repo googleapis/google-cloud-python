@@ -2356,6 +2356,14 @@ class _BaseDlpServiceRestTransport(DlpServiceTransport):
                     "method": "get",
                     "uri": "/v2/{parent=locations/*}/infoTypes",
                 },
+                {
+                    "method": "get",
+                    "uri": "/v2/{parent=projects/*/locations/*}/infoTypes",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v2/{parent=organizations/*/locations/*}/infoTypes",
+                },
             ]
             return http_options
 

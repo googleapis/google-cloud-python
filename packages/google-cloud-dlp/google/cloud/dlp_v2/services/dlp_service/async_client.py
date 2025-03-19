@@ -446,6 +446,10 @@ class DlpServiceAsyncClient:
         detectors to run. By default this may be all types, but
         may change over time as detectors are updated.
 
+        Only the first frame of each multiframe image is
+        redacted. Metadata and other frames are omitted in the
+        response.
+
         .. code-block:: python
 
             # This snippet has been automatically generated and should be regarded as a

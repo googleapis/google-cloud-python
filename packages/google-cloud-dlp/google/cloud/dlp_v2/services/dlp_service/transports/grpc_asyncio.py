@@ -389,6 +389,10 @@ class DlpServiceGrpcAsyncIOTransport(DlpServiceTransport):
         detectors to run. By default this may be all types, but
         may change over time as detectors are updated.
 
+        Only the first frame of each multiframe image is
+        redacted. Metadata and other frames are omitted in the
+        response.
+
         Returns:
             Callable[[~.RedactImageRequest],
                     Awaitable[~.RedactImageResponse]]:
