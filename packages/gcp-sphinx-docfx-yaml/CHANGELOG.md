@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.2.3](https://github.com/googleapis/sphinx-docfx-yaml/compare/v3.2.2...v3.2.3) (2025-03-19)
+
+
+### Bug Fixes
+
+* Update summary overview entry to deduplicate ([#413](https://github.com/googleapis/sphinx-docfx-yaml/issues/413)) ([0c714a8](https://github.com/googleapis/sphinx-docfx-yaml/commit/0c714a8390f9dc547d261cc8f6702428fa76ed5b))
+
 ## [3.2.2](https://github.com/googleapis/sphinx-docfx-yaml/compare/v3.2.1...v3.2.2) (2024-09-06)
 
 
