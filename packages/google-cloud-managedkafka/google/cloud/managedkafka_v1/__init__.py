@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,6 +19,10 @@ __version__ = package_version.__version__
 
 
 from .services.managed_kafka import ManagedKafkaAsyncClient, ManagedKafkaClient
+from .services.managed_kafka_connect import (
+    ManagedKafkaConnectAsyncClient,
+    ManagedKafkaConnectClient,
+)
 from .types.managed_kafka import (
     CreateClusterRequest,
     CreateTopicRequest,
@@ -38,10 +42,37 @@ from .types.managed_kafka import (
     UpdateConsumerGroupRequest,
     UpdateTopicRequest,
 )
+from .types.managed_kafka_connect import (
+    CreateConnectClusterRequest,
+    CreateConnectorRequest,
+    DeleteConnectClusterRequest,
+    DeleteConnectorRequest,
+    GetConnectClusterRequest,
+    GetConnectorRequest,
+    ListConnectClustersRequest,
+    ListConnectClustersResponse,
+    ListConnectorsRequest,
+    ListConnectorsResponse,
+    PauseConnectorRequest,
+    PauseConnectorResponse,
+    RestartConnectorRequest,
+    RestartConnectorResponse,
+    ResumeConnectorRequest,
+    ResumeConnectorResponse,
+    StopConnectorRequest,
+    StopConnectorResponse,
+    UpdateConnectClusterRequest,
+    UpdateConnectorRequest,
+)
 from .types.resources import (
     AccessConfig,
     CapacityConfig,
     Cluster,
+    ConnectAccessConfig,
+    ConnectCluster,
+    ConnectGcpConfig,
+    ConnectNetworkConfig,
+    Connector,
     ConsumerGroup,
     ConsumerPartitionMetadata,
     ConsumerTopicMetadata,
@@ -49,38 +80,67 @@ from .types.resources import (
     NetworkConfig,
     OperationMetadata,
     RebalanceConfig,
+    TaskRetryPolicy,
     Topic,
 )
 
 __all__ = (
     "ManagedKafkaAsyncClient",
+    "ManagedKafkaConnectAsyncClient",
     "AccessConfig",
     "CapacityConfig",
     "Cluster",
+    "ConnectAccessConfig",
+    "ConnectCluster",
+    "ConnectGcpConfig",
+    "ConnectNetworkConfig",
+    "Connector",
     "ConsumerGroup",
     "ConsumerPartitionMetadata",
     "ConsumerTopicMetadata",
     "CreateClusterRequest",
+    "CreateConnectClusterRequest",
+    "CreateConnectorRequest",
     "CreateTopicRequest",
     "DeleteClusterRequest",
+    "DeleteConnectClusterRequest",
+    "DeleteConnectorRequest",
     "DeleteConsumerGroupRequest",
     "DeleteTopicRequest",
     "GcpConfig",
     "GetClusterRequest",
+    "GetConnectClusterRequest",
+    "GetConnectorRequest",
     "GetConsumerGroupRequest",
     "GetTopicRequest",
     "ListClustersRequest",
     "ListClustersResponse",
+    "ListConnectClustersRequest",
+    "ListConnectClustersResponse",
+    "ListConnectorsRequest",
+    "ListConnectorsResponse",
     "ListConsumerGroupsRequest",
     "ListConsumerGroupsResponse",
     "ListTopicsRequest",
     "ListTopicsResponse",
     "ManagedKafkaClient",
+    "ManagedKafkaConnectClient",
     "NetworkConfig",
     "OperationMetadata",
+    "PauseConnectorRequest",
+    "PauseConnectorResponse",
     "RebalanceConfig",
+    "RestartConnectorRequest",
+    "RestartConnectorResponse",
+    "ResumeConnectorRequest",
+    "ResumeConnectorResponse",
+    "StopConnectorRequest",
+    "StopConnectorResponse",
+    "TaskRetryPolicy",
     "Topic",
     "UpdateClusterRequest",
+    "UpdateConnectClusterRequest",
+    "UpdateConnectorRequest",
     "UpdateConsumerGroupRequest",
     "UpdateTopicRequest",
 )
