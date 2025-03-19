@@ -35,7 +35,6 @@ import bigframes.core.compile.ibis_types
 import bigframes.dtypes
 import bigframes.exceptions as bfe
 import bigframes.formatting_helpers as bf_formatting
-import bigframes.functions.function_template
 
 from . import _function_session as bff_session
 from . import _utils
