@@ -92,3 +92,11 @@ def test_block_from_local(data):
     pandas.testing.assert_index_equal(block.column_labels, expected.columns)
     assert tuple(block.index.names) == tuple(expected.index.names)
     assert block.shape == expected.shape
+
+
+def test_block_compute_dry_run__raises_error_when_sampling_is_enabled():
+    mock_session = mock.create_autospec(spec=bigframes.Session)
+    block = blocks.Block.from_local(pandas.DataFrame(), mock_session)
+
+    with pytest.raises(NotImplementedError):
+        block._compute_dry_run(sampling_method="UNIFORM")

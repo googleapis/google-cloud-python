@@ -17,7 +17,7 @@
 from __future__ import annotations
 
 import typing
-from typing import Hashable, Literal, Optional, Sequence, Union
+from typing import Hashable, Literal, Optional, overload, Sequence, Union
 
 import bigframes_vendored.constants as constants
 import bigframes_vendored.pandas.core.indexes.base as vendored_pandas_index
@@ -228,7 +228,7 @@ class Index(vendored_pandas_index.Index):
         return self.transpose()
 
     @property
-    def query_job(self) -> Optional[bigquery.QueryJob]:
+    def query_job(self) -> bigquery.QueryJob:
         """BigQuery job metadata for the most recent query.
 
         Returns:
@@ -236,7 +236,8 @@ class Index(vendored_pandas_index.Index):
             <https://cloud.google.com/python/docs/reference/bigquery/latest/google.cloud.bigquery.job.QueryJob>`_.
         """
         if self._query_job is None:
-            self._query_job = self._block._compute_dry_run()
+            _, query_job = self._block._compute_dry_run()
+            self._query_job = query_job
         return self._query_job
 
     def __repr__(self) -> str:
@@ -252,7 +253,8 @@ class Index(vendored_pandas_index.Index):
         opts = bigframes.options.display
         max_results = opts.max_rows
         if opts.repr_mode == "deferred":
-            return formatter.repr_query_job(self._block._compute_dry_run())
+            _, dry_run_query_job = self._block._compute_dry_run()
+            return formatter.repr_query_job(dry_run_query_job)
 
         pandas_df, _, query_job = self._block.retrieve_repr_request_results(max_results)
         self._query_job = query_job
@@ -490,18 +492,46 @@ class Index(vendored_pandas_index.Index):
         else:
             raise NotImplementedError(f"Index key not supported {key}")
 
-    def to_pandas(self, *, allow_large_results: Optional[bool] = None) -> pandas.Index:
+    @overload
+    def to_pandas(
+        self,
+        *,
+        allow_large_results: Optional[bool] = ...,
+        dry_run: Literal[False] = ...,
+    ) -> pandas.Index:
+        ...
+
+    @overload
+    def to_pandas(
+        self, *, allow_large_results: Optional[bool] = ..., dry_run: Literal[True] = ...
+    ) -> pandas.Series:
+        ...
+
+    def to_pandas(
+        self, *, allow_large_results: Optional[bool] = None, dry_run: bool = False
+    ) -> pandas.Index | pandas.Series:
         """Gets the Index as a pandas Index.
 
         Args:
             allow_large_results (bool, default None):
                 If not None, overrides the global setting to allow or disallow large query results
                 over the default size limit of 10 GB.
+            dry_run (bool, default False):
+                If this argument is true, this method will not process the data. Instead, it returns
+                a Pandas series containing dtype and the amount of bytes to be processed.
 
         Returns:
-            pandas.Index:
-                A pandas Index with all of the labels from this Index.
+            pandas.Index | pandas.Series:
+                A pandas Index with all of the labels from this Index. If dry run is set to True,
+                returns a Series containing dry run statistics.
         """
+        if dry_run:
+            dry_run_stats, dry_run_job = self._block.index._compute_dry_run(
+                ordered=True
+            )
+            self._query_job = dry_run_job
+            return dry_run_stats
+
         df, query_job = self._block.index.to_pandas(
             ordered=True, allow_large_results=allow_large_results
         )

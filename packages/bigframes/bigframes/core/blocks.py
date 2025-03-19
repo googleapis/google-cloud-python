@@ -22,6 +22,7 @@ circular dependencies.
 from __future__ import annotations
 
 import ast
+import copy
 import dataclasses
 import datetime
 import functools
@@ -30,6 +31,7 @@ import random
 import textwrap
 import typing
 from typing import (
+    Any,
     Iterable,
     List,
     Literal,
@@ -49,7 +51,7 @@ import pandas as pd
 import pyarrow as pa
 
 from bigframes import session
-import bigframes._config.sampling_options as sampling_options
+from bigframes._config import sampling_options
 import bigframes.constants
 import bigframes.core as core
 import bigframes.core.compile.googlesql as googlesql
@@ -535,19 +537,9 @@ class Block:
         Returns:
             pandas.DataFrame, QueryJob
         """
-        if (sampling_method is not None) and (sampling_method not in _SAMPLING_METHODS):
-            raise NotImplementedError(
-                f"The downsampling method {sampling_method} is not implemented, "
-                f"please choose from {','.join(_SAMPLING_METHODS)}."
-            )
-
-        sampling = bigframes.options.sampling.with_max_download_size(max_download_size)
-        if sampling_method is not None:
-            sampling = sampling.with_method(sampling_method).with_random_state(  # type: ignore
-                random_state
-            )
-        else:
-            sampling = sampling.with_disabled()
+        sampling = self._get_sampling_option(
+            max_download_size, sampling_method, random_state
+        )
 
         df, query_job = self._materialize_local(
             materialize_options=MaterializationOptions(
@@ -558,6 +550,27 @@ class Block:
         )
         df.set_axis(self.column_labels, axis=1, copy=False)
         return df, query_job
+
+    def _get_sampling_option(
+        self,
+        max_download_size: Optional[int] = None,
+        sampling_method: Optional[str] = None,
+        random_state: Optional[int] = None,
+    ) -> sampling_options.SamplingOptions:
+
+        if (sampling_method is not None) and (sampling_method not in _SAMPLING_METHODS):
+            raise NotImplementedError(
+                f"The downsampling method {sampling_method} is not implemented, "
+                f"please choose from {','.join(_SAMPLING_METHODS)}."
+            )
+
+        sampling = bigframes.options.sampling.with_max_download_size(max_download_size)
+        if sampling_method is None:
+            return sampling.with_disabled()
+
+        return sampling.with_method(sampling_method).with_random_state(  # type: ignore
+            random_state
+        )
 
     def try_peek(
         self, n: int = 20, force: bool = False, allow_large_results=None
@@ -798,11 +811,73 @@ class Block:
         return [sliced_block.drop_columns(drop_cols) for sliced_block in sliced_blocks]
 
     def _compute_dry_run(
-        self, value_keys: Optional[Iterable[str]] = None
-    ) -> bigquery.QueryJob:
+        self,
+        value_keys: Optional[Iterable[str]] = None,
+        *,
+        ordered: bool = True,
+        max_download_size: Optional[int] = None,
+        sampling_method: Optional[str] = None,
+        random_state: Optional[int] = None,
+    ) -> typing.Tuple[pd.Series, bigquery.QueryJob]:
+        sampling = self._get_sampling_option(
+            max_download_size, sampling_method, random_state
+        )
+        if sampling.enable_downsampling:
+            raise NotImplementedError("Dry run with sampling is not supported")
+
+        index: List[Any] = []
+        values: List[Any] = []
+
+        index.append("columnCount")
+        values.append(len(self.value_columns))
+        index.append("columnDtypes")
+        values.append(
+            {
+                col: self.expr.get_column_type(self.resolve_label_exact_or_error(col))
+                for col in self.column_labels
+            }
+        )
+
+        index.append("indexLevel")
+        values.append(self.index.nlevels)
+        index.append("indexDtypes")
+        values.append(self.index.dtypes)
+
         expr = self._apply_value_keys_to_expr(value_keys=value_keys)
-        query_job = self.session._executor.dry_run(expr)
-        return query_job
+        query_job = self.session._executor.dry_run(expr, ordered)
+        job_api_repr = copy.deepcopy(query_job._properties)
+
+        job_ref = job_api_repr["jobReference"]
+        for key, val in job_ref.items():
+            index.append(key)
+            values.append(val)
+
+        index.append("jobType")
+        values.append(job_api_repr["configuration"]["jobType"])
+
+        query_config = job_api_repr["configuration"]["query"]
+        for key in ("destinationTable", "useLegacySql"):
+            index.append(key)
+            values.append(query_config.get(key))
+
+        query_stats = job_api_repr["statistics"]["query"]
+        for key in (
+            "referencedTables",
+            "totalBytesProcessed",
+            "cacheHit",
+            "statementType",
+        ):
+            index.append(key)
+            values.append(query_stats.get(key))
+
+        index.append("creationTime")
+        values.append(
+            pd.Timestamp(
+                job_api_repr["statistics"]["creationTime"], unit="ms", tz="UTC"
+            )
+        )
+
+        return pd.Series(values, index=index), query_job
 
     def _apply_value_keys_to_expr(self, value_keys: Optional[Iterable[str]] = None):
         expr = self._expr
@@ -2703,10 +2778,17 @@ class BlockIndexProperties:
                 "Cannot materialize index, as this object does not have an index. Set index column(s) using set_index."
             )
         ordered = ordered if ordered is not None else True
+
         df, query_job = self._block.select_columns([]).to_pandas(
-            ordered=ordered, allow_large_results=allow_large_results
+            ordered=ordered,
+            allow_large_results=allow_large_results,
         )
         return df.index, query_job
+
+    def _compute_dry_run(
+        self, *, ordered: bool = True
+    ) -> Tuple[pd.Series, bigquery.QueryJob]:
+        return self._block.select_columns([])._compute_dry_run(ordered=ordered)
 
     def resolve_level(self, level: LevelsType) -> typing.Sequence[str]:
         if utils.is_list_like(level):

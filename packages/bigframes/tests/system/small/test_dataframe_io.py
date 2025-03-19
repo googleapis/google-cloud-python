@@ -927,3 +927,11 @@ def test_to_sql_query_named_index_excluded(
     utils.assert_pandas_df_equal(
         roundtrip.to_pandas(), pd_df, check_index_type=False, ignore_order=True
     )
+
+
+def test_to_pandas_dry_run(session, scalars_pandas_df_multi_index):
+    bf_df = session.read_pandas(scalars_pandas_df_multi_index)
+
+    result = bf_df.to_pandas(dry_run=True)
+
+    assert len(result) == 14
