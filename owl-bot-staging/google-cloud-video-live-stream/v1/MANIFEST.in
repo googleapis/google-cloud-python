@@ -1,0 +1,2 @@
+recursive-include google/cloud/video/live_stream *.py
+recursive-include google/cloud/video/live_stream_v1 *.py
