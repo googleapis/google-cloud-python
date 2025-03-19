@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.17.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-orchestration-airflow-v1.17.1...google-cloud-orchestration-airflow-v1.17.2) (2025-03-19)
+
+
+### Documentation
+
+* [google-cloud-orchestration-airflow] A comment for field ([6cce4cd](https://github.com/googleapis/google-cloud-python/commit/6cce4cdb66c2ade97223315ba46e2c9b60acee15))
+* [google-cloud-orchestration-airflow] update composer supported environments version match ([#13663](https://github.com/googleapis/google-cloud-python/issues/13663)) ([098c51d](https://github.com/googleapis/google-cloud-python/commit/098c51d6ba314917bc43486dc07b13e868b5c05c))
+* A comment for field `connection_type` in message `.google.cloud.orchestration.airflow.service.v1.NetworkingConfig` is changed ([#13679](https://github.com/googleapis/google-cloud-python/issues/13679)) ([6cce4cd](https://github.com/googleapis/google-cloud-python/commit/6cce4cdb66c2ade97223315ba46e2c9b60acee15))
+
 ## [1.17.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-orchestration-airflow-v1.17.0...google-cloud-orchestration-airflow-v1.17.1) (2025-03-15)
 
 

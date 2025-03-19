@@ -1,5 +1,13 @@
 # Changelog
 
+## [3.3.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-documentai-v3.2.1...google-cloud-documentai-v3.3.0) (2025-03-19)
+
+
+### Features
+
+* [google-cloud-documentai] Added config options to enable LLM ([ee05aca](https://github.com/googleapis/google-cloud-python/commit/ee05aca642a1e86e8ae05e19a4f2f84fdbbab7d8))
+* Added config options to enable LLM layout parsing ([#13680](https://github.com/googleapis/google-cloud-python/issues/13680)) ([ee05aca](https://github.com/googleapis/google-cloud-python/commit/ee05aca642a1e86e8ae05e19a4f2f84fdbbab7d8))
+
 ## [3.2.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-documentai-v3.2.0...google-cloud-documentai-v3.2.1) (2025-03-15)
 
 

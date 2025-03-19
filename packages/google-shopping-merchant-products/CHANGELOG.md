@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.2.3](https://github.com/googleapis/google-cloud-python/compare/google-shopping-merchant-products-v0.2.2...google-shopping-merchant-products-v0.2.3) (2025-03-19)
+
+
+### Features
+
+* Add an update method ([5cde00f](https://github.com/googleapis/google-cloud-python/commit/5cde00f98c05b2bf3c996ced62c81d4f81be8df2))
+
+
+### Documentation
+
+* A comment for field `channel` in message `.google.shopping.merchant.products.v1beta.ProductInput` is changed ([5cde00f](https://github.com/googleapis/google-cloud-python/commit/5cde00f98c05b2bf3c996ced62c81d4f81be8df2))
+* A comment for field `data_source` in message `.google.shopping.merchant.products.v1beta.InsertProductInputRequest` is changed ([5cde00f](https://github.com/googleapis/google-cloud-python/commit/5cde00f98c05b2bf3c996ced62c81d4f81be8df2))
+* A comment for message `ProductInput` is changed ([5cde00f](https://github.com/googleapis/google-cloud-python/commit/5cde00f98c05b2bf3c996ced62c81d4f81be8df2))
+
 ## [0.2.2](https://github.com/googleapis/google-cloud-python/compare/google-shopping-merchant-products-v0.2.1...google-shopping-merchant-products-v0.2.2) (2025-03-15)
 
 

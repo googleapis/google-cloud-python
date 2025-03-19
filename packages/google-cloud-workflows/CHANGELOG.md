@@ -1,5 +1,21 @@
 # Changelog
 
+## [1.18.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-workflows-v1.17.1...google-cloud-workflows-v1.18.0) (2025-03-19)
+
+
+### Features
+
+* add crypto key config to Workflow ([036658f](https://github.com/googleapis/google-cloud-python/commit/036658f6562449b5f11c0e8168e3cea07ce359c8))
+* add ExecutionHistoryLevel enum ([036658f](https://github.com/googleapis/google-cloud-python/commit/036658f6562449b5f11c0e8168e3cea07ce359c8))
+* add ExecutionHistoryLevel to Workflow ([036658f](https://github.com/googleapis/google-cloud-python/commit/036658f6562449b5f11c0e8168e3cea07ce359c8))
+* add ListWorkflowRevisions method ([036658f](https://github.com/googleapis/google-cloud-python/commit/036658f6562449b5f11c0e8168e3cea07ce359c8))
+* add tags to Workflow ([036658f](https://github.com/googleapis/google-cloud-python/commit/036658f6562449b5f11c0e8168e3cea07ce359c8))
+
+
+### Documentation
+
+* update Workflow some standard field docs ([036658f](https://github.com/googleapis/google-cloud-python/commit/036658f6562449b5f11c0e8168e3cea07ce359c8))
+
 ## [1.17.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-workflows-v1.17.0...google-cloud-workflows-v1.17.1) (2025-03-15)
 
 

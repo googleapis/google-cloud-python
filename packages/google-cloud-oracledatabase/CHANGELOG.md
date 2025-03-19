@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.7](https://github.com/googleapis/google-cloud-python/compare/google-cloud-oracledatabase-v0.1.6...google-cloud-oracledatabase-v0.1.7) (2025-03-19)
+
+
+### Features
+
+* [google-cloud-oracledatabase] add enum value `State::NOT_APPROVED_IN_PRIVATE_MARKETPLACE` ([#13664](https://github.com/googleapis/google-cloud-python/issues/13664)) ([ba9f843](https://github.com/googleapis/google-cloud-python/commit/ba9f843957ea307b187fe2a1a7fc6b043e6bd6c0))
+
 ## [0.1.6](https://github.com/googleapis/google-cloud-python/compare/google-cloud-oracledatabase-v0.1.5...google-cloud-oracledatabase-v0.1.6) (2025-03-15)
 
 

@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.1.9](https://github.com/googleapis/google-cloud-python/compare/google-cloud-managedkafka-v0.1.8...google-cloud-managedkafka-v0.1.9) (2025-03-19)
+
+
+### Features
+
+* [google-cloud-managedkafka] add Managed Kafka Connect API ([887357d](https://github.com/googleapis/google-cloud-python/commit/887357da2ede1d41f14258fc44275f5f592f2478))
+* Add Managed Kafka Connect API ([#13677](https://github.com/googleapis/google-cloud-python/issues/13677)) ([887357d](https://github.com/googleapis/google-cloud-python/commit/887357da2ede1d41f14258fc44275f5f592f2478))
+
 ## [0.1.8](https://github.com/googleapis/google-cloud-python/compare/google-cloud-managedkafka-v0.1.7...google-cloud-managedkafka-v0.1.8) (2025-03-15)
 
 
