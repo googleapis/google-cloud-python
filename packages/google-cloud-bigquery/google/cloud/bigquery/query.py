@@ -18,11 +18,11 @@ from collections import OrderedDict
 import copy
 import datetime
 import decimal
-from typing import Any, Optional, Dict, Union
+from typing import Any, cast, Optional, Dict, Union
 
 from google.cloud.bigquery.table import _parse_schema_resource
+from google.cloud.bigquery import _helpers
 from google.cloud.bigquery._helpers import _rows_from_json
-from google.cloud.bigquery._helpers import _QUERY_PARAMS_FROM_JSON
 from google.cloud.bigquery._helpers import _SCALAR_VALUE_TO_JSON_PARAM
 from google.cloud.bigquery._helpers import _SUPPORTED_RANGE_ELEMENTS
 
@@ -571,6 +571,9 @@ class ScalarQueryParameter(_AbstractQueryParameter):
         Returns:
             google.cloud.bigquery.query.ScalarQueryParameter: Instance
         """
+        # Import here to avoid circular imports.
+        from google.cloud.bigquery import schema
+
         name = resource.get("name")
         type_ = resource["parameterType"]["type"]
 
@@ -578,7 +581,9 @@ class ScalarQueryParameter(_AbstractQueryParameter):
         # from the back-end - the latter omits it for None values.
         value = resource.get("parameterValue", {}).get("value")
         if value is not None:
-            converted = _QUERY_PARAMS_FROM_JSON[type_](value, None)
+            converted = _helpers.SCALAR_QUERY_PARAM_PARSER.to_py(
+                value, schema.SchemaField(cast(str, name), type_)
+            )
         else:
             converted = None
 
@@ -693,13 +698,20 @@ class ArrayQueryParameter(_AbstractQueryParameter):
 
     @classmethod
     def _from_api_repr_scalar(cls, resource):
+        """Converts REST resource into a list of scalar values."""
+        # Import here to avoid circular imports.
+        from google.cloud.bigquery import schema
+
         name = resource.get("name")
         array_type = resource["parameterType"]["arrayType"]["type"]
         parameter_value = resource.get("parameterValue", {})
         array_values = parameter_value.get("arrayValues", ())
         values = [value["value"] for value in array_values]
         converted = [
-            _QUERY_PARAMS_FROM_JSON[array_type](value, None) for value in values
+            _helpers.SCALAR_QUERY_PARAM_PARSER.to_py(
+                value, schema.SchemaField(name, array_type)
+            )
+            for value in values
         ]
         return cls(name, array_type, converted)
 
@@ -850,6 +862,9 @@ class StructQueryParameter(_AbstractQueryParameter):
         Returns:
             google.cloud.bigquery.query.StructQueryParameter: Instance
         """
+        # Import here to avoid circular imports.
+        from google.cloud.bigquery import schema
+
         name = resource.get("name")
         instance = cls(name)
         type_resources = {}
@@ -877,7 +892,9 @@ class StructQueryParameter(_AbstractQueryParameter):
                 converted = ArrayQueryParameter.from_api_repr(struct_resource)
             else:
                 value = value["value"]
-                converted = _QUERY_PARAMS_FROM_JSON[type_](value, None)
+                converted = _helpers.SCALAR_QUERY_PARAM_PARSER.to_py(
+                    value, schema.SchemaField(cast(str, name), type_)
+                )
             instance.struct_values[key] = converted
         return instance
 

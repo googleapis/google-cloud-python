@@ -21,8 +21,9 @@ import json
 import math
 import re
 import os
+import textwrap
 import warnings
-from typing import Optional, Union, Any, Tuple, Type
+from typing import Any, Optional, Tuple, Type, Union
 
 from dateutil import relativedelta
 from google.cloud._helpers import UTC  # type: ignore
@@ -133,260 +134,310 @@ def _not_null(value, field):
     return value is not None or (field is not None and field.mode != "NULLABLE")
 
 
-def _int_from_json(value, field):
-    """Coerce 'value' to an int, if set or not nullable."""
-    if _not_null(value, field):
-        return int(value)
+class CellDataParser:
+    """Converter from BigQuery REST resource to Python value for RowIterator and similar classes.
 
-
-def _interval_from_json(
-    value: Optional[str], field
-) -> Optional[relativedelta.relativedelta]:
-    """Coerce 'value' to an interval, if set or not nullable."""
-    if not _not_null(value, field):
-        return None
-    if value is None:
-        raise TypeError(f"got {value} for REQUIRED field: {repr(field)}")
-
-    parsed = _INTERVAL_PATTERN.match(value)
-    if parsed is None:
-        raise ValueError(f"got interval: '{value}' with unexpected format")
-
-    calendar_sign = -1 if parsed.group("calendar_sign") == "-" else 1
-    years = calendar_sign * int(parsed.group("years"))
-    months = calendar_sign * int(parsed.group("months"))
-    days = int(parsed.group("days"))
-    time_sign = -1 if parsed.group("time_sign") == "-" else 1
-    hours = time_sign * int(parsed.group("hours"))
-    minutes = time_sign * int(parsed.group("minutes"))
-    seconds = time_sign * int(parsed.group("seconds"))
-    fraction = parsed.group("fraction")
-    microseconds = time_sign * int(fraction.ljust(6, "0")[:6]) if fraction else 0
-
-    return relativedelta.relativedelta(
-        years=years,
-        months=months,
-        days=days,
-        hours=hours,
-        minutes=minutes,
-        seconds=seconds,
-        microseconds=microseconds,
-    )
-
-
-def _float_from_json(value, field):
-    """Coerce 'value' to a float, if set or not nullable."""
-    if _not_null(value, field):
-        return float(value)
-
-
-def _decimal_from_json(value, field):
-    """Coerce 'value' to a Decimal, if set or not nullable."""
-    if _not_null(value, field):
-        return decimal.Decimal(value)
-
-
-def _bool_from_json(value, field):
-    """Coerce 'value' to a bool, if set or not nullable."""
-    if _not_null(value, field):
-        return value.lower() in ["t", "true", "1"]
-
-
-def _string_from_json(value, _):
-    """NOOP string -> string coercion"""
-    return value
-
-
-def _bytes_from_json(value, field):
-    """Base64-decode value"""
-    if _not_null(value, field):
-        return base64.standard_b64decode(_to_bytes(value))
-
-
-def _timestamp_from_json(value, field):
-    """Coerce 'value' to a datetime, if set or not nullable."""
-    if _not_null(value, field):
-        # value will be a integer in seconds, to microsecond precision, in UTC.
-        return _datetime_from_microseconds(int(value))
-
-
-def _timestamp_query_param_from_json(value, field):
-    """Coerce 'value' to a datetime, if set or not nullable.
-
-    Args:
-        value (str): The timestamp.
-
-        field (google.cloud.bigquery.schema.SchemaField):
-            The field corresponding to the value.
-
-    Returns:
-        Optional[datetime.datetime]:
-            The parsed datetime object from
-            ``value`` if the ``field`` is not null (otherwise it is
-            :data:`None`).
+    See: "rows" field of
+    https://cloud.google.com/bigquery/docs/reference/rest/v2/tabledata/list and
+    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/getQueryResults.
     """
-    if _not_null(value, field):
-        # Canonical formats for timestamps in BigQuery are flexible. See:
-        # g.co/cloud/bigquery/docs/reference/standard-sql/data-types#timestamp-type
-        # The separator between the date and time can be 'T' or ' '.
-        value = value.replace(" ", "T", 1)
-        # The UTC timezone may be formatted as Z or +00:00.
-        value = value.replace("Z", "")
-        value = value.replace("+00:00", "")
 
-        if "." in value:
-            # YYYY-MM-DDTHH:MM:SS.ffffff
-            return datetime.datetime.strptime(value, _RFC3339_MICROS_NO_ZULU).replace(
-                tzinfo=UTC
+    def to_py(self, resource, field):
+        def default_converter(value, field):
+            _warn_unknown_field_type(field)
+            return value
+
+        converter = getattr(
+            self, f"{field.field_type.lower()}_to_py", default_converter
+        )
+        if field.mode == "REPEATED":
+            return [converter(item["v"], field) for item in resource]
+        else:
+            return converter(resource, field)
+
+    def bool_to_py(self, value, field):
+        """Coerce 'value' to a bool, if set or not nullable."""
+        if _not_null(value, field):
+            # TODO(tswast): Why does _not_null care if the field is NULLABLE or
+            # REQUIRED? Do we actually need such client-side validation?
+            if value is None:
+                raise TypeError(f"got None for required boolean field {field}")
+            return value.lower() in ("t", "true", "1")
+
+    def boolean_to_py(self, value, field):
+        """Coerce 'value' to a bool, if set or not nullable."""
+        return self.bool_to_py(value, field)
+
+    def integer_to_py(self, value, field):
+        """Coerce 'value' to an int, if set or not nullable."""
+        if _not_null(value, field):
+            return int(value)
+
+    def int64_to_py(self, value, field):
+        """Coerce 'value' to an int, if set or not nullable."""
+        return self.integer_to_py(value, field)
+
+    def interval_to_py(
+        self, value: Optional[str], field
+    ) -> Optional[relativedelta.relativedelta]:
+        """Coerce 'value' to an interval, if set or not nullable."""
+        if not _not_null(value, field):
+            return None
+        if value is None:
+            raise TypeError(f"got {value} for REQUIRED field: {repr(field)}")
+
+        parsed = _INTERVAL_PATTERN.match(value)
+        if parsed is None:
+            raise ValueError(
+                textwrap.dedent(
+                    f"""
+                    Got interval: '{value}' with unexpected format.
+                    Expected interval in canonical format of "[sign]Y-M [sign]D [sign]H:M:S[.F]".
+                    See:
+                    https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#interval_type
+                    for more information.
+                    """
+                ),
+            )
+
+        calendar_sign = -1 if parsed.group("calendar_sign") == "-" else 1
+        years = calendar_sign * int(parsed.group("years"))
+        months = calendar_sign * int(parsed.group("months"))
+        days = int(parsed.group("days"))
+        time_sign = -1 if parsed.group("time_sign") == "-" else 1
+        hours = time_sign * int(parsed.group("hours"))
+        minutes = time_sign * int(parsed.group("minutes"))
+        seconds = time_sign * int(parsed.group("seconds"))
+        fraction = parsed.group("fraction")
+        microseconds = time_sign * int(fraction.ljust(6, "0")[:6]) if fraction else 0
+
+        return relativedelta.relativedelta(
+            years=years,
+            months=months,
+            days=days,
+            hours=hours,
+            minutes=minutes,
+            seconds=seconds,
+            microseconds=microseconds,
+        )
+
+    def float_to_py(self, value, field):
+        """Coerce 'value' to a float, if set or not nullable."""
+        if _not_null(value, field):
+            return float(value)
+
+    def float64_to_py(self, value, field):
+        """Coerce 'value' to a float, if set or not nullable."""
+        return self.float_to_py(value, field)
+
+    def numeric_to_py(self, value, field):
+        """Coerce 'value' to a Decimal, if set or not nullable."""
+        if _not_null(value, field):
+            return decimal.Decimal(value)
+
+    def bignumeric_to_py(self, value, field):
+        """Coerce 'value' to a Decimal, if set or not nullable."""
+        return self.numeric_to_py(value, field)
+
+    def string_to_py(self, value, _):
+        """NOOP string -> string coercion"""
+        return value
+
+    def geography_to_py(self, value, _):
+        """NOOP string -> string coercion"""
+        return value
+
+    def bytes_to_py(self, value, field):
+        """Base64-decode value"""
+        if _not_null(value, field):
+            return base64.standard_b64decode(_to_bytes(value))
+
+    def timestamp_to_py(self, value, field):
+        """Coerce 'value' to a datetime, if set or not nullable."""
+        if _not_null(value, field):
+            # value will be a integer in seconds, to microsecond precision, in UTC.
+            return _datetime_from_microseconds(int(value))
+
+    def datetime_to_py(self, value, field):
+        """Coerce 'value' to a datetime, if set or not nullable.
+
+        Args:
+            value (str): The timestamp.
+            field (google.cloud.bigquery.schema.SchemaField):
+                The field corresponding to the value.
+
+        Returns:
+            Optional[datetime.datetime]:
+                The parsed datetime object from
+                ``value`` if the ``field`` is not null (otherwise it is
+                :data:`None`).
+        """
+        if _not_null(value, field):
+            if "." in value:
+                # YYYY-MM-DDTHH:MM:SS.ffffff
+                return datetime.datetime.strptime(value, _RFC3339_MICROS_NO_ZULU)
+            else:
+                # YYYY-MM-DDTHH:MM:SS
+                return datetime.datetime.strptime(value, _RFC3339_NO_FRACTION)
+        else:
+            return None
+
+    def date_to_py(self, value, field):
+        """Coerce 'value' to a datetime date, if set or not nullable"""
+        if _not_null(value, field):
+            # value will be a string, in YYYY-MM-DD form.
+            return _date_from_iso8601_date(value)
+
+    def time_to_py(self, value, field):
+        """Coerce 'value' to a datetime date, if set or not nullable"""
+        if _not_null(value, field):
+            if len(value) == 8:  # HH:MM:SS
+                fmt = _TIMEONLY_WO_MICROS
+            elif len(value) == 15:  # HH:MM:SS.micros
+                fmt = _TIMEONLY_W_MICROS
+            else:
+                raise ValueError(
+                    textwrap.dedent(
+                        f"""
+                        Got {repr(value)} with unknown time format.
+                        Expected HH:MM:SS or HH:MM:SS.micros. See
+                        https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#time_type
+                        for more information.
+                        """
+                    ),
+                )
+            return datetime.datetime.strptime(value, fmt).time()
+
+    def record_to_py(self, value, field):
+        """Coerce 'value' to a mapping, if set or not nullable."""
+        if _not_null(value, field):
+            record = {}
+            record_iter = zip(field.fields, value["f"])
+            for subfield, cell in record_iter:
+                record[subfield.name] = self.to_py(cell["v"], subfield)
+            return record
+
+    def struct_to_py(self, value, field):
+        """Coerce 'value' to a mapping, if set or not nullable."""
+        return self.record_to_py(value, field)
+
+    def json_to_py(self, value, field):
+        """Coerce 'value' to a Pythonic JSON representation."""
+        if _not_null(value, field):
+            return json.loads(value)
+        else:
+            return None
+
+    def _range_element_to_py(self, value, field_element_type):
+        """Coerce 'value' to a range element value."""
+        # Avoid circular imports by importing here.
+        from google.cloud.bigquery import schema
+
+        if value == "UNBOUNDED":
+            return None
+        if field_element_type.element_type in _SUPPORTED_RANGE_ELEMENTS:
+            return self.to_py(
+                value,
+                schema.SchemaField("placeholder", field_element_type.element_type),
             )
         else:
-            # YYYY-MM-DDTHH:MM:SS
-            return datetime.datetime.strptime(value, _RFC3339_NO_FRACTION).replace(
-                tzinfo=UTC
+            raise ValueError(
+                textwrap.dedent(
+                    f"""
+                    Got unsupported range element type: {field_element_type.element_type}.
+                    Exptected one of {repr(_SUPPORTED_RANGE_ELEMENTS)}. See:
+                    https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#declare_a_range_type
+                    for more information.
+                    """
+                ),
             )
-    else:
-        return None
+
+    def range_to_py(self, value, field):
+        """Coerce 'value' to a range, if set or not nullable.
+
+        Args:
+            value (str): The literal representation of the range.
+            field (google.cloud.bigquery.schema.SchemaField):
+                The field corresponding to the value.
+
+        Returns:
+            Optional[dict]:
+                The parsed range object from ``value`` if the ``field`` is not
+                null (otherwise it is :data:`None`).
+        """
+        if _not_null(value, field):
+            if _RANGE_PATTERN.match(value):
+                start, end = value[1:-1].split(", ")
+                start = self._range_element_to_py(start, field.range_element_type)
+                end = self._range_element_to_py(end, field.range_element_type)
+                return {"start": start, "end": end}
+            else:
+                raise ValueError(
+                    textwrap.dedent(
+                        f"""
+                        Got unknown format for range value: {value}.
+                        Expected format '[lower_bound, upper_bound)'. See:
+                        https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#range_with_literal
+                        for more information.
+                        """
+                    ),
+                )
 
 
-def _datetime_from_json(value, field):
-    """Coerce 'value' to a datetime, if set or not nullable.
+CELL_DATA_PARSER = CellDataParser()
 
-    Args:
-        value (str): The timestamp.
-        field (google.cloud.bigquery.schema.SchemaField):
-            The field corresponding to the value.
 
-    Returns:
-        Optional[datetime.datetime]:
-            The parsed datetime object from
-            ``value`` if the ``field`` is not null (otherwise it is
-            :data:`None`).
+class ScalarQueryParamParser(CellDataParser):
+    """Override of CellDataParser to handle the differences in the response from query params.
+
+    See: "value" field of
+    https://cloud.google.com/bigquery/docs/reference/rest/v2/QueryParameter#QueryParameterValue
     """
-    if _not_null(value, field):
-        if "." in value:
-            # YYYY-MM-DDTHH:MM:SS.ffffff
-            return datetime.datetime.strptime(value, _RFC3339_MICROS_NO_ZULU)
+
+    def timestamp_to_py(self, value, field):
+        """Coerce 'value' to a datetime, if set or not nullable.
+
+        Args:
+            value (str): The timestamp.
+
+            field (google.cloud.bigquery.schema.SchemaField):
+                The field corresponding to the value.
+
+        Returns:
+            Optional[datetime.datetime]:
+                The parsed datetime object from
+                ``value`` if the ``field`` is not null (otherwise it is
+                :data:`None`).
+        """
+        if _not_null(value, field):
+            # Canonical formats for timestamps in BigQuery are flexible. See:
+            # g.co/cloud/bigquery/docs/reference/standard-sql/data-types#timestamp-type
+            # The separator between the date and time can be 'T' or ' '.
+            value = value.replace(" ", "T", 1)
+            # The UTC timezone may be formatted as Z or +00:00.
+            value = value.replace("Z", "")
+            value = value.replace("+00:00", "")
+
+            if "." in value:
+                # YYYY-MM-DDTHH:MM:SS.ffffff
+                return datetime.datetime.strptime(
+                    value, _RFC3339_MICROS_NO_ZULU
+                ).replace(tzinfo=UTC)
+            else:
+                # YYYY-MM-DDTHH:MM:SS
+                return datetime.datetime.strptime(value, _RFC3339_NO_FRACTION).replace(
+                    tzinfo=UTC
+                )
         else:
-            # YYYY-MM-DDTHH:MM:SS
-            return datetime.datetime.strptime(value, _RFC3339_NO_FRACTION)
-    else:
-        return None
+            return None
 
 
-def _date_from_json(value, field):
-    """Coerce 'value' to a datetime date, if set or not nullable"""
-    if _not_null(value, field):
-        # value will be a string, in YYYY-MM-DD form.
-        return _date_from_iso8601_date(value)
-
-
-def _time_from_json(value, field):
-    """Coerce 'value' to a datetime date, if set or not nullable"""
-    if _not_null(value, field):
-        if len(value) == 8:  # HH:MM:SS
-            fmt = _TIMEONLY_WO_MICROS
-        elif len(value) == 15:  # HH:MM:SS.micros
-            fmt = _TIMEONLY_W_MICROS
-        else:
-            raise ValueError("Unknown time format: {}".format(value))
-        return datetime.datetime.strptime(value, fmt).time()
-
-
-def _record_from_json(value, field):
-    """Coerce 'value' to a mapping, if set or not nullable."""
-    if _not_null(value, field):
-        record = {}
-        record_iter = zip(field.fields, value["f"])
-        for subfield, cell in record_iter:
-            record[subfield.name] = _field_from_json(cell["v"], subfield)
-        return record
-
-
-def _json_from_json(value, field):
-    """Coerce 'value' to a Pythonic JSON representation."""
-    if _not_null(value, field):
-        return json.loads(value)
-    else:
-        return None
-
-
-def _range_element_from_json(value, field):
-    """Coerce 'value' to a range element value."""
-    if value == "UNBOUNDED":
-        return None
-    if field.element_type in _SUPPORTED_RANGE_ELEMENTS:
-        return _CELLDATA_FROM_JSON[field.element_type](value, field.element_type)
-    else:
-        raise ValueError(f"Unsupported range element type: {field.element_type}")
-
-
-def _range_from_json(value, field):
-    """Coerce 'value' to a range, if set or not nullable.
-
-    Args:
-        value (str): The literal representation of the range.
-        field (google.cloud.bigquery.schema.SchemaField):
-            The field corresponding to the value.
-
-    Returns:
-        Optional[dict]:
-            The parsed range object from ``value`` if the ``field`` is not
-            null (otherwise it is :data:`None`).
-    """
-    if _not_null(value, field):
-        if _RANGE_PATTERN.match(value):
-            start, end = value[1:-1].split(", ")
-            start = _range_element_from_json(start, field.range_element_type)
-            end = _range_element_from_json(end, field.range_element_type)
-            return {"start": start, "end": end}
-        else:
-            raise ValueError(f"Unknown format for range value: {value}")
-    else:
-        return None
-
-
-# Parse BigQuery API response JSON into a Python representation.
-_CELLDATA_FROM_JSON = {
-    "INTEGER": _int_from_json,
-    "INT64": _int_from_json,
-    "INTERVAL": _interval_from_json,
-    "FLOAT": _float_from_json,
-    "FLOAT64": _float_from_json,
-    "NUMERIC": _decimal_from_json,
-    "BIGNUMERIC": _decimal_from_json,
-    "BOOLEAN": _bool_from_json,
-    "BOOL": _bool_from_json,
-    "STRING": _string_from_json,
-    "GEOGRAPHY": _string_from_json,
-    "BYTES": _bytes_from_json,
-    "TIMESTAMP": _timestamp_from_json,
-    "DATETIME": _datetime_from_json,
-    "DATE": _date_from_json,
-    "TIME": _time_from_json,
-    "RECORD": _record_from_json,
-    "JSON": _json_from_json,
-    "RANGE": _range_from_json,
-}
-
-_QUERY_PARAMS_FROM_JSON = dict(_CELLDATA_FROM_JSON)
-_QUERY_PARAMS_FROM_JSON["TIMESTAMP"] = _timestamp_query_param_from_json
+SCALAR_QUERY_PARAM_PARSER = ScalarQueryParamParser()
 
 
 def _field_to_index_mapping(schema):
     """Create a mapping from schema field name to index of field."""
     return {f.name: i for i, f in enumerate(schema)}
-
-
-def _field_from_json(resource, field):
-    def default_converter(value, field):
-        _warn_unknown_field_type(field)
-        return value
-
-    converter = _CELLDATA_FROM_JSON.get(field.field_type, default_converter)
-    if field.mode == "REPEATED":
-        return [converter(item["v"], field) for item in resource]
-    else:
-        return converter(resource, field)
 
 
 def _row_tuple_from_json(row, schema):
@@ -410,7 +461,7 @@ def _row_tuple_from_json(row, schema):
 
     row_data = []
     for field, cell in zip(schema, row["f"]):
-        row_data.append(_field_from_json(cell["v"], field))
+        row_data.append(CELL_DATA_PARSER.to_py(cell["v"], field))
     return tuple(row_data)
 
 

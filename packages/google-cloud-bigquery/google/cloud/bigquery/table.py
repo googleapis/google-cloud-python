@@ -3533,7 +3533,7 @@ def _row_iterator_page_columns(schema, response):
 
     def get_column_data(field_index, field):
         for row in rows:
-            yield _helpers._field_from_json(row["f"][field_index]["v"], field)
+            yield _helpers.CELL_DATA_PARSER.to_py(row["f"][field_index]["v"], field)
 
     for field_index, field in enumerate(schema):
         columns.append(get_column_data(field_index, field))
