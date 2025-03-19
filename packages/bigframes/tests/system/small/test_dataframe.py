@@ -4400,9 +4400,15 @@ def test_loc_list_multiindex(scalars_dfs_maybe_ordered):
     )
 
 
-def test_iloc_list(scalars_df_index, scalars_pandas_df_index):
-    index_list = [0, 0, 0, 5, 4, 7]
-
+@pytest.mark.parametrize(
+    "index_list",
+    [
+        [0, 1, 2, 3, 4, 4],
+        [0, 0, 0, 5, 4, 7, -2, -5, 3],
+        [-1, -2, -3, -4, -5, -5],
+    ],
+)
+def test_iloc_list(scalars_df_index, scalars_pandas_df_index, index_list):
     bf_result = scalars_df_index.iloc[index_list]
     pd_result = scalars_pandas_df_index.iloc[index_list]
 
@@ -4412,11 +4418,17 @@ def test_iloc_list(scalars_df_index, scalars_pandas_df_index):
     )
 
 
+@pytest.mark.parametrize(
+    "index_list",
+    [
+        [0, 1, 2, 3, 4, 4],
+        [0, 0, 0, 5, 4, 7, -2, -5, 3],
+        [-1, -2, -3, -4, -5, -5],
+    ],
+)
 def test_iloc_list_partial_ordering(
-    scalars_df_partial_ordering, scalars_pandas_df_index
+    scalars_df_partial_ordering, scalars_pandas_df_index, index_list
 ):
-    index_list = [0, 0, 0, 5, 4, 7]
-
     bf_result = scalars_df_partial_ordering.iloc[index_list]
     pd_result = scalars_pandas_df_index.iloc[index_list]
 

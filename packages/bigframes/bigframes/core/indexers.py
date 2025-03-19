@@ -27,6 +27,7 @@ import bigframes.core.expression as ex
 import bigframes.core.guid as guid
 import bigframes.core.indexes as indexes
 import bigframes.core.scalar
+import bigframes.core.window_spec as windows
 import bigframes.dataframe
 import bigframes.dtypes
 import bigframes.exceptions as bfe
@@ -477,6 +478,19 @@ def _iloc_getitem_series_or_dataframe(
                 Union[bigframes.dataframe.DataFrame, bigframes.series.Series],
                 series_or_dataframe.iloc[0:0],
             )
+
+        # Check if both positive index and negative index are necessary
+        if isinstance(key, (bigframes.series.Series, indexes.Index)):
+            # Avoid data download
+            is_key_unisigned = False
+        else:
+            first_sign = key[0] >= 0
+            is_key_unisigned = True
+            for k in key:
+                if (k >= 0) != first_sign:
+                    is_key_unisigned = False
+                    break
+
         if isinstance(series_or_dataframe, bigframes.series.Series):
             original_series_name = series_or_dataframe.name
             series_name = (
@@ -497,7 +511,27 @@ def _iloc_getitem_series_or_dataframe(
         block = df._block
         # explicitly set index to offsets, reset_index may not generate offsets in some modes
         block, offsets_id = block.promote_offsets("temp_iloc_offsets_")
-        block = block.set_index([offsets_id])
+        pos_block = block.set_index([offsets_id])
+
+        if not is_key_unisigned or key[0] < 0:
+            neg_block, size_col_id = block.apply_window_op(
+                offsets_id,
+                ops.aggregations.SizeUnaryOp(),
+                window_spec=windows.rows(),
+            )
+            neg_block, neg_index_id = neg_block.apply_binary_op(
+                offsets_id, size_col_id, ops.SubOp()
+            )
+
+            neg_block = neg_block.set_index([neg_index_id]).drop_columns(
+                [size_col_id, offsets_id]
+            )
+
+        if is_key_unisigned:
+            block = pos_block if key[0] >= 0 else neg_block
+        else:
+            block = pos_block.concat([neg_block], how="inner")
+
         df = bigframes.dataframe.DataFrame(block)
 
         result = df.loc[key]
