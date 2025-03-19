@@ -1,0 +1,2 @@
+recursive-include google/cloud/parametermanager *.py
+recursive-include google/cloud/parametermanager_v1 *.py
