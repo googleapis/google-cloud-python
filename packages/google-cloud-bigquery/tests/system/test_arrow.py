@@ -194,3 +194,32 @@ def test_list_rows_range_csv(
 
     range_type = schema.field("range_date").type
     assert range_type == expected_type
+
+
+def test_to_arrow_query_with_empty_results(bigquery_client):
+    """
+    JSON regression test for https://github.com/googleapis/python-bigquery/issues/1580.
+    """
+    job = bigquery_client.query(
+        """
+        select
+        123 as int_col,
+        '' as string_col,
+        to_json('{}') as json_col,
+        struct(to_json('[]') as json_field, -1 as int_field) as struct_col,
+        [to_json('null')] as json_array_col,
+        from unnest([])
+        """
+    )
+    table = job.to_arrow()
+    assert list(table.column_names) == [
+        "int_col",
+        "string_col",
+        "json_col",
+        "struct_col",
+        "json_array_col",
+    ]
+    assert table.shape == (0, 5)
+    struct_type = table.field("struct_col").type
+    assert struct_type.get_field_index("json_field") == 0
+    assert struct_type.get_field_index("int_field") == 1

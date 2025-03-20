@@ -15,7 +15,9 @@
 """Shared helper functions for connecting BigQuery and pyarrow.
 
 NOTE: This module is DEPRECATED. Please make updates in the pandas-gbq package,
-instead. See: go/pandas-gbq-and-bigframes-redundancy and
+instead. See: go/pandas-gbq-and-bigframes-redundancy,
+https://github.com/googleapis/python-bigquery-pandas/blob/main/pandas_gbq/schema/bigquery_to_pyarrow.py
+and
 https://github.com/googleapis/python-bigquery-pandas/blob/main/pandas_gbq/schema/pyarrow_to_bigquery.py
 """
 
@@ -25,6 +27,14 @@ try:
     import pyarrow  # type: ignore
 except ImportError:
     pyarrow = None
+
+try:
+    import db_dtypes  # type: ignore
+
+    db_dtypes_import_exception = None
+except ImportError as exc:
+    db_dtypes = None
+    db_dtypes_import_exception = exc
 
 
 def pyarrow_datetime():
@@ -67,12 +77,18 @@ if pyarrow:
         "GEOGRAPHY": pyarrow.string,
         "INT64": pyarrow.int64,
         "INTEGER": pyarrow.int64,
+        # Normally, we'd prefer JSON type built-in to pyarrow (added in 19.0.0),
+        # but we'd like this to map as closely to the BQ Storage API as
+        # possible, which uses the string() dtype, as JSON support in Arrow
+        # predates JSON support in BigQuery by several years.
+        "JSON": pyarrow.string,
         "NUMERIC": pyarrow_numeric,
         "STRING": pyarrow.string,
         "TIME": pyarrow_time,
         "TIMESTAMP": pyarrow_timestamp,
     }
 
+    # DEPRECATED: update pandas_gbq.schema.pyarrow_to_bigquery, instead.
     _ARROW_SCALAR_IDS_TO_BQ = {
         # https://arrow.apache.org/docs/python/api/datatypes.html#type-classes
         pyarrow.bool_().id: "BOOL",
@@ -97,6 +113,9 @@ if pyarrow:
         pyarrow.large_string().id: "STRING",
         # The exact scale and precision don't matter, see below.
         pyarrow.decimal128(38, scale=9).id: "NUMERIC",
+        # NOTE: all extension types (e.g. json_, uuid, db_dtypes.JSONArrowType)
+        # have the same id (31 as of version 19.0.1), so these should not be
+        # matched by id.
     }
 
     _BQ_TO_ARROW_SCALARS["BIGNUMERIC"] = pyarrow_bignumeric
@@ -107,6 +126,9 @@ if pyarrow:
 
 def bq_to_arrow_scalars(bq_scalar: str):
     """
+    DEPRECATED: update pandas_gbq.schema.bigquery_to_pyarrow, instead, which is
+    to be added in https://github.com/googleapis/python-bigquery-pandas/pull/893.
+
     Returns:
         The Arrow scalar type that the input BigQuery scalar type maps to.
         If it cannot find the BigQuery scalar, return None.
@@ -116,6 +138,8 @@ def bq_to_arrow_scalars(bq_scalar: str):
 
 def arrow_scalar_ids_to_bq(arrow_scalar: Any):
     """
+    DEPRECATED: update pandas_gbq.schema.pyarrow_to_bigquery, instead.
+
     Returns:
         The BigQuery scalar type that the input arrow scalar type maps to.
         If it cannot find the arrow scalar, return None.

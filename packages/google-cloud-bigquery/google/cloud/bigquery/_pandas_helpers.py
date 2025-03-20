@@ -158,6 +158,7 @@ BQ_FIELD_TYPE_TO_ARROW_FIELD_METADATA = {
         b"ARROW:extension:metadata": b'{"encoding": "WKT"}',
     },
     "DATETIME": {b"ARROW:extension:name": b"google:sqlType:datetime"},
+    "JSON": {b"ARROW:extension:name": b"google:sqlType:json"},
 }
 
 

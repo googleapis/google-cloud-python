@@ -387,6 +387,21 @@ class CellDataParser:
 CELL_DATA_PARSER = CellDataParser()
 
 
+class DataFrameCellDataParser(CellDataParser):
+    """Override of CellDataParser to handle differences in expection of values in DataFrame-like outputs.
+
+    This is used to turn the output of the REST API into a pyarrow Table,
+    emulating the serialized arrow from the BigQuery Storage Read API.
+    """
+
+    def json_to_py(self, value, _):
+        """No-op because DataFrame expects string for JSON output."""
+        return value
+
+
+DATA_FRAME_CELL_DATA_PARSER = DataFrameCellDataParser()
+
+
 class ScalarQueryParamParser(CellDataParser):
     """Override of CellDataParser to handle the differences in the response from query params.
 

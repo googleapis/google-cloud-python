@@ -1304,6 +1304,32 @@ def test_upload_time_and_datetime_56(bigquery_client, dataset_id):
     ]
 
 
+def test_to_dataframe_query_with_empty_results(bigquery_client):
+    """
+    JSON regression test for https://github.com/googleapis/python-bigquery/issues/1580.
+    """
+    job = bigquery_client.query(
+        """
+        select
+        123 as int_col,
+        '' as string_col,
+        to_json('{}') as json_col,
+        struct(to_json('[]') as json_field, -1 as int_field) as struct_col,
+        [to_json('null')] as json_array_col,
+        from unnest([])
+        """
+    )
+    df = job.to_dataframe()
+    assert list(df.columns) == [
+        "int_col",
+        "string_col",
+        "json_col",
+        "struct_col",
+        "json_array_col",
+    ]
+    assert len(df.index) == 0
+
+
 def test_to_dataframe_geography_as_objects(bigquery_client, dataset_id):
     wkt = pytest.importorskip("shapely.wkt")
     bigquery_client.query(

@@ -28,6 +28,7 @@ def test_to_arrow_with_jobs_query_response():
             "fields": [
                 {"name": "name", "type": "STRING", "mode": "NULLABLE"},
                 {"name": "number", "type": "INTEGER", "mode": "NULLABLE"},
+                {"name": "json", "type": "JSON", "mode": "NULLABLE"},
             ]
         },
         "jobReference": {
@@ -37,15 +38,21 @@ def test_to_arrow_with_jobs_query_response():
         },
         "totalRows": "9",
         "rows": [
-            {"f": [{"v": "Tiarra"}, {"v": "6"}]},
-            {"f": [{"v": "Timothy"}, {"v": "325"}]},
-            {"f": [{"v": "Tina"}, {"v": "26"}]},
-            {"f": [{"v": "Tierra"}, {"v": "10"}]},
-            {"f": [{"v": "Tia"}, {"v": "17"}]},
-            {"f": [{"v": "Tiara"}, {"v": "22"}]},
-            {"f": [{"v": "Tiana"}, {"v": "6"}]},
-            {"f": [{"v": "Tiffany"}, {"v": "229"}]},
-            {"f": [{"v": "Tiffani"}, {"v": "8"}]},
+            {"f": [{"v": "Tiarra"}, {"v": "6"}, {"v": "123"}]},
+            {"f": [{"v": "Timothy"}, {"v": "325"}, {"v": '{"key":"value"}'}]},
+            {"f": [{"v": "Tina"}, {"v": "26"}, {"v": "[1,2,3]"}]},
+            {
+                "f": [
+                    {"v": "Tierra"},
+                    {"v": "10"},
+                    {"v": '{"aKey": {"bKey": {"cKey": -123}}}'},
+                ]
+            },
+            {"f": [{"v": "Tia"}, {"v": "17"}, {"v": None}]},
+            {"f": [{"v": "Tiara"}, {"v": "22"}, {"v": '"some-json-string"'}]},
+            {"f": [{"v": "Tiana"}, {"v": "6"}, {"v": '{"nullKey":null}'}]},
+            {"f": [{"v": "Tiffany"}, {"v": "229"}, {"v": '""'}]},
+            {"f": [{"v": "Tiffani"}, {"v": "8"}, {"v": "[]"}]},
         ],
         "totalBytesProcessed": "154775150",
         "jobComplete": True,
@@ -65,7 +72,7 @@ def test_to_arrow_with_jobs_query_response():
     )
     records = rows.to_arrow()
 
-    assert records.column_names == ["name", "number"]
+    assert records.column_names == ["name", "number", "json"]
     assert records["name"].to_pylist() == [
         "Tiarra",
         "Timothy",
@@ -78,6 +85,17 @@ def test_to_arrow_with_jobs_query_response():
         "Tiffani",
     ]
     assert records["number"].to_pylist() == [6, 325, 26, 10, 17, 22, 6, 229, 8]
+    assert records["json"].to_pylist() == [
+        "123",
+        '{"key":"value"}',
+        "[1,2,3]",
+        '{"aKey": {"bKey": {"cKey": -123}}}',
+        None,
+        '"some-json-string"',
+        '{"nullKey":null}',
+        '""',
+        "[]",
+    ]
 
 
 def test_to_arrow_with_jobs_query_response_and_max_results():
@@ -87,6 +105,7 @@ def test_to_arrow_with_jobs_query_response_and_max_results():
             "fields": [
                 {"name": "name", "type": "STRING", "mode": "NULLABLE"},
                 {"name": "number", "type": "INTEGER", "mode": "NULLABLE"},
+                {"name": "json", "type": "JSON", "mode": "NULLABLE"},
             ]
         },
         "jobReference": {
@@ -96,15 +115,21 @@ def test_to_arrow_with_jobs_query_response_and_max_results():
         },
         "totalRows": "9",
         "rows": [
-            {"f": [{"v": "Tiarra"}, {"v": "6"}]},
-            {"f": [{"v": "Timothy"}, {"v": "325"}]},
-            {"f": [{"v": "Tina"}, {"v": "26"}]},
-            {"f": [{"v": "Tierra"}, {"v": "10"}]},
-            {"f": [{"v": "Tia"}, {"v": "17"}]},
-            {"f": [{"v": "Tiara"}, {"v": "22"}]},
-            {"f": [{"v": "Tiana"}, {"v": "6"}]},
-            {"f": [{"v": "Tiffany"}, {"v": "229"}]},
-            {"f": [{"v": "Tiffani"}, {"v": "8"}]},
+            {"f": [{"v": "Tiarra"}, {"v": "6"}, {"v": "123"}]},
+            {"f": [{"v": "Timothy"}, {"v": "325"}, {"v": '{"key":"value"}'}]},
+            {"f": [{"v": "Tina"}, {"v": "26"}, {"v": "[1,2,3]"}]},
+            {
+                "f": [
+                    {"v": "Tierra"},
+                    {"v": "10"},
+                    {"v": '{"aKey": {"bKey": {"cKey": -123}}}'},
+                ]
+            },
+            {"f": [{"v": "Tia"}, {"v": "17"}, {"v": None}]},
+            {"f": [{"v": "Tiara"}, {"v": "22"}, {"v": '"some-json-string"'}]},
+            {"f": [{"v": "Tiana"}, {"v": "6"}, {"v": '{"nullKey":null}'}]},
+            {"f": [{"v": "Tiffany"}, {"v": "229"}, {"v": '""'}]},
+            {"f": [{"v": "Tiffani"}, {"v": "8"}, {"v": "[]"}]},
         ],
         "totalBytesProcessed": "154775150",
         "jobComplete": True,
@@ -125,10 +150,11 @@ def test_to_arrow_with_jobs_query_response_and_max_results():
     )
     records = rows.to_arrow()
 
-    assert records.column_names == ["name", "number"]
+    assert records.column_names == ["name", "number", "json"]
     assert records["name"].to_pylist() == [
         "Tiarra",
         "Timothy",
         "Tina",
     ]
     assert records["number"].to_pylist() == [6, 325, 26]
+    assert records["json"].to_pylist() == ["123", '{"key":"value"}', "[1,2,3]"]
