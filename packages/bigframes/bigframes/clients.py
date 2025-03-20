@@ -94,16 +94,24 @@ class BqConnectionManager:
         # https://cloud.google.com/bigquery/docs/reference/standard-sql/remote-functions#grant_permission_on_function
         self._ensure_iam_binding(project_id, service_account_id, iam_role)
 
-    # Introduce retries to accommodate transient errors like etag mismatch,
-    # which can be caused by concurrent operation on the same resource, and
-    # manifests with message like:
-    # google.api_core.exceptions.Aborted: 409 There were concurrent policy
-    # changes. Please retry the whole read-modify-write with exponential
-    # backoff. The request's ETag '\007\006\003,\264\304\337\272' did not match
-    # the current policy's ETag '\007\006\003,\3750&\363'.
+    # Introduce retries to accommodate transient errors like:
+    # (1) Etag mismatch,
+    #     which can be caused by concurrent operation on the same resource, and
+    #     manifests with message like:
+    #     google.api_core.exceptions.Aborted: 409 There were concurrent policy
+    #     changes. Please retry the whole read-modify-write with exponential
+    #     backoff. The request's ETag '\007\006\003,\264\304\337\272' did not
+    #     match the current policy's ETag '\007\006\003,\3750&\363'.
+    # (2) Connection creation,
+    #     for which sometimes it takes a bit for its service account to reflect
+    #     across APIs (e.g. b/397662004, b/386838767), before which, an attempt
+    #     to set an IAM policy for the service account may throw an error like:
+    #     google.api_core.exceptions.InvalidArgument: 400 Service account
+    #     bqcx-*@gcp-sa-bigquery-condel.iam.gserviceaccount.com does not exist.
     @google.api_core.retry.Retry(
         predicate=google.api_core.retry.if_exception_type(
-            google.api_core.exceptions.Aborted
+            google.api_core.exceptions.Aborted,
+            google.api_core.exceptions.InvalidArgument,
         ),
         initial=10,
         maximum=20,
