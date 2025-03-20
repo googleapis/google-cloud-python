@@ -5,6 +5,30 @@
 [1]: https://pypi.org/project/google-cloud-pubsub/#history
 
 
+## [2.29.0](https://github.com/googleapis/python-pubsub/compare/v2.28.0...v2.29.0) (2025-03-19)
+
+
+### Features
+
+* Add REST Interceptors which support reading metadata ([4363179](https://github.com/googleapis/python-pubsub/commit/43631790781ccfe071a7ecad41949399d3dbd063))
+* Add support for opt-in debug logging ([4363179](https://github.com/googleapis/python-pubsub/commit/43631790781ccfe071a7ecad41949399d3dbd063))
+* Deprecate `enabled` field for message transforms and add `disabled` field ([4363179](https://github.com/googleapis/python-pubsub/commit/43631790781ccfe071a7ecad41949399d3dbd063))
+
+
+### Bug Fixes
+
+* Allow logs to propagate upstream for caplog testing ([#1374](https://github.com/googleapis/python-pubsub/issues/1374)) ([fa39b0e](https://github.com/googleapis/python-pubsub/commit/fa39b0e87695da40036c1daec1b3108374672d61))
+* Allow Protobuf 6.x ([#1369](https://github.com/googleapis/python-pubsub/issues/1369)) ([c95b7a5](https://github.com/googleapis/python-pubsub/commit/c95b7a5bad7138a70e56c278970f5b54939a68f8))
+* Fix typing issue with gRPC metadata when key ends in -bin ([4363179](https://github.com/googleapis/python-pubsub/commit/43631790781ccfe071a7ecad41949399d3dbd063))
+
+
+### Documentation
+
+* A comment for field `code` in message `.google.pubsub.v1.JavaScriptUDF` is changed ([4363179](https://github.com/googleapis/python-pubsub/commit/43631790781ccfe071a7ecad41949399d3dbd063))
+* Add samples and test for ingestion from Kafka sources ([#1354](https://github.com/googleapis/python-pubsub/issues/1354)) ([820f986](https://github.com/googleapis/python-pubsub/commit/820f986104ca39fd0c92ba6816319e939be1ed63))
+* Deprecate `enabled` field for message transforms and add `disabled` field ([4363179](https://github.com/googleapis/python-pubsub/commit/43631790781ccfe071a7ecad41949399d3dbd063))
+* **samples:** Increase example max_bytes setting for cloud storage subscriptions to encourage more performant subscribe ([#1324](https://github.com/googleapis/python-pubsub/issues/1324)) ([cb760a7](https://github.com/googleapis/python-pubsub/commit/cb760a71cd4ad035d0c2c4c0f7b66bf52f18808c))
+
 ## [2.28.0](https://github.com/googleapis/python-pubsub/compare/v2.27.3...v2.28.0) (2025-01-30)
 
 
