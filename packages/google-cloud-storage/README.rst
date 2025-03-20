@@ -8,6 +8,8 @@ allows world-wide storage and retrieval of any amount of data at any time. You c
 Cloud Storage for a range of scenarios including serving website content, storing data
 for archival and disaster recovery, or distributing large data objects to users via direct download.
 
+**NOTE**: `3.0 Major Version Notes`_ are available. Feedback welcome.
+
 A comprehensive list of changes in each version may be found in the `CHANGELOG`_.
 
 - `Product Documentation`_
@@ -37,75 +39,6 @@ Google APIs Client Libraries, in `Client Libraries Explained`_.
 .. _Storage Control API: https://cloud.google.com/storage/docs/reference/rpc/google.storage.control.v2
 .. _Client Libraries Explained: https://cloud.google.com/apis/docs/client-libraries-explained
 
-3.0 Major Version Notes
------------------------
-
-Feedback Welcome
-~~~~~~~~~~~~~~~~
-
-If you experience that backwards compatibility for your application is broken
-with this major version release, please let us know through the Github issues
-system. While some breaks of backwards compatibility may be unavoidable due to
-new features in the major version release, we will do our best to minimize
-them. Thank you.
-
-Exception Handling
-~~~~~~~~~~~~~~~~~~
-
-In Python Storage 3.0, the dependency ``google-resumable-media`` was integrated.
-The ``google-resumable-media`` dependency included exceptions
-``google.resumable_media.common.InvalidResponse`` and
-``google.resumable_media.common.DataCorruption``, which were often imported
-directly in user application code. The replacements for these exceptions are
-``google.cloud.storage.exceptions.InvalidResponse`` and
-``google.cloud.storage.exceptions.DataCorruption``. Please update application code
-to import and use these exceptions instead.
-
-For backwards compatibility, if ``google-resumable-media`` is installed, the new
-exceptions will be defined as subclasses of the old exceptions, so applications
-should continue to work without modification. This backwards compatibility
-feature may be removed in a future major version update.
-
-Some users may be using the original exception classes from the
-``google-resumable-media`` library without explicitly installing that library. So
-as not to break user applications following this pattern,
-``google-resumable-media`` is still in the list of dependencies in this package's
-setup.py file. Applications which do not import directly from
-``google-resumable-media`` can safely disregard this dependency.
-This backwards compatibility feature **will be removed** in a future major
-version update. Please migrate to using the ``google.cloud.storage.exceptions``
-classes as above.
-
-Checksum Defaults
-~~~~~~~~~~~~~~~~~
-
-In Python Storage 3.0, uploads and downloads now have a default of "auto" where
-applicable. "Auto" will use crc32c checksums, except for unusual cases where the
-fast (C extension) crc32c implementation is not available, in which case it will
-use md5 instead. Before Python Storage 3.0, the default was md5 for most
-downloads and None for most uploads. Note that ranged downloads ("start" or
-"end" set) still do not support any checksumming, and some features in
-``transfer_manager.py`` still support crc32c only.
-
-Note: The method ``Blob.upload_from_file()`` requires a file in bytes mode, but
-when checksum is set to None, as was the previous default, would not throw an
-error if passed a file in string mode under some circumstances. With the new
-defaults, it will now raise a TypeError. Please use a file opened in bytes
-reading mode as required.
-
-Miscellaneous
-~~~~~~~~~~~~~
-
-- The ``BlobWriter`` class now attempts to terminate an ongoing resumable upload if
-  the writer exits with an exception.
-- Retry behavior is now identical between media operations (uploads and
-  downloads) and other operations, and custom predicates are now supported for
-  media operations as well.
-- ``Blob.download_as_filename()`` will now delete the empty file if it results in a
-  google.cloud.exceptions.NotFound exception (HTTP 404).
-- Previously, object upload, metadata update, and delete methods had retries
-  disabled by default unless the generation or metageneration was specified in
-  the request. This has now changed so that retries are enabled by default.
 
 Quick Start
 -----------
@@ -186,6 +119,26 @@ Windows
     pip install google-cloud-storage
 
 
+Example Usage
+~~~~~~~~~~~~~
+
+.. code-block:: python
+
+    # Imports the Google Cloud client library
+    from google.cloud import storage
+
+    # Instantiates a client
+    storage_client = storage.Client()
+
+    # The name for the new bucket
+    bucket_name = "my-new-bucket"
+
+    # Creates the new bucket
+    bucket = storage_client.create_bucket(bucket_name)
+
+    print(f"Bucket {bucket.name} created.")
+
+
 Tracing With OpenTelemetry
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -238,6 +191,77 @@ For a list of libraries that can be instrumented, refer to the `OpenTelemetry Re
 .. _OpenTelemetry: https://opentelemetry.io
 .. _OpenTelemetry Registry: https://opentelemetry.io/ecosystem/registry
 .. _Google Cloud Trace: https://cloud.google.com/trace
+
+
+3.0 Major Version Notes
+-----------------------
+
+Feedback Welcome
+~~~~~~~~~~~~~~~~
+
+If you experience that backwards compatibility for your application is broken
+with this major version release, please let us know through the Github issues
+system. While some breaks of backwards compatibility may be unavoidable due to
+new features in the major version release, we will do our best to minimize
+them. Thank you.
+
+Exception Handling
+~~~~~~~~~~~~~~~~~~
+
+In Python Storage 3.0, the dependency ``google-resumable-media`` was integrated.
+The ``google-resumable-media`` dependency included exceptions
+``google.resumable_media.common.InvalidResponse`` and
+``google.resumable_media.common.DataCorruption``, which were often imported
+directly in user application code. The replacements for these exceptions are
+``google.cloud.storage.exceptions.InvalidResponse`` and
+``google.cloud.storage.exceptions.DataCorruption``. Please update application code
+to import and use these exceptions instead.
+
+For backwards compatibility, if ``google-resumable-media`` is installed, the new
+exceptions will be defined as subclasses of the old exceptions, so applications
+should continue to work without modification. This backwards compatibility
+feature may be removed in a future major version update.
+
+Some users may be using the original exception classes from the
+``google-resumable-media`` library without explicitly installing that library. So
+as not to break user applications following this pattern,
+``google-resumable-media`` is still in the list of dependencies in this package's
+setup.py file. Applications which do not import directly from
+``google-resumable-media`` can safely disregard this dependency.
+This backwards compatibility feature **will be removed** in a future major
+version update. Please migrate to using the ``google.cloud.storage.exceptions``
+classes as above.
+
+Checksum Defaults
+~~~~~~~~~~~~~~~~~
+
+In Python Storage 3.0, uploads and downloads now have a default of "auto" where
+applicable. "Auto" will use crc32c checksums, except for unusual cases where the
+fast (C extension) crc32c implementation is not available, in which case it will
+use md5 instead. Before Python Storage 3.0, the default was md5 for most
+downloads and None for most uploads. Note that ranged downloads ("start" or
+"end" set) still do not support any checksumming, and some features in
+``transfer_manager.py`` still support crc32c only.
+
+Note: The method ``Blob.upload_from_file()`` requires a file in bytes mode, but
+when checksum is set to None, as was the previous default, would not throw an
+error if passed a file in string mode under some circumstances. With the new
+defaults, it will now raise a TypeError. Please use a file opened in bytes
+reading mode as required.
+
+Miscellaneous
+~~~~~~~~~~~~~
+
+- The ``BlobWriter`` class now attempts to terminate an ongoing resumable upload if
+  the writer exits with an exception.
+- Retry behavior is now identical between media operations (uploads and
+  downloads) and other operations, and custom predicates are now supported for
+  media operations as well.
+- ``Blob.download_as_filename()`` will now delete the empty file if it results in a
+  google.cloud.exceptions.NotFound exception (HTTP 404).
+- Previously, object upload, metadata update, and delete methods had retries
+  disabled by default unless the generation or metageneration was specified in
+  the request. This has now changed so that retries are enabled by default.
 
 
 Next Steps
