@@ -1596,7 +1596,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         return pa_table
 
     @overload
-    def to_pandas(
+    def to_pandas(  # type: ignore[overload-overlap]
         self,
         max_download_size: Optional[int] = ...,
         sampling_method: Optional[str] = ...,

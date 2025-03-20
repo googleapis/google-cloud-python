@@ -493,7 +493,7 @@ class Index(vendored_pandas_index.Index):
             raise NotImplementedError(f"Index key not supported {key}")
 
     @overload
-    def to_pandas(
+    def to_pandas(  # type: ignore[overload-overlap]
         self,
         *,
         allow_large_results: Optional[bool] = ...,
