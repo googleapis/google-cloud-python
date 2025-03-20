@@ -342,6 +342,9 @@ def run_system(
 
     install_systemtest_dependencies(session, install_test_extra, "-c", constraints_path)
 
+    # Print out package versions for debugging.
+    session.run("python", "-m", "pip", "freeze")
+
     # Run py.test against the system tests.
     pytest_cmd = [
         "py.test",
