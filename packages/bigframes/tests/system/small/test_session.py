@@ -26,6 +26,8 @@ import google
 import google.cloud.bigquery as bigquery
 import numpy as np
 import pandas as pd
+import pandas.arrays as arrays
+import pyarrow as pa
 import pytest
 
 import bigframes
@@ -827,6 +829,68 @@ def test_read_pandas_json_index(session, write_engine):
         expected_index, write_engine=write_engine
     ).to_pandas(allow_large_results=True)
     pd.testing.assert_index_equal(actual_result, expected_index)
+
+
+@pytest.mark.parametrize(
+    ("write_engine"),
+    [
+        pytest.param("default"),
+        pytest.param("bigquery_load"),
+    ],
+)
+def test_read_pandas_w_nested_json(session, write_engine):
+    data = [
+        [{"json_field": "1"}],
+        [{"json_field": None}],
+        [{"json_field": '["1","3","5"]'}],
+        [{"json_field": '{"a":1,"b":["x","y"],"c":{"x":[],"z":false}}'}],
+    ]
+    # PyArrow currently lacks support for creating structs or lists containing extension types.
+    # See issue: https://github.com/apache/arrow/issues/45262
+    pa_array = pa.array(data, type=pa.list_(pa.struct([("name", pa.string())])))
+    pd_s = pd.Series(
+        arrays.ArrowExtensionArray(pa_array),  # type: ignore
+        dtype=pd.ArrowDtype(
+            pa.list_(pa.struct([("name", bigframes.dtypes.JSON_ARROW_TYPE)]))
+        ),
+    )
+    with pytest.raises(NotImplementedError, match="Nested JSON types, found in column"):
+        # Until b/401630655 is resolved, json not compatible with allow_large_results=False
+        session.read_pandas(pd_s, write_engine=write_engine).to_pandas(
+            allow_large_results=True
+        )
+
+
+@pytest.mark.parametrize(
+    ("write_engine"),
+    [
+        pytest.param("default"),
+        pytest.param("bigquery_load"),
+    ],
+)
+def test_read_pandas_w_nested_json_index(session, write_engine):
+    data = [
+        [{"json_field": "1"}],
+        [{"json_field": None}],
+        [{"json_field": '["1","3","5"]'}],
+        [{"json_field": '{"a":1,"b":["x","y"],"c":{"x":[],"z":false}}'}],
+    ]
+    # PyArrow currently lacks support for creating structs or lists containing extension types.
+    # See issue: https://github.com/apache/arrow/issues/45262
+    pa_array = pa.array(data, type=pa.list_(pa.struct([("name", pa.string())])))
+    pd_idx: pd.Index = pd.Index(
+        arrays.ArrowExtensionArray(pa_array),  # type: ignore
+        dtype=pd.ArrowDtype(
+            pa.list_(pa.struct([("name", bigframes.dtypes.JSON_ARROW_TYPE)]))
+        ),
+    )
+    with pytest.raises(
+        NotImplementedError, match="Nested JSON types, found in the index"
+    ):
+        # Until b/401630655 is resolved, json not compatible with allow_large_results=False
+        session.read_pandas(pd_idx, write_engine=write_engine).to_pandas(
+            allow_large_results=True
+        )
 
 
 @utils.skip_legacy_pandas
