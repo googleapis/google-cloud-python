@@ -2922,14 +2922,9 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
                 client = oracledatabase_v1.OracleDatabaseClient()
 
                 # Initialize request argument(s)
-                autonomous_database = oracledatabase_v1.AutonomousDatabase()
-                autonomous_database.network = "network_value"
-                autonomous_database.cidr = "cidr_value"
-
                 request = oracledatabase_v1.CreateAutonomousDatabaseRequest(
                     parent="parent_value",
                     autonomous_database_id="autonomous_database_id_value",
-                    autonomous_database=autonomous_database,
                 )
 
                 # Make the request

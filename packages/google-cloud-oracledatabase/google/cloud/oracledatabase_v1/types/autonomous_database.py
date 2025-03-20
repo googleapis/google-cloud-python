@@ -245,11 +245,11 @@ class AutonomousDatabase(proto.Message):
             Optional. The labels or tags associated with
             the Autonomous Database.
         network (str):
-            Required. The name of the VPC network used by
+            Optional. The name of the VPC network used by
             the Autonomous Database in the following format:
             projects/{project}/global/networks/{network}
         cidr (str):
-            Required. The subnet CIDR range for the
+            Optional. The subnet CIDR range for the
             Autonmous Database.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The date and time that the
