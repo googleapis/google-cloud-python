@@ -560,9 +560,9 @@ class BlobAccessor(base.SeriesMethods):
         self,
         *,
         connection: Optional[str] = None,
-        max_batching_rows: int = 8192,
-        container_cpu: Union[float, int] = 0.33,
-        container_memory: str = "512Mi",
+        max_batching_rows: int = 1,
+        container_cpu: Union[float, int] = 2,
+        container_memory: str = "1Gi",
     ) -> bigframes.series.Series:
         """Extracts text from PDF URLs and saves the text as string.
 
@@ -574,10 +574,10 @@ class BlobAccessor(base.SeriesMethods):
             connection (str or None, default None): BQ connection used for
                 function internet transactions, and the output blob if "dst"
                 is str. If None, uses default connection of the session.
-            max_batching_rows (int, default 8,192): Max number of rows per batch
+            max_batching_rows (int, default 1): Max number of rows per batch
                 send to cloud run to execute the function.
-            container_cpu (int or float, default 0.33): number of container CPUs. Possible values are [0.33, 8]. Floats larger than 1 are cast to intergers.
-            container_memory (str, default "512Mi"): container memory size. String of the format <number><unit>. Possible values are from 512Mi to 32Gi.
+            container_cpu (int or float, default 2): number of container CPUs. Possible values are [0.33, 8]. Floats larger than 1 are cast to intergers.
+            container_memory (str, default "1Gi"): container memory size. String of the format <number><unit>. Possible values are from 512Mi to 32Gi.
 
         Returns:
             bigframes.series.Series: conatins all text from a pdf file
@@ -604,11 +604,11 @@ class BlobAccessor(base.SeriesMethods):
         self,
         *,
         connection: Optional[str] = None,
-        chunk_size: int = 1000,
+        chunk_size: int = 2000,
         overlap_size: int = 200,
-        max_batching_rows: int = 8192,
-        container_cpu: Union[float, int] = 0.33,
-        container_memory: str = "512Mi",
+        max_batching_rows: int = 1,
+        container_cpu: Union[float, int] = 2,
+        container_memory: str = "1Gi",
     ) -> bigframes.series.Series:
         """Extracts and chunks text from PDF URLs and saves the text as
            arrays of strings.
@@ -620,15 +620,15 @@ class BlobAccessor(base.SeriesMethods):
             connection (str or None, default None): BQ connection used for
                 function internet transactions, and the output blob if "dst"
                 is str. If None, uses default connection of the session.
-            chunk_size (int, default 1000): the desired size of each text chunk
+            chunk_size (int, default 2000): the desired size of each text chunk
                 (number of characters).
             overlap_size (int, default 200): the number of overlapping characters
                 between consective chunks. The helps to ensure context is
                 perserved across chunk boundaries.
-            max_batching_rows (int, default 8,192): Max number of rows per batch
+            max_batching_rows (int, default 1): Max number of rows per batch
                 send to cloud run to execute the function.
-            container_cpu (int or float, default 0.33): number of container CPUs. Possible values are [0.33, 8]. Floats larger than 1 are cast to intergers.
-            container_memory (str, default "512Mi"): container memory size. String of the format <number><unit>. Possible values are from 512Mi to 32Gi.
+            container_cpu (int or float, default 2): number of container CPUs. Possible values are [0.33, 8]. Floats larger than 1 are cast to intergers.
+            container_memory (str, default "1Gi"): container memory size. String of the format <number><unit>. Possible values are from 512Mi to 32Gi.
 
         Returns:
             bigframe.series.Series: Series of array[str], where each string is a
