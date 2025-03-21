@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.8](https://github.com/googleapis/google-cloud-python/compare/google-cloud-oracledatabase-v0.1.7...google-cloud-oracledatabase-v0.1.8) (2025-03-21)
+
+
+### Documentation
+
+* [google-cloud-oracledatabase] the network and cidr fields of AutonomousDatabase are now marked optional ([#13699](https://github.com/googleapis/google-cloud-python/issues/13699)) ([eead40b](https://github.com/googleapis/google-cloud-python/commit/eead40b9752768e392b1d0f8aa3485b73b34d190))
+
 ## [0.1.7](https://github.com/googleapis/google-cloud-python/compare/google-cloud-oracledatabase-v0.1.6...google-cloud-oracledatabase-v0.1.7) (2025-03-19)
 
 

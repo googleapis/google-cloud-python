@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-parametermanager-v0.1.2...google-cloud-parametermanager-v0.1.3) (2025-03-21)
+
+
+### Features
+
+* [google-cloud-parametermanager] add CMEK support ([#13696](https://github.com/googleapis/google-cloud-python/issues/13696)) ([5618268](https://github.com/googleapis/google-cloud-python/commit/56182685892633bbe062b6f9819a73961bf24b20))
+
 ## [0.1.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-parametermanager-v0.1.1...google-cloud-parametermanager-v0.1.2) (2025-03-15)
 
 

@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.6.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-deploy-v2.6.2...google-cloud-deploy-v2.6.3) (2025-03-21)
+
+
+### Documentation
+
+* [google-cloud-deploy] fix typo in comments ([#13694](https://github.com/googleapis/google-cloud-python/issues/13694)) ([00baa06](https://github.com/googleapis/google-cloud-python/commit/00baa069072a021b874b08917466ac6178d9f41d))
+
 ## [2.6.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-deploy-v2.6.1...google-cloud-deploy-v2.6.2) (2025-03-15)
 
 
