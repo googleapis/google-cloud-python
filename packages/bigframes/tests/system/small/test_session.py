@@ -22,6 +22,7 @@ from typing import List, Optional, Sequence
 import warnings
 
 import bigframes_vendored.pandas.io.gbq as vendored_pandas_gbq
+import db_dtypes  # type:ignore
 import google
 import google.cloud.bigquery as bigquery
 import numpy as np
@@ -601,6 +602,154 @@ def test_read_gbq_external_table(session: bigframes.Session):
 
     assert list(df.columns) == ["idx", "s1", "s2", "s3", "s4", "i1", "f1", "i2", "f2"]
     assert df["i1"].max() == 99
+
+
+def test_read_gbq_w_json(session):
+    sql = """
+        SELECT 0 AS id, JSON_OBJECT('boolean', True) AS json_col,
+        UNION ALL
+        SELECT 1, JSON_OBJECT('int', 100),
+        UNION ALL
+        SELECT 2, JSON_OBJECT('float', 0.98),
+        UNION ALL
+        SELECT 3, JSON_OBJECT('string', 'hello world'),
+        UNION ALL
+        SELECT 4, JSON_OBJECT('array', [8, 9, 10]),
+        UNION ALL
+        SELECT 5, JSON_OBJECT('null', null),
+        UNION ALL
+        SELECT 6, JSON_OBJECT('b', 2, 'a', 1),
+        UNION ALL
+        SELECT
+            7,
+            JSON_OBJECT(
+                'dict',
+                JSON_OBJECT(
+                    'int', 1,
+                    'array', [JSON_OBJECT('foo', 1), JSON_OBJECT('bar', 'hello')]
+                )
+            ),
+    """
+    # TODO(b/401630655): JSON is not compatible with allow_large_results=False
+    df = session.read_gbq(sql, index_col="id").to_pandas(allow_large_results=True)
+
+    assert df.dtypes["json_col"] == pd.ArrowDtype(db_dtypes.JSONArrowType())
+
+    assert df["json_col"][0] == '{"boolean":true}'
+    assert df["json_col"][1] == '{"int":100}'
+    assert df["json_col"][2] == '{"float":0.98}'
+    assert df["json_col"][3] == '{"string":"hello world"}'
+    assert df["json_col"][4] == '{"array":[8,9,10]}'
+    assert df["json_col"][5] == '{"null":null}'
+
+    # Verifies JSON strings preserve array order, regardless of dictionary key order.
+    assert df["json_col"][6] == '{"a":1,"b":2}'
+    assert df["json_col"][7] == '{"dict":{"array":[{"foo":1},{"bar":"hello"}],"int":1}}'
+
+
+def test_read_gbq_w_json_and_compare_w_pandas_json(session):
+    df = session.read_gbq("SELECT JSON_OBJECT('foo', 10, 'bar', TRUE) AS json_col")
+    assert df.dtypes["json_col"] == pd.ArrowDtype(db_dtypes.JSONArrowType())
+
+    # TODO(b/401630655): JSON is not compatible with allow_large_results=False
+    result = df.to_pandas(allow_large_results=True)
+
+    # These JSON strings are compatible with BigQuery's JSON storage,
+    pd_df = pd.DataFrame(
+        {"json_col": ['{"bar":true,"foo":10}']},
+        dtype=pd.ArrowDtype(db_dtypes.JSONArrowType()),
+    )
+    pd_df.index = pd_df.index.astype("Int64")
+    pd.testing.assert_series_equal(result.dtypes, pd_df.dtypes)
+    pd.testing.assert_series_equal(result["json_col"], pd_df["json_col"])
+
+
+def test_read_gbq_w_json_in_struct(session):
+    """Avoid regressions for internal issue 381148539."""
+    sql = """
+        SELECT 0 AS id, STRUCT(JSON_OBJECT('boolean', True) AS data, 1 AS number) AS struct_col
+        UNION ALL
+        SELECT 1, STRUCT(JSON_OBJECT('int', 100), 2),
+        UNION ALL
+        SELECT 2, STRUCT(JSON_OBJECT('float', 0.98), 3),
+        UNION ALL
+        SELECT 3, STRUCT(JSON_OBJECT('string', 'hello world'), 4),
+        UNION ALL
+        SELECT 4, STRUCT(JSON_OBJECT('array', [8, 9, 10]), 5),
+        UNION ALL
+        SELECT 5, STRUCT(JSON_OBJECT('null', null), 6),
+        UNION ALL
+        SELECT
+            6,
+            STRUCT(JSON_OBJECT(
+                'dict',
+                JSON_OBJECT(
+                    'int', 1,
+                    'array', [JSON_OBJECT('foo', 1), JSON_OBJECT('bar', 'hello')]
+                )
+            ), 7),
+    """
+    df = session.read_gbq(sql, index_col="id")
+
+    assert isinstance(df.dtypes["struct_col"], pd.ArrowDtype)
+    assert isinstance(df.dtypes["struct_col"].pyarrow_dtype, pa.StructType)
+
+    data = df["struct_col"].struct.field("data")
+    assert data.dtype == pd.ArrowDtype(db_dtypes.JSONArrowType())
+
+    # TODO(b/401630655): JSON is not compatible with allow_large_results=False
+    data = data.to_pandas(allow_large_results=True)
+
+    assert data[0] == '{"boolean":true}'
+    assert data[1] == '{"int":100}'
+    assert data[2] == '{"float":0.98}'
+    assert data[3] == '{"string":"hello world"}'
+    assert data[4] == '{"array":[8,9,10]}'
+    assert data[5] == '{"null":null}'
+    assert data[6] == '{"dict":{"array":[{"foo":1},{"bar":"hello"}],"int":1}}'
+
+
+def test_read_gbq_w_json_in_array(session):
+    sql = """
+        SELECT
+            0 AS id,
+            [
+                JSON_OBJECT('boolean', True),
+                JSON_OBJECT('int', 100),
+                JSON_OBJECT('float', 0.98),
+                JSON_OBJECT('string', 'hello world'),
+                JSON_OBJECT('array', [8, 9, 10]),
+                JSON_OBJECT('null', null),
+                JSON_OBJECT(
+                    'dict',
+                    JSON_OBJECT(
+                        'int', 1,
+                        'array', [JSON_OBJECT('bar', 'hello'), JSON_OBJECT('foo', 1)]
+                    )
+                )
+            ] AS array_col,
+    """
+    df = session.read_gbq(sql, index_col="id")
+
+    assert isinstance(df.dtypes["array_col"], pd.ArrowDtype)
+    assert isinstance(df.dtypes["array_col"].pyarrow_dtype, pa.ListType)
+
+    data = df["array_col"]
+    assert data.list.len()[0] == 7
+    assert data.list[0].dtype == pd.ArrowDtype(db_dtypes.JSONArrowType())
+
+    # TODO(b/401630655): JSON is not compatible with allow_large_results=False
+    pd_data = data.to_pandas(allow_large_results=True)
+
+    assert pd_data[0] == [
+        '{"boolean":true}',
+        '{"int":100}',
+        '{"float":0.98}',
+        '{"string":"hello world"}',
+        '{"array":[8,9,10]}',
+        '{"null":null}',
+        '{"dict":{"array":[{"bar":"hello"},{"foo":1}],"int":1}}',
+    ]
 
 
 def test_read_gbq_model(session, penguins_linear_model_name):
