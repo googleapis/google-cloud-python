@@ -35,11 +35,10 @@ import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.networkconnectivity_v1.types import hub
-from google.cloud.networkconnectivity_v1.types import hub as gcn_hub
+from google.cloud.networkconnectivity_v1.types import cross_network_automation
 
-from .base import DEFAULT_CLIENT_INFO, HubServiceTransport
-from .grpc import HubServiceGrpcTransport
+from .base import DEFAULT_CLIENT_INFO, CrossNetworkAutomationServiceTransport
+from .grpc import CrossNetworkAutomationServiceGrpcTransport
 
 try:
     from google.api_core import client_logging  # type: ignore
@@ -79,7 +78,7 @@ class _LoggingClientAIOInterceptor(
             _LOGGER.debug(
                 f"Sending request for {client_call_details.method}",
                 extra={
-                    "serviceName": "google.cloud.networkconnectivity.v1.HubService",
+                    "serviceName": "google.cloud.networkconnectivity.v1.CrossNetworkAutomationService",
                     "rpcName": str(client_call_details.method),
                     "request": grpc_request,
                     "metadata": grpc_request["metadata"],
@@ -109,7 +108,7 @@ class _LoggingClientAIOInterceptor(
             _LOGGER.debug(
                 f"Received response to rpc {client_call_details.method}.",
                 extra={
-                    "serviceName": "google.cloud.networkconnectivity.v1.HubService",
+                    "serviceName": "google.cloud.networkconnectivity.v1.CrossNetworkAutomationService",
                     "rpcName": str(client_call_details.method),
                     "response": grpc_response,
                     "metadata": grpc_response["metadata"],
@@ -118,13 +117,12 @@ class _LoggingClientAIOInterceptor(
         return response
 
 
-class HubServiceGrpcAsyncIOTransport(HubServiceTransport):
-    """gRPC AsyncIO backend transport for HubService.
+class CrossNetworkAutomationServiceGrpcAsyncIOTransport(
+    CrossNetworkAutomationServiceTransport
+):
+    """gRPC AsyncIO backend transport for CrossNetworkAutomationService.
 
-    Network Connectivity Center is a hub-and-spoke abstraction
-    for network connectivity management in Google Cloud. It reduces
-    operational complexity through a simple, centralized
-    connectivity management model.
+    The service for CrossNetworkAutomation resources.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -353,17 +351,20 @@ class HubServiceGrpcAsyncIOTransport(HubServiceTransport):
         return self._operations_client
 
     @property
-    def list_hubs(
+    def list_service_connection_maps(
         self,
-    ) -> Callable[[hub.ListHubsRequest], Awaitable[hub.ListHubsResponse]]:
-        r"""Return a callable for the list hubs method over gRPC.
+    ) -> Callable[
+        [cross_network_automation.ListServiceConnectionMapsRequest],
+        Awaitable[cross_network_automation.ListServiceConnectionMapsResponse],
+    ]:
+        r"""Return a callable for the list service connection maps method over gRPC.
 
-        Lists the Network Connectivity Center hubs associated
-        with a given project.
+        Lists ServiceConnectionMaps in a given project and
+        location.
 
         Returns:
-            Callable[[~.ListHubsRequest],
-                    Awaitable[~.ListHubsResponse]]:
+            Callable[[~.ListServiceConnectionMapsRequest],
+                    Awaitable[~.ListServiceConnectionMapsResponse]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -371,23 +372,30 @@ class HubServiceGrpcAsyncIOTransport(HubServiceTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "list_hubs" not in self._stubs:
-            self._stubs["list_hubs"] = self._logged_channel.unary_unary(
-                "/google.cloud.networkconnectivity.v1.HubService/ListHubs",
-                request_serializer=hub.ListHubsRequest.serialize,
-                response_deserializer=hub.ListHubsResponse.deserialize,
+        if "list_service_connection_maps" not in self._stubs:
+            self._stubs[
+                "list_service_connection_maps"
+            ] = self._logged_channel.unary_unary(
+                "/google.cloud.networkconnectivity.v1.CrossNetworkAutomationService/ListServiceConnectionMaps",
+                request_serializer=cross_network_automation.ListServiceConnectionMapsRequest.serialize,
+                response_deserializer=cross_network_automation.ListServiceConnectionMapsResponse.deserialize,
             )
-        return self._stubs["list_hubs"]
+        return self._stubs["list_service_connection_maps"]
 
     @property
-    def get_hub(self) -> Callable[[hub.GetHubRequest], Awaitable[hub.Hub]]:
-        r"""Return a callable for the get hub method over gRPC.
+    def get_service_connection_map(
+        self,
+    ) -> Callable[
+        [cross_network_automation.GetServiceConnectionMapRequest],
+        Awaitable[cross_network_automation.ServiceConnectionMap],
+    ]:
+        r"""Return a callable for the get service connection map method over gRPC.
 
-        Gets details about a Network Connectivity Center hub.
+        Gets details of a single ServiceConnectionMap.
 
         Returns:
-            Callable[[~.GetHubRequest],
-                    Awaitable[~.Hub]]:
+            Callable[[~.GetServiceConnectionMapRequest],
+                    Awaitable[~.ServiceConnectionMap]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -395,25 +403,30 @@ class HubServiceGrpcAsyncIOTransport(HubServiceTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "get_hub" not in self._stubs:
-            self._stubs["get_hub"] = self._logged_channel.unary_unary(
-                "/google.cloud.networkconnectivity.v1.HubService/GetHub",
-                request_serializer=hub.GetHubRequest.serialize,
-                response_deserializer=hub.Hub.deserialize,
+        if "get_service_connection_map" not in self._stubs:
+            self._stubs[
+                "get_service_connection_map"
+            ] = self._logged_channel.unary_unary(
+                "/google.cloud.networkconnectivity.v1.CrossNetworkAutomationService/GetServiceConnectionMap",
+                request_serializer=cross_network_automation.GetServiceConnectionMapRequest.serialize,
+                response_deserializer=cross_network_automation.ServiceConnectionMap.deserialize,
             )
-        return self._stubs["get_hub"]
+        return self._stubs["get_service_connection_map"]
 
     @property
-    def create_hub(
+    def create_service_connection_map(
         self,
-    ) -> Callable[[gcn_hub.CreateHubRequest], Awaitable[operations_pb2.Operation]]:
-        r"""Return a callable for the create hub method over gRPC.
+    ) -> Callable[
+        [cross_network_automation.CreateServiceConnectionMapRequest],
+        Awaitable[operations_pb2.Operation],
+    ]:
+        r"""Return a callable for the create service connection map method over gRPC.
 
-        Creates a new Network Connectivity Center hub in the
-        specified project.
+        Creates a new ServiceConnectionMap in a given project
+        and location.
 
         Returns:
-            Callable[[~.CreateHubRequest],
+            Callable[[~.CreateServiceConnectionMapRequest],
                     Awaitable[~.Operation]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
@@ -422,25 +435,30 @@ class HubServiceGrpcAsyncIOTransport(HubServiceTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "create_hub" not in self._stubs:
-            self._stubs["create_hub"] = self._logged_channel.unary_unary(
-                "/google.cloud.networkconnectivity.v1.HubService/CreateHub",
-                request_serializer=gcn_hub.CreateHubRequest.serialize,
+        if "create_service_connection_map" not in self._stubs:
+            self._stubs[
+                "create_service_connection_map"
+            ] = self._logged_channel.unary_unary(
+                "/google.cloud.networkconnectivity.v1.CrossNetworkAutomationService/CreateServiceConnectionMap",
+                request_serializer=cross_network_automation.CreateServiceConnectionMapRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
-        return self._stubs["create_hub"]
+        return self._stubs["create_service_connection_map"]
 
     @property
-    def update_hub(
+    def update_service_connection_map(
         self,
-    ) -> Callable[[gcn_hub.UpdateHubRequest], Awaitable[operations_pb2.Operation]]:
-        r"""Return a callable for the update hub method over gRPC.
+    ) -> Callable[
+        [cross_network_automation.UpdateServiceConnectionMapRequest],
+        Awaitable[operations_pb2.Operation],
+    ]:
+        r"""Return a callable for the update service connection map method over gRPC.
 
-        Updates the description and/or labels of a Network
-        Connectivity Center hub.
+        Updates the parameters of a single
+        ServiceConnectionMap.
 
         Returns:
-            Callable[[~.UpdateHubRequest],
+            Callable[[~.UpdateServiceConnectionMapRequest],
                     Awaitable[~.Operation]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
@@ -449,24 +467,29 @@ class HubServiceGrpcAsyncIOTransport(HubServiceTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "update_hub" not in self._stubs:
-            self._stubs["update_hub"] = self._logged_channel.unary_unary(
-                "/google.cloud.networkconnectivity.v1.HubService/UpdateHub",
-                request_serializer=gcn_hub.UpdateHubRequest.serialize,
+        if "update_service_connection_map" not in self._stubs:
+            self._stubs[
+                "update_service_connection_map"
+            ] = self._logged_channel.unary_unary(
+                "/google.cloud.networkconnectivity.v1.CrossNetworkAutomationService/UpdateServiceConnectionMap",
+                request_serializer=cross_network_automation.UpdateServiceConnectionMapRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
-        return self._stubs["update_hub"]
+        return self._stubs["update_service_connection_map"]
 
     @property
-    def delete_hub(
+    def delete_service_connection_map(
         self,
-    ) -> Callable[[hub.DeleteHubRequest], Awaitable[operations_pb2.Operation]]:
-        r"""Return a callable for the delete hub method over gRPC.
+    ) -> Callable[
+        [cross_network_automation.DeleteServiceConnectionMapRequest],
+        Awaitable[operations_pb2.Operation],
+    ]:
+        r"""Return a callable for the delete service connection map method over gRPC.
 
-        Deletes a Network Connectivity Center hub.
+        Deletes a single ServiceConnectionMap.
 
         Returns:
-            Callable[[~.DeleteHubRequest],
+            Callable[[~.DeleteServiceConnectionMapRequest],
                     Awaitable[~.Operation]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
@@ -475,28 +498,32 @@ class HubServiceGrpcAsyncIOTransport(HubServiceTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "delete_hub" not in self._stubs:
-            self._stubs["delete_hub"] = self._logged_channel.unary_unary(
-                "/google.cloud.networkconnectivity.v1.HubService/DeleteHub",
-                request_serializer=hub.DeleteHubRequest.serialize,
+        if "delete_service_connection_map" not in self._stubs:
+            self._stubs[
+                "delete_service_connection_map"
+            ] = self._logged_channel.unary_unary(
+                "/google.cloud.networkconnectivity.v1.CrossNetworkAutomationService/DeleteServiceConnectionMap",
+                request_serializer=cross_network_automation.DeleteServiceConnectionMapRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
-        return self._stubs["delete_hub"]
+        return self._stubs["delete_service_connection_map"]
 
     @property
-    def list_hub_spokes(
+    def list_service_connection_policies(
         self,
-    ) -> Callable[[hub.ListHubSpokesRequest], Awaitable[hub.ListHubSpokesResponse]]:
-        r"""Return a callable for the list hub spokes method over gRPC.
+    ) -> Callable[
+        [cross_network_automation.ListServiceConnectionPoliciesRequest],
+        Awaitable[cross_network_automation.ListServiceConnectionPoliciesResponse],
+    ]:
+        r"""Return a callable for the list service connection
+        policies method over gRPC.
 
-        Lists the Network Connectivity Center spokes
-        associated with a specified hub and location. The list
-        includes both spokes that are attached to the hub and
-        spokes that have been proposed but not yet accepted.
+        Lists ServiceConnectionPolicies in a given project
+        and location.
 
         Returns:
-            Callable[[~.ListHubSpokesRequest],
-                    Awaitable[~.ListHubSpokesResponse]]:
+            Callable[[~.ListServiceConnectionPoliciesRequest],
+                    Awaitable[~.ListServiceConnectionPoliciesResponse]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -504,26 +531,30 @@ class HubServiceGrpcAsyncIOTransport(HubServiceTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "list_hub_spokes" not in self._stubs:
-            self._stubs["list_hub_spokes"] = self._logged_channel.unary_unary(
-                "/google.cloud.networkconnectivity.v1.HubService/ListHubSpokes",
-                request_serializer=hub.ListHubSpokesRequest.serialize,
-                response_deserializer=hub.ListHubSpokesResponse.deserialize,
+        if "list_service_connection_policies" not in self._stubs:
+            self._stubs[
+                "list_service_connection_policies"
+            ] = self._logged_channel.unary_unary(
+                "/google.cloud.networkconnectivity.v1.CrossNetworkAutomationService/ListServiceConnectionPolicies",
+                request_serializer=cross_network_automation.ListServiceConnectionPoliciesRequest.serialize,
+                response_deserializer=cross_network_automation.ListServiceConnectionPoliciesResponse.deserialize,
             )
-        return self._stubs["list_hub_spokes"]
+        return self._stubs["list_service_connection_policies"]
 
     @property
-    def query_hub_status(
+    def get_service_connection_policy(
         self,
-    ) -> Callable[[hub.QueryHubStatusRequest], Awaitable[hub.QueryHubStatusResponse]]:
-        r"""Return a callable for the query hub status method over gRPC.
+    ) -> Callable[
+        [cross_network_automation.GetServiceConnectionPolicyRequest],
+        Awaitable[cross_network_automation.ServiceConnectionPolicy],
+    ]:
+        r"""Return a callable for the get service connection policy method over gRPC.
 
-        Query the Private Service Connect propagation status
-        of a Network Connectivity Center hub.
+        Gets details of a single ServiceConnectionPolicy.
 
         Returns:
-            Callable[[~.QueryHubStatusRequest],
-                    Awaitable[~.QueryHubStatusResponse]]:
+            Callable[[~.GetServiceConnectionPolicyRequest],
+                    Awaitable[~.ServiceConnectionPolicy]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -531,76 +562,31 @@ class HubServiceGrpcAsyncIOTransport(HubServiceTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "query_hub_status" not in self._stubs:
-            self._stubs["query_hub_status"] = self._logged_channel.unary_unary(
-                "/google.cloud.networkconnectivity.v1.HubService/QueryHubStatus",
-                request_serializer=hub.QueryHubStatusRequest.serialize,
-                response_deserializer=hub.QueryHubStatusResponse.deserialize,
+        if "get_service_connection_policy" not in self._stubs:
+            self._stubs[
+                "get_service_connection_policy"
+            ] = self._logged_channel.unary_unary(
+                "/google.cloud.networkconnectivity.v1.CrossNetworkAutomationService/GetServiceConnectionPolicy",
+                request_serializer=cross_network_automation.GetServiceConnectionPolicyRequest.serialize,
+                response_deserializer=cross_network_automation.ServiceConnectionPolicy.deserialize,
             )
-        return self._stubs["query_hub_status"]
+        return self._stubs["get_service_connection_policy"]
 
     @property
-    def list_spokes(
+    def create_service_connection_policy(
         self,
-    ) -> Callable[[hub.ListSpokesRequest], Awaitable[hub.ListSpokesResponse]]:
-        r"""Return a callable for the list spokes method over gRPC.
+    ) -> Callable[
+        [cross_network_automation.CreateServiceConnectionPolicyRequest],
+        Awaitable[operations_pb2.Operation],
+    ]:
+        r"""Return a callable for the create service connection
+        policy method over gRPC.
 
-        Lists the Network Connectivity Center spokes in a
-        specified project and location.
-
-        Returns:
-            Callable[[~.ListSpokesRequest],
-                    Awaitable[~.ListSpokesResponse]]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "list_spokes" not in self._stubs:
-            self._stubs["list_spokes"] = self._logged_channel.unary_unary(
-                "/google.cloud.networkconnectivity.v1.HubService/ListSpokes",
-                request_serializer=hub.ListSpokesRequest.serialize,
-                response_deserializer=hub.ListSpokesResponse.deserialize,
-            )
-        return self._stubs["list_spokes"]
-
-    @property
-    def get_spoke(self) -> Callable[[hub.GetSpokeRequest], Awaitable[hub.Spoke]]:
-        r"""Return a callable for the get spoke method over gRPC.
-
-        Gets details about a Network Connectivity Center
-        spoke.
+        Creates a new ServiceConnectionPolicy in a given
+        project and location.
 
         Returns:
-            Callable[[~.GetSpokeRequest],
-                    Awaitable[~.Spoke]]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "get_spoke" not in self._stubs:
-            self._stubs["get_spoke"] = self._logged_channel.unary_unary(
-                "/google.cloud.networkconnectivity.v1.HubService/GetSpoke",
-                request_serializer=hub.GetSpokeRequest.serialize,
-                response_deserializer=hub.Spoke.deserialize,
-            )
-        return self._stubs["get_spoke"]
-
-    @property
-    def create_spoke(
-        self,
-    ) -> Callable[[hub.CreateSpokeRequest], Awaitable[operations_pb2.Operation]]:
-        r"""Return a callable for the create spoke method over gRPC.
-
-        Creates a Network Connectivity Center spoke.
-
-        Returns:
-            Callable[[~.CreateSpokeRequest],
+            Callable[[~.CreateServiceConnectionPolicyRequest],
                     Awaitable[~.Operation]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
@@ -609,25 +595,31 @@ class HubServiceGrpcAsyncIOTransport(HubServiceTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "create_spoke" not in self._stubs:
-            self._stubs["create_spoke"] = self._logged_channel.unary_unary(
-                "/google.cloud.networkconnectivity.v1.HubService/CreateSpoke",
-                request_serializer=hub.CreateSpokeRequest.serialize,
+        if "create_service_connection_policy" not in self._stubs:
+            self._stubs[
+                "create_service_connection_policy"
+            ] = self._logged_channel.unary_unary(
+                "/google.cloud.networkconnectivity.v1.CrossNetworkAutomationService/CreateServiceConnectionPolicy",
+                request_serializer=cross_network_automation.CreateServiceConnectionPolicyRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
-        return self._stubs["create_spoke"]
+        return self._stubs["create_service_connection_policy"]
 
     @property
-    def update_spoke(
+    def update_service_connection_policy(
         self,
-    ) -> Callable[[hub.UpdateSpokeRequest], Awaitable[operations_pb2.Operation]]:
-        r"""Return a callable for the update spoke method over gRPC.
+    ) -> Callable[
+        [cross_network_automation.UpdateServiceConnectionPolicyRequest],
+        Awaitable[operations_pb2.Operation],
+    ]:
+        r"""Return a callable for the update service connection
+        policy method over gRPC.
 
-        Updates the parameters of a Network Connectivity
-        Center spoke.
+        Updates the parameters of a single
+        ServiceConnectionPolicy.
 
         Returns:
-            Callable[[~.UpdateSpokeRequest],
+            Callable[[~.UpdateServiceConnectionPolicyRequest],
                     Awaitable[~.Operation]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
@@ -636,27 +628,30 @@ class HubServiceGrpcAsyncIOTransport(HubServiceTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "update_spoke" not in self._stubs:
-            self._stubs["update_spoke"] = self._logged_channel.unary_unary(
-                "/google.cloud.networkconnectivity.v1.HubService/UpdateSpoke",
-                request_serializer=hub.UpdateSpokeRequest.serialize,
+        if "update_service_connection_policy" not in self._stubs:
+            self._stubs[
+                "update_service_connection_policy"
+            ] = self._logged_channel.unary_unary(
+                "/google.cloud.networkconnectivity.v1.CrossNetworkAutomationService/UpdateServiceConnectionPolicy",
+                request_serializer=cross_network_automation.UpdateServiceConnectionPolicyRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
-        return self._stubs["update_spoke"]
+        return self._stubs["update_service_connection_policy"]
 
     @property
-    def reject_hub_spoke(
+    def delete_service_connection_policy(
         self,
-    ) -> Callable[[hub.RejectHubSpokeRequest], Awaitable[operations_pb2.Operation]]:
-        r"""Return a callable for the reject hub spoke method over gRPC.
+    ) -> Callable[
+        [cross_network_automation.DeleteServiceConnectionPolicyRequest],
+        Awaitable[operations_pb2.Operation],
+    ]:
+        r"""Return a callable for the delete service connection
+        policy method over gRPC.
 
-        Rejects a Network Connectivity Center spoke from being attached
-        to a hub. If the spoke was previously in the ``ACTIVE`` state,
-        it transitions to the ``INACTIVE`` state and is no longer able
-        to connect to other spokes that are attached to the hub.
+        Deletes a single ServiceConnectionPolicy.
 
         Returns:
-            Callable[[~.RejectHubSpokeRequest],
+            Callable[[~.DeleteServiceConnectionPolicyRequest],
                     Awaitable[~.Operation]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
@@ -665,25 +660,87 @@ class HubServiceGrpcAsyncIOTransport(HubServiceTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "reject_hub_spoke" not in self._stubs:
-            self._stubs["reject_hub_spoke"] = self._logged_channel.unary_unary(
-                "/google.cloud.networkconnectivity.v1.HubService/RejectHubSpoke",
-                request_serializer=hub.RejectHubSpokeRequest.serialize,
+        if "delete_service_connection_policy" not in self._stubs:
+            self._stubs[
+                "delete_service_connection_policy"
+            ] = self._logged_channel.unary_unary(
+                "/google.cloud.networkconnectivity.v1.CrossNetworkAutomationService/DeleteServiceConnectionPolicy",
+                request_serializer=cross_network_automation.DeleteServiceConnectionPolicyRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
-        return self._stubs["reject_hub_spoke"]
+        return self._stubs["delete_service_connection_policy"]
 
     @property
-    def accept_hub_spoke(
+    def list_service_classes(
         self,
-    ) -> Callable[[hub.AcceptHubSpokeRequest], Awaitable[operations_pb2.Operation]]:
-        r"""Return a callable for the accept hub spoke method over gRPC.
+    ) -> Callable[
+        [cross_network_automation.ListServiceClassesRequest],
+        Awaitable[cross_network_automation.ListServiceClassesResponse],
+    ]:
+        r"""Return a callable for the list service classes method over gRPC.
 
-        Accepts a proposal to attach a Network Connectivity
-        Center spoke to a hub.
+        Lists ServiceClasses in a given project and location.
 
         Returns:
-            Callable[[~.AcceptHubSpokeRequest],
+            Callable[[~.ListServiceClassesRequest],
+                    Awaitable[~.ListServiceClassesResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_service_classes" not in self._stubs:
+            self._stubs["list_service_classes"] = self._logged_channel.unary_unary(
+                "/google.cloud.networkconnectivity.v1.CrossNetworkAutomationService/ListServiceClasses",
+                request_serializer=cross_network_automation.ListServiceClassesRequest.serialize,
+                response_deserializer=cross_network_automation.ListServiceClassesResponse.deserialize,
+            )
+        return self._stubs["list_service_classes"]
+
+    @property
+    def get_service_class(
+        self,
+    ) -> Callable[
+        [cross_network_automation.GetServiceClassRequest],
+        Awaitable[cross_network_automation.ServiceClass],
+    ]:
+        r"""Return a callable for the get service class method over gRPC.
+
+        Gets details of a single ServiceClass.
+
+        Returns:
+            Callable[[~.GetServiceClassRequest],
+                    Awaitable[~.ServiceClass]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_service_class" not in self._stubs:
+            self._stubs["get_service_class"] = self._logged_channel.unary_unary(
+                "/google.cloud.networkconnectivity.v1.CrossNetworkAutomationService/GetServiceClass",
+                request_serializer=cross_network_automation.GetServiceClassRequest.serialize,
+                response_deserializer=cross_network_automation.ServiceClass.deserialize,
+            )
+        return self._stubs["get_service_class"]
+
+    @property
+    def update_service_class(
+        self,
+    ) -> Callable[
+        [cross_network_automation.UpdateServiceClassRequest],
+        Awaitable[operations_pb2.Operation],
+    ]:
+        r"""Return a callable for the update service class method over gRPC.
+
+        Updates the parameters of a single ServiceClass.
+
+        Returns:
+            Callable[[~.UpdateServiceClassRequest],
                     Awaitable[~.Operation]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
@@ -692,25 +749,27 @@ class HubServiceGrpcAsyncIOTransport(HubServiceTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "accept_hub_spoke" not in self._stubs:
-            self._stubs["accept_hub_spoke"] = self._logged_channel.unary_unary(
-                "/google.cloud.networkconnectivity.v1.HubService/AcceptHubSpoke",
-                request_serializer=hub.AcceptHubSpokeRequest.serialize,
+        if "update_service_class" not in self._stubs:
+            self._stubs["update_service_class"] = self._logged_channel.unary_unary(
+                "/google.cloud.networkconnectivity.v1.CrossNetworkAutomationService/UpdateServiceClass",
+                request_serializer=cross_network_automation.UpdateServiceClassRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
-        return self._stubs["accept_hub_spoke"]
+        return self._stubs["update_service_class"]
 
     @property
-    def accept_spoke_update(
+    def delete_service_class(
         self,
-    ) -> Callable[[hub.AcceptSpokeUpdateRequest], Awaitable[operations_pb2.Operation]]:
-        r"""Return a callable for the accept spoke update method over gRPC.
+    ) -> Callable[
+        [cross_network_automation.DeleteServiceClassRequest],
+        Awaitable[operations_pb2.Operation],
+    ]:
+        r"""Return a callable for the delete service class method over gRPC.
 
-        Accepts a proposal to update a Network Connectivity
-        Center spoke in a hub.
+        Deletes a single ServiceClass.
 
         Returns:
-            Callable[[~.AcceptSpokeUpdateRequest],
+            Callable[[~.DeleteServiceClassRequest],
                     Awaitable[~.Operation]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
@@ -719,25 +778,92 @@ class HubServiceGrpcAsyncIOTransport(HubServiceTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "accept_spoke_update" not in self._stubs:
-            self._stubs["accept_spoke_update"] = self._logged_channel.unary_unary(
-                "/google.cloud.networkconnectivity.v1.HubService/AcceptSpokeUpdate",
-                request_serializer=hub.AcceptSpokeUpdateRequest.serialize,
+        if "delete_service_class" not in self._stubs:
+            self._stubs["delete_service_class"] = self._logged_channel.unary_unary(
+                "/google.cloud.networkconnectivity.v1.CrossNetworkAutomationService/DeleteServiceClass",
+                request_serializer=cross_network_automation.DeleteServiceClassRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
-        return self._stubs["accept_spoke_update"]
+        return self._stubs["delete_service_class"]
 
     @property
-    def reject_spoke_update(
+    def get_service_connection_token(
         self,
-    ) -> Callable[[hub.RejectSpokeUpdateRequest], Awaitable[operations_pb2.Operation]]:
-        r"""Return a callable for the reject spoke update method over gRPC.
+    ) -> Callable[
+        [cross_network_automation.GetServiceConnectionTokenRequest],
+        Awaitable[cross_network_automation.ServiceConnectionToken],
+    ]:
+        r"""Return a callable for the get service connection token method over gRPC.
 
-        Rejects a proposal to update a Network Connectivity
-        Center spoke in a hub.
+        Gets details of a single ServiceConnectionToken.
 
         Returns:
-            Callable[[~.RejectSpokeUpdateRequest],
+            Callable[[~.GetServiceConnectionTokenRequest],
+                    Awaitable[~.ServiceConnectionToken]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_service_connection_token" not in self._stubs:
+            self._stubs[
+                "get_service_connection_token"
+            ] = self._logged_channel.unary_unary(
+                "/google.cloud.networkconnectivity.v1.CrossNetworkAutomationService/GetServiceConnectionToken",
+                request_serializer=cross_network_automation.GetServiceConnectionTokenRequest.serialize,
+                response_deserializer=cross_network_automation.ServiceConnectionToken.deserialize,
+            )
+        return self._stubs["get_service_connection_token"]
+
+    @property
+    def list_service_connection_tokens(
+        self,
+    ) -> Callable[
+        [cross_network_automation.ListServiceConnectionTokensRequest],
+        Awaitable[cross_network_automation.ListServiceConnectionTokensResponse],
+    ]:
+        r"""Return a callable for the list service connection tokens method over gRPC.
+
+        Lists ServiceConnectionTokens in a given project and
+        location.
+
+        Returns:
+            Callable[[~.ListServiceConnectionTokensRequest],
+                    Awaitable[~.ListServiceConnectionTokensResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_service_connection_tokens" not in self._stubs:
+            self._stubs[
+                "list_service_connection_tokens"
+            ] = self._logged_channel.unary_unary(
+                "/google.cloud.networkconnectivity.v1.CrossNetworkAutomationService/ListServiceConnectionTokens",
+                request_serializer=cross_network_automation.ListServiceConnectionTokensRequest.serialize,
+                response_deserializer=cross_network_automation.ListServiceConnectionTokensResponse.deserialize,
+            )
+        return self._stubs["list_service_connection_tokens"]
+
+    @property
+    def create_service_connection_token(
+        self,
+    ) -> Callable[
+        [cross_network_automation.CreateServiceConnectionTokenRequest],
+        Awaitable[operations_pb2.Operation],
+    ]:
+        r"""Return a callable for the create service connection
+        token method over gRPC.
+
+        Creates a new ServiceConnectionToken in a given
+        project and location.
+
+        Returns:
+            Callable[[~.CreateServiceConnectionTokenRequest],
                     Awaitable[~.Operation]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
@@ -746,24 +872,30 @@ class HubServiceGrpcAsyncIOTransport(HubServiceTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "reject_spoke_update" not in self._stubs:
-            self._stubs["reject_spoke_update"] = self._logged_channel.unary_unary(
-                "/google.cloud.networkconnectivity.v1.HubService/RejectSpokeUpdate",
-                request_serializer=hub.RejectSpokeUpdateRequest.serialize,
+        if "create_service_connection_token" not in self._stubs:
+            self._stubs[
+                "create_service_connection_token"
+            ] = self._logged_channel.unary_unary(
+                "/google.cloud.networkconnectivity.v1.CrossNetworkAutomationService/CreateServiceConnectionToken",
+                request_serializer=cross_network_automation.CreateServiceConnectionTokenRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
-        return self._stubs["reject_spoke_update"]
+        return self._stubs["create_service_connection_token"]
 
     @property
-    def delete_spoke(
+    def delete_service_connection_token(
         self,
-    ) -> Callable[[hub.DeleteSpokeRequest], Awaitable[operations_pb2.Operation]]:
-        r"""Return a callable for the delete spoke method over gRPC.
+    ) -> Callable[
+        [cross_network_automation.DeleteServiceConnectionTokenRequest],
+        Awaitable[operations_pb2.Operation],
+    ]:
+        r"""Return a callable for the delete service connection
+        token method over gRPC.
 
-        Deletes a Network Connectivity Center spoke.
+        Deletes a single ServiceConnectionToken.
 
         Returns:
-            Callable[[~.DeleteSpokeRequest],
+            Callable[[~.DeleteServiceConnectionTokenRequest],
                     Awaitable[~.Operation]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
@@ -772,310 +904,106 @@ class HubServiceGrpcAsyncIOTransport(HubServiceTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "delete_spoke" not in self._stubs:
-            self._stubs["delete_spoke"] = self._logged_channel.unary_unary(
-                "/google.cloud.networkconnectivity.v1.HubService/DeleteSpoke",
-                request_serializer=hub.DeleteSpokeRequest.serialize,
+        if "delete_service_connection_token" not in self._stubs:
+            self._stubs[
+                "delete_service_connection_token"
+            ] = self._logged_channel.unary_unary(
+                "/google.cloud.networkconnectivity.v1.CrossNetworkAutomationService/DeleteServiceConnectionToken",
+                request_serializer=cross_network_automation.DeleteServiceConnectionTokenRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
-        return self._stubs["delete_spoke"]
-
-    @property
-    def get_route_table(
-        self,
-    ) -> Callable[[hub.GetRouteTableRequest], Awaitable[hub.RouteTable]]:
-        r"""Return a callable for the get route table method over gRPC.
-
-        Gets details about a Network Connectivity Center
-        route table.
-
-        Returns:
-            Callable[[~.GetRouteTableRequest],
-                    Awaitable[~.RouteTable]]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "get_route_table" not in self._stubs:
-            self._stubs["get_route_table"] = self._logged_channel.unary_unary(
-                "/google.cloud.networkconnectivity.v1.HubService/GetRouteTable",
-                request_serializer=hub.GetRouteTableRequest.serialize,
-                response_deserializer=hub.RouteTable.deserialize,
-            )
-        return self._stubs["get_route_table"]
-
-    @property
-    def get_route(self) -> Callable[[hub.GetRouteRequest], Awaitable[hub.Route]]:
-        r"""Return a callable for the get route method over gRPC.
-
-        Gets details about the specified route.
-
-        Returns:
-            Callable[[~.GetRouteRequest],
-                    Awaitable[~.Route]]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "get_route" not in self._stubs:
-            self._stubs["get_route"] = self._logged_channel.unary_unary(
-                "/google.cloud.networkconnectivity.v1.HubService/GetRoute",
-                request_serializer=hub.GetRouteRequest.serialize,
-                response_deserializer=hub.Route.deserialize,
-            )
-        return self._stubs["get_route"]
-
-    @property
-    def list_routes(
-        self,
-    ) -> Callable[[hub.ListRoutesRequest], Awaitable[hub.ListRoutesResponse]]:
-        r"""Return a callable for the list routes method over gRPC.
-
-        Lists routes in a given route table.
-
-        Returns:
-            Callable[[~.ListRoutesRequest],
-                    Awaitable[~.ListRoutesResponse]]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "list_routes" not in self._stubs:
-            self._stubs["list_routes"] = self._logged_channel.unary_unary(
-                "/google.cloud.networkconnectivity.v1.HubService/ListRoutes",
-                request_serializer=hub.ListRoutesRequest.serialize,
-                response_deserializer=hub.ListRoutesResponse.deserialize,
-            )
-        return self._stubs["list_routes"]
-
-    @property
-    def list_route_tables(
-        self,
-    ) -> Callable[[hub.ListRouteTablesRequest], Awaitable[hub.ListRouteTablesResponse]]:
-        r"""Return a callable for the list route tables method over gRPC.
-
-        Lists route tables in a given hub.
-
-        Returns:
-            Callable[[~.ListRouteTablesRequest],
-                    Awaitable[~.ListRouteTablesResponse]]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "list_route_tables" not in self._stubs:
-            self._stubs["list_route_tables"] = self._logged_channel.unary_unary(
-                "/google.cloud.networkconnectivity.v1.HubService/ListRouteTables",
-                request_serializer=hub.ListRouteTablesRequest.serialize,
-                response_deserializer=hub.ListRouteTablesResponse.deserialize,
-            )
-        return self._stubs["list_route_tables"]
-
-    @property
-    def get_group(self) -> Callable[[hub.GetGroupRequest], Awaitable[hub.Group]]:
-        r"""Return a callable for the get group method over gRPC.
-
-        Gets details about a Network Connectivity Center
-        group.
-
-        Returns:
-            Callable[[~.GetGroupRequest],
-                    Awaitable[~.Group]]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "get_group" not in self._stubs:
-            self._stubs["get_group"] = self._logged_channel.unary_unary(
-                "/google.cloud.networkconnectivity.v1.HubService/GetGroup",
-                request_serializer=hub.GetGroupRequest.serialize,
-                response_deserializer=hub.Group.deserialize,
-            )
-        return self._stubs["get_group"]
-
-    @property
-    def list_groups(
-        self,
-    ) -> Callable[[hub.ListGroupsRequest], Awaitable[hub.ListGroupsResponse]]:
-        r"""Return a callable for the list groups method over gRPC.
-
-        Lists groups in a given hub.
-
-        Returns:
-            Callable[[~.ListGroupsRequest],
-                    Awaitable[~.ListGroupsResponse]]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "list_groups" not in self._stubs:
-            self._stubs["list_groups"] = self._logged_channel.unary_unary(
-                "/google.cloud.networkconnectivity.v1.HubService/ListGroups",
-                request_serializer=hub.ListGroupsRequest.serialize,
-                response_deserializer=hub.ListGroupsResponse.deserialize,
-            )
-        return self._stubs["list_groups"]
-
-    @property
-    def update_group(
-        self,
-    ) -> Callable[[hub.UpdateGroupRequest], Awaitable[operations_pb2.Operation]]:
-        r"""Return a callable for the update group method over gRPC.
-
-        Updates the parameters of a Network Connectivity
-        Center group.
-
-        Returns:
-            Callable[[~.UpdateGroupRequest],
-                    Awaitable[~.Operation]]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "update_group" not in self._stubs:
-            self._stubs["update_group"] = self._logged_channel.unary_unary(
-                "/google.cloud.networkconnectivity.v1.HubService/UpdateGroup",
-                request_serializer=hub.UpdateGroupRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
-            )
-        return self._stubs["update_group"]
+        return self._stubs["delete_service_connection_token"]
 
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
-            self.list_hubs: self._wrap_method(
-                self.list_hubs,
+            self.list_service_connection_maps: self._wrap_method(
+                self.list_service_connection_maps,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.get_hub: self._wrap_method(
-                self.get_hub,
+            self.get_service_connection_map: self._wrap_method(
+                self.get_service_connection_map,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.create_hub: self._wrap_method(
-                self.create_hub,
-                default_timeout=60.0,
-                client_info=client_info,
-            ),
-            self.update_hub: self._wrap_method(
-                self.update_hub,
-                default_timeout=60.0,
-                client_info=client_info,
-            ),
-            self.delete_hub: self._wrap_method(
-                self.delete_hub,
-                default_timeout=60.0,
-                client_info=client_info,
-            ),
-            self.list_hub_spokes: self._wrap_method(
-                self.list_hub_spokes,
+            self.create_service_connection_map: self._wrap_method(
+                self.create_service_connection_map,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.query_hub_status: self._wrap_method(
-                self.query_hub_status,
+            self.update_service_connection_map: self._wrap_method(
+                self.update_service_connection_map,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.list_spokes: self._wrap_method(
-                self.list_spokes,
+            self.delete_service_connection_map: self._wrap_method(
+                self.delete_service_connection_map,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.get_spoke: self._wrap_method(
-                self.get_spoke,
+            self.list_service_connection_policies: self._wrap_method(
+                self.list_service_connection_policies,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.create_spoke: self._wrap_method(
-                self.create_spoke,
-                default_timeout=60.0,
-                client_info=client_info,
-            ),
-            self.update_spoke: self._wrap_method(
-                self.update_spoke,
-                default_timeout=60.0,
-                client_info=client_info,
-            ),
-            self.reject_hub_spoke: self._wrap_method(
-                self.reject_hub_spoke,
+            self.get_service_connection_policy: self._wrap_method(
+                self.get_service_connection_policy,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.accept_hub_spoke: self._wrap_method(
-                self.accept_hub_spoke,
+            self.create_service_connection_policy: self._wrap_method(
+                self.create_service_connection_policy,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.accept_spoke_update: self._wrap_method(
-                self.accept_spoke_update,
+            self.update_service_connection_policy: self._wrap_method(
+                self.update_service_connection_policy,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.reject_spoke_update: self._wrap_method(
-                self.reject_spoke_update,
+            self.delete_service_connection_policy: self._wrap_method(
+                self.delete_service_connection_policy,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.delete_spoke: self._wrap_method(
-                self.delete_spoke,
-                default_timeout=60.0,
-                client_info=client_info,
-            ),
-            self.get_route_table: self._wrap_method(
-                self.get_route_table,
+            self.list_service_classes: self._wrap_method(
+                self.list_service_classes,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.get_route: self._wrap_method(
-                self.get_route,
+            self.get_service_class: self._wrap_method(
+                self.get_service_class,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.list_routes: self._wrap_method(
-                self.list_routes,
+            self.update_service_class: self._wrap_method(
+                self.update_service_class,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.list_route_tables: self._wrap_method(
-                self.list_route_tables,
+            self.delete_service_class: self._wrap_method(
+                self.delete_service_class,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.get_group: self._wrap_method(
-                self.get_group,
+            self.get_service_connection_token: self._wrap_method(
+                self.get_service_connection_token,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.list_groups: self._wrap_method(
-                self.list_groups,
+            self.list_service_connection_tokens: self._wrap_method(
+                self.list_service_connection_tokens,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.update_group: self._wrap_method(
-                self.update_group,
+            self.create_service_connection_token: self._wrap_method(
+                self.create_service_connection_token,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_service_connection_token: self._wrap_method(
+                self.delete_service_connection_token,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -1325,4 +1253,4 @@ class HubServiceGrpcAsyncIOTransport(HubServiceTransport):
         return self._stubs["test_iam_permissions"]
 
 
-__all__ = ("HubServiceGrpcAsyncIOTransport",)
+__all__ = ("CrossNetworkAutomationServiceGrpcAsyncIOTransport",)

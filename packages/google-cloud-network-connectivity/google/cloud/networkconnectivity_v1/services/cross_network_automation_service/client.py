@@ -14,7 +14,10 @@
 # limitations under the License.
 #
 from collections import OrderedDict
+from http import HTTPStatus
+import json
 import logging as std_logging
+import os
 import re
 from typing import (
     Callable,
@@ -27,21 +30,35 @@ from typing import (
     Tuple,
     Type,
     Union,
+    cast,
 )
+import warnings
 
+from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
-from google.api_core import retry_async as retries
-from google.api_core.client_options import ClientOptions
+from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.exceptions import MutualTLSChannelError  # type: ignore
+from google.auth.transport import mtls  # type: ignore
+from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
 from google.cloud.networkconnectivity_v1 import gapic_version as package_version
 
 try:
-    OptionalRetry = Union[retries.AsyncRetry, gapic_v1.method._MethodDefault, None]
+    OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
 except AttributeError:  # pragma: NO COVER
-    OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
+    OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
+
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = std_logging.getLogger(__name__)
 
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
@@ -53,81 +70,97 @@ from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 
-from google.cloud.networkconnectivity_v1.services.hub_service import pagers
-from google.cloud.networkconnectivity_v1.types import common
-from google.cloud.networkconnectivity_v1.types import hub
-from google.cloud.networkconnectivity_v1.types import hub as gcn_hub
+from google.cloud.networkconnectivity_v1.services.cross_network_automation_service import (
+    pagers,
+)
+from google.cloud.networkconnectivity_v1.types import common, cross_network_automation
 
-from .client import HubServiceClient
-from .transports.base import DEFAULT_CLIENT_INFO, HubServiceTransport
-from .transports.grpc_asyncio import HubServiceGrpcAsyncIOTransport
-
-try:
-    from google.api_core import client_logging  # type: ignore
-
-    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    CLIENT_LOGGING_SUPPORTED = False
-
-_LOGGER = std_logging.getLogger(__name__)
+from .transports.base import DEFAULT_CLIENT_INFO, CrossNetworkAutomationServiceTransport
+from .transports.grpc import CrossNetworkAutomationServiceGrpcTransport
+from .transports.grpc_asyncio import CrossNetworkAutomationServiceGrpcAsyncIOTransport
 
 
-class HubServiceAsyncClient:
-    """Network Connectivity Center is a hub-and-spoke abstraction
-    for network connectivity management in Google Cloud. It reduces
-    operational complexity through a simple, centralized
-    connectivity management model.
+class CrossNetworkAutomationServiceClientMeta(type):
+    """Metaclass for the CrossNetworkAutomationService client.
+
+    This provides class-level methods for building and retrieving
+    support objects (e.g. transport) without polluting the client instance
+    objects.
     """
 
-    _client: HubServiceClient
+    _transport_registry = (
+        OrderedDict()
+    )  # type: Dict[str, Type[CrossNetworkAutomationServiceTransport]]
+    _transport_registry["grpc"] = CrossNetworkAutomationServiceGrpcTransport
+    _transport_registry[
+        "grpc_asyncio"
+    ] = CrossNetworkAutomationServiceGrpcAsyncIOTransport
 
-    # Copy defaults from the synchronous client for use here.
+    def get_transport_class(
+        cls,
+        label: Optional[str] = None,
+    ) -> Type[CrossNetworkAutomationServiceTransport]:
+        """Returns an appropriate transport class.
+
+        Args:
+            label: The name of the desired transport. If none is
+                provided, then the first transport in the registry is used.
+
+        Returns:
+            The transport class to use.
+        """
+        # If a specific transport is requested, return that one.
+        if label:
+            return cls._transport_registry[label]
+
+        # No transport is requested; return the default (that is, the first one
+        # in the dictionary).
+        return next(iter(cls._transport_registry.values()))
+
+
+class CrossNetworkAutomationServiceClient(
+    metaclass=CrossNetworkAutomationServiceClientMeta
+):
+    """The service for CrossNetworkAutomation resources."""
+
+    @staticmethod
+    def _get_default_mtls_endpoint(api_endpoint):
+        """Converts api endpoint to mTLS endpoint.
+
+        Convert "*.sandbox.googleapis.com" and "*.googleapis.com" to
+        "*.mtls.sandbox.googleapis.com" and "*.mtls.googleapis.com" respectively.
+        Args:
+            api_endpoint (Optional[str]): the api endpoint to convert.
+        Returns:
+            str: converted mTLS api endpoint.
+        """
+        if not api_endpoint:
+            return api_endpoint
+
+        mtls_endpoint_re = re.compile(
+            r"(?P<name>[^.]+)(?P<mtls>\.mtls)?(?P<sandbox>\.sandbox)?(?P<googledomain>\.googleapis\.com)?"
+        )
+
+        m = mtls_endpoint_re.match(api_endpoint)
+        name, mtls, sandbox, googledomain = m.groups()
+        if mtls or not googledomain:
+            return api_endpoint
+
+        if sandbox:
+            return api_endpoint.replace(
+                "sandbox.googleapis.com", "mtls.sandbox.googleapis.com"
+            )
+
+        return api_endpoint.replace(".googleapis.com", ".mtls.googleapis.com")
+
     # Note: DEFAULT_ENDPOINT is deprecated. Use _DEFAULT_ENDPOINT_TEMPLATE instead.
-    DEFAULT_ENDPOINT = HubServiceClient.DEFAULT_ENDPOINT
-    DEFAULT_MTLS_ENDPOINT = HubServiceClient.DEFAULT_MTLS_ENDPOINT
-    _DEFAULT_ENDPOINT_TEMPLATE = HubServiceClient._DEFAULT_ENDPOINT_TEMPLATE
-    _DEFAULT_UNIVERSE = HubServiceClient._DEFAULT_UNIVERSE
+    DEFAULT_ENDPOINT = "networkconnectivity.googleapis.com"
+    DEFAULT_MTLS_ENDPOINT = _get_default_mtls_endpoint.__func__(  # type: ignore
+        DEFAULT_ENDPOINT
+    )
 
-    group_path = staticmethod(HubServiceClient.group_path)
-    parse_group_path = staticmethod(HubServiceClient.parse_group_path)
-    hub_path = staticmethod(HubServiceClient.hub_path)
-    parse_hub_path = staticmethod(HubServiceClient.parse_hub_path)
-    hub_route_path = staticmethod(HubServiceClient.hub_route_path)
-    parse_hub_route_path = staticmethod(HubServiceClient.parse_hub_route_path)
-    instance_path = staticmethod(HubServiceClient.instance_path)
-    parse_instance_path = staticmethod(HubServiceClient.parse_instance_path)
-    interconnect_attachment_path = staticmethod(
-        HubServiceClient.interconnect_attachment_path
-    )
-    parse_interconnect_attachment_path = staticmethod(
-        HubServiceClient.parse_interconnect_attachment_path
-    )
-    network_path = staticmethod(HubServiceClient.network_path)
-    parse_network_path = staticmethod(HubServiceClient.parse_network_path)
-    route_table_path = staticmethod(HubServiceClient.route_table_path)
-    parse_route_table_path = staticmethod(HubServiceClient.parse_route_table_path)
-    spoke_path = staticmethod(HubServiceClient.spoke_path)
-    parse_spoke_path = staticmethod(HubServiceClient.parse_spoke_path)
-    vpn_tunnel_path = staticmethod(HubServiceClient.vpn_tunnel_path)
-    parse_vpn_tunnel_path = staticmethod(HubServiceClient.parse_vpn_tunnel_path)
-    common_billing_account_path = staticmethod(
-        HubServiceClient.common_billing_account_path
-    )
-    parse_common_billing_account_path = staticmethod(
-        HubServiceClient.parse_common_billing_account_path
-    )
-    common_folder_path = staticmethod(HubServiceClient.common_folder_path)
-    parse_common_folder_path = staticmethod(HubServiceClient.parse_common_folder_path)
-    common_organization_path = staticmethod(HubServiceClient.common_organization_path)
-    parse_common_organization_path = staticmethod(
-        HubServiceClient.parse_common_organization_path
-    )
-    common_project_path = staticmethod(HubServiceClient.common_project_path)
-    parse_common_project_path = staticmethod(HubServiceClient.parse_common_project_path)
-    common_location_path = staticmethod(HubServiceClient.common_location_path)
-    parse_common_location_path = staticmethod(
-        HubServiceClient.parse_common_location_path
-    )
+    _DEFAULT_ENDPOINT_TEMPLATE = "networkconnectivity.{UNIVERSE_DOMAIN}"
+    _DEFAULT_UNIVERSE = "googleapis.com"
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
@@ -140,9 +173,11 @@ class HubServiceAsyncClient:
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            HubServiceAsyncClient: The constructed client.
+            CrossNetworkAutomationServiceClient: The constructed client.
         """
-        return HubServiceClient.from_service_account_info.__func__(HubServiceAsyncClient, info, *args, **kwargs)  # type: ignore
+        credentials = service_account.Credentials.from_service_account_info(info)
+        kwargs["credentials"] = credentials
+        return cls(*args, **kwargs)
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -156,17 +191,272 @@ class HubServiceAsyncClient:
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            HubServiceAsyncClient: The constructed client.
+            CrossNetworkAutomationServiceClient: The constructed client.
         """
-        return HubServiceClient.from_service_account_file.__func__(HubServiceAsyncClient, filename, *args, **kwargs)  # type: ignore
+        credentials = service_account.Credentials.from_service_account_file(filename)
+        kwargs["credentials"] = credentials
+        return cls(*args, **kwargs)
 
     from_service_account_json = from_service_account_file
 
+    @property
+    def transport(self) -> CrossNetworkAutomationServiceTransport:
+        """Returns the transport used by the client instance.
+
+        Returns:
+            CrossNetworkAutomationServiceTransport: The transport used by the client
+                instance.
+        """
+        return self._transport
+
+    @staticmethod
+    def network_path(
+        project: str,
+        resource_id: str,
+    ) -> str:
+        """Returns a fully-qualified network string."""
+        return "projects/{project}/global/networks/{resource_id}".format(
+            project=project,
+            resource_id=resource_id,
+        )
+
+    @staticmethod
+    def parse_network_path(path: str) -> Dict[str, str]:
+        """Parses a network path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/global/networks/(?P<resource_id>.+?)$", path
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def project_path(
+        project: str,
+    ) -> str:
+        """Returns a fully-qualified project string."""
+        return "projects/{project}".format(
+            project=project,
+        )
+
+    @staticmethod
+    def parse_project_path(path: str) -> Dict[str, str]:
+        """Parses a project path into its component segments."""
+        m = re.match(r"^projects/(?P<project>.+?)$", path)
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def service_attachment_path(
+        project: str,
+        region: str,
+        service_attachment: str,
+    ) -> str:
+        """Returns a fully-qualified service_attachment string."""
+        return "projects/{project}/regions/{region}/serviceAttachments/{service_attachment}".format(
+            project=project,
+            region=region,
+            service_attachment=service_attachment,
+        )
+
+    @staticmethod
+    def parse_service_attachment_path(path: str) -> Dict[str, str]:
+        """Parses a service_attachment path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/regions/(?P<region>.+?)/serviceAttachments/(?P<service_attachment>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def service_class_path(
+        project: str,
+        location: str,
+        service_class: str,
+    ) -> str:
+        """Returns a fully-qualified service_class string."""
+        return "projects/{project}/locations/{location}/serviceClasses/{service_class}".format(
+            project=project,
+            location=location,
+            service_class=service_class,
+        )
+
+    @staticmethod
+    def parse_service_class_path(path: str) -> Dict[str, str]:
+        """Parses a service_class path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/serviceClasses/(?P<service_class>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def service_connection_map_path(
+        project: str,
+        location: str,
+        service_connection_map: str,
+    ) -> str:
+        """Returns a fully-qualified service_connection_map string."""
+        return "projects/{project}/locations/{location}/serviceConnectionMaps/{service_connection_map}".format(
+            project=project,
+            location=location,
+            service_connection_map=service_connection_map,
+        )
+
+    @staticmethod
+    def parse_service_connection_map_path(path: str) -> Dict[str, str]:
+        """Parses a service_connection_map path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/serviceConnectionMaps/(?P<service_connection_map>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def service_connection_policy_path(
+        project: str,
+        location: str,
+        service_connection_policy: str,
+    ) -> str:
+        """Returns a fully-qualified service_connection_policy string."""
+        return "projects/{project}/locations/{location}/serviceConnectionPolicies/{service_connection_policy}".format(
+            project=project,
+            location=location,
+            service_connection_policy=service_connection_policy,
+        )
+
+    @staticmethod
+    def parse_service_connection_policy_path(path: str) -> Dict[str, str]:
+        """Parses a service_connection_policy path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/serviceConnectionPolicies/(?P<service_connection_policy>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def service_connection_token_path(
+        project: str,
+        location: str,
+        service_connection_token: str,
+    ) -> str:
+        """Returns a fully-qualified service_connection_token string."""
+        return "projects/{project}/locations/{location}/serviceConnectionTokens/{service_connection_token}".format(
+            project=project,
+            location=location,
+            service_connection_token=service_connection_token,
+        )
+
+    @staticmethod
+    def parse_service_connection_token_path(path: str) -> Dict[str, str]:
+        """Parses a service_connection_token path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/serviceConnectionTokens/(?P<service_connection_token>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def subnetwork_path(
+        project: str,
+        region: str,
+        subnetwork: str,
+    ) -> str:
+        """Returns a fully-qualified subnetwork string."""
+        return "projects/{project}/regions/{region}/subnetworks/{subnetwork}".format(
+            project=project,
+            region=region,
+            subnetwork=subnetwork,
+        )
+
+    @staticmethod
+    def parse_subnetwork_path(path: str) -> Dict[str, str]:
+        """Parses a subnetwork path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/regions/(?P<region>.+?)/subnetworks/(?P<subnetwork>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def common_billing_account_path(
+        billing_account: str,
+    ) -> str:
+        """Returns a fully-qualified billing_account string."""
+        return "billingAccounts/{billing_account}".format(
+            billing_account=billing_account,
+        )
+
+    @staticmethod
+    def parse_common_billing_account_path(path: str) -> Dict[str, str]:
+        """Parse a billing_account path into its component segments."""
+        m = re.match(r"^billingAccounts/(?P<billing_account>.+?)$", path)
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def common_folder_path(
+        folder: str,
+    ) -> str:
+        """Returns a fully-qualified folder string."""
+        return "folders/{folder}".format(
+            folder=folder,
+        )
+
+    @staticmethod
+    def parse_common_folder_path(path: str) -> Dict[str, str]:
+        """Parse a folder path into its component segments."""
+        m = re.match(r"^folders/(?P<folder>.+?)$", path)
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def common_organization_path(
+        organization: str,
+    ) -> str:
+        """Returns a fully-qualified organization string."""
+        return "organizations/{organization}".format(
+            organization=organization,
+        )
+
+    @staticmethod
+    def parse_common_organization_path(path: str) -> Dict[str, str]:
+        """Parse a organization path into its component segments."""
+        m = re.match(r"^organizations/(?P<organization>.+?)$", path)
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def common_project_path(
+        project: str,
+    ) -> str:
+        """Returns a fully-qualified project string."""
+        return "projects/{project}".format(
+            project=project,
+        )
+
+    @staticmethod
+    def parse_common_project_path(path: str) -> Dict[str, str]:
+        """Parse a project path into its component segments."""
+        m = re.match(r"^projects/(?P<project>.+?)$", path)
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def common_location_path(
+        project: str,
+        location: str,
+    ) -> str:
+        """Returns a fully-qualified location string."""
+        return "projects/{project}/locations/{location}".format(
+            project=project,
+            location=location,
+        )
+
+    @staticmethod
+    def parse_common_location_path(path: str) -> Dict[str, str]:
+        """Parse a location path into its component segments."""
+        m = re.match(r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)$", path)
+        return m.groupdict() if m else {}
+
     @classmethod
     def get_mtls_endpoint_and_cert_source(
-        cls, client_options: Optional[ClientOptions] = None
+        cls, client_options: Optional[client_options_lib.ClientOptions] = None
     ):
-        """Return the API endpoint and client cert source for mutual TLS.
+        """Deprecated. Return the API endpoint and client cert source for mutual TLS.
 
         The client cert source is determined in the following order:
         (1) if `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is not "true", the
@@ -196,16 +486,192 @@ class HubServiceAsyncClient:
         Raises:
             google.auth.exceptions.MutualTLSChannelError: If any errors happen.
         """
-        return HubServiceClient.get_mtls_endpoint_and_cert_source(client_options)  # type: ignore
 
-    @property
-    def transport(self) -> HubServiceTransport:
-        """Returns the transport used by the client instance.
+        warnings.warn(
+            "get_mtls_endpoint_and_cert_source is deprecated. Use the api_endpoint property instead.",
+            DeprecationWarning,
+        )
+        if client_options is None:
+            client_options = client_options_lib.ClientOptions()
+        use_client_cert = os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false")
+        use_mtls_endpoint = os.getenv("GOOGLE_API_USE_MTLS_ENDPOINT", "auto")
+        if use_client_cert not in ("true", "false"):
+            raise ValueError(
+                "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
+            )
+        if use_mtls_endpoint not in ("auto", "never", "always"):
+            raise MutualTLSChannelError(
+                "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
+            )
+
+        # Figure out the client cert source to use.
+        client_cert_source = None
+        if use_client_cert == "true":
+            if client_options.client_cert_source:
+                client_cert_source = client_options.client_cert_source
+            elif mtls.has_default_client_cert_source():
+                client_cert_source = mtls.default_client_cert_source()
+
+        # Figure out which api endpoint to use.
+        if client_options.api_endpoint is not None:
+            api_endpoint = client_options.api_endpoint
+        elif use_mtls_endpoint == "always" or (
+            use_mtls_endpoint == "auto" and client_cert_source
+        ):
+            api_endpoint = cls.DEFAULT_MTLS_ENDPOINT
+        else:
+            api_endpoint = cls.DEFAULT_ENDPOINT
+
+        return api_endpoint, client_cert_source
+
+    @staticmethod
+    def _read_environment_variables():
+        """Returns the environment variables used by the client.
 
         Returns:
-            HubServiceTransport: The transport used by the client instance.
+            Tuple[bool, str, str]: returns the GOOGLE_API_USE_CLIENT_CERTIFICATE,
+            GOOGLE_API_USE_MTLS_ENDPOINT, and GOOGLE_CLOUD_UNIVERSE_DOMAIN environment variables.
+
+        Raises:
+            ValueError: If GOOGLE_API_USE_CLIENT_CERTIFICATE is not
+                any of ["true", "false"].
+            google.auth.exceptions.MutualTLSChannelError: If GOOGLE_API_USE_MTLS_ENDPOINT
+                is not any of ["auto", "never", "always"].
         """
-        return self._client.transport
+        use_client_cert = os.getenv(
+            "GOOGLE_API_USE_CLIENT_CERTIFICATE", "false"
+        ).lower()
+        use_mtls_endpoint = os.getenv("GOOGLE_API_USE_MTLS_ENDPOINT", "auto").lower()
+        universe_domain_env = os.getenv("GOOGLE_CLOUD_UNIVERSE_DOMAIN")
+        if use_client_cert not in ("true", "false"):
+            raise ValueError(
+                "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
+            )
+        if use_mtls_endpoint not in ("auto", "never", "always"):
+            raise MutualTLSChannelError(
+                "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
+            )
+        return use_client_cert == "true", use_mtls_endpoint, universe_domain_env
+
+    @staticmethod
+    def _get_client_cert_source(provided_cert_source, use_cert_flag):
+        """Return the client cert source to be used by the client.
+
+        Args:
+            provided_cert_source (bytes): The client certificate source provided.
+            use_cert_flag (bool): A flag indicating whether to use the client certificate.
+
+        Returns:
+            bytes or None: The client cert source to be used by the client.
+        """
+        client_cert_source = None
+        if use_cert_flag:
+            if provided_cert_source:
+                client_cert_source = provided_cert_source
+            elif mtls.has_default_client_cert_source():
+                client_cert_source = mtls.default_client_cert_source()
+        return client_cert_source
+
+    @staticmethod
+    def _get_api_endpoint(
+        api_override, client_cert_source, universe_domain, use_mtls_endpoint
+    ):
+        """Return the API endpoint used by the client.
+
+        Args:
+            api_override (str): The API endpoint override. If specified, this is always
+                the return value of this function and the other arguments are not used.
+            client_cert_source (bytes): The client certificate source used by the client.
+            universe_domain (str): The universe domain used by the client.
+            use_mtls_endpoint (str): How to use the mTLS endpoint, which depends also on the other parameters.
+                Possible values are "always", "auto", or "never".
+
+        Returns:
+            str: The API endpoint to be used by the client.
+        """
+        if api_override is not None:
+            api_endpoint = api_override
+        elif use_mtls_endpoint == "always" or (
+            use_mtls_endpoint == "auto" and client_cert_source
+        ):
+            _default_universe = CrossNetworkAutomationServiceClient._DEFAULT_UNIVERSE
+            if universe_domain != _default_universe:
+                raise MutualTLSChannelError(
+                    f"mTLS is not supported in any universe other than {_default_universe}."
+                )
+            api_endpoint = CrossNetworkAutomationServiceClient.DEFAULT_MTLS_ENDPOINT
+        else:
+            api_endpoint = (
+                CrossNetworkAutomationServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(
+                    UNIVERSE_DOMAIN=universe_domain
+                )
+            )
+        return api_endpoint
+
+    @staticmethod
+    def _get_universe_domain(
+        client_universe_domain: Optional[str], universe_domain_env: Optional[str]
+    ) -> str:
+        """Return the universe domain used by the client.
+
+        Args:
+            client_universe_domain (Optional[str]): The universe domain configured via the client options.
+            universe_domain_env (Optional[str]): The universe domain configured via the "GOOGLE_CLOUD_UNIVERSE_DOMAIN" environment variable.
+
+        Returns:
+            str: The universe domain to be used by the client.
+
+        Raises:
+            ValueError: If the universe domain is an empty string.
+        """
+        universe_domain = CrossNetworkAutomationServiceClient._DEFAULT_UNIVERSE
+        if client_universe_domain is not None:
+            universe_domain = client_universe_domain
+        elif universe_domain_env is not None:
+            universe_domain = universe_domain_env
+        if len(universe_domain.strip()) == 0:
+            raise ValueError("Universe Domain cannot be an empty string.")
+        return universe_domain
+
+    def _validate_universe_domain(self):
+        """Validates client's and credentials' universe domains are consistent.
+
+        Returns:
+            bool: True iff the configured universe domain is valid.
+
+        Raises:
+            ValueError: If the configured universe domain is not valid.
+        """
+
+        # NOTE (b/349488459): universe validation is disabled until further notice.
+        return True
+
+    def _add_cred_info_for_auth_errors(
+        self, error: core_exceptions.GoogleAPICallError
+    ) -> None:
+        """Adds credential info string to error details for 401/403/404 errors.
+
+        Args:
+            error (google.api_core.exceptions.GoogleAPICallError): The error to add the cred info.
+        """
+        if error.code not in [
+            HTTPStatus.UNAUTHORIZED,
+            HTTPStatus.FORBIDDEN,
+            HTTPStatus.NOT_FOUND,
+        ]:
+            return
+
+        cred = self._transport._credentials
+
+        # get_cred_info is only available in google-auth>=2.35.0
+        if not hasattr(cred, "get_cred_info"):
+            return
+
+        # ignore the type check since pypy test fails when get_cred_info
+        # is not available
+        cred_info = cred.get_cred_info()  # type: ignore
+        if cred_info and hasattr(error._details, "append"):
+            error._details.append(json.dumps(cred_info))
 
     @property
     def api_endpoint(self):
@@ -214,31 +680,32 @@ class HubServiceAsyncClient:
         Returns:
             str: The API endpoint used by the client instance.
         """
-        return self._client._api_endpoint
+        return self._api_endpoint
 
     @property
     def universe_domain(self) -> str:
         """Return the universe domain used by the client instance.
 
         Returns:
-            str: The universe domain used
-                by the client instance.
+            str: The universe domain used by the client instance.
         """
-        return self._client._universe_domain
-
-    get_transport_class = HubServiceClient.get_transport_class
+        return self._universe_domain
 
     def __init__(
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
         transport: Optional[
-            Union[str, HubServiceTransport, Callable[..., HubServiceTransport]]
-        ] = "grpc_asyncio",
-        client_options: Optional[ClientOptions] = None,
+            Union[
+                str,
+                CrossNetworkAutomationServiceTransport,
+                Callable[..., CrossNetworkAutomationServiceTransport],
+            ]
+        ] = None,
+        client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
-        """Instantiates the hub service async client.
+        """Instantiates the cross network automation service client.
 
         Args:
             credentials (Optional[google.auth.credentials.Credentials]): The
@@ -246,10 +713,10 @@ class HubServiceAsyncClient:
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Optional[Union[str,HubServiceTransport,Callable[..., HubServiceTransport]]]):
-                The transport to use, or a Callable that constructs and returns a new transport to use.
+            transport (Optional[Union[str,CrossNetworkAutomationServiceTransport,Callable[..., CrossNetworkAutomationServiceTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport.
                 If a Callable is given, it will be called with the same set of initialization
-                arguments as used in the HubServiceTransport constructor.
+                arguments as used in the CrossNetworkAutomationServiceTransport constructor.
                 If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
@@ -273,7 +740,7 @@ class HubServiceAsyncClient:
                 set, no client certificate will be used.
 
                 3. The ``universe_domain`` property can be used to override the
-                default "googleapis.com" universe. Note that ``api_endpoint``
+                default "googleapis.com" universe. Note that the ``api_endpoint``
                 property still takes precedence; and ``universe_domain`` is
                 currently not supported for mTLS.
 
@@ -284,49 +751,150 @@ class HubServiceAsyncClient:
                 your own client library.
 
         Raises:
-            google.auth.exceptions.MutualTlsChannelError: If mutual TLS transport
+            google.auth.exceptions.MutualTLSChannelError: If mutual TLS transport
                 creation failed for any reason.
         """
-        self._client = HubServiceClient(
-            credentials=credentials,
-            transport=transport,
-            client_options=client_options,
-            client_info=client_info,
+        self._client_options = client_options
+        if isinstance(self._client_options, dict):
+            self._client_options = client_options_lib.from_dict(self._client_options)
+        if self._client_options is None:
+            self._client_options = client_options_lib.ClientOptions()
+        self._client_options = cast(
+            client_options_lib.ClientOptions, self._client_options
         )
 
-        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        ):  # pragma: NO COVER
-            _LOGGER.debug(
-                "Created client `google.cloud.networkconnectivity_v1.HubServiceAsyncClient`.",
-                extra={
-                    "serviceName": "google.cloud.networkconnectivity.v1.HubService",
-                    "universeDomain": getattr(
-                        self._client._transport._credentials, "universe_domain", ""
-                    ),
-                    "credentialsType": f"{type(self._client._transport._credentials).__module__}.{type(self._client._transport._credentials).__qualname__}",
-                    "credentialsInfo": getattr(
-                        self.transport._credentials, "get_cred_info", lambda: None
-                    )(),
-                }
-                if hasattr(self._client._transport, "_credentials")
-                else {
-                    "serviceName": "google.cloud.networkconnectivity.v1.HubService",
-                    "credentialsType": None,
-                },
+        universe_domain_opt = getattr(self._client_options, "universe_domain", None)
+
+        (
+            self._use_client_cert,
+            self._use_mtls_endpoint,
+            self._universe_domain_env,
+        ) = CrossNetworkAutomationServiceClient._read_environment_variables()
+        self._client_cert_source = (
+            CrossNetworkAutomationServiceClient._get_client_cert_source(
+                self._client_options.client_cert_source, self._use_client_cert
+            )
+        )
+        self._universe_domain = (
+            CrossNetworkAutomationServiceClient._get_universe_domain(
+                universe_domain_opt, self._universe_domain_env
+            )
+        )
+        self._api_endpoint = None  # updated below, depending on `transport`
+
+        # Initialize the universe domain validation.
+        self._is_universe_domain_valid = False
+
+        if CLIENT_LOGGING_SUPPORTED:  # pragma: NO COVER
+            # Setup logging.
+            client_logging.initialize_logging()
+
+        api_key_value = getattr(self._client_options, "api_key", None)
+        if api_key_value and credentials:
+            raise ValueError(
+                "client_options.api_key and credentials are mutually exclusive"
             )
 
-    async def list_hubs(
+        # Save or instantiate the transport.
+        # Ordinarily, we provide the transport, but allowing a custom transport
+        # instance provides an extensibility point for unusual situations.
+        transport_provided = isinstance(
+            transport, CrossNetworkAutomationServiceTransport
+        )
+        if transport_provided:
+            # transport is a CrossNetworkAutomationServiceTransport instance.
+            if credentials or self._client_options.credentials_file or api_key_value:
+                raise ValueError(
+                    "When providing a transport instance, "
+                    "provide its credentials directly."
+                )
+            if self._client_options.scopes:
+                raise ValueError(
+                    "When providing a transport instance, provide its scopes "
+                    "directly."
+                )
+            self._transport = cast(CrossNetworkAutomationServiceTransport, transport)
+            self._api_endpoint = self._transport.host
+
+        self._api_endpoint = (
+            self._api_endpoint
+            or CrossNetworkAutomationServiceClient._get_api_endpoint(
+                self._client_options.api_endpoint,
+                self._client_cert_source,
+                self._universe_domain,
+                self._use_mtls_endpoint,
+            )
+        )
+
+        if not transport_provided:
+            import google.auth._default  # type: ignore
+
+            if api_key_value and hasattr(
+                google.auth._default, "get_api_key_credentials"
+            ):
+                credentials = google.auth._default.get_api_key_credentials(
+                    api_key_value
+                )
+
+            transport_init: Union[
+                Type[CrossNetworkAutomationServiceTransport],
+                Callable[..., CrossNetworkAutomationServiceTransport],
+            ] = (
+                CrossNetworkAutomationServiceClient.get_transport_class(transport)
+                if isinstance(transport, str) or transport is None
+                else cast(
+                    Callable[..., CrossNetworkAutomationServiceTransport], transport
+                )
+            )
+            # initialize with the provided callable or the passed in class
+            self._transport = transport_init(
+                credentials=credentials,
+                credentials_file=self._client_options.credentials_file,
+                host=self._api_endpoint,
+                scopes=self._client_options.scopes,
+                client_cert_source_for_mtls=self._client_cert_source,
+                quota_project_id=self._client_options.quota_project_id,
+                client_info=client_info,
+                always_use_jwt_access=True,
+                api_audience=self._client_options.api_audience,
+            )
+
+        if "async" not in str(self._transport):
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                std_logging.DEBUG
+            ):  # pragma: NO COVER
+                _LOGGER.debug(
+                    "Created client `google.cloud.networkconnectivity_v1.CrossNetworkAutomationServiceClient`.",
+                    extra={
+                        "serviceName": "google.cloud.networkconnectivity.v1.CrossNetworkAutomationService",
+                        "universeDomain": getattr(
+                            self._transport._credentials, "universe_domain", ""
+                        ),
+                        "credentialsType": f"{type(self._transport._credentials).__module__}.{type(self._transport._credentials).__qualname__}",
+                        "credentialsInfo": getattr(
+                            self.transport._credentials, "get_cred_info", lambda: None
+                        )(),
+                    }
+                    if hasattr(self._transport, "_credentials")
+                    else {
+                        "serviceName": "google.cloud.networkconnectivity.v1.CrossNetworkAutomationService",
+                        "credentialsType": None,
+                    },
+                )
+
+    def list_service_connection_maps(
         self,
-        request: Optional[Union[hub.ListHubsRequest, dict]] = None,
+        request: Optional[
+            Union[cross_network_automation.ListServiceConnectionMapsRequest, dict]
+        ] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> pagers.ListHubsAsyncPager:
-        r"""Lists the Network Connectivity Center hubs associated
-        with a given project.
+    ) -> pagers.ListServiceConnectionMapsPager:
+        r"""Lists ServiceConnectionMaps in a given project and
+        location.
 
         .. code-block:: python
 
@@ -339,33 +907,34 @@ class HubServiceAsyncClient:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import networkconnectivity_v1
 
-            async def sample_list_hubs():
+            def sample_list_service_connection_maps():
                 # Create a client
-                client = networkconnectivity_v1.HubServiceAsyncClient()
+                client = networkconnectivity_v1.CrossNetworkAutomationServiceClient()
 
                 # Initialize request argument(s)
-                request = networkconnectivity_v1.ListHubsRequest(
+                request = networkconnectivity_v1.ListServiceConnectionMapsRequest(
                     parent="parent_value",
                 )
 
                 # Make the request
-                page_result = client.list_hubs(request=request)
+                page_result = client.list_service_connection_maps(request=request)
 
                 # Handle the response
-                async for response in page_result:
+                for response in page_result:
                     print(response)
 
         Args:
-            request (Optional[Union[google.cloud.networkconnectivity_v1.types.ListHubsRequest, dict]]):
+            request (Union[google.cloud.networkconnectivity_v1.types.ListServiceConnectionMapsRequest, dict]):
                 The request object. Request for
-                [HubService.ListHubs][google.cloud.networkconnectivity.v1.HubService.ListHubs]
-                method.
-            parent (:class:`str`):
+                ListServiceConnectionMaps.
+            parent (str):
                 Required. The parent resource's name.
+                ex. projects/123/locations/us-east1
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
@@ -374,13 +943,12 @@ class HubServiceAsyncClient:
                 be of type `bytes`.
 
         Returns:
-            google.cloud.networkconnectivity_v1.services.hub_service.pagers.ListHubsAsyncPager:
+            google.cloud.networkconnectivity_v1.services.cross_network_automation_service.pagers.ListServiceConnectionMapsPager:
                 Response for
-                   [HubService.ListHubs][google.cloud.networkconnectivity.v1.HubService.ListHubs]
-                   method.
-
-                Iterating over this object will yield results and
-                resolve additional pages automatically.
+                ListServiceConnectionMaps.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
 
         """
         # Create or coerce a protobuf request object.
@@ -398,18 +966,19 @@ class HubServiceAsyncClient:
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(request, hub.ListHubsRequest):
-            request = hub.ListHubsRequest(request)
-
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
-        if parent is not None:
-            request.parent = parent
+        if not isinstance(
+            request, cross_network_automation.ListServiceConnectionMapsRequest
+        ):
+            request = cross_network_automation.ListServiceConnectionMapsRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_hubs
+        rpc = self._transport._wrapped_methods[
+            self._transport.list_service_connection_maps
         ]
 
         # Certain fields should be provided within the metadata header;
@@ -419,10 +988,10 @@ class HubServiceAsyncClient:
         )
 
         # Validate the universe domain.
-        self._client._validate_universe_domain()
+        self._validate_universe_domain()
 
         # Send the request.
-        response = await rpc(
+        response = rpc(
             request,
             retry=retry,
             timeout=timeout,
@@ -430,8 +999,8 @@ class HubServiceAsyncClient:
         )
 
         # This method is paged; wrap the response in a pager, which provides
-        # an `__aiter__` convenience method.
-        response = pagers.ListHubsAsyncPager(
+        # an `__iter__` convenience method.
+        response = pagers.ListServiceConnectionMapsPager(
             method=rpc,
             request=request,
             response=response,
@@ -443,16 +1012,18 @@ class HubServiceAsyncClient:
         # Done; return the response.
         return response
 
-    async def get_hub(
+    def get_service_connection_map(
         self,
-        request: Optional[Union[hub.GetHubRequest, dict]] = None,
+        request: Optional[
+            Union[cross_network_automation.GetServiceConnectionMapRequest, dict]
+        ] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> hub.Hub:
-        r"""Gets details about a Network Connectivity Center hub.
+    ) -> cross_network_automation.ServiceConnectionMap:
+        r"""Gets details of a single ServiceConnectionMap.
 
         .. code-block:: python
 
@@ -465,34 +1036,32 @@ class HubServiceAsyncClient:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import networkconnectivity_v1
 
-            async def sample_get_hub():
+            def sample_get_service_connection_map():
                 # Create a client
-                client = networkconnectivity_v1.HubServiceAsyncClient()
+                client = networkconnectivity_v1.CrossNetworkAutomationServiceClient()
 
                 # Initialize request argument(s)
-                request = networkconnectivity_v1.GetHubRequest(
+                request = networkconnectivity_v1.GetServiceConnectionMapRequest(
                     name="name_value",
                 )
 
                 # Make the request
-                response = await client.get_hub(request=request)
+                response = client.get_service_connection_map(request=request)
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Optional[Union[google.cloud.networkconnectivity_v1.types.GetHubRequest, dict]]):
-                The request object. Request for
-                [HubService.GetHub][google.cloud.networkconnectivity.v1.HubService.GetHub]
-                method.
-            name (:class:`str`):
-                Required. The name of the hub
-                resource to get.
+            request (Union[google.cloud.networkconnectivity_v1.types.GetServiceConnectionMapRequest, dict]):
+                The request object. Request for GetServiceConnectionMap.
+            name (str):
+                Required. Name of the
+                ServiceConnectionMap to get.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
@@ -501,20 +1070,8 @@ class HubServiceAsyncClient:
                 be of type `bytes`.
 
         Returns:
-            google.cloud.networkconnectivity_v1.types.Hub:
-                A Network Connectivity Center hub is
-                a global management resource to which
-                you attach spokes. A single hub can
-                contain spokes from multiple regions.
-                However, if any of a hub's spokes use
-                the site-to-site data transfer feature,
-                the resources associated with those
-                spokes must all be in the same VPC
-                network. Spokes that do not use
-                site-to-site data transfer can be
-                associated with any VPC network in your
-                project.
-
+            google.cloud.networkconnectivity_v1.types.ServiceConnectionMap:
+                The ServiceConnectionMap resource.
         """
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
@@ -531,17 +1088,20 @@ class HubServiceAsyncClient:
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(request, hub.GetHubRequest):
-            request = hub.GetHubRequest(request)
-
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
-        if name is not None:
-            request.name = name
+        if not isinstance(
+            request, cross_network_automation.GetServiceConnectionMapRequest
+        ):
+            request = cross_network_automation.GetServiceConnectionMapRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[self._client._transport.get_hub]
+        rpc = self._transport._wrapped_methods[
+            self._transport.get_service_connection_map
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -550,10 +1110,10 @@ class HubServiceAsyncClient:
         )
 
         # Validate the universe domain.
-        self._client._validate_universe_domain()
+        self._validate_universe_domain()
 
         # Send the request.
-        response = await rpc(
+        response = rpc(
             request,
             retry=retry,
             timeout=timeout,
@@ -563,19 +1123,23 @@ class HubServiceAsyncClient:
         # Done; return the response.
         return response
 
-    async def create_hub(
+    def create_service_connection_map(
         self,
-        request: Optional[Union[gcn_hub.CreateHubRequest, dict]] = None,
+        request: Optional[
+            Union[cross_network_automation.CreateServiceConnectionMapRequest, dict]
+        ] = None,
         *,
         parent: Optional[str] = None,
-        hub: Optional[gcn_hub.Hub] = None,
-        hub_id: Optional[str] = None,
+        service_connection_map: Optional[
+            cross_network_automation.ServiceConnectionMap
+        ] = None,
+        service_connection_map_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> operation_async.AsyncOperation:
-        r"""Creates a new Network Connectivity Center hub in the
-        specified project.
+    ) -> operation.Operation:
+        r"""Creates a new ServiceConnectionMap in a given project
+        and location.
 
         .. code-block:: python
 
@@ -588,713 +1152,55 @@ class HubServiceAsyncClient:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import networkconnectivity_v1
 
-            async def sample_create_hub():
+            def sample_create_service_connection_map():
                 # Create a client
-                client = networkconnectivity_v1.HubServiceAsyncClient()
+                client = networkconnectivity_v1.CrossNetworkAutomationServiceClient()
 
                 # Initialize request argument(s)
-                request = networkconnectivity_v1.CreateHubRequest(
-                    parent="parent_value",
-                    hub_id="hub_id_value",
-                )
-
-                # Make the request
-                operation = client.create_hub(request=request)
-
-                print("Waiting for operation to complete...")
-
-                response = (await operation).result()
-
-                # Handle the response
-                print(response)
-
-        Args:
-            request (Optional[Union[google.cloud.networkconnectivity_v1.types.CreateHubRequest, dict]]):
-                The request object. Request for
-                [HubService.CreateHub][google.cloud.networkconnectivity.v1.HubService.CreateHub]
-                method.
-            parent (:class:`str`):
-                Required. The parent resource.
-                This corresponds to the ``parent`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            hub (:class:`google.cloud.networkconnectivity_v1.types.Hub`):
-                Required. The initial values for a
-                new hub.
-
-                This corresponds to the ``hub`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            hub_id (:class:`str`):
-                Required. A unique identifier for the
-                hub.
-
-                This corresponds to the ``hub_id`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
-                sent along with the request as metadata. Normally, each value must be of type `str`,
-                but for metadata keys ending with the suffix `-bin`, the corresponding values must
-                be of type `bytes`.
-
-        Returns:
-            google.api_core.operation_async.AsyncOperation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be :class:`google.cloud.networkconnectivity_v1.types.Hub` A Network Connectivity Center hub is a global management resource to which
-                   you attach spokes. A single hub can contain spokes
-                   from multiple regions. However, if any of a hub's
-                   spokes use the site-to-site data transfer feature,
-                   the resources associated with those spokes must all
-                   be in the same VPC network. Spokes that do not use
-                   site-to-site data transfer can be associated with any
-                   VPC network in your project.
-
-        """
-        # Create or coerce a protobuf request object.
-        # - Quick check: If we got a request object, we should *not* have
-        #   gotten any keyword arguments that map to the request.
-        flattened_params = [parent, hub, hub_id]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
-        # - Use the request object if provided (there's no risk of modifying the input as
-        #   there are no flattened fields), or create one.
-        if not isinstance(request, gcn_hub.CreateHubRequest):
-            request = gcn_hub.CreateHubRequest(request)
-
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
-        if parent is not None:
-            request.parent = parent
-        if hub is not None:
-            request.hub = hub
-        if hub_id is not None:
-            request.hub_id = hub_id
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_hub
-        ]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
-
-        # Validate the universe domain.
-        self._client._validate_universe_domain()
-
-        # Send the request.
-        response = await rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # Wrap the response in an operation future.
-        response = operation_async.from_gapic(
-            response,
-            self._client._transport.operations_client,
-            gcn_hub.Hub,
-            metadata_type=common.OperationMetadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    async def update_hub(
-        self,
-        request: Optional[Union[gcn_hub.UpdateHubRequest, dict]] = None,
-        *,
-        hub: Optional[gcn_hub.Hub] = None,
-        update_mask: Optional[field_mask_pb2.FieldMask] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> operation_async.AsyncOperation:
-        r"""Updates the description and/or labels of a Network
-        Connectivity Center hub.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud import networkconnectivity_v1
-
-            async def sample_update_hub():
-                # Create a client
-                client = networkconnectivity_v1.HubServiceAsyncClient()
-
-                # Initialize request argument(s)
-                request = networkconnectivity_v1.UpdateHubRequest(
-                )
-
-                # Make the request
-                operation = client.update_hub(request=request)
-
-                print("Waiting for operation to complete...")
-
-                response = (await operation).result()
-
-                # Handle the response
-                print(response)
-
-        Args:
-            request (Optional[Union[google.cloud.networkconnectivity_v1.types.UpdateHubRequest, dict]]):
-                The request object. Request for
-                [HubService.UpdateHub][google.cloud.networkconnectivity.v1.HubService.UpdateHub]
-                method.
-            hub (:class:`google.cloud.networkconnectivity_v1.types.Hub`):
-                Required. The state that the hub
-                should be in after the update.
-
-                This corresponds to the ``hub`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
-                Optional. In the case of an update to an existing hub,
-                field mask is used to specify the fields to be
-                overwritten. The fields specified in the update_mask are
-                relative to the resource, not the full request. A field
-                is overwritten if it is in the mask. If the user does
-                not provide a mask, then all fields are overwritten.
-
-                This corresponds to the ``update_mask`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
-                sent along with the request as metadata. Normally, each value must be of type `str`,
-                but for metadata keys ending with the suffix `-bin`, the corresponding values must
-                be of type `bytes`.
-
-        Returns:
-            google.api_core.operation_async.AsyncOperation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be :class:`google.cloud.networkconnectivity_v1.types.Hub` A Network Connectivity Center hub is a global management resource to which
-                   you attach spokes. A single hub can contain spokes
-                   from multiple regions. However, if any of a hub's
-                   spokes use the site-to-site data transfer feature,
-                   the resources associated with those spokes must all
-                   be in the same VPC network. Spokes that do not use
-                   site-to-site data transfer can be associated with any
-                   VPC network in your project.
-
-        """
-        # Create or coerce a protobuf request object.
-        # - Quick check: If we got a request object, we should *not* have
-        #   gotten any keyword arguments that map to the request.
-        flattened_params = [hub, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
-        # - Use the request object if provided (there's no risk of modifying the input as
-        #   there are no flattened fields), or create one.
-        if not isinstance(request, gcn_hub.UpdateHubRequest):
-            request = gcn_hub.UpdateHubRequest(request)
-
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
-        if hub is not None:
-            request.hub = hub
-        if update_mask is not None:
-            request.update_mask = update_mask
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_hub
-        ]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("hub.name", request.hub.name),)),
-        )
-
-        # Validate the universe domain.
-        self._client._validate_universe_domain()
-
-        # Send the request.
-        response = await rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # Wrap the response in an operation future.
-        response = operation_async.from_gapic(
-            response,
-            self._client._transport.operations_client,
-            gcn_hub.Hub,
-            metadata_type=common.OperationMetadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    async def delete_hub(
-        self,
-        request: Optional[Union[hub.DeleteHubRequest, dict]] = None,
-        *,
-        name: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> operation_async.AsyncOperation:
-        r"""Deletes a Network Connectivity Center hub.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud import networkconnectivity_v1
-
-            async def sample_delete_hub():
-                # Create a client
-                client = networkconnectivity_v1.HubServiceAsyncClient()
-
-                # Initialize request argument(s)
-                request = networkconnectivity_v1.DeleteHubRequest(
-                    name="name_value",
-                )
-
-                # Make the request
-                operation = client.delete_hub(request=request)
-
-                print("Waiting for operation to complete...")
-
-                response = (await operation).result()
-
-                # Handle the response
-                print(response)
-
-        Args:
-            request (Optional[Union[google.cloud.networkconnectivity_v1.types.DeleteHubRequest, dict]]):
-                The request object. The request for
-                [HubService.DeleteHub][google.cloud.networkconnectivity.v1.HubService.DeleteHub].
-            name (:class:`str`):
-                Required. The name of the hub to
-                delete.
-
-                This corresponds to the ``name`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
-                sent along with the request as metadata. Normally, each value must be of type `str`,
-                but for metadata keys ending with the suffix `-bin`, the corresponding values must
-                be of type `bytes`.
-
-        Returns:
-            google.api_core.operation_async.AsyncOperation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be :class:`google.protobuf.empty_pb2.Empty` A generic empty message that you can re-use to avoid defining duplicated
-                   empty messages in your APIs. A typical example is to
-                   use it as the request or the response type of an API
-                   method. For instance:
-
-                      service Foo {
-                         rpc Bar(google.protobuf.Empty) returns
-                         (google.protobuf.Empty);
-
-                      }
-
-        """
-        # Create or coerce a protobuf request object.
-        # - Quick check: If we got a request object, we should *not* have
-        #   gotten any keyword arguments that map to the request.
-        flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
-        # - Use the request object if provided (there's no risk of modifying the input as
-        #   there are no flattened fields), or create one.
-        if not isinstance(request, hub.DeleteHubRequest):
-            request = hub.DeleteHubRequest(request)
-
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
-        if name is not None:
-            request.name = name
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_hub
-        ]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
-
-        # Validate the universe domain.
-        self._client._validate_universe_domain()
-
-        # Send the request.
-        response = await rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # Wrap the response in an operation future.
-        response = operation_async.from_gapic(
-            response,
-            self._client._transport.operations_client,
-            empty_pb2.Empty,
-            metadata_type=common.OperationMetadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    async def list_hub_spokes(
-        self,
-        request: Optional[Union[hub.ListHubSpokesRequest, dict]] = None,
-        *,
-        name: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> pagers.ListHubSpokesAsyncPager:
-        r"""Lists the Network Connectivity Center spokes
-        associated with a specified hub and location. The list
-        includes both spokes that are attached to the hub and
-        spokes that have been proposed but not yet accepted.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud import networkconnectivity_v1
-
-            async def sample_list_hub_spokes():
-                # Create a client
-                client = networkconnectivity_v1.HubServiceAsyncClient()
-
-                # Initialize request argument(s)
-                request = networkconnectivity_v1.ListHubSpokesRequest(
-                    name="name_value",
-                )
-
-                # Make the request
-                page_result = client.list_hub_spokes(request=request)
-
-                # Handle the response
-                async for response in page_result:
-                    print(response)
-
-        Args:
-            request (Optional[Union[google.cloud.networkconnectivity_v1.types.ListHubSpokesRequest, dict]]):
-                The request object. The request for
-                [HubService.ListHubSpokes][google.cloud.networkconnectivity.v1.HubService.ListHubSpokes].
-            name (:class:`str`):
-                Required. The name of the hub.
-                This corresponds to the ``name`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
-                sent along with the request as metadata. Normally, each value must be of type `str`,
-                but for metadata keys ending with the suffix `-bin`, the corresponding values must
-                be of type `bytes`.
-
-        Returns:
-            google.cloud.networkconnectivity_v1.services.hub_service.pagers.ListHubSpokesAsyncPager:
-                The response for
-                   [HubService.ListHubSpokes][google.cloud.networkconnectivity.v1.HubService.ListHubSpokes].
-
-                Iterating over this object will yield results and
-                resolve additional pages automatically.
-
-        """
-        # Create or coerce a protobuf request object.
-        # - Quick check: If we got a request object, we should *not* have
-        #   gotten any keyword arguments that map to the request.
-        flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
-        # - Use the request object if provided (there's no risk of modifying the input as
-        #   there are no flattened fields), or create one.
-        if not isinstance(request, hub.ListHubSpokesRequest):
-            request = hub.ListHubSpokesRequest(request)
-
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
-        if name is not None:
-            request.name = name
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_hub_spokes
-        ]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
-
-        # Validate the universe domain.
-        self._client._validate_universe_domain()
-
-        # Send the request.
-        response = await rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # This method is paged; wrap the response in a pager, which provides
-        # an `__aiter__` convenience method.
-        response = pagers.ListHubSpokesAsyncPager(
-            method=rpc,
-            request=request,
-            response=response,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    async def query_hub_status(
-        self,
-        request: Optional[Union[hub.QueryHubStatusRequest, dict]] = None,
-        *,
-        name: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> pagers.QueryHubStatusAsyncPager:
-        r"""Query the Private Service Connect propagation status
-        of a Network Connectivity Center hub.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud import networkconnectivity_v1
-
-            async def sample_query_hub_status():
-                # Create a client
-                client = networkconnectivity_v1.HubServiceAsyncClient()
-
-                # Initialize request argument(s)
-                request = networkconnectivity_v1.QueryHubStatusRequest(
-                    name="name_value",
-                )
-
-                # Make the request
-                page_result = client.query_hub_status(request=request)
-
-                # Handle the response
-                async for response in page_result:
-                    print(response)
-
-        Args:
-            request (Optional[Union[google.cloud.networkconnectivity_v1.types.QueryHubStatusRequest, dict]]):
-                The request object. The request for
-                [HubService.QueryHubStatus][google.cloud.networkconnectivity.v1.HubService.QueryHubStatus].
-            name (:class:`str`):
-                Required. The name of the hub.
-                This corresponds to the ``name`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
-                sent along with the request as metadata. Normally, each value must be of type `str`,
-                but for metadata keys ending with the suffix `-bin`, the corresponding values must
-                be of type `bytes`.
-
-        Returns:
-            google.cloud.networkconnectivity_v1.services.hub_service.pagers.QueryHubStatusAsyncPager:
-                The response for
-                   [HubService.QueryHubStatus][google.cloud.networkconnectivity.v1.HubService.QueryHubStatus].
-
-                Iterating over this object will yield results and
-                resolve additional pages automatically.
-
-        """
-        # Create or coerce a protobuf request object.
-        # - Quick check: If we got a request object, we should *not* have
-        #   gotten any keyword arguments that map to the request.
-        flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
-        # - Use the request object if provided (there's no risk of modifying the input as
-        #   there are no flattened fields), or create one.
-        if not isinstance(request, hub.QueryHubStatusRequest):
-            request = hub.QueryHubStatusRequest(request)
-
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
-        if name is not None:
-            request.name = name
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.query_hub_status
-        ]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
-
-        # Validate the universe domain.
-        self._client._validate_universe_domain()
-
-        # Send the request.
-        response = await rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # This method is paged; wrap the response in a pager, which provides
-        # an `__aiter__` convenience method.
-        response = pagers.QueryHubStatusAsyncPager(
-            method=rpc,
-            request=request,
-            response=response,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    async def list_spokes(
-        self,
-        request: Optional[Union[hub.ListSpokesRequest, dict]] = None,
-        *,
-        parent: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> pagers.ListSpokesAsyncPager:
-        r"""Lists the Network Connectivity Center spokes in a
-        specified project and location.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud import networkconnectivity_v1
-
-            async def sample_list_spokes():
-                # Create a client
-                client = networkconnectivity_v1.HubServiceAsyncClient()
-
-                # Initialize request argument(s)
-                request = networkconnectivity_v1.ListSpokesRequest(
+                request = networkconnectivity_v1.CreateServiceConnectionMapRequest(
                     parent="parent_value",
                 )
 
                 # Make the request
-                page_result = client.list_spokes(request=request)
+                operation = client.create_service_connection_map(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
 
                 # Handle the response
-                async for response in page_result:
-                    print(response)
+                print(response)
 
         Args:
-            request (Optional[Union[google.cloud.networkconnectivity_v1.types.ListSpokesRequest, dict]]):
-                The request object. The request for
-                [HubService.ListSpokes][google.cloud.networkconnectivity.v1.HubService.ListSpokes].
-            parent (:class:`str`):
-                Required. The parent resource.
+            request (Union[google.cloud.networkconnectivity_v1.types.CreateServiceConnectionMapRequest, dict]):
+                The request object. Request for
+                CreateServiceConnectionMap.
+            parent (str):
+                Required. The parent resource's name
+                of the ServiceConnectionMap. ex.
+                projects/123/locations/us-east1
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+            service_connection_map (google.cloud.networkconnectivity_v1.types.ServiceConnectionMap):
+                Required. Initial values for a new
+                ServiceConnectionMaps
+
+                This corresponds to the ``service_connection_map`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            service_connection_map_id (str):
+                Optional. Resource ID (i.e. 'foo' in
+                '[...]/projects/p/locations/l/serviceConnectionMaps/foo')
+                See https://google.aip.dev/122#resource-id-segments
+                Unique per location. If one is not provided, one will be
+                generated.
+
+                This corresponds to the ``service_connection_map_id`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
@@ -1303,2003 +1209,18 @@ class HubServiceAsyncClient:
                 be of type `bytes`.
 
         Returns:
-            google.cloud.networkconnectivity_v1.services.hub_service.pagers.ListSpokesAsyncPager:
-                The response for
-                   [HubService.ListSpokes][google.cloud.networkconnectivity.v1.HubService.ListSpokes].
-
-                Iterating over this object will yield results and
-                resolve additional pages automatically.
-
-        """
-        # Create or coerce a protobuf request object.
-        # - Quick check: If we got a request object, we should *not* have
-        #   gotten any keyword arguments that map to the request.
-        flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
-        # - Use the request object if provided (there's no risk of modifying the input as
-        #   there are no flattened fields), or create one.
-        if not isinstance(request, hub.ListSpokesRequest):
-            request = hub.ListSpokesRequest(request)
-
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
-        if parent is not None:
-            request.parent = parent
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_spokes
-        ]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
-
-        # Validate the universe domain.
-        self._client._validate_universe_domain()
-
-        # Send the request.
-        response = await rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # This method is paged; wrap the response in a pager, which provides
-        # an `__aiter__` convenience method.
-        response = pagers.ListSpokesAsyncPager(
-            method=rpc,
-            request=request,
-            response=response,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    async def get_spoke(
-        self,
-        request: Optional[Union[hub.GetSpokeRequest, dict]] = None,
-        *,
-        name: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> hub.Spoke:
-        r"""Gets details about a Network Connectivity Center
-        spoke.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud import networkconnectivity_v1
-
-            async def sample_get_spoke():
-                # Create a client
-                client = networkconnectivity_v1.HubServiceAsyncClient()
-
-                # Initialize request argument(s)
-                request = networkconnectivity_v1.GetSpokeRequest(
-                    name="name_value",
-                )
-
-                # Make the request
-                response = await client.get_spoke(request=request)
-
-                # Handle the response
-                print(response)
-
-        Args:
-            request (Optional[Union[google.cloud.networkconnectivity_v1.types.GetSpokeRequest, dict]]):
-                The request object. The request for
-                [HubService.GetSpoke][google.cloud.networkconnectivity.v1.HubService.GetSpoke].
-            name (:class:`str`):
-                Required. The name of the spoke
-                resource.
-
-                This corresponds to the ``name`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
-                sent along with the request as metadata. Normally, each value must be of type `str`,
-                but for metadata keys ending with the suffix `-bin`, the corresponding values must
-                be of type `bytes`.
-
-        Returns:
-            google.cloud.networkconnectivity_v1.types.Spoke:
-                A Network Connectivity Center spoke represents one or more network
-                   connectivity resources.
-
-                   When you create a spoke, you associate it with a hub.
-                   You must also identify a value for exactly one of the
-                   following fields:
-
-                   -  linked_vpn_tunnels
-                   -  linked_interconnect_attachments
-                   -  linked_router_appliance_instances
-                   -  linked_vpc_network
-
-        """
-        # Create or coerce a protobuf request object.
-        # - Quick check: If we got a request object, we should *not* have
-        #   gotten any keyword arguments that map to the request.
-        flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
-        # - Use the request object if provided (there's no risk of modifying the input as
-        #   there are no flattened fields), or create one.
-        if not isinstance(request, hub.GetSpokeRequest):
-            request = hub.GetSpokeRequest(request)
-
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
-        if name is not None:
-            request.name = name
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_spoke
-        ]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
-
-        # Validate the universe domain.
-        self._client._validate_universe_domain()
-
-        # Send the request.
-        response = await rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    async def create_spoke(
-        self,
-        request: Optional[Union[hub.CreateSpokeRequest, dict]] = None,
-        *,
-        parent: Optional[str] = None,
-        spoke: Optional[hub.Spoke] = None,
-        spoke_id: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> operation_async.AsyncOperation:
-        r"""Creates a Network Connectivity Center spoke.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud import networkconnectivity_v1
-
-            async def sample_create_spoke():
-                # Create a client
-                client = networkconnectivity_v1.HubServiceAsyncClient()
-
-                # Initialize request argument(s)
-                request = networkconnectivity_v1.CreateSpokeRequest(
-                    parent="parent_value",
-                    spoke_id="spoke_id_value",
-                )
-
-                # Make the request
-                operation = client.create_spoke(request=request)
-
-                print("Waiting for operation to complete...")
-
-                response = (await operation).result()
-
-                # Handle the response
-                print(response)
-
-        Args:
-            request (Optional[Union[google.cloud.networkconnectivity_v1.types.CreateSpokeRequest, dict]]):
-                The request object. The request for
-                [HubService.CreateSpoke][google.cloud.networkconnectivity.v1.HubService.CreateSpoke].
-            parent (:class:`str`):
-                Required. The parent resource.
-                This corresponds to the ``parent`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            spoke (:class:`google.cloud.networkconnectivity_v1.types.Spoke`):
-                Required. The initial values for a
-                new spoke.
-
-                This corresponds to the ``spoke`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            spoke_id (:class:`str`):
-                Required. Unique id for the spoke to
-                create.
-
-                This corresponds to the ``spoke_id`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
-                sent along with the request as metadata. Normally, each value must be of type `str`,
-                but for metadata keys ending with the suffix `-bin`, the corresponding values must
-                be of type `bytes`.
-
-        Returns:
-            google.api_core.operation_async.AsyncOperation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be :class:`google.cloud.networkconnectivity_v1.types.Spoke` A Network Connectivity Center spoke represents one or more network
-                   connectivity resources.
-
-                   When you create a spoke, you associate it with a hub.
-                   You must also identify a value for exactly one of the
-                   following fields:
-
-                   -  linked_vpn_tunnels
-                   -  linked_interconnect_attachments
-                   -  linked_router_appliance_instances
-                   -  linked_vpc_network
-
-        """
-        # Create or coerce a protobuf request object.
-        # - Quick check: If we got a request object, we should *not* have
-        #   gotten any keyword arguments that map to the request.
-        flattened_params = [parent, spoke, spoke_id]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
-        # - Use the request object if provided (there's no risk of modifying the input as
-        #   there are no flattened fields), or create one.
-        if not isinstance(request, hub.CreateSpokeRequest):
-            request = hub.CreateSpokeRequest(request)
-
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
-        if parent is not None:
-            request.parent = parent
-        if spoke is not None:
-            request.spoke = spoke
-        if spoke_id is not None:
-            request.spoke_id = spoke_id
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_spoke
-        ]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
-
-        # Validate the universe domain.
-        self._client._validate_universe_domain()
-
-        # Send the request.
-        response = await rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # Wrap the response in an operation future.
-        response = operation_async.from_gapic(
-            response,
-            self._client._transport.operations_client,
-            hub.Spoke,
-            metadata_type=common.OperationMetadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    async def update_spoke(
-        self,
-        request: Optional[Union[hub.UpdateSpokeRequest, dict]] = None,
-        *,
-        spoke: Optional[hub.Spoke] = None,
-        update_mask: Optional[field_mask_pb2.FieldMask] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> operation_async.AsyncOperation:
-        r"""Updates the parameters of a Network Connectivity
-        Center spoke.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud import networkconnectivity_v1
-
-            async def sample_update_spoke():
-                # Create a client
-                client = networkconnectivity_v1.HubServiceAsyncClient()
-
-                # Initialize request argument(s)
-                request = networkconnectivity_v1.UpdateSpokeRequest(
-                )
-
-                # Make the request
-                operation = client.update_spoke(request=request)
-
-                print("Waiting for operation to complete...")
-
-                response = (await operation).result()
-
-                # Handle the response
-                print(response)
-
-        Args:
-            request (Optional[Union[google.cloud.networkconnectivity_v1.types.UpdateSpokeRequest, dict]]):
-                The request object. Request for
-                [HubService.UpdateSpoke][google.cloud.networkconnectivity.v1.HubService.UpdateSpoke]
-                method.
-            spoke (:class:`google.cloud.networkconnectivity_v1.types.Spoke`):
-                Required. The state that the spoke
-                should be in after the update.
-
-                This corresponds to the ``spoke`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
-                Optional. In the case of an update to an existing spoke,
-                field mask is used to specify the fields to be
-                overwritten. The fields specified in the update_mask are
-                relative to the resource, not the full request. A field
-                is overwritten if it is in the mask. If the user does
-                not provide a mask, then all fields are overwritten.
-
-                This corresponds to the ``update_mask`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
-                sent along with the request as metadata. Normally, each value must be of type `str`,
-                but for metadata keys ending with the suffix `-bin`, the corresponding values must
-                be of type `bytes`.
-
-        Returns:
-            google.api_core.operation_async.AsyncOperation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be :class:`google.cloud.networkconnectivity_v1.types.Spoke` A Network Connectivity Center spoke represents one or more network
-                   connectivity resources.
-
-                   When you create a spoke, you associate it with a hub.
-                   You must also identify a value for exactly one of the
-                   following fields:
-
-                   -  linked_vpn_tunnels
-                   -  linked_interconnect_attachments
-                   -  linked_router_appliance_instances
-                   -  linked_vpc_network
-
-        """
-        # Create or coerce a protobuf request object.
-        # - Quick check: If we got a request object, we should *not* have
-        #   gotten any keyword arguments that map to the request.
-        flattened_params = [spoke, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
-        # - Use the request object if provided (there's no risk of modifying the input as
-        #   there are no flattened fields), or create one.
-        if not isinstance(request, hub.UpdateSpokeRequest):
-            request = hub.UpdateSpokeRequest(request)
-
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
-        if spoke is not None:
-            request.spoke = spoke
-        if update_mask is not None:
-            request.update_mask = update_mask
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_spoke
-        ]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("spoke.name", request.spoke.name),)
-            ),
-        )
-
-        # Validate the universe domain.
-        self._client._validate_universe_domain()
-
-        # Send the request.
-        response = await rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # Wrap the response in an operation future.
-        response = operation_async.from_gapic(
-            response,
-            self._client._transport.operations_client,
-            hub.Spoke,
-            metadata_type=common.OperationMetadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    async def reject_hub_spoke(
-        self,
-        request: Optional[Union[hub.RejectHubSpokeRequest, dict]] = None,
-        *,
-        name: Optional[str] = None,
-        spoke_uri: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> operation_async.AsyncOperation:
-        r"""Rejects a Network Connectivity Center spoke from being attached
-        to a hub. If the spoke was previously in the ``ACTIVE`` state,
-        it transitions to the ``INACTIVE`` state and is no longer able
-        to connect to other spokes that are attached to the hub.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud import networkconnectivity_v1
-
-            async def sample_reject_hub_spoke():
-                # Create a client
-                client = networkconnectivity_v1.HubServiceAsyncClient()
-
-                # Initialize request argument(s)
-                request = networkconnectivity_v1.RejectHubSpokeRequest(
-                    name="name_value",
-                    spoke_uri="spoke_uri_value",
-                )
-
-                # Make the request
-                operation = client.reject_hub_spoke(request=request)
-
-                print("Waiting for operation to complete...")
-
-                response = (await operation).result()
-
-                # Handle the response
-                print(response)
-
-        Args:
-            request (Optional[Union[google.cloud.networkconnectivity_v1.types.RejectHubSpokeRequest, dict]]):
-                The request object. The request for
-                [HubService.RejectHubSpoke][google.cloud.networkconnectivity.v1.HubService.RejectHubSpoke].
-            name (:class:`str`):
-                Required. The name of the hub from
-                which to reject the spoke.
-
-                This corresponds to the ``name`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            spoke_uri (:class:`str`):
-                Required. The URI of the spoke to
-                reject from the hub.
-
-                This corresponds to the ``spoke_uri`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
-                sent along with the request as metadata. Normally, each value must be of type `str`,
-                but for metadata keys ending with the suffix `-bin`, the corresponding values must
-                be of type `bytes`.
-
-        Returns:
-            google.api_core.operation_async.AsyncOperation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be :class:`google.cloud.networkconnectivity_v1.types.RejectHubSpokeResponse` The response for
-                   [HubService.RejectHubSpoke][google.cloud.networkconnectivity.v1.HubService.RejectHubSpoke].
-
-        """
-        # Create or coerce a protobuf request object.
-        # - Quick check: If we got a request object, we should *not* have
-        #   gotten any keyword arguments that map to the request.
-        flattened_params = [name, spoke_uri]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
-        # - Use the request object if provided (there's no risk of modifying the input as
-        #   there are no flattened fields), or create one.
-        if not isinstance(request, hub.RejectHubSpokeRequest):
-            request = hub.RejectHubSpokeRequest(request)
-
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
-        if name is not None:
-            request.name = name
-        if spoke_uri is not None:
-            request.spoke_uri = spoke_uri
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.reject_hub_spoke
-        ]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
-
-        # Validate the universe domain.
-        self._client._validate_universe_domain()
-
-        # Send the request.
-        response = await rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # Wrap the response in an operation future.
-        response = operation_async.from_gapic(
-            response,
-            self._client._transport.operations_client,
-            hub.RejectHubSpokeResponse,
-            metadata_type=common.OperationMetadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    async def accept_hub_spoke(
-        self,
-        request: Optional[Union[hub.AcceptHubSpokeRequest, dict]] = None,
-        *,
-        name: Optional[str] = None,
-        spoke_uri: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> operation_async.AsyncOperation:
-        r"""Accepts a proposal to attach a Network Connectivity
-        Center spoke to a hub.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud import networkconnectivity_v1
-
-            async def sample_accept_hub_spoke():
-                # Create a client
-                client = networkconnectivity_v1.HubServiceAsyncClient()
-
-                # Initialize request argument(s)
-                request = networkconnectivity_v1.AcceptHubSpokeRequest(
-                    name="name_value",
-                    spoke_uri="spoke_uri_value",
-                )
-
-                # Make the request
-                operation = client.accept_hub_spoke(request=request)
-
-                print("Waiting for operation to complete...")
-
-                response = (await operation).result()
-
-                # Handle the response
-                print(response)
-
-        Args:
-            request (Optional[Union[google.cloud.networkconnectivity_v1.types.AcceptHubSpokeRequest, dict]]):
-                The request object. The request for
-                [HubService.AcceptHubSpoke][google.cloud.networkconnectivity.v1.HubService.AcceptHubSpoke].
-            name (:class:`str`):
-                Required. The name of the hub into
-                which to accept the spoke.
-
-                This corresponds to the ``name`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            spoke_uri (:class:`str`):
-                Required. The URI of the spoke to
-                accept into the hub.
-
-                This corresponds to the ``spoke_uri`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
-                sent along with the request as metadata. Normally, each value must be of type `str`,
-                but for metadata keys ending with the suffix `-bin`, the corresponding values must
-                be of type `bytes`.
-
-        Returns:
-            google.api_core.operation_async.AsyncOperation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be :class:`google.cloud.networkconnectivity_v1.types.AcceptHubSpokeResponse` The response for
-                   [HubService.AcceptHubSpoke][google.cloud.networkconnectivity.v1.HubService.AcceptHubSpoke].
-
-        """
-        # Create or coerce a protobuf request object.
-        # - Quick check: If we got a request object, we should *not* have
-        #   gotten any keyword arguments that map to the request.
-        flattened_params = [name, spoke_uri]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
-        # - Use the request object if provided (there's no risk of modifying the input as
-        #   there are no flattened fields), or create one.
-        if not isinstance(request, hub.AcceptHubSpokeRequest):
-            request = hub.AcceptHubSpokeRequest(request)
-
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
-        if name is not None:
-            request.name = name
-        if spoke_uri is not None:
-            request.spoke_uri = spoke_uri
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.accept_hub_spoke
-        ]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
-
-        # Validate the universe domain.
-        self._client._validate_universe_domain()
-
-        # Send the request.
-        response = await rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # Wrap the response in an operation future.
-        response = operation_async.from_gapic(
-            response,
-            self._client._transport.operations_client,
-            hub.AcceptHubSpokeResponse,
-            metadata_type=common.OperationMetadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    async def accept_spoke_update(
-        self,
-        request: Optional[Union[hub.AcceptSpokeUpdateRequest, dict]] = None,
-        *,
-        name: Optional[str] = None,
-        spoke_uri: Optional[str] = None,
-        spoke_etag: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> operation_async.AsyncOperation:
-        r"""Accepts a proposal to update a Network Connectivity
-        Center spoke in a hub.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud import networkconnectivity_v1
-
-            async def sample_accept_spoke_update():
-                # Create a client
-                client = networkconnectivity_v1.HubServiceAsyncClient()
-
-                # Initialize request argument(s)
-                request = networkconnectivity_v1.AcceptSpokeUpdateRequest(
-                    name="name_value",
-                    spoke_uri="spoke_uri_value",
-                    spoke_etag="spoke_etag_value",
-                )
-
-                # Make the request
-                operation = client.accept_spoke_update(request=request)
-
-                print("Waiting for operation to complete...")
-
-                response = (await operation).result()
-
-                # Handle the response
-                print(response)
-
-        Args:
-            request (Optional[Union[google.cloud.networkconnectivity_v1.types.AcceptSpokeUpdateRequest, dict]]):
-                The request object. The request for
-                [HubService.AcceptSpokeUpdate][google.cloud.networkconnectivity.v1.HubService.AcceptSpokeUpdate].
-            name (:class:`str`):
-                Required. The name of the hub to
-                accept spoke update.
-
-                This corresponds to the ``name`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            spoke_uri (:class:`str`):
-                Required. The URI of the spoke to
-                accept update.
-
-                This corresponds to the ``spoke_uri`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            spoke_etag (:class:`str`):
-                Required. The etag of the spoke to
-                accept update.
-
-                This corresponds to the ``spoke_etag`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
-                sent along with the request as metadata. Normally, each value must be of type `str`,
-                but for metadata keys ending with the suffix `-bin`, the corresponding values must
-                be of type `bytes`.
-
-        Returns:
-            google.api_core.operation_async.AsyncOperation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be :class:`google.cloud.networkconnectivity_v1.types.AcceptSpokeUpdateResponse` The response for
-                   [HubService.AcceptSpokeUpdate][google.cloud.networkconnectivity.v1.HubService.AcceptSpokeUpdate].
-
-        """
-        # Create or coerce a protobuf request object.
-        # - Quick check: If we got a request object, we should *not* have
-        #   gotten any keyword arguments that map to the request.
-        flattened_params = [name, spoke_uri, spoke_etag]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
-        # - Use the request object if provided (there's no risk of modifying the input as
-        #   there are no flattened fields), or create one.
-        if not isinstance(request, hub.AcceptSpokeUpdateRequest):
-            request = hub.AcceptSpokeUpdateRequest(request)
-
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
-        if name is not None:
-            request.name = name
-        if spoke_uri is not None:
-            request.spoke_uri = spoke_uri
-        if spoke_etag is not None:
-            request.spoke_etag = spoke_etag
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.accept_spoke_update
-        ]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
-
-        # Validate the universe domain.
-        self._client._validate_universe_domain()
-
-        # Send the request.
-        response = await rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # Wrap the response in an operation future.
-        response = operation_async.from_gapic(
-            response,
-            self._client._transport.operations_client,
-            hub.AcceptSpokeUpdateResponse,
-            metadata_type=common.OperationMetadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    async def reject_spoke_update(
-        self,
-        request: Optional[Union[hub.RejectSpokeUpdateRequest, dict]] = None,
-        *,
-        name: Optional[str] = None,
-        spoke_uri: Optional[str] = None,
-        spoke_etag: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> operation_async.AsyncOperation:
-        r"""Rejects a proposal to update a Network Connectivity
-        Center spoke in a hub.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud import networkconnectivity_v1
-
-            async def sample_reject_spoke_update():
-                # Create a client
-                client = networkconnectivity_v1.HubServiceAsyncClient()
-
-                # Initialize request argument(s)
-                request = networkconnectivity_v1.RejectSpokeUpdateRequest(
-                    name="name_value",
-                    spoke_uri="spoke_uri_value",
-                    spoke_etag="spoke_etag_value",
-                )
-
-                # Make the request
-                operation = client.reject_spoke_update(request=request)
-
-                print("Waiting for operation to complete...")
-
-                response = (await operation).result()
-
-                # Handle the response
-                print(response)
-
-        Args:
-            request (Optional[Union[google.cloud.networkconnectivity_v1.types.RejectSpokeUpdateRequest, dict]]):
-                The request object. The request for
-                [HubService.RejectSpokeUpdate][google.cloud.networkconnectivity.v1.HubService.RejectSpokeUpdate].
-            name (:class:`str`):
-                Required. The name of the hub to
-                reject spoke update.
-
-                This corresponds to the ``name`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            spoke_uri (:class:`str`):
-                Required. The URI of the spoke to
-                reject update.
-
-                This corresponds to the ``spoke_uri`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            spoke_etag (:class:`str`):
-                Required. The etag of the spoke to
-                reject update.
-
-                This corresponds to the ``spoke_etag`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
-                sent along with the request as metadata. Normally, each value must be of type `str`,
-                but for metadata keys ending with the suffix `-bin`, the corresponding values must
-                be of type `bytes`.
-
-        Returns:
-            google.api_core.operation_async.AsyncOperation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be :class:`google.cloud.networkconnectivity_v1.types.RejectSpokeUpdateResponse` The response for
-                   [HubService.RejectSpokeUpdate][google.cloud.networkconnectivity.v1.HubService.RejectSpokeUpdate].
-
-        """
-        # Create or coerce a protobuf request object.
-        # - Quick check: If we got a request object, we should *not* have
-        #   gotten any keyword arguments that map to the request.
-        flattened_params = [name, spoke_uri, spoke_etag]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
-        # - Use the request object if provided (there's no risk of modifying the input as
-        #   there are no flattened fields), or create one.
-        if not isinstance(request, hub.RejectSpokeUpdateRequest):
-            request = hub.RejectSpokeUpdateRequest(request)
-
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
-        if name is not None:
-            request.name = name
-        if spoke_uri is not None:
-            request.spoke_uri = spoke_uri
-        if spoke_etag is not None:
-            request.spoke_etag = spoke_etag
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.reject_spoke_update
-        ]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
-
-        # Validate the universe domain.
-        self._client._validate_universe_domain()
-
-        # Send the request.
-        response = await rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # Wrap the response in an operation future.
-        response = operation_async.from_gapic(
-            response,
-            self._client._transport.operations_client,
-            hub.RejectSpokeUpdateResponse,
-            metadata_type=common.OperationMetadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    async def delete_spoke(
-        self,
-        request: Optional[Union[hub.DeleteSpokeRequest, dict]] = None,
-        *,
-        name: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> operation_async.AsyncOperation:
-        r"""Deletes a Network Connectivity Center spoke.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud import networkconnectivity_v1
-
-            async def sample_delete_spoke():
-                # Create a client
-                client = networkconnectivity_v1.HubServiceAsyncClient()
-
-                # Initialize request argument(s)
-                request = networkconnectivity_v1.DeleteSpokeRequest(
-                    name="name_value",
-                )
-
-                # Make the request
-                operation = client.delete_spoke(request=request)
-
-                print("Waiting for operation to complete...")
-
-                response = (await operation).result()
-
-                # Handle the response
-                print(response)
-
-        Args:
-            request (Optional[Union[google.cloud.networkconnectivity_v1.types.DeleteSpokeRequest, dict]]):
-                The request object. The request for
-                [HubService.DeleteSpoke][google.cloud.networkconnectivity.v1.HubService.DeleteSpoke].
-            name (:class:`str`):
-                Required. The name of the spoke to
-                delete.
-
-                This corresponds to the ``name`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
-                sent along with the request as metadata. Normally, each value must be of type `str`,
-                but for metadata keys ending with the suffix `-bin`, the corresponding values must
-                be of type `bytes`.
-
-        Returns:
-            google.api_core.operation_async.AsyncOperation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be :class:`google.protobuf.empty_pb2.Empty` A generic empty message that you can re-use to avoid defining duplicated
-                   empty messages in your APIs. A typical example is to
-                   use it as the request or the response type of an API
-                   method. For instance:
-
-                      service Foo {
-                         rpc Bar(google.protobuf.Empty) returns
-                         (google.protobuf.Empty);
-
-                      }
-
-        """
-        # Create or coerce a protobuf request object.
-        # - Quick check: If we got a request object, we should *not* have
-        #   gotten any keyword arguments that map to the request.
-        flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
-        # - Use the request object if provided (there's no risk of modifying the input as
-        #   there are no flattened fields), or create one.
-        if not isinstance(request, hub.DeleteSpokeRequest):
-            request = hub.DeleteSpokeRequest(request)
-
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
-        if name is not None:
-            request.name = name
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_spoke
-        ]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
-
-        # Validate the universe domain.
-        self._client._validate_universe_domain()
-
-        # Send the request.
-        response = await rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # Wrap the response in an operation future.
-        response = operation_async.from_gapic(
-            response,
-            self._client._transport.operations_client,
-            empty_pb2.Empty,
-            metadata_type=common.OperationMetadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    async def get_route_table(
-        self,
-        request: Optional[Union[hub.GetRouteTableRequest, dict]] = None,
-        *,
-        name: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> hub.RouteTable:
-        r"""Gets details about a Network Connectivity Center
-        route table.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud import networkconnectivity_v1
-
-            async def sample_get_route_table():
-                # Create a client
-                client = networkconnectivity_v1.HubServiceAsyncClient()
-
-                # Initialize request argument(s)
-                request = networkconnectivity_v1.GetRouteTableRequest(
-                    name="name_value",
-                )
-
-                # Make the request
-                response = await client.get_route_table(request=request)
-
-                # Handle the response
-                print(response)
-
-        Args:
-            request (Optional[Union[google.cloud.networkconnectivity_v1.types.GetRouteTableRequest, dict]]):
-                The request object. The request for
-                [HubService.GetRouteTable][google.cloud.networkconnectivity.v1.HubService.GetRouteTable].
-            name (:class:`str`):
-                Required. The name of the route table
-                resource.
-
-                This corresponds to the ``name`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
-                sent along with the request as metadata. Normally, each value must be of type `str`,
-                but for metadata keys ending with the suffix `-bin`, the corresponding values must
-                be of type `bytes`.
-
-        Returns:
-            google.cloud.networkconnectivity_v1.types.RouteTable:
-
-        """
-        # Create or coerce a protobuf request object.
-        # - Quick check: If we got a request object, we should *not* have
-        #   gotten any keyword arguments that map to the request.
-        flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
-        # - Use the request object if provided (there's no risk of modifying the input as
-        #   there are no flattened fields), or create one.
-        if not isinstance(request, hub.GetRouteTableRequest):
-            request = hub.GetRouteTableRequest(request)
-
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
-        if name is not None:
-            request.name = name
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_route_table
-        ]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
-
-        # Validate the universe domain.
-        self._client._validate_universe_domain()
-
-        # Send the request.
-        response = await rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    async def get_route(
-        self,
-        request: Optional[Union[hub.GetRouteRequest, dict]] = None,
-        *,
-        name: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> hub.Route:
-        r"""Gets details about the specified route.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud import networkconnectivity_v1
-
-            async def sample_get_route():
-                # Create a client
-                client = networkconnectivity_v1.HubServiceAsyncClient()
-
-                # Initialize request argument(s)
-                request = networkconnectivity_v1.GetRouteRequest(
-                    name="name_value",
-                )
-
-                # Make the request
-                response = await client.get_route(request=request)
-
-                # Handle the response
-                print(response)
-
-        Args:
-            request (Optional[Union[google.cloud.networkconnectivity_v1.types.GetRouteRequest, dict]]):
-                The request object. The request for
-                [HubService.GetRoute][google.cloud.networkconnectivity.v1.HubService.GetRoute].
-            name (:class:`str`):
-                Required. The name of the route
-                resource.
-
-                This corresponds to the ``name`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
-                sent along with the request as metadata. Normally, each value must be of type `str`,
-                but for metadata keys ending with the suffix `-bin`, the corresponding values must
-                be of type `bytes`.
-
-        Returns:
-            google.cloud.networkconnectivity_v1.types.Route:
-                A route defines a path from VM
-                instances within a spoke to a specific
-                destination resource. Only VPC spokes
-                have routes.
-
-        """
-        # Create or coerce a protobuf request object.
-        # - Quick check: If we got a request object, we should *not* have
-        #   gotten any keyword arguments that map to the request.
-        flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
-        # - Use the request object if provided (there's no risk of modifying the input as
-        #   there are no flattened fields), or create one.
-        if not isinstance(request, hub.GetRouteRequest):
-            request = hub.GetRouteRequest(request)
-
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
-        if name is not None:
-            request.name = name
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_route
-        ]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
-
-        # Validate the universe domain.
-        self._client._validate_universe_domain()
-
-        # Send the request.
-        response = await rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    async def list_routes(
-        self,
-        request: Optional[Union[hub.ListRoutesRequest, dict]] = None,
-        *,
-        parent: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> pagers.ListRoutesAsyncPager:
-        r"""Lists routes in a given route table.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud import networkconnectivity_v1
-
-            async def sample_list_routes():
-                # Create a client
-                client = networkconnectivity_v1.HubServiceAsyncClient()
-
-                # Initialize request argument(s)
-                request = networkconnectivity_v1.ListRoutesRequest(
-                    parent="parent_value",
-                )
-
-                # Make the request
-                page_result = client.list_routes(request=request)
-
-                # Handle the response
-                async for response in page_result:
-                    print(response)
-
-        Args:
-            request (Optional[Union[google.cloud.networkconnectivity_v1.types.ListRoutesRequest, dict]]):
-                The request object. Request for
-                [HubService.ListRoutes][google.cloud.networkconnectivity.v1.HubService.ListRoutes]
-                method.
-            parent (:class:`str`):
-                Required. The parent resource's name.
-                This corresponds to the ``parent`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
-                sent along with the request as metadata. Normally, each value must be of type `str`,
-                but for metadata keys ending with the suffix `-bin`, the corresponding values must
-                be of type `bytes`.
-
-        Returns:
-            google.cloud.networkconnectivity_v1.services.hub_service.pagers.ListRoutesAsyncPager:
-                Response for
-                   [HubService.ListRoutes][google.cloud.networkconnectivity.v1.HubService.ListRoutes]
-                   method.
-
-                Iterating over this object will yield results and
-                resolve additional pages automatically.
-
-        """
-        # Create or coerce a protobuf request object.
-        # - Quick check: If we got a request object, we should *not* have
-        #   gotten any keyword arguments that map to the request.
-        flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
-        # - Use the request object if provided (there's no risk of modifying the input as
-        #   there are no flattened fields), or create one.
-        if not isinstance(request, hub.ListRoutesRequest):
-            request = hub.ListRoutesRequest(request)
-
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
-        if parent is not None:
-            request.parent = parent
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_routes
-        ]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
-
-        # Validate the universe domain.
-        self._client._validate_universe_domain()
-
-        # Send the request.
-        response = await rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # This method is paged; wrap the response in a pager, which provides
-        # an `__aiter__` convenience method.
-        response = pagers.ListRoutesAsyncPager(
-            method=rpc,
-            request=request,
-            response=response,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    async def list_route_tables(
-        self,
-        request: Optional[Union[hub.ListRouteTablesRequest, dict]] = None,
-        *,
-        parent: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> pagers.ListRouteTablesAsyncPager:
-        r"""Lists route tables in a given hub.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud import networkconnectivity_v1
-
-            async def sample_list_route_tables():
-                # Create a client
-                client = networkconnectivity_v1.HubServiceAsyncClient()
-
-                # Initialize request argument(s)
-                request = networkconnectivity_v1.ListRouteTablesRequest(
-                    parent="parent_value",
-                )
-
-                # Make the request
-                page_result = client.list_route_tables(request=request)
-
-                # Handle the response
-                async for response in page_result:
-                    print(response)
-
-        Args:
-            request (Optional[Union[google.cloud.networkconnectivity_v1.types.ListRouteTablesRequest, dict]]):
-                The request object. Request for
-                [HubService.ListRouteTables][google.cloud.networkconnectivity.v1.HubService.ListRouteTables]
-                method.
-            parent (:class:`str`):
-                Required. The parent resource's name.
-                This corresponds to the ``parent`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
-                sent along with the request as metadata. Normally, each value must be of type `str`,
-                but for metadata keys ending with the suffix `-bin`, the corresponding values must
-                be of type `bytes`.
-
-        Returns:
-            google.cloud.networkconnectivity_v1.services.hub_service.pagers.ListRouteTablesAsyncPager:
-                Response for
-                   [HubService.ListRouteTables][google.cloud.networkconnectivity.v1.HubService.ListRouteTables]
-                   method.
-
-                Iterating over this object will yield results and
-                resolve additional pages automatically.
-
-        """
-        # Create or coerce a protobuf request object.
-        # - Quick check: If we got a request object, we should *not* have
-        #   gotten any keyword arguments that map to the request.
-        flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
-        # - Use the request object if provided (there's no risk of modifying the input as
-        #   there are no flattened fields), or create one.
-        if not isinstance(request, hub.ListRouteTablesRequest):
-            request = hub.ListRouteTablesRequest(request)
-
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
-        if parent is not None:
-            request.parent = parent
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_route_tables
-        ]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
-
-        # Validate the universe domain.
-        self._client._validate_universe_domain()
-
-        # Send the request.
-        response = await rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # This method is paged; wrap the response in a pager, which provides
-        # an `__aiter__` convenience method.
-        response = pagers.ListRouteTablesAsyncPager(
-            method=rpc,
-            request=request,
-            response=response,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    async def get_group(
-        self,
-        request: Optional[Union[hub.GetGroupRequest, dict]] = None,
-        *,
-        name: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> hub.Group:
-        r"""Gets details about a Network Connectivity Center
-        group.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud import networkconnectivity_v1
-
-            async def sample_get_group():
-                # Create a client
-                client = networkconnectivity_v1.HubServiceAsyncClient()
-
-                # Initialize request argument(s)
-                request = networkconnectivity_v1.GetGroupRequest(
-                    name="name_value",
-                )
-
-                # Make the request
-                response = await client.get_group(request=request)
-
-                # Handle the response
-                print(response)
-
-        Args:
-            request (Optional[Union[google.cloud.networkconnectivity_v1.types.GetGroupRequest, dict]]):
-                The request object. The request for
-                [HubService.GetGroup][google.cloud.networkconnectivity.v1.HubService.GetGroup].
-            name (:class:`str`):
-                Required. The name of the route table
-                resource.
-
-                This corresponds to the ``name`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
-                sent along with the request as metadata. Normally, each value must be of type `str`,
-                but for metadata keys ending with the suffix `-bin`, the corresponding values must
-                be of type `bytes`.
-
-        Returns:
-            google.cloud.networkconnectivity_v1.types.Group:
-                A group represents a subset of spokes
-                attached to a hub.
-
-        """
-        # Create or coerce a protobuf request object.
-        # - Quick check: If we got a request object, we should *not* have
-        #   gotten any keyword arguments that map to the request.
-        flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
-        # - Use the request object if provided (there's no risk of modifying the input as
-        #   there are no flattened fields), or create one.
-        if not isinstance(request, hub.GetGroupRequest):
-            request = hub.GetGroupRequest(request)
-
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
-        if name is not None:
-            request.name = name
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_group
-        ]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
-
-        # Validate the universe domain.
-        self._client._validate_universe_domain()
-
-        # Send the request.
-        response = await rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    async def list_groups(
-        self,
-        request: Optional[Union[hub.ListGroupsRequest, dict]] = None,
-        *,
-        parent: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> pagers.ListGroupsAsyncPager:
-        r"""Lists groups in a given hub.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud import networkconnectivity_v1
-
-            async def sample_list_groups():
-                # Create a client
-                client = networkconnectivity_v1.HubServiceAsyncClient()
-
-                # Initialize request argument(s)
-                request = networkconnectivity_v1.ListGroupsRequest(
-                    parent="parent_value",
-                )
-
-                # Make the request
-                page_result = client.list_groups(request=request)
-
-                # Handle the response
-                async for response in page_result:
-                    print(response)
-
-        Args:
-            request (Optional[Union[google.cloud.networkconnectivity_v1.types.ListGroupsRequest, dict]]):
-                The request object. Request for
-                [HubService.ListGroups][google.cloud.networkconnectivity.v1.HubService.ListGroups]
-                method.
-            parent (:class:`str`):
-                Required. The parent resource's name.
-                This corresponds to the ``parent`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
-                sent along with the request as metadata. Normally, each value must be of type `str`,
-                but for metadata keys ending with the suffix `-bin`, the corresponding values must
-                be of type `bytes`.
-
-        Returns:
-            google.cloud.networkconnectivity_v1.services.hub_service.pagers.ListGroupsAsyncPager:
-                Response for
-                   [HubService.ListGroups][google.cloud.networkconnectivity.v1.HubService.ListGroups]
-                   method.
-
-                Iterating over this object will yield results and
-                resolve additional pages automatically.
-
-        """
-        # Create or coerce a protobuf request object.
-        # - Quick check: If we got a request object, we should *not* have
-        #   gotten any keyword arguments that map to the request.
-        flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
-        # - Use the request object if provided (there's no risk of modifying the input as
-        #   there are no flattened fields), or create one.
-        if not isinstance(request, hub.ListGroupsRequest):
-            request = hub.ListGroupsRequest(request)
-
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
-        if parent is not None:
-            request.parent = parent
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_groups
-        ]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
-
-        # Validate the universe domain.
-        self._client._validate_universe_domain()
-
-        # Send the request.
-        response = await rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # This method is paged; wrap the response in a pager, which provides
-        # an `__aiter__` convenience method.
-        response = pagers.ListGroupsAsyncPager(
-            method=rpc,
-            request=request,
-            response=response,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    async def update_group(
-        self,
-        request: Optional[Union[hub.UpdateGroupRequest, dict]] = None,
-        *,
-        group: Optional[hub.Group] = None,
-        update_mask: Optional[field_mask_pb2.FieldMask] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> operation_async.AsyncOperation:
-        r"""Updates the parameters of a Network Connectivity
-        Center group.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud import networkconnectivity_v1
-
-            async def sample_update_group():
-                # Create a client
-                client = networkconnectivity_v1.HubServiceAsyncClient()
-
-                # Initialize request argument(s)
-                request = networkconnectivity_v1.UpdateGroupRequest(
-                )
-
-                # Make the request
-                operation = client.update_group(request=request)
-
-                print("Waiting for operation to complete...")
-
-                response = (await operation).result()
-
-                # Handle the response
-                print(response)
-
-        Args:
-            request (Optional[Union[google.cloud.networkconnectivity_v1.types.UpdateGroupRequest, dict]]):
-                The request object. Request for
-                [HubService.UpdateGroup][google.cloud.networkconnectivity.v1.HubService.UpdateGroup]
-                method.
-            group (:class:`google.cloud.networkconnectivity_v1.types.Group`):
-                Required. The state that the group
-                should be in after the update.
-
-                This corresponds to the ``group`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
-                Optional. In the case of an update to an existing group,
-                field mask is used to specify the fields to be
-                overwritten. The fields specified in the update_mask are
-                relative to the resource, not the full request. A field
-                is overwritten if it is in the mask. If the user does
-                not provide a mask, then all fields are overwritten.
-
-                This corresponds to the ``update_mask`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
-                sent along with the request as metadata. Normally, each value must be of type `str`,
-                but for metadata keys ending with the suffix `-bin`, the corresponding values must
-                be of type `bytes`.
-
-        Returns:
-            google.api_core.operation_async.AsyncOperation:
+            google.api_core.operation.Operation:
                 An object representing a long-running operation.
 
                 The result type for the operation will be
-                :class:`google.cloud.networkconnectivity_v1.types.Group`
-                A group represents a subset of spokes attached to a hub.
+                :class:`google.cloud.networkconnectivity_v1.types.ServiceConnectionMap`
+                The ServiceConnectionMap resource.
 
         """
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        flattened_params = [group, update_mask]
+        flattened_params = [parent, service_connection_map, service_connection_map_id]
         has_flattened_params = (
             len([param for param in flattened_params if param is not None]) > 0
         )
@@ -3311,35 +1232,38 @@ class HubServiceAsyncClient:
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(request, hub.UpdateGroupRequest):
-            request = hub.UpdateGroupRequest(request)
-
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
-        if group is not None:
-            request.group = group
-        if update_mask is not None:
-            request.update_mask = update_mask
+        if not isinstance(
+            request, cross_network_automation.CreateServiceConnectionMapRequest
+        ):
+            request = cross_network_automation.CreateServiceConnectionMapRequest(
+                request
+            )
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+            if service_connection_map is not None:
+                request.service_connection_map = service_connection_map
+            if service_connection_map_id is not None:
+                request.service_connection_map_id = service_connection_map_id
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_group
+        rpc = self._transport._wrapped_methods[
+            self._transport.create_service_connection_map
         ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("group.name", request.group.name),)
-            ),
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
         )
 
         # Validate the universe domain.
-        self._client._validate_universe_domain()
+        self._validate_universe_domain()
 
         # Send the request.
-        response = await rpc(
+        response = rpc(
             request,
             retry=retry,
             timeout=timeout,
@@ -3347,17 +1271,2063 @@ class HubServiceAsyncClient:
         )
 
         # Wrap the response in an operation future.
-        response = operation_async.from_gapic(
+        response = operation.from_gapic(
             response,
-            self._client._transport.operations_client,
-            hub.Group,
+            self._transport.operations_client,
+            cross_network_automation.ServiceConnectionMap,
             metadata_type=common.OperationMetadata,
         )
 
         # Done; return the response.
         return response
 
-    async def list_operations(
+    def update_service_connection_map(
+        self,
+        request: Optional[
+            Union[cross_network_automation.UpdateServiceConnectionMapRequest, dict]
+        ] = None,
+        *,
+        service_connection_map: Optional[
+            cross_network_automation.ServiceConnectionMap
+        ] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> operation.Operation:
+        r"""Updates the parameters of a single
+        ServiceConnectionMap.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import networkconnectivity_v1
+
+            def sample_update_service_connection_map():
+                # Create a client
+                client = networkconnectivity_v1.CrossNetworkAutomationServiceClient()
+
+                # Initialize request argument(s)
+                request = networkconnectivity_v1.UpdateServiceConnectionMapRequest(
+                )
+
+                # Make the request
+                operation = client.update_service_connection_map(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.networkconnectivity_v1.types.UpdateServiceConnectionMapRequest, dict]):
+                The request object. Request for
+                UpdateServiceConnectionMap.
+            service_connection_map (google.cloud.networkconnectivity_v1.types.ServiceConnectionMap):
+                Required. New values to be patched
+                into the resource.
+
+                This corresponds to the ``service_connection_map`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            update_mask (google.protobuf.field_mask_pb2.FieldMask):
+                Optional. Field mask is used to specify the fields to be
+                overwritten in the ServiceConnectionMap resource by the
+                update. The fields specified in the update_mask are
+                relative to the resource, not the full request. A field
+                will be overwritten if it is in the mask. If the user
+                does not provide a mask then all fields will be
+                overwritten.
+
+                This corresponds to the ``update_mask`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be
+                :class:`google.cloud.networkconnectivity_v1.types.ServiceConnectionMap`
+                The ServiceConnectionMap resource.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [service_connection_map, update_mask]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request, cross_network_automation.UpdateServiceConnectionMapRequest
+        ):
+            request = cross_network_automation.UpdateServiceConnectionMapRequest(
+                request
+            )
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if service_connection_map is not None:
+                request.service_connection_map = service_connection_map
+            if update_mask is not None:
+                request.update_mask = update_mask
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.update_service_connection_map
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("service_connection_map.name", request.service_connection_map.name),)
+            ),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            cross_network_automation.ServiceConnectionMap,
+            metadata_type=common.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def delete_service_connection_map(
+        self,
+        request: Optional[
+            Union[cross_network_automation.DeleteServiceConnectionMapRequest, dict]
+        ] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> operation.Operation:
+        r"""Deletes a single ServiceConnectionMap.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import networkconnectivity_v1
+
+            def sample_delete_service_connection_map():
+                # Create a client
+                client = networkconnectivity_v1.CrossNetworkAutomationServiceClient()
+
+                # Initialize request argument(s)
+                request = networkconnectivity_v1.DeleteServiceConnectionMapRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.delete_service_connection_map(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.networkconnectivity_v1.types.DeleteServiceConnectionMapRequest, dict]):
+                The request object. Request for
+                DeleteServiceConnectionMap.
+            name (str):
+                Required. The name of the
+                ServiceConnectionMap to delete.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.protobuf.empty_pb2.Empty` A generic empty message that you can re-use to avoid defining duplicated
+                   empty messages in your APIs. A typical example is to
+                   use it as the request or the response type of an API
+                   method. For instance:
+
+                      service Foo {
+                         rpc Bar(google.protobuf.Empty) returns
+                         (google.protobuf.Empty);
+
+                      }
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [name]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request, cross_network_automation.DeleteServiceConnectionMapRequest
+        ):
+            request = cross_network_automation.DeleteServiceConnectionMapRequest(
+                request
+            )
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.delete_service_connection_map
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            empty_pb2.Empty,
+            metadata_type=common.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def list_service_connection_policies(
+        self,
+        request: Optional[
+            Union[cross_network_automation.ListServiceConnectionPoliciesRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> pagers.ListServiceConnectionPoliciesPager:
+        r"""Lists ServiceConnectionPolicies in a given project
+        and location.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import networkconnectivity_v1
+
+            def sample_list_service_connection_policies():
+                # Create a client
+                client = networkconnectivity_v1.CrossNetworkAutomationServiceClient()
+
+                # Initialize request argument(s)
+                request = networkconnectivity_v1.ListServiceConnectionPoliciesRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_service_connection_policies(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
+        Args:
+            request (Union[google.cloud.networkconnectivity_v1.types.ListServiceConnectionPoliciesRequest, dict]):
+                The request object. Request for
+                ListServiceConnectionPolicies.
+            parent (str):
+                Required. The parent resource's name.
+                ex. projects/123/locations/us-east1
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.networkconnectivity_v1.services.cross_network_automation_service.pagers.ListServiceConnectionPoliciesPager:
+                Response for
+                ListServiceConnectionPolicies.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [parent]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request, cross_network_automation.ListServiceConnectionPoliciesRequest
+        ):
+            request = cross_network_automation.ListServiceConnectionPoliciesRequest(
+                request
+            )
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.list_service_connection_policies
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.ListServiceConnectionPoliciesPager(
+            method=rpc,
+            request=request,
+            response=response,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def get_service_connection_policy(
+        self,
+        request: Optional[
+            Union[cross_network_automation.GetServiceConnectionPolicyRequest, dict]
+        ] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> cross_network_automation.ServiceConnectionPolicy:
+        r"""Gets details of a single ServiceConnectionPolicy.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import networkconnectivity_v1
+
+            def sample_get_service_connection_policy():
+                # Create a client
+                client = networkconnectivity_v1.CrossNetworkAutomationServiceClient()
+
+                # Initialize request argument(s)
+                request = networkconnectivity_v1.GetServiceConnectionPolicyRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_service_connection_policy(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.networkconnectivity_v1.types.GetServiceConnectionPolicyRequest, dict]):
+                The request object. Request for
+                GetServiceConnectionPolicy.
+            name (str):
+                Required. Name of the
+                ServiceConnectionPolicy to get.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.networkconnectivity_v1.types.ServiceConnectionPolicy:
+                The ServiceConnectionPolicy resource.
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [name]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request, cross_network_automation.GetServiceConnectionPolicyRequest
+        ):
+            request = cross_network_automation.GetServiceConnectionPolicyRequest(
+                request
+            )
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.get_service_connection_policy
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def create_service_connection_policy(
+        self,
+        request: Optional[
+            Union[cross_network_automation.CreateServiceConnectionPolicyRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        service_connection_policy: Optional[
+            cross_network_automation.ServiceConnectionPolicy
+        ] = None,
+        service_connection_policy_id: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> operation.Operation:
+        r"""Creates a new ServiceConnectionPolicy in a given
+        project and location.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import networkconnectivity_v1
+
+            def sample_create_service_connection_policy():
+                # Create a client
+                client = networkconnectivity_v1.CrossNetworkAutomationServiceClient()
+
+                # Initialize request argument(s)
+                request = networkconnectivity_v1.CreateServiceConnectionPolicyRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                operation = client.create_service_connection_policy(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.networkconnectivity_v1.types.CreateServiceConnectionPolicyRequest, dict]):
+                The request object. Request for
+                CreateServiceConnectionPolicy.
+            parent (str):
+                Required. The parent resource's name
+                of the ServiceConnectionPolicy. ex.
+                projects/123/locations/us-east1
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            service_connection_policy (google.cloud.networkconnectivity_v1.types.ServiceConnectionPolicy):
+                Required. Initial values for a new
+                ServiceConnectionPolicies
+
+                This corresponds to the ``service_connection_policy`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            service_connection_policy_id (str):
+                Optional. Resource ID (i.e. 'foo' in
+                '[...]/projects/p/locations/l/serviceConnectionPolicies/foo')
+                See https://google.aip.dev/122#resource-id-segments
+                Unique per location.
+
+                This corresponds to the ``service_connection_policy_id`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be
+                :class:`google.cloud.networkconnectivity_v1.types.ServiceConnectionPolicy`
+                The ServiceConnectionPolicy resource.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [
+            parent,
+            service_connection_policy,
+            service_connection_policy_id,
+        ]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request, cross_network_automation.CreateServiceConnectionPolicyRequest
+        ):
+            request = cross_network_automation.CreateServiceConnectionPolicyRequest(
+                request
+            )
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+            if service_connection_policy is not None:
+                request.service_connection_policy = service_connection_policy
+            if service_connection_policy_id is not None:
+                request.service_connection_policy_id = service_connection_policy_id
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.create_service_connection_policy
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            cross_network_automation.ServiceConnectionPolicy,
+            metadata_type=common.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def update_service_connection_policy(
+        self,
+        request: Optional[
+            Union[cross_network_automation.UpdateServiceConnectionPolicyRequest, dict]
+        ] = None,
+        *,
+        service_connection_policy: Optional[
+            cross_network_automation.ServiceConnectionPolicy
+        ] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> operation.Operation:
+        r"""Updates the parameters of a single
+        ServiceConnectionPolicy.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import networkconnectivity_v1
+
+            def sample_update_service_connection_policy():
+                # Create a client
+                client = networkconnectivity_v1.CrossNetworkAutomationServiceClient()
+
+                # Initialize request argument(s)
+                request = networkconnectivity_v1.UpdateServiceConnectionPolicyRequest(
+                )
+
+                # Make the request
+                operation = client.update_service_connection_policy(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.networkconnectivity_v1.types.UpdateServiceConnectionPolicyRequest, dict]):
+                The request object. Request for
+                UpdateServiceConnectionPolicy.
+            service_connection_policy (google.cloud.networkconnectivity_v1.types.ServiceConnectionPolicy):
+                Required. New values to be patched
+                into the resource.
+
+                This corresponds to the ``service_connection_policy`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            update_mask (google.protobuf.field_mask_pb2.FieldMask):
+                Optional. Field mask is used to specify the fields to be
+                overwritten in the ServiceConnectionPolicy resource by
+                the update. The fields specified in the update_mask are
+                relative to the resource, not the full request. A field
+                will be overwritten if it is in the mask. If the user
+                does not provide a mask then all fields will be
+                overwritten.
+
+                This corresponds to the ``update_mask`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be
+                :class:`google.cloud.networkconnectivity_v1.types.ServiceConnectionPolicy`
+                The ServiceConnectionPolicy resource.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [service_connection_policy, update_mask]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request, cross_network_automation.UpdateServiceConnectionPolicyRequest
+        ):
+            request = cross_network_automation.UpdateServiceConnectionPolicyRequest(
+                request
+            )
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if service_connection_policy is not None:
+                request.service_connection_policy = service_connection_policy
+            if update_mask is not None:
+                request.update_mask = update_mask
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.update_service_connection_policy
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    (
+                        "service_connection_policy.name",
+                        request.service_connection_policy.name,
+                    ),
+                )
+            ),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            cross_network_automation.ServiceConnectionPolicy,
+            metadata_type=common.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def delete_service_connection_policy(
+        self,
+        request: Optional[
+            Union[cross_network_automation.DeleteServiceConnectionPolicyRequest, dict]
+        ] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> operation.Operation:
+        r"""Deletes a single ServiceConnectionPolicy.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import networkconnectivity_v1
+
+            def sample_delete_service_connection_policy():
+                # Create a client
+                client = networkconnectivity_v1.CrossNetworkAutomationServiceClient()
+
+                # Initialize request argument(s)
+                request = networkconnectivity_v1.DeleteServiceConnectionPolicyRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.delete_service_connection_policy(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.networkconnectivity_v1.types.DeleteServiceConnectionPolicyRequest, dict]):
+                The request object. Request for
+                DeleteServiceConnectionPolicy.
+            name (str):
+                Required. The name of the
+                ServiceConnectionPolicy to delete.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.protobuf.empty_pb2.Empty` A generic empty message that you can re-use to avoid defining duplicated
+                   empty messages in your APIs. A typical example is to
+                   use it as the request or the response type of an API
+                   method. For instance:
+
+                      service Foo {
+                         rpc Bar(google.protobuf.Empty) returns
+                         (google.protobuf.Empty);
+
+                      }
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [name]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request, cross_network_automation.DeleteServiceConnectionPolicyRequest
+        ):
+            request = cross_network_automation.DeleteServiceConnectionPolicyRequest(
+                request
+            )
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.delete_service_connection_policy
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            empty_pb2.Empty,
+            metadata_type=common.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def list_service_classes(
+        self,
+        request: Optional[
+            Union[cross_network_automation.ListServiceClassesRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> pagers.ListServiceClassesPager:
+        r"""Lists ServiceClasses in a given project and location.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import networkconnectivity_v1
+
+            def sample_list_service_classes():
+                # Create a client
+                client = networkconnectivity_v1.CrossNetworkAutomationServiceClient()
+
+                # Initialize request argument(s)
+                request = networkconnectivity_v1.ListServiceClassesRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_service_classes(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
+        Args:
+            request (Union[google.cloud.networkconnectivity_v1.types.ListServiceClassesRequest, dict]):
+                The request object. Request for ListServiceClasses.
+            parent (str):
+                Required. The parent resource's name.
+                ex. projects/123/locations/us-east1
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.networkconnectivity_v1.services.cross_network_automation_service.pagers.ListServiceClassesPager:
+                Response for ListServiceClasses.
+
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [parent]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, cross_network_automation.ListServiceClassesRequest):
+            request = cross_network_automation.ListServiceClassesRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.list_service_classes]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.ListServiceClassesPager(
+            method=rpc,
+            request=request,
+            response=response,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def get_service_class(
+        self,
+        request: Optional[
+            Union[cross_network_automation.GetServiceClassRequest, dict]
+        ] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> cross_network_automation.ServiceClass:
+        r"""Gets details of a single ServiceClass.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import networkconnectivity_v1
+
+            def sample_get_service_class():
+                # Create a client
+                client = networkconnectivity_v1.CrossNetworkAutomationServiceClient()
+
+                # Initialize request argument(s)
+                request = networkconnectivity_v1.GetServiceClassRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_service_class(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.networkconnectivity_v1.types.GetServiceClassRequest, dict]):
+                The request object. Request for GetServiceClass.
+            name (str):
+                Required. Name of the ServiceClass to
+                get.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.networkconnectivity_v1.types.ServiceClass:
+                The ServiceClass resource.
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [name]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, cross_network_automation.GetServiceClassRequest):
+            request = cross_network_automation.GetServiceClassRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.get_service_class]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def update_service_class(
+        self,
+        request: Optional[
+            Union[cross_network_automation.UpdateServiceClassRequest, dict]
+        ] = None,
+        *,
+        service_class: Optional[cross_network_automation.ServiceClass] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> operation.Operation:
+        r"""Updates the parameters of a single ServiceClass.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import networkconnectivity_v1
+
+            def sample_update_service_class():
+                # Create a client
+                client = networkconnectivity_v1.CrossNetworkAutomationServiceClient()
+
+                # Initialize request argument(s)
+                request = networkconnectivity_v1.UpdateServiceClassRequest(
+                )
+
+                # Make the request
+                operation = client.update_service_class(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.networkconnectivity_v1.types.UpdateServiceClassRequest, dict]):
+                The request object. Request for UpdateServiceClass.
+            service_class (google.cloud.networkconnectivity_v1.types.ServiceClass):
+                Required. New values to be patched
+                into the resource.
+
+                This corresponds to the ``service_class`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            update_mask (google.protobuf.field_mask_pb2.FieldMask):
+                Optional. Field mask is used to specify the fields to be
+                overwritten in the ServiceClass resource by the update.
+                The fields specified in the update_mask are relative to
+                the resource, not the full request. A field will be
+                overwritten if it is in the mask. If the user does not
+                provide a mask then all fields will be overwritten.
+
+                This corresponds to the ``update_mask`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be
+                :class:`google.cloud.networkconnectivity_v1.types.ServiceClass`
+                The ServiceClass resource.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [service_class, update_mask]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, cross_network_automation.UpdateServiceClassRequest):
+            request = cross_network_automation.UpdateServiceClassRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if service_class is not None:
+                request.service_class = service_class
+            if update_mask is not None:
+                request.update_mask = update_mask
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.update_service_class]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("service_class.name", request.service_class.name),)
+            ),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            cross_network_automation.ServiceClass,
+            metadata_type=common.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def delete_service_class(
+        self,
+        request: Optional[
+            Union[cross_network_automation.DeleteServiceClassRequest, dict]
+        ] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> operation.Operation:
+        r"""Deletes a single ServiceClass.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import networkconnectivity_v1
+
+            def sample_delete_service_class():
+                # Create a client
+                client = networkconnectivity_v1.CrossNetworkAutomationServiceClient()
+
+                # Initialize request argument(s)
+                request = networkconnectivity_v1.DeleteServiceClassRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.delete_service_class(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.networkconnectivity_v1.types.DeleteServiceClassRequest, dict]):
+                The request object. Request for DeleteServiceClass.
+            name (str):
+                Required. The name of the
+                ServiceClass to delete.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.protobuf.empty_pb2.Empty` A generic empty message that you can re-use to avoid defining duplicated
+                   empty messages in your APIs. A typical example is to
+                   use it as the request or the response type of an API
+                   method. For instance:
+
+                      service Foo {
+                         rpc Bar(google.protobuf.Empty) returns
+                         (google.protobuf.Empty);
+
+                      }
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [name]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, cross_network_automation.DeleteServiceClassRequest):
+            request = cross_network_automation.DeleteServiceClassRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.delete_service_class]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            empty_pb2.Empty,
+            metadata_type=common.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def get_service_connection_token(
+        self,
+        request: Optional[
+            Union[cross_network_automation.GetServiceConnectionTokenRequest, dict]
+        ] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> cross_network_automation.ServiceConnectionToken:
+        r"""Gets details of a single ServiceConnectionToken.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import networkconnectivity_v1
+
+            def sample_get_service_connection_token():
+                # Create a client
+                client = networkconnectivity_v1.CrossNetworkAutomationServiceClient()
+
+                # Initialize request argument(s)
+                request = networkconnectivity_v1.GetServiceConnectionTokenRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_service_connection_token(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.networkconnectivity_v1.types.GetServiceConnectionTokenRequest, dict]):
+                The request object. Request for
+                GetServiceConnectionToken.
+            name (str):
+                Required. Name of the
+                ServiceConnectionToken to get.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.networkconnectivity_v1.types.ServiceConnectionToken:
+                The ServiceConnectionToken resource.
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [name]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request, cross_network_automation.GetServiceConnectionTokenRequest
+        ):
+            request = cross_network_automation.GetServiceConnectionTokenRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.get_service_connection_token
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def list_service_connection_tokens(
+        self,
+        request: Optional[
+            Union[cross_network_automation.ListServiceConnectionTokensRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> pagers.ListServiceConnectionTokensPager:
+        r"""Lists ServiceConnectionTokens in a given project and
+        location.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import networkconnectivity_v1
+
+            def sample_list_service_connection_tokens():
+                # Create a client
+                client = networkconnectivity_v1.CrossNetworkAutomationServiceClient()
+
+                # Initialize request argument(s)
+                request = networkconnectivity_v1.ListServiceConnectionTokensRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_service_connection_tokens(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
+        Args:
+            request (Union[google.cloud.networkconnectivity_v1.types.ListServiceConnectionTokensRequest, dict]):
+                The request object. Request for
+                ListServiceConnectionTokens.
+            parent (str):
+                Required. The parent resource's name.
+                ex. projects/123/locations/us-east1
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.networkconnectivity_v1.services.cross_network_automation_service.pagers.ListServiceConnectionTokensPager:
+                Response for
+                ListServiceConnectionTokens.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [parent]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request, cross_network_automation.ListServiceConnectionTokensRequest
+        ):
+            request = cross_network_automation.ListServiceConnectionTokensRequest(
+                request
+            )
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.list_service_connection_tokens
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.ListServiceConnectionTokensPager(
+            method=rpc,
+            request=request,
+            response=response,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def create_service_connection_token(
+        self,
+        request: Optional[
+            Union[cross_network_automation.CreateServiceConnectionTokenRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        service_connection_token: Optional[
+            cross_network_automation.ServiceConnectionToken
+        ] = None,
+        service_connection_token_id: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> operation.Operation:
+        r"""Creates a new ServiceConnectionToken in a given
+        project and location.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import networkconnectivity_v1
+
+            def sample_create_service_connection_token():
+                # Create a client
+                client = networkconnectivity_v1.CrossNetworkAutomationServiceClient()
+
+                # Initialize request argument(s)
+                request = networkconnectivity_v1.CreateServiceConnectionTokenRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                operation = client.create_service_connection_token(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.networkconnectivity_v1.types.CreateServiceConnectionTokenRequest, dict]):
+                The request object. Request for
+                CreateServiceConnectionToken.
+            parent (str):
+                Required. The parent resource's name
+                of the ServiceConnectionToken. ex.
+                projects/123/locations/us-east1
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            service_connection_token (google.cloud.networkconnectivity_v1.types.ServiceConnectionToken):
+                Required. Initial values for a new
+                ServiceConnectionTokens
+
+                This corresponds to the ``service_connection_token`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            service_connection_token_id (str):
+                Optional. Resource ID (i.e. 'foo' in
+                '[...]/projects/p/locations/l/ServiceConnectionTokens/foo')
+                See https://google.aip.dev/122#resource-id-segments
+                Unique per location. If one is not provided, one will be
+                generated.
+
+                This corresponds to the ``service_connection_token_id`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be
+                :class:`google.cloud.networkconnectivity_v1.types.ServiceConnectionToken`
+                The ServiceConnectionToken resource.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [
+            parent,
+            service_connection_token,
+            service_connection_token_id,
+        ]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request, cross_network_automation.CreateServiceConnectionTokenRequest
+        ):
+            request = cross_network_automation.CreateServiceConnectionTokenRequest(
+                request
+            )
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+            if service_connection_token is not None:
+                request.service_connection_token = service_connection_token
+            if service_connection_token_id is not None:
+                request.service_connection_token_id = service_connection_token_id
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.create_service_connection_token
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            cross_network_automation.ServiceConnectionToken,
+            metadata_type=common.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def delete_service_connection_token(
+        self,
+        request: Optional[
+            Union[cross_network_automation.DeleteServiceConnectionTokenRequest, dict]
+        ] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> operation.Operation:
+        r"""Deletes a single ServiceConnectionToken.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import networkconnectivity_v1
+
+            def sample_delete_service_connection_token():
+                # Create a client
+                client = networkconnectivity_v1.CrossNetworkAutomationServiceClient()
+
+                # Initialize request argument(s)
+                request = networkconnectivity_v1.DeleteServiceConnectionTokenRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.delete_service_connection_token(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.networkconnectivity_v1.types.DeleteServiceConnectionTokenRequest, dict]):
+                The request object. Request for
+                DeleteServiceConnectionToken.
+            name (str):
+                Required. The name of the
+                ServiceConnectionToken to delete.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.protobuf.empty_pb2.Empty` A generic empty message that you can re-use to avoid defining duplicated
+                   empty messages in your APIs. A typical example is to
+                   use it as the request or the response type of an API
+                   method. For instance:
+
+                      service Foo {
+                         rpc Bar(google.protobuf.Empty) returns
+                         (google.protobuf.Empty);
+
+                      }
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [name]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request, cross_network_automation.DeleteServiceConnectionTokenRequest
+        ):
+            request = cross_network_automation.DeleteServiceConnectionTokenRequest(
+                request
+            )
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.delete_service_connection_token
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            empty_pb2.Empty,
+            metadata_type=common.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def __enter__(self) -> "CrossNetworkAutomationServiceClient":
+        return self
+
+    def __exit__(self, type, value, traceback):
+        """Releases underlying transport's resources.
+
+        .. warning::
+            ONLY use as a context manager if the transport is NOT shared
+            with other clients! Exiting the with block will CLOSE the transport
+            and may cause errors in other clients!
+        """
+        self.transport.close()
+
+    def list_operations(
         self,
         request: Optional[operations_pb2.ListOperationsRequest] = None,
         *,
@@ -3371,7 +3341,7 @@ class HubServiceAsyncClient:
             request (:class:`~.operations_pb2.ListOperationsRequest`):
                 The request object. Request message for
                 `ListOperations` method.
-            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors,
+            retry (google.api_core.retry.Retry): Designation of what errors,
                     if any, should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
@@ -3390,7 +3360,7 @@ class HubServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self.transport._wrapped_methods[self._client._transport.list_operations]
+        rpc = self._transport._wrapped_methods[self._transport.list_operations]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3399,20 +3369,24 @@ class HubServiceAsyncClient:
         )
 
         # Validate the universe domain.
-        self._client._validate_universe_domain()
+        self._validate_universe_domain()
 
-        # Send the request.
-        response = await rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
+        try:
+            # Send the request.
+            response = rpc(
+                request,
+                retry=retry,
+                timeout=timeout,
+                metadata=metadata,
+            )
 
-        # Done; return the response.
-        return response
+            # Done; return the response.
+            return response
+        except core_exceptions.GoogleAPICallError as e:
+            self._add_cred_info_for_auth_errors(e)
+            raise e
 
-    async def get_operation(
+    def get_operation(
         self,
         request: Optional[operations_pb2.GetOperationRequest] = None,
         *,
@@ -3426,7 +3400,7 @@ class HubServiceAsyncClient:
             request (:class:`~.operations_pb2.GetOperationRequest`):
                 The request object. Request message for
                 `GetOperation` method.
-            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors,
+            retry (google.api_core.retry.Retry): Designation of what errors,
                     if any, should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
@@ -3445,7 +3419,7 @@ class HubServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self.transport._wrapped_methods[self._client._transport.get_operation]
+        rpc = self._transport._wrapped_methods[self._transport.get_operation]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3454,20 +3428,24 @@ class HubServiceAsyncClient:
         )
 
         # Validate the universe domain.
-        self._client._validate_universe_domain()
+        self._validate_universe_domain()
 
-        # Send the request.
-        response = await rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
+        try:
+            # Send the request.
+            response = rpc(
+                request,
+                retry=retry,
+                timeout=timeout,
+                metadata=metadata,
+            )
 
-        # Done; return the response.
-        return response
+            # Done; return the response.
+            return response
+        except core_exceptions.GoogleAPICallError as e:
+            self._add_cred_info_for_auth_errors(e)
+            raise e
 
-    async def delete_operation(
+    def delete_operation(
         self,
         request: Optional[operations_pb2.DeleteOperationRequest] = None,
         *,
@@ -3486,7 +3464,7 @@ class HubServiceAsyncClient:
             request (:class:`~.operations_pb2.DeleteOperationRequest`):
                 The request object. Request message for
                 `DeleteOperation` method.
-            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors,
+            retry (google.api_core.retry.Retry): Designation of what errors,
                     if any, should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
@@ -3504,7 +3482,7 @@ class HubServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self.transport._wrapped_methods[self._client._transport.delete_operation]
+        rpc = self._transport._wrapped_methods[self._transport.delete_operation]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3513,17 +3491,17 @@ class HubServiceAsyncClient:
         )
 
         # Validate the universe domain.
-        self._client._validate_universe_domain()
+        self._validate_universe_domain()
 
         # Send the request.
-        await rpc(
+        rpc(
             request,
             retry=retry,
             timeout=timeout,
             metadata=metadata,
         )
 
-    async def cancel_operation(
+    def cancel_operation(
         self,
         request: Optional[operations_pb2.CancelOperationRequest] = None,
         *,
@@ -3541,7 +3519,7 @@ class HubServiceAsyncClient:
             request (:class:`~.operations_pb2.CancelOperationRequest`):
                 The request object. Request message for
                 `CancelOperation` method.
-            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors,
+            retry (google.api_core.retry.Retry): Designation of what errors,
                     if any, should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
@@ -3559,7 +3537,7 @@ class HubServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self.transport._wrapped_methods[self._client._transport.cancel_operation]
+        rpc = self._transport._wrapped_methods[self._transport.cancel_operation]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3568,17 +3546,17 @@ class HubServiceAsyncClient:
         )
 
         # Validate the universe domain.
-        self._client._validate_universe_domain()
+        self._validate_universe_domain()
 
         # Send the request.
-        await rpc(
+        rpc(
             request,
             retry=retry,
             timeout=timeout,
             metadata=metadata,
         )
 
-    async def set_iam_policy(
+    def set_iam_policy(
         self,
         request: Optional[iam_policy_pb2.SetIamPolicyRequest] = None,
         *,
@@ -3594,7 +3572,7 @@ class HubServiceAsyncClient:
             request (:class:`~.iam_policy_pb2.SetIamPolicyRequest`):
                 The request object. Request message for `SetIamPolicy`
                 method.
-            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
@@ -3677,7 +3655,7 @@ class HubServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self.transport._wrapped_methods[self._client._transport.set_iam_policy]
+        rpc = self._transport._wrapped_methods[self._transport.set_iam_policy]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3686,20 +3664,24 @@ class HubServiceAsyncClient:
         )
 
         # Validate the universe domain.
-        self._client._validate_universe_domain()
+        self._validate_universe_domain()
 
-        # Send the request.
-        response = await rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
+        try:
+            # Send the request.
+            response = rpc(
+                request,
+                retry=retry,
+                timeout=timeout,
+                metadata=metadata,
+            )
 
-        # Done; return the response.
-        return response
+            # Done; return the response.
+            return response
+        except core_exceptions.GoogleAPICallError as e:
+            self._add_cred_info_for_auth_errors(e)
+            raise e
 
-    async def get_iam_policy(
+    def get_iam_policy(
         self,
         request: Optional[iam_policy_pb2.GetIamPolicyRequest] = None,
         *,
@@ -3716,7 +3698,7 @@ class HubServiceAsyncClient:
             request (:class:`~.iam_policy_pb2.GetIamPolicyRequest`):
                 The request object. Request message for `GetIamPolicy`
                 method.
-            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if
+            retry (google.api_core.retry.Retry): Designation of what errors, if
                 any, should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
@@ -3799,7 +3781,7 @@ class HubServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self.transport._wrapped_methods[self._client._transport.get_iam_policy]
+        rpc = self._transport._wrapped_methods[self._transport.get_iam_policy]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3808,20 +3790,24 @@ class HubServiceAsyncClient:
         )
 
         # Validate the universe domain.
-        self._client._validate_universe_domain()
+        self._validate_universe_domain()
 
-        # Send the request.
-        response = await rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
+        try:
+            # Send the request.
+            response = rpc(
+                request,
+                retry=retry,
+                timeout=timeout,
+                metadata=metadata,
+            )
 
-        # Done; return the response.
-        return response
+            # Done; return the response.
+            return response
+        except core_exceptions.GoogleAPICallError as e:
+            self._add_cred_info_for_auth_errors(e)
+            raise e
 
-    async def test_iam_permissions(
+    def test_iam_permissions(
         self,
         request: Optional[iam_policy_pb2.TestIamPermissionsRequest] = None,
         *,
@@ -3839,7 +3825,7 @@ class HubServiceAsyncClient:
             request (:class:`~.iam_policy_pb2.TestIamPermissionsRequest`):
                 The request object. Request message for
                 `TestIamPermissions` method.
-            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors,
+            retry (google.api_core.retry.Retry): Designation of what errors,
                  if any, should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
@@ -3859,9 +3845,7 @@ class HubServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self.transport._wrapped_methods[
-            self._client._transport.test_iam_permissions
-        ]
+        rpc = self._transport._wrapped_methods[self._transport.test_iam_permissions]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3870,20 +3854,24 @@ class HubServiceAsyncClient:
         )
 
         # Validate the universe domain.
-        self._client._validate_universe_domain()
+        self._validate_universe_domain()
 
-        # Send the request.
-        response = await rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
+        try:
+            # Send the request.
+            response = rpc(
+                request,
+                retry=retry,
+                timeout=timeout,
+                metadata=metadata,
+            )
 
-        # Done; return the response.
-        return response
+            # Done; return the response.
+            return response
+        except core_exceptions.GoogleAPICallError as e:
+            self._add_cred_info_for_auth_errors(e)
+            raise e
 
-    async def get_location(
+    def get_location(
         self,
         request: Optional[locations_pb2.GetLocationRequest] = None,
         *,
@@ -3897,7 +3885,7 @@ class HubServiceAsyncClient:
             request (:class:`~.location_pb2.GetLocationRequest`):
                 The request object. Request message for
                 `GetLocation` method.
-            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors,
+            retry (google.api_core.retry.Retry): Designation of what errors,
                  if any, should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
@@ -3916,7 +3904,7 @@ class HubServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self.transport._wrapped_methods[self._client._transport.get_location]
+        rpc = self._transport._wrapped_methods[self._transport.get_location]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3925,20 +3913,24 @@ class HubServiceAsyncClient:
         )
 
         # Validate the universe domain.
-        self._client._validate_universe_domain()
+        self._validate_universe_domain()
 
-        # Send the request.
-        response = await rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
+        try:
+            # Send the request.
+            response = rpc(
+                request,
+                retry=retry,
+                timeout=timeout,
+                metadata=metadata,
+            )
 
-        # Done; return the response.
-        return response
+            # Done; return the response.
+            return response
+        except core_exceptions.GoogleAPICallError as e:
+            self._add_cred_info_for_auth_errors(e)
+            raise e
 
-    async def list_locations(
+    def list_locations(
         self,
         request: Optional[locations_pb2.ListLocationsRequest] = None,
         *,
@@ -3952,7 +3944,7 @@ class HubServiceAsyncClient:
             request (:class:`~.location_pb2.ListLocationsRequest`):
                 The request object. Request message for
                 `ListLocations` method.
-            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors,
+            retry (google.api_core.retry.Retry): Designation of what errors,
                  if any, should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
@@ -3971,7 +3963,7 @@ class HubServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self.transport._wrapped_methods[self._client._transport.list_locations]
+        rpc = self._transport._wrapped_methods[self._transport.list_locations]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3980,24 +3972,22 @@ class HubServiceAsyncClient:
         )
 
         # Validate the universe domain.
-        self._client._validate_universe_domain()
+        self._validate_universe_domain()
 
-        # Send the request.
-        response = await rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
+        try:
+            # Send the request.
+            response = rpc(
+                request,
+                retry=retry,
+                timeout=timeout,
+                metadata=metadata,
+            )
 
-        # Done; return the response.
-        return response
-
-    async def __aenter__(self) -> "HubServiceAsyncClient":
-        return self
-
-    async def __aexit__(self, exc_type, exc, tb):
-        await self.transport.close()
+            # Done; return the response.
+            return response
+        except core_exceptions.GoogleAPICallError as e:
+            self._add_cred_info_for_auth_errors(e)
+            raise e
 
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
@@ -4005,4 +3995,4 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
 )
 
 
-__all__ = ("HubServiceAsyncClient",)
+__all__ = ("CrossNetworkAutomationServiceClient",)

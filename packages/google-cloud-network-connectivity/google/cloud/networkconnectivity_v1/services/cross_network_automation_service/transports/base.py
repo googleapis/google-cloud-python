@@ -29,16 +29,15 @@ from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
 from google.cloud.networkconnectivity_v1 import gapic_version as package_version
-from google.cloud.networkconnectivity_v1.types import hub
-from google.cloud.networkconnectivity_v1.types import hub as gcn_hub
+from google.cloud.networkconnectivity_v1.types import cross_network_automation
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
 )
 
 
-class HubServiceTransport(abc.ABC):
-    """Abstract transport class for HubService."""
+class CrossNetworkAutomationServiceTransport(abc.ABC):
+    """Abstract transport class for CrossNetworkAutomationService."""
 
     AUTH_SCOPES = ("https://www.googleapis.com/auth/cloud-platform",)
 
@@ -133,118 +132,93 @@ class HubServiceTransport(abc.ABC):
     def _prep_wrapped_messages(self, client_info):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
-            self.list_hubs: gapic_v1.method.wrap_method(
-                self.list_hubs,
+            self.list_service_connection_maps: gapic_v1.method.wrap_method(
+                self.list_service_connection_maps,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.get_hub: gapic_v1.method.wrap_method(
-                self.get_hub,
+            self.get_service_connection_map: gapic_v1.method.wrap_method(
+                self.get_service_connection_map,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.create_hub: gapic_v1.method.wrap_method(
-                self.create_hub,
-                default_timeout=60.0,
-                client_info=client_info,
-            ),
-            self.update_hub: gapic_v1.method.wrap_method(
-                self.update_hub,
-                default_timeout=60.0,
-                client_info=client_info,
-            ),
-            self.delete_hub: gapic_v1.method.wrap_method(
-                self.delete_hub,
-                default_timeout=60.0,
-                client_info=client_info,
-            ),
-            self.list_hub_spokes: gapic_v1.method.wrap_method(
-                self.list_hub_spokes,
+            self.create_service_connection_map: gapic_v1.method.wrap_method(
+                self.create_service_connection_map,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.query_hub_status: gapic_v1.method.wrap_method(
-                self.query_hub_status,
+            self.update_service_connection_map: gapic_v1.method.wrap_method(
+                self.update_service_connection_map,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.list_spokes: gapic_v1.method.wrap_method(
-                self.list_spokes,
+            self.delete_service_connection_map: gapic_v1.method.wrap_method(
+                self.delete_service_connection_map,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.get_spoke: gapic_v1.method.wrap_method(
-                self.get_spoke,
+            self.list_service_connection_policies: gapic_v1.method.wrap_method(
+                self.list_service_connection_policies,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.create_spoke: gapic_v1.method.wrap_method(
-                self.create_spoke,
-                default_timeout=60.0,
-                client_info=client_info,
-            ),
-            self.update_spoke: gapic_v1.method.wrap_method(
-                self.update_spoke,
-                default_timeout=60.0,
-                client_info=client_info,
-            ),
-            self.reject_hub_spoke: gapic_v1.method.wrap_method(
-                self.reject_hub_spoke,
+            self.get_service_connection_policy: gapic_v1.method.wrap_method(
+                self.get_service_connection_policy,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.accept_hub_spoke: gapic_v1.method.wrap_method(
-                self.accept_hub_spoke,
+            self.create_service_connection_policy: gapic_v1.method.wrap_method(
+                self.create_service_connection_policy,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.accept_spoke_update: gapic_v1.method.wrap_method(
-                self.accept_spoke_update,
+            self.update_service_connection_policy: gapic_v1.method.wrap_method(
+                self.update_service_connection_policy,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.reject_spoke_update: gapic_v1.method.wrap_method(
-                self.reject_spoke_update,
+            self.delete_service_connection_policy: gapic_v1.method.wrap_method(
+                self.delete_service_connection_policy,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.delete_spoke: gapic_v1.method.wrap_method(
-                self.delete_spoke,
-                default_timeout=60.0,
-                client_info=client_info,
-            ),
-            self.get_route_table: gapic_v1.method.wrap_method(
-                self.get_route_table,
+            self.list_service_classes: gapic_v1.method.wrap_method(
+                self.list_service_classes,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.get_route: gapic_v1.method.wrap_method(
-                self.get_route,
+            self.get_service_class: gapic_v1.method.wrap_method(
+                self.get_service_class,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.list_routes: gapic_v1.method.wrap_method(
-                self.list_routes,
+            self.update_service_class: gapic_v1.method.wrap_method(
+                self.update_service_class,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.list_route_tables: gapic_v1.method.wrap_method(
-                self.list_route_tables,
+            self.delete_service_class: gapic_v1.method.wrap_method(
+                self.delete_service_class,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.get_group: gapic_v1.method.wrap_method(
-                self.get_group,
+            self.get_service_connection_token: gapic_v1.method.wrap_method(
+                self.get_service_connection_token,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.list_groups: gapic_v1.method.wrap_method(
-                self.list_groups,
+            self.list_service_connection_tokens: gapic_v1.method.wrap_method(
+                self.list_service_connection_tokens,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.update_group: gapic_v1.method.wrap_method(
-                self.update_group,
+            self.create_service_connection_token: gapic_v1.method.wrap_method(
+                self.create_service_connection_token,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_service_connection_token: gapic_v1.method.wrap_method(
+                self.delete_service_connection_token,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -310,195 +284,187 @@ class HubServiceTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def list_hubs(
+    def list_service_connection_maps(
         self,
     ) -> Callable[
-        [hub.ListHubsRequest],
-        Union[hub.ListHubsResponse, Awaitable[hub.ListHubsResponse]],
+        [cross_network_automation.ListServiceConnectionMapsRequest],
+        Union[
+            cross_network_automation.ListServiceConnectionMapsResponse,
+            Awaitable[cross_network_automation.ListServiceConnectionMapsResponse],
+        ],
     ]:
         raise NotImplementedError()
 
     @property
-    def get_hub(
+    def get_service_connection_map(
         self,
-    ) -> Callable[[hub.GetHubRequest], Union[hub.Hub, Awaitable[hub.Hub]]]:
+    ) -> Callable[
+        [cross_network_automation.GetServiceConnectionMapRequest],
+        Union[
+            cross_network_automation.ServiceConnectionMap,
+            Awaitable[cross_network_automation.ServiceConnectionMap],
+        ],
+    ]:
         raise NotImplementedError()
 
     @property
-    def create_hub(
+    def create_service_connection_map(
         self,
     ) -> Callable[
-        [gcn_hub.CreateHubRequest],
+        [cross_network_automation.CreateServiceConnectionMapRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()
 
     @property
-    def update_hub(
+    def update_service_connection_map(
         self,
     ) -> Callable[
-        [gcn_hub.UpdateHubRequest],
+        [cross_network_automation.UpdateServiceConnectionMapRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()
 
     @property
-    def delete_hub(
+    def delete_service_connection_map(
         self,
     ) -> Callable[
-        [hub.DeleteHubRequest],
+        [cross_network_automation.DeleteServiceConnectionMapRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()
 
     @property
-    def list_hub_spokes(
+    def list_service_connection_policies(
         self,
     ) -> Callable[
-        [hub.ListHubSpokesRequest],
-        Union[hub.ListHubSpokesResponse, Awaitable[hub.ListHubSpokesResponse]],
+        [cross_network_automation.ListServiceConnectionPoliciesRequest],
+        Union[
+            cross_network_automation.ListServiceConnectionPoliciesResponse,
+            Awaitable[cross_network_automation.ListServiceConnectionPoliciesResponse],
+        ],
     ]:
         raise NotImplementedError()
 
     @property
-    def query_hub_status(
+    def get_service_connection_policy(
         self,
     ) -> Callable[
-        [hub.QueryHubStatusRequest],
-        Union[hub.QueryHubStatusResponse, Awaitable[hub.QueryHubStatusResponse]],
+        [cross_network_automation.GetServiceConnectionPolicyRequest],
+        Union[
+            cross_network_automation.ServiceConnectionPolicy,
+            Awaitable[cross_network_automation.ServiceConnectionPolicy],
+        ],
     ]:
         raise NotImplementedError()
 
     @property
-    def list_spokes(
+    def create_service_connection_policy(
         self,
     ) -> Callable[
-        [hub.ListSpokesRequest],
-        Union[hub.ListSpokesResponse, Awaitable[hub.ListSpokesResponse]],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def get_spoke(
-        self,
-    ) -> Callable[[hub.GetSpokeRequest], Union[hub.Spoke, Awaitable[hub.Spoke]]]:
-        raise NotImplementedError()
-
-    @property
-    def create_spoke(
-        self,
-    ) -> Callable[
-        [hub.CreateSpokeRequest],
+        [cross_network_automation.CreateServiceConnectionPolicyRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()
 
     @property
-    def update_spoke(
+    def update_service_connection_policy(
         self,
     ) -> Callable[
-        [hub.UpdateSpokeRequest],
+        [cross_network_automation.UpdateServiceConnectionPolicyRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()
 
     @property
-    def reject_hub_spoke(
+    def delete_service_connection_policy(
         self,
     ) -> Callable[
-        [hub.RejectHubSpokeRequest],
+        [cross_network_automation.DeleteServiceConnectionPolicyRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()
 
     @property
-    def accept_hub_spoke(
+    def list_service_classes(
         self,
     ) -> Callable[
-        [hub.AcceptHubSpokeRequest],
+        [cross_network_automation.ListServiceClassesRequest],
+        Union[
+            cross_network_automation.ListServiceClassesResponse,
+            Awaitable[cross_network_automation.ListServiceClassesResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_service_class(
+        self,
+    ) -> Callable[
+        [cross_network_automation.GetServiceClassRequest],
+        Union[
+            cross_network_automation.ServiceClass,
+            Awaitable[cross_network_automation.ServiceClass],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_service_class(
+        self,
+    ) -> Callable[
+        [cross_network_automation.UpdateServiceClassRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()
 
     @property
-    def accept_spoke_update(
+    def delete_service_class(
         self,
     ) -> Callable[
-        [hub.AcceptSpokeUpdateRequest],
+        [cross_network_automation.DeleteServiceClassRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()
 
     @property
-    def reject_spoke_update(
+    def get_service_connection_token(
         self,
     ) -> Callable[
-        [hub.RejectSpokeUpdateRequest],
+        [cross_network_automation.GetServiceConnectionTokenRequest],
+        Union[
+            cross_network_automation.ServiceConnectionToken,
+            Awaitable[cross_network_automation.ServiceConnectionToken],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_service_connection_tokens(
+        self,
+    ) -> Callable[
+        [cross_network_automation.ListServiceConnectionTokensRequest],
+        Union[
+            cross_network_automation.ListServiceConnectionTokensResponse,
+            Awaitable[cross_network_automation.ListServiceConnectionTokensResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_service_connection_token(
+        self,
+    ) -> Callable[
+        [cross_network_automation.CreateServiceConnectionTokenRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()
 
     @property
-    def delete_spoke(
+    def delete_service_connection_token(
         self,
     ) -> Callable[
-        [hub.DeleteSpokeRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def get_route_table(
-        self,
-    ) -> Callable[
-        [hub.GetRouteTableRequest], Union[hub.RouteTable, Awaitable[hub.RouteTable]]
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def get_route(
-        self,
-    ) -> Callable[[hub.GetRouteRequest], Union[hub.Route, Awaitable[hub.Route]]]:
-        raise NotImplementedError()
-
-    @property
-    def list_routes(
-        self,
-    ) -> Callable[
-        [hub.ListRoutesRequest],
-        Union[hub.ListRoutesResponse, Awaitable[hub.ListRoutesResponse]],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def list_route_tables(
-        self,
-    ) -> Callable[
-        [hub.ListRouteTablesRequest],
-        Union[hub.ListRouteTablesResponse, Awaitable[hub.ListRouteTablesResponse]],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def get_group(
-        self,
-    ) -> Callable[[hub.GetGroupRequest], Union[hub.Group, Awaitable[hub.Group]]]:
-        raise NotImplementedError()
-
-    @property
-    def list_groups(
-        self,
-    ) -> Callable[
-        [hub.ListGroupsRequest],
-        Union[hub.ListGroupsResponse, Awaitable[hub.ListGroupsResponse]],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def update_group(
-        self,
-    ) -> Callable[
-        [hub.UpdateGroupRequest],
+        [cross_network_automation.DeleteServiceConnectionTokenRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()
@@ -592,4 +558,4 @@ class HubServiceTransport(abc.ABC):
         raise NotImplementedError()
 
 
-__all__ = ("HubServiceTransport",)
+__all__ = ("CrossNetworkAutomationServiceTransport",)
