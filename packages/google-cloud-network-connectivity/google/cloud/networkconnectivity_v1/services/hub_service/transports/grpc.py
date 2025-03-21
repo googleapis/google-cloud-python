@@ -688,6 +688,60 @@ class HubServiceGrpcTransport(HubServiceTransport):
         return self._stubs["accept_hub_spoke"]
 
     @property
+    def accept_spoke_update(
+        self,
+    ) -> Callable[[hub.AcceptSpokeUpdateRequest], operations_pb2.Operation]:
+        r"""Return a callable for the accept spoke update method over gRPC.
+
+        Accepts a proposal to update a Network Connectivity
+        Center spoke in a hub.
+
+        Returns:
+            Callable[[~.AcceptSpokeUpdateRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "accept_spoke_update" not in self._stubs:
+            self._stubs["accept_spoke_update"] = self._logged_channel.unary_unary(
+                "/google.cloud.networkconnectivity.v1.HubService/AcceptSpokeUpdate",
+                request_serializer=hub.AcceptSpokeUpdateRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["accept_spoke_update"]
+
+    @property
+    def reject_spoke_update(
+        self,
+    ) -> Callable[[hub.RejectSpokeUpdateRequest], operations_pb2.Operation]:
+        r"""Return a callable for the reject spoke update method over gRPC.
+
+        Rejects a proposal to update a Network Connectivity
+        Center spoke in a hub.
+
+        Returns:
+            Callable[[~.RejectSpokeUpdateRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "reject_spoke_update" not in self._stubs:
+            self._stubs["reject_spoke_update"] = self._logged_channel.unary_unary(
+                "/google.cloud.networkconnectivity.v1.HubService/RejectSpokeUpdate",
+                request_serializer=hub.RejectSpokeUpdateRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["reject_spoke_update"]
+
+    @property
     def delete_spoke(
         self,
     ) -> Callable[[hub.DeleteSpokeRequest], operations_pb2.Operation]:

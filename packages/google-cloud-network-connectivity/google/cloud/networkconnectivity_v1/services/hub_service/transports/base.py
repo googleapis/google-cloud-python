@@ -198,6 +198,16 @@ class HubServiceTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.accept_spoke_update: gapic_v1.method.wrap_method(
+                self.accept_spoke_update,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.reject_spoke_update: gapic_v1.method.wrap_method(
+                self.reject_spoke_update,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.delete_spoke: gapic_v1.method.wrap_method(
                 self.delete_spoke,
                 default_timeout=60.0,
@@ -406,6 +416,24 @@ class HubServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [hub.AcceptHubSpokeRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def accept_spoke_update(
+        self,
+    ) -> Callable[
+        [hub.AcceptSpokeUpdateRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def reject_spoke_update(
+        self,
+    ) -> Callable[
+        [hub.RejectSpokeUpdateRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()
