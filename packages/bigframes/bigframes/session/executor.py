@@ -462,7 +462,7 @@ class BigQueryCachingExecutor(Executor):
                 generate_row_count_plan(array_value.node)
             )
             sql = self.compiler.compile(row_count_plan, ordered=False)
-            iter, _ = self._run_execute_query(sql)
+            iter, _ = self._run_execute_query(sql, query_with_job=False)
             return next(iter)[0]
 
     def cached(
