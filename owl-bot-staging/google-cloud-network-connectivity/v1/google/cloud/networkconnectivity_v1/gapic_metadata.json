@@ -1,0 +1,501 @@
+ {
+  "comment": "This file maps proto services/RPCs to the corresponding library clients/methods",
+  "language": "python",
+  "libraryPackage": "google.cloud.networkconnectivity_v1",
+  "protoPackage": "google.cloud.networkconnectivity.v1",
+  "schema": "1.0",
+  "services": {
+    "CrossNetworkAutomationService": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "CrossNetworkAutomationServiceClient",
+          "rpcs": {
+            "CreateServiceConnectionMap": {
+              "methods": [
+                "create_service_connection_map"
+              ]
+            },
+            "CreateServiceConnectionPolicy": {
+              "methods": [
+                "create_service_connection_policy"
+              ]
+            },
+            "CreateServiceConnectionToken": {
+              "methods": [
+                "create_service_connection_token"
+              ]
+            },
+            "DeleteServiceClass": {
+              "methods": [
+                "delete_service_class"
+              ]
+            },
+            "DeleteServiceConnectionMap": {
+              "methods": [
+                "delete_service_connection_map"
+              ]
+            },
+            "DeleteServiceConnectionPolicy": {
+              "methods": [
+                "delete_service_connection_policy"
+              ]
+            },
+            "DeleteServiceConnectionToken": {
+              "methods": [
+                "delete_service_connection_token"
+              ]
+            },
+            "GetServiceClass": {
+              "methods": [
+                "get_service_class"
+              ]
+            },
+            "GetServiceConnectionMap": {
+              "methods": [
+                "get_service_connection_map"
+              ]
+            },
+            "GetServiceConnectionPolicy": {
+              "methods": [
+                "get_service_connection_policy"
+              ]
+            },
+            "GetServiceConnectionToken": {
+              "methods": [
+                "get_service_connection_token"
+              ]
+            },
+            "ListServiceClasses": {
+              "methods": [
+                "list_service_classes"
+              ]
+            },
+            "ListServiceConnectionMaps": {
+              "methods": [
+                "list_service_connection_maps"
+              ]
+            },
+            "ListServiceConnectionPolicies": {
+              "methods": [
+                "list_service_connection_policies"
+              ]
+            },
+            "ListServiceConnectionTokens": {
+              "methods": [
+                "list_service_connection_tokens"
+              ]
+            },
+            "UpdateServiceClass": {
+              "methods": [
+                "update_service_class"
+              ]
+            },
+            "UpdateServiceConnectionMap": {
+              "methods": [
+                "update_service_connection_map"
+              ]
+            },
+            "UpdateServiceConnectionPolicy": {
+              "methods": [
+                "update_service_connection_policy"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "CrossNetworkAutomationServiceAsyncClient",
+          "rpcs": {
+            "CreateServiceConnectionMap": {
+              "methods": [
+                "create_service_connection_map"
+              ]
+            },
+            "CreateServiceConnectionPolicy": {
+              "methods": [
+                "create_service_connection_policy"
+              ]
+            },
+            "CreateServiceConnectionToken": {
+              "methods": [
+                "create_service_connection_token"
+              ]
+            },
+            "DeleteServiceClass": {
+              "methods": [
+                "delete_service_class"
+              ]
+            },
+            "DeleteServiceConnectionMap": {
+              "methods": [
+                "delete_service_connection_map"
+              ]
+            },
+            "DeleteServiceConnectionPolicy": {
+              "methods": [
+                "delete_service_connection_policy"
+              ]
+            },
+            "DeleteServiceConnectionToken": {
+              "methods": [
+                "delete_service_connection_token"
+              ]
+            },
+            "GetServiceClass": {
+              "methods": [
+                "get_service_class"
+              ]
+            },
+            "GetServiceConnectionMap": {
+              "methods": [
+                "get_service_connection_map"
+              ]
+            },
+            "GetServiceConnectionPolicy": {
+              "methods": [
+                "get_service_connection_policy"
+              ]
+            },
+            "GetServiceConnectionToken": {
+              "methods": [
+                "get_service_connection_token"
+              ]
+            },
+            "ListServiceClasses": {
+              "methods": [
+                "list_service_classes"
+              ]
+            },
+            "ListServiceConnectionMaps": {
+              "methods": [
+                "list_service_connection_maps"
+              ]
+            },
+            "ListServiceConnectionPolicies": {
+              "methods": [
+                "list_service_connection_policies"
+              ]
+            },
+            "ListServiceConnectionTokens": {
+              "methods": [
+                "list_service_connection_tokens"
+              ]
+            },
+            "UpdateServiceClass": {
+              "methods": [
+                "update_service_class"
+              ]
+            },
+            "UpdateServiceConnectionMap": {
+              "methods": [
+                "update_service_connection_map"
+              ]
+            },
+            "UpdateServiceConnectionPolicy": {
+              "methods": [
+                "update_service_connection_policy"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "HubService": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "HubServiceClient",
+          "rpcs": {
+            "AcceptHubSpoke": {
+              "methods": [
+                "accept_hub_spoke"
+              ]
+            },
+            "AcceptSpokeUpdate": {
+              "methods": [
+                "accept_spoke_update"
+              ]
+            },
+            "CreateHub": {
+              "methods": [
+                "create_hub"
+              ]
+            },
+            "CreateSpoke": {
+              "methods": [
+                "create_spoke"
+              ]
+            },
+            "DeleteHub": {
+              "methods": [
+                "delete_hub"
+              ]
+            },
+            "DeleteSpoke": {
+              "methods": [
+                "delete_spoke"
+              ]
+            },
+            "GetGroup": {
+              "methods": [
+                "get_group"
+              ]
+            },
+            "GetHub": {
+              "methods": [
+                "get_hub"
+              ]
+            },
+            "GetRoute": {
+              "methods": [
+                "get_route"
+              ]
+            },
+            "GetRouteTable": {
+              "methods": [
+                "get_route_table"
+              ]
+            },
+            "GetSpoke": {
+              "methods": [
+                "get_spoke"
+              ]
+            },
+            "ListGroups": {
+              "methods": [
+                "list_groups"
+              ]
+            },
+            "ListHubSpokes": {
+              "methods": [
+                "list_hub_spokes"
+              ]
+            },
+            "ListHubs": {
+              "methods": [
+                "list_hubs"
+              ]
+            },
+            "ListRouteTables": {
+              "methods": [
+                "list_route_tables"
+              ]
+            },
+            "ListRoutes": {
+              "methods": [
+                "list_routes"
+              ]
+            },
+            "ListSpokes": {
+              "methods": [
+                "list_spokes"
+              ]
+            },
+            "QueryHubStatus": {
+              "methods": [
+                "query_hub_status"
+              ]
+            },
+            "RejectHubSpoke": {
+              "methods": [
+                "reject_hub_spoke"
+              ]
+            },
+            "RejectSpokeUpdate": {
+              "methods": [
+                "reject_spoke_update"
+              ]
+            },
+            "UpdateGroup": {
+              "methods": [
+                "update_group"
+              ]
+            },
+            "UpdateHub": {
+              "methods": [
+                "update_hub"
+              ]
+            },
+            "UpdateSpoke": {
+              "methods": [
+                "update_spoke"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "HubServiceAsyncClient",
+          "rpcs": {
+            "AcceptHubSpoke": {
+              "methods": [
+                "accept_hub_spoke"
+              ]
+            },
+            "AcceptSpokeUpdate": {
+              "methods": [
+                "accept_spoke_update"
+              ]
+            },
+            "CreateHub": {
+              "methods": [
+                "create_hub"
+              ]
+            },
+            "CreateSpoke": {
+              "methods": [
+                "create_spoke"
+              ]
+            },
+            "DeleteHub": {
+              "methods": [
+                "delete_hub"
+              ]
+            },
+            "DeleteSpoke": {
+              "methods": [
+                "delete_spoke"
+              ]
+            },
+            "GetGroup": {
+              "methods": [
+                "get_group"
+              ]
+            },
+            "GetHub": {
+              "methods": [
+                "get_hub"
+              ]
+            },
+            "GetRoute": {
+              "methods": [
+                "get_route"
+              ]
+            },
+            "GetRouteTable": {
+              "methods": [
+                "get_route_table"
+              ]
+            },
+            "GetSpoke": {
+              "methods": [
+                "get_spoke"
+              ]
+            },
+            "ListGroups": {
+              "methods": [
+                "list_groups"
+              ]
+            },
+            "ListHubSpokes": {
+              "methods": [
+                "list_hub_spokes"
+              ]
+            },
+            "ListHubs": {
+              "methods": [
+                "list_hubs"
+              ]
+            },
+            "ListRouteTables": {
+              "methods": [
+                "list_route_tables"
+              ]
+            },
+            "ListRoutes": {
+              "methods": [
+                "list_routes"
+              ]
+            },
+            "ListSpokes": {
+              "methods": [
+                "list_spokes"
+              ]
+            },
+            "QueryHubStatus": {
+              "methods": [
+                "query_hub_status"
+              ]
+            },
+            "RejectHubSpoke": {
+              "methods": [
+                "reject_hub_spoke"
+              ]
+            },
+            "RejectSpokeUpdate": {
+              "methods": [
+                "reject_spoke_update"
+              ]
+            },
+            "UpdateGroup": {
+              "methods": [
+                "update_group"
+              ]
+            },
+            "UpdateHub": {
+              "methods": [
+                "update_hub"
+              ]
+            },
+            "UpdateSpoke": {
+              "methods": [
+                "update_spoke"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "PolicyBasedRoutingService": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "PolicyBasedRoutingServiceClient",
+          "rpcs": {
+            "CreatePolicyBasedRoute": {
+              "methods": [
+                "create_policy_based_route"
+              ]
+            },
+            "DeletePolicyBasedRoute": {
+              "methods": [
+                "delete_policy_based_route"
+              ]
+            },
+            "GetPolicyBasedRoute": {
+              "methods": [
+                "get_policy_based_route"
+              ]
+            },
+            "ListPolicyBasedRoutes": {
+              "methods": [
+                "list_policy_based_routes"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "PolicyBasedRoutingServiceAsyncClient",
+          "rpcs": {
+            "CreatePolicyBasedRoute": {
+              "methods": [
+                "create_policy_based_route"
+              ]
+            },
+            "DeletePolicyBasedRoute": {
+              "methods": [
+                "delete_policy_based_route"
+              ]
+            },
+            "GetPolicyBasedRoute": {
+              "methods": [
+                "get_policy_based_route"
+              ]
+            },
+            "ListPolicyBasedRoutes": {
+              "methods": [
+                "list_policy_based_routes"
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}
