@@ -37,13 +37,16 @@ geo_st_boundary_op = base_ops.create_unary_op(
     ),
 )
 
+geo_st_difference_op = base_ops.create_binary_op(
+    name="geo_st_difference", type_signature=op_typing.BinaryGeo()
+)
+
 geo_st_geogfromtext_op = base_ops.create_unary_op(
     name="geo_st_geogfromtext",
     type_signature=op_typing.FixedOutputType(
         dtypes.is_string_like, dtypes.GEO_DTYPE, description="string-like"
     ),
 )
-
 
 geo_st_geogpoint_op = base_ops.create_binary_op(
     name="geo_st_geogpoint", type_signature=op_typing.BinaryNumericGeo()

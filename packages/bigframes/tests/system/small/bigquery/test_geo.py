@@ -14,7 +14,12 @@
 
 import geopandas  # type: ignore
 import pandas as pd
-from shapely.geometry import LineString, Point, Polygon  # type: ignore
+from shapely.geometry import (  # type: ignore
+    GeometryCollection,
+    LineString,
+    Point,
+    Polygon,
+)
 
 import bigframes.bigquery as bbq
 import bigframes.geopandas
@@ -51,3 +56,92 @@ def test_geo_st_area():
         check_exact=False,
         rtol=1,
     )
+
+
+def test_geo_st_difference_with_geometry_objects():
+    data1 = [
+        Polygon([(0, 0), (10, 0), (10, 10), (0, 0)]),
+        Polygon([(0, 0), (1, 1), (0, 1), (0, 0)]),
+        Point(0, 1),
+    ]
+
+    data2 = [
+        Polygon([(0, 0), (10, 0), (10, 10), (0, 0)]),
+        Polygon([(0, 0), (1, 1), (0, 1), (0, 0)]),
+        LineString([(2, 0), (0, 2)]),
+    ]
+
+    geobf_s1 = bigframes.geopandas.GeoSeries(data=data1)
+    geobf_s2 = bigframes.geopandas.GeoSeries(data=data2)
+    geobf_s_result = bbq.st_difference(geobf_s1, geobf_s2).to_pandas()
+
+    expected = bigframes.series.Series(
+        [
+            GeometryCollection([]),
+            GeometryCollection([]),
+            Point(0, 1),
+        ],
+        index=[0, 1, 2],
+        dtype=geopandas.array.GeometryDtype(),
+    ).to_pandas()
+
+    assert geobf_s_result.dtype == "geometry"
+    assert expected.iloc[0].equals(geobf_s_result.iloc[0])
+    assert expected.iloc[1].equals(geobf_s_result.iloc[1])
+    assert expected.iloc[2].equals(geobf_s_result.iloc[2])
+
+
+def test_geo_st_difference_with_single_geometry_object():
+    data1 = [
+        Polygon([(0, 0), (10, 0), (10, 10), (0, 0)]),
+        Polygon([(4, 2), (6, 2), (8, 6), (4, 2)]),
+        Point(0, 1),
+    ]
+
+    geobf_s1 = bigframes.geopandas.GeoSeries(data=data1)
+    geobf_s_result = bbq.st_difference(
+        geobf_s1,
+        bigframes.geopandas.GeoSeries(
+            [
+                Polygon([(0, 0), (10, 0), (10, 10), (0, 0)]),
+                Polygon([(1, 0), (0, 5), (0, 0), (1, 0)]),
+            ]
+        ),
+    ).to_pandas()
+
+    expected = bigframes.series.Series(
+        [
+            GeometryCollection([]),
+            Polygon([(4, 2), (6, 2), (8, 6), (4, 2)]),
+            None,
+        ],
+        index=[0, 1, 2],
+        dtype=geopandas.array.GeometryDtype(),
+    ).to_pandas()
+
+    assert geobf_s_result.dtype == "geometry"
+    assert (expected.iloc[0]).equals(geobf_s_result.iloc[0])
+    assert expected.iloc[1] == geobf_s_result.iloc[1]
+    assert expected.iloc[2] == geobf_s_result.iloc[2]
+
+
+def test_geo_st_difference_with_similar_geometry_objects():
+    data1 = [
+        Polygon([(0, 0), (10, 0), (10, 10), (0, 0)]),
+        Polygon([(0, 0), (1, 1), (0, 1)]),
+        Point(0, 1),
+    ]
+
+    geobf_s1 = bigframes.geopandas.GeoSeries(data=data1)
+    geobf_s_result = bbq.st_difference(geobf_s1, geobf_s1).to_pandas()
+
+    expected = bigframes.series.Series(
+        [GeometryCollection([]), GeometryCollection([]), GeometryCollection([])],
+        index=[0, 1, 2],
+        dtype=geopandas.array.GeometryDtype(),
+    ).to_pandas()
+
+    assert geobf_s_result.dtype == "geometry"
+    assert expected.iloc[0].equals(geobf_s_result.iloc[0])
+    assert expected.iloc[1].equals(geobf_s_result.iloc[1])
+    assert expected.iloc[2].equals(geobf_s_result.iloc[2])

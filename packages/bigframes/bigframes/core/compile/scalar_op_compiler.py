@@ -1001,11 +1001,6 @@ def normalize_op_impl(x: ibis_types.Value):
 
 
 # Geo Ops
-@scalar_op_compiler.register_unary_op(ops.geo_st_boundary_op, pass_op=False)
-def geo_st_boundary_op_impl(x: ibis_types.Value):
-    return st_boundary(x)
-
-
 @scalar_op_compiler.register_unary_op(ops.geo_area_op)
 def geo_area_op_impl(x: ibis_types.Value):
     return typing.cast(ibis_types.GeoSpatialValue, x).area()
@@ -1014,6 +1009,18 @@ def geo_area_op_impl(x: ibis_types.Value):
 @scalar_op_compiler.register_unary_op(ops.geo_st_astext_op)
 def geo_st_astext_op_impl(x: ibis_types.Value):
     return typing.cast(ibis_types.GeoSpatialValue, x).as_text()
+
+
+@scalar_op_compiler.register_unary_op(ops.geo_st_boundary_op, pass_op=False)
+def geo_st_boundary_op_impl(x: ibis_types.Value):
+    return st_boundary(x)
+
+
+@scalar_op_compiler.register_binary_op(ops.geo_st_difference_op, pass_op=False)
+def geo_st_difference_op_impl(x: ibis_types.Value, y: ibis_types.Value):
+    return typing.cast(ibis_types.GeoSpatialValue, x).difference(
+        typing.cast(ibis_types.GeoSpatialValue, y)
+    )
 
 
 @scalar_op_compiler.register_unary_op(ops.geo_st_geogfromtext_op)

@@ -20,7 +20,12 @@ from geopandas.array import GeometryDtype  # type:ignore
 import google.api_core.exceptions
 import pandas as pd
 import pytest
-from shapely.geometry import LineString, Point, Polygon  # type: ignore
+from shapely.geometry import (  # type: ignore
+    GeometryCollection,
+    LineString,
+    Point,
+    Polygon,
+)
 
 import bigframes.geopandas
 import bigframes.series
@@ -194,3 +199,93 @@ def test_geo_boundary():
         check_series_type=False,
         check_index=False,
     )
+
+
+# the GeoSeries and GeoPandas results are not always the same.
+# For example, when the difference between two polygons is empty,
+# GeoPandas returns 'POLYGON EMPTY' while GeoSeries returns 'GeometryCollection([])'.
+# This is why we are hard-coding the expected results.
+def test_geo_difference_with_geometry_objects():
+    data1 = [
+        Polygon([(0, 0), (10, 0), (10, 10), (0, 0)]),
+        Polygon([(0, 0), (1, 1), (0, 1), (0, 0)]),
+        Point(0, 1),
+    ]
+
+    data2 = [
+        Polygon([(0, 0), (10, 0), (10, 10), (0, 0)]),
+        Polygon([(0, 0), (1, 1), (0, 1), (0, 0)]),
+        LineString([(2, 0), (0, 2)]),
+    ]
+
+    bf_s1 = bigframes.geopandas.GeoSeries(data=data1)
+    bf_s2 = bigframes.geopandas.GeoSeries(data=data2)
+
+    bf_result = bf_s1.difference(bf_s2).to_pandas()
+
+    expected = bigframes.geopandas.GeoSeries(
+        [
+            Polygon([]),
+            Polygon([]),
+            Point(0, 1),
+        ],
+        index=[0, 1, 2],
+    ).to_pandas()
+
+    assert bf_result.dtype == "geometry"
+    assert expected.iloc[0].equals(bf_result.iloc[0])
+    assert expected.iloc[1].equals(bf_result.iloc[1])
+    assert expected.iloc[2].equals(bf_result.iloc[2])
+
+
+def test_geo_difference_with_single_geometry_object():
+    data1 = [
+        Polygon([(0, 0), (10, 0), (10, 10), (0, 0)]),
+        Polygon([(4, 2), (6, 2), (8, 6), (4, 2)]),
+        Point(0, 1),
+    ]
+
+    bf_s1 = bigframes.geopandas.GeoSeries(data=data1)
+    bf_result = bf_s1.difference(
+        bigframes.geopandas.GeoSeries(
+            [
+                Polygon([(0, 0), (10, 0), (10, 10), (0, 0)]),
+                Polygon([(1, 0), (0, 5), (0, 0), (1, 0)]),
+            ]
+        ),
+    ).to_pandas()
+
+    expected = bigframes.geopandas.GeoSeries(
+        [
+            GeometryCollection([]),
+            Polygon([(4, 2), (6, 2), (8, 6), (4, 2)]),
+            None,
+        ],
+        index=[0, 1, 2],
+    ).to_pandas()
+
+    assert bf_result.dtype == "geometry"
+    assert (expected.iloc[0]).equals(bf_result.iloc[0])
+    assert expected.iloc[1] == bf_result.iloc[1]
+    assert expected.iloc[2] == bf_result.iloc[2]
+
+
+def test_geo_difference_with_similar_geometry_objects():
+    data1 = [
+        Polygon([(0, 0), (10, 0), (10, 10), (0, 0)]),
+        Polygon([(0, 0), (1, 1), (0, 1)]),
+        Point(0, 1),
+    ]
+
+    bf_s1 = bigframes.geopandas.GeoSeries(data=data1)
+    bf_result = bf_s1.difference(bf_s1).to_pandas()
+
+    expected = bigframes.geopandas.GeoSeries(
+        [GeometryCollection([]), GeometryCollection([]), GeometryCollection([])],
+        index=[0, 1, 2],
+    ).to_pandas()
+
+    assert bf_result.dtype == "geometry"
+    assert expected.iloc[0].equals(bf_result.iloc[0])
+    assert expected.iloc[1].equals(bf_result.iloc[1])
+    assert expected.iloc[2].equals(bf_result.iloc[2])

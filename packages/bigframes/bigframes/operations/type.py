@@ -122,6 +122,20 @@ class BinaryNumeric(BinaryTypeSignature):
 
 
 @dataclasses.dataclass
+@dataclasses.dataclass
+class BinaryGeo(BinaryTypeSignature):
+    """Type signature for geo functions like difference that can map geo to geo."""
+
+    def output_type(
+        self, left_type: ExpressionType, right_type: ExpressionType
+    ) -> ExpressionType:
+        if (left_type is not None) and not bigframes.dtypes.is_geo_like(left_type):
+            raise TypeError(f"Type {left_type} is not geo")
+        if (right_type is not None) and not bigframes.dtypes.is_geo_like(right_type):
+            raise TypeError(f"Type {right_type} is not numeric")
+        return bigframes.dtypes.GEO_DTYPE
+
+
 class BinaryNumericGeo(BinaryTypeSignature):
     """Type signature for geo functions like from_xy that can map ints to ints."""
 

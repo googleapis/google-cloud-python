@@ -62,7 +62,7 @@ class GeoSeries(vendored_geoseries.GeoSeries, bigframes.series.Series):
 
         Raises:
             NotImplementedError:
-                GeoSeries.area is not supported. Use bigframes.bigquery.st_area(series), insetead.
+                GeoSeries.area is not supported. Use bigframes.bigquery.st_area(series), instead.
         """
         raise NotImplementedError(
             f"GeoSeries.area is not supported. Use bigframes.bigquery.st_area(series), instead. {constants.FEEDBACK_LINK}"
@@ -93,3 +93,6 @@ class GeoSeries(vendored_geoseries.GeoSeries, bigframes.series.Series):
         series = self._apply_unary_op(ops.geo_st_astext_op)
         series.name = None
         return series
+
+    def difference(self: GeoSeries, other: GeoSeries) -> bigframes.series.Series:  # type: ignore
+        return self._apply_binary_op(other, ops.geo_st_difference_op)

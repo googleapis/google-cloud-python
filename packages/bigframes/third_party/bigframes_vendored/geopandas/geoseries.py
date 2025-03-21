@@ -239,3 +239,116 @@ class GeoSeries:
                 WKT representations of the geometries.
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
+    def difference(self: GeoSeries, other: GeoSeries) -> GeoSeries:  # type: ignore
+        """
+            Returns a GeoSeries of the points in each aligned geometry that are not
+            in other.
+
+            The operation works on a 1-to-1 row-wise manner
+
+        **Examples:**
+
+            >>> import bigframes as bpd
+            >>> import bigframes.geopandas
+            >>> from shapely.geometry import Polygon, LineString, Point
+            >>> bpd.options.display.progress_bar = None
+
+        We can check two GeoSeries against each other, row by row.
+
+            >>> s1 = bigframes.geopandas.GeoSeries(
+            ...    [
+            ...        Polygon([(0, 0), (2, 2), (0, 2)]),
+            ...        Polygon([(0, 0), (2, 2), (0, 2)]),
+            ...        LineString([(0, 0), (2, 2)]),
+            ...        LineString([(2, 0), (0, 2)]),
+            ...        Point(0, 1),
+            ...    ],
+            ... )
+            >>> s2 = bigframes.geopandas.GeoSeries(
+            ...    [
+            ...        Polygon([(0, 0), (1, 1), (0, 1)]),
+            ...        LineString([(1, 0), (1, 3)]),
+            ...        LineString([(2, 0), (0, 2)]),
+            ...        Point(1, 1),
+            ...        Point(0, 1),
+            ...    ],
+            ...    index=range(1, 6),
+            ... )
+
+            >>> s1
+            0    POLYGON ((0 0, 2 2, 0 2, 0 0))
+            1    POLYGON ((0 0, 2 2, 0 2, 0 0))
+            2             LINESTRING (0 0, 2 2)
+            3             LINESTRING (2 0, 0 2)
+            4                       POINT (0 1)
+            dtype: geometry
+
+            >>> s2
+            1    POLYGON ((0 0, 1 1, 0 1, 0 0))
+            2             LINESTRING (1 0, 1 3)
+            3             LINESTRING (2 0, 0 2)
+            4                       POINT (1 1)
+            5                       POINT (0 1)
+            dtype: geometry
+
+            >>> s1.difference(s2)
+            0                                               None
+            1    POLYGON ((0.99954 1, 2 2, 0 2, 0 1, 0.99954 1))
+            2                   LINESTRING (0 0, 1 1.00046, 2 2)
+            3                           GEOMETRYCOLLECTION EMPTY
+            4                                        POINT (0 1)
+            5                                               None
+            dtype: geometry
+
+        We can also check difference of single shapely geometries:
+
+            >>> sbq1 = bigframes.geopandas.GeoSeries(
+            ...     [
+            ...         Polygon([(0, 0), (10, 0), (10, 10), (0, 0)])
+            ...     ]
+            ... )
+            >>> sbq2 = bigframes.geopandas.GeoSeries(
+            ...     [
+            ...         Polygon([(4, 2), (6, 2), (8, 6), (4, 2)])
+            ...     ]
+            ... )
+
+            >>> sbq1
+            0    POLYGON ((0 0, 10 0, 10 10, 0 0))
+            dtype: geometry
+
+            >>> sbq2
+            0    POLYGON ((4 2, 6 2, 8 6, 4 2))
+            dtype: geometry
+
+            >>> sbq1.difference(sbq2)
+            0    POLYGON ((0 0, 10 0, 10 10, 0 0), (8 6, 6 2, 4...
+            dtype: geometry
+
+        Additionally, we can check difference of a GeoSeries against a single shapely geometry:
+
+            >>> s1.difference(sbq2)
+            0    POLYGON ((0 0, 2 2, 0 2, 0 0))
+            1                              None
+            2                              None
+            3                              None
+            4                              None
+            dtype: geometry
+
+            Args:
+                other (GeoSeries or geometric object):
+                    The GeoSeries (elementwise) or geometric object to find the
+                    difference to.
+
+            Returns:
+                bigframes.geopandas.GeoSeries:
+                    A GeoSeries of the points in each aligned geometry that are not
+                    in other.
+
+            Raises:
+                NotImplementedError:
+                    GeoSeries.difference is not supported. Use
+                    bigframes.bigquery.st_difference(series), instead.
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
