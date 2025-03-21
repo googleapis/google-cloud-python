@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.17.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-orchestration-airflow-v1.17.2...google-cloud-orchestration-airflow-v1.17.3) (2025-03-21)
+
+
+### Documentation
+
+* [google-cloud-orchestration-airflow] fix typo in comments ([#13697](https://github.com/googleapis/google-cloud-python/issues/13697)) ([6e93528](https://github.com/googleapis/google-cloud-python/commit/6e93528463490369fc9701a35b7a30e5e66a0291))
+
 ## [1.17.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-orchestration-airflow-v1.17.1...google-cloud-orchestration-airflow-v1.17.2) (2025-03-19)
 
 
