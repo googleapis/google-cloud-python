@@ -68,7 +68,9 @@ class TransformFunction:
 
     def _create_udf(self):
         """Create Python UDF in BQ. Return name of the UDF."""
-        udf_name = str(self._session._loader._storage_manager._random_table())
+        udf_name = str(
+            self._session._loader._storage_manager.generate_unique_resource_id()
+        )
 
         func_body = inspect.getsource(self._func)
         func_name = self._func.__name__

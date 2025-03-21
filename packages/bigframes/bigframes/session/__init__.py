@@ -248,7 +248,7 @@ class Session(
         self._metrics = bigframes.session.metrics.ExecutionMetrics()
         self._function_session = bff_session.FunctionSession()
         self._temp_storage_manager = (
-            bigframes.session.temp_storage.TemporaryGbqStorageManager(
+            bigframes.session.temp_storage.AnonymousDatasetManager(
                 self._clients_provider.bqclient,
                 location=self._location,
                 session_id=self._session_id,
@@ -908,7 +908,7 @@ class Session(
             engine=engine,
             write_engine=write_engine,
         )
-        table = self._temp_storage_manager._random_table()
+        table = self._temp_storage_manager.allocate_temp_table()
 
         if engine is not None and engine == "bigquery":
             if any(param is not None for param in (dtype, names)):
@@ -1054,7 +1054,7 @@ class Session(
             engine=engine,
             write_engine=write_engine,
         )
-        table = self._temp_storage_manager._random_table()
+        table = self._temp_storage_manager.allocate_temp_table()
 
         if engine == "bigquery":
             job_config = bigquery.LoadJobConfig()
@@ -1108,7 +1108,7 @@ class Session(
             engine=engine,
             write_engine=write_engine,
         )
-        table = self._temp_storage_manager._random_table()
+        table = self._temp_storage_manager.allocate_temp_table()
 
         if engine == "bigquery":
 
@@ -1704,7 +1704,7 @@ class Session(
 
     def _create_object_table(self, path: str, connection: str) -> str:
         """Create a random id Object Table from the input path and connection."""
-        table = str(self._loader._storage_manager._random_table())
+        table = str(self._loader._storage_manager.generate_unique_resource_id())
 
         import textwrap
 

@@ -24,7 +24,7 @@ import bigframes.session._io.bigquery as bf_io_bigquery
 _TEMP_TABLE_ID_FORMAT = "bqdf{date}_{session_id}_{random_id}"
 
 
-class TemporaryGbqStorageManager:
+class AnonymousDatasetManager:
     """
     Responsible for allocating and cleaning up temporary gbq tables used by a BigFrames session.
     """
@@ -46,20 +46,22 @@ class TemporaryGbqStorageManager:
         )
 
         self.session_id = session_id
-        self._table_ids: List[str] = []
+        self._table_ids: List[bigquery.TableReference] = []
         self._kms_key = kms_key
 
-    def create_temp_table(
+    def allocate_and_create_temp_table(
         self, schema: Sequence[bigquery.SchemaField], cluster_cols: Sequence[str]
     ) -> bigquery.TableReference:
-        # Can't set a table in _SESSION as destination via query job API, so we
-        # run DDL, instead.
+        """
+        Allocates and and creates a table in the anonymous dataset.
+        The table will be cleaned up by clean_up_tables.
+        """
         expiration = (
             datetime.datetime.now(datetime.timezone.utc) + constants.DEFAULT_EXPIRATION
         )
         table = bf_io_bigquery.create_temp_table(
             self.bqclient,
-            self._random_table(),
+            self.allocate_temp_table(),
             expiration,
             schema=schema,
             cluster_columns=list(cluster_cols),
@@ -67,11 +69,19 @@ class TemporaryGbqStorageManager:
         )
         return bigquery.TableReference.from_string(table)
 
-    def _random_table(self, skip_cleanup: bool = False) -> bigquery.TableReference:
+    def allocate_temp_table(self) -> bigquery.TableReference:
+        """
+        Allocates a unique table id, but does not create the table.
+        The table will be cleaned up by clean_up_tables.
+        """
+        table_id = self.generate_unique_resource_id()
+        self._table_ids.append(table_id)
+        return table_id
+
+    def generate_unique_resource_id(self) -> bigquery.TableReference:
         """Generate a random table ID with BigQuery DataFrames prefix.
 
-        The generated ID will be stored and checked for deletion when the
-        session is closed, unless skip_cleanup is True.
+        This resource will not be cleaned up by this manager.
 
         Args:
             skip_cleanup (bool, default False):
@@ -87,16 +97,9 @@ class TemporaryGbqStorageManager:
         table_id = _TEMP_TABLE_ID_FORMAT.format(
             date=now.strftime("%Y%m%d"), session_id=self.session_id, random_id=random_id
         )
-        if not skip_cleanup:
-            self._table_ids.append(table_id)
         return self.dataset.table(table_id)
 
     def clean_up_tables(self):
         """Delete tables that were created with this session's session_id."""
-        client = self.bqclient
-        project_id = self.dataset.project
-        dataset_id = self.dataset.dataset_id
-
-        for table_id in self._table_ids:
-            full_id = ".".join([project_id, dataset_id, table_id])
-            client.delete_table(full_id, not_found_ok=True)
+        for table_ref in self._table_ids:
+            self.bqclient.delete_table(table_ref, not_found_ok=True)

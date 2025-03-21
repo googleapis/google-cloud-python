@@ -115,7 +115,7 @@ class GbqDataLoader:
         self,
         session: bigframes.session.Session,
         bqclient: bigquery.Client,
-        storage_manager: bigframes.session.temp_storage.TemporaryGbqStorageManager,
+        storage_manager: bigframes.session.temp_storage.AnonymousDatasetManager,
         default_index_type: bigframes.enums.DefaultIndexKind,
         scan_index_uniqueness: bool,
         force_total_order: bool,
@@ -167,7 +167,7 @@ class GbqDataLoader:
 
         job_config.labels = {"bigframes-api": api_name}
 
-        load_table_destination = self._storage_manager._random_table()
+        load_table_destination = self._storage_manager.allocate_temp_table()
         load_job = self._bqclient.load_table_from_dataframe(
             pandas_dataframe_copy,
             load_table_destination,
@@ -216,7 +216,7 @@ class GbqDataLoader:
             index=True,
         )
 
-        destination = self._storage_manager.create_temp_table(
+        destination = self._storage_manager.allocate_and_create_temp_table(
             schema,
             [ordering_col],
         )
@@ -673,7 +673,9 @@ class GbqDataLoader:
             )
         else:
             cluster_cols = []
-        temp_table = self._storage_manager.create_temp_table(schema, cluster_cols)
+        temp_table = self._storage_manager.allocate_and_create_temp_table(
+            schema, cluster_cols
+        )
 
         timeout_ms = configuration.get("jobTimeoutMs") or configuration["query"].get(
             "timeoutMs"

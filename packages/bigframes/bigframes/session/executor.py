@@ -195,7 +195,7 @@ class BigQueryCachingExecutor(Executor):
     def __init__(
         self,
         bqclient: bigquery.Client,
-        storage_manager: bigframes.session.temp_storage.TemporaryGbqStorageManager,
+        storage_manager: bigframes.session.temp_storage.AnonymousDatasetManager,
         bqstoragereadclient: google.cloud.bigquery_storage_v1.BigQueryReadClient,
         *,
         strictly_ordered: bool = True,
@@ -248,7 +248,7 @@ class BigQueryCachingExecutor(Executor):
         job_config = bigquery.QueryJobConfig()
         # Use explicit destination to avoid 10GB limit of temporary table
         if use_explicit_destination:
-            destination_table = self.storage_manager.create_temp_table(
+            destination_table = self.storage_manager.allocate_and_create_temp_table(
                 array_value.schema.to_bigquery(), cluster_cols=[]
             )
             job_config.destination = destination_table
@@ -392,7 +392,7 @@ class BigQueryCachingExecutor(Executor):
         job_config = bigquery.QueryJobConfig()
         # Use explicit destination to avoid 10GB limit of temporary table
         if use_explicit_destination:
-            destination_table = self.storage_manager.create_temp_table(
+            destination_table = self.storage_manager.allocate_and_create_temp_table(
                 array_value.schema.to_bigquery(), cluster_cols=[]
             )
             job_config.destination = destination_table
@@ -645,7 +645,9 @@ class BigQueryCachingExecutor(Executor):
         cluster_cols: Sequence[str],
     ) -> bigquery.TableReference:
         assert len(cluster_cols) <= _MAX_CLUSTER_COLUMNS
-        temp_table = self.storage_manager.create_temp_table(schema, cluster_cols)
+        temp_table = self.storage_manager.allocate_and_create_temp_table(
+            schema, cluster_cols
+        )
 
         # TODO: Get default job config settings
         job_config = cast(

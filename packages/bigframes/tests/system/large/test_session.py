@@ -14,6 +14,7 @@
 
 import datetime
 
+import google.cloud.bigquery as bigquery
 import google.cloud.exceptions
 import pytest
 
@@ -70,10 +71,14 @@ def test_close(session: bigframes.Session):
         + bigframes.constants.DEFAULT_EXPIRATION
     )
     full_id_1 = bigframes.session._io.bigquery.create_temp_table(
-        session.bqclient, session._temp_storage_manager._random_table(), expiration
+        session.bqclient,
+        session._temp_storage_manager.allocate_temp_table(),
+        expiration,
     )
     full_id_2 = bigframes.session._io.bigquery.create_temp_table(
-        session.bqclient, session._temp_storage_manager._random_table(), expiration
+        session.bqclient,
+        session._temp_storage_manager.allocate_temp_table(),
+        expiration,
     )
 
     # check that the tables were actually created
@@ -106,10 +111,14 @@ def test_clean_up_by_session_id():
         + bigframes.constants.DEFAULT_EXPIRATION
     )
     bigframes.session._io.bigquery.create_temp_table(
-        session.bqclient, session._temp_storage_manager._random_table(), expiration
+        session.bqclient,
+        session._temp_storage_manager.allocate_temp_table(),
+        expiration,
     )
     bigframes.session._io.bigquery.create_temp_table(
-        session.bqclient, session._temp_storage_manager._random_table(), expiration
+        session.bqclient,
+        session._temp_storage_manager.allocate_temp_table(),
+        expiration,
     )
 
     # check that some table exists with the expected session_id
@@ -148,15 +157,11 @@ def test_clean_up_via_context_manager(session_creator):
     with session_creator() as session:
         bqclient = session.bqclient
 
-        expiration = (
-            datetime.datetime.now(datetime.timezone.utc)
-            + bigframes.constants.DEFAULT_EXPIRATION
+        full_id_1 = session._temp_storage_manager.allocate_and_create_temp_table(
+            [bigquery.SchemaField("a", "INT64")], cluster_cols=[]
         )
-        full_id_1 = bigframes.session._io.bigquery.create_temp_table(
-            session.bqclient, session._temp_storage_manager._random_table(), expiration
-        )
-        full_id_2 = bigframes.session._io.bigquery.create_temp_table(
-            session.bqclient, session._temp_storage_manager._random_table(), expiration
+        full_id_2 = session._temp_storage_manager.allocate_and_create_temp_table(
+            [bigquery.SchemaField("b", "STRING")], cluster_cols=["b"]
         )
 
         # check that the tables were actually created
