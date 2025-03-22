@@ -42,6 +42,7 @@ class AssetServiceTransport(abc.ABC):
     )
 
     DEFAULT_HOST: str = 'cloudasset.googleapis.com'
+
     def __init__(
             self, *,
             host: str = DEFAULT_HOST,

@@ -42,6 +42,7 @@ class CloudRedisTransport(abc.ABC):
     )
 
     DEFAULT_HOST: str = 'redis.googleapis.com'
+
     def __init__(
             self, *,
             host: str = DEFAULT_HOST,

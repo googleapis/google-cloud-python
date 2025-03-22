@@ -45,6 +45,7 @@ class ConfigServiceV2Transport(abc.ABC):
     )
 
     DEFAULT_HOST: str = 'logging.googleapis.com'
+
     def __init__(
             self, *,
             host: str = DEFAULT_HOST,

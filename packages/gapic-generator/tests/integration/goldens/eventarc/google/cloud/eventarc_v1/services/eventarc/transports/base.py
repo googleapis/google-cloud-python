@@ -50,6 +50,7 @@ class EventarcTransport(abc.ABC):
     )
 
     DEFAULT_HOST: str = 'eventarc.googleapis.com'
+
     def __init__(
             self, *,
             host: str = DEFAULT_HOST,

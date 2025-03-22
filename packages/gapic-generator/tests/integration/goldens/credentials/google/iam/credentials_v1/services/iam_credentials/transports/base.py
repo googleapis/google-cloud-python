@@ -39,6 +39,7 @@ class IAMCredentialsTransport(abc.ABC):
     )
 
     DEFAULT_HOST: str = 'iamcredentials.googleapis.com'
+
     def __init__(
             self, *,
             host: str = DEFAULT_HOST,
