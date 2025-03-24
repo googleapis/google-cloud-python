@@ -1318,6 +1318,61 @@ def test__set_pb_meaning_w_value_unset(orig_meaning):
     assert value_pb.meaning == orig_meaning
 
 
+def test__set_pb_meaning_w_list_and_single_value():
+    """
+    v2.20.2 uses a tuple to represent list meanings (https://github.com/googleapis/python-datastore/pull/575)
+
+    This check ensures _set_pb_meaning_from_entity is backwards
+    compatible with the old meaning style, still used by python-ndb
+    """
+    from google.cloud.datastore_v1.types import entity as entity_pb2
+    from google.cloud.datastore.helpers import _set_pb_meaning_from_entity
+    from google.cloud.datastore.entity import Entity
+
+    orig_root_meaning = 1
+    updated_meaning = 22
+    orig_pb = entity_pb2.Entity()
+    value_pb = orig_pb._pb.properties.get_or_create("value")
+    value_pb.meaning = orig_root_meaning
+    sub_value_pb1 = value_pb.array_value.values.add()
+    sub_value_pb2 = value_pb.array_value.values.add()
+
+    entity = Entity(key="key")
+    entity._meanings = {"value": (updated_meaning, None)}
+    _set_pb_meaning_from_entity(entity, "value", None, value_pb, is_list=True)
+    assert value_pb.meaning == orig_root_meaning
+    assert sub_value_pb1.meaning == updated_meaning
+    assert sub_value_pb2.meaning == updated_meaning
+
+
+def test__set_pb_meaning_w_list_and_list():
+    """
+    v2.20.2 uses a tuple to represent list meanings (https://github.com/googleapis/python-datastore/pull/575)
+
+    This check ensures _set_pb_meaning_from_entity is backwards
+    compatible with the old meaning style, still used by python-ndb
+    """
+    from google.cloud.datastore_v1.types import entity as entity_pb2
+    from google.cloud.datastore.helpers import _set_pb_meaning_from_entity
+    from google.cloud.datastore.entity import Entity
+
+    orig_root_meaning = 1
+    updated_meaning_1 = 12
+    updated_meaning_2 = 4
+    orig_pb = entity_pb2.Entity()
+    value_pb = orig_pb._pb.properties.get_or_create("value")
+    value_pb.meaning = orig_root_meaning
+    sub_value_pb1 = value_pb.array_value.values.add()
+    sub_value_pb2 = value_pb.array_value.values.add()
+
+    entity = Entity(key="key")
+    entity._meanings = {"value": ([updated_meaning_1, updated_meaning_2], None)}
+    _set_pb_meaning_from_entity(entity, "value", None, value_pb, is_list=True)
+    assert value_pb.meaning == orig_root_meaning
+    assert sub_value_pb1.meaning == updated_meaning_1
+    assert sub_value_pb2.meaning == updated_meaning_2
+
+
 def test__array_w_meaning_end_to_end():
     """
     Test proto->entity->proto with an array with a meaning field
