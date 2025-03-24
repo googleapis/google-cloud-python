@@ -72,7 +72,7 @@ def test_managed_function_multiply_with_ibis(
         )
     finally:
         # clean up the gcp assets created for the managed function.
-        cleanup_function_assets(multiply, bigquery_client)
+        cleanup_function_assets(multiply, bigquery_client, ignore_failures=False)
 
 
 def test_managed_function_stringify_with_ibis(
@@ -118,7 +118,7 @@ def test_managed_function_stringify_with_ibis(
         )
     finally:
         # clean up the gcp assets created for the managed function.
-        cleanup_function_assets(stringify, bigquery_client)
+        cleanup_function_assets(stringify, bigquery_client, ignore_failures=False)
 
 
 @pytest.mark.parametrize(
@@ -167,7 +167,7 @@ def test_managed_function_array_output(session, scalars_dfs, dataset_id, array_d
 
     finally:
         # Clean up the gcp assets created for the managed function.
-        cleanup_function_assets(featurize, session.bqclient)
+        cleanup_function_assets(featurize, session.bqclient, ignore_failures=False)
 
 
 @pytest.mark.parametrize(
@@ -234,7 +234,7 @@ def test_managed_function_series_apply(
         pandas.testing.assert_frame_equal(bf_result_gbq, pd_result, check_dtype=False)
     finally:
         # Clean up the gcp assets created for the managed function.
-        cleanup_function_assets(foo, session.bqclient)
+        cleanup_function_assets(foo, session.bqclient, ignore_failures=False)
 
 
 @pytest.mark.parametrize(
@@ -274,7 +274,7 @@ def test_managed_function_series_apply_array_output(
         pandas.testing.assert_frame_equal(bf_result, pd_result, check_dtype=False)
     finally:
         # Clean up the gcp assets created for the managed function.
-        cleanup_function_assets(foo_list, session.bqclient)
+        cleanup_function_assets(foo_list, session.bqclient, ignore_failures=False)
 
 
 def test_managed_function_series_combine(session, scalars_dfs):
@@ -330,7 +330,9 @@ def test_managed_function_series_combine(session, scalars_dfs):
         pandas.testing.assert_series_equal(bf_result, pd_result, check_dtype=False)
     finally:
         # Clean up the gcp assets created for the managed function.
-        cleanup_function_assets(add_managed_func, session.bqclient)
+        cleanup_function_assets(
+            add_managed_func, session.bqclient, ignore_failures=False
+        )
 
 
 def test_managed_function_series_combine_array_output(session, scalars_dfs):
@@ -391,7 +393,9 @@ def test_managed_function_series_combine_array_output(session, scalars_dfs):
         pandas.testing.assert_series_equal(bf_result_gbq, pd_result, check_dtype=False)
     finally:
         # Clean up the gcp assets created for the managed function.
-        cleanup_function_assets(add_list_managed_func, session.bqclient)
+        cleanup_function_assets(
+            add_list_managed_func, session.bqclient, ignore_failures=False
+        )
 
 
 def test_managed_function_dataframe_map(session, scalars_dfs):
@@ -425,7 +429,7 @@ def test_managed_function_dataframe_map(session, scalars_dfs):
         pandas.testing.assert_frame_equal(bf_result, pd_result)
     finally:
         # Clean up the gcp assets created for the managed function.
-        cleanup_function_assets(mf_add_one, session.bqclient)
+        cleanup_function_assets(mf_add_one, session.bqclient, ignore_failures=False)
 
 
 def test_managed_function_dataframe_map_array_output(
@@ -464,7 +468,9 @@ def test_managed_function_dataframe_map_array_output(
         pandas.testing.assert_frame_equal(bf_result_gbq, pd_result, check_dtype=False)
     finally:
         # Clean up the gcp assets created for the managed function.
-        cleanup_function_assets(mf_add_one_list, session.bqclient)
+        cleanup_function_assets(
+            mf_add_one_list, session.bqclient, ignore_failures=False
+        )
 
 
 def test_managed_function_dataframe_apply_axis_1(session, scalars_dfs):
@@ -500,7 +506,7 @@ def test_managed_function_dataframe_apply_axis_1(session, scalars_dfs):
         )
     finally:
         # Clean up the gcp assets created for the managed function.
-        cleanup_function_assets(add_ints_mf, session.bqclient)
+        cleanup_function_assets(add_ints_mf, session.bqclient, ignore_failures=False)
 
 
 def test_managed_function_dataframe_apply_axis_1_array_output(session):
@@ -605,4 +611,4 @@ def test_managed_function_dataframe_apply_axis_1_array_output(session):
 
     finally:
         # Clean up the gcp assets created for the managed function.
-        cleanup_function_assets(foo, session.bqclient)
+        cleanup_function_assets(foo, session.bqclient, ignore_failures=False)
