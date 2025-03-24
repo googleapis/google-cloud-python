@@ -57,7 +57,7 @@ jobs:
       matrix:
         # TODO(https://github.com/googleapis/gapic-generator-python/issues/2121) Remove `showcase_w_rest_async` target when async rest is GA.
         python: ["3.7", "3.13"]
-        target: [showcase, showcase_alternative_templates, showcase_w_rest_async]
+        target: [showcase, showcase_w_rest_async]
         logging_scope: ["", "google"]
 
     # TODO(https://github.com/googleapis/gapic-generator-python/issues/2303): use `ubuntu-latest` once this bug is fixed.
@@ -102,7 +102,7 @@ jobs:
     if: ${{ false }}            # TODO(dovs): reenable when #1218 is fixed
     strategy:
       matrix:
-        target: [showcase_mtls, showcase_mtls_alternative_templates]
+        target: [showcase_mtls]
       max-parallel: 1
     runs-on: ubuntu-latest
     steps:

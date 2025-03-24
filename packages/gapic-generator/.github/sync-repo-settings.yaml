@@ -15,14 +15,11 @@ branchProtectionRules:
     - 'mypy (3.13)'
     - 'showcase (3.7, showcase)'
     - 'showcase (3.13, showcase)'
-    - 'showcase (3.7, showcase_alternative_templates)'
-    - 'showcase (3.13, showcase_alternative_templates)'
     - 'showcase (3.7, showcase_w_rest_async)'
     - 'showcase (3.13, showcase_w_rest_async)'
     # TODO(dovs): reenable these when the mtls tests have been debugged and fixed
     # See #1218 for details
     # - 'showcase-mtls (showcase_mtls)'
-    # - 'showcase-mtls (showcase_mtls_alternative_templates)'
     - 'showcase-mypy'
     - 'showcase-mypy (_alternative_templates)'
     - 'showcase-unit (3.7)'

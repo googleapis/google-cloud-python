@@ -461,28 +461,6 @@ def showcase_mtls(
         )
 
 
-@nox.session(python=ALL_PYTHON)
-def showcase_alternative_templates(session):
-    templates = path.join(path.dirname(__file__), "gapic", "ads-templates")
-    showcase(
-        session,
-        templates=templates,
-        other_opts=("old-naming",),
-        env={"GAPIC_PYTHON_ASYNC": "False", "IGNORE_FILE": "test_universe_domain.py"},
-    )
-
-
-@nox.session(python=NEWEST_PYTHON)
-def showcase_mtls_alternative_templates(session):
-    templates = path.join(path.dirname(__file__), "gapic", "ads-templates")
-    showcase_mtls(
-        session,
-        templates=templates,
-        other_opts=("old-naming",),
-        env={"GAPIC_PYTHON_ASYNC": "False", "IGNORE_FILE": "test_universe_domain.py"},
-    )
-
-
 def run_showcase_unit_tests(session, fail_under=100, rest_async_io_enabled=False):
     session.install(
         "coverage",
