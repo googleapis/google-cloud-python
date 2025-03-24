@@ -22,6 +22,8 @@ import warnings
 import google.api_core.exceptions
 import google.cloud.bigquery
 import google.cloud.bigquery.table
+import pandas as pd
+import pyarrow as pa
 import pytest
 
 import bigframes
@@ -458,3 +460,34 @@ def test_session_init_warns_if_bf_version_is_too_old(monkeypatch):
 
     with pytest.warns(bigframes.exceptions.ObsoleteVersionWarning):
         resources.create_bigquery_session()
+
+
+@mock.patch("bigframes.session.MAX_INLINE_DF_BYTES", 1)
+def test_read_pandas_inline_exceeds_limit_raises_error():
+    session = resources.create_bigquery_session()
+    pd_df = pd.DataFrame([[1, 2, 3], [4, 5, 6]])
+    with pytest.raises(
+        ValueError,
+        match=r"DataFrame size \(.* bytes\) exceeds the maximum allowed for inline data \(1 bytes\)\.",
+    ):
+        session.read_pandas(pd_df, write_engine="bigquery_inline")
+
+
+def test_read_pandas_inline_w_interval_type_raises_error():
+    session = resources.create_bigquery_session()
+    df = pd.DataFrame(pd.arrays.IntervalArray.from_breaks([0, 10, 20, 30, 40, 50]))
+    with pytest.raises(ValueError, match="Could not convert with a BigQuery type: "):
+        session.read_pandas(df, write_engine="bigquery_inline")
+
+
+def test_read_pandas_inline_w_noninlineable_type_raises_error():
+    session = resources.create_bigquery_session()
+    data = [
+        [1, 2, 3],
+        [4, 5],
+        None,
+        [6, 7, 8, 9],
+    ]
+    s = pd.Series(data, dtype=pd.ArrowDtype(pa.list_(pa.int64())))
+    with pytest.raises(ValueError, match="Could not inline with a BigQuery type:"):
+        session.read_pandas(s, write_engine="bigquery_inline")
