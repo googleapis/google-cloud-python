@@ -24,6 +24,7 @@ Wheels are published for the following platforms / architectures:
 ### Unsupported Platforms
 
 - `manylinux1` platform, `x86_64` architecture support has ended.
+
 See https://github.com/pypa/manylinux/issues/994.
 
 ## Mac OS
