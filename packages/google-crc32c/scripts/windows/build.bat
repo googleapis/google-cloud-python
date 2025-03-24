@@ -31,10 +31,13 @@ FOR %%P IN (3.9, 3.10, 3.11, 3.12, 3.13.1) DO (
     echo "Listing available Python versions'
     py -0
 
-    py -%%P-64 -m pip install --upgrade pip
+    set python_version=%%P
+    set python_version_trimmed=!python_version:~0,4!
+
+    py -!python_version_trimmed!-64 -m pip install --upgrade pip
 
     echo "Installing cmake for Python %%P"
-    py -%%P-64 -m pip install cmake
+    py -!python_version_trimmed!-64 -m pip install cmake
 
     @rem Add directory as safe to avoid "detected dubious ownership" fatal issue
     git config --global --add safe.directory %cd%
@@ -56,9 +59,9 @@ FOR %%P IN (3.9, 3.10, 3.11, 3.12, 3.13.1) DO (
 
     echo "Running cmake with Generator:  %CMAKE_GENERATOR%, Platform: x64, Install Prefix: %CRC32C_INSTALL_PREFIX%"
 
-    py -%%P-64 -m cmake -G %CMAKE_GENERATOR% -A x64 -DCRC32C_BUILD_BENCHMARKS=no -DCRC32C_BUILD_TESTS=no -DBUILD_SHARED_LIBS=yes -DCMAKE_WINDOWS_EXPORT_ALL_SYMBOLS=yes -DCRC32C_USE_GLOG=0 -DCMAKE_INSTALL_PREFIX:PATH=%CRC32C_INSTALL_PREFIX% ..
+    py -!python_version_trimmed!-64 -m cmake -G %CMAKE_GENERATOR% -A x64 -DCRC32C_BUILD_BENCHMARKS=no -DCRC32C_BUILD_TESTS=no -DBUILD_SHARED_LIBS=yes -DCMAKE_WINDOWS_EXPORT_ALL_SYMBOLS=yes -DCRC32C_USE_GLOG=0 -DCMAKE_INSTALL_PREFIX:PATH=%CRC32C_INSTALL_PREFIX% ..
 
-    py -%%P-64 -m cmake --build . --config "%CONFIGURATION%" --target install
+    py -!python_version_trimmed!-64 -m cmake --build . --config "%CONFIGURATION%" --target install
 
     dir %CRC32C_INSTALL_PREFIX% /b /s
     popd
@@ -67,14 +70,14 @@ FOR %%P IN (3.9, 3.10, 3.11, 3.12, 3.13.1) DO (
     echo "Copying Binary to root: %CRC32C_INSTALL_PREFIX%\bin\crc32c.dll"
     copy %CRC32C_INSTALL_PREFIX%\bin\crc32c.dll .
 
-    py -%%P-64 -m pip install --upgrade pip setuptools wheel
+    py -!python_version_trimmed!-64 -m pip install --upgrade pip setuptools wheel
     echo "Building C extension"
-    py -%%P-64 setup.py build_ext -v --include-dirs=%CRC32C_INSTALL_PREFIX%\include --library-dirs=%CRC32C_INSTALL_PREFIX%\lib
+    py -!python_version_trimmed!-64 setup.py build_ext -v --include-dirs=%CRC32C_INSTALL_PREFIX%\include --library-dirs=%CRC32C_INSTALL_PREFIX%\lib
     echo "Building Wheel"
-    py -%%P-64 -m pip wheel . --wheel-dir wheels/
+    py -!python_version_trimmed!-64 -m pip wheel . --wheel-dir wheels/
 
     echo "Built wheel, now running tests."
-    call %~dp0/test.bat %%P || goto :error
+    call %~dp0/test.bat !python_version_trimmed! || goto :error
 
     echo "Finished with Python version %%P, now uninstalling"
     choco uninstall python -y
