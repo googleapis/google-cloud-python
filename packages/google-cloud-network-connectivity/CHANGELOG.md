@@ -1,5 +1,17 @@
 # Changelog
 
+## [2.8.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-connectivity-v2.7.2...google-cloud-network-connectivity-v2.8.0) (2025-03-21)
+
+
+### Features
+
+* add Network Connectivity Center APIs for PSC service automation ([ed8bfa4](https://github.com/googleapis/google-cloud-python/commit/ed8bfa48bf59f6a052704ce3becf6c5b5c0ffcca))
+
+
+### Documentation
+
+* update some documentation. ([ed8bfa4](https://github.com/googleapis/google-cloud-python/commit/ed8bfa48bf59f6a052704ce3becf6c5b5c0ffcca))
+
 ## [2.7.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-connectivity-v2.7.1...google-cloud-network-connectivity-v2.7.2) (2025-03-15)
 
 
