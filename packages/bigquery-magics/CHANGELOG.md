@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.8.1](https://github.com/googleapis/python-bigquery-magics/compare/v0.8.0...v0.8.1) (2025-03-21)
+
+
+### Bug Fixes
+
+* Remove setup.cfg configuration for creating universal wheels ([#106](https://github.com/googleapis/python-bigquery-magics/issues/106)) ([fe3ec29](https://github.com/googleapis/python-bigquery-magics/commit/fe3ec29fefb7ca9195484d13f2bf15c65cf20614))
+
+
+### Dependencies
+
+* Bump minimum required version of spanner-graph-notebook to 1.1.5 ([#110](https://github.com/googleapis/python-bigquery-magics/issues/110)) ([756ac0d](https://github.com/googleapis/python-bigquery-magics/commit/756ac0d0910a0622aee88ed558886456311976e9))
+
 ## [0.8.0](https://github.com/googleapis/python-bigquery-magics/compare/v0.7.0...v0.8.0) (2025-03-13)
 
 
