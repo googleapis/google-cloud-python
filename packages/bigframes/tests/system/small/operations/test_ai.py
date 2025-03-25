@@ -14,7 +14,7 @@
 
 
 # Note that the tests in this files uses fake models for deterministic results.
-# Tests that use real LLM models are under system/large/test_semantcs.py
+# Tests that use real LLM models are under system/large/test_ai.py
 
 import pandas as pd
 import pandas.testing
@@ -24,8 +24,8 @@ import bigframes
 from bigframes import dataframe, dtypes
 from bigframes.ml import llm
 
-SEM_OP_EXP_OPTION = "experiments.semantic_operators"
-THRESHOLD_OPTION = "compute.semantic_ops_confirmation_threshold"
+AI_OP_EXP_OPTION = "experiments.ai_operators"
+THRESHOLD_OPTION = "compute.ai_ops_confirmation_threshold"
 
 
 class FakeGeminiTextGenerator(llm.GeminiTextGenerator):
@@ -36,15 +36,15 @@ class FakeGeminiTextGenerator(llm.GeminiTextGenerator):
         return self.prediction
 
 
-def test_semantics_experiment_off_raise_error(session):
+def test_experiment_off_raise_error(session):
     df = dataframe.DataFrame(
         {"country": ["USA", "Germany"], "city": ["Seattle", "Berlin"]}, session=session
     )
 
-    with bigframes.option_context(SEM_OP_EXP_OPTION, False), pytest.raises(
+    with bigframes.option_context(AI_OP_EXP_OPTION, False), pytest.raises(
         NotImplementedError
     ):
-        df.semantics
+        df.ai
 
 
 def test_filter(session):
@@ -56,12 +56,12 @@ def test_filter(session):
     )
 
     with bigframes.option_context(
-        SEM_OP_EXP_OPTION,
+        AI_OP_EXP_OPTION,
         True,
         THRESHOLD_OPTION,
         50,
     ):
-        result = df.semantics.filter(
+        result = df.ai.filter(
             "filter {col}",
             model=model,
         ).to_pandas()
@@ -82,14 +82,12 @@ def test_map(session):
     )
 
     with bigframes.option_context(
-        SEM_OP_EXP_OPTION,
+        AI_OP_EXP_OPTION,
         True,
         THRESHOLD_OPTION,
         50,
     ):
-        result = df.semantics.map(
-            "map {col}", model=model, output_column="output"
-        ).to_pandas()
+        result = df.ai.map("map {col}", model=model, output_column="output").to_pandas()
 
     pandas.testing.assert_frame_equal(
         result,
@@ -108,12 +106,12 @@ def test_join(session):
     )
 
     with bigframes.option_context(
-        SEM_OP_EXP_OPTION,
+        AI_OP_EXP_OPTION,
         True,
         THRESHOLD_OPTION,
         50,
     ):
-        result = left_df.semantics.join(
+        result = left_df.ai.join(
             right_df, "join {col_A} and {col_B}", model
         ).to_pandas()
 
@@ -133,11 +131,11 @@ def test_top_k(session):
     )
 
     with bigframes.option_context(
-        SEM_OP_EXP_OPTION,
+        AI_OP_EXP_OPTION,
         True,
         THRESHOLD_OPTION,
         50,
     ):
-        result = df.semantics.top_k("top k of {col}", model, k=1).to_pandas()
+        result = df.ai.top_k("top k of {col}", model, k=1).to_pandas()
 
     assert len(result) == 1

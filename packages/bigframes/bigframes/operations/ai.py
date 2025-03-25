@@ -1,4 +1,4 @@
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,7 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
 import re
 import typing
 from typing import List, Optional
@@ -25,294 +24,15 @@ from bigframes.core import guid, log_adapter
 
 
 @log_adapter.class_logger
-class Semantics:
+class AIAccessor:
     def __init__(self, df) -> None:
         import bigframes  # Import in the function body to avoid circular imports.
         import bigframes.dataframe
 
-        if not bigframes.options.experiments.semantic_operators:
+        if not bigframes.options.experiments.ai_operators:
             raise NotImplementedError()
 
         self._df: bigframes.dataframe.DataFrame = df
-
-    def agg(
-        self,
-        instruction: str,
-        model,
-        cluster_column: typing.Optional[str] = None,
-        max_agg_rows: int = 10,
-        ground_with_google_search: bool = False,
-    ):
-        """
-        Performs an aggregation over all rows of the table.
-
-        This method recursively aggregates the input data to produce partial answers
-        in parallel, until a single answer remains.
-
-        **Examples:**
-
-            >>> import bigframes.pandas as bpd
-            >>> bpd.options.display.progress_bar = None
-            >>> bpd.options.experiments.semantic_operators = True
-            >>> bpd.options.compute.semantic_ops_confirmation_threshold = 25
-
-            >>> import bigframes.ml.llm as llm
-            >>> model = llm.GeminiTextGenerator(model_name="gemini-1.5-flash-001")
-
-            >>> df = bpd.DataFrame(
-            ... {
-            ...     "Movies": [
-            ...         "Titanic",
-            ...         "The Wolf of Wall Street",
-            ...         "Inception",
-            ...     ],
-            ...     "Year": [1997, 2013, 2010],
-            ... })
-            >>> df.semantics.agg(
-            ...     "Find the first name shared by all actors in {Movies}. One word answer.",
-            ...     model=model,
-            ... )
-            0    Leonardo
-            <BLANKLINE>
-            Name: Movies, dtype: string
-
-        Args:
-            instruction (str):
-                An instruction on how to map the data. This value must contain
-                column references by name enclosed in braces.
-                For example, to reference a column named "movies", use "{movies}" in the
-                instruction, like: "Find actor names shared by all {movies}."
-
-            model (bigframes.ml.llm.GeminiTextGenerator):
-                A GeminiTextGenerator provided by the Bigframes ML package.
-
-            cluster_column (Optional[str], default None):
-                If set, aggregates each cluster before performing aggregations across
-                clusters. Clustering based on semantic similarity can improve accuracy
-                of the sementic aggregations.
-
-            max_agg_rows (int, default 10):
-                The maxinum number of rows to be aggregated at a time.
-
-            ground_with_google_search (bool, default False):
-                Enables Grounding with Google Search for the GeminiTextGenerator model.
-                When set to True, the model incorporates relevant information from Google
-                Search results into its responses, enhancing their accuracy and factualness.
-                Note: Using this feature may impact billing costs. Refer to the pricing
-                page for details: https://cloud.google.com/vertex-ai/generative-ai/pricing#google_models
-                The default is `False`.
-
-        Returns:
-            bigframes.dataframe.DataFrame: A new DataFrame with the aggregated answers.
-
-        Raises:
-            NotImplementedError: when the semantic operator experiment is off.
-            ValueError: when the instruction refers to a non-existing column, or when
-                more than one columns are referred to.
-        """
-        import bigframes.bigquery as bbq
-        import bigframes.dataframe
-        import bigframes.series
-
-        self._validate_model(model)
-        columns = self._parse_columns(instruction)
-
-        if max_agg_rows <= 1:
-            raise ValueError(
-                f"Invalid value for `max_agg_rows`: {max_agg_rows}."
-                "It must be greater than 1."
-            )
-
-        work_estimate = len(self._df) * int(max_agg_rows / (max_agg_rows - 1))
-        self._confirm_operation(work_estimate)
-
-        df: bigframes.dataframe.DataFrame = self._df.copy()
-        for column in columns:
-            if column not in self._df.columns:
-                raise ValueError(f"Column {column} not found.")
-
-            if df[column].dtype != dtypes.STRING_DTYPE:
-                df[column] = df[column].astype(dtypes.STRING_DTYPE)
-
-        if len(columns) > 1:
-            raise NotImplementedError(
-                "Semantic aggregations are limited to a single column."
-            )
-        column = columns[0]
-
-        if ground_with_google_search:
-            msg = exceptions.format_message(
-                "Enables Grounding with Google Search may impact billing cost. See pricing "
-                "details: https://cloud.google.com/vertex-ai/generative-ai/pricing#google_models"
-            )
-            warnings.warn(msg, category=UserWarning)
-
-        user_instruction = self._format_instruction(instruction, columns)
-
-        num_cluster = 1
-        if cluster_column is not None:
-            if cluster_column not in df.columns:
-                raise ValueError(f"Cluster column `{cluster_column}` not found.")
-
-            if df[cluster_column].dtype != dtypes.INT_DTYPE:
-                raise TypeError(
-                    "Cluster column must be an integer type, not "
-                    f"{type(df[cluster_column])}"
-                )
-
-            num_cluster = df[cluster_column].unique().shape[0]
-            df = df.sort_values(cluster_column)
-        else:
-            cluster_column = guid.generate_guid("pid")
-            df[cluster_column] = 0
-
-        aggregation_group_id = guid.generate_guid("agg")
-        group_row_index = guid.generate_guid("gid")
-        llm_prompt = guid.generate_guid("prompt")
-        df = (
-            df.reset_index(drop=True)
-            .reset_index()
-            .rename(columns={"index": aggregation_group_id})
-        )
-
-        output_instruction = (
-            "Answer user instructions using the provided context from various sources. "
-            "Combine all relevant information into a single, concise, well-structured response. "
-            f"Instruction: {user_instruction}.\n\n"
-        )
-
-        while len(df) > 1:
-            df[group_row_index] = (df[aggregation_group_id] % max_agg_rows + 1).astype(
-                dtypes.STRING_DTYPE
-            )
-            df[aggregation_group_id] = (df[aggregation_group_id] / max_agg_rows).astype(
-                dtypes.INT_DTYPE
-            )
-            df[llm_prompt] = "\t\nSource #" + df[group_row_index] + ": " + df[column]
-
-            if len(df) > num_cluster:
-                # Aggregate within each partition
-                agg_df = bbq.array_agg(
-                    df.groupby(by=[cluster_column, aggregation_group_id])
-                )
-            else:
-                # Aggregate cross partitions
-                agg_df = bbq.array_agg(df.groupby(by=[aggregation_group_id]))
-                agg_df[cluster_column] = agg_df[cluster_column].list[0]
-
-            # Skip if the aggregated group only has a single item
-            single_row_df: bigframes.series.Series = bbq.array_to_string(
-                agg_df[agg_df[group_row_index].list.len() <= 1][column],
-                delimiter="",
-            )
-            prompt_s: bigframes.series.Series = bbq.array_to_string(
-                agg_df[agg_df[group_row_index].list.len() > 1][llm_prompt],
-                delimiter="",
-            )
-            prompt_s = output_instruction + prompt_s  # type:ignore
-
-            # Run model
-            predict_df = typing.cast(
-                bigframes.dataframe.DataFrame,
-                model.predict(
-                    prompt_s,
-                    temperature=0.0,
-                    ground_with_google_search=ground_with_google_search,
-                ),
-            )
-            agg_df[column] = predict_df["ml_generate_text_llm_result"].combine_first(
-                single_row_df
-            )
-
-            agg_df = agg_df.reset_index()
-            df = agg_df[[aggregation_group_id, cluster_column, column]]
-
-        return df[column]
-
-    def cluster_by(
-        self,
-        column: str,
-        output_column: str,
-        model,
-        n_clusters: int = 5,
-    ):
-        """
-        Clusters data based on the semantic similarity of text within a specified column.
-
-        This method leverages a language model to generate text embeddings for each value in
-        the given column. These embeddings capture the semantic meaning of the text.
-        The data is then grouped into `n` clusters using the k-means clustering algorithm,
-        which groups data points based on the similarity of their embeddings.
-
-        **Examples:**
-
-            >>> import bigframes.pandas as bpd
-            >>> bpd.options.display.progress_bar = None
-            >>> bpd.options.experiments.semantic_operators = True
-            >>> bpd.options.compute.semantic_ops_confirmation_threshold = 25
-
-            >>> import bigframes.ml.llm as llm
-            >>> model = llm.TextEmbeddingGenerator()
-
-            >>> df = bpd.DataFrame({
-            ...     "Product": ["Smartphone", "Laptop", "T-shirt", "Jeans"],
-            ... })
-            >>> df.semantics.cluster_by("Product", "Cluster ID", model, n_clusters=2) # doctest: +SKIP
-                    Product  Cluster ID
-            0    Smartphone           2
-            1        Laptop           2
-            2       T-shirt           1
-            3         Jeans           1
-            <BLANKLINE>
-            [4 rows x 2 columns]
-
-        Args:
-            column (str):
-                An column name to perform the similarity clustering.
-
-            output_column (str):
-                An output column to store the clustering ID.
-
-            model (bigframes.ml.llm.TextEmbeddingGenerator):
-                A TextEmbeddingGenerator provided by Bigframes ML package.
-
-            n_clusters (int, default 5):
-                Default 5. Number of clusters to be detected.
-
-        Returns:
-            bigframes.dataframe.DataFrame: A new DataFrame with the clustering output column.
-
-        Raises:
-            NotImplementedError: when the semantic operator experiment is off.
-            ValueError: when the column refers to a non-existing column.
-        """
-
-        import bigframes.dataframe
-        import bigframes.ml.cluster as cluster
-        import bigframes.ml.llm as llm
-
-        if not isinstance(model, llm.TextEmbeddingGenerator):
-            raise TypeError(f"Expect a text embedding model, but got: {type(model)}")
-
-        if column not in self._df.columns:
-            raise ValueError(f"Column {column} not found.")
-
-        if n_clusters <= 1:
-            raise ValueError(
-                f"Invalid value for `n_clusters`: {n_clusters}."
-                "It must be greater than 1."
-            )
-
-        self._confirm_operation(len(self._df))
-
-        df: bigframes.dataframe.DataFrame = self._df.copy()
-        embeddings_df = model.predict(df[column])
-
-        cluster_model = cluster.KMeans(n_clusters=n_clusters)
-        cluster_model.fit(embeddings_df[["ml_generate_embedding_result"]])
-        clustered_result = cluster_model.predict(embeddings_df)
-        df[output_column] = clustered_result["CENTROID_ID"]
-        return df
 
     def filter(self, instruction: str, model, ground_with_google_search: bool = False):
         """
@@ -322,14 +42,14 @@ class Semantics:
 
             >>> import bigframes.pandas as bpd
             >>> bpd.options.display.progress_bar = None
-            >>> bpd.options.experiments.semantic_operators = True
-            >>> bpd.options.compute.semantic_ops_confirmation_threshold = 25
+            >>> bpd.options.experiments.ai_operators = True
+            >>> bpd.options.compute.ai_ops_confirmation_threshold = 25
 
             >>> import bigframes.ml.llm as llm
             >>> model = llm.GeminiTextGenerator(model_name="gemini-1.5-flash-001")
 
             >>> df = bpd.DataFrame({"country": ["USA", "Germany"], "city": ["Seattle", "Berlin"]})
-            >>> df.semantics.filter("{city} is the capital of {country}", model)
+            >>> df.ai.filter("{city} is the capital of {country}", model)
                country    city
             1  Germany  Berlin
             <BLANKLINE>
@@ -358,7 +78,7 @@ class Semantics:
             bigframes.pandas.DataFrame: DataFrame filtered by the instruction.
 
         Raises:
-            NotImplementedError: when the semantic operator experiment is off.
+            NotImplementedError: when the AI operator experiment is off.
             ValueError: when the instruction refers to a non-existing column, or when no
                 columns are referred to.
         """
@@ -436,14 +156,14 @@ class Semantics:
 
             >>> import bigframes.pandas as bpd
             >>> bpd.options.display.progress_bar = None
-            >>> bpd.options.experiments.semantic_operators = True
-            >>> bpd.options.compute.semantic_ops_confirmation_threshold = 25
+            >>> bpd.options.experiments.ai_operators = True
+            >>> bpd.options.compute.ai_ops_confirmation_threshold = 25
 
             >>> import bigframes.ml.llm as llm
             >>> model = llm.GeminiTextGenerator(model_name="gemini-1.5-flash-001")
 
             >>> df = bpd.DataFrame({"ingredient_1": ["Burger Bun", "Soy Bean"], "ingredient_2": ["Beef Patty", "Bittern"]})
-            >>> df.semantics.map("What is the food made from {ingredient_1} and {ingredient_2}? One word only.", output_column="food", model=model)
+            >>> df.ai.map("What is the food made from {ingredient_1} and {ingredient_2}? One word only.", output_column="food", model=model)
               ingredient_1 ingredient_2      food
             0   Burger Bun   Beef Patty  Burger
             <BLANKLINE>
@@ -478,7 +198,7 @@ class Semantics:
             bigframes.pandas.DataFrame: DataFrame with attached mapping results.
 
         Raises:
-            NotImplementedError: when the semantic operator experiment is off.
+            NotImplementedError: when the AI operator experiment is off.
             ValueError: when the instruction refers to a non-existing column, or when no
                 columns are referred to.
         """
@@ -559,8 +279,8 @@ class Semantics:
 
             >>> import bigframes.pandas as bpd
             >>> bpd.options.display.progress_bar = None
-            >>> bpd.options.experiments.semantic_operators = True
-            >>> bpd.options.compute.semantic_ops_confirmation_threshold = 25
+            >>> bpd.options.experiments.ai_operators = True
+            >>> bpd.options.compute.ai_ops_confirmation_threshold = 25
 
             >>> import bigframes.ml.llm as llm
             >>> model = llm.GeminiTextGenerator(model_name="gemini-1.5-flash-001")
@@ -568,7 +288,7 @@ class Semantics:
             >>> cities = bpd.DataFrame({'city': ['Seattle', 'Ottawa', 'Berlin', 'Shanghai', 'New Delhi']})
             >>> continents = bpd.DataFrame({'continent': ['North America', 'Africa', 'Asia']})
 
-            >>> cities.semantics.join(continents, "{city} is in {continent}", model)
+            >>> cities.ai.join(continents, "{city} is in {continent}", model)
                     city      continent
             0    Seattle  North America
             1     Ottawa  North America
@@ -679,7 +399,7 @@ class Semantics:
 
         joined_df = self._df.merge(other, how="cross", suffixes=("_left", "_right"))
 
-        return joined_df.semantics.filter(
+        return joined_df.ai.filter(
             instruction, model, ground_with_google_search=ground_with_google_search
         ).reset_index(drop=True)
 
@@ -692,7 +412,7 @@ class Semantics:
         score_column: Optional[str] = None,
     ):
         """
-        Performs semantic search on the DataFrame.
+        Performs AI semantic search on the DataFrame.
 
         ** Examples: **
 
@@ -700,14 +420,14 @@ class Semantics:
             >>> bpd.options.display.progress_bar = None
 
             >>> import bigframes
-            >>> bigframes.options.experiments.semantic_operators = True
-            >>> bpd.options.compute.semantic_ops_confirmation_threshold = 25
+            >>> bigframes.options.experiments.ai_operators = True
+            >>> bpd.options.compute.ai_ops_confirmation_threshold = 25
 
             >>> import bigframes.ml.llm as llm
             >>> model = llm.TextEmbeddingGenerator(model_name="text-embedding-005")
 
             >>> df = bpd.DataFrame({"creatures": ["salmon", "sea urchin", "frog", "chimpanzee"]})
-            >>> df.semantics.search("creatures", "monkey", top_k=1, model=model, score_column='distance')
+            >>> df.ai.search("creatures", "monkey", top_k=1, model=model, score_column='distance')
                 creatures  distance
             3  chimpanzee  0.635844
             <BLANKLINE>
@@ -801,8 +521,8 @@ class Semantics:
 
             >>> import bigframes.pandas as bpd
             >>> bpd.options.display.progress_bar = None
-            >>> bpd.options.experiments.semantic_operators = True
-            >>> bpd.options.compute.semantic_ops_confirmation_threshold = 25
+            >>> bpd.options.experiments.ai_operators = True
+            >>> bpd.options.compute.ai_ops_confirmation_threshold = 25
 
             >>> import bigframes.ml.llm as llm
             >>> model = llm.GeminiTextGenerator(model_name="gemini-1.5-flash-001")
@@ -812,7 +532,7 @@ class Semantics:
             ...     "Animals": ["Dog", "Bird", "Cat", "Horse"],
             ...     "Sounds": ["Woof", "Chirp", "Meow", "Neigh"],
             ... })
-            >>> df.semantics.top_k("{Animals} are more popular as pets", model=model, k=2)
+            >>> df.ai.top_k("{Animals} are more popular as pets", model=model, k=2)
               Animals Sounds
             0     Dog   Woof
             2     Cat   Meow
@@ -844,7 +564,7 @@ class Semantics:
             bigframes.dataframe.DataFrame: A new DataFrame with the top k rows.
 
         Raises:
-            NotImplementedError: when the semantic operator experiment is off.
+            NotImplementedError: when the AI operator experiment is off.
             ValueError: when the instruction refers to a non-existing column, or when no
                 columns are referred to.
         """
@@ -857,7 +577,7 @@ class Semantics:
             if column not in self._df.columns:
                 raise ValueError(f"Column {column} not found.")
         if len(columns) > 1:
-            raise NotImplementedError("Semantic top K are limited to a single column.")
+            raise NotImplementedError("AI top K are limited to a single column.")
 
         if ground_with_google_search:
             msg = exceptions.format_message(
@@ -1002,8 +722,8 @@ class Semantics:
 
             >>> import bigframes.pandas as bpd
             >>> bpd.options.display.progress_bar = None
-            >>> bpd.options.experiments.semantic_operators = True
-            >>> bpd.options.compute.semantic_ops_confirmation_threshold = 25
+            >>> bpd.options.experiments.ai_operators = True
+            >>> bpd.options.compute.ai_ops_confirmation_threshold = 25
 
             >>> import bigframes.ml.llm as llm
             >>> model = llm.TextEmbeddingGenerator(model_name="text-embedding-005")
@@ -1011,7 +731,7 @@ class Semantics:
             >>> df1 = bpd.DataFrame({'animal': ['monkey', 'spider']})
             >>> df2 = bpd.DataFrame({'animal': ['scorpion', 'baboon']})
 
-            >>> df1.semantics.sim_join(df2, left_on='animal', right_on='animal', model=model, top_k=1)
+            >>> df1.ai.sim_join(df2, left_on='animal', right_on='animal', model=model, top_k=1)
             animal  animal_1
             0  monkey    baboon
             1  spider  scorpion
@@ -1154,12 +874,12 @@ class Semantics:
         """Raises OperationAbortedError when the confirmation fails"""
         import bigframes  # Import in the function body to avoid circular imports.
 
-        threshold = bigframes.options.compute.semantic_ops_confirmation_threshold
+        threshold = bigframes.options.compute.ai_ops_confirmation_threshold
 
         if threshold is None or row_count <= threshold:
             return
 
-        if bigframes.options.compute.semantic_ops_threshold_autofail:
+        if bigframes.options.compute.ai_ops_threshold_autofail:
             raise exceptions.OperationAbortedError(
                 f"Operation was cancelled because your work estimate is {row_count} rows, which exceeds the threshold {threshold} rows."
             )
@@ -1168,7 +888,7 @@ class Semantics:
         # input function makes it less visible to the end user.
         print(f"This operation will process about {row_count} rows.")
         print(
-            "You can raise the confirmation threshold by setting `bigframes.options.compute.semantic_ops_confirmation_threshold` to a higher value. To completely turn off the confirmation check, set the threshold to `None`."
+            "You can raise the confirmation threshold by setting `bigframes.options.compute.ai_ops_confirmation_threshold` to a higher value. To completely turn off the confirmation check, set the threshold to `None`."
         )
         print("Proceed? [Y/n]")
         reply = input().casefold()

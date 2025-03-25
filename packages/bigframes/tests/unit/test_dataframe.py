@@ -89,3 +89,14 @@ def test_dataframe_to_gbq_writes_to_anonymous_dataset(
     destination = dataframe.to_gbq()
 
     assert destination.startswith(anonymous_dataset_id)
+
+
+def test_dataframe_semantics_property_future_warning(
+    monkeypatch: pytest.MonkeyPatch,
+):
+    dataframe = resources.create_dataframe(monkeypatch)
+
+    with bigframes.option_context("experiments.semantic_operators", True), pytest.warns(
+        FutureWarning
+    ):
+        dataframe.semantics

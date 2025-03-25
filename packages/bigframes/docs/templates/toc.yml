@@ -45,6 +45,8 @@
         uid: bigframes.operations.plotting.PlotAccessor
       - name: StructAccessor
         uid: bigframes.operations.structs.StructFrameAccessor
+      - name: AI
+        uid: bigframes.operations.ai.AIAccessor
     - items:
       - name: DataFrameGroupBy
         uid: bigframes.core.groupby.DataFrameGroupBy

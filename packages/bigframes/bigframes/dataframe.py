@@ -74,6 +74,7 @@ import bigframes.formatting_helpers as formatter
 import bigframes.operations as ops
 import bigframes.operations.aggregations
 import bigframes.operations.aggregations as agg_ops
+import bigframes.operations.ai
 import bigframes.operations.plotting as plotting
 import bigframes.operations.semantics
 import bigframes.operations.structs
@@ -4574,4 +4575,13 @@ class DataFrame(vendored_pandas_frame.DataFrame):
 
     @property
     def semantics(self):
+        msg = bfe.format_message(
+            "The 'semantics' property will be removed. Please use 'ai' instead."
+        )
+        warnings.warn(msg, category=FutureWarning)
         return bigframes.operations.semantics.Semantics(self)
+
+    @property
+    def ai(self):
+        """Returns the accessor for AI operators."""
+        return bigframes.operations.ai.AIAccessor(self)

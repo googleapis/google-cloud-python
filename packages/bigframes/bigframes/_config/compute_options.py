@@ -60,19 +60,31 @@ class ComputeOptions:
             bytes billed beyond this limit will fail (without incurring a
             charge). If unspecified, this will be set to your project default.
             See `maximum_bytes_billed`: https://cloud.google.com/python/docs/reference/bigquery/latest/google.cloud.bigquery.job.QueryJobConfig#google_cloud_bigquery_job_QueryJobConfig_maximum_bytes_billed.
+
         enable_multi_query_execution (bool, Options):
             If enabled, large queries may be factored into multiple smaller queries
             in order to avoid generating queries that are too complex for the query
             engine to handle. However this comes at the cost of increase cost and latency.
+
         extra_query_labels (Dict[str, Any], Options):
             Stores additional custom labels for query configuration.
-        semmantic_ops_confirmation_threshold (int, optional):
-            Guards against unexepcted processing of large amount of rows by semantic operators.
+
+        semantic_ops_confirmation_threshold (int, optional):
+            .. deprecated:: 1.42.0
+                Semantic operators are deprecated. Please use AI operators instead
+
+        semantic_ops_threshold_autofail (bool):
+            .. deprecated:: 1.42.0
+                Semantic operators are deprecated. Please use AI operators instead
+
+        ai_ops_confirmation_threshold (int, optional):
+            Guards against unexpected processing of large amount of rows by semantic operators.
             If the number of rows exceeds the threshold, the user will be asked to confirm
             their operations to resume. The default value is 0. Set the value to None
             to turn off the guard.
-        semantic_ops_threshold_autofail (bool):
-            Guards against unexepcted processing of large amount of rows by semantic operators.
+
+        ai_ops_threshold_autofail (bool):
+            Guards against unexpected processing of large amount of rows by semantic operators.
             When set to True, the operation automatically fails without asking for user inputs.
     """
 
@@ -83,6 +95,9 @@ class ComputeOptions:
     )
     semantic_ops_confirmation_threshold: Optional[int] = 0
     semantic_ops_threshold_autofail = False
+
+    ai_ops_confirmation_threshold: Optional[int] = 0
+    ai_ops_threshold_autofail = False
 
     def assign_extra_query_labels(self, **kwargs: Any) -> None:
         """

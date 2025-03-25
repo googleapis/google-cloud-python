@@ -34,3 +34,11 @@ Struct handling
     :members:
     :inherited-members:
     :undoc-members:
+
+AI operators
+^^^^^^^^^^^^
+
+.. autoclass:: bigframes.operations.ai.AIAccessor
+    :members:
+    :inherited-members:
+    :undoc-members:
