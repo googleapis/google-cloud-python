@@ -203,12 +203,12 @@ class Test_Connection(unittest.TestCase):
         return mock.create_autospec(big_query_write.BigQueryWriteClient)
 
     @staticmethod
-    def _make_mock_stream():
+    def _make_mock_stream(initial_template=REQUEST_TEMPLATE):
         from google.cloud.bigquery_storage_v1.writer import _process_request_template
 
         writer = mock.Mock()
         template = mock.PropertyMock(
-            return_value=_process_request_template(REQUEST_TEMPLATE)
+            return_value=_process_request_template(initial_template)
         )
         type(writer)._initial_request_template = template
         return writer
@@ -251,8 +251,17 @@ class Test_Connection(unittest.TestCase):
     def test_initial_send(self, background_consumer, bidi_rpc):
         from google.cloud.bigquery_storage_v1.writer import AppendRowsFuture
 
+        initial_request_template = gapic_types.AppendRowsRequest(
+            write_stream="stream-name-from-REQUEST_TEMPLATE",
+            offset=0,
+            proto_rows=gapic_types.AppendRowsRequest.ProtoData(
+                writer_schema=gapic_types.ProtoSchema(
+                    proto_descriptor=descriptor_pb2.DescriptorProto()
+                )
+            ),
+        )
         mock_client = self._make_mock_client()
-        mock_stream = self._make_mock_stream()
+        mock_stream = self._make_mock_stream(initial_template=initial_request_template)
         connection = self._make_one(mock_client, mock_stream)
 
         type(bidi_rpc.return_value).is_active = mock.PropertyMock(

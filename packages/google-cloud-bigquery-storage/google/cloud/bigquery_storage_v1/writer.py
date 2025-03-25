@@ -72,11 +72,13 @@ def _process_request_template(
     # The protobuf payload will be decoded as proto2 on the server side. The
     # schema is also specified as proto2. Hence we must clear proto3-only
     # features. This works since proto2 and proto3 are binary-compatible.
-    proto_descriptor = template_copy.proto_rows.writer_schema.proto_descriptor
-    for field in proto_descriptor.field:
-        field.ClearField("oneof_index")
-        field.ClearField("proto3_optional")
-    proto_descriptor.ClearField("oneof_decl")
+    oneof_field = template_copy._pb.WhichOneof("rows")
+    if oneof_field == "proto_rows":
+        proto_descriptor = template_copy.proto_rows.writer_schema.proto_descriptor
+        for field in proto_descriptor.field:
+            field.ClearField("oneof_index")
+            field.ClearField("proto3_optional")
+        proto_descriptor.ClearField("oneof_decl")
 
     return template_copy
 
