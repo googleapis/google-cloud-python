@@ -28,7 +28,7 @@ export PYTHONUNBUFFERED=1
 python3 -m pip uninstall --yes --quiet nox-automation
 
 # Install nox
-python3 -m pip install --upgrade --quiet nox
+python3 -m pip install nox==2024.10.9
 python3 -m nox --version
 
 # Setup service account credentials.
