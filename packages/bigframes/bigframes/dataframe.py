@@ -4170,8 +4170,10 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         # to the applied function should be a Series, not a scalar.
 
         if utils.get_axis_number(axis) == 1:
-            msg = bfe.format_message("axis=1 scenario is in preview.")
-            warnings.warn(msg, category=bfe.PreviewWarning)
+            msg = bfe.format_message(
+                "DataFrame.apply with parameter axis=1 scenario is in preview."
+            )
+            warnings.warn(msg, category=bfe.FunctionAxisOnePreviewWarning)
 
             if not hasattr(func, "bigframes_bigquery_function"):
                 raise ValueError(

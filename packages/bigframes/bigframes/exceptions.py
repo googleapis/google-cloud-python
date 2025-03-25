@@ -95,6 +95,10 @@ class ObsoleteVersionWarning(Warning):
     """The BigFrames version is too old."""
 
 
+class FunctionAxisOnePreviewWarning(PreviewWarning):
+    """Remote Function and Managed UDF with axis=1 preview."""
+
+
 def format_message(message: str, fill: bool = True):
     """Formats a warning message with ANSI color codes for the warning color.
 

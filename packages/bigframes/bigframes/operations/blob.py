@@ -16,6 +16,7 @@ from __future__ import annotations
 
 import os
 from typing import cast, Optional, Union
+import warnings
 
 import IPython.display as ipy_display
 import pandas as pd
@@ -23,6 +24,7 @@ import requests
 
 from bigframes import clients
 import bigframes.dataframe
+import bigframes.exceptions as bfe
 from bigframes.operations import base
 import bigframes.operations as ops
 import bigframes.series
@@ -165,6 +167,30 @@ class BlobAccessor(base.SeriesMethods):
         s = self._apply_unary_op(ops.obj_fetch_metadata_op) if with_metadata else self
 
         return s._apply_unary_op(ops.ObjGetAccessUrl(mode=mode))
+
+    def _df_apply_udf(
+        self, df: bigframes.dataframe.DataFrame, udf
+    ) -> bigframes.series.Series:
+        # Catch and rethrow function axis=1 warning to be more user-friendly.
+        with warnings.catch_warnings(record=True) as catched_warnings:
+            s = df.apply(udf, axis=1)
+        for w in catched_warnings:
+            if isinstance(w.message, bfe.FunctionAxisOnePreviewWarning):
+                warnings.warn(
+                    "Blob Functions use bigframes DataFrame Managed function with axis=1 senario, which is a preview feature.",
+                    category=w.category,
+                    stacklevel=2,
+                )
+            else:
+                warnings.warn_explicit(
+                    message=w.message,
+                    category=w.category,
+                    filename=w.filename,
+                    lineno=w.lineno,
+                    source=w.source,
+                )
+
+        return s
 
     def read_url(self) -> bigframes.series.Series:
         """Retrieve the read URL of the Blob.
@@ -346,7 +372,7 @@ class BlobAccessor(base.SeriesMethods):
 
             df["ksize_x"], df["ksize_y"] = ksize
             df["ext"] = ext  # type: ignore
-            res = df.apply(image_blur_udf, axis=1)
+            res = self._df_apply_udf(df, image_blur_udf)
 
             return res
 
@@ -375,7 +401,7 @@ class BlobAccessor(base.SeriesMethods):
         df["ksize_x"], df["ksize_y"] = ksize
         df["ext"] = ext  # type: ignore
 
-        res = df.apply(image_blur_udf, axis=1)
+        res = self._df_apply_udf(df, image_blur_udf)
         res.cache()  # to execute the udf
 
         self._add_to_cleanup_set(image_blur_udf)
@@ -443,7 +469,7 @@ class BlobAccessor(base.SeriesMethods):
             df["dsize_x"], df["dsizye_y"] = dsize
             df["fx"], df["fy"] = fx, fy
             df["ext"] = ext  # type: ignore
-            res = df.apply(image_resize_udf, axis=1)
+            res = self._df_apply_udf(df, image_resize_udf)
 
             return res
 
@@ -473,7 +499,7 @@ class BlobAccessor(base.SeriesMethods):
         df["fx"], df["fy"] = fx, fy
         df["ext"] = ext  # type: ignore
 
-        res = df.apply(image_resize_udf, axis=1)
+        res = self._df_apply_udf(df, image_resize_udf)
         res.cache()  # to execute the udf
 
         self._add_to_cleanup_set(image_resize_udf)
@@ -535,7 +561,7 @@ class BlobAccessor(base.SeriesMethods):
             df["beta"] = beta
             df["norm_type"] = norm_type
             df["ext"] = ext  # type: ignore
-            res = df.apply(image_normalize_udf, axis=1)
+            res = self._df_apply_udf(df, image_normalize_udf)
 
             return res
 
@@ -566,7 +592,7 @@ class BlobAccessor(base.SeriesMethods):
         df["norm_type"] = norm_type
         df["ext"] = ext  # type: ignore
 
-        res = df.apply(image_normalize_udf, axis=1)
+        res = self._df_apply_udf(df, image_normalize_udf)
         res.cache()  # to execute the udf
 
         self._add_to_cleanup_set(image_normalize_udf)
@@ -681,7 +707,7 @@ class BlobAccessor(base.SeriesMethods):
         df["chunk_size"] = chunk_size
         df["overlap_size"] = overlap_size
 
-        res = df.apply(pdf_chunk_udf, axis=1)
+        res = self._df_apply_udf(df, pdf_chunk_udf)
 
         res_array = bbq.json_extract_string_array(res)
 
