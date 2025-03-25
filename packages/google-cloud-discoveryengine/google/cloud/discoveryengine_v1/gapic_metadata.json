@@ -253,6 +253,11 @@
                 "list_sessions"
               ]
             },
+            "StreamAnswerQuery": {
+              "methods": [
+                "stream_answer_query"
+              ]
+            },
             "UpdateConversation": {
               "methods": [
                 "update_conversation"
@@ -323,6 +328,11 @@
                 "list_sessions"
               ]
             },
+            "StreamAnswerQuery": {
+              "methods": [
+                "stream_answer_query"
+              ]
+            },
             "UpdateConversation": {
               "methods": [
                 "update_conversation"
@@ -391,6 +401,11 @@
             "ListSessions": {
               "methods": [
                 "list_sessions"
+              ]
+            },
+            "StreamAnswerQuery": {
+              "methods": [
+                "stream_answer_query"
               ]
             },
             "UpdateConversation": {
@@ -1107,9 +1122,19 @@
                 "batch_verify_target_sites"
               ]
             },
+            "CreateSitemap": {
+              "methods": [
+                "create_sitemap"
+              ]
+            },
             "CreateTargetSite": {
               "methods": [
                 "create_target_site"
+              ]
+            },
+            "DeleteSitemap": {
+              "methods": [
+                "delete_sitemap"
               ]
             },
             "DeleteTargetSite": {
@@ -1130,6 +1155,11 @@
             "FetchDomainVerificationStatus": {
               "methods": [
                 "fetch_domain_verification_status"
+              ]
+            },
+            "FetchSitemaps": {
+              "methods": [
+                "fetch_sitemaps"
               ]
             },
             "GetSiteSearchEngine": {
@@ -1172,9 +1202,19 @@
                 "batch_verify_target_sites"
               ]
             },
+            "CreateSitemap": {
+              "methods": [
+                "create_sitemap"
+              ]
+            },
             "CreateTargetSite": {
               "methods": [
                 "create_target_site"
+              ]
+            },
+            "DeleteSitemap": {
+              "methods": [
+                "delete_sitemap"
               ]
             },
             "DeleteTargetSite": {
@@ -1195,6 +1235,11 @@
             "FetchDomainVerificationStatus": {
               "methods": [
                 "fetch_domain_verification_status"
+              ]
+            },
+            "FetchSitemaps": {
+              "methods": [
+                "fetch_sitemaps"
               ]
             },
             "GetSiteSearchEngine": {
@@ -1237,9 +1282,19 @@
                 "batch_verify_target_sites"
               ]
             },
+            "CreateSitemap": {
+              "methods": [
+                "create_sitemap"
+              ]
+            },
             "CreateTargetSite": {
               "methods": [
                 "create_target_site"
+              ]
+            },
+            "DeleteSitemap": {
+              "methods": [
+                "delete_sitemap"
               ]
             },
             "DeleteTargetSite": {
@@ -1260,6 +1315,11 @@
             "FetchDomainVerificationStatus": {
               "methods": [
                 "fetch_domain_verification_status"
+              ]
+            },
+            "FetchSitemaps": {
+              "methods": [
+                "fetch_sitemaps"
               ]
             },
             "GetSiteSearchEngine": {

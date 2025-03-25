@@ -92,9 +92,9 @@ class RecommendRequest(proto.Message):
             expected instead of the above described tag-based syntax.
             Examples:
 
-            -  (launguage: ANY("en", "es")) AND NOT (categories:
+            -  (language: ANY("en", "es")) AND NOT (categories:
                ANY("Movie"))
-            -  (available: true) AND (launguage: ANY("en", "es")) OR
+            -  (available: true) AND (language: ANY("en", "es")) OR
                (categories: ANY("Movie"))
 
             If your filter blocks all results, the API returns generic

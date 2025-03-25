@@ -61,9 +61,11 @@ from .types.answer import Answer
 from .types.chunk import Chunk
 from .types.common import (
     CustomAttribute,
+    DoubleList,
     IndustryVertical,
     Interval,
     SearchAddOn,
+    SearchLinkPromotion,
     SearchTier,
     SearchUseCase,
     SolutionType,
@@ -107,7 +109,7 @@ from .types.conversational_search_service import (
     UpdateSessionRequest,
 )
 from .types.custom_tuning_model import CustomTuningModel
-from .types.data_store import DataStore, WorkspaceConfig
+from .types.data_store import AdvancedSiteSearchConfig, DataStore, WorkspaceConfig
 from .types.data_store_service import (
     CreateDataStoreMetadata,
     CreateDataStoreRequest,
@@ -193,6 +195,7 @@ from .types.purge_config import (
 )
 from .types.rank_service import RankingRecord, RankRequest, RankResponse
 from .types.recommendation_service import RecommendRequest, RecommendResponse
+from .types.safety import HarmCategory, SafetyRating
 from .types.schema import Schema
 from .types.schema_service import (
     CreateSchemaMetadata,
@@ -214,7 +217,12 @@ from .types.search_tuning_service import (
     TrainCustomModelResponse,
 )
 from .types.session import Query, Session
-from .types.site_search_engine import SiteSearchEngine, SiteVerificationInfo, TargetSite
+from .types.site_search_engine import (
+    Sitemap,
+    SiteSearchEngine,
+    SiteVerificationInfo,
+    TargetSite,
+)
 from .types.site_search_engine_service import (
     BatchCreateTargetSiteMetadata,
     BatchCreateTargetSitesRequest,
@@ -222,8 +230,12 @@ from .types.site_search_engine_service import (
     BatchVerifyTargetSitesMetadata,
     BatchVerifyTargetSitesRequest,
     BatchVerifyTargetSitesResponse,
+    CreateSitemapMetadata,
+    CreateSitemapRequest,
     CreateTargetSiteMetadata,
     CreateTargetSiteRequest,
+    DeleteSitemapMetadata,
+    DeleteSitemapRequest,
     DeleteTargetSiteMetadata,
     DeleteTargetSiteRequest,
     DisableAdvancedSiteSearchMetadata,
@@ -234,6 +246,8 @@ from .types.site_search_engine_service import (
     EnableAdvancedSiteSearchResponse,
     FetchDomainVerificationStatusRequest,
     FetchDomainVerificationStatusResponse,
+    FetchSitemapsRequest,
+    FetchSitemapsResponse,
     GetSiteSearchEngineRequest,
     GetTargetSiteRequest,
     ListTargetSitesRequest,
@@ -272,6 +286,7 @@ __all__ = (
     "SearchTuningServiceAsyncClient",
     "SiteSearchEngineServiceAsyncClient",
     "UserEventServiceAsyncClient",
+    "AdvancedSiteSearchConfig",
     "AlloyDbSource",
     "Answer",
     "AnswerQueryRequest",
@@ -317,6 +332,8 @@ __all__ = (
     "CreateSchemaMetadata",
     "CreateSchemaRequest",
     "CreateSessionRequest",
+    "CreateSitemapMetadata",
+    "CreateSitemapRequest",
     "CreateTargetSiteMetadata",
     "CreateTargetSiteRequest",
     "CustomAttribute",
@@ -333,6 +350,8 @@ __all__ = (
     "DeleteSchemaMetadata",
     "DeleteSchemaRequest",
     "DeleteSessionRequest",
+    "DeleteSitemapMetadata",
+    "DeleteSitemapRequest",
     "DeleteTargetSiteMetadata",
     "DeleteTargetSiteRequest",
     "DisableAdvancedSiteSearchMetadata",
@@ -342,6 +361,7 @@ __all__ = (
     "DocumentInfo",
     "DocumentProcessingConfig",
     "DocumentServiceClient",
+    "DoubleList",
     "EnableAdvancedSiteSearchMetadata",
     "EnableAdvancedSiteSearchRequest",
     "EnableAdvancedSiteSearchResponse",
@@ -350,6 +370,8 @@ __all__ = (
     "FactChunk",
     "FetchDomainVerificationStatusRequest",
     "FetchDomainVerificationStatusResponse",
+    "FetchSitemapsRequest",
+    "FetchSitemapsResponse",
     "FhirStoreSource",
     "FirestoreSource",
     "GcsSource",
@@ -368,6 +390,7 @@ __all__ = (
     "GroundedGenerationContent",
     "GroundedGenerationServiceClient",
     "GroundingFact",
+    "HarmCategory",
     "ImportCompletionSuggestionsMetadata",
     "ImportCompletionSuggestionsRequest",
     "ImportCompletionSuggestionsResponse",
@@ -433,10 +456,12 @@ __all__ = (
     "RecrawlUrisRequest",
     "RecrawlUrisResponse",
     "Reply",
+    "SafetyRating",
     "Schema",
     "SchemaServiceClient",
     "SearchAddOn",
     "SearchInfo",
+    "SearchLinkPromotion",
     "SearchRequest",
     "SearchResponse",
     "SearchServiceClient",
@@ -447,6 +472,7 @@ __all__ = (
     "SiteSearchEngine",
     "SiteSearchEngineServiceClient",
     "SiteVerificationInfo",
+    "Sitemap",
     "SolutionType",
     "SpannerSource",
     "SuggestionDenyListEntry",

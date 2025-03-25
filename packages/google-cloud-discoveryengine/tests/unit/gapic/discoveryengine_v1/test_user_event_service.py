@@ -1183,6 +1183,7 @@ def test_write_user_event(request_type, transport: str = "grpc"):
         # Designate an appropriate return value for the call.
         call.return_value = user_event.UserEvent(
             event_type="event_type_value",
+            conversion_type="conversion_type_value",
             user_pseudo_id="user_pseudo_id_value",
             engine="engine_value",
             data_store="data_store_value",
@@ -1204,6 +1205,7 @@ def test_write_user_event(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, user_event.UserEvent)
     assert response.event_type == "event_type_value"
+    assert response.conversion_type == "conversion_type_value"
     assert response.user_pseudo_id == "user_pseudo_id_value"
     assert response.engine == "engine_value"
     assert response.data_store == "data_store_value"
@@ -1342,6 +1344,7 @@ async def test_write_user_event_async(
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             user_event.UserEvent(
                 event_type="event_type_value",
+                conversion_type="conversion_type_value",
                 user_pseudo_id="user_pseudo_id_value",
                 engine="engine_value",
                 data_store="data_store_value",
@@ -1364,6 +1367,7 @@ async def test_write_user_event_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, user_event.UserEvent)
     assert response.event_type == "event_type_value"
+    assert response.conversion_type == "conversion_type_value"
     assert response.user_pseudo_id == "user_pseudo_id_value"
     assert response.engine == "engine_value"
     assert response.data_store == "data_store_value"
@@ -3000,6 +3004,7 @@ async def test_write_user_event_empty_call_grpc_asyncio():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             user_event.UserEvent(
                 event_type="event_type_value",
+                conversion_type="conversion_type_value",
                 user_pseudo_id="user_pseudo_id_value",
                 engine="engine_value",
                 data_store="data_store_value",
@@ -3153,6 +3158,7 @@ def test_write_user_event_rest_call_success(request_type):
     request_init = {"parent": "projects/sample1/locations/sample2/dataStores/sample3"}
     request_init["user_event"] = {
         "event_type": "event_type_value",
+        "conversion_type": "conversion_type_value",
         "user_pseudo_id": "user_pseudo_id_value",
         "engine": "engine_value",
         "data_store": "data_store_value",
@@ -3176,6 +3182,7 @@ def test_write_user_event_rest_call_success(request_type):
                 "quantity": 895,
                 "promotion_ids": ["promotion_ids_value1", "promotion_ids_value2"],
                 "joined": True,
+                "conversion_value": 0.17300000000000001,
             }
         ],
         "panel": {
@@ -3183,6 +3190,7 @@ def test_write_user_event_rest_call_success(request_type):
             "display_name": "display_name_value",
             "panel_position": 1508,
             "total_panels": 1286,
+            "documents": {},
         },
         "search_info": {
             "search_query": "search_query_value",
@@ -3208,6 +3216,7 @@ def test_write_user_event_rest_call_success(request_type):
             "media_progress_duration": {"seconds": 751, "nanos": 543},
             "media_progress_percentage": 0.2641,
         },
+        "panels": {},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -3283,6 +3292,7 @@ def test_write_user_event_rest_call_success(request_type):
         # Designate an appropriate value for the returned response.
         return_value = user_event.UserEvent(
             event_type="event_type_value",
+            conversion_type="conversion_type_value",
             user_pseudo_id="user_pseudo_id_value",
             engine="engine_value",
             data_store="data_store_value",
@@ -3309,6 +3319,7 @@ def test_write_user_event_rest_call_success(request_type):
     # Establish that the response is the type that we expect.
     assert isinstance(response, user_event.UserEvent)
     assert response.event_type == "event_type_value"
+    assert response.conversion_type == "conversion_type_value"
     assert response.user_pseudo_id == "user_pseudo_id_value"
     assert response.engine == "engine_value"
     assert response.data_store == "data_store_value"

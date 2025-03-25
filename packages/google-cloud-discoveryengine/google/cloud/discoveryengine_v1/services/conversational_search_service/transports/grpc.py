@@ -545,6 +545,41 @@ class ConversationalSearchServiceGrpcTransport(ConversationalSearchServiceTransp
         return self._stubs["answer_query"]
 
     @property
+    def stream_answer_query(
+        self,
+    ) -> Callable[
+        [conversational_search_service.AnswerQueryRequest],
+        conversational_search_service.AnswerQueryResponse,
+    ]:
+        r"""Return a callable for the stream answer query method over gRPC.
+
+        Answer query method (streaming).
+
+        It takes one
+        [AnswerQueryRequest][google.cloud.discoveryengine.v1.AnswerQueryRequest]
+        and returns multiple
+        [AnswerQueryResponse][google.cloud.discoveryengine.v1.AnswerQueryResponse]
+        messages in a stream.
+
+        Returns:
+            Callable[[~.AnswerQueryRequest],
+                    ~.AnswerQueryResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "stream_answer_query" not in self._stubs:
+            self._stubs["stream_answer_query"] = self._logged_channel.unary_stream(
+                "/google.cloud.discoveryengine.v1.ConversationalSearchService/StreamAnswerQuery",
+                request_serializer=conversational_search_service.AnswerQueryRequest.serialize,
+                response_deserializer=conversational_search_service.AnswerQueryResponse.deserialize,
+            )
+        return self._stubs["stream_answer_query"]
+
+    @property
     def get_answer(
         self,
     ) -> Callable[[conversational_search_service.GetAnswerRequest], answer.Answer]:

@@ -30,6 +30,8 @@ __protobuf__ = proto.module(
         "Interval",
         "CustomAttribute",
         "UserInfo",
+        "DoubleList",
+        "SearchLinkPromotion",
     },
 )
 
@@ -265,6 +267,68 @@ class UserInfo(proto.Message):
     user_agent: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+
+
+class DoubleList(proto.Message):
+    r"""Double list.
+
+    Attributes:
+        values (MutableSequence[float]):
+            Double values.
+    """
+
+    values: MutableSequence[float] = proto.RepeatedField(
+        proto.DOUBLE,
+        number=1,
+    )
+
+
+class SearchLinkPromotion(proto.Message):
+    r"""Promotion proto includes uri and other helping information to
+    display the promotion.
+
+    Attributes:
+        title (str):
+            Required. The title of the promotion.
+            Maximum length: 160 characters.
+        uri (str):
+            Optional. The URL for the page the user wants
+            to promote. Must be set for site search. For
+            other verticals, this is optional.
+        image_uri (str):
+            Optional. The promotion thumbnail image url.
+        description (str):
+            Optional. The Promotion description.
+            Maximum length: 200 characters.
+        enabled (bool):
+            Optional. The enabled promotion will be
+            returned for any serving configs associated with
+            the parent of the control this promotion is
+            attached to.
+
+            This flag is used for basic site search only.
+    """
+
+    title: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    uri: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    image_uri: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    description: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    enabled: bool = proto.Field(
+        proto.BOOL,
+        number=5,
     )
 
 
