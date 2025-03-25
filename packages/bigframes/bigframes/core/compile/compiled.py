@@ -665,9 +665,11 @@ def _join_condition(
 
 
 def _as_groupable(value: ibis_types.Value):
-    # Some types need to be converted to string to enable groupby
-    if value.type().is_float64() or value.type().is_geospatial():
+    # Some types need to be converted to another type to enable groupby
+    if value.type().is_float64():
         return value.cast(ibis_dtypes.str)
+    elif value.type().is_geospatial():
+        return typing.cast(ibis_types.GeoSpatialColumn, value).as_binary()
     elif value.type().is_json():
         return scalar_op_compiler.to_json_string(value)
     else:

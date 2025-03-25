@@ -289,3 +289,20 @@ def test_geo_difference_with_similar_geometry_objects():
     assert expected.iloc[0].equals(bf_result.iloc[0])
     assert expected.iloc[1].equals(bf_result.iloc[1])
     assert expected.iloc[2].equals(bf_result.iloc[2])
+
+
+def test_geo_drop_duplicates():
+    bf_series = bigframes.geopandas.GeoSeries(
+        [Point(1, 1), Point(2, 2), Point(3, 3), Point(2, 2)]
+    )
+
+    pd_series = geopandas.GeoSeries(
+        [Point(1, 1), Point(2, 2), Point(3, 3), Point(2, 2)]
+    )
+
+    bf_result = bf_series.drop_duplicates().to_pandas()
+    pd_result = pd_series.drop_duplicates()
+
+    pd.testing.assert_series_equal(
+        geopandas.GeoSeries(bf_result), pd_result, check_index=False
+    )
