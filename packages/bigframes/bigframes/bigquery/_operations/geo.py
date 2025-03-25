@@ -28,14 +28,14 @@ https://cloud.google.com/bigquery/docs/reference/standard-sql/geography_function
 def st_area(series: bigframes.series.Series) -> bigframes.series.Series:
     """
     Returns the area in square meters covered by the polygons in the input
-    GEOGRAPHY.
+    `GEOGRAPHY`.
 
     If geography_expression is a point or a line, returns zero. If
     geography_expression is a collection, returns the area of the polygons
     in the collection; if the collection doesn't contain polygons, returns zero.
 
 
-    ..note::
+    .. note::
         BigQuery's Geography functions, like `st_area`, interpret the geometry
         data type as a point set on the Earth's surface. A point set is a set
         of points, lines, and polygons on the WGS84 reference spheroid, with
@@ -98,14 +98,14 @@ def st_difference(
     series: bigframes.series.Series, other: bigframes.series.Series
 ) -> bigframes.series.Series:
     """
-    Returns a GEOGRAPHY that represents the point set difference of
+    Returns a `GEOGRAPHY` that represents the point set difference of
     `geography_1` and `geography_2`. Therefore, the result consists of the part
     of `geography_1` that doesn't intersect with `geography_2`.
 
-    If `geometry_1` is completely contained in `geometry_2`, then ST_DIFFERENCE
-    returns an empty GEOGRAPHY.
+    If `geometry_1` is completely contained in `geometry_2`, then `ST_DIFFERENCE`
+    returns an empty `GEOGRAPHY`.
 
-    ..note::
+    .. note::
         BigQuery's Geography functions, like `st_difference`, interpret the geometry
         data type as a point set on the Earth's surface. A point set is a set
         of points, lines, and polygons on the WGS84 reference spheroid, with
@@ -119,7 +119,7 @@ def st_difference(
         >>> from shapely.geometry import Polygon, LineString, Point
         >>> bpd.options.display.progress_bar = None
 
-    We can check two GeoSeries against each other, row by row.
+    We can check two GeoSeries against each other, row by row:
 
         >>> s1 = bigframes.geopandas.GeoSeries(
         ...    [
@@ -168,32 +168,32 @@ def st_difference(
 
     We can also check difference of single shapely geometries:
 
-        >>> sbq1 = bigframes.geopandas.GeoSeries(
+        >>> polygon_s1 = bigframes.geopandas.GeoSeries(
         ...     [
         ...         Polygon([(0, 0), (10, 0), (10, 10), (0, 0)])
         ...     ]
         ... )
-        >>> sbq2 = bigframes.geopandas.GeoSeries(
+        >>> polygon_s2 = bigframes.geopandas.GeoSeries(
         ...     [
         ...         Polygon([(4, 2), (6, 2), (8, 6), (4, 2)])
         ...     ]
         ... )
 
-        >>> sbq1
+        >>> polygon_s1
         0    POLYGON ((0 0, 10 0, 10 10, 0 0))
         dtype: geometry
 
-        >>> sbq2
+        >>> polygon_s2
         0    POLYGON ((4 2, 6 2, 8 6, 4 2))
         dtype: geometry
 
-        >>> bbq.st_difference(sbq1, sbq2)
+        >>> bbq.st_difference(polygon_s1, polygon_s2)
         0    POLYGON ((0 0, 10 0, 10 10, 0 0), (8 6, 6 2, 4...
         dtype: geometry
 
     Additionally, we can check difference of a GeoSeries against a single shapely geometry:
 
-        >>> bbq.st_difference(s1, sbq2)
+        >>> bbq.st_difference(s1, polygon_s2)
         0    POLYGON ((0 0, 2 2, 0 2, 0 0))
         1                              None
         2                              None

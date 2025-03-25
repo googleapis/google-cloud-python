@@ -242,10 +242,10 @@ class GeoSeries:
 
     def difference(self: GeoSeries, other: GeoSeries) -> GeoSeries:  # type: ignore
         """
-            Returns a GeoSeries of the points in each aligned geometry that are not
-            in other.
+        Returns a GeoSeries of the points in each aligned geometry that are not
+        in other.
 
-            The operation works on a 1-to-1 row-wise manner
+        The operation works on a 1-to-1 row-wise manner.
 
         **Examples:**
 
@@ -254,7 +254,7 @@ class GeoSeries:
             >>> from shapely.geometry import Polygon, LineString, Point
             >>> bpd.options.display.progress_bar = None
 
-        We can check two GeoSeries against each other, row by row.
+        We can check two GeoSeries against each other, row by row:
 
             >>> s1 = bigframes.geopandas.GeoSeries(
             ...    [
@@ -303,32 +303,32 @@ class GeoSeries:
 
         We can also check difference of single shapely geometries:
 
-            >>> sbq1 = bigframes.geopandas.GeoSeries(
+            >>> polygon_s1 = bigframes.geopandas.GeoSeries(
             ...     [
             ...         Polygon([(0, 0), (10, 0), (10, 10), (0, 0)])
             ...     ]
             ... )
-            >>> sbq2 = bigframes.geopandas.GeoSeries(
+            >>> polygon_s2 = bigframes.geopandas.GeoSeries(
             ...     [
             ...         Polygon([(4, 2), (6, 2), (8, 6), (4, 2)])
             ...     ]
             ... )
 
-            >>> sbq1
+            >>> polygon_s1
             0    POLYGON ((0 0, 10 0, 10 10, 0 0))
             dtype: geometry
 
-            >>> sbq2
+            >>> polygon_s2
             0    POLYGON ((4 2, 6 2, 8 6, 4 2))
             dtype: geometry
 
-            >>> sbq1.difference(sbq2)
+            >>> polygon_s1.difference(polygon_s2)
             0    POLYGON ((0 0, 10 0, 10 10, 0 0), (8 6, 6 2, 4...
             dtype: geometry
 
         Additionally, we can check difference of a GeoSeries against a single shapely geometry:
 
-            >>> s1.difference(sbq2)
+            >>> s1.difference(polygon_s2)
             0    POLYGON ((0 0, 2 2, 0 2, 0 0))
             1                              None
             2                              None
@@ -336,19 +336,14 @@ class GeoSeries:
             4                              None
             dtype: geometry
 
-            Args:
-                other (GeoSeries or geometric object):
-                    The GeoSeries (elementwise) or geometric object to find the
-                    difference to.
+        Args:
+            other (bigframes.geopandas.GeoSeries or geometric object):
+                The GeoSeries (elementwise) or geometric object to find the
+                difference to.
 
-            Returns:
-                bigframes.geopandas.GeoSeries:
-                    A GeoSeries of the points in each aligned geometry that are not
-                    in other.
-
-            Raises:
-                NotImplementedError:
-                    GeoSeries.difference is not supported. Use
-                    bigframes.bigquery.st_difference(series), instead.
+        Returns:
+            bigframes.geopandas.GeoSeries:
+                A GeoSeries of the points in each aligned geometry that are not
+                in other.
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
