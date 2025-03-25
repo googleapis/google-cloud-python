@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -134,6 +134,11 @@ class ProductInputsServiceTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.update_product_input: gapic_v1.method.wrap_method(
+                self.update_product_input,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.delete_product_input: gapic_v1.method.wrap_method(
                 self.delete_product_input,
                 default_timeout=None,
@@ -155,6 +160,15 @@ class ProductInputsServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [productinputs.InsertProductInputRequest],
+        Union[productinputs.ProductInput, Awaitable[productinputs.ProductInput]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_product_input(
+        self,
+    ) -> Callable[
+        [productinputs.UpdateProductInputRequest],
         Union[productinputs.ProductInput, Awaitable[productinputs.ProductInput]],
     ]:
         raise NotImplementedError()

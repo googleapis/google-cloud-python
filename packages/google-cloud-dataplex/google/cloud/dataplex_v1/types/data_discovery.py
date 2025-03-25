@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -55,6 +55,32 @@ class DataDiscoverySpec(proto.Message):
                 Optional. The BigQuery connection used to create BigLake
                 tables. Must be in the form
                 ``projects/{project_id}/locations/{location_id}/connections/{connection_id}``
+            location (str):
+                Optional. The location of the BigQuery dataset to publish
+                BigLake external or non-BigLake external tables to.
+
+                1. If the Cloud Storage bucket is located in a multi-region
+                   bucket, then BigQuery dataset can be in the same
+                   multi-region bucket or any single region that is included
+                   in the same multi-region bucket. The datascan can be
+                   created in any single region that is included in the same
+                   multi-region bucket
+                2. If the Cloud Storage bucket is located in a dual-region
+                   bucket, then BigQuery dataset can be located in regions
+                   that are included in the dual-region bucket, or in a
+                   multi-region that includes the dual-region. The datascan
+                   can be created in any single region that is included in
+                   the same dual-region bucket.
+                3. If the Cloud Storage bucket is located in a single
+                   region, then BigQuery dataset can be in the same single
+                   region or any multi-region bucket that includes the same
+                   single region. The datascan will be created in the same
+                   single region as the bucket.
+                4. If the BigQuery dataset is in single region, it must be
+                   in the same single region as the datascan.
+
+                For supported values, refer to
+                https://cloud.google.com/bigquery/docs/locations#supported_locations.
         """
 
         class TableType(proto.Enum):
@@ -88,6 +114,10 @@ class DataDiscoverySpec(proto.Message):
         connection: str = proto.Field(
             proto.STRING,
             number=3,
+        )
+        location: str = proto.Field(
+            proto.STRING,
+            number=4,
         )
 
     class StorageConfig(proto.Message):

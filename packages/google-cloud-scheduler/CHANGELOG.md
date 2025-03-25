@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-scheduler/#history
 
+## [2.16.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-scheduler-v2.16.0...google-cloud-scheduler-v2.16.1) (2025-03-15)
+
+
+### Bug Fixes
+
+* [Many APIs] Allow Protobuf 6.x ([784a3ca](https://github.com/googleapis/google-cloud-python/commit/784a3ca7a180453320521753f5bce71de329d65c))
+* remove setup.cfg configuration for creating universal wheels ([#13659](https://github.com/googleapis/google-cloud-python/issues/13659)) ([59bfd42](https://github.com/googleapis/google-cloud-python/commit/59bfd42cf8a2eaeed696a7504890bce5aae815ce))
+
 ## [2.16.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-scheduler-v2.15.1...google-cloud-scheduler-v2.16.0) (2025-02-18)
 
 

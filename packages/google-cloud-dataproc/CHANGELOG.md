@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-dataproc/#history
 
+## [5.18.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataproc-v5.18.0...google-cloud-dataproc-v5.18.1) (2025-03-15)
+
+
+### Bug Fixes
+
+* [Many APIs] Allow Protobuf 6.x ([feb5353](https://github.com/googleapis/google-cloud-python/commit/feb53532240bb70a94b359b519f0f41f95875a33))
+* remove setup.cfg configuration for creating universal wheels ([#13659](https://github.com/googleapis/google-cloud-python/issues/13659)) ([59bfd42](https://github.com/googleapis/google-cloud-python/commit/59bfd42cf8a2eaeed696a7504890bce5aae815ce))
+
 ## [5.18.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataproc-v5.17.1...google-cloud-dataproc-v5.18.0) (2025-02-24)
 
 

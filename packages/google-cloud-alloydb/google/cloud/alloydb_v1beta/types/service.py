@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -34,6 +34,9 @@ __protobuf__ = proto.module(
         "CreateSecondaryClusterRequest",
         "CreateClusterRequest",
         "UpdateClusterRequest",
+        "GcsDestination",
+        "ExportClusterRequest",
+        "ExportClusterResponse",
         "UpgradeClusterRequest",
         "UpgradeClusterResponse",
         "DeleteClusterRequest",
@@ -378,6 +381,195 @@ class UpdateClusterRequest(proto.Message):
     allow_missing: bool = proto.Field(
         proto.BOOL,
         number=5,
+    )
+
+
+class GcsDestination(proto.Message):
+    r"""Destination for Export. Export will be done to cloud storage.
+
+    Attributes:
+        uri (str):
+            Required. The path to the file in Google Cloud Storage where
+            the export will be stored. The URI is in the form
+            ``gs://bucketName/fileName``.
+    """
+
+    uri: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class ExportClusterRequest(proto.Message):
+    r"""Export cluster request.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        gcs_destination (google.cloud.alloydb_v1beta.types.GcsDestination):
+            Required. Option to export data to cloud
+            storage.
+
+            This field is a member of `oneof`_ ``destination``.
+        csv_export_options (google.cloud.alloydb_v1beta.types.ExportClusterRequest.CsvExportOptions):
+            Options for exporting data in CSV format.
+            Required field to be set for CSV file type.
+
+            This field is a member of `oneof`_ ``export_options``.
+        sql_export_options (google.cloud.alloydb_v1beta.types.ExportClusterRequest.SqlExportOptions):
+            Options for exporting data in SQL format.
+            Required field to be set for SQL file type.
+
+            This field is a member of `oneof`_ ``export_options``.
+        name (str):
+            Required. The resource name of the cluster.
+        database (str):
+            Required. Name of the database where the export command will
+            be executed. Note - Value provided should be the same as
+            expected from ``SELECT current_database();`` and NOT as a
+            resource reference.
+    """
+
+    class CsvExportOptions(proto.Message):
+        r"""Options for exporting data in CSV format.
+
+        Attributes:
+            select_query (str):
+                Required. The SELECT query used to extract
+                the data.
+            field_delimiter (str):
+                Optional. Specifies the character that
+                separates columns within each row (line) of the
+                file. The default is comma. The value of this
+                argument has to be a character in Hex ASCII
+                Code.
+            quote_character (str):
+                Optional. Specifies the quoting character to
+                be used when a data value is quoted. The default
+                is double-quote. The value of this argument has
+                to be a character in Hex ASCII Code.
+            escape_character (str):
+                Optional. Specifies the character that should
+                appear before a data character that needs to be
+                escaped. The default is the same as quote
+                character. The value of this argument has to be
+                a character in Hex ASCII Code.
+        """
+
+        select_query: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        field_delimiter: str = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+        quote_character: str = proto.Field(
+            proto.STRING,
+            number=3,
+        )
+        escape_character: str = proto.Field(
+            proto.STRING,
+            number=4,
+        )
+
+    class SqlExportOptions(proto.Message):
+        r"""Options for exporting data in SQL format.
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+        Attributes:
+            tables (MutableSequence[str]):
+                Optional. Tables to export from.
+            schema_only (bool):
+                Optional. If true, only export the schema.
+
+                This field is a member of `oneof`_ ``_schema_only``.
+            clean_target_objects (bool):
+                Optional. If true, output commands to DROP
+                all the dumped database objects prior to
+                outputting the commands for creating them.
+
+                This field is a member of `oneof`_ ``_clean_target_objects``.
+            if_exist_target_objects (bool):
+                Optional. If true, use DROP ... IF EXISTS commands to check
+                for the object's existence before dropping it in
+                clean_target_objects mode.
+
+                This field is a member of `oneof`_ ``_if_exist_target_objects``.
+        """
+
+        tables: MutableSequence[str] = proto.RepeatedField(
+            proto.STRING,
+            number=1,
+        )
+        schema_only: bool = proto.Field(
+            proto.BOOL,
+            number=2,
+            optional=True,
+        )
+        clean_target_objects: bool = proto.Field(
+            proto.BOOL,
+            number=3,
+            optional=True,
+        )
+        if_exist_target_objects: bool = proto.Field(
+            proto.BOOL,
+            number=4,
+            optional=True,
+        )
+
+    gcs_destination: "GcsDestination" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        oneof="destination",
+        message="GcsDestination",
+    )
+    csv_export_options: CsvExportOptions = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        oneof="export_options",
+        message=CsvExportOptions,
+    )
+    sql_export_options: SqlExportOptions = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        oneof="export_options",
+        message=SqlExportOptions,
+    )
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    database: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class ExportClusterResponse(proto.Message):
+    r"""Response of export cluster rpc.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        gcs_destination (google.cloud.alloydb_v1beta.types.GcsDestination):
+            Required. Option to export data to cloud
+            storage.
+
+            This field is a member of `oneof`_ ``destination``.
+    """
+
+    gcs_destination: "GcsDestination" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        oneof="destination",
+        message="GcsDestination",
     )
 
 
@@ -2342,9 +2534,11 @@ class OperationMetadata(proto.Message):
         requested_cancellation (bool):
             Output only. Identifies whether the user has requested
             cancellation of the operation. Operations that have
-            successfully been cancelled have [Operation.error][] value
-            with a [google.rpc.Status.code][google.rpc.Status.code] of
-            1, corresponding to ``Code.CANCELLED``.
+            successfully been cancelled have
+            [google.longrunning.Operation.error][google.longrunning.Operation.error]
+            value with a
+            [google.rpc.Status.code][google.rpc.Status.code] of 1,
+            corresponding to ``Code.CANCELLED``.
         api_version (str):
             Output only. API version used to start the
             operation.

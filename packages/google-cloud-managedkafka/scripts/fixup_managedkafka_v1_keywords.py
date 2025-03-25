@@ -1,6 +1,6 @@
 #! /usr/bin/env python3
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -40,17 +40,31 @@ class managedkafkaCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
         'create_cluster': ('parent', 'cluster_id', 'cluster', 'request_id', ),
+        'create_connect_cluster': ('parent', 'connect_cluster_id', 'connect_cluster', 'request_id', ),
+        'create_connector': ('parent', 'connector_id', 'connector', ),
         'create_topic': ('parent', 'topic_id', 'topic', ),
         'delete_cluster': ('name', 'request_id', ),
+        'delete_connect_cluster': ('name', 'request_id', ),
+        'delete_connector': ('name', ),
         'delete_consumer_group': ('name', ),
         'delete_topic': ('name', ),
         'get_cluster': ('name', ),
+        'get_connect_cluster': ('name', ),
+        'get_connector': ('name', ),
         'get_consumer_group': ('name', ),
         'get_topic': ('name', ),
         'list_clusters': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
+        'list_connect_clusters': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
+        'list_connectors': ('parent', 'page_size', 'page_token', ),
         'list_consumer_groups': ('parent', 'page_size', 'page_token', ),
         'list_topics': ('parent', 'page_size', 'page_token', ),
+        'pause_connector': ('name', ),
+        'restart_connector': ('name', ),
+        'resume_connector': ('name', ),
+        'stop_connector': ('name', ),
         'update_cluster': ('update_mask', 'cluster', 'request_id', ),
+        'update_connect_cluster': ('update_mask', 'connect_cluster', 'request_id', ),
+        'update_connector': ('update_mask', 'connector', ),
         'update_consumer_group': ('update_mask', 'consumer_group', ),
         'update_topic': ('update_mask', 'topic', ),
     }

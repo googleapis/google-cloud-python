@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -1291,14 +1291,14 @@ class Instance(proto.Message):
             instance, instance is created in a random zone
             with available capacity.
         database_flags (MutableMapping[str, str]):
-            Database flags. Set at instance level.
-
-            -  They are copied from primary instance on read instance
-               creation.
-            -  Read instances can set new or override existing flags
-               that are relevant for reads, e.g. for enabling columnar
-               cache on a read instance. Flags set on read instance may
-               or may not be present on primary.
+            Database flags. Set at the instance level. They are copied
+            from the primary instance on secondary instance creation.
+            Flags that have restrictions default to the value at primary
+            instance on read instances during creation. Read instances
+            can set new flags or override existing flags that are
+            relevant for reads, for example, for enabling columnar cache
+            on a read instance. Flags set on read instance might or
+            might not be present on the primary instance.
 
             This is a list of "key": "value" pairs. "key": The name of
             the flag. These flags are passed at instance setup time, so
@@ -1480,18 +1480,18 @@ class Instance(proto.Message):
 
         Attributes:
             zone_id (str):
-                The Compute Engine zone of the VM e.g.
-                "us-central1-b".
+                Output only. The Compute Engine zone of the
+                VM e.g. "us-central1-b".
             id (str):
-                The identifier of the VM e.g.
+                Output only. The identifier of the VM e.g.
                 "test-read-0601-407e52be-ms3l".
             ip (str):
-                The private IP address of the VM e.g.
-                "10.57.0.34".
+                Output only. The private IP address of the VM
+                e.g. "10.57.0.34".
             state (str):
-                Determined by state of the compute VM and
-                postgres-service health. Compute VM state can
-                have values listed in
+                Output only. Determined by state of the
+                compute VM and postgres-service health. Compute
+                VM state can have values listed in
                 https://cloud.google.com/compute/docs/instances/instance-life-cycle
                 and postgres-service health can have values:
                 HEALTHY and UNHEALTHY.

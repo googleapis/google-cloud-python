@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -170,6 +170,9 @@ __protobuf__ = proto.module(
         "DeleteJobTriggerRequest",
         "InspectJobConfig",
         "DataProfileAction",
+        "DataProfileFinding",
+        "DataProfileFindingLocation",
+        "DataProfileFindingRecordLocation",
         "DataProfileJobConfig",
         "BigQueryRegex",
         "BigQueryRegexes",
@@ -275,6 +278,7 @@ __protobuf__ = proto.module(
         "OtherInfoTypeSummary",
         "ColumnDataProfile",
         "FileStoreDataProfile",
+        "Tag",
         "RelatedResource",
         "FileStoreInfoTypeSummary",
         "FileExtensionInfo",
@@ -1258,6 +1262,9 @@ class ByteContentItem(proto.Message):
         r"""The type of data being sent for inspection. To learn more, see
         `Supported file
         types <https://cloud.google.com/sensitive-data-protection/docs/supported-file-types>`__.
+
+        Only the first frame of each multiframe image is inspected. Metadata
+        and other frames aren't inspected.
 
         Values:
             BYTES_TYPE_UNSPECIFIED (0):
@@ -2851,6 +2858,13 @@ class InfoTypeDescription(proto.Message):
             The category of the infoType.
         sensitivity_score (google.cloud.dlp_v2.types.SensitivityScore):
             The default sensitivity of the infoType.
+        specific_info_types (MutableSequence[str]):
+            If this field is set, this infoType is a general infoType
+            and these specific infoTypes are contained within it.
+            General infoTypes are infoTypes that encompass multiple
+            specific infoTypes. For example, the "GEOGRAPHIC_DATA"
+            general infoType would have set for this field "LOCATION",
+            "LOCATION_COORDINATES", and "STREET_ADDRESS".
     """
 
     name: str = proto.Field(
@@ -2888,6 +2902,10 @@ class InfoTypeDescription(proto.Message):
         proto.MESSAGE,
         number=11,
         message=storage.SensitivityScore,
+    )
+    specific_info_types: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=12,
     )
 
 
@@ -2954,6 +2972,8 @@ class InfoTypeCategory(proto.Message):
                 The infoType is typically used in Colombia.
             CROATIA (42):
                 The infoType is typically used in Croatia.
+            CZECHIA (52):
+                The infoType is typically used in Czechia.
             DENMARK (10):
                 The infoType is typically used in Denmark.
             FRANCE (11):
@@ -3050,6 +3070,7 @@ class InfoTypeCategory(proto.Message):
         CHINA = 8
         COLOMBIA = 9
         CROATIA = 42
+        CZECHIA = 52
         DENMARK = 10
         FRANCE = 11
         FINLAND = 12
@@ -7952,11 +7973,25 @@ class DataProfileAction(proto.Message):
                    If you use VPC Service Controls to define security
                    perimeters, then you must use a separate table for each
                    boundary.
+            sample_findings_table (google.cloud.dlp_v2.types.BigQueryTable):
+                Store sample [data profile
+                findings][google.privacy.dlp.v2.DataProfileFinding] in an
+                existing table or a new table in an existing dataset. Each
+                regeneration will result in new rows in BigQuery. Data is
+                inserted using `streaming
+                insert <https://cloud.google.com/blog/products/bigquery/life-of-a-bigquery-streaming-insert>`__
+                and so data may be in the buffer for a period of time after
+                the profile has finished.
         """
 
         profile_table: storage.BigQueryTable = proto.Field(
             proto.MESSAGE,
             number=1,
+            message=storage.BigQueryTable,
+        )
+        sample_findings_table: storage.BigQueryTable = proto.Field(
+            proto.MESSAGE,
+            number=2,
             message=storage.BigQueryTable,
         )
 
@@ -8167,6 +8202,127 @@ class DataProfileAction(proto.Message):
         number=8,
         oneof="action",
         message=TagResources,
+    )
+
+
+class DataProfileFinding(proto.Message):
+    r"""Details about a piece of potentially sensitive information
+    that was detected when the data resource was profiled.
+
+    Attributes:
+        quote (str):
+            The content that was found. Even if the
+            content is not textual, it may be converted to a
+            textual representation here. If the finding
+            exceeds 4096 bytes in length, the quote may be
+            omitted.
+        infotype (google.cloud.dlp_v2.types.InfoType):
+            The `type of
+            content <https://cloud.google.com/sensitive-data-protection/docs/infotypes-reference>`__
+            that might have been found.
+        quote_info (google.cloud.dlp_v2.types.QuoteInfo):
+            Contains data parsed from quotes. Currently supported
+            infoTypes: DATE, DATE_OF_BIRTH, and TIME.
+        data_profile_resource_name (str):
+            Resource name of the data profile associated
+            with the finding.
+        finding_id (str):
+            A unique identifier for the finding.
+        timestamp (google.protobuf.timestamp_pb2.Timestamp):
+            Timestamp when the finding was detected.
+        location (google.cloud.dlp_v2.types.DataProfileFindingLocation):
+            Where the content was found.
+        resource_visibility (google.cloud.dlp_v2.types.ResourceVisibility):
+            How broadly a resource has been shared.
+    """
+
+    quote: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    infotype: storage.InfoType = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=storage.InfoType,
+    )
+    quote_info: "QuoteInfo" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="QuoteInfo",
+    )
+    data_profile_resource_name: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    finding_id: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    timestamp: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message=timestamp_pb2.Timestamp,
+    )
+    location: "DataProfileFindingLocation" = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message="DataProfileFindingLocation",
+    )
+    resource_visibility: "ResourceVisibility" = proto.Field(
+        proto.ENUM,
+        number=8,
+        enum="ResourceVisibility",
+    )
+
+
+class DataProfileFindingLocation(proto.Message):
+    r"""Location of a data profile finding within a resource.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        container_name (str):
+            Name of the container where the finding is located. The
+            top-level name is the source file name or table name. Names
+            of some common storage containers are formatted as follows:
+
+            -  BigQuery tables: ``{project_id}:{dataset_id}.{table_id}``
+            -  Cloud Storage files: ``gs://{bucket}/{path}``
+        data_profile_finding_record_location (google.cloud.dlp_v2.types.DataProfileFindingRecordLocation):
+            Location of a finding within a resource that
+            produces a table data profile.
+
+            This field is a member of `oneof`_ ``location_extra_details``.
+    """
+
+    container_name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    data_profile_finding_record_location: "DataProfileFindingRecordLocation" = (
+        proto.Field(
+            proto.MESSAGE,
+            number=2,
+            oneof="location_extra_details",
+            message="DataProfileFindingRecordLocation",
+        )
+    )
+
+
+class DataProfileFindingRecordLocation(proto.Message):
+    r"""Location of a finding within a resource that produces a table
+    data profile.
+
+    Attributes:
+        field (google.cloud.dlp_v2.types.FieldId):
+            Field ID of the column containing the
+            finding.
+    """
+
+    field: storage.FieldId = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=storage.FieldId,
     )
 
 
@@ -12301,6 +12457,15 @@ class TableDataProfile(proto.Message):
             time the profile was generated.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             The time at which the table was created.
+        sample_findings_table (google.cloud.dlp_v2.types.BigQueryTable):
+            The BigQuery table to which the sample
+            findings are written.
+        tags (MutableSequence[google.cloud.dlp_v2.types.Tag]):
+            The tags attached to the table, including any
+            tags attached during profiling. Because tags are
+            attached to Cloud SQL instances rather than
+            Cloud SQL tables, this field is empty for Cloud
+            SQL table profiles.
         related_resources (MutableSequence[google.cloud.dlp_v2.types.RelatedResource]):
             Resources related to this profile.
     """
@@ -12441,6 +12606,16 @@ class TableDataProfile(proto.Message):
         proto.MESSAGE,
         number=23,
         message=timestamp_pb2.Timestamp,
+    )
+    sample_findings_table: storage.BigQueryTable = proto.Field(
+        proto.MESSAGE,
+        number=37,
+        message=storage.BigQueryTable,
+    )
+    tags: MutableSequence["Tag"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=39,
+        message="Tag",
     )
     related_resources: MutableSequence["RelatedResource"] = proto.RepeatedField(
         proto.MESSAGE,
@@ -12871,8 +13046,14 @@ class FileStoreDataProfile(proto.Message):
             time the profile was generated.
         file_store_info_type_summaries (MutableSequence[google.cloud.dlp_v2.types.FileStoreInfoTypeSummary]):
             InfoTypes detected in this file store.
+        sample_findings_table (google.cloud.dlp_v2.types.BigQueryTable):
+            The BigQuery table to which the sample
+            findings are written.
         file_store_is_empty (bool):
             The file store does not have any files.
+        tags (MutableSequence[google.cloud.dlp_v2.types.Tag]):
+            The tags attached to the resource, including
+            any tags attached during profiling.
         related_resources (MutableSequence[google.cloud.dlp_v2.types.RelatedResource]):
             Resources related to this profile.
     """
@@ -13000,14 +13181,58 @@ class FileStoreDataProfile(proto.Message):
         number=21,
         message="FileStoreInfoTypeSummary",
     )
+    sample_findings_table: storage.BigQueryTable = proto.Field(
+        proto.MESSAGE,
+        number=22,
+        message=storage.BigQueryTable,
+    )
     file_store_is_empty: bool = proto.Field(
         proto.BOOL,
         number=23,
+    )
+    tags: MutableSequence["Tag"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=25,
+        message="Tag",
     )
     related_resources: MutableSequence["RelatedResource"] = proto.RepeatedField(
         proto.MESSAGE,
         number=26,
         message="RelatedResource",
+    )
+
+
+class Tag(proto.Message):
+    r"""A tag associated with a resource.
+
+    Attributes:
+        namespaced_tag_value (str):
+            The namespaced name for the tag value to attach to Google
+            Cloud resources. Must be in the format
+            ``{parent_id}/{tag_key_short_name}/{short_name}``, for
+            example, "123456/environment/prod". This is only set for
+            Google Cloud resources.
+        key (str):
+            The key of a tag key-value pair. For Google
+            Cloud resources, this is the resource name of
+            the key, for example, "tagKeys/123456".
+        value (str):
+            The value of a tag key-value pair. For Google
+            Cloud resources, this is the resource name of
+            the value, for example, "tagValues/123456".
+    """
+
+    namespaced_tag_value: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    key: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    value: str = proto.Field(
+        proto.STRING,
+        number=3,
     )
 
 

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -7798,7 +7798,14 @@ def test_create_agent_rest_call_success(request_type):
                 "tracking_branch": "tracking_branch_value",
                 "access_token": "access_token_value",
                 "branches": ["branches_value1", "branches_value2"],
-            }
+            },
+            "git_connection_settings": {
+                "display_name": "display_name_value",
+                "repository_uri": "repository_uri_value",
+                "tracking_branch": "tracking_branch_value",
+                "branches": ["branches_value1", "branches_value2"],
+                "access_token_secret": "access_token_secret_value",
+            },
         },
         "bigquery_export_settings": {
             "enabled": True,
@@ -8082,7 +8089,14 @@ def test_update_agent_rest_call_success(request_type):
                 "tracking_branch": "tracking_branch_value",
                 "access_token": "access_token_value",
                 "branches": ["branches_value1", "branches_value2"],
-            }
+            },
+            "git_connection_settings": {
+                "display_name": "display_name_value",
+                "repository_uri": "repository_uri_value",
+                "tracking_branch": "tracking_branch_value",
+                "branches": ["branches_value1", "branches_value2"],
+                "access_token_secret": "access_token_secret_value",
+            },
         },
         "bigquery_export_settings": {
             "enabled": True,

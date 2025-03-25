@@ -1,5 +1,25 @@
 # Changelog
 
+## [2.8.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-connectivity-v2.7.2...google-cloud-network-connectivity-v2.8.0) (2025-03-21)
+
+
+### Features
+
+* add Network Connectivity Center APIs for PSC service automation ([ed8bfa4](https://github.com/googleapis/google-cloud-python/commit/ed8bfa48bf59f6a052704ce3becf6c5b5c0ffcca))
+
+
+### Documentation
+
+* update some documentation. ([ed8bfa4](https://github.com/googleapis/google-cloud-python/commit/ed8bfa48bf59f6a052704ce3becf6c5b5c0ffcca))
+
+## [2.7.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-connectivity-v2.7.1...google-cloud-network-connectivity-v2.7.2) (2025-03-15)
+
+
+### Bug Fixes
+
+* [Many APIs] Allow Protobuf 6.x ([c8bbf32](https://github.com/googleapis/google-cloud-python/commit/c8bbf32606e790b559b261bf96700c76b6e2bfce))
+* remove setup.cfg configuration for creating universal wheels ([#13659](https://github.com/googleapis/google-cloud-python/issues/13659)) ([59bfd42](https://github.com/googleapis/google-cloud-python/commit/59bfd42cf8a2eaeed696a7504890bce5aae815ce))
+
 ## [2.7.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-connectivity-v2.7.0...google-cloud-network-connectivity-v2.7.1) (2025-02-18)
 
 

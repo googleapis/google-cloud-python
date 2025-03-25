@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.12.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dms-v1.12.2...google-cloud-dms-v1.12.3) (2025-03-15)
+
+
+### Bug Fixes
+
+* [Many APIs] Allow Protobuf 6.x ([feb5353](https://github.com/googleapis/google-cloud-python/commit/feb53532240bb70a94b359b519f0f41f95875a33))
+* remove setup.cfg configuration for creating universal wheels ([#13659](https://github.com/googleapis/google-cloud-python/issues/13659)) ([59bfd42](https://github.com/googleapis/google-cloud-python/commit/59bfd42cf8a2eaeed696a7504890bce5aae815ce))
+
 ## [1.12.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dms-v1.12.1...google-cloud-dms-v1.12.2) (2025-02-27)
 
 

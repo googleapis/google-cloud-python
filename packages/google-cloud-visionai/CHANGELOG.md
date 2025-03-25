@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.9](https://github.com/googleapis/google-cloud-python/compare/google-cloud-visionai-v0.1.8...google-cloud-visionai-v0.1.9) (2025-03-15)
+
+
+### Bug Fixes
+
+* [Many APIs] Allow Protobuf 6.x ([4757dae](https://github.com/googleapis/google-cloud-python/commit/4757daede978618382ba46f4aa91bb9cfd9b937b))
+
 ## [0.1.8](https://github.com/googleapis/google-cloud-python/compare/google-cloud-visionai-v0.1.7...google-cloud-visionai-v0.1.8) (2025-02-18)
 
 

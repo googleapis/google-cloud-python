@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -214,11 +214,20 @@ class Agent(proto.Message):
     class GitIntegrationSettings(proto.Message):
         r"""Settings for connecting to Git repository for an agent.
 
+        This message has `oneof`_ fields (mutually exclusive fields).
+        For each oneof, at most one member field can be set at the same time.
+        Setting any member of the oneof automatically clears all other
+        members.
+
         .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
         Attributes:
             github_settings (google.cloud.dialogflowcx_v3beta1.types.Agent.GitIntegrationSettings.GithubSettings):
                 GitHub settings.
+
+                This field is a member of `oneof`_ ``git_settings``.
+            git_connection_settings (google.cloud.dialogflowcx_v3beta1.types.Agent.GitIntegrationSettings.GitConnectionSettings):
+                Git connection settings.
 
                 This field is a member of `oneof`_ ``git_settings``.
         """
@@ -265,11 +274,62 @@ class Agent(proto.Message):
                 number=5,
             )
 
+        class GitConnectionSettings(proto.Message):
+            r"""Integration settings for a Git service hosted on Cloud Run.
+
+            .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+            Attributes:
+                display_name (str):
+                    Required. Display name for the repository
+                repository_uri (str):
+                    Required. Git server reporitory URI.
+                tracking_branch (str):
+                    Required. Default branch of the repository.
+                branches (MutableSequence[str]):
+                    Optional. List of branches configured for the
+                    repository.
+                access_token_secret (str):
+                    The name of the SecretManager secret version resource
+                    storing the git access token. Format:
+                    ``projects/{project}/secrets/{secret}/versions/{version}``
+
+                    This field is a member of `oneof`_ ``git_authentication``.
+            """
+
+            display_name: str = proto.Field(
+                proto.STRING,
+                number=1,
+            )
+            repository_uri: str = proto.Field(
+                proto.STRING,
+                number=2,
+            )
+            tracking_branch: str = proto.Field(
+                proto.STRING,
+                number=3,
+            )
+            branches: MutableSequence[str] = proto.RepeatedField(
+                proto.STRING,
+                number=4,
+            )
+            access_token_secret: str = proto.Field(
+                proto.STRING,
+                number=5,
+                oneof="git_authentication",
+            )
+
         github_settings: "Agent.GitIntegrationSettings.GithubSettings" = proto.Field(
             proto.MESSAGE,
             number=1,
             oneof="git_settings",
             message="Agent.GitIntegrationSettings.GithubSettings",
+        )
+        git_connection_settings: "Agent.GitIntegrationSettings.GitConnectionSettings" = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            oneof="git_settings",
+            message="Agent.GitIntegrationSettings.GitConnectionSettings",
         )
 
     class GenAppBuilderSettings(proto.Message):

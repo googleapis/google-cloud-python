@@ -1,5 +1,26 @@
 # Changelog
 
+## [0.1.8](https://github.com/googleapis/google-cloud-python/compare/google-cloud-oracledatabase-v0.1.7...google-cloud-oracledatabase-v0.1.8) (2025-03-21)
+
+
+### Documentation
+
+* [google-cloud-oracledatabase] the network and cidr fields of AutonomousDatabase are now marked optional ([#13699](https://github.com/googleapis/google-cloud-python/issues/13699)) ([eead40b](https://github.com/googleapis/google-cloud-python/commit/eead40b9752768e392b1d0f8aa3485b73b34d190))
+
+## [0.1.7](https://github.com/googleapis/google-cloud-python/compare/google-cloud-oracledatabase-v0.1.6...google-cloud-oracledatabase-v0.1.7) (2025-03-19)
+
+
+### Features
+
+* [google-cloud-oracledatabase] add enum value `State::NOT_APPROVED_IN_PRIVATE_MARKETPLACE` ([#13664](https://github.com/googleapis/google-cloud-python/issues/13664)) ([ba9f843](https://github.com/googleapis/google-cloud-python/commit/ba9f843957ea307b187fe2a1a7fc6b043e6bd6c0))
+
+## [0.1.6](https://github.com/googleapis/google-cloud-python/compare/google-cloud-oracledatabase-v0.1.5...google-cloud-oracledatabase-v0.1.6) (2025-03-15)
+
+
+### Bug Fixes
+
+* [Many APIs] Allow Protobuf 6.x ([c8bbf32](https://github.com/googleapis/google-cloud-python/commit/c8bbf32606e790b559b261bf96700c76b6e2bfce))
+
 ## [0.1.5](https://github.com/googleapis/google-cloud-python/compare/google-cloud-oracledatabase-v0.1.4...google-cloud-oracledatabase-v0.1.5) (2025-02-12)
 
 

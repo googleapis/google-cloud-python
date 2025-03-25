@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -509,6 +509,146 @@ class ToolsGrpcAsyncIOTransport(ToolsTransport):
             )
         return self._stubs["delete_tool"]
 
+    @property
+    def list_tool_versions(
+        self,
+    ) -> Callable[
+        [tool.ListToolVersionsRequest], Awaitable[tool.ListToolVersionsResponse]
+    ]:
+        r"""Return a callable for the list tool versions method over gRPC.
+
+        List versions of the specified
+        [Tool][google.cloud.dialogflow.cx.v3beta1.Tool].
+
+        Returns:
+            Callable[[~.ListToolVersionsRequest],
+                    Awaitable[~.ListToolVersionsResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_tool_versions" not in self._stubs:
+            self._stubs["list_tool_versions"] = self._logged_channel.unary_unary(
+                "/google.cloud.dialogflow.cx.v3beta1.Tools/ListToolVersions",
+                request_serializer=tool.ListToolVersionsRequest.serialize,
+                response_deserializer=tool.ListToolVersionsResponse.deserialize,
+            )
+        return self._stubs["list_tool_versions"]
+
+    @property
+    def create_tool_version(
+        self,
+    ) -> Callable[[tool.CreateToolVersionRequest], Awaitable[tool.ToolVersion]]:
+        r"""Return a callable for the create tool version method over gRPC.
+
+        Creates a version for the specified
+        [Tool][google.cloud.dialogflow.cx.v3beta1.Tool].
+
+        Returns:
+            Callable[[~.CreateToolVersionRequest],
+                    Awaitable[~.ToolVersion]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_tool_version" not in self._stubs:
+            self._stubs["create_tool_version"] = self._logged_channel.unary_unary(
+                "/google.cloud.dialogflow.cx.v3beta1.Tools/CreateToolVersion",
+                request_serializer=tool.CreateToolVersionRequest.serialize,
+                response_deserializer=tool.ToolVersion.deserialize,
+            )
+        return self._stubs["create_tool_version"]
+
+    @property
+    def get_tool_version(
+        self,
+    ) -> Callable[[tool.GetToolVersionRequest], Awaitable[tool.ToolVersion]]:
+        r"""Return a callable for the get tool version method over gRPC.
+
+        Retrieves the specified version of the
+        [Tool][google.cloud.dialogflow.cx.v3beta1.Tool].
+
+        Returns:
+            Callable[[~.GetToolVersionRequest],
+                    Awaitable[~.ToolVersion]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_tool_version" not in self._stubs:
+            self._stubs["get_tool_version"] = self._logged_channel.unary_unary(
+                "/google.cloud.dialogflow.cx.v3beta1.Tools/GetToolVersion",
+                request_serializer=tool.GetToolVersionRequest.serialize,
+                response_deserializer=tool.ToolVersion.deserialize,
+            )
+        return self._stubs["get_tool_version"]
+
+    @property
+    def delete_tool_version(
+        self,
+    ) -> Callable[[tool.DeleteToolVersionRequest], Awaitable[empty_pb2.Empty]]:
+        r"""Return a callable for the delete tool version method over gRPC.
+
+        Deletes the specified version of the
+        [Tool][google.cloud.dialogflow.cx.v3beta1.Tool].
+
+        Returns:
+            Callable[[~.DeleteToolVersionRequest],
+                    Awaitable[~.Empty]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_tool_version" not in self._stubs:
+            self._stubs["delete_tool_version"] = self._logged_channel.unary_unary(
+                "/google.cloud.dialogflow.cx.v3beta1.Tools/DeleteToolVersion",
+                request_serializer=tool.DeleteToolVersionRequest.serialize,
+                response_deserializer=empty_pb2.Empty.FromString,
+            )
+        return self._stubs["delete_tool_version"]
+
+    @property
+    def restore_tool_version(
+        self,
+    ) -> Callable[
+        [tool.RestoreToolVersionRequest], Awaitable[tool.RestoreToolVersionResponse]
+    ]:
+        r"""Return a callable for the restore tool version method over gRPC.
+
+        Retrieves the specified version of the Tool and
+        stores it as the current tool draft, returning the tool
+        with resources updated.
+
+        Returns:
+            Callable[[~.RestoreToolVersionRequest],
+                    Awaitable[~.RestoreToolVersionResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "restore_tool_version" not in self._stubs:
+            self._stubs["restore_tool_version"] = self._logged_channel.unary_unary(
+                "/google.cloud.dialogflow.cx.v3beta1.Tools/RestoreToolVersion",
+                request_serializer=tool.RestoreToolVersionRequest.serialize,
+                response_deserializer=tool.RestoreToolVersionResponse.deserialize,
+            )
+        return self._stubs["restore_tool_version"]
+
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
@@ -539,6 +679,31 @@ class ToolsGrpcAsyncIOTransport(ToolsTransport):
             ),
             self.delete_tool: self._wrap_method(
                 self.delete_tool,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_tool_versions: self._wrap_method(
+                self.list_tool_versions,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_tool_version: self._wrap_method(
+                self.create_tool_version,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_tool_version: self._wrap_method(
+                self.get_tool_version,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_tool_version: self._wrap_method(
+                self.delete_tool_version,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.restore_tool_version: self._wrap_method(
+                self.restore_tool_version,
                 default_timeout=None,
                 client_info=client_info,
             ),

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -5426,8 +5426,10 @@ def test_get_rest_call_success(request_type):
             id=205,
             internal_ipv6_prefix="internal_ipv6_prefix_value",
             ip_cidr_range="ip_cidr_range_value",
+            ip_collection="ip_collection_value",
             ipv6_access_type="ipv6_access_type_value",
             ipv6_cidr_range="ipv6_cidr_range_value",
+            ipv6_gce_endpoint="ipv6_gce_endpoint_value",
             kind="kind_value",
             name="name_value",
             network="network_value",
@@ -5465,8 +5467,10 @@ def test_get_rest_call_success(request_type):
     assert response.id == 205
     assert response.internal_ipv6_prefix == "internal_ipv6_prefix_value"
     assert response.ip_cidr_range == "ip_cidr_range_value"
+    assert response.ip_collection == "ip_collection_value"
     assert response.ipv6_access_type == "ipv6_access_type_value"
     assert response.ipv6_cidr_range == "ipv6_cidr_range_value"
+    assert response.ipv6_gce_endpoint == "ipv6_gce_endpoint_value"
     assert response.kind == "kind_value"
     assert response.name == "name_value"
     assert response.network == "network_value"
@@ -5719,8 +5723,10 @@ def test_insert_rest_call_success(request_type):
         "id": 205,
         "internal_ipv6_prefix": "internal_ipv6_prefix_value",
         "ip_cidr_range": "ip_cidr_range_value",
+        "ip_collection": "ip_collection_value",
         "ipv6_access_type": "ipv6_access_type_value",
         "ipv6_cidr_range": "ipv6_cidr_range_value",
+        "ipv6_gce_endpoint": "ipv6_gce_endpoint_value",
         "kind": "kind_value",
         "log_config": {
             "aggregation_interval": "aggregation_interval_value",
@@ -6260,8 +6266,10 @@ def test_patch_rest_call_success(request_type):
         "id": 205,
         "internal_ipv6_prefix": "internal_ipv6_prefix_value",
         "ip_cidr_range": "ip_cidr_range_value",
+        "ip_collection": "ip_collection_value",
         "ipv6_access_type": "ipv6_access_type_value",
         "ipv6_cidr_range": "ipv6_cidr_range_value",
+        "ipv6_gce_endpoint": "ipv6_gce_endpoint_value",
         "kind": "kind_value",
         "log_config": {
             "aggregation_interval": "aggregation_interval_value",

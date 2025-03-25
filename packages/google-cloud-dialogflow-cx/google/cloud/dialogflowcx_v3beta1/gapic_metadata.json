@@ -1988,9 +1988,19 @@
                 "create_tool"
               ]
             },
+            "CreateToolVersion": {
+              "methods": [
+                "create_tool_version"
+              ]
+            },
             "DeleteTool": {
               "methods": [
                 "delete_tool"
+              ]
+            },
+            "DeleteToolVersion": {
+              "methods": [
+                "delete_tool_version"
               ]
             },
             "ExportTools": {
@@ -2003,9 +2013,24 @@
                 "get_tool"
               ]
             },
+            "GetToolVersion": {
+              "methods": [
+                "get_tool_version"
+              ]
+            },
+            "ListToolVersions": {
+              "methods": [
+                "list_tool_versions"
+              ]
+            },
             "ListTools": {
               "methods": [
                 "list_tools"
+              ]
+            },
+            "RestoreToolVersion": {
+              "methods": [
+                "restore_tool_version"
               ]
             },
             "UpdateTool": {
@@ -2023,9 +2048,19 @@
                 "create_tool"
               ]
             },
+            "CreateToolVersion": {
+              "methods": [
+                "create_tool_version"
+              ]
+            },
             "DeleteTool": {
               "methods": [
                 "delete_tool"
+              ]
+            },
+            "DeleteToolVersion": {
+              "methods": [
+                "delete_tool_version"
               ]
             },
             "ExportTools": {
@@ -2038,9 +2073,24 @@
                 "get_tool"
               ]
             },
+            "GetToolVersion": {
+              "methods": [
+                "get_tool_version"
+              ]
+            },
+            "ListToolVersions": {
+              "methods": [
+                "list_tool_versions"
+              ]
+            },
             "ListTools": {
               "methods": [
                 "list_tools"
+              ]
+            },
+            "RestoreToolVersion": {
+              "methods": [
+                "restore_tool_version"
               ]
             },
             "UpdateTool": {
@@ -2058,9 +2108,19 @@
                 "create_tool"
               ]
             },
+            "CreateToolVersion": {
+              "methods": [
+                "create_tool_version"
+              ]
+            },
             "DeleteTool": {
               "methods": [
                 "delete_tool"
+              ]
+            },
+            "DeleteToolVersion": {
+              "methods": [
+                "delete_tool_version"
               ]
             },
             "ExportTools": {
@@ -2073,9 +2133,24 @@
                 "get_tool"
               ]
             },
+            "GetToolVersion": {
+              "methods": [
+                "get_tool_version"
+              ]
+            },
+            "ListToolVersions": {
+              "methods": [
+                "list_tool_versions"
+              ]
+            },
             "ListTools": {
               "methods": [
                 "list_tools"
+              ]
+            },
+            "RestoreToolVersion": {
+              "methods": [
+                "restore_tool_version"
               ]
             },
             "UpdateTool": {

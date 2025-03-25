@@ -1,5 +1,26 @@
 # Changelog
 
+## [0.2.3](https://github.com/googleapis/google-cloud-python/compare/google-shopping-merchant-products-v0.2.2...google-shopping-merchant-products-v0.2.3) (2025-03-19)
+
+
+### Features
+
+* Add an update method ([5cde00f](https://github.com/googleapis/google-cloud-python/commit/5cde00f98c05b2bf3c996ced62c81d4f81be8df2))
+
+
+### Documentation
+
+* A comment for field `channel` in message `.google.shopping.merchant.products.v1beta.ProductInput` is changed ([5cde00f](https://github.com/googleapis/google-cloud-python/commit/5cde00f98c05b2bf3c996ced62c81d4f81be8df2))
+* A comment for field `data_source` in message `.google.shopping.merchant.products.v1beta.InsertProductInputRequest` is changed ([5cde00f](https://github.com/googleapis/google-cloud-python/commit/5cde00f98c05b2bf3c996ced62c81d4f81be8df2))
+* A comment for message `ProductInput` is changed ([5cde00f](https://github.com/googleapis/google-cloud-python/commit/5cde00f98c05b2bf3c996ced62c81d4f81be8df2))
+
+## [0.2.2](https://github.com/googleapis/google-cloud-python/compare/google-shopping-merchant-products-v0.2.1...google-shopping-merchant-products-v0.2.2) (2025-03-15)
+
+
+### Bug Fixes
+
+* [Many APIs] Allow Protobuf 6.x ([25ced24](https://github.com/googleapis/google-cloud-python/commit/25ced2444528a1dc6a22daa32b82b844961f1b75))
+
 ## [0.2.1](https://github.com/googleapis/google-cloud-python/compare/google-shopping-merchant-products-v0.2.0...google-shopping-merchant-products-v0.2.1) (2025-02-18)
 
 

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -30,6 +30,7 @@ __protobuf__ = proto.module(
         "GovernanceEvent",
         "DataScanEvent",
         "DataQualityScanRuleResult",
+        "BusinessGlossaryEvent",
     },
 )
 
@@ -1353,6 +1354,69 @@ class DataQualityScanRuleResult(proto.Message):
     assertion_row_count: int = proto.Field(
         proto.INT64,
         number=13,
+    )
+
+
+class BusinessGlossaryEvent(proto.Message):
+    r"""Payload associated with Business Glossary related log events.
+
+    Attributes:
+        message (str):
+            The log message.
+        event_type (google.cloud.dataplex_v1.types.BusinessGlossaryEvent.EventType):
+            The type of the event.
+        resource (str):
+            Name of the resource.
+    """
+
+    class EventType(proto.Enum):
+        r"""Type of glossary log event.
+
+        Values:
+            EVENT_TYPE_UNSPECIFIED (0):
+                An unspecified event type.
+            GLOSSARY_CREATE (1):
+                Glossary create event.
+            GLOSSARY_UPDATE (2):
+                Glossary update event.
+            GLOSSARY_DELETE (3):
+                Glossary delete event.
+            GLOSSARY_CATEGORY_CREATE (4):
+                Glossary category create event.
+            GLOSSARY_CATEGORY_UPDATE (5):
+                Glossary category update event.
+            GLOSSARY_CATEGORY_DELETE (6):
+                Glossary category delete event.
+            GLOSSARY_TERM_CREATE (7):
+                Glossary term create event.
+            GLOSSARY_TERM_UPDATE (8):
+                Glossary term update event.
+            GLOSSARY_TERM_DELETE (9):
+                Glossary term delete event.
+        """
+        EVENT_TYPE_UNSPECIFIED = 0
+        GLOSSARY_CREATE = 1
+        GLOSSARY_UPDATE = 2
+        GLOSSARY_DELETE = 3
+        GLOSSARY_CATEGORY_CREATE = 4
+        GLOSSARY_CATEGORY_UPDATE = 5
+        GLOSSARY_CATEGORY_DELETE = 6
+        GLOSSARY_TERM_CREATE = 7
+        GLOSSARY_TERM_UPDATE = 8
+        GLOSSARY_TERM_DELETE = 9
+
+    message: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    event_type: EventType = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=EventType,
+    )
+    resource: str = proto.Field(
+        proto.STRING,
+        number=3,
     )
 
 

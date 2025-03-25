@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -168,6 +168,7 @@ from google.cloud.dataplex_v1.types.datascans import (
     UpdateDataScanRequest,
 )
 from google.cloud.dataplex_v1.types.logs import (
+    BusinessGlossaryEvent,
     DataQualityScanRuleResult,
     DataScanEvent,
     DiscoveryEvent,
@@ -365,6 +366,7 @@ __all__ = (
     "RunDataScanResponse",
     "UpdateDataScanRequest",
     "DataScanType",
+    "BusinessGlossaryEvent",
     "DataQualityScanRuleResult",
     "DataScanEvent",
     "DiscoveryEvent",

@@ -41,7 +41,8 @@ class TestBase(unittest.TestCase):
                 self.DEFAULT_PROJECT
             )
         )
-        self.DISK_IMAGE = "projects/debian-cloud/global/images/family/debian-10"
+        # Choose a debian family from https://cloud.google.com/compute/docs/images/os-details#debian
+        self.DISK_IMAGE = "projects/debian-cloud/global/images/family/debian-12"
 
     @staticmethod
     def get_unique_name(placeholder=""):

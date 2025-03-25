@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -50,56 +50,25 @@ class ConnectivityTest(proto.Message):
             Required. Source specification of the
             Connectivity Test.
             You can use a combination of source IP address,
-            virtual machine (VM) instance, or Compute Engine
-            network to uniquely identify the source
-            location.
+            URI of a supported endpoint, project ID, or VPC
+            network to identify the source location.
 
-            Examples:
-
-            If the source IP address is an internal IP
-            address within a Google Cloud Virtual Private
-            Cloud (VPC) network, then you must also specify
-            the VPC network. Otherwise, specify the VM
-            instance, which already contains its internal IP
-            address and VPC network information.
-
-            If the source of the test is within an
-            on-premises network, then you must provide the
-            destination VPC network.
-
-            If the source endpoint is a Compute Engine VM
-            instance with multiple network interfaces, the
-            instance itself is not sufficient to identify
-            the endpoint. So, you must also specify the
-            source IP address or VPC network.
-
-            A reachability analysis proceeds even if the
+            Reachability analysis might proceed even if the
             source location is ambiguous. However, the test
-            result may include endpoints that you don't
-            intend to test.
+            result might include endpoints or use a source
+            that you don't intend to test.
         destination (google.cloud.network_management_v1.types.Endpoint):
             Required. Destination specification of the
             Connectivity Test.
             You can use a combination of destination IP
-            address, Compute Engine VM instance, or VPC
-            network to uniquely identify the destination
+            address, URI of a supported endpoint, project
+            ID, or VPC network to identify the destination
             location.
 
-            Even if the destination IP address is not
-            unique, the source IP location is unique.
-            Usually, the analysis can infer the destination
-            endpoint from route information.
-
-            If the destination you specify is a VM instance
-            and the instance has multiple network
-            interfaces, then you must also specify either a
-            destination IP address  or VPC network to
-            identify the destination interface.
-
-            A reachability analysis proceeds even if the
+            Reachability analysis proceeds even if the
             destination location is ambiguous. However, the
-            result can include endpoints that you don't
-            intend to test.
+            test result might include endpoints or use a
+            destination that you don't intend to test.
         protocol (str):
             IP Protocol of the test. When not provided,
             "TCP" is assumed.
@@ -142,8 +111,8 @@ class ConnectivityTest(proto.Message):
             test, updating an existing test, or triggering a
             one-time rerun of an existing test.
         bypass_firewall_checks (bool):
-            Whether the test should skip firewall
-            checking. If not provided, we assume false.
+            Whether the analysis should skip firewall
+            checking. Default value is false.
     """
 
     name: str = proto.Field(
@@ -237,7 +206,8 @@ class Endpoint(proto.Message):
             are also used for protocol forwarding, Private
             Service Connect and other network services to
             provide forwarding information in the control
-            plane. Format:
+            plane. Applicable only to destination endpoint.
+            Format:
 
             projects/{project}/global/forwardingRules/{id}
             or
@@ -272,22 +242,25 @@ class Endpoint(proto.Message):
         redis_instance (str):
             A `Redis
             Instance <https://cloud.google.com/memorystore/docs/redis>`__
-            URI.
+            URI. Applicable only to destination endpoint.
         redis_cluster (str):
             A `Redis
             Cluster <https://cloud.google.com/memorystore/docs/cluster>`__
-            URI.
+            URI. Applicable only to destination endpoint.
         cloud_function (google.cloud.network_management_v1.types.Endpoint.CloudFunctionEndpoint):
             A `Cloud Function <https://cloud.google.com/functions>`__.
+            Applicable only to source endpoint.
         app_engine_version (google.cloud.network_management_v1.types.Endpoint.AppEngineVersionEndpoint):
             An `App Engine <https://cloud.google.com/appengine>`__
             `service
             version <https://cloud.google.com/appengine/docs/admin-api/reference/rest/v1/apps.services.versions>`__.
+            Applicable only to source endpoint.
         cloud_run_revision (google.cloud.network_management_v1.types.Endpoint.CloudRunRevisionEndpoint):
             A `Cloud Run <https://cloud.google.com/run>`__
             `revision <https://cloud.google.com/run/docs/reference/rest/v1/namespaces.revisions/get>`__
+            Applicable only to source endpoint.
         network (str):
-            A Compute Engine network URI.
+            A VPC network URI.
         network_type (google.cloud.network_management_v1.types.Endpoint.NetworkType):
             Type of the network where the endpoint is
             located. Applicable only to source endpoint, as
@@ -295,10 +268,10 @@ class Endpoint(proto.Message):
             the source.
         project_id (str):
             Project ID where the endpoint is located.
-            The Project ID can be derived from the URI if
-            you provide a VM instance or network URI.
-            The following are two cases where you must
-            provide the project ID:
+            The project ID can be derived from the URI if
+            you provide a endpoint or network URI.
+            The following are two cases where you may need
+            to provide the project ID:
 
             1. Only the IP address is specified, and the IP
                 address is within a Google Cloud project.
@@ -322,8 +295,9 @@ class Endpoint(proto.Message):
                 for the source or destination network.
             NON_GCP_NETWORK (2):
                 A network hosted outside of Google Cloud.
-                This can be an on-premises network, or a network
-                hosted by another cloud provider.
+                This can be an on-premises network, an internet
+                resource or a network hosted by another cloud
+                provider.
         """
         NETWORK_TYPE_UNSPECIFIED = 0
         GCP_NETWORK = 1

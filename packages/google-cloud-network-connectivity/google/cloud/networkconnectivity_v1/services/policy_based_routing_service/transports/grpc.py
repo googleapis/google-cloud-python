@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -352,7 +352,7 @@ class PolicyBasedRoutingServiceGrpcTransport(PolicyBasedRoutingServiceTransport)
     ]:
         r"""Return a callable for the list policy based routes method over gRPC.
 
-        Lists PolicyBasedRoutes in a given project and
+        Lists policy-based routes in a given project and
         location.
 
         Returns:
@@ -382,7 +382,7 @@ class PolicyBasedRoutingServiceGrpcTransport(PolicyBasedRoutingServiceTransport)
     ]:
         r"""Return a callable for the get policy based route method over gRPC.
 
-        Gets details of a single PolicyBasedRoute.
+        Gets details of a single policy-based route.
 
         Returns:
             Callable[[~.GetPolicyBasedRouteRequest],
@@ -410,8 +410,8 @@ class PolicyBasedRoutingServiceGrpcTransport(PolicyBasedRoutingServiceTransport)
     ]:
         r"""Return a callable for the create policy based route method over gRPC.
 
-        Creates a new PolicyBasedRoute in a given project and
-        location.
+        Creates a new policy-based route in a given project
+        and location.
 
         Returns:
             Callable[[~.CreatePolicyBasedRouteRequest],
@@ -439,7 +439,7 @@ class PolicyBasedRoutingServiceGrpcTransport(PolicyBasedRoutingServiceTransport)
     ]:
         r"""Return a callable for the delete policy based route method over gRPC.
 
-        Deletes a single PolicyBasedRoute.
+        Deletes a single policy-based route.
 
         Returns:
             Callable[[~.DeletePolicyBasedRouteRequest],

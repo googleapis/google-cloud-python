@@ -64,12 +64,12 @@
       "regionTag": "merchantapi_v1beta_generated_DataSourcesService_CreateDataSource_async",
       "segments": [
         {
-          "end": 56,
+          "end": 55,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 56,
+          "end": 55,
           "start": 27,
           "type": "SHORT"
         },
@@ -79,18 +79,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 50,
+          "end": 49,
           "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 53,
-          "start": 51,
+          "end": 52,
+          "start": 50,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 57,
-          "start": 54,
+          "end": 56,
+          "start": 53,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -148,12 +148,12 @@
       "regionTag": "merchantapi_v1beta_generated_DataSourcesService_CreateDataSource_sync",
       "segments": [
         {
-          "end": 56,
+          "end": 55,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 56,
+          "end": 55,
           "start": 27,
           "type": "SHORT"
         },
@@ -163,18 +163,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 50,
+          "end": 49,
           "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 53,
-          "start": 51,
+          "end": 52,
+          "start": 50,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 57,
-          "start": 54,
+          "end": 56,
+          "start": 53,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -857,12 +857,12 @@
       "regionTag": "merchantapi_v1beta_generated_DataSourcesService_UpdateDataSource_async",
       "segments": [
         {
-          "end": 55,
+          "end": 54,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 55,
+          "end": 54,
           "start": 27,
           "type": "SHORT"
         },
@@ -872,18 +872,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 49,
+          "end": 48,
           "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 52,
-          "start": 50,
+          "end": 51,
+          "start": 49,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 56,
-          "start": 53,
+          "end": 55,
+          "start": 52,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -941,12 +941,12 @@
       "regionTag": "merchantapi_v1beta_generated_DataSourcesService_UpdateDataSource_sync",
       "segments": [
         {
-          "end": 55,
+          "end": 54,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 55,
+          "end": 54,
           "start": 27,
           "type": "SHORT"
         },
@@ -956,18 +956,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 49,
+          "end": 48,
           "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 52,
-          "start": 50,
+          "end": 51,
+          "start": 49,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 56,
-          "start": 53,
+          "end": 55,
+          "start": 52,
           "type": "RESPONSE_HANDLING"
         }
       ],

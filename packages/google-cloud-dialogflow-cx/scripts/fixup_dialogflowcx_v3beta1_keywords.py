@@ -1,6 +1,6 @@
 #! /usr/bin/env python3
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -58,6 +58,7 @@ class dialogflowcxCallTransformer(cst.CSTTransformer):
         'create_session_entity_type': ('parent', 'session_entity_type', ),
         'create_test_case': ('parent', 'test_case', ),
         'create_tool': ('parent', 'tool', ),
+        'create_tool_version': ('parent', 'tool_version', ),
         'create_transition_route_group': ('parent', 'transition_route_group', 'language_code', ),
         'create_version': ('parent', 'version', ),
         'create_webhook': ('parent', 'webhook', ),
@@ -76,6 +77,7 @@ class dialogflowcxCallTransformer(cst.CSTTransformer):
         'delete_security_settings': ('name', ),
         'delete_session_entity_type': ('name', ),
         'delete_tool': ('name', 'force', ),
+        'delete_tool_version': ('name', 'force', ),
         'delete_transition_route_group': ('name', 'force', ),
         'delete_version': ('name', ),
         'delete_webhook': ('name', 'force', ),
@@ -110,6 +112,7 @@ class dialogflowcxCallTransformer(cst.CSTTransformer):
         'get_test_case': ('name', ),
         'get_test_case_result': ('name', ),
         'get_tool': ('name', ),
+        'get_tool_version': ('name', ),
         'get_transition_route_group': ('name', 'language_code', ),
         'get_version': ('name', ),
         'get_webhook': ('name', ),
@@ -137,6 +140,7 @@ class dialogflowcxCallTransformer(cst.CSTTransformer):
         'list_test_case_results': ('parent', 'page_size', 'page_token', 'filter', ),
         'list_test_cases': ('parent', 'page_size', 'page_token', 'view', ),
         'list_tools': ('parent', 'page_size', 'page_token', ),
+        'list_tool_versions': ('parent', 'page_size', 'page_token', ),
         'list_transition_route_groups': ('parent', 'page_size', 'page_token', 'language_code', ),
         'list_versions': ('parent', 'page_size', 'page_token', ),
         'list_webhooks': ('parent', 'page_size', 'page_token', ),
@@ -144,6 +148,7 @@ class dialogflowcxCallTransformer(cst.CSTTransformer):
         'lookup_environment_history': ('name', 'page_size', 'page_token', ),
         'match_intent': ('session', 'query_input', 'query_params', 'persist_parameter_changes', ),
         'restore_agent': ('name', 'agent_uri', 'agent_content', 'git_source', 'restore_option', ),
+        'restore_tool_version': ('name', ),
         'run_continuous_test': ('environment', ),
         'run_test_case': ('name', 'environment', ),
         'server_streaming_detect_intent': ('session', 'query_input', 'query_params', 'output_audio_config', ),

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -51,6 +51,7 @@ import google.auth
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
 from google.oauth2 import service_account
+from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.shopping.type.types import types
 from google.type import interval_pb2  # type: ignore
@@ -1460,6 +1461,382 @@ async def test_insert_product_input_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
+        productinputs.UpdateProductInputRequest,
+        dict,
+    ],
+)
+def test_update_product_input(request_type, transport: str = "grpc"):
+    client = ProductInputsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_product_input), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = productinputs.ProductInput(
+            name="name_value",
+            product="product_value",
+            channel=types.Channel.ChannelEnum.ONLINE,
+            offer_id="offer_id_value",
+            content_language="content_language_value",
+            feed_label="feed_label_value",
+            version_number=1518,
+        )
+        response = client.update_product_input(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = productinputs.UpdateProductInputRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, productinputs.ProductInput)
+    assert response.name == "name_value"
+    assert response.product == "product_value"
+    assert response.channel == types.Channel.ChannelEnum.ONLINE
+    assert response.offer_id == "offer_id_value"
+    assert response.content_language == "content_language_value"
+    assert response.feed_label == "feed_label_value"
+    assert response.version_number == 1518
+
+
+def test_update_product_input_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ProductInputsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = productinputs.UpdateProductInputRequest(
+        data_source="data_source_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_product_input), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.update_product_input(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == productinputs.UpdateProductInputRequest(
+            data_source="data_source_value",
+        )
+
+
+def test_update_product_input_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = ProductInputsServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.update_product_input in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.update_product_input
+        ] = mock_rpc
+        request = {}
+        client.update_product_input(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.update_product_input(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_update_product_input_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = ProductInputsServiceAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.update_product_input
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.update_product_input
+        ] = mock_rpc
+
+        request = {}
+        await client.update_product_input(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        await client.update_product_input(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_update_product_input_async(
+    transport: str = "grpc_asyncio",
+    request_type=productinputs.UpdateProductInputRequest,
+):
+    client = ProductInputsServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_product_input), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            productinputs.ProductInput(
+                name="name_value",
+                product="product_value",
+                channel=types.Channel.ChannelEnum.ONLINE,
+                offer_id="offer_id_value",
+                content_language="content_language_value",
+                feed_label="feed_label_value",
+                version_number=1518,
+            )
+        )
+        response = await client.update_product_input(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = productinputs.UpdateProductInputRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, productinputs.ProductInput)
+    assert response.name == "name_value"
+    assert response.product == "product_value"
+    assert response.channel == types.Channel.ChannelEnum.ONLINE
+    assert response.offer_id == "offer_id_value"
+    assert response.content_language == "content_language_value"
+    assert response.feed_label == "feed_label_value"
+    assert response.version_number == 1518
+
+
+@pytest.mark.asyncio
+async def test_update_product_input_async_from_dict():
+    await test_update_product_input_async(request_type=dict)
+
+
+def test_update_product_input_field_headers():
+    client = ProductInputsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = productinputs.UpdateProductInputRequest()
+
+    request.product_input.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_product_input), "__call__"
+    ) as call:
+        call.return_value = productinputs.ProductInput()
+        client.update_product_input(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "product_input.name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_update_product_input_field_headers_async():
+    client = ProductInputsServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = productinputs.UpdateProductInputRequest()
+
+    request.product_input.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_product_input), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            productinputs.ProductInput()
+        )
+        await client.update_product_input(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "product_input.name=name_value",
+    ) in kw["metadata"]
+
+
+def test_update_product_input_flattened():
+    client = ProductInputsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_product_input), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = productinputs.ProductInput()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.update_product_input(
+            product_input=productinputs.ProductInput(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].product_input
+        mock_val = productinputs.ProductInput(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+
+
+def test_update_product_input_flattened_error():
+    client = ProductInputsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_product_input(
+            productinputs.UpdateProductInputRequest(),
+            product_input=productinputs.ProductInput(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_product_input_flattened_async():
+    client = ProductInputsServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_product_input), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = productinputs.ProductInput()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            productinputs.ProductInput()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.update_product_input(
+            product_input=productinputs.ProductInput(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].product_input
+        mock_val = productinputs.ProductInput(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_update_product_input_flattened_error_async():
+    client = ProductInputsServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.update_product_input(
+            productinputs.UpdateProductInputRequest(),
+            product_input=productinputs.ProductInput(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         productinputs.DeleteProductInputRequest,
         dict,
     ],
@@ -1938,6 +2315,222 @@ def test_insert_product_input_rest_unset_required_fields():
     )
 
 
+def test_update_product_input_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = ProductInputsServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.update_product_input in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.update_product_input
+        ] = mock_rpc
+
+        request = {}
+        client.update_product_input(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.update_product_input(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_update_product_input_rest_required_fields(
+    request_type=productinputs.UpdateProductInputRequest,
+):
+    transport_class = transports.ProductInputsServiceRestTransport
+
+    request_init = {}
+    request_init["data_source"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+    assert "dataSource" not in jsonified_request
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_product_input._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+    assert "dataSource" in jsonified_request
+    assert jsonified_request["dataSource"] == request_init["data_source"]
+
+    jsonified_request["dataSource"] = "data_source_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_product_input._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "data_source",
+            "update_mask",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "dataSource" in jsonified_request
+    assert jsonified_request["dataSource"] == "data_source_value"
+
+    client = ProductInputsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = productinputs.ProductInput()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "patch",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = productinputs.ProductInput.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.update_product_input(request)
+
+            expected_params = [
+                (
+                    "dataSource",
+                    "",
+                ),
+                ("$alt", "json;enum-encoding=int"),
+            ]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_update_product_input_rest_unset_required_fields():
+    transport = transports.ProductInputsServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.update_product_input._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "dataSource",
+                "updateMask",
+            )
+        )
+        & set(
+            (
+                "productInput",
+                "dataSource",
+            )
+        )
+    )
+
+
+def test_update_product_input_rest_flattened():
+    client = ProductInputsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = productinputs.ProductInput()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "product_input": {"name": "accounts/sample1/productInputs/sample2"}
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            product_input=productinputs.ProductInput(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = productinputs.ProductInput.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        client.update_product_input(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/products/v1beta/{product_input.name=accounts/*/productInputs/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_update_product_input_rest_flattened_error(transport: str = "rest"):
+    client = ProductInputsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_product_input(
+            productinputs.UpdateProductInputRequest(),
+            product_input=productinputs.ProductInput(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
 def test_delete_product_input_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -2269,6 +2862,29 @@ def test_insert_product_input_empty_call_grpc():
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
+def test_update_product_input_empty_call_grpc():
+    client = ProductInputsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_product_input), "__call__"
+    ) as call:
+        call.return_value = productinputs.ProductInput()
+        client.update_product_input(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = productinputs.UpdateProductInputRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
 def test_delete_product_input_empty_call_grpc():
     client = ProductInputsServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -2335,6 +2951,41 @@ async def test_insert_product_input_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = productinputs.InsertProductInputRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_update_product_input_empty_call_grpc_asyncio():
+    client = ProductInputsServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_product_input), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            productinputs.ProductInput(
+                name="name_value",
+                product="product_value",
+                channel=types.Channel.ChannelEnum.ONLINE,
+                offer_id="offer_id_value",
+                content_language="content_language_value",
+                feed_label="feed_label_value",
+                version_number=1518,
+            )
+        )
+        await client.update_product_input(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = productinputs.UpdateProductInputRequest()
 
         assert args[0] == request_msg
 
@@ -2606,6 +3257,9 @@ def test_insert_product_input_rest_call_success(request_type):
                 "content": "content_value",
             },
             "auto_pricing_min_price": {},
+            "sustainability_incentives": [
+                {"amount": {}, "percentage": 0.10540000000000001, "type_": 1}
+            ],
         },
         "custom_attributes": [
             {"name": "name_value", "value": "value_value", "group_values": {}}
@@ -2779,6 +3433,417 @@ def test_insert_product_input_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
+def test_update_product_input_rest_bad_request(
+    request_type=productinputs.UpdateProductInputRequest,
+):
+    client = ProductInputsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"product_input": {"name": "accounts/sample1/productInputs/sample2"}}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.update_product_input(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        productinputs.UpdateProductInputRequest,
+        dict,
+    ],
+)
+def test_update_product_input_rest_call_success(request_type):
+    client = ProductInputsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"product_input": {"name": "accounts/sample1/productInputs/sample2"}}
+    request_init["product_input"] = {
+        "name": "accounts/sample1/productInputs/sample2",
+        "product": "product_value",
+        "channel": 1,
+        "offer_id": "offer_id_value",
+        "content_language": "content_language_value",
+        "feed_label": "feed_label_value",
+        "version_number": 1518,
+        "attributes": {
+            "identifier_exists": True,
+            "is_bundle": True,
+            "title": "title_value",
+            "description": "description_value",
+            "link": "link_value",
+            "mobile_link": "mobile_link_value",
+            "canonical_link": "canonical_link_value",
+            "image_link": "image_link_value",
+            "additional_image_links": [
+                "additional_image_links_value1",
+                "additional_image_links_value2",
+            ],
+            "expiration_date": {"seconds": 751, "nanos": 543},
+            "disclosure_date": {},
+            "adult": True,
+            "age_group": "age_group_value",
+            "availability": "availability_value",
+            "availability_date": {},
+            "brand": "brand_value",
+            "color": "color_value",
+            "condition": "condition_value",
+            "gender": "gender_value",
+            "google_product_category": "google_product_category_value",
+            "gtin": ["gtin_value1", "gtin_value2"],
+            "item_group_id": "item_group_id_value",
+            "material": "material_value",
+            "mpn": "mpn_value",
+            "pattern": "pattern_value",
+            "price": {"amount_micros": 1408, "currency_code": "currency_code_value"},
+            "installment": {
+                "months": 665,
+                "amount": {},
+                "downpayment": {},
+                "credit_type": "credit_type_value",
+            },
+            "subscription_cost": {"period": 1, "period_length": 1380, "amount": {}},
+            "loyalty_points": {
+                "name": "name_value",
+                "points_value": 1305,
+                "ratio": 0.543,
+            },
+            "loyalty_programs": [
+                {
+                    "program_label": "program_label_value",
+                    "tier_label": "tier_label_value",
+                    "price": {},
+                    "cashback_for_future_use": {},
+                    "loyalty_points": 1546,
+                    "member_price_effective_date": {"start_time": {}, "end_time": {}},
+                    "shipping_label": "shipping_label_value",
+                }
+            ],
+            "product_types": ["product_types_value1", "product_types_value2"],
+            "sale_price": {},
+            "sale_price_effective_date": {},
+            "sell_on_google_quantity": 2470,
+            "product_height": {"value": 0.541, "unit": "unit_value"},
+            "product_length": {},
+            "product_width": {},
+            "product_weight": {"value": 0.541, "unit": "unit_value"},
+            "shipping": [
+                {
+                    "price": {},
+                    "country": "country_value",
+                    "region": "region_value",
+                    "service": "service_value",
+                    "location_id": 1157,
+                    "location_group_name": "location_group_name_value",
+                    "postal_code": "postal_code_value",
+                    "min_handling_time": 1782,
+                    "max_handling_time": 1784,
+                    "min_transit_time": 1718,
+                    "max_transit_time": 1720,
+                }
+            ],
+            "free_shipping_threshold": [
+                {"country": "country_value", "price_threshold": {}}
+            ],
+            "shipping_weight": {"value": 0.541, "unit": "unit_value"},
+            "shipping_length": {"value": 0.541, "unit": "unit_value"},
+            "shipping_width": {},
+            "shipping_height": {},
+            "max_handling_time": 1784,
+            "min_handling_time": 1782,
+            "shipping_label": "shipping_label_value",
+            "transit_time_label": "transit_time_label_value",
+            "size": "size_value",
+            "size_system": "size_system_value",
+            "size_types": ["size_types_value1", "size_types_value2"],
+            "taxes": [
+                {
+                    "rate": 0.428,
+                    "country": "country_value",
+                    "region": "region_value",
+                    "tax_ship": True,
+                    "location_id": 1157,
+                    "postal_code": "postal_code_value",
+                }
+            ],
+            "tax_category": "tax_category_value",
+            "energy_efficiency_class": "energy_efficiency_class_value",
+            "min_energy_efficiency_class": "min_energy_efficiency_class_value",
+            "max_energy_efficiency_class": "max_energy_efficiency_class_value",
+            "unit_pricing_measure": {"value": 0.541, "unit": "unit_value"},
+            "unit_pricing_base_measure": {"value": 541, "unit": "unit_value"},
+            "multipack": 970,
+            "ads_grouping": "ads_grouping_value",
+            "ads_labels": ["ads_labels_value1", "ads_labels_value2"],
+            "ads_redirect": "ads_redirect_value",
+            "cost_of_goods_sold": {},
+            "product_details": [
+                {
+                    "section_name": "section_name_value",
+                    "attribute_name": "attribute_name_value",
+                    "attribute_value": "attribute_value_value",
+                }
+            ],
+            "product_highlights": [
+                "product_highlights_value1",
+                "product_highlights_value2",
+            ],
+            "display_ads_id": "display_ads_id_value",
+            "display_ads_similar_ids": [
+                "display_ads_similar_ids_value1",
+                "display_ads_similar_ids_value2",
+            ],
+            "display_ads_title": "display_ads_title_value",
+            "display_ads_link": "display_ads_link_value",
+            "display_ads_value": 0.1801,
+            "promotion_ids": ["promotion_ids_value1", "promotion_ids_value2"],
+            "pickup_method": "pickup_method_value",
+            "pickup_sla": "pickup_sla_value",
+            "link_template": "link_template_value",
+            "mobile_link_template": "mobile_link_template_value",
+            "custom_label_0": "custom_label_0_value",
+            "custom_label_1": "custom_label_1_value",
+            "custom_label_2": "custom_label_2_value",
+            "custom_label_3": "custom_label_3_value",
+            "custom_label_4": "custom_label_4_value",
+            "included_destinations": [
+                "included_destinations_value1",
+                "included_destinations_value2",
+            ],
+            "excluded_destinations": [
+                "excluded_destinations_value1",
+                "excluded_destinations_value2",
+            ],
+            "shopping_ads_excluded_countries": [
+                "shopping_ads_excluded_countries_value1",
+                "shopping_ads_excluded_countries_value2",
+            ],
+            "external_seller_id": "external_seller_id_value",
+            "pause": "pause_value",
+            "lifestyle_image_links": [
+                "lifestyle_image_links_value1",
+                "lifestyle_image_links_value2",
+            ],
+            "cloud_export_additional_properties": [
+                {
+                    "property_name": "property_name_value",
+                    "text_value": ["text_value_value1", "text_value_value2"],
+                    "bool_value": True,
+                    "int_value": [968, 969],
+                    "float_value": [0.11710000000000001, 0.11720000000000001],
+                    "min_value": 0.96,
+                    "max_value": 0.962,
+                    "unit_code": "unit_code_value",
+                }
+            ],
+            "virtual_model_link": "virtual_model_link_value",
+            "certifications": [
+                {
+                    "certification_authority": "certification_authority_value",
+                    "certification_name": "certification_name_value",
+                    "certification_code": "certification_code_value",
+                    "certification_value": "certification_value_value",
+                }
+            ],
+            "structured_title": {
+                "digital_source_type": "digital_source_type_value",
+                "content": "content_value",
+            },
+            "structured_description": {
+                "digital_source_type": "digital_source_type_value",
+                "content": "content_value",
+            },
+            "auto_pricing_min_price": {},
+            "sustainability_incentives": [
+                {"amount": {}, "percentage": 0.10540000000000001, "type_": 1}
+            ],
+        },
+        "custom_attributes": [
+            {"name": "name_value", "value": "value_value", "group_values": {}}
+        ],
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = productinputs.UpdateProductInputRequest.meta.fields["product_input"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["product_input"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["product_input"][field])):
+                    del request_init["product_input"][field][i][subfield]
+            else:
+                del request_init["product_input"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = productinputs.ProductInput(
+            name="name_value",
+            product="product_value",
+            channel=types.Channel.ChannelEnum.ONLINE,
+            offer_id="offer_id_value",
+            content_language="content_language_value",
+            feed_label="feed_label_value",
+            version_number=1518,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = productinputs.ProductInput.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.update_product_input(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, productinputs.ProductInput)
+    assert response.name == "name_value"
+    assert response.product == "product_value"
+    assert response.channel == types.Channel.ChannelEnum.ONLINE
+    assert response.offer_id == "offer_id_value"
+    assert response.content_language == "content_language_value"
+    assert response.feed_label == "feed_label_value"
+    assert response.version_number == 1518
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_product_input_rest_interceptors(null_interceptor):
+    transport = transports.ProductInputsServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ProductInputsServiceRestInterceptor(),
+    )
+    client = ProductInputsServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ProductInputsServiceRestInterceptor, "post_update_product_input"
+    ) as post, mock.patch.object(
+        transports.ProductInputsServiceRestInterceptor,
+        "post_update_product_input_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
+        transports.ProductInputsServiceRestInterceptor, "pre_update_product_input"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        post_with_metadata.assert_not_called()
+        pb_message = productinputs.UpdateProductInputRequest.pb(
+            productinputs.UpdateProductInputRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = productinputs.ProductInput.to_json(productinputs.ProductInput())
+        req.return_value.content = return_value
+
+        request = productinputs.UpdateProductInputRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = productinputs.ProductInput()
+        post_with_metadata.return_value = productinputs.ProductInput(), metadata
+
+        client.update_product_input(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+        post_with_metadata.assert_called_once()
+
+
 def test_delete_product_input_rest_bad_request(
     request_type=productinputs.DeleteProductInputRequest,
 ):
@@ -2919,6 +3984,28 @@ def test_insert_product_input_empty_call_rest():
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
+def test_update_product_input_empty_call_rest():
+    client = ProductInputsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_product_input), "__call__"
+    ) as call:
+        client.update_product_input(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = productinputs.UpdateProductInputRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
 def test_delete_product_input_empty_call_rest():
     client = ProductInputsServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -2973,6 +4060,7 @@ def test_product_inputs_service_base_transport():
     # raise NotImplementedError.
     methods = (
         "insert_product_input",
+        "update_product_input",
         "delete_product_input",
     )
     for method in methods:
@@ -3236,6 +4324,9 @@ def test_product_inputs_service_client_transport_session_collision(transport_nam
     )
     session1 = client1.transport.insert_product_input._session
     session2 = client2.transport.insert_product_input._session
+    assert session1 != session2
+    session1 = client1.transport.update_product_input._session
+    session2 = client2.transport.update_product_input._session
     assert session1 != session2
     session1 = client1.transport.delete_product_input._session
     session2 = client2.transport.delete_product_input._session

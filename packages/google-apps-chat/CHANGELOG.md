@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.2.5](https://github.com/googleapis/google-cloud-python/compare/google-apps-chat-v0.2.4...google-apps-chat-v0.2.5) (2025-03-15)
+
+
+### Bug Fixes
+
+* [Many APIs] Allow Protobuf 6.x ([a1b9294](https://github.com/googleapis/google-cloud-python/commit/a1b9294d0bf6e27c2a951d6df7faf7807dc5420b))
+
+## [0.2.4](https://github.com/googleapis/google-cloud-python/compare/google-apps-chat-v0.2.3...google-apps-chat-v0.2.4) (2025-03-09)
+
+
+### Features
+
+* Addition of space notification setting Chat API ([4c3dbf2](https://github.com/googleapis/google-cloud-python/commit/4c3dbf253f5113a5565110dd33a0749fb40c8fb2))
+
 ## [0.2.3](https://github.com/googleapis/google-cloud-python/compare/google-apps-chat-v0.2.2...google-apps-chat-v0.2.3) (2025-02-24)
 
 

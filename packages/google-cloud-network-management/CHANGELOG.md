@@ -1,5 +1,20 @@
 # Changelog
 
+## [1.25.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-management-v1.25.2...google-cloud-network-management-v1.25.3) (2025-03-19)
+
+
+### Documentation
+
+* [google-cloud-network-management] Update comments for Connectivity Test ([#13669](https://github.com/googleapis/google-cloud-python/issues/13669)) ([9321997](https://github.com/googleapis/google-cloud-python/commit/932199775d19958b932b39b0178caaa5c83ad2ee))
+
+## [1.25.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-management-v1.25.1...google-cloud-network-management-v1.25.2) (2025-03-15)
+
+
+### Bug Fixes
+
+* [Many APIs] Allow Protobuf 6.x ([c8bbf32](https://github.com/googleapis/google-cloud-python/commit/c8bbf32606e790b559b261bf96700c76b6e2bfce))
+* remove setup.cfg configuration for creating universal wheels ([#13659](https://github.com/googleapis/google-cloud-python/issues/13659)) ([59bfd42](https://github.com/googleapis/google-cloud-python/commit/59bfd42cf8a2eaeed696a7504890bce5aae815ce))
+
 ## [1.25.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-management-v1.25.0...google-cloud-network-management-v1.25.1) (2025-02-18)
 
 

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -346,7 +346,7 @@ class AnnotateAssessmentRequest(proto.Message):
 
         Values:
             REASON_UNSPECIFIED (0):
-                Default unspecified reason.
+                Unspecified reason. Do not use.
             CHARGEBACK (1):
                 Indicates that the transaction had a chargeback issued with
                 no other details. When possible, specify the type by using
@@ -800,7 +800,13 @@ class Event(proto.Message):
             specified, and have been created by a
             WAF-enabled key.
         ja3 (str):
-            Optional. JA3 fingerprint for SSL clients.
+            Optional. JA3 fingerprint for SSL clients. To
+            learn how to compute this fingerprint, please
+            refer to https://github.com/salesforce/ja3.
+        ja4 (str):
+            Optional. JA4 fingerprint for SSL clients. To
+            learn how to compute this fingerprint, please
+            refer to https://github.com/FoxIO-LLC/ja4.
         headers (MutableSequence[str]):
             Optional. HTTP header information about the
             request.
@@ -843,7 +849,7 @@ class Event(proto.Message):
                 Cloud console.
             DISABLED (2):
                 Disable Fraud Prevention for this assessment,
-                regardless of Google Cloud console settings.
+                regardless of the Google Cloud console settings.
         """
         FRAUD_PREVENTION_UNSPECIFIED = 0
         ENABLED = 1
@@ -888,6 +894,10 @@ class Event(proto.Message):
     ja3: str = proto.Field(
         proto.STRING,
         number=10,
+    )
+    ja4: str = proto.Field(
+        proto.STRING,
+        number=18,
     )
     headers: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
@@ -2126,7 +2136,8 @@ class Metrics(proto.Message):
             Output only. Identifier. The name of the metrics, in the
             format ``projects/{project}/keys/{key}/metrics``.
         start_time (google.protobuf.timestamp_pb2.Timestamp):
-            Inclusive start time aligned to a day (UTC).
+            Inclusive start time aligned to a day in the
+            America/Los_Angeles (Pacific) timezone.
         score_metrics (MutableSequence[google.cloud.recaptchaenterprise_v1.types.ScoreMetrics]):
             Metrics are continuous and in order by dates,
             and in the granularity of day. All Key types

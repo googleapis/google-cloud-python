@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -1694,6 +1694,7 @@ def test_get_parameter(request_type, transport: str = "grpc"):
         call.return_value = service.Parameter(
             name="name_value",
             format_=service.ParameterFormat.UNFORMATTED,
+            kms_key="kms_key_value",
         )
         response = client.get_parameter(request)
 
@@ -1707,6 +1708,7 @@ def test_get_parameter(request_type, transport: str = "grpc"):
     assert isinstance(response, service.Parameter)
     assert response.name == "name_value"
     assert response.format_ == service.ParameterFormat.UNFORMATTED
+    assert response.kms_key == "kms_key_value"
 
 
 def test_get_parameter_non_empty_request_with_auto_populated_field():
@@ -1834,6 +1836,7 @@ async def test_get_parameter_async(
             service.Parameter(
                 name="name_value",
                 format_=service.ParameterFormat.UNFORMATTED,
+                kms_key="kms_key_value",
             )
         )
         response = await client.get_parameter(request)
@@ -1848,6 +1851,7 @@ async def test_get_parameter_async(
     assert isinstance(response, service.Parameter)
     assert response.name == "name_value"
     assert response.format_ == service.ParameterFormat.UNFORMATTED
+    assert response.kms_key == "kms_key_value"
 
 
 @pytest.mark.asyncio
@@ -2017,6 +2021,7 @@ def test_create_parameter(request_type, transport: str = "grpc"):
         call.return_value = service.Parameter(
             name="name_value",
             format_=service.ParameterFormat.UNFORMATTED,
+            kms_key="kms_key_value",
         )
         response = client.create_parameter(request)
 
@@ -2030,6 +2035,7 @@ def test_create_parameter(request_type, transport: str = "grpc"):
     assert isinstance(response, service.Parameter)
     assert response.name == "name_value"
     assert response.format_ == service.ParameterFormat.UNFORMATTED
+    assert response.kms_key == "kms_key_value"
 
 
 def test_create_parameter_non_empty_request_with_auto_populated_field():
@@ -2161,6 +2167,7 @@ async def test_create_parameter_async(
             service.Parameter(
                 name="name_value",
                 format_=service.ParameterFormat.UNFORMATTED,
+                kms_key="kms_key_value",
             )
         )
         response = await client.create_parameter(request)
@@ -2175,6 +2182,7 @@ async def test_create_parameter_async(
     assert isinstance(response, service.Parameter)
     assert response.name == "name_value"
     assert response.format_ == service.ParameterFormat.UNFORMATTED
+    assert response.kms_key == "kms_key_value"
 
 
 @pytest.mark.asyncio
@@ -2364,6 +2372,7 @@ def test_update_parameter(request_type, transport: str = "grpc"):
         call.return_value = service.Parameter(
             name="name_value",
             format_=service.ParameterFormat.UNFORMATTED,
+            kms_key="kms_key_value",
         )
         response = client.update_parameter(request)
 
@@ -2377,6 +2386,7 @@ def test_update_parameter(request_type, transport: str = "grpc"):
     assert isinstance(response, service.Parameter)
     assert response.name == "name_value"
     assert response.format_ == service.ParameterFormat.UNFORMATTED
+    assert response.kms_key == "kms_key_value"
 
 
 def test_update_parameter_non_empty_request_with_auto_populated_field():
@@ -2502,6 +2512,7 @@ async def test_update_parameter_async(
             service.Parameter(
                 name="name_value",
                 format_=service.ParameterFormat.UNFORMATTED,
+                kms_key="kms_key_value",
             )
         )
         response = await client.update_parameter(request)
@@ -2516,6 +2527,7 @@ async def test_update_parameter_async(
     assert isinstance(response, service.Parameter)
     assert response.name == "name_value"
     assert response.format_ == service.ParameterFormat.UNFORMATTED
+    assert response.kms_key == "kms_key_value"
 
 
 @pytest.mark.asyncio
@@ -3564,6 +3576,7 @@ def test_get_parameter_version(request_type, transport: str = "grpc"):
         call.return_value = service.ParameterVersion(
             name="name_value",
             disabled=True,
+            kms_key_version="kms_key_version_value",
         )
         response = client.get_parameter_version(request)
 
@@ -3577,6 +3590,7 @@ def test_get_parameter_version(request_type, transport: str = "grpc"):
     assert isinstance(response, service.ParameterVersion)
     assert response.name == "name_value"
     assert response.disabled is True
+    assert response.kms_key_version == "kms_key_version_value"
 
 
 def test_get_parameter_version_non_empty_request_with_auto_populated_field():
@@ -3713,6 +3727,7 @@ async def test_get_parameter_version_async(
             service.ParameterVersion(
                 name="name_value",
                 disabled=True,
+                kms_key_version="kms_key_version_value",
             )
         )
         response = await client.get_parameter_version(request)
@@ -3727,6 +3742,7 @@ async def test_get_parameter_version_async(
     assert isinstance(response, service.ParameterVersion)
     assert response.name == "name_value"
     assert response.disabled is True
+    assert response.kms_key_version == "kms_key_version_value"
 
 
 @pytest.mark.asyncio
@@ -4256,6 +4272,7 @@ def test_create_parameter_version(request_type, transport: str = "grpc"):
         call.return_value = service.ParameterVersion(
             name="name_value",
             disabled=True,
+            kms_key_version="kms_key_version_value",
         )
         response = client.create_parameter_version(request)
 
@@ -4269,6 +4286,7 @@ def test_create_parameter_version(request_type, transport: str = "grpc"):
     assert isinstance(response, service.ParameterVersion)
     assert response.name == "name_value"
     assert response.disabled is True
+    assert response.kms_key_version == "kms_key_version_value"
 
 
 def test_create_parameter_version_non_empty_request_with_auto_populated_field():
@@ -4407,6 +4425,7 @@ async def test_create_parameter_version_async(
             service.ParameterVersion(
                 name="name_value",
                 disabled=True,
+                kms_key_version="kms_key_version_value",
             )
         )
         response = await client.create_parameter_version(request)
@@ -4421,6 +4440,7 @@ async def test_create_parameter_version_async(
     assert isinstance(response, service.ParameterVersion)
     assert response.name == "name_value"
     assert response.disabled is True
+    assert response.kms_key_version == "kms_key_version_value"
 
 
 @pytest.mark.asyncio
@@ -4624,6 +4644,7 @@ def test_update_parameter_version(request_type, transport: str = "grpc"):
         call.return_value = service.ParameterVersion(
             name="name_value",
             disabled=True,
+            kms_key_version="kms_key_version_value",
         )
         response = client.update_parameter_version(request)
 
@@ -4637,6 +4658,7 @@ def test_update_parameter_version(request_type, transport: str = "grpc"):
     assert isinstance(response, service.ParameterVersion)
     assert response.name == "name_value"
     assert response.disabled is True
+    assert response.kms_key_version == "kms_key_version_value"
 
 
 def test_update_parameter_version_non_empty_request_with_auto_populated_field():
@@ -4769,6 +4791,7 @@ async def test_update_parameter_version_async(
             service.ParameterVersion(
                 name="name_value",
                 disabled=True,
+                kms_key_version="kms_key_version_value",
             )
         )
         response = await client.update_parameter_version(request)
@@ -4783,6 +4806,7 @@ async def test_update_parameter_version_async(
     assert isinstance(response, service.ParameterVersion)
     assert response.name == "name_value"
     assert response.disabled is True
+    assert response.kms_key_version == "kms_key_version_value"
 
 
 @pytest.mark.asyncio
@@ -7964,6 +7988,7 @@ async def test_get_parameter_empty_call_grpc_asyncio():
             service.Parameter(
                 name="name_value",
                 format_=service.ParameterFormat.UNFORMATTED,
+                kms_key="kms_key_value",
             )
         )
         await client.get_parameter(request=None)
@@ -7992,6 +8017,7 @@ async def test_create_parameter_empty_call_grpc_asyncio():
             service.Parameter(
                 name="name_value",
                 format_=service.ParameterFormat.UNFORMATTED,
+                kms_key="kms_key_value",
             )
         )
         await client.create_parameter(request=None)
@@ -8020,6 +8046,7 @@ async def test_update_parameter_empty_call_grpc_asyncio():
             service.Parameter(
                 name="name_value",
                 format_=service.ParameterFormat.UNFORMATTED,
+                kms_key="kms_key_value",
             )
         )
         await client.update_parameter(request=None)
@@ -8103,6 +8130,7 @@ async def test_get_parameter_version_empty_call_grpc_asyncio():
             service.ParameterVersion(
                 name="name_value",
                 disabled=True,
+                kms_key_version="kms_key_version_value",
             )
         )
         await client.get_parameter_version(request=None)
@@ -8163,6 +8191,7 @@ async def test_create_parameter_version_empty_call_grpc_asyncio():
             service.ParameterVersion(
                 name="name_value",
                 disabled=True,
+                kms_key_version="kms_key_version_value",
             )
         )
         await client.create_parameter_version(request=None)
@@ -8193,6 +8222,7 @@ async def test_update_parameter_version_empty_call_grpc_asyncio():
             service.ParameterVersion(
                 name="name_value",
                 disabled=True,
+                kms_key_version="kms_key_version_value",
             )
         )
         await client.update_parameter_version(request=None)
@@ -8409,6 +8439,7 @@ def test_get_parameter_rest_call_success(request_type):
         return_value = service.Parameter(
             name="name_value",
             format_=service.ParameterFormat.UNFORMATTED,
+            kms_key="kms_key_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -8427,6 +8458,7 @@ def test_get_parameter_rest_call_success(request_type):
     assert isinstance(response, service.Parameter)
     assert response.name == "name_value"
     assert response.format_ == service.ParameterFormat.UNFORMATTED
+    assert response.kms_key == "kms_key_value"
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -8536,6 +8568,7 @@ def test_create_parameter_rest_call_success(request_type):
             "iam_policy_name_principal": "iam_policy_name_principal_value",
             "iam_policy_uid_principal": "iam_policy_uid_principal_value",
         },
+        "kms_key": "kms_key_value",
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -8612,6 +8645,7 @@ def test_create_parameter_rest_call_success(request_type):
         return_value = service.Parameter(
             name="name_value",
             format_=service.ParameterFormat.UNFORMATTED,
+            kms_key="kms_key_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -8630,6 +8664,7 @@ def test_create_parameter_rest_call_success(request_type):
     assert isinstance(response, service.Parameter)
     assert response.name == "name_value"
     assert response.format_ == service.ParameterFormat.UNFORMATTED
+    assert response.kms_key == "kms_key_value"
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -8744,6 +8779,7 @@ def test_update_parameter_rest_call_success(request_type):
             "iam_policy_name_principal": "iam_policy_name_principal_value",
             "iam_policy_uid_principal": "iam_policy_uid_principal_value",
         },
+        "kms_key": "kms_key_value",
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -8820,6 +8856,7 @@ def test_update_parameter_rest_call_success(request_type):
         return_value = service.Parameter(
             name="name_value",
             format_=service.ParameterFormat.UNFORMATTED,
+            kms_key="kms_key_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -8838,6 +8875,7 @@ def test_update_parameter_rest_call_success(request_type):
     assert isinstance(response, service.Parameter)
     assert response.name == "name_value"
     assert response.format_ == service.ParameterFormat.UNFORMATTED
+    assert response.kms_key == "kms_key_value"
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -9192,6 +9230,7 @@ def test_get_parameter_version_rest_call_success(request_type):
         return_value = service.ParameterVersion(
             name="name_value",
             disabled=True,
+            kms_key_version="kms_key_version_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -9210,6 +9249,7 @@ def test_get_parameter_version_rest_call_success(request_type):
     assert isinstance(response, service.ParameterVersion)
     assert response.name == "name_value"
     assert response.disabled is True
+    assert response.kms_key_version == "kms_key_version_value"
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -9459,6 +9499,7 @@ def test_create_parameter_version_rest_call_success(request_type):
         "update_time": {},
         "disabled": True,
         "payload": {"data": b"data_blob"},
+        "kms_key_version": "kms_key_version_value",
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -9535,6 +9576,7 @@ def test_create_parameter_version_rest_call_success(request_type):
         return_value = service.ParameterVersion(
             name="name_value",
             disabled=True,
+            kms_key_version="kms_key_version_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -9553,6 +9595,7 @@ def test_create_parameter_version_rest_call_success(request_type):
     assert isinstance(response, service.ParameterVersion)
     assert response.name == "name_value"
     assert response.disabled is True
+    assert response.kms_key_version == "kms_key_version_value"
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -9671,6 +9714,7 @@ def test_update_parameter_version_rest_call_success(request_type):
         "update_time": {},
         "disabled": True,
         "payload": {"data": b"data_blob"},
+        "kms_key_version": "kms_key_version_value",
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -9747,6 +9791,7 @@ def test_update_parameter_version_rest_call_success(request_type):
         return_value = service.ParameterVersion(
             name="name_value",
             disabled=True,
+            kms_key_version="kms_key_version_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -9765,6 +9810,7 @@ def test_update_parameter_version_rest_call_success(request_type):
     assert isinstance(response, service.ParameterVersion)
     assert response.name == "name_value"
     assert response.disabled is True
+    assert response.kms_key_version == "kms_key_version_value"
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])

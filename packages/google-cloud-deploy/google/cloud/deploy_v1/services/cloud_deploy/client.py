@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -4698,7 +4698,7 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
 
         Returns:
             google.cloud.deploy_v1.services.cloud_deploy.pagers.ListRolloutsPager:
-                ListRolloutsResponse is the response object reutrned by
+                ListRolloutsResponse is the response object returned by
                 ListRollouts.
 
                 Iterating over this object will yield results and

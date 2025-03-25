@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -54,10 +54,11 @@ class DataQualitySpec(proto.Message):
 
             100.
         row_filter (str):
-            Optional. A filter applied to all rows in a
-            single DataScan job. The filter needs to be a
-            valid SQL expression for a WHERE clause in
-            BigQuery standard SQL syntax.
+            Optional. A filter applied to all rows in a single DataScan
+            job. The filter needs to be a valid SQL expression for a
+            `WHERE clause in GoogleSQL
+            syntax <https://cloud.google.com/bigquery/docs/reference/standard-sql/query-syntax#where_clause>`__.
+
             Example: col1 >= 0 AND col2 < 10
         post_scan_actions (google.cloud.dataplex_v1.types.DataQualitySpec.PostScanActions):
             Optional. Actions to take upon job
@@ -740,8 +741,9 @@ class DataQualityRule(proto.Message):
     class RowConditionExpectation(proto.Message):
         r"""Evaluates whether each row passes the specified condition.
 
-        The SQL expression needs to use BigQuery standard SQL syntax and
-        should produce a boolean value per row as the result.
+        The SQL expression needs to use `GoogleSQL
+        syntax <https://cloud.google.com/bigquery/docs/reference/standard-sql/query-syntax>`__
+        and should produce a boolean value per row as the result.
 
         Example: col1 >= 0 AND col2 < 10
 
@@ -758,8 +760,9 @@ class DataQualityRule(proto.Message):
     class TableConditionExpectation(proto.Message):
         r"""Evaluates whether the provided expression is true.
 
-        The SQL expression needs to use BigQuery standard SQL syntax and
-        should produce a scalar boolean result.
+        The SQL expression needs to use `GoogleSQL
+        syntax <https://cloud.google.com/bigquery/docs/reference/standard-sql/query-syntax>`__
+        and should produce a scalar boolean result.
 
         Example: MIN(col1) >= 0
 
@@ -777,8 +780,9 @@ class DataQualityRule(proto.Message):
         r"""A SQL statement that is evaluated to return rows that match an
         invalid state. If any rows are are returned, this rule fails.
 
-        The SQL statement must use BigQuery standard SQL syntax, and must
-        not contain any semicolons.
+        The SQL statement must use `GoogleSQL
+        syntax <https://cloud.google.com/bigquery/docs/reference/standard-sql/query-syntax>`__,
+        and must not contain any semicolons.
 
         You can use the data reference parameter ``${data()}`` to reference
         the source table with all of its precondition filters applied.

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -92,6 +92,8 @@ class View(proto.Enum):
 class Parameter(proto.Message):
     r"""Message describing Parameter resource
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         name (str):
             Identifier. [Output only] The resource name of the Parameter
@@ -108,6 +110,15 @@ class Parameter(proto.Message):
         policy_member (google.iam.v1.resource_policy_member_pb2.ResourcePolicyMember):
             Output only. [Output-only] policy member strings of a Google
             Cloud resource.
+        kms_key (str):
+            Optional. Customer managed encryption key (CMEK) to use for
+            encrypting the Parameter Versions. If not set, the default
+            Google-managed encryption key will be used. Cloud KMS
+            CryptoKeys must reside in the same location as the
+            Parameter. The expected format is
+            ``projects/*/locations/*/keyRings/*/cryptoKeys/*``.
+
+            This field is a member of `oneof`_ ``_kms_key``.
     """
 
     name: str = proto.Field(
@@ -138,6 +149,11 @@ class Parameter(proto.Message):
         proto.MESSAGE,
         number=6,
         message=resource_policy_member_pb2.ResourcePolicyMember,
+    )
+    kms_key: str = proto.Field(
+        proto.STRING,
+        number=7,
+        optional=True,
     )
 
 
@@ -380,6 +396,8 @@ class DeleteParameterRequest(proto.Message):
 class ParameterVersion(proto.Message):
     r"""Message describing ParameterVersion resource
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         name (str):
             Identifier. [Output only] The resource name of the
@@ -403,6 +421,14 @@ class ParameterVersion(proto.Message):
             ParameterVersion resource.  This is only
             returned when the request provides the View
             value of FULL (default for GET request).
+        kms_key_version (str):
+            Optional. Output only. [Output only] The resource name of
+            the KMS key version used to encrypt the ParameterVersion
+            payload. This field is populated only if the Parameter
+            resource has customer managed encryption key (CMEK)
+            configured.
+
+            This field is a member of `oneof`_ ``_kms_key_version``.
     """
 
     name: str = proto.Field(
@@ -427,6 +453,11 @@ class ParameterVersion(proto.Message):
         proto.MESSAGE,
         number=5,
         message="ParameterVersionPayload",
+    )
+    kms_key_version: str = proto.Field(
+        proto.STRING,
+        number=6,
+        optional=True,
     )
 
 
@@ -577,7 +608,7 @@ class RenderParameterVersionResponse(proto.Message):
             (ParameterVersionPayload) which has
             substitutions of all (if any) references to a
             SecretManager SecretVersion resources. This
-            substituion only works for a Parameter which is
+            substitution only works for a Parameter which is
             in JSON or YAML format.
     """
 

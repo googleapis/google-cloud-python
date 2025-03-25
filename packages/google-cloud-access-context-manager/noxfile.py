@@ -382,15 +382,24 @@ def docfx(session):
     ["python", "upb", "cpp"],
 )
 def prerelease_deps(session, protobuf_implementation):
-    """Run all tests with prerelease versions of dependencies installed."""
+    """
+    Run all tests with pre-release versions of dependencies installed
+    rather than the standard non pre-release versions.
+    Pre-release versions can be installed using
+    `pip install --pre <package>`.
+    """
 
     if protobuf_implementation == "cpp" and session.python in ("3.11", "3.12", "3.13"):
         session.skip("cpp implementation is not supported in python 3.11+")
 
     # Install all dependencies
-    session.install("-e", ".[all, tests, tracing]")
+    session.install("-e", ".")
+
+    # Install dependencies for the unit test environment
     unit_deps_all = UNIT_TEST_STANDARD_DEPENDENCIES + UNIT_TEST_EXTERNAL_DEPENDENCIES
     session.install(*unit_deps_all)
+
+    # Install dependencies for the system test environment
     system_deps_all = (
         SYSTEM_TEST_STANDARD_DEPENDENCIES
         + SYSTEM_TEST_EXTERNAL_DEPENDENCIES
@@ -417,39 +426,122 @@ def prerelease_deps(session, protobuf_implementation):
         )
     ]
 
+    # Install dependencies specified in `testing/constraints-X.txt`.
     session.install(*constraints_deps)
 
+    # Note: If a dependency is added to the `prerel_deps` list,
+    # the `core_dependencies_from_source` list in the `core_deps_from_source`
+    # nox session should also be updated.
     prerel_deps = [
-        "protobuf",
-        # dependency of grpc
-        "six",
-        "grpc-google-iam-v1",
         "googleapis-common-protos",
-        "grpcio",
-        "grpcio-status",
         "google-api-core",
         "google-auth",
+        "grpc-google-iam-v1",
+        "grpcio",
+        "grpcio-status",
+        "protobuf",
         "proto-plus",
-        "google-cloud-testutils",
-        # dependencies of google-cloud-testutils"
-        "click",
     ]
 
     for dep in prerel_deps:
-        session.install("--pre", "--no-deps", "--upgrade", dep)
+        session.install("--pre", "--no-deps", "--ignore-installed", dep)
+        # TODO(https://github.com/grpc/grpc/issues/38965): Add `grpcio-status``
+        # to the dictionary below once this bug is fixed.
+        # TODO(https://github.com/googleapis/google-cloud-python/issues/13643): Add
+        # `googleapis-common-protos` and `grpc-google-iam-v1` to the dictionary below
+        # once this bug is fixed.
+        package_namespaces = {
+            "google-api-core": "google.api_core",
+            "google-auth": "google.auth",
+            "grpcio": "grpc",
+            "protobuf": "google.protobuf",
+            "proto-plus": "proto",
+        }
 
-    # Remaining dependencies
-    other_deps = [
-        "requests",
-    ]
-    session.install(*other_deps)
+        version_namespace = package_namespaces.get(dep)
 
-    # Print out prerelease package versions
+        print(f"Installed {dep}")
+        if version_namespace:
+            session.run(
+                "python",
+                "-c",
+                f"import {version_namespace}; print({version_namespace}.__version__)",
+            )
+
     session.run(
-        "python", "-c", "import google.protobuf; print(google.protobuf.__version__)"
+        "py.test",
+        "tests/unit",
+        env={
+            "PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION": protobuf_implementation,
+        },
     )
-    session.run("python", "-c", "import grpc; print(grpc.__version__)")
-    session.run("python", "-c", "import google.auth; print(google.auth.__version__)")
+
+
+@nox.session(python="3.13")
+@nox.parametrize(
+    "protobuf_implementation",
+    ["python", "upb"],
+)
+def core_deps_from_source(session, protobuf_implementation):
+    """Run all tests with core dependencies installed from source
+    rather than pulling the dependencies from PyPI.
+    """
+
+    # Install all dependencies
+    session.install("-e", ".")
+
+    # Install dependencies for the unit test environment
+    unit_deps_all = UNIT_TEST_STANDARD_DEPENDENCIES + UNIT_TEST_EXTERNAL_DEPENDENCIES
+    session.install(*unit_deps_all)
+
+    # Install dependencies for the system test environment
+    system_deps_all = (
+        SYSTEM_TEST_STANDARD_DEPENDENCIES
+        + SYSTEM_TEST_EXTERNAL_DEPENDENCIES
+        + SYSTEM_TEST_EXTRAS
+    )
+    session.install(*system_deps_all)
+
+    # Because we test minimum dependency versions on the minimum Python
+    # version, the first version we test with in the unit tests sessions has a
+    # constraints file containing all dependencies and extras.
+    with open(
+        CURRENT_DIRECTORY
+        / "testing"
+        / f"constraints-{UNIT_TEST_PYTHON_VERSIONS[0]}.txt",
+        encoding="utf-8",
+    ) as constraints_file:
+        constraints_text = constraints_file.read()
+
+    # Ignore leading whitespace and comment lines.
+    constraints_deps = [
+        match.group(1)
+        for match in re.finditer(
+            r"^\s*(\S+)(?===\S+)", constraints_text, flags=re.MULTILINE
+        )
+    ]
+
+    # Install dependencies specified in `testing/constraints-X.txt`.
+    session.install(*constraints_deps)
+
+    # TODO(https://github.com/googleapis/gapic-generator-python/issues/2358): `grpcio` and
+    # `grpcio-status` should be added to the list below so that they are installed from source,
+    # rather than PyPI.
+    # TODO(https://github.com/googleapis/gapic-generator-python/issues/2357): `protobuf` should be
+    # added to the list below so that it is installed from source, rather than PyPI
+    # Note: If a dependency is added to the `core_dependencies_from_source` list,
+    # the `prerel_deps` list in the `prerelease_deps` nox session should also be updated.
+    core_dependencies_from_source = [
+        f"{CURRENT_DIRECTORY}/../googleapis-common-protos",
+        "google-api-core @ git+https://github.com/googleapis/python-api-core.git",
+        "google-auth @ git+https://github.com/googleapis/google-auth-library-python.git",
+        f"{CURRENT_DIRECTORY}/../grpc-google-iam-v1",
+        "proto-plus @ git+https://github.com/googleapis/proto-plus-python.git",
+    ]
+
+    for dep in core_dependencies_from_source:
+        session.install(dep, "--no-deps", "--ignore-installed")
+        print(f"Installed {dep}")
 
     session.run(
         "py.test",

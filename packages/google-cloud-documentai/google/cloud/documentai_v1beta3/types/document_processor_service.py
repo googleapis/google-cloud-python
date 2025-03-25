@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -138,6 +138,15 @@ class ProcessOptions(proto.Message):
             chunking_config (google.cloud.documentai_v1beta3.types.ProcessOptions.LayoutConfig.ChunkingConfig):
                 Optional. Config for chunking in layout
                 parser processor.
+            return_images (bool):
+                Optional. Whether to include images in layout
+                parser processor response.
+            return_bounding_boxes (bool):
+                Optional. Whether to include bounding boxes
+                in layout parser processor response.
+            enable_llm_layout_parsing (bool):
+                Optional. Whether to refine PDF layout using
+                LLM.
         """
 
         class ChunkingConfig(proto.Message):
@@ -183,6 +192,18 @@ class ProcessOptions(proto.Message):
             proto.MESSAGE,
             number=1,
             message="ProcessOptions.LayoutConfig.ChunkingConfig",
+        )
+        return_images: bool = proto.Field(
+            proto.BOOL,
+            number=2,
+        )
+        return_bounding_boxes: bool = proto.Field(
+            proto.BOOL,
+            number=3,
+        )
+        enable_llm_layout_parsing: bool = proto.Field(
+            proto.BOOL,
+            number=5,
         )
 
     class IndividualPageSelector(proto.Message):

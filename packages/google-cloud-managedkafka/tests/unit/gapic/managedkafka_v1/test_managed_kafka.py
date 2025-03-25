@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -8927,7 +8927,7 @@ def test_get_consumer_group_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "%s/v1/{name=projects/*/locations/*/clusters/*/consumerGroups/*}"
+            "%s/v1/{name=projects/*/locations/*/clusters/*/consumerGroups/**}"
             % client.transport._host,
             args[1],
         )
@@ -9121,7 +9121,7 @@ def test_update_consumer_group_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "%s/v1/{consumer_group.name=projects/*/locations/*/clusters/*/consumerGroups/*}"
+            "%s/v1/{consumer_group.name=projects/*/locations/*/clusters/*/consumerGroups/**}"
             % client.transport._host,
             args[1],
         )
@@ -9302,7 +9302,7 @@ def test_delete_consumer_group_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "%s/v1/{name=projects/*/locations/*/clusters/*/consumerGroups/*}"
+            "%s/v1/{name=projects/*/locations/*/clusters/*/consumerGroups/**}"
             % client.transport._host,
             args[1],
         )

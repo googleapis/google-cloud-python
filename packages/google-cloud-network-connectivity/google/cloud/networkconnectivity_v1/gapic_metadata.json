@@ -5,6 +5,200 @@
   "protoPackage": "google.cloud.networkconnectivity.v1",
   "schema": "1.0",
   "services": {
+    "CrossNetworkAutomationService": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "CrossNetworkAutomationServiceClient",
+          "rpcs": {
+            "CreateServiceConnectionMap": {
+              "methods": [
+                "create_service_connection_map"
+              ]
+            },
+            "CreateServiceConnectionPolicy": {
+              "methods": [
+                "create_service_connection_policy"
+              ]
+            },
+            "CreateServiceConnectionToken": {
+              "methods": [
+                "create_service_connection_token"
+              ]
+            },
+            "DeleteServiceClass": {
+              "methods": [
+                "delete_service_class"
+              ]
+            },
+            "DeleteServiceConnectionMap": {
+              "methods": [
+                "delete_service_connection_map"
+              ]
+            },
+            "DeleteServiceConnectionPolicy": {
+              "methods": [
+                "delete_service_connection_policy"
+              ]
+            },
+            "DeleteServiceConnectionToken": {
+              "methods": [
+                "delete_service_connection_token"
+              ]
+            },
+            "GetServiceClass": {
+              "methods": [
+                "get_service_class"
+              ]
+            },
+            "GetServiceConnectionMap": {
+              "methods": [
+                "get_service_connection_map"
+              ]
+            },
+            "GetServiceConnectionPolicy": {
+              "methods": [
+                "get_service_connection_policy"
+              ]
+            },
+            "GetServiceConnectionToken": {
+              "methods": [
+                "get_service_connection_token"
+              ]
+            },
+            "ListServiceClasses": {
+              "methods": [
+                "list_service_classes"
+              ]
+            },
+            "ListServiceConnectionMaps": {
+              "methods": [
+                "list_service_connection_maps"
+              ]
+            },
+            "ListServiceConnectionPolicies": {
+              "methods": [
+                "list_service_connection_policies"
+              ]
+            },
+            "ListServiceConnectionTokens": {
+              "methods": [
+                "list_service_connection_tokens"
+              ]
+            },
+            "UpdateServiceClass": {
+              "methods": [
+                "update_service_class"
+              ]
+            },
+            "UpdateServiceConnectionMap": {
+              "methods": [
+                "update_service_connection_map"
+              ]
+            },
+            "UpdateServiceConnectionPolicy": {
+              "methods": [
+                "update_service_connection_policy"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "CrossNetworkAutomationServiceAsyncClient",
+          "rpcs": {
+            "CreateServiceConnectionMap": {
+              "methods": [
+                "create_service_connection_map"
+              ]
+            },
+            "CreateServiceConnectionPolicy": {
+              "methods": [
+                "create_service_connection_policy"
+              ]
+            },
+            "CreateServiceConnectionToken": {
+              "methods": [
+                "create_service_connection_token"
+              ]
+            },
+            "DeleteServiceClass": {
+              "methods": [
+                "delete_service_class"
+              ]
+            },
+            "DeleteServiceConnectionMap": {
+              "methods": [
+                "delete_service_connection_map"
+              ]
+            },
+            "DeleteServiceConnectionPolicy": {
+              "methods": [
+                "delete_service_connection_policy"
+              ]
+            },
+            "DeleteServiceConnectionToken": {
+              "methods": [
+                "delete_service_connection_token"
+              ]
+            },
+            "GetServiceClass": {
+              "methods": [
+                "get_service_class"
+              ]
+            },
+            "GetServiceConnectionMap": {
+              "methods": [
+                "get_service_connection_map"
+              ]
+            },
+            "GetServiceConnectionPolicy": {
+              "methods": [
+                "get_service_connection_policy"
+              ]
+            },
+            "GetServiceConnectionToken": {
+              "methods": [
+                "get_service_connection_token"
+              ]
+            },
+            "ListServiceClasses": {
+              "methods": [
+                "list_service_classes"
+              ]
+            },
+            "ListServiceConnectionMaps": {
+              "methods": [
+                "list_service_connection_maps"
+              ]
+            },
+            "ListServiceConnectionPolicies": {
+              "methods": [
+                "list_service_connection_policies"
+              ]
+            },
+            "ListServiceConnectionTokens": {
+              "methods": [
+                "list_service_connection_tokens"
+              ]
+            },
+            "UpdateServiceClass": {
+              "methods": [
+                "update_service_class"
+              ]
+            },
+            "UpdateServiceConnectionMap": {
+              "methods": [
+                "update_service_connection_map"
+              ]
+            },
+            "UpdateServiceConnectionPolicy": {
+              "methods": [
+                "update_service_connection_policy"
+              ]
+            }
+          }
+        }
+      }
+    },
     "HubService": {
       "clients": {
         "grpc": {
@@ -13,6 +207,11 @@
             "AcceptHubSpoke": {
               "methods": [
                 "accept_hub_spoke"
+              ]
+            },
+            "AcceptSpokeUpdate": {
+              "methods": [
+                "accept_spoke_update"
               ]
             },
             "CreateHub": {
@@ -98,6 +297,11 @@
             "RejectHubSpoke": {
               "methods": [
                 "reject_hub_spoke"
+              ]
+            },
+            "RejectSpokeUpdate": {
+              "methods": [
+                "reject_spoke_update"
               ]
             },
             "UpdateGroup": {
@@ -125,6 +329,11 @@
                 "accept_hub_spoke"
               ]
             },
+            "AcceptSpokeUpdate": {
+              "methods": [
+                "accept_spoke_update"
+              ]
+            },
             "CreateHub": {
               "methods": [
                 "create_hub"
@@ -208,6 +417,11 @@
             "RejectHubSpoke": {
               "methods": [
                 "reject_hub_spoke"
+              ]
+            },
+            "RejectSpokeUpdate": {
+              "methods": [
+                "reject_spoke_update"
               ]
             },
             "UpdateGroup": {

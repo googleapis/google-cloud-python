@@ -1,6 +1,6 @@
 #! /usr/bin/env python3
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -52,6 +52,7 @@ class merchant_accountsCallTransformer(cst.CSTTransformer):
         'get_account': ('name', ),
         'get_account_tax': ('name', ),
         'get_autofeed_settings': ('name', ),
+        'get_automatic_improvements': ('name', ),
         'get_business_identity': ('name', ),
         'get_business_info': ('name', ),
         'get_email_preferences': ('name', ),
@@ -78,6 +79,7 @@ class merchant_accountsCallTransformer(cst.CSTTransformer):
         'update_account': ('account', 'update_mask', ),
         'update_account_tax': ('account_tax', 'update_mask', ),
         'update_autofeed_settings': ('autofeed_settings', 'update_mask', ),
+        'update_automatic_improvements': ('automatic_improvements', 'update_mask', ),
         'update_business_identity': ('business_identity', 'update_mask', ),
         'update_business_info': ('business_info', 'update_mask', ),
         'update_email_preferences': ('email_preferences', 'update_mask', ),

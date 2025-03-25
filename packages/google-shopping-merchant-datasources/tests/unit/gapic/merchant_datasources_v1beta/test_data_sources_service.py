@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -52,6 +52,7 @@ from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
 from google.oauth2 import service_account
 from google.protobuf import field_mask_pb2  # type: ignore
+from google.shopping.type.types import types
 from google.type import dayofweek_pb2  # type: ignore
 from google.type import timeofday_pb2  # type: ignore
 
@@ -5270,6 +5271,7 @@ def test_create_data_source_rest_call_success(request_type):
                     }
                 ]
             },
+            "destinations": [{"destination": 1, "state": 1}],
         },
         "supplemental_product_data_source": {
             "feed_label": "feed_label_value",
@@ -5531,6 +5533,7 @@ def test_update_data_source_rest_call_success(request_type):
                     }
                 ]
             },
+            "destinations": [{"destination": 1, "state": 1}],
         },
         "supplemental_product_data_source": {
             "feed_label": "feed_label_value",

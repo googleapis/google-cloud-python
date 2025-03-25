@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.12](https://github.com/googleapis/google-cloud-python/compare/google-geo-type-v0.3.11...google-geo-type-v0.3.12) (2025-03-15)
+
+
+### Bug Fixes
+
+* [Many APIs] Allow Protobuf 6.x ([25ced24](https://github.com/googleapis/google-cloud-python/commit/25ced2444528a1dc6a22daa32b82b844961f1b75))
+
 ## [0.3.11](https://github.com/googleapis/google-cloud-python/compare/google-geo-type-v0.3.10...google-geo-type-v0.3.11) (2025-02-12)
 
 

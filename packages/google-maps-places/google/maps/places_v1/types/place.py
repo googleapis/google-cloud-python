@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,8 +20,10 @@ from typing import MutableMapping, MutableSequence
 from google.geo.type.types import viewport as ggt_viewport
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.type import date_pb2  # type: ignore
+from google.type import datetime_pb2  # type: ignore
 from google.type import latlng_pb2  # type: ignore
 from google.type import localized_text_pb2  # type: ignore
+from google.type import postal_address_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.maps.places_v1.types import content_block, ev_charging
@@ -111,6 +113,8 @@ class Place(proto.Message):
         short_formatted_address (str):
             A short, human-readable address for this
             place.
+        postal_address (google.type.postal_address_pb2.PostalAddress):
+            The address in postal address format.
         address_components (MutableSequence[google.maps.places_v1.types.Place.AddressComponent]):
             Repeated components for each locality level. Note the
             following facts about the address_components[] array:
@@ -157,7 +161,14 @@ class Place(proto.Message):
             relevance. A maximum of 5 reviews can be
             returned.
         regular_opening_hours (google.maps.places_v1.types.Place.OpeningHours):
-            The regular hours of operation.
+            The regular hours of operation. Note that if a place is
+            always open (24 hours), the ``close`` field will not be set.
+            Clients can rely on always open (24 hours) being represented
+            as an
+            [open][google.maps.places.v1.Place.OpeningHours.Period.open]
+            period containing [day][Point.day] with value ``0``,
+            [hour][Point.hour] with value ``0``, and
+            [minute][Point.minute] with value ``0``.
         utc_offset_minutes (int):
             Number of minutes this place's timezone is
             currently offset from UTC. This is expressed in
@@ -166,6 +177,9 @@ class Place(proto.Message):
             minutes.
 
             This field is a member of `oneof`_ ``_utc_offset_minutes``.
+        time_zone (google.type.datetime_pb2.TimeZone):
+            IANA Time Zone Database time zone. For example
+            "America/New_York".
         photos (MutableSequence[google.maps.places_v1.types.Photo]):
             Information (including references) about
             photos of this place. A maximum of 10 photos can
@@ -174,7 +188,7 @@ class Place(proto.Message):
             The place's address in adr microformat:
             http://microformats.org/wiki/adr.
         business_status (google.maps.places_v1.types.Place.BusinessStatus):
-
+            The business status for the place.
         price_level (google.maps.places_v1.types.PriceLevel):
             Price level of the place.
         attributions (MutableSequence[google.maps.places_v1.types.Place.Attribution]):
@@ -579,11 +593,12 @@ class Place(proto.Message):
 
                         This field is a member of `oneof`_ ``_day``.
                     hour (int):
-                        The hour in 2 digits. Ranges from 00 to 23.
+                        The hour in 24 hour format. Ranges from 0 to
+                        23.
 
                         This field is a member of `oneof`_ ``_hour``.
                     minute (int):
-                        The minute in 2 digits. Ranges from 00 to 59.
+                        The minute. Ranges from 0 to 59.
 
                         This field is a member of `oneof`_ ``_minute``.
                     date (google.type.date_pb2.Date):
@@ -1009,6 +1024,11 @@ class Place(proto.Message):
         proto.STRING,
         number=51,
     )
+    postal_address: postal_address_pb2.PostalAddress = proto.Field(
+        proto.MESSAGE,
+        number=90,
+        message=postal_address_pb2.PostalAddress,
+    )
     address_components: MutableSequence[AddressComponent] = proto.RepeatedField(
         proto.MESSAGE,
         number=10,
@@ -1055,6 +1075,11 @@ class Place(proto.Message):
         proto.INT32,
         number=22,
         optional=True,
+    )
+    time_zone: datetime_pb2.TimeZone = proto.Field(
+        proto.MESSAGE,
+        number=88,
+        message=datetime_pb2.TimeZone,
     )
     photos: MutableSequence[photo.Photo] = proto.RepeatedField(
         proto.MESSAGE,

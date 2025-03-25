@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -455,6 +455,33 @@ class AlloyDBAdminGrpcAsyncIOTransport(AlloyDBAdminTransport):
                 response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["update_cluster"]
+
+    @property
+    def export_cluster(
+        self,
+    ) -> Callable[[service.ExportClusterRequest], Awaitable[operations_pb2.Operation]]:
+        r"""Return a callable for the export cluster method over gRPC.
+
+        Exports data from the cluster.
+        Imperative only.
+
+        Returns:
+            Callable[[~.ExportClusterRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "export_cluster" not in self._stubs:
+            self._stubs["export_cluster"] = self._logged_channel.unary_unary(
+                "/google.cloud.alloydb.v1beta.AlloyDBAdmin/ExportCluster",
+                request_serializer=service.ExportClusterRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["export_cluster"]
 
     @property
     def upgrade_cluster(
@@ -1364,6 +1391,11 @@ class AlloyDBAdminGrpcAsyncIOTransport(AlloyDBAdminTransport):
             ),
             self.update_cluster: self._wrap_method(
                 self.update_cluster,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.export_cluster: self._wrap_method(
+                self.export_cluster,
                 default_timeout=None,
                 client_info=client_info,
             ),

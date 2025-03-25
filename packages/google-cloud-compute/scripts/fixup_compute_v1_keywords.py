@@ -1,6 +1,6 @@
 #! /usr/bin/env python3
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -135,6 +135,7 @@ class computeCallTransformer(cst.CSTTransformer):
         'remove_peering': ('network', 'networks_remove_peering_request_resource', 'project', 'request_id', ),
         'remove_resource_policies': ('disk', 'disks_remove_resource_policies_request_resource', 'project', 'zone', 'request_id', ),
         'remove_rule': ('firewall_policy', 'priority', 'request_id', ),
+        'report_host_as_faulty': ('instance', 'instances_report_host_as_faulty_request_resource', 'project', 'zone', 'request_id', ),
         'reset': ('instance', 'project', 'zone', 'request_id', ),
         'resize': ('disk', 'disks_resize_request_resource', 'project', 'zone', 'request_id', ),
         'resume': ('instance', 'project', 'zone', 'request_id', ),

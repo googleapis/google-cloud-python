@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -230,6 +230,11 @@ class InstancesTransport(abc.ABC):
             ),
             self.remove_resource_policies: gapic_v1.method.wrap_method(
                 self.remove_resource_policies,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.report_host_as_faulty: gapic_v1.method.wrap_method(
+                self.report_host_as_faulty,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -568,6 +573,15 @@ class InstancesTransport(abc.ABC):
         self,
     ) -> Callable[
         [compute.RemoveResourcePoliciesInstanceRequest],
+        Union[compute.Operation, Awaitable[compute.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def report_host_as_faulty(
+        self,
+    ) -> Callable[
+        [compute.ReportHostAsFaultyInstanceRequest],
         Union[compute.Operation, Awaitable[compute.Operation]],
     ]:
         raise NotImplementedError()

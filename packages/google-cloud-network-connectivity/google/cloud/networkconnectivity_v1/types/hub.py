@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -59,6 +59,10 @@ __protobuf__ = proto.module(
         "AcceptHubSpokeResponse",
         "RejectHubSpokeRequest",
         "RejectHubSpokeResponse",
+        "AcceptSpokeUpdateRequest",
+        "AcceptSpokeUpdateResponse",
+        "RejectSpokeUpdateRequest",
+        "RejectSpokeUpdateResponse",
         "GetRouteTableRequest",
         "GetRouteRequest",
         "ListRoutesRequest",
@@ -160,6 +164,11 @@ class State(proto.Enum):
             The hub associated with this spoke resource
             has been deleted. This state applies to spoke
             resources only.
+        FAILED (11):
+            The resource is in an undefined state due to
+            resource creation or deletion failure. You can
+            try to delete the resource later or contact
+            support for help.
     """
     STATE_UNSPECIFIED = 0
     CREATING = 1
@@ -170,6 +179,7 @@ class State(proto.Enum):
     UPDATING = 6
     INACTIVE = 7
     OBSOLETE = 10
+    FAILED = 11
 
 
 class SpokeType(proto.Enum):
@@ -262,7 +272,7 @@ class Hub(proto.Message):
             information about labels, see `Requirements for
             labels <https://cloud.google.com/resource-manager/docs/creating-managing-labels#requirements>`__.
         description (str):
-            An optional description of the hub.
+            Optional. An optional description of the hub.
         unique_id (str):
             Output only. The Google-generated UUID for the hub. This
             value is unique across all hub resources. If a hub is
@@ -305,11 +315,11 @@ class Hub(proto.Message):
             the preset_topology is set to PRESET_TOPOLOGY_UNSPECIFIED.
         export_psc (bool):
             Optional. Whether Private Service Connect
-            transitivity is enabled for the hub. If true,
-            Private Service Connect endpoints in VPC spokes
-            attached to the hub are made accessible to other
-            VPC spokes attached to the hub. The default
-            value is false.
+            connection propagation is enabled for the hub.
+            If true, Private Service Connect endpoints in
+            VPC spokes attached to the hub are made
+            accessible to other VPC spokes attached to the
+            hub. The default value is false.
 
             This field is a member of `oneof`_ ``_export_psc``.
     """
@@ -430,7 +440,8 @@ class Spoke(proto.Message):
             information about labels, see `Requirements for
             labels <https://cloud.google.com/resource-manager/docs/creating-managing-labels#requirements>`__.
         description (str):
-            An optional description of the spoke.
+            Optional. An optional description of the
+            spoke.
         hub (str):
             Immutable. The name of the hub that this
             spoke is attached to.
@@ -438,13 +449,13 @@ class Spoke(proto.Message):
             Optional. The name of the group that this
             spoke is associated with.
         linked_vpn_tunnels (google.cloud.networkconnectivity_v1.types.LinkedVpnTunnels):
-            VPN tunnels that are associated with the
-            spoke.
+            Optional. VPN tunnels that are associated
+            with the spoke.
         linked_interconnect_attachments (google.cloud.networkconnectivity_v1.types.LinkedInterconnectAttachments):
-            VLAN attachments that are associated with the
-            spoke.
+            Optional. VLAN attachments that are
+            associated with the spoke.
         linked_router_appliance_instances (google.cloud.networkconnectivity_v1.types.LinkedRouterApplianceInstances):
-            Router appliance instances that are
+            Optional. Router appliance instances that are
             associated with the spoke.
         linked_vpc_network (google.cloud.networkconnectivity_v1.types.LinkedVpcNetwork):
             Optional. VPC network that is associated with
@@ -461,11 +472,20 @@ class Spoke(proto.Message):
             Output only. The current lifecycle state of
             this spoke.
         reasons (MutableSequence[google.cloud.networkconnectivity_v1.types.Spoke.StateReason]):
-            Output only. The reasons for current state of the spoke.
-            Only present when the spoke is in the ``INACTIVE`` state.
+            Output only. The reasons for current state of
+            the spoke.
         spoke_type (google.cloud.networkconnectivity_v1.types.SpokeType):
             Output only. The type of resource associated
             with the spoke.
+        etag (str):
+            Optional. This checksum is computed by the
+            server based on the value of other fields, and
+            may be sent on update and delete requests to
+            ensure the client has an up-to-date value before
+            proceeding.
+        field_paths_pending_update (MutableSequence[str]):
+            Optional. The list of fields waiting for hub
+            administration's approval.
     """
 
     class StateReason(proto.Message):
@@ -498,12 +518,23 @@ class Spoke(proto.Message):
                 FAILED (4):
                     Network Connectivity Center encountered
                     errors while accepting the spoke.
+                UPDATE_PENDING_REVIEW (5):
+                    The proposed spoke update is pending review.
+                UPDATE_REJECTED (6):
+                    The proposed spoke update has been rejected
+                    by the hub administrator.
+                UPDATE_FAILED (7):
+                    Network Connectivity Center encountered
+                    errors while accepting the spoke update.
             """
             CODE_UNSPECIFIED = 0
             PENDING_REVIEW = 1
             REJECTED = 2
             PAUSED = 3
             FAILED = 4
+            UPDATE_PENDING_REVIEW = 5
+            UPDATE_REJECTED = 6
+            UPDATE_FAILED = 7
 
         code: "Spoke.StateReason.Code" = proto.Field(
             proto.ENUM,
@@ -593,6 +624,14 @@ class Spoke(proto.Message):
         proto.ENUM,
         number=22,
         enum="SpokeType",
+    )
+    etag: str = proto.Field(
+        proto.STRING,
+        number=27,
+    )
+    field_paths_pending_update: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=28,
     )
 
 
@@ -890,10 +929,11 @@ class AutoAccept(proto.Message):
 
     Attributes:
         auto_accept_projects (MutableSequence[str]):
-            A list of project ids or project numbers for
-            which you want to enable auto-accept. The
-            auto-accept setting is applied to spokes being
-            created or updated in these projects.
+            Optional. A list of project ids or project
+            numbers for which you want to enable
+            auto-accept. The auto-accept setting is applied
+            to spokes being created or updated in these
+            projects.
     """
 
     auto_accept_projects: MutableSequence[str] = proto.RepeatedField(
@@ -1875,6 +1915,155 @@ class RejectHubSpokeResponse(proto.Message):
     )
 
 
+class AcceptSpokeUpdateRequest(proto.Message):
+    r"""The request for
+    [HubService.AcceptSpokeUpdate][google.cloud.networkconnectivity.v1.HubService.AcceptSpokeUpdate].
+
+    Attributes:
+        name (str):
+            Required. The name of the hub to accept spoke
+            update.
+        spoke_uri (str):
+            Required. The URI of the spoke to accept
+            update.
+        spoke_etag (str):
+            Required. The etag of the spoke to accept
+            update.
+        request_id (str):
+            Optional. A request ID to identify requests.
+            Specify a unique request ID so that if you must
+            retry your request, the server knows to ignore
+            the request if it has already been completed.
+            The server guarantees that a request doesn't
+            result in creation of duplicate commitments for
+            at least 60 minutes.
+
+            For example, consider a situation where you make
+            an initial request and the request times out. If
+            you make the request again with the same request
+            ID, the server can check to see whether the
+            original operation was received. If it was, the
+            server ignores the second request. This behavior
+            prevents clients from mistakenly creating
+            duplicate commitments.
+
+            The request ID must be a valid UUID, with the
+            exception that zero UUID is not supported
+            (00000000-0000-0000-0000-000000000000).
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    spoke_uri: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    spoke_etag: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+
+
+class AcceptSpokeUpdateResponse(proto.Message):
+    r"""The response for
+    [HubService.AcceptSpokeUpdate][google.cloud.networkconnectivity.v1.HubService.AcceptSpokeUpdate].
+
+    Attributes:
+        spoke (google.cloud.networkconnectivity_v1.types.Spoke):
+            The spoke that was operated on.
+    """
+
+    spoke: "Spoke" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="Spoke",
+    )
+
+
+class RejectSpokeUpdateRequest(proto.Message):
+    r"""The request for
+    [HubService.RejectSpokeUpdate][google.cloud.networkconnectivity.v1.HubService.RejectSpokeUpdate].
+
+    Attributes:
+        name (str):
+            Required. The name of the hub to reject spoke
+            update.
+        spoke_uri (str):
+            Required. The URI of the spoke to reject
+            update.
+        spoke_etag (str):
+            Required. The etag of the spoke to reject
+            update.
+        details (str):
+            Optional. Additional information provided by
+            the hub administrator.
+        request_id (str):
+            Optional. A request ID to identify requests.
+            Specify a unique request ID so that if you must
+            retry your request, the server knows to ignore
+            the request if it has already been completed.
+            The server guarantees that a request doesn't
+            result in creation of duplicate commitments for
+            at least 60 minutes.
+
+            For example, consider a situation where you make
+            an initial request and the request times out. If
+            you make the request again with the same request
+            ID, the server can check to see whether the
+            original operation was received. If it was, the
+            server ignores the second request. This behavior
+            prevents clients from mistakenly creating
+            duplicate commitments.
+
+            The request ID must be a valid UUID, with the
+            exception that zero UUID is not supported
+            (00000000-0000-0000-0000-000000000000).
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    spoke_uri: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    spoke_etag: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    details: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+
+
+class RejectSpokeUpdateResponse(proto.Message):
+    r"""The response for
+    [HubService.RejectSpokeUpdate][google.cloud.networkconnectivity.v1.HubService.RejectSpokeUpdate].
+
+    Attributes:
+        spoke (google.cloud.networkconnectivity_v1.types.Spoke):
+            The spoke that was operated on.
+    """
+
+    spoke: "Spoke" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="Spoke",
+    )
+
+
 class GetRouteTableRequest(proto.Message):
     r"""The request for
     [HubService.GetRouteTable][google.cloud.networkconnectivity.v1.HubService.GetRouteTable].
@@ -2277,12 +2466,26 @@ class LinkedVpcNetwork(proto.Message):
         include_export_ranges (MutableSequence[str]):
             Optional. IP ranges allowed to be included
             from peering.
+        proposed_include_export_ranges (MutableSequence[str]):
+            Optional. The proposed include export IP
+            ranges waiting for hub administration's
+            approval.
+        proposed_exclude_export_ranges (MutableSequence[str]):
+            Output only. The proposed exclude export IP
+            ranges waiting for hub administration's
+            approval.
         producer_vpc_spokes (MutableSequence[str]):
             Output only. The list of Producer VPC spokes
             that this VPC spoke is a service consumer VPC
             spoke for. These producer VPCs are connected
             through VPC peering to this spoke's backing VPC
-            network.
+            network. Because they are directly connected
+            throuh VPC peering, NCC export filters do not
+            apply between the service consumer VPC spoke and
+            any of its producer VPC spokes. This VPC spoke
+            cannot be deleted as long as any of these
+            producer VPC spokes are connected to the NCC
+            Hub.
     """
 
     uri: str = proto.Field(
@@ -2296,6 +2499,14 @@ class LinkedVpcNetwork(proto.Message):
     include_export_ranges: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
+    )
+    proposed_include_export_ranges: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=5,
+    )
+    proposed_exclude_export_ranges: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=6,
     )
     producer_vpc_spokes: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
@@ -2327,6 +2538,14 @@ class LinkedProducerVpcNetwork(proto.Message):
         include_export_ranges (MutableSequence[str]):
             Optional. IP ranges allowed to be included
             from peering.
+        proposed_include_export_ranges (MutableSequence[str]):
+            Optional. The proposed include export IP
+            ranges waiting for hub administration's
+            approval.
+        proposed_exclude_export_ranges (MutableSequence[str]):
+            Output only. The proposed exclude export IP
+            ranges waiting for hub administration's
+            approval.
     """
 
     network: str = proto.Field(
@@ -2352,6 +2571,14 @@ class LinkedProducerVpcNetwork(proto.Message):
     include_export_ranges: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=4,
+    )
+    proposed_include_export_ranges: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=7,
+    )
+    proposed_exclude_export_ranges: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=8,
     )
 
 

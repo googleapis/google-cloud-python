@@ -19,6 +19,11 @@
               "methods": [
                 "insert_product_input"
               ]
+            },
+            "UpdateProductInput": {
+              "methods": [
+                "update_product_input"
+              ]
             }
           }
         },
@@ -34,6 +39,11 @@
               "methods": [
                 "insert_product_input"
               ]
+            },
+            "UpdateProductInput": {
+              "methods": [
+                "update_product_input"
+              ]
             }
           }
         },
@@ -48,6 +58,11 @@
             "InsertProductInput": {
               "methods": [
                 "insert_product_input"
+              ]
+            },
+            "UpdateProductInput": {
+              "methods": [
+                "update_product_input"
               ]
             }
           }

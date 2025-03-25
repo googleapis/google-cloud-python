@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -34,12 +34,10 @@ __protobuf__ = proto.module(
 
 
 class PolicyBasedRoute(proto.Message):
-    r"""Policy Based Routes (PBR) are more powerful routes that
-    allows GCP customers to route their L4 network traffic based on
-    not just destination IP, but also source IP, protocol and more.
-    A PBR always take precedence when it conflicts with other types
-    of routes.
-    Next id: 22
+    r"""Policy-based routes route L4 network traffic based on not
+    just destination IP address, but also source IP address,
+    protocol, and more. If a policy-based route conflicts with other
+    types of routes, the policy-based route always takes precedence.
 
     This message has `oneof`_ fields (mutually exclusive fields).
     For each oneof, at most one member field can be set at the same time.
@@ -50,19 +48,20 @@ class PolicyBasedRoute(proto.Message):
 
     Attributes:
         virtual_machine (google.cloud.networkconnectivity_v1.types.PolicyBasedRoute.VirtualMachine):
-            Optional. VM instances to which this policy
-            based route applies to.
+            Optional. VM instances that this policy-based
+            route applies to.
 
             This field is a member of `oneof`_ ``target``.
         interconnect_attachment (google.cloud.networkconnectivity_v1.types.PolicyBasedRoute.InterconnectAttachment):
-            Optional. The interconnect attachments to
-            which this route applies to.
+            Optional. The interconnect attachments that
+            this policy-based route applies to.
 
             This field is a member of `oneof`_ ``target``.
         next_hop_ilb_ip (str):
-            Optional. The IP of a global access enabled L4 ILB that
-            should be the next hop to handle matching packets. For this
-            version, only next_hop_ilb_ip is supported.
+            Optional. The IP address of a
+            global-access-enabled L4 ILB that is the next
+            hop for matching packets. For this version, only
+            nextHopIlbIp is supported.
 
             This field is a member of `oneof`_ ``next_hop``.
         next_hop_other_routes (google.cloud.networkconnectivity_v1.types.PolicyBasedRoute.OtherRoutes):
@@ -75,10 +74,10 @@ class PolicyBasedRoute(proto.Message):
             Immutable. A unique name of the resource in the form of
             ``projects/{project_number}/locations/global/PolicyBasedRoutes/{policy_based_route_id}``
         create_time (google.protobuf.timestamp_pb2.Timestamp):
-            Output only. Time when the PolicyBasedRoute
+            Output only. Time when the policy-based route
             was created.
         update_time (google.protobuf.timestamp_pb2.Timestamp):
-            Output only. Time when the PolicyBasedRoute
+            Output only. Time when the policy-based route
             was updated.
         labels (MutableMapping[str, str]):
             User-defined labels.
@@ -88,18 +87,18 @@ class PolicyBasedRoute(proto.Message):
             resource.
         network (str):
             Required. Fully-qualified URL of the network
-            that this route applies to. e.g.
+            that this route applies to, for example:
             projects/my-project/global/networks/my-network.
         filter (google.cloud.networkconnectivity_v1.types.PolicyBasedRoute.Filter):
             Required. The filter to match L4 traffic.
         priority (int):
-            Optional. The priority of this policy based
+            Optional. The priority of this policy-based
             route. Priority is used to break ties in cases
-            where there are more than one matching policy
-            based routes found. In cases where multiple
-            policy based routes are matched, the one with
-            the lowest-numbered priority value wins. The
-            default value is
+            where there are more than one matching
+            policy-based routes found. In cases where
+            multiple policy-based routes are matched, the
+            one with the lowest-numbered priority value
+            wins. The default value is
             1000. The priority value must be from 1 to
             65535, inclusive.
         warnings (MutableSequence[google.cloud.networkconnectivity_v1.types.PolicyBasedRoute.Warnings]):
@@ -111,8 +110,8 @@ class PolicyBasedRoute(proto.Message):
             URL for this resource.
         kind (str):
             Output only. Type of this resource. Always
-            networkconnectivity#policyBasedRoute for Policy
-            Based Route resources.
+            networkconnectivity#policyBasedRoute for
+            policy-based Route resources.
     """
 
     class OtherRoutes(proto.Enum):
@@ -125,21 +124,21 @@ class PolicyBasedRoute(proto.Message):
                 Use the routes from the default routing
                 tables (system-generated routes, custom routes,
                 peering route) to determine the next hop. This
-                will effectively exclude matching packets being
+                effectively excludes matching packets being
                 applied on other PBRs with a lower priority.
         """
         OTHER_ROUTES_UNSPECIFIED = 0
         DEFAULT_ROUTING = 1
 
     class VirtualMachine(proto.Message):
-        r"""VM instances to which this policy based route applies to.
+        r"""VM instances that this policy-based route applies to.
 
         Attributes:
             tags (MutableSequence[str]):
-                Optional. A list of VM instance tags to which
-                this policy based route applies to. VM instances
-                that have ANY of tags specified here will
-                install this PBR.
+                Optional. A list of VM instance tags that
+                this policy-based route applies to. VM instances
+                that have ANY of tags specified here installs
+                this PBR.
         """
 
         tags: MutableSequence[str] = proto.RepeatedField(
@@ -148,11 +147,11 @@ class PolicyBasedRoute(proto.Message):
         )
 
     class InterconnectAttachment(proto.Message):
-        r"""InterconnectAttachment to which this route applies to.
+        r"""InterconnectAttachment that this route applies to.
 
         Attributes:
             region (str):
-                Optional. Cloud region to install this policy based route on
+                Optional. Cloud region to install this policy-based route on
                 interconnect attachment. Use ``all`` to install it on all
                 interconnect attachments.
         """
@@ -167,23 +166,24 @@ class PolicyBasedRoute(proto.Message):
 
         Attributes:
             ip_protocol (str):
-                Optional. The IP protocol that this policy
-                based route applies to. Valid values are 'TCP',
-                'UDP', and 'ALL'. Default is 'ALL'.
+                Optional. The IP protocol that this
+                policy-based route applies to. Valid values are
+                'TCP', 'UDP', and 'ALL'. Default is 'ALL'.
             src_range (str):
                 Optional. The source IP range of outgoing
-                packets that this policy based route applies to.
+                packets that this policy-based route applies to.
                 Default is "0.0.0.0/0" if protocol version is
                 IPv4.
             dest_range (str):
                 Optional. The destination IP range of
-                outgoing packets that this policy based route
+                outgoing packets that this policy-based route
                 applies to. Default is "0.0.0.0/0" if protocol
                 version is IPv4.
             protocol_version (google.cloud.networkconnectivity_v1.types.PolicyBasedRoute.Filter.ProtocolVersion):
                 Required. Internet protocol versions this
-                policy based route applies to. For this version,
-                only IPV4 is supported.
+                policy-based route applies to. For this version,
+                only IPV4 is supported. IPV6 is supported in
+                preview.
         """
 
         class ProtocolVersion(proto.Enum):
@@ -239,19 +239,19 @@ class PolicyBasedRoute(proto.Message):
         """
 
         class Code(proto.Enum):
-            r"""Warning code for Policy Based Routing. Expect to add values
+            r"""Warning code for policy-based routing. Expect to add values
             in the future.
 
             Values:
                 WARNING_UNSPECIFIED (0):
                     Default value.
                 RESOURCE_NOT_ACTIVE (1):
-                    The policy based route is not active and
-                    functioning. Common causes are the dependent
-                    network was deleted or the resource project was
-                    turned off.
+                    The policy-based route is not active and
+                    functioning. Common causes are that the
+                    dependent network was deleted or the resource
+                    project was turned off.
                 RESOURCE_BEING_MODIFIED (2):
-                    The policy based route is being modified
+                    The policy-based route is being modified
                     (e.g. created/deleted) at this time.
             """
             WARNING_UNSPECIFIED = 0
@@ -348,7 +348,9 @@ class PolicyBasedRoute(proto.Message):
 
 
 class ListPolicyBasedRoutesRequest(proto.Message):
-    r"""Request for [PolicyBasedRouting.ListPolicyBasedRoutes][] method.
+    r"""Request for
+    [PolicyBasedRoutingService.ListPolicyBasedRoutes][google.cloud.networkconnectivity.v1.PolicyBasedRoutingService.ListPolicyBasedRoutes]
+    method.
 
     Attributes:
         parent (str):
@@ -388,11 +390,13 @@ class ListPolicyBasedRoutesRequest(proto.Message):
 
 
 class ListPolicyBasedRoutesResponse(proto.Message):
-    r"""Response for [PolicyBasedRouting.ListPolicyBasedRoutes][] method.
+    r"""Response for
+    [PolicyBasedRoutingService.ListPolicyBasedRoutes][google.cloud.networkconnectivity.v1.PolicyBasedRoutingService.ListPolicyBasedRoutes]
+    method.
 
     Attributes:
         policy_based_routes (MutableSequence[google.cloud.networkconnectivity_v1.types.PolicyBasedRoute]):
-            Policy based routes to be returned.
+            Policy-based routes to be returned.
         next_page_token (str):
             The next pagination token in the List response. It should be
             used as page_token for the following request. An empty value
@@ -421,7 +425,9 @@ class ListPolicyBasedRoutesResponse(proto.Message):
 
 
 class GetPolicyBasedRouteRequest(proto.Message):
-    r"""Request for [PolicyBasedRouting.GetPolicyBasedRoute][] method.
+    r"""Request for
+    [PolicyBasedRoutingService.GetPolicyBasedRoute][google.cloud.networkconnectivity.v1.PolicyBasedRoutingService.GetPolicyBasedRoute]
+    method.
 
     Attributes:
         name (str):
@@ -436,34 +442,44 @@ class GetPolicyBasedRouteRequest(proto.Message):
 
 
 class CreatePolicyBasedRouteRequest(proto.Message):
-    r"""Request for [PolicyBasedRouting.CreatePolicyBasedRoute][] method.
+    r"""Request for
+    [PolicyBasedRoutingService.CreatePolicyBasedRoute][google.cloud.networkconnectivity.v1.PolicyBasedRoutingService.CreatePolicyBasedRoute]
+    method.
 
     Attributes:
         parent (str):
             Required. The parent resource's name of the
             PolicyBasedRoute.
         policy_based_route_id (str):
-            Required. Unique id for the Policy Based
-            Route to create.
+            Required. Unique id for the policy-based route to create.
+            Provided by the client when the resource is created. The
+            name must comply with
+            https://google.aip.dev/122#resource-id-segments.
+            Specifically, the name must be 1-63 characters long and
+            match the regular expression `a-z <[a-z0-9-]*[a-z0-9]>`__?.
+            The first character must be a lowercase letter, and all
+            following characters (except for the last character) must be
+            a dash, lowercase letter, or digit. The last character must
+            be a lowercase letter or digit.
         policy_based_route (google.cloud.networkconnectivity_v1.types.PolicyBasedRoute):
-            Required. Initial values for a new Policy
-            Based Route.
+            Required. Initial values for a new
+            policy-based route.
         request_id (str):
             Optional. An optional request ID to identify
             requests. Specify a unique request ID so that if
-            you must retry your request, the server will
-            know to ignore the request if it has already
-            been completed. The server will guarantee that
-            for at least 60 minutes since the first request.
+            you must retry your request, the server knows to
+            ignore the request if it has already been
+            completed. The server guarantees that for at
+            least 60 minutes since the first request.
 
             For example, consider a situation where you make
             an initial request and the request times out. If
             you make the request again with the same request
             ID, the server can check if original operation
             with the same request ID was received, and if
-            so, will ignore the second request. This
-            prevents clients from accidentally creating
-            duplicate commitments.
+            so, ignores the second request. This prevents
+            clients from accidentally creating duplicate
+            commitments.
 
             The request ID must be a valid UUID with the
             exception that zero UUID is not supported
@@ -490,28 +506,30 @@ class CreatePolicyBasedRouteRequest(proto.Message):
 
 
 class DeletePolicyBasedRouteRequest(proto.Message):
-    r"""Request for [PolicyBasedRouting.DeletePolicyBasedRoute][] method.
+    r"""Request for
+    [PolicyBasedRoutingService.DeletePolicyBasedRoute][google.cloud.networkconnectivity.v1.PolicyBasedRoutingService.DeletePolicyBasedRoute]
+    method.
 
     Attributes:
         name (str):
-            Required. Name of the PolicyBasedRoute
+            Required. Name of the policy-based route
             resource to delete.
         request_id (str):
             Optional. An optional request ID to identify
             requests. Specify a unique request ID so that if
-            you must retry your request, the server will
-            know to ignore the request if it has already
-            been completed. The server will guarantee that
-            for at least 60 minutes after the first request.
+            you must retry your request, the server knows to
+            ignore the request if it has already been
+            completed. The server guarantees that for at
+            least 60 minutes after the first request.
 
             For example, consider a situation where you make
             an initial request and the request times out. If
             you make the request again with the same request
             ID, the server can check if original operation
             with the same request ID was received, and if
-            so, will ignore the second request. This
-            prevents clients from accidentally creating
-            duplicate commitments.
+            so, ignores the second request. This prevents
+            clients from accidentally creating duplicate
+            commitments.
 
             The request ID must be a valid UUID with the
             exception that zero UUID is not supported
