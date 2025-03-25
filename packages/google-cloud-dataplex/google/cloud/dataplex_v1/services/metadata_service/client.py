@@ -72,6 +72,7 @@ from google.cloud.dataplex_v1.types import metadata_
 from .transports.base import DEFAULT_CLIENT_INFO, MetadataServiceTransport
 from .transports.grpc import MetadataServiceGrpcTransport
 from .transports.grpc_asyncio import MetadataServiceGrpcAsyncIOTransport
+from .transports.rest import MetadataServiceRestTransport
 
 
 class MetadataServiceClientMeta(type):
@@ -87,6 +88,7 @@ class MetadataServiceClientMeta(type):
     )  # type: Dict[str, Type[MetadataServiceTransport]]
     _transport_registry["grpc"] = MetadataServiceGrpcTransport
     _transport_registry["grpc_asyncio"] = MetadataServiceGrpcAsyncIOTransport
+    _transport_registry["rest"] = MetadataServiceRestTransport
 
     def get_transport_class(
         cls,

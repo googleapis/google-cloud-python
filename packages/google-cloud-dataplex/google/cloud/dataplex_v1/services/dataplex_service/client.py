@@ -76,6 +76,7 @@ from google.cloud.dataplex_v1.types import analyze, resources, service, tasks
 from .transports.base import DEFAULT_CLIENT_INFO, DataplexServiceTransport
 from .transports.grpc import DataplexServiceGrpcTransport
 from .transports.grpc_asyncio import DataplexServiceGrpcAsyncIOTransport
+from .transports.rest import DataplexServiceRestTransport
 
 
 class DataplexServiceClientMeta(type):
@@ -91,6 +92,7 @@ class DataplexServiceClientMeta(type):
     )  # type: Dict[str, Type[DataplexServiceTransport]]
     _transport_registry["grpc"] = DataplexServiceGrpcTransport
     _transport_registry["grpc_asyncio"] = DataplexServiceGrpcAsyncIOTransport
+    _transport_registry["rest"] = DataplexServiceRestTransport
 
     def get_transport_class(
         cls,
