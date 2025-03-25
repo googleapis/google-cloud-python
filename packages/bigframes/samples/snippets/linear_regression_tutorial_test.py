@@ -92,6 +92,31 @@ def test_linear_regression(random_model_id: str) -> None:
     # 3	 5349.603734	        [{'feature': 'island', 'attribution': 7348.877...	-5320.222128	          5349.603734	            0.0	         Gentoo penguin (Pygoscelis papua)	Biscoe	    46.4	              15.6	        221.0	           5000.0	    MALE
     # 4	 4637.165037	        [{'feature': 'island', 'attribution': 7348.877...	-5320.222128	          4637.165037	            0.0	         Gentoo penguin (Pygoscelis papua)	Biscoe	    46.1	              13.2	        211.0	           4500.0	   FEMALE
     # [END bigquery_dataframes_bqml_linear_predict_explain]
+    # [START bigquery_dataframes_bqml_linear_global_explain]
+    # To use the `global_explain()` function, the model must be recreated with `enable_global_explain` set to `True`.
+    model = LinearRegression(enable_global_explain=True)
+
+    # The model must the be fitted before it can be saved to BigQuery and then explained.
+    training_data = bq_df.dropna(subset=["body_mass_g"])
+    X = training_data.drop(columns=["body_mass_g"])
+    y = training_data[["body_mass_g"]]
+    model.fit(X, y)
+    model.to_gbq("bqml_tutorial.penguins_model", replace=True)
+
+    # Explain the model
+    explain_model = model.global_explain()
+
+    # Expected results:
+    #                       attribution
+    # feature
+    # island	            5737.315921
+    # species	            4073.280549
+    # sex	                622.070896
+    # flipper_length_mm	    193.612051
+    # culmen_depth_mm	    117.084944
+    # culmen_length_mm	    94.366793
+    # [END bigquery_dataframes_bqml_linear_global_explain]
+    assert explain_model is not None
     assert feature_columns is not None
     assert label_columns is not None
     assert model is not None
