@@ -5,6 +5,27 @@
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
 
+## [3.31.0](https://github.com/googleapis/python-bigquery/compare/v3.30.0...v3.31.0) (2025-03-20)
+
+
+### Features
+
+* Add query text and total bytes processed to RowIterator ([#2140](https://github.com/googleapis/python-bigquery/issues/2140)) ([2d5f932](https://github.com/googleapis/python-bigquery/commit/2d5f9320d7103bc64c7ba496ba54bb0ef52b5605))
+* Add support for Python 3.13 ([0842aa1](https://github.com/googleapis/python-bigquery/commit/0842aa10967b1d8395cfb43e52c8ea091b381870))
+
+
+### Bug Fixes
+
+* Adding property setter for table constraints, [#1990](https://github.com/googleapis/python-bigquery/issues/1990) ([#2092](https://github.com/googleapis/python-bigquery/issues/2092)) ([f8572dd](https://github.com/googleapis/python-bigquery/commit/f8572dd86595361bae82c3232b2c0d159690a7b7))
+* Allow protobuf 6.x ([0842aa1](https://github.com/googleapis/python-bigquery/commit/0842aa10967b1d8395cfb43e52c8ea091b381870))
+* Avoid "Unable to determine type" warning with JSON columns in `to_dataframe` ([#1876](https://github.com/googleapis/python-bigquery/issues/1876)) ([968020d](https://github.com/googleapis/python-bigquery/commit/968020d5be9d2a30b90d046eaf52f91bb2c70911))
+* Remove setup.cfg configuration for creating universal wheels ([#2146](https://github.com/googleapis/python-bigquery/issues/2146)) ([d7f7685](https://github.com/googleapis/python-bigquery/commit/d7f76853d598c354bfd2e65f5dde28dae97da0ec))
+
+
+### Dependencies
+
+* Remove Python 3.7 and 3.8 as supported runtimes ([#2133](https://github.com/googleapis/python-bigquery/issues/2133)) ([fb7de39](https://github.com/googleapis/python-bigquery/commit/fb7de398cb2ad000b80a8a702d1f6539dc03d8e0))
+
 ## [3.30.0](https://github.com/googleapis/python-bigquery/compare/v3.29.0...v3.30.0) (2025-02-26)
 
 
