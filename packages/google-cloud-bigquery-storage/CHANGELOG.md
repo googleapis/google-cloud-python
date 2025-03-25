@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery-storage/#history
 
+## [2.30.0](https://github.com/googleapis/python-bigquery-storage/compare/v2.29.1...v2.30.0) (2025-03-25)
+
+
+### Features
+
+* Link stream to use _Connection ([#901](https://github.com/googleapis/python-bigquery-storage/issues/901)) ([28e0529](https://github.com/googleapis/python-bigquery-storage/commit/28e0529f6980e0858b2ece866e1baacd36745d60))
+* Sample for AppendRowsStream with Arrow ([#915](https://github.com/googleapis/python-bigquery-storage/issues/915)) ([a6df546](https://github.com/googleapis/python-bigquery-storage/commit/a6df54684e90aa928b7354a2f88576cf27003e1a))
+
+
+### Bug Fixes
+
+* Remove setup.cfg configuration for creating universal wheels ([#913](https://github.com/googleapis/python-bigquery-storage/issues/913)) ([a1fa1c7](https://github.com/googleapis/python-bigquery-storage/commit/a1fa1c7a16da60c349c9af639352268813cb2e2b))
+
 ## [2.29.1](https://github.com/googleapis/python-bigquery-storage/compare/v2.29.0...v2.29.1) (2025-03-13)
 
 
