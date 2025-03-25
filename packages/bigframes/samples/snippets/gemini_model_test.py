@@ -29,7 +29,9 @@ def test_gemini_text_generator_model() -> None:
     # Create the Gemini LLM model
     session = bpd.get_global_session()
     connection = f"{PROJECT_ID}.{REGION}.{CONN_NAME}"
-    model = GeminiTextGenerator(session=session, connection_name=connection)
+    model = GeminiTextGenerator(
+        session=session, connection_name=connection, model_name="gemini-1.5-flash-002"
+    )
 
     df_api = bpd.read_csv("gs://cloud-samples-data/vertex-ai/bigframe/df.csv")
 
