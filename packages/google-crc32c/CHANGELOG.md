@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-crc32c/#history
 
+## [1.7.1](https://github.com/googleapis/python-crc32c/compare/v1.7.0...v1.7.1) (2025-03-25)
+
+
+### Bug Fixes
+
+* Add Python 3.13 windows wheels ([fbb0e26](https://github.com/googleapis/python-crc32c/commit/fbb0e26b576fb82b8677b14505e702313cbcfe4e))
+
 ## [1.7.0](https://github.com/googleapis/python-crc32c/compare/v1.6.0...v1.7.0) (2025-03-17)
 
 
