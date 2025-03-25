@@ -10,6 +10,11 @@
         "grpc": {
           "libraryClient": "ContainerAnalysisClient",
           "rpcs": {
+            "ExportSBOM": {
+              "methods": [
+                "export_sbom"
+              ]
+            },
             "GetIamPolicy": {
               "methods": [
                 "get_iam_policy"
@@ -35,6 +40,11 @@
         "grpc-async": {
           "libraryClient": "ContainerAnalysisAsyncClient",
           "rpcs": {
+            "ExportSBOM": {
+              "methods": [
+                "export_sbom"
+              ]
+            },
             "GetIamPolicy": {
               "methods": [
                 "get_iam_policy"
@@ -60,6 +70,11 @@
         "rest": {
           "libraryClient": "ContainerAnalysisClient",
           "rpcs": {
+            "ExportSBOM": {
+              "methods": [
+                "export_sbom"
+              ]
+            },
             "GetIamPolicy": {
               "methods": [
                 "get_iam_policy"

@@ -150,6 +150,11 @@ class ContainerAnalysisTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.export_sbom: gapic_v1.method.wrap_method(
+                self.export_sbom,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -199,6 +204,18 @@ class ContainerAnalysisTransport(abc.ABC):
         Union[
             containeranalysis.VulnerabilityOccurrencesSummary,
             Awaitable[containeranalysis.VulnerabilityOccurrencesSummary],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def export_sbom(
+        self,
+    ) -> Callable[
+        [containeranalysis.ExportSBOMRequest],
+        Union[
+            containeranalysis.ExportSBOMResponse,
+            Awaitable[containeranalysis.ExportSBOMResponse],
         ],
     ]:
         raise NotImplementedError()

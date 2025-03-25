@@ -14,11 +14,15 @@
 # limitations under the License.
 #
 from .containeranalysis import (
+    ExportSBOMRequest,
+    ExportSBOMResponse,
     GetVulnerabilityOccurrencesSummaryRequest,
     VulnerabilityOccurrencesSummary,
 )
 
 __all__ = (
+    "ExportSBOMRequest",
+    "ExportSBOMResponse",
     "GetVulnerabilityOccurrencesSummaryRequest",
     "VulnerabilityOccurrencesSummary",
 )
