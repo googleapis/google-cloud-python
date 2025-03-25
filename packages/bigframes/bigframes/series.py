@@ -544,7 +544,7 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
 
     @validations.requires_ordering()
     def ffill(self, *, limit: typing.Optional[int] = None) -> Series:
-        window = windows.rows(preceding=limit, following=0)
+        window = windows.rows(start=None if limit is None else -limit, end=0)
         return self._apply_window_op(agg_ops.LastNonNullOp(), window)
 
     pad = ffill
@@ -552,7 +552,7 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
 
     @validations.requires_ordering()
     def bfill(self, *, limit: typing.Optional[int] = None) -> Series:
-        window = windows.rows(preceding=0, following=limit)
+        window = windows.rows(start=0, end=limit)
         return self._apply_window_op(agg_ops.FirstNonNullOp(), window)
 
     @validations.requires_ordering()
@@ -1441,7 +1441,7 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
     def rolling(self, window: int, min_periods=None) -> bigframes.core.window.Window:
         # To get n size window, need current row and n-1 preceding rows.
         window_spec = windows.rows(
-            preceding=window - 1, following=0, min_periods=min_periods or window
+            start=-(window - 1), end=0, min_periods=min_periods or window
         )
         return bigframes.core.window.Window(
             self._block, window_spec, self._block.value_columns, is_series=True

@@ -213,8 +213,8 @@ def _interpolate_column(
     if interpolate_method not in ["linear", "nearest", "ffill"]:
         raise ValueError("interpolate method not supported")
     window_ordering = (ordering.OrderingExpression(ex.deref(x_values)),)
-    backwards_window = windows.rows(following=0, ordering=window_ordering)
-    forwards_window = windows.rows(preceding=0, ordering=window_ordering)
+    backwards_window = windows.rows(end=0, ordering=window_ordering)
+    forwards_window = windows.rows(start=0, ordering=window_ordering)
 
     # Note, this method may
     block, notnull = block.apply_unary_op(column, ops.notnull_op)
@@ -450,7 +450,7 @@ def rank(
             )
             if method == "dense"
             else windows.rows(
-                following=0, ordering=window_ordering, grouping_keys=grouping_cols
+                end=0, ordering=window_ordering, grouping_keys=grouping_cols
             ),
             skip_reproject_unsafe=(col != columns[-1]),
         )

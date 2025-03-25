@@ -309,8 +309,8 @@ class DataFrameGroupBy(vendored_pandas_groupby.DataFrameGroupBy):
         # To get n size window, need current row and n-1 preceding rows.
         window_spec = window_specs.rows(
             grouping_keys=tuple(self._by_col_ids),
-            preceding=window - 1,
-            following=0,
+            start=-(window - 1),
+            end=0,
             min_periods=min_periods or window,
         )
         block = self._block.order_by(
@@ -742,8 +742,8 @@ class SeriesGroupBy(vendored_pandas_groupby.SeriesGroupBy):
         # To get n size window, need current row and n-1 preceding rows.
         window_spec = window_specs.rows(
             grouping_keys=tuple(self._by_col_ids),
-            preceding=window - 1,
-            following=0,
+            start=-(window - 1),
+            end=0,
             min_periods=min_periods or window,
         )
         block = self._block.order_by(

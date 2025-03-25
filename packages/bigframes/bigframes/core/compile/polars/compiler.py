@@ -16,9 +16,10 @@ from __future__ import annotations
 import dataclasses
 import functools
 import itertools
-from typing import cast, Sequence, Tuple, TYPE_CHECKING
+from typing import cast, Optional, Sequence, Tuple, TYPE_CHECKING, Union
 
 import bigframes.core
+from bigframes.core import window_spec
 import bigframes.core.expression as ex
 import bigframes.core.guid as guid
 import bigframes.core.nodes as nodes
@@ -366,23 +367,8 @@ class PolarsCompiler:
             indexed_df = df.with_row_index(index_col_name)
             if len(window.grouping_keys) == 0:  # rolling-only window
                 # https://docs.pola.rs/api/python/stable/reference/dataframe/api/polars.DataFrame.rolling.html
-                finite = (
-                    window.bounds.preceding is not None
-                    and window.bounds.following is not None
-                )
-                offset_n = (
-                    None
-                    if window.bounds.preceding is None
-                    else -window.bounds.preceding
-                )
-                # collecting height is a massive kludge
-                period_n = (
-                    df.collect().height
-                    if not finite
-                    else cast(int, window.bounds.preceding)
-                    + cast(int, window.bounds.following)
-                    + 1
-                )
+                offset_n = window.bounds.start
+                period_n = _get_period(window.bounds) or df.collect().height
                 results = indexed_df.rolling(
                     index_column=index_col_name,
                     period=f"{period_n}i",
@@ -395,3 +381,14 @@ class PolarsCompiler:
             # polars is columnar, so this is efficient
             # TODO: why can't just add columns?
             return pl.concat([df, results], how="horizontal")
+
+
+def _get_period(
+    bounds: Union[window_spec.RowsWindowBounds, window_spec.RangeWindowBounds]
+) -> Optional[int]:
+    """Returns None if the boundary is infinite."""
+    if bounds.start is None or bounds.end is None:
+        return None
+
+    # collecting height is a massive kludge
+    return bounds.end - bounds.start + 1

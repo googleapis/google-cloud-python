@@ -21,7 +21,9 @@ from typing import Literal, Optional, Sequence
 import bigframes_vendored.ibis
 import bigframes_vendored.ibis.backends.bigquery.backend as ibis_bigquery
 import bigframes_vendored.ibis.common.deferred as ibis_deferred  # type: ignore
+from bigframes_vendored.ibis.expr import builders as ibis_expr_builders
 import bigframes_vendored.ibis.expr.datatypes as ibis_dtypes
+from bigframes_vendored.ibis.expr.operations import window as ibis_expr_window
 import bigframes_vendored.ibis.expr.operations as ibis_ops
 import bigframes_vendored.ibis.expr.types as ibis_types
 import pandas
@@ -551,20 +553,9 @@ class UnorderedIR:
             # Unbound grouping window. Suitable for aggregations but not for analytic function application.
             order_by = None
 
-        bounds = window_spec.bounds
         window = bigframes_vendored.ibis.window(order_by=order_by, group_by=group_by)
-        if bounds is not None:
-            if isinstance(bounds, RangeWindowBounds):
-                window = window.preceding_following(
-                    bounds.preceding, bounds.following, how="range"
-                )
-            if isinstance(bounds, RowsWindowBounds):
-                if bounds.preceding is not None or bounds.following is not None:
-                    window = window.preceding_following(
-                        bounds.preceding, bounds.following, how="rows"
-                    )
-            else:
-                raise ValueError(f"unrecognized window bounds {bounds}")
+        if window_spec.bounds is not None:
+            return _add_boundary(window_spec.bounds, window)
         return window
 
 
@@ -681,3 +672,33 @@ def _as_groupable(value: ibis_types.Value):
         return scalar_op_compiler.to_json_string(value)
     else:
         return value
+
+
+def _to_ibis_boundary(
+    boundary: Optional[int],
+) -> Optional[ibis_expr_window.WindowBoundary]:
+    if boundary is None:
+        return None
+    return ibis_expr_window.WindowBoundary(
+        abs(boundary), preceding=boundary <= 0  # type:ignore
+    )
+
+
+def _add_boundary(
+    bounds: typing.Union[RowsWindowBounds, RangeWindowBounds],
+    ibis_window: ibis_expr_builders.LegacyWindowBuilder,
+) -> ibis_expr_builders.LegacyWindowBuilder:
+    if isinstance(bounds, RangeWindowBounds):
+        return ibis_window.range(
+            start=_to_ibis_boundary(bounds.start),
+            end=_to_ibis_boundary(bounds.end),
+        )
+    if isinstance(bounds, RowsWindowBounds):
+        if bounds.start is not None or bounds.end is not None:
+            return ibis_window.rows(
+                start=_to_ibis_boundary(bounds.start),
+                end=_to_ibis_boundary(bounds.end),
+            )
+        return ibis_window
+    else:
+        raise ValueError(f"unrecognized window bounds {bounds}")
