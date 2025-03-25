@@ -286,7 +286,8 @@ class StreamingDataFrame(StreamingBase):
         original_table = self._original_table
         assert original_table is not None
 
-        appends_clause = f"APPENDS(TABLE `{original_table}`, NULL, NULL)"
+        # TODO(b/405691193): set start time back to NULL. Now set it slightly after 7 days max interval to avoid the bug.
+        appends_clause = f"APPENDS(TABLE `{original_table}`, CURRENT_TIMESTAMP() - (INTERVAL 7 DAY - INTERVAL 5 MINUTE))"
         sql_str = sql_str.replace(f"`{original_table}`", appends_clause)
         return sql_str
 
