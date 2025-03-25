@@ -238,6 +238,10 @@ class BlobAccessor(base.SeriesMethods):
         for _, row in pandas_df.iterrows():
             display_single_url(row["read_url"], row["content_type"])
 
+    @property
+    def session(self):
+        return self._block.session
+
     def _resolve_connection(self, connection: Optional[str] = None) -> str:
         """Resovle the BigQuery connection.
 
@@ -285,6 +289,13 @@ class BlobAccessor(base.SeriesMethods):
         """
         runtime = self._get_runtime(mode=mode, with_metadata=with_metadata)
         return runtime._apply_unary_op(ops.ToJSONString())
+
+    # TODO(b/404605969): remove cleanups when UDF fixes dataset deletion.
+    def _add_to_cleanup_set(self, udf):
+        """Add udf name to session cleanup set. Won't need this after UDF fixes dataset deletion."""
+        self.session._function_session._update_temp_artifacts(
+            udf.bigframes_bigquery_function, ""
+        )
 
     def image_blur(
         self,
@@ -366,6 +377,8 @@ class BlobAccessor(base.SeriesMethods):
 
         res = df.apply(image_blur_udf, axis=1)
         res.cache()  # to execute the udf
+
+        self._add_to_cleanup_set(image_blur_udf)
 
         return dst
 
@@ -463,6 +476,8 @@ class BlobAccessor(base.SeriesMethods):
         res = df.apply(image_resize_udf, axis=1)
         res.cache()  # to execute the udf
 
+        self._add_to_cleanup_set(image_resize_udf)
+
         return dst
 
     def image_normalize(
@@ -554,6 +569,8 @@ class BlobAccessor(base.SeriesMethods):
         res = df.apply(image_normalize_udf, axis=1)
         res.cache()  # to execute the udf
 
+        self._add_to_cleanup_set(image_normalize_udf)
+
         return dst
 
     def pdf_extract(
@@ -598,6 +615,9 @@ class BlobAccessor(base.SeriesMethods):
 
         src_rt = self._get_runtime_json_str(mode="R")
         res = src_rt.apply(pdf_extract_udf)
+
+        self._add_to_cleanup_set(pdf_extract_udf)
+
         return res
 
     def pdf_chunk(
@@ -664,4 +684,7 @@ class BlobAccessor(base.SeriesMethods):
         res = df.apply(pdf_chunk_udf, axis=1)
 
         res_array = bbq.json_extract_string_array(res)
+
+        self._add_to_cleanup_set(pdf_chunk_udf)
+
         return res_array
