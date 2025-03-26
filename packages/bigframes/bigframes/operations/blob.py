@@ -36,6 +36,13 @@ FILE_EXT_REGEX = r"(\.[0-9a-zA-Z]+$)"
 
 @log_adapter.class_logger
 class BlobAccessor(base.SeriesMethods):
+    """
+    Blob functions for Series and Index.
+
+    .. note::
+        BigFrames Blob is still under experiments. It may not work and subject to change in the future.
+    """
+
     def __init__(self, *args, **kwargs):
         if not bigframes.options.experiments.blob:
             raise NotImplementedError()
