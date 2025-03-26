@@ -70,9 +70,7 @@ class Index(vendored_pandas_index.Index):
         elif isinstance(data, series.Series) or isinstance(data, Index):
             if isinstance(data, series.Series):
                 block = data._block
-                block = block.set_index(
-                    col_ids=[data._value_column],
-                )
+                block = block.set_index(col_ids=[data._value_column])
             elif isinstance(data, Index):
                 block = data._block
             index = Index(data=block)
@@ -508,7 +506,10 @@ class Index(vendored_pandas_index.Index):
         ...
 
     def to_pandas(
-        self, *, allow_large_results: Optional[bool] = None, dry_run: bool = False
+        self,
+        *,
+        allow_large_results: Optional[bool] = None,
+        dry_run: bool = False,
     ) -> pandas.Index | pandas.Series:
         """Gets the Index as a pandas Index.
 
