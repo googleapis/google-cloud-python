@@ -95,55 +95,62 @@ def collect_benchmark_result(
         if not (
             len(bytes_files)
             == len(millis_files)
-            == len(local_seconds_files)
             == len(bq_seconds_files)
-            == len(query_char_count_files)
+            <= len(query_char_count_files)
+            == len(local_seconds_files)
         ):
             raise ValueError(
                 "Mismatch in the number of report files for bytes, millis, seconds and query char count."
             )
 
-        for idx in range(len(bytes_files)):
-            bytes_file = bytes_files[idx]
-            millis_file = millis_files[idx]
-            bq_seconds_file = bq_seconds_files[idx]
+        has_full_metrics = len(bq_seconds_files) == len(local_seconds_files)
+
+        for idx in range(len(local_seconds_files)):
             query_char_count_file = query_char_count_files[idx]
-
-            filename = bytes_file.relative_to(path).with_suffix("")
-
-            if filename != millis_file.relative_to(path).with_suffix(
-                ""
-            ) or filename != bq_seconds_file.relative_to(path).with_suffix(""):
-                raise ValueError(
-                    "File name mismatch among bytes, millis, and seconds reports."
-                )
-
             local_seconds_file = local_seconds_files[idx]
+            filename = query_char_count_file.relative_to(path).with_suffix("")
             if filename != local_seconds_file.relative_to(path).with_suffix(""):
                 raise ValueError(
-                    "File name mismatch among bytes, millis, and seconds reports."
+                    "File name mismatch between query_char_count and seconds reports."
                 )
 
-            with open(bytes_file, "r") as file:
+            with open(query_char_count_file, "r") as file:
                 lines = file.read().splitlines()
+                query_char_count = sum(int(line) for line in lines) / iterations
                 query_count = len(lines) / iterations
-                total_bytes = sum(int(line) for line in lines) / iterations
-
-            with open(millis_file, "r") as file:
-                lines = file.read().splitlines()
-                total_slot_millis = sum(int(line) for line in lines) / iterations
 
             with open(local_seconds_file, "r") as file:
                 lines = file.read().splitlines()
                 local_seconds = sum(float(line) for line in lines) / iterations
 
-            with open(bq_seconds_file, "r") as file:
-                lines = file.read().splitlines()
-                bq_seconds = sum(float(line) for line in lines) / iterations
+            if not has_full_metrics:
+                total_bytes = None
+                total_slot_millis = None
+                bq_seconds = None
+            else:
+                bytes_file = bytes_files[idx]
+                millis_file = millis_files[idx]
+                bq_seconds_file = bq_seconds_files[idx]
+                if (
+                    filename != bytes_file.relative_to(path).with_suffix("")
+                    or filename != millis_file.relative_to(path).with_suffix("")
+                    or filename != bq_seconds_file.relative_to(path).with_suffix("")
+                ):
+                    raise ValueError(
+                        "File name mismatch among query_char_count, bytes, millis, and seconds reports."
+                    )
 
-            with open(query_char_count_file, "r") as file:
-                lines = file.read().splitlines()
-                query_char_count = sum(int(line) for line in lines) / iterations
+                with open(bytes_file, "r") as file:
+                    lines = file.read().splitlines()
+                    total_bytes = sum(int(line) for line in lines) / iterations
+
+                with open(millis_file, "r") as file:
+                    lines = file.read().splitlines()
+                    total_slot_millis = sum(int(line) for line in lines) / iterations
+
+                with open(bq_seconds_file, "r") as file:
+                    lines = file.read().splitlines()
+                    bq_seconds = sum(float(line) for line in lines) / iterations
 
             results_dict[str(filename)] = [
                 query_count,
@@ -194,11 +201,19 @@ def collect_benchmark_result(
         )
         print(
             f"{index} - query count: {row['Query_Count']},"
-            f" query char count: {row['Query_Char_Count']},",
-            f" bytes processed sum: {row['Bytes_Processed']},"
-            f" slot millis sum: {row['Slot_Millis']},"
-            f" local execution time: {formatted_local_exec_time} seconds,"
-            f" bigquery execution time: {round(row['BigQuery_Execution_Time_Sec'], 1)} seconds",
+            + f" query char count: {row['Query_Char_Count']},"
+            + (
+                f" bytes processed sum: {row['Bytes_Processed']},"
+                if has_full_metrics
+                else ""
+            )
+            + (f" slot millis sum: {row['Slot_Millis']}," if has_full_metrics else "")
+            + f" local execution time: {formatted_local_exec_time} seconds"
+            + (
+                f", bigquery execution time: {round(row['BigQuery_Execution_Time_Sec'], 1)} seconds"
+                if has_full_metrics
+                else ""
+            )
         )
 
     geometric_mean_queries = geometric_mean_excluding_zeros(
@@ -221,12 +236,24 @@ def collect_benchmark_result(
     )
 
     print(
-        f"---Geometric mean of queries: {geometric_mean_queries}, "
-        f"Geometric mean of queries char counts: {geometric_mean_query_char_count}, "
-        f"Geometric mean of bytes processed: {geometric_mean_bytes}, "
-        f"Geometric mean of slot millis: {geometric_mean_slot_millis}, "
-        f"Geometric mean of local execution time: {geometric_mean_local_seconds} seconds, "
-        f"Geometric mean of BigQuery execution time: {geometric_mean_bq_seconds} seconds---"
+        f"---Geometric mean of queries: {geometric_mean_queries},"
+        + f" Geometric mean of queries char counts: {geometric_mean_query_char_count},"
+        + (
+            f" Geometric mean of bytes processed: {geometric_mean_bytes},"
+            if has_full_metrics
+            else ""
+        )
+        + (
+            f" Geometric mean of slot millis: {geometric_mean_slot_millis},"
+            if has_full_metrics
+            else ""
+        )
+        + f" Geometric mean of local execution time: {geometric_mean_local_seconds} seconds"
+        + (
+            f", Geometric mean of BigQuery execution time: {geometric_mean_bq_seconds} seconds---"
+            if has_full_metrics
+            else ""
+        )
     )
 
     error_message = (

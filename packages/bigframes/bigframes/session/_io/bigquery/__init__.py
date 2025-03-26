@@ -247,7 +247,7 @@ def start_query_with_client(
                 api_timeout=timeout,
             )
             if metrics is not None:
-                metrics.count_job_stats()
+                metrics.count_job_stats(query=sql)
             return results_iterator, None
 
         query_job = bq_client.query(
