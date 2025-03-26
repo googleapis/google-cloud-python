@@ -16,38 +16,17 @@
 
 import re
 
+from IPython.testing import globalipapp
+from IPython.utils import io
+import pandas
 import psutil
-import pytest
-
-IPython = pytest.importorskip("IPython")
-io = pytest.importorskip("IPython.utils.io")
-pandas = pytest.importorskip("pandas")
-tools = pytest.importorskip("IPython.testing.tools")
-interactiveshell = pytest.importorskip("IPython.terminal.interactiveshell")
 
 
-@pytest.fixture(scope="session")
-def ipython():
-    config = tools.default_config()
-    config.TerminalInteractiveShell.simple_prompt = True
-    shell = interactiveshell.TerminalInteractiveShell.instance(config=config)
-    return shell
-
-
-@pytest.fixture()
-def ipython_interactive(ipython):
-    """Activate IPython's builtin hooks
-
-    for the duration of the test scope.
-    """
-    with ipython.builtin_trap:
-        yield ipython
-
-
-def test_bigquery_magic(ipython_interactive):
-    ip = IPython.get_ipython()
+def test_bigquery_magic():
+    globalipapp.start_ipython()
+    ip = globalipapp.get_ipython()
     current_process = psutil.Process()
-    conn_count_start = len(current_process.connections())
+    conn_count_start = len(current_process.net_connections())
 
     ip.extension_manager.load_extension("bigquery_magics")
     sql = """
@@ -64,7 +43,7 @@ def test_bigquery_magic(ipython_interactive):
     with io.capture_output() as captured:
         result = ip.run_cell_magic("bigquery", "--use_rest_api", sql)
 
-    conn_count_end = len(current_process.connections())
+    conn_count_end = len(current_process.net_connections())
 
     lines = re.split("\n|\r", captured.stdout)
     # Removes blanks & terminal code (result of display clearing)

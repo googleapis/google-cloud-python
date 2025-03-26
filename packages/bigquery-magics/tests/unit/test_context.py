@@ -78,12 +78,11 @@ def test_context_set_default_variable():
 
 
 @pytest.mark.parametrize("engine", ["pandas", "bigframes"])
-def test_context_set_engine(engine):
-    bigquery_magics.context.engine = engine
-
+def test_context_set_engine(monkeypatch, engine):
+    monkeypatch.setattr(bigquery_magics.context, "engine", engine)
     assert bigquery_magics.context.engine == engine
 
 
-def test_context_set_invalid_engine():
+def test_context_set_invalid_engine(monkeypatch):
     with pytest.raises(ValueError):
-        bigquery_magics.context.engine = "whatever"
+        monkeypatch.setattr(bigquery_magics.context, "engine", "whatever")

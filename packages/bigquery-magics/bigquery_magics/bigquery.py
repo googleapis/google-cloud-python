@@ -77,6 +77,14 @@
           serializable. The variable reference is indicated by a ``$`` before
           the variable name (ex. ``$my_dict_var``). See ``In[6]`` and ``In[7]``
           in the Examples section below.
+    * ``--engine <engine>`` (Optional[line argument]):
+          Set the execution engine, either 'pandas' (default) or 'bigframes'
+          (experimental).
+    * ``--pyformat`` (Optional[line argument]):
+          Warning! Do not use with user-provided values.
+          This doesn't escape values. Use --params instead for proper SQL escaping.
+          This enables Python string formatting in the query text.
+          Useful for values not supported by SQL query params such as table IDs.
 
     * ``<query>`` (required, cell argument):
         SQL query to run. If the query does not contain any whitespace (aside
@@ -122,7 +130,7 @@ from bigquery_magics import line_arg_parser as lap
 import bigquery_magics._versions_helpers
 import bigquery_magics.config
 import bigquery_magics.graph_server as graph_server
-import bigquery_magics.line_arg_parser.exceptions
+import bigquery_magics.pyformat
 import bigquery_magics.version
 
 try:
@@ -401,6 +409,17 @@ def _create_dataset_if_necessary(client, dataset_id):
     default=False,
     help=("Visualizes the query results as a graph"),
 )
+@magic_arguments.argument(
+    "--pyformat",
+    action="store_true",
+    default=False,
+    help=(
+        "Warning! Do not use with user-provided values. "
+        "This doesn't escape values. Use --params instead for proper SQL escaping. "
+        "This enables Python string formatting in the query text. "
+        "Useful for values not supported by SQL query params such as table IDs. "
+    ),
+)
 def _cell_magic(line, query):
     """Underlying function for bigquery cell magic
 
@@ -515,7 +534,6 @@ def _query_with_bigframes(query: str, params: List[Any], args: Any):
 
 def _query_with_pandas(query: str, params: List[Any], args: Any):
     bq_client, bqstorage_client = _create_clients(args)
-
     try:
         return _make_bq_query(
             query,
@@ -779,26 +797,30 @@ def _make_bq_query(
 
 def _validate_and_resolve_query(query: str, args: Any) -> str:
     # Check if query is given as a reference to a variable.
-    if not query.startswith("$"):
-        return query
+    if query.startswith("$"):
+        query_var_name = query[1:]
 
-    query_var_name = query[1:]
+        if not query_var_name:
+            missing_msg = 'Missing query variable name, empty "$" is not allowed.'
+            raise NameError(missing_msg)
 
-    if not query_var_name:
-        missing_msg = 'Missing query variable name, empty "$" is not allowed.'
-        raise NameError(missing_msg)
+        if query_var_name.isidentifier():
+            ip = get_ipython()
+            query = ip.user_ns.get(query_var_name, ip)  # ip serves as a sentinel
 
-    if query_var_name.isidentifier():
+            if query is ip:
+                raise NameError(
+                    f"Unknown query, variable {query_var_name} does not exist."
+                )
+            elif not isinstance(query, (str, bytes)):
+                raise TypeError(
+                    f"Query variable {query_var_name} must be a string "
+                    "or a bytes-like value."
+                )
+
+    if args.pyformat:
         ip = get_ipython()
-        query = ip.user_ns.get(query_var_name, ip)  # ip serves as a sentinel
-
-        if query is ip:
-            raise NameError(f"Unknown query, variable {query_var_name} does not exist.")
-        elif not isinstance(query, (str, bytes)):
-            raise TypeError(
-                f"Query variable {query_var_name} must be a string "
-                "or a bytes-like value."
-            )
+        query = bigquery_magics.pyformat.pyformat(query, ip.user_ns)
     return query
 
 

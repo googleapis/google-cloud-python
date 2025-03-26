@@ -22,8 +22,7 @@ from unittest import mock
 import warnings
 
 import IPython
-import IPython.terminal.interactiveshell as interactiveshell
-import IPython.testing.tools as tools
+from IPython.testing import globalipapp
 import IPython.utils.io as io
 from google.api_core import exceptions
 import google.auth.credentials
@@ -35,7 +34,6 @@ import google.cloud.bigquery.exceptions
 from google.cloud.bigquery.retry import DEFAULT_TIMEOUT
 import pandas
 import pytest
-import test_utils.imports  # google-cloud-testutils
 
 import bigquery_magics
 import bigquery_magics.bigquery as magics
@@ -70,82 +68,6 @@ def make_connection(*args):
     return conn
 
 
-@pytest.fixture(scope="session")
-def ipython():
-    config = tools.default_config()
-    config.TerminalInteractiveShell.simple_prompt = True
-    shell = interactiveshell.TerminalInteractiveShell.instance(config=config)
-    return shell
-
-
-@pytest.fixture()
-def ipython_interactive(request, ipython):
-    """Activate IPython's builtin hooks
-
-    for the duration of the test scope.
-    """
-    with ipython.builtin_trap:
-        yield ipython
-
-        ipython.get_ipython().extension_manager.unload_extension("bigquery_magics")
-
-
-@pytest.fixture()
-def ipython_ns_cleanup():
-    """A helper to clean up user namespace after the test
-
-    for the duration of the test scope.
-    """
-    names_to_clean = []  # pairs (IPython_instance, name_to_clean)
-
-    yield names_to_clean
-
-    for ip, name in names_to_clean:
-        if name in ip.user_ns:
-            del ip.user_ns[name]
-
-
-@pytest.fixture(scope="session")
-def missing_bq_storage():
-    """Provide a patcher that can make the bigquery storage import to fail."""
-
-    def fail_if(name, globals, locals, fromlist, level):
-        # NOTE: *very* simplified, assuming a straightforward absolute import
-        return "bigquery_storage" in name or (
-            fromlist is not None and "bigquery_storage" in fromlist
-        )
-
-    return test_utils.imports.maybe_fail_import(predicate=fail_if)
-
-
-@pytest.fixture(scope="session")
-def missing_grpcio_lib():
-    """Provide a patcher that can make the gapic library import to fail."""
-
-    def fail_if(name, globals, locals, fromlist, level):
-        # NOTE: *very* simplified, assuming a straightforward absolute import
-        return "gapic_v1" in name or (fromlist is not None and "gapic_v1" in fromlist)
-
-    return test_utils.imports.maybe_fail_import(predicate=fail_if)
-
-
-@pytest.fixture
-def mock_credentials(monkeypatch):
-    credentials = mock.create_autospec(
-        google.auth.credentials.Credentials, instance=True
-    )
-
-    # Set up the context with monkeypatch so that it's reset for subsequent
-    # tests.
-    monkeypatch.setattr(bigquery_magics.context, "_project", "test-project")
-    monkeypatch.setattr(bigquery_magics.context, "_credentials", credentials)
-
-
-@pytest.fixture
-def set_bigframes_engine_in_context(monkeypatch):
-    monkeypatch.setattr(bigquery_magics.context, "engine", "bigframes")
-
-
 PROJECT_ID = "its-a-project-eh"
 JOB_ID = "some-random-id"
 JOB_REFERENCE_RESOURCE = {"projectId": PROJECT_ID, "jobId": JOB_ID}
@@ -177,9 +99,9 @@ QUERY_RESULTS_RESOURCE = {
 }
 
 
-@pytest.mark.usefixtures("ipython_interactive")
 def test_context_with_default_connection():
-    ip = IPython.get_ipython()
+    globalipapp.start_ipython()
+    ip = globalipapp.get_ipython()
     ip.extension_manager.load_extension("bigquery_magics")
     bigquery_magics.context._credentials = None
     bigquery_magics.context._project = None
@@ -221,9 +143,9 @@ def test_context_with_default_connection():
     default_conn.api_request.assert_has_calls([begin_call, query_results_call])
 
 
-@pytest.mark.usefixtures("ipython_interactive")
 def test_context_with_custom_connection():
-    ip = IPython.get_ipython()
+    globalipapp.start_ipython()
+    ip = globalipapp.get_ipython()
     ip.extension_manager.load_extension("bigquery_magics")
     bigquery_magics.context._project = None
     bigquery_magics.context._credentials = None
@@ -417,9 +339,9 @@ def test__create_dataset_if_necessary_not_exist():
         ("bqsql",),
     ),
 )
-@pytest.mark.usefixtures("ipython_interactive")
 def test_extension_load(magic_name):
-    ip = IPython.get_ipython()
+    globalipapp.start_ipython()
+    ip = globalipapp.get_ipython()
     ip.extension_manager.load_extension("bigquery_magics")
 
     # verify that the magic is registered and has the correct source
@@ -427,12 +349,12 @@ def test_extension_load(magic_name):
     assert magic.__module__ == "bigquery_magics.bigquery"
 
 
-@pytest.mark.usefixtures("ipython_interactive")
 @pytest.mark.skipif(
     bigquery_storage is None, reason="Requires `google-cloud-bigquery-storage`"
 )
 def test_bigquery_magic_without_optional_arguments(monkeypatch):
-    ip = IPython.get_ipython()
+    globalipapp.start_ipython()
+    ip = globalipapp.get_ipython()
     ip.extension_manager.load_extension("bigquery_magics")
     mock_credentials = mock.create_autospec(
         google.auth.credentials.Credentials, instance=True
@@ -471,13 +393,13 @@ def test_bigquery_magic_without_optional_arguments(monkeypatch):
     assert list(return_value) == list(result)  # verify column names
 
 
-@pytest.mark.usefixtures("ipython_interactive")
 @pytest.mark.skipif(
     graph_visualization is not None or bigquery_storage is None,
     reason="Requires `spanner-graph-notebook` to be missing and `google-cloud-bigquery-storage` to be present",
 )
 def test_bigquery_graph_spanner_graph_notebook_missing(monkeypatch):
-    ip = IPython.get_ipython()
+    globalipapp.start_ipython()
+    ip = globalipapp.get_ipython()
     ip.extension_manager.load_extension("bigquery_magics")
     mock_credentials = mock.create_autospec(
         google.auth.credentials.Credentials, instance=True
@@ -522,13 +444,13 @@ def test_bigquery_graph_spanner_graph_notebook_missing(monkeypatch):
     assert list(return_value) == list(result)  # verify column names
 
 
-@pytest.mark.usefixtures("ipython_interactive")
 @pytest.mark.skipif(
     graph_visualization is None or bigquery_storage is None,
     reason="Requires `spanner-graph-notebook` and `google-cloud-bigquery-storage`",
 )
 def test_bigquery_graph_int_result(monkeypatch):
-    ip = IPython.get_ipython()
+    globalipapp.start_ipython()
+    ip = globalipapp.get_ipython()
     ip.extension_manager.load_extension("bigquery_magics")
     mock_credentials = mock.create_autospec(
         google.auth.credentials.Credentials, instance=True
@@ -573,13 +495,13 @@ def test_bigquery_graph_int_result(monkeypatch):
     assert list(return_value) == list(result)  # verify column names
 
 
-@pytest.mark.usefixtures("ipython_interactive")
 @pytest.mark.skipif(
     graph_visualization is None or bigquery_storage is None,
     reason="Requires `spanner-graph-notebook` and `google-cloud-bigquery-storage`",
 )
 def test_bigquery_graph_str_result(monkeypatch):
-    ip = IPython.get_ipython()
+    globalipapp.start_ipython()
+    ip = globalipapp.get_ipython()
     ip.extension_manager.load_extension("bigquery_magics")
     mock_credentials = mock.create_autospec(
         google.auth.credentials.Credentials, instance=True
@@ -624,13 +546,13 @@ def test_bigquery_graph_str_result(monkeypatch):
     assert list(return_value) == list(result)  # verify column names
 
 
-@pytest.mark.usefixtures("ipython_interactive")
 @pytest.mark.skipif(
     graph_visualization is None or bigquery_storage is None,
     reason="Requires `spanner-graph-notebook` and `google-cloud-bigquery-storage`",
 )
 def test_bigquery_graph_json_json_result(monkeypatch):
-    ip = IPython.get_ipython()
+    globalipapp.start_ipython()
+    ip = globalipapp.get_ipython()
     ip.extension_manager.load_extension("bigquery_magics")
     mock_credentials = mock.create_autospec(
         google.auth.credentials.Credentials, instance=True
@@ -691,13 +613,13 @@ def test_bigquery_graph_json_json_result(monkeypatch):
     assert list(return_value) == list(result)  # verify column names
 
 
-@pytest.mark.usefixtures("ipython_interactive")
 @pytest.mark.skipif(
     graph_visualization is None or bigquery_storage is None,
     reason="Requires `spanner-graph-notebook` and `google-cloud-bigquery-storage`",
 )
 def test_bigquery_graph_json_result(monkeypatch):
-    ip = IPython.get_ipython()
+    globalipapp.start_ipython()
+    ip = globalipapp.get_ipython()
     ip.extension_manager.load_extension("bigquery_magics")
     mock_credentials = mock.create_autospec(
         google.auth.credentials.Credentials, instance=True
@@ -796,7 +718,6 @@ def test_bigquery_graph_json_result(monkeypatch):
     assert list(return_value) == list(result)  # verify column names
 
 
-@pytest.mark.usefixtures("ipython_interactive")
 @pytest.mark.skipif(
     graph_visualization is None or bigquery_storage is None,
     reason="Requires `spanner-graph-notebook` and `google-cloud-bigquery-storage`",
@@ -806,7 +727,8 @@ def test_bigquery_graph_colab(monkeypatch):
     # GraphServer.
     sys.modules["google.colab"] = mock.Mock()
 
-    ip = IPython.get_ipython()
+    globalipapp.start_ipython()
+    ip = globalipapp.get_ipython()
     ip.extension_manager.load_extension("bigquery_magics")
     mock_credentials = mock.create_autospec(
         google.auth.credentials.Credentials, instance=True
@@ -886,7 +808,6 @@ def test_bigquery_graph_colab(monkeypatch):
     assert list(return_value) == list(result)  # verify column names
 
 
-@pytest.mark.usefixtures("ipython_interactive")
 @pytest.mark.skipif(
     graph_visualization is None or bigquery_storage is None,
     reason="Requires `spanner-graph-notebook` and `google-cloud-bigquery-storage`",
@@ -905,7 +826,6 @@ def test_colab_query_callback():
     }
 
 
-@pytest.mark.usefixtures("ipython_interactive")
 @pytest.mark.skipif(
     graph_visualization is None or bigquery_storage is None,
     reason="Requires `spanner-graph-notebook` and `google-cloud-bigquery-storage`",
@@ -925,13 +845,13 @@ def test_colab_node_expansion_callback():
     assert result.data == {"error": "Node expansion not yet implemented"}
 
 
-@pytest.mark.usefixtures("ipython_interactive")
 @pytest.mark.skipif(
     graph_visualization is not None or bigquery_storage is None,
     reason="Requires `spanner-graph-notebook` to be missing and `google-cloud-bigquery-storage` to be present",
 )
 def test_bigquery_graph_missing_spanner_deps(monkeypatch):
-    ip = IPython.get_ipython()
+    globalipapp.start_ipython()
+    ip = globalipapp.get_ipython()
     ip.extension_manager.load_extension("bigquery_magics")
     mock_credentials = mock.create_autospec(
         google.auth.credentials.Credentials, instance=True
@@ -983,9 +903,9 @@ def test_bigquery_graph_missing_spanner_deps(monkeypatch):
         display_mock.assert_not_called()
 
 
-@pytest.mark.usefixtures("ipython_interactive")
 def test_bigquery_magic_default_connection_user_agent():
-    ip = IPython.get_ipython()
+    globalipapp.start_ipython()
+    ip = globalipapp.get_ipython()
     ip.extension_manager.load_extension("bigquery_magics")
     bigquery_magics.context._connection = None
 
@@ -1009,9 +929,9 @@ def test_bigquery_magic_default_connection_user_agent():
     )
 
 
-@pytest.mark.usefixtures("ipython_interactive")
 def test_bigquery_magic_with_legacy_sql():
-    ip = IPython.get_ipython()
+    globalipapp.start_ipython()
+    ip = globalipapp.get_ipython()
     ip.extension_manager.load_extension("bigquery_magics")
     bigquery_magics.context.credentials = mock.create_autospec(
         google.auth.credentials.Credentials, instance=True
@@ -1025,9 +945,9 @@ def test_bigquery_magic_with_legacy_sql():
         assert job_config_used.use_legacy_sql is True
 
 
-@pytest.mark.usefixtures("ipython_interactive")
 def test_bigquery_magic_with_result_saved_to_variable(ipython_ns_cleanup):
-    ip = IPython.get_ipython()
+    globalipapp.start_ipython()
+    ip = globalipapp.get_ipython()
     ip.extension_manager.load_extension("bigquery_magics")
     bigquery_magics.context.credentials = mock.create_autospec(
         google.auth.credentials.Credentials, instance=True
@@ -1056,9 +976,9 @@ def test_bigquery_magic_with_result_saved_to_variable(ipython_ns_cleanup):
     assert list(df) == list(result)  # verify column names
 
 
-@pytest.mark.usefixtures("ipython_interactive")
 def test_bigquery_magic_does_not_clear_display_in_verbose_mode():
-    ip = IPython.get_ipython()
+    globalipapp.start_ipython()
+    ip = globalipapp.get_ipython()
     ip.extension_manager.load_extension("bigquery_magics")
     bigquery_magics.context.credentials = mock.create_autospec(
         google.auth.credentials.Credentials, instance=True
@@ -1075,9 +995,9 @@ def test_bigquery_magic_does_not_clear_display_in_verbose_mode():
         assert clear_mock.call_count == 0
 
 
-@pytest.mark.usefixtures("ipython_interactive")
 def test_bigquery_magic_clears_display_in_non_verbose_mode():
-    ip = IPython.get_ipython()
+    globalipapp.start_ipython()
+    ip = globalipapp.get_ipython()
     ip.extension_manager.load_extension("bigquery_magics")
     bigquery_magics.context.credentials = mock.create_autospec(
         google.auth.credentials.Credentials, instance=True
@@ -1094,12 +1014,12 @@ def test_bigquery_magic_clears_display_in_non_verbose_mode():
         assert clear_mock.call_count == 1
 
 
-@pytest.mark.usefixtures("ipython_interactive")
 @pytest.mark.skipif(
     bigquery_storage is None, reason="Requires `google-cloud-bigquery-storage`"
 )
 def test_bigquery_magic_with_bqstorage_from_argument(monkeypatch):
-    ip = IPython.get_ipython()
+    globalipapp.start_ipython()
+    ip = globalipapp.get_ipython()
     ip.extension_manager.load_extension("bigquery_magics")
     mock_credentials = mock.create_autospec(
         google.auth.credentials.Credentials, instance=True
@@ -1161,14 +1081,14 @@ def test_bigquery_magic_with_bqstorage_from_argument(monkeypatch):
     assert isinstance(return_value, pandas.DataFrame)
 
 
-@pytest.mark.usefixtures("ipython_interactive")
 @pytest.mark.skipif(
     bigquery_storage is None, reason="Requires `google-cloud-bigquery-storage`"
 )
 def test_bigquery_magic_with_rest_client_requested(monkeypatch):
     pandas = pytest.importorskip("pandas")
 
-    ip = IPython.get_ipython()
+    globalipapp.start_ipython()
+    ip = globalipapp.get_ipython()
     ip.extension_manager.load_extension("bigquery_magics")
     mock_credentials = mock.create_autospec(
         google.auth.credentials.Credentials, instance=True
@@ -1206,9 +1126,9 @@ def test_bigquery_magic_with_rest_client_requested(monkeypatch):
     assert isinstance(return_value, pandas.DataFrame)
 
 
-@pytest.mark.usefixtures("ipython_interactive")
 def test_bigquery_magic_w_max_results_invalid():
-    ip = IPython.get_ipython()
+    globalipapp.start_ipython()
+    ip = globalipapp.get_ipython()
     ip.extension_manager.load_extension("bigquery_magics")
     bigquery_magics.context._project = None
 
@@ -1228,9 +1148,9 @@ def test_bigquery_magic_w_max_results_invalid():
         ip.run_cell_magic("bigquery", "--max_results=abc", sql)
 
 
-@pytest.mark.usefixtures("ipython_interactive")
 def test_bigquery_magic_w_max_results_valid_calls_queryjob_result():
-    ip = IPython.get_ipython()
+    globalipapp.start_ipython()
+    ip = globalipapp.get_ipython()
     ip.extension_manager.load_extension("bigquery_magics")
     bigquery_magics.context._project = None
 
@@ -1262,10 +1182,10 @@ def test_bigquery_magic_w_max_results_valid_calls_queryjob_result():
     )
 
 
-@pytest.mark.usefixtures("ipython_interactive")
 @pytest.mark.skipif(gpd is None, reason="Requires `geopandas`")
 def test_bigquery_magic_with_use_geodataframe():
-    ip = IPython.get_ipython()
+    globalipapp.start_ipython()
+    ip = globalipapp.get_ipython()
     ip.extension_manager.load_extension("bigquery_magics")
     bigquery_magics.context._project = None
 
@@ -1307,9 +1227,9 @@ def test_bigquery_magic_with_use_geodataframe():
     assert isinstance(return_value, gpd.GeoDataFrame)
 
 
-@pytest.mark.usefixtures("ipython_interactive")
 def test_bigquery_magic_w_max_results_query_job_results_fails():
-    ip = IPython.get_ipython()
+    globalipapp.start_ipython()
+    ip = globalipapp.get_ipython()
     ip.extension_manager.load_extension("bigquery_magics")
     bigquery_magics.context._project = None
 
@@ -1346,7 +1266,8 @@ def test_bigquery_magic_w_max_results_query_job_results_fails():
 
 
 def test_bigquery_magic_w_table_id_invalid():
-    ip = IPython.get_ipython()
+    globalipapp.start_ipython()
+    ip = globalipapp.get_ipython()
     ip.extension_manager.load_extension("bigquery_magics")
     bigquery_magics.context._project = None
 
@@ -1375,7 +1296,8 @@ def test_bigquery_magic_w_table_id_invalid():
 
 
 def test_bigquery_magic_w_missing_query():
-    ip = IPython.get_ipython()
+    globalipapp.start_ipython()
+    ip = globalipapp.get_ipython()
     ip.extension_manager.load_extension("bigquery_magics")
     bigquery_magics.context._project = None
 
@@ -1397,11 +1319,11 @@ def test_bigquery_magic_w_missing_query():
     assert "Traceback (most recent call last)" not in output
 
 
-@pytest.mark.usefixtures("ipython_interactive")
 def test_bigquery_magic_w_table_id_and_default_variable(
     ipython_ns_cleanup, monkeypatch
 ):
-    ip = IPython.get_ipython()
+    globalipapp.start_ipython()
+    ip = globalipapp.get_ipython()
     ip.extension_manager.load_extension("bigquery_magics")
     bigquery_magics.context._project = None
     monkeypatch.setattr(bigquery_magics.context, "default_variable", "_bq_df")
@@ -1436,9 +1358,9 @@ def test_bigquery_magic_w_table_id_and_default_variable(
     assert isinstance(df, pandas.DataFrame)
 
 
-@pytest.mark.usefixtures("ipython_interactive")
 def test_bigquery_magic_w_table_id_and_destination_var(ipython_ns_cleanup):
-    ip = IPython.get_ipython()
+    globalipapp.start_ipython()
+    ip = globalipapp.get_ipython()
     ip.extension_manager.load_extension("bigquery_magics")
     bigquery_magics.context._project = None
 
@@ -1472,12 +1394,12 @@ def test_bigquery_magic_w_table_id_and_destination_var(ipython_ns_cleanup):
     assert isinstance(df, pandas.DataFrame)
 
 
-@pytest.mark.usefixtures("ipython_interactive")
 @pytest.mark.skipif(
     bigquery_storage is None, reason="Requires `google-cloud-bigquery-storage`"
 )
 def test_bigquery_magic_w_table_id_and_bqstorage_client():
-    ip = IPython.get_ipython()
+    globalipapp.start_ipython()
+    ip = globalipapp.get_ipython()
     ip.extension_manager.load_extension("bigquery_magics")
     bigquery_magics.context._project = None
 
@@ -1517,9 +1439,9 @@ def test_bigquery_magic_w_table_id_and_bqstorage_client():
         )
 
 
-@pytest.mark.usefixtures("ipython_interactive")
 def test_bigquery_magic_dryrun_option_sets_job_config():
-    ip = IPython.get_ipython()
+    globalipapp.start_ipython()
+    ip = globalipapp.get_ipython()
     ip.extension_manager.load_extension("bigquery_magics")
     bigquery_magics.context.credentials = mock.create_autospec(
         google.auth.credentials.Credentials, instance=True
@@ -1536,9 +1458,9 @@ def test_bigquery_magic_dryrun_option_sets_job_config():
         assert job_config_used.dry_run is True
 
 
-@pytest.mark.usefixtures("ipython_interactive")
 def test_bigquery_magic_dryrun_option_returns_query_job():
-    ip = IPython.get_ipython()
+    globalipapp.start_ipython()
+    ip = globalipapp.get_ipython()
     ip.extension_manager.load_extension("bigquery_magics")
     bigquery_magics.context.credentials = mock.create_autospec(
         google.auth.credentials.Credentials, instance=True
@@ -1558,9 +1480,9 @@ def test_bigquery_magic_dryrun_option_returns_query_job():
         assert isinstance(return_value, job.QueryJob)
 
 
-@pytest.mark.usefixtures("ipython_interactive")
 def test_bigquery_magic_dryrun_option_variable_error_message(ipython_ns_cleanup):
-    ip = IPython.get_ipython()
+    globalipapp.start_ipython()
+    ip = globalipapp.get_ipython()
     ip.extension_manager.load_extension("bigquery_magics")
     bigquery_magics.context.credentials = mock.create_autospec(
         google.auth.credentials.Credentials, instance=True
@@ -1585,9 +1507,9 @@ def test_bigquery_magic_dryrun_option_variable_error_message(ipython_ns_cleanup)
     assert "Could not save output to variable 'q_job'." in full_text
 
 
-@pytest.mark.usefixtures("ipython_interactive")
 def test_bigquery_magic_dryrun_option_saves_query_job_to_variable(ipython_ns_cleanup):
-    ip = IPython.get_ipython()
+    globalipapp.start_ipython()
+    ip = globalipapp.get_ipython()
     ip.extension_manager.load_extension("bigquery_magics")
     bigquery_magics.context.credentials = mock.create_autospec(
         google.auth.credentials.Credentials, instance=True
@@ -1613,9 +1535,9 @@ def test_bigquery_magic_dryrun_option_saves_query_job_to_variable(ipython_ns_cle
     assert isinstance(q_job, job.QueryJob)
 
 
-@pytest.mark.usefixtures("ipython_interactive")
 def test_bigquery_magic_saves_query_job_to_variable_on_error(ipython_ns_cleanup):
-    ip = IPython.get_ipython()
+    globalipapp.start_ipython()
+    ip = globalipapp.get_ipython()
     ip.extension_manager.load_extension("bigquery_magics")
     bigquery_magics.context.credentials = mock.create_autospec(
         google.auth.credentials.Credentials, instance=True
@@ -1646,9 +1568,9 @@ def test_bigquery_magic_saves_query_job_to_variable_on_error(ipython_ns_cleanup)
     assert isinstance(result, job.QueryJob)
 
 
-@pytest.mark.usefixtures("ipython_interactive")
 def test_bigquery_magic_w_maximum_bytes_billed_invalid():
-    ip = IPython.get_ipython()
+    globalipapp.start_ipython()
+    ip = globalipapp.get_ipython()
     ip.extension_manager.load_extension("bigquery_magics")
     bigquery_magics.context._project = None
 
@@ -1669,9 +1591,9 @@ def test_bigquery_magic_w_maximum_bytes_billed_invalid():
 @pytest.mark.parametrize(
     "param_value,expected", [("987654321", "987654321"), ("None", "0")]
 )
-@pytest.mark.usefixtures("ipython_interactive")
 def test_bigquery_magic_w_maximum_bytes_billed_overrides_context(param_value, expected):
-    ip = IPython.get_ipython()
+    globalipapp.start_ipython()
+    ip = globalipapp.get_ipython()
     ip.extension_manager.load_extension("bigquery_magics")
     bigquery_magics.context._project = None
 
@@ -1710,9 +1632,9 @@ def test_bigquery_magic_w_maximum_bytes_billed_overrides_context(param_value, ex
     assert sent_config["maximumBytesBilled"] == expected
 
 
-@pytest.mark.usefixtures("ipython_interactive")
 def test_bigquery_magic_w_maximum_bytes_billed_w_context_inplace():
-    ip = IPython.get_ipython()
+    globalipapp.start_ipython()
+    ip = globalipapp.get_ipython()
     ip.extension_manager.load_extension("bigquery_magics")
     bigquery_magics.context._project = None
 
@@ -1748,9 +1670,9 @@ def test_bigquery_magic_w_maximum_bytes_billed_w_context_inplace():
     assert sent_config["maximumBytesBilled"] == "1337"
 
 
-@pytest.mark.usefixtures("ipython_interactive")
 def test_bigquery_magic_w_maximum_bytes_billed_w_context_setter():
-    ip = IPython.get_ipython()
+    globalipapp.start_ipython()
+    ip = globalipapp.get_ipython()
     ip.extension_manager.load_extension("bigquery_magics")
     bigquery_magics.context._project = None
 
@@ -1788,9 +1710,9 @@ def test_bigquery_magic_w_maximum_bytes_billed_w_context_setter():
     assert sent_config["maximumBytesBilled"] == "10203"
 
 
-@pytest.mark.usefixtures("ipython_interactive")
 def test_bigquery_magic_with_no_query_cache(monkeypatch):
-    ip = IPython.get_ipython()
+    globalipapp.start_ipython()
+    ip = globalipapp.get_ipython()
     ip.extension_manager.load_extension("bigquery_magics")
     conn = make_connection()
     monkeypatch.setattr(bigquery_magics.context, "_connection", conn)
@@ -1817,9 +1739,9 @@ def test_bigquery_magic_with_no_query_cache(monkeypatch):
     assert not jobs_insert_call[1]["data"]["configuration"]["query"]["useQueryCache"]
 
 
-@pytest.mark.usefixtures("ipython_interactive")
 def test_context_with_no_query_cache_from_context(monkeypatch):
-    ip = IPython.get_ipython()
+    globalipapp.start_ipython()
+    ip = globalipapp.get_ipython()
     ip.extension_manager.load_extension("bigquery_magics")
     conn = make_connection()
     monkeypatch.setattr(bigquery_magics.context, "_connection", conn)
@@ -1844,9 +1766,10 @@ def test_context_with_no_query_cache_from_context(monkeypatch):
     assert not jobs_insert_call[1]["data"]["configuration"]["query"]["useQueryCache"]
 
 
-@pytest.mark.usefixtures("ipython_interactive", "mock_credentials")
+@pytest.mark.usefixtures("mock_credentials")
 def test_bigquery_magic_w_progress_bar_type_w_context_setter():
-    ip = IPython.get_ipython()
+    globalipapp.start_ipython()
+    ip = globalipapp.get_ipython()
     ip.extension_manager.load_extension("bigquery_magics")
 
     bigquery_magics.context.progress_bar_type = "tqdm_gui"
@@ -1883,9 +1806,10 @@ def test_bigquery_magic_w_progress_bar_type_w_context_setter():
     assert isinstance(return_value, pandas.DataFrame)
 
 
-@pytest.mark.usefixtures("ipython_interactive", "mock_credentials")
+@pytest.mark.usefixtures("mock_credentials")
 def test_bigquery_magic_with_progress_bar_type():
-    ip = IPython.get_ipython()
+    globalipapp.start_ipython()
+    ip = globalipapp.get_ipython()
     ip.extension_manager.load_extension("bigquery_magics")
     bigquery_magics.context.progress_bar_type = None
 
@@ -1901,9 +1825,9 @@ def test_bigquery_magic_with_progress_bar_type():
         assert bigquery_magics.context.progress_bar_type is None
 
 
-@pytest.mark.usefixtures("ipython_interactive")
 def test_bigquery_magic_with_project():
-    ip = IPython.get_ipython()
+    globalipapp.start_ipython()
+    ip = globalipapp.get_ipython()
     ip.extension_manager.load_extension("bigquery_magics")
     bigquery_magics.context._project = None
 
@@ -1923,9 +1847,9 @@ def test_bigquery_magic_with_project():
         assert bigquery_magics.context.project == "general-project"
 
 
-@pytest.mark.usefixtures("ipython_interactive")
 def test_bigquery_magic_with_bigquery_api_endpoint(ipython_ns_cleanup):
-    ip = IPython.get_ipython()
+    globalipapp.start_ipython()
+    ip = globalipapp.get_ipython()
     ip.extension_manager.load_extension("bigquery_magics")
     bigquery_magics.context._connection = None
 
@@ -1943,9 +1867,9 @@ def test_bigquery_magic_with_bigquery_api_endpoint(ipython_ns_cleanup):
     assert bigquery_magics.context.bigquery_client_options.api_endpoint is None
 
 
-@pytest.mark.usefixtures("ipython_interactive")
 def test_bigquery_magic_with_bigquery_api_endpoint_context_dict():
-    ip = IPython.get_ipython()
+    globalipapp.start_ipython()
+    ip = globalipapp.get_ipython()
     ip.extension_manager.load_extension("bigquery_magics")
     bigquery_magics.context._connection = None
     bigquery_magics.context.bigquery_client_options = {}
@@ -1964,12 +1888,12 @@ def test_bigquery_magic_with_bigquery_api_endpoint_context_dict():
     assert bigquery_magics.context.bigquery_client_options == {}
 
 
-@pytest.mark.usefixtures("ipython_interactive")
 @pytest.mark.skipif(
     bigquery_storage is None, reason="Requires `google-cloud-bigquery-storage`"
 )
 def test_bigquery_magic_with_bqstorage_api_endpoint(ipython_ns_cleanup):
-    ip = IPython.get_ipython()
+    globalipapp.start_ipython()
+    ip = globalipapp.get_ipython()
     ip.extension_manager.load_extension("bigquery_magics")
     bigquery_magics.context._connection = None
 
@@ -1987,12 +1911,12 @@ def test_bigquery_magic_with_bqstorage_api_endpoint(ipython_ns_cleanup):
     assert bigquery_magics.context.bqstorage_client_options.api_endpoint is None
 
 
-@pytest.mark.usefixtures("ipython_interactive")
 @pytest.mark.skipif(
     bigquery_storage is None, reason="Requires `google-cloud-bigquery-storage`"
 )
 def test_bigquery_magic_with_bqstorage_api_endpoint_context_dict():
-    ip = IPython.get_ipython()
+    globalipapp.start_ipython()
+    ip = globalipapp.get_ipython()
     ip.extension_manager.load_extension("bigquery_magics")
     bigquery_magics.context._connection = None
     bigquery_magics.context.bqstorage_client_options = {}
@@ -2011,9 +1935,9 @@ def test_bigquery_magic_with_bqstorage_api_endpoint_context_dict():
     assert bigquery_magics.context.bqstorage_client_options == {}
 
 
-@pytest.mark.usefixtures("ipython_interactive")
 def test_bigquery_magic_with_multiple_options():
-    ip = IPython.get_ipython()
+    globalipapp.start_ipython()
+    ip = globalipapp.get_ipython()
     ip.extension_manager.load_extension("bigquery_magics")
     bigquery_magics.context._project = None
 
@@ -2040,9 +1964,10 @@ def test_bigquery_magic_with_multiple_options():
     assert job_config_used.maximum_bytes_billed == 1024
 
 
-@pytest.mark.usefixtures("ipython_interactive", "mock_credentials")
+@pytest.mark.usefixtures("mock_credentials")
 def test_bigquery_magic_with_string_params(ipython_ns_cleanup):
-    ip = IPython.get_ipython()
+    globalipapp.start_ipython()
+    ip = globalipapp.get_ipython()
     ip.extension_manager.load_extension("bigquery_magics")
     bigquery_magics.context.credentials = mock.create_autospec(
         google.auth.credentials.Credentials, instance=True
@@ -2074,9 +1999,10 @@ def test_bigquery_magic_with_string_params(ipython_ns_cleanup):
     assert list(df) == list(result)  # verify column names
 
 
-@pytest.mark.usefixtures("ipython_interactive", "mock_credentials")
+@pytest.mark.usefixtures("mock_credentials")
 def test_bigquery_magic_with_dict_params(ipython_ns_cleanup):
-    ip = IPython.get_ipython()
+    globalipapp.start_ipython()
+    ip = globalipapp.get_ipython()
     ip.extension_manager.load_extension("bigquery_magics")
     bigquery_magics.context.credentials = mock.create_autospec(
         google.auth.credentials.Credentials, instance=True
@@ -2115,9 +2041,9 @@ def test_bigquery_magic_with_dict_params(ipython_ns_cleanup):
     assert df["tricky_value"][0] == '--params "value"'
 
 
-@pytest.mark.usefixtures("ipython_interactive")
 def test_bigquery_magic_with_dict_params_nonexisting():
-    ip = IPython.get_ipython()
+    globalipapp.start_ipython()
+    ip = globalipapp.get_ipython()
     ip.extension_manager.load_extension("bigquery_magics")
     bigquery_magics.context.credentials = mock.create_autospec(
         google.auth.credentials.Credentials, instance=True
@@ -2129,9 +2055,9 @@ def test_bigquery_magic_with_dict_params_nonexisting():
         ip.run_cell_magic("bigquery", "params_dict_df --params $unknown_name", sql)
 
 
-@pytest.mark.usefixtures("ipython_interactive")
 def test_bigquery_magic_with_dict_params_incorrect_syntax():
-    ip = IPython.get_ipython()
+    globalipapp.start_ipython()
+    ip = globalipapp.get_ipython()
     ip.extension_manager.load_extension("bigquery_magics")
     bigquery_magics.context.credentials = mock.create_autospec(
         google.auth.credentials.Credentials, instance=True
@@ -2144,9 +2070,9 @@ def test_bigquery_magic_with_dict_params_incorrect_syntax():
         ip.run_cell_magic("bigquery", cell_magic_args, sql)
 
 
-@pytest.mark.usefixtures("ipython_interactive")
 def test_bigquery_magic_with_dict_params_duplicate():
-    ip = IPython.get_ipython()
+    globalipapp.start_ipython()
+    ip = globalipapp.get_ipython()
     ip.extension_manager.load_extension("bigquery_magics")
 
     sql = "SELECT @foo AS foo"
@@ -2158,9 +2084,10 @@ def test_bigquery_magic_with_dict_params_duplicate():
         ip.run_cell_magic("bigquery", cell_magic_args, sql)
 
 
-@pytest.mark.usefixtures("ipython_interactive", "mock_credentials")
+@pytest.mark.usefixtures("mock_credentials")
 def test_bigquery_magic_with_option_value_incorrect():
-    ip = IPython.get_ipython()
+    globalipapp.start_ipython()
+    ip = globalipapp.get_ipython()
     ip.extension_manager.load_extension("bigquery_magics")
 
     sql = "SELECT @foo AS foo"
@@ -2170,9 +2097,10 @@ def test_bigquery_magic_with_option_value_incorrect():
         ip.run_cell_magic("bigquery", cell_magic_args, sql)
 
 
-@pytest.mark.usefixtures("ipython_interactive", "mock_credentials")
+@pytest.mark.usefixtures("mock_credentials")
 def test_bigquery_magic_with_dict_params_negative_value(ipython_ns_cleanup):
-    ip = IPython.get_ipython()
+    globalipapp.start_ipython()
+    ip = globalipapp.get_ipython()
     ip.extension_manager.load_extension("bigquery_magics")
 
     ipython_ns_cleanup.append((ip, "params_dict_df"))
@@ -2204,9 +2132,10 @@ def test_bigquery_magic_with_dict_params_negative_value(ipython_ns_cleanup):
     assert df["num"][0] == -17
 
 
-@pytest.mark.usefixtures("ipython_interactive", "mock_credentials")
+@pytest.mark.usefixtures("mock_credentials")
 def test_bigquery_magic_with_dict_params_array_value(ipython_ns_cleanup):
-    ip = IPython.get_ipython()
+    globalipapp.start_ipython()
+    ip = globalipapp.get_ipython()
     ip.extension_manager.load_extension("bigquery_magics")
 
     ipython_ns_cleanup.append((ip, "params_dict_df"))
@@ -2238,9 +2167,10 @@ def test_bigquery_magic_with_dict_params_array_value(ipython_ns_cleanup):
     assert list(df["array_data"]) == ["foo bar", "baz quux"]
 
 
-@pytest.mark.usefixtures("ipython_interactive", "mock_credentials")
+@pytest.mark.usefixtures("mock_credentials")
 def test_bigquery_magic_with_dict_params_tuple_value(ipython_ns_cleanup):
-    ip = IPython.get_ipython()
+    globalipapp.start_ipython()
+    ip = globalipapp.get_ipython()
     ip.extension_manager.load_extension("bigquery_magics")
 
     ipython_ns_cleanup.append((ip, "params_dict_df"))
@@ -2272,9 +2202,9 @@ def test_bigquery_magic_with_dict_params_tuple_value(ipython_ns_cleanup):
     assert list(df["array_data"]) == ["foo bar", "baz quux"]
 
 
-@pytest.mark.usefixtures("ipython_interactive")
 def test_bigquery_magic_with_improperly_formatted_params():
-    ip = IPython.get_ipython()
+    globalipapp.start_ipython()
+    ip = globalipapp.get_ipython()
     ip.extension_manager.load_extension("bigquery_magics")
     bigquery_magics.context.credentials = mock.create_autospec(
         google.auth.credentials.Credentials, instance=True
@@ -2289,9 +2219,10 @@ def test_bigquery_magic_with_improperly_formatted_params():
 @pytest.mark.parametrize(
     "raw_sql", ("SELECT answer AS 42", " \t   SELECT answer AS 42  \t  ")
 )
-@pytest.mark.usefixtures("ipython_interactive", "mock_credentials")
+@pytest.mark.usefixtures("mock_credentials")
 def test_bigquery_magic_valid_query_in_existing_variable(ipython_ns_cleanup, raw_sql):
-    ip = IPython.get_ipython()
+    globalipapp.start_ipython()
+    ip = globalipapp.get_ipython()
     ip.extension_manager.load_extension("bigquery_magics")
 
     ipython_ns_cleanup.append((ip, "custom_query"))
@@ -2322,9 +2253,10 @@ def test_bigquery_magic_valid_query_in_existing_variable(ipython_ns_cleanup, raw
     assert list(df["answer"]) == [42]
 
 
-@pytest.mark.usefixtures("ipython_interactive", "mock_credentials")
+@pytest.mark.usefixtures("mock_credentials")
 def test_bigquery_magic_nonexisting_query_variable():
-    ip = IPython.get_ipython()
+    globalipapp.start_ipython()
+    ip = globalipapp.get_ipython()
     ip.extension_manager.load_extension("bigquery_magics")
 
     run_query_patch = mock.patch("bigquery_magics.bigquery._run_query", autospec=True)
@@ -2340,9 +2272,10 @@ def test_bigquery_magic_nonexisting_query_variable():
     run_query_mock.assert_not_called()
 
 
-@pytest.mark.usefixtures("ipython_interactive", "mock_credentials")
+@pytest.mark.usefixtures("mock_credentials")
 def test_bigquery_magic_empty_query_variable_name():
-    ip = IPython.get_ipython()
+    globalipapp.start_ipython()
+    ip = globalipapp.get_ipython()
     ip.extension_manager.load_extension("bigquery_magics")
 
     run_query_patch = mock.patch("bigquery_magics.bigquery._run_query", autospec=True)
@@ -2356,9 +2289,10 @@ def test_bigquery_magic_empty_query_variable_name():
     run_query_mock.assert_not_called()
 
 
-@pytest.mark.usefixtures("ipython_interactive", "mock_credentials")
+@pytest.mark.usefixtures("mock_credentials")
 def test_bigquery_magic_query_variable_non_string(ipython_ns_cleanup):
-    ip = IPython.get_ipython()
+    globalipapp.start_ipython()
+    ip = globalipapp.get_ipython()
     ip.extension_manager.load_extension("bigquery_magics")
 
     run_query_patch = mock.patch("bigquery_magics.bigquery._run_query", autospec=True)
@@ -2376,9 +2310,10 @@ def test_bigquery_magic_query_variable_non_string(ipython_ns_cleanup):
     run_query_mock.assert_not_called()
 
 
-@pytest.mark.usefixtures("ipython_interactive", "mock_credentials")
+@pytest.mark.usefixtures("mock_credentials")
 def test_bigquery_magic_query_variable_not_identifier():
-    ip = IPython.get_ipython()
+    globalipapp.start_ipython()
+    ip = globalipapp.get_ipython()
     ip.extension_manager.load_extension("bigquery_magics")
 
     cell_body = "$123foo"  # 123foo is not valid Python identifier
@@ -2395,9 +2330,10 @@ def test_bigquery_magic_query_variable_not_identifier():
     assert "must be a fully-qualified ID" in output
 
 
-@pytest.mark.usefixtures("ipython_interactive", "mock_credentials")
+@pytest.mark.usefixtures("mock_credentials")
 def test_bigquery_magic_with_invalid_multiple_option_values():
-    ip = IPython.get_ipython()
+    globalipapp.start_ipython()
+    ip = globalipapp.get_ipython()
     ip.extension_manager.load_extension("bigquery_magics")
 
     sql = "SELECT @foo AS foo"
@@ -2409,9 +2345,10 @@ def test_bigquery_magic_with_invalid_multiple_option_values():
         ip.run_cell_magic("bigquery", cell_magic_args, sql)
 
 
-@pytest.mark.usefixtures("ipython_interactive", "mock_credentials")
+@pytest.mark.usefixtures("mock_credentials")
 def test_bigquery_magic_omits_tracebacks_from_error_message():
-    ip = IPython.get_ipython()
+    globalipapp.start_ipython()
+    ip = globalipapp.get_ipython()
     ip.extension_manager.load_extension("bigquery_magics")
 
     run_query_patch = mock.patch(
@@ -2429,9 +2366,10 @@ def test_bigquery_magic_omits_tracebacks_from_error_message():
     assert "Syntax error" not in captured_io.stdout
 
 
-@pytest.mark.usefixtures("ipython_interactive", "mock_credentials")
+@pytest.mark.usefixtures("mock_credentials")
 def test_bigquery_magic_w_destination_table_invalid_format():
-    ip = IPython.get_ipython()
+    globalipapp.start_ipython()
+    ip = globalipapp.get_ipython()
     ip.extension_manager.load_extension("bigquery_magics")
 
     client_patch = mock.patch("bigquery_magics.bigquery.bigquery.Client", autospec=True)
@@ -2447,9 +2385,10 @@ def test_bigquery_magic_w_destination_table_invalid_format():
     )
 
 
-@pytest.mark.usefixtures("ipython_interactive", "mock_credentials")
+@pytest.mark.usefixtures("mock_credentials")
 def test_bigquery_magic_w_destination_table():
-    ip = IPython.get_ipython()
+    globalipapp.start_ipython()
+    ip = globalipapp.get_ipython()
     ip.extension_manager.load_extension("bigquery_magics")
 
     create_dataset_if_necessary_patch = mock.patch(
@@ -2474,9 +2413,10 @@ def test_bigquery_magic_w_destination_table():
         assert job_config_used.destination.table_id == "table_id"
 
 
-@pytest.mark.usefixtures("ipython_interactive", "mock_credentials")
+@pytest.mark.usefixtures("mock_credentials")
 def test_bigquery_magic_create_dataset_fails():
-    ip = IPython.get_ipython()
+    globalipapp.start_ipython()
+    ip = globalipapp.get_ipython()
     ip.extension_manager.load_extension("bigquery_magics")
 
     create_dataset_if_necessary_patch = mock.patch(
@@ -2501,9 +2441,10 @@ def test_bigquery_magic_create_dataset_fails():
     assert close_transports.called
 
 
-@pytest.mark.usefixtures("ipython_interactive", "mock_credentials")
+@pytest.mark.usefixtures("mock_credentials")
 def test_bigquery_magic_with_location():
-    ip = IPython.get_ipython()
+    globalipapp.start_ipython()
+    ip = globalipapp.get_ipython()
     ip.extension_manager.load_extension("bigquery_magics")
 
     run_query_patch = mock.patch("bigquery_magics.bigquery._run_query", autospec=True)
@@ -2514,9 +2455,9 @@ def test_bigquery_magic_with_location():
         assert client_options_used.location == "us-east1"
 
 
-@pytest.mark.usefixtures("ipython_interactive")
 def test_bigquery_magic_with_invalid_engine_raises_error():
-    ip = IPython.get_ipython()
+    globalipapp.start_ipython()
+    ip = globalipapp.get_ipython()
     ip.extension_manager.load_extension("bigquery_magics")
     engine = "whatever"
 
@@ -2524,14 +2465,13 @@ def test_bigquery_magic_with_invalid_engine_raises_error():
         ip.run_cell_magic("bigquery", f"--engine {engine}", "SELECT 17 AS num")
 
 
-@pytest.mark.usefixtures(
-    "ipython_interactive", "mock_credentials", "set_bigframes_engine_in_context"
-)
+@pytest.mark.usefixtures("mock_credentials", "set_bigframes_engine_in_context")
 def test_bigquery_magic_bigframes_set_in_context():
     if bpd is None:
         pytest.skip("BigFrames not installed")
 
-    ip = IPython.get_ipython()
+    globalipapp.start_ipython()
+    ip = globalipapp.get_ipython()
     ip.extension_manager.load_extension("bigquery_magics")
     sql = "SELECT 0 AS something"
     expected_configuration = {
@@ -2550,12 +2490,13 @@ def test_bigquery_magic_bigframes_set_in_context():
         assert bpd.options.bigquery.project == bigquery_magics.context.project
 
 
-@pytest.mark.usefixtures("ipython_interactive", "mock_credentials")
+@pytest.mark.usefixtures("mock_credentials")
 def test_bigquery_magic_bigframes_set_in_args():
     if bpd is None:
         pytest.skip("BigFrames not installed")
 
-    ip = IPython.get_ipython()
+    globalipapp.start_ipython()
+    ip = globalipapp.get_ipython()
     ip.extension_manager.load_extension("bigquery_magics")
     sql = "SELECT 0 AS something"
     expected_configuration = {
@@ -2574,14 +2515,13 @@ def test_bigquery_magic_bigframes_set_in_args():
         assert bpd.options.bigquery.project == bigquery_magics.context.project
 
 
-@pytest.mark.usefixtures(
-    "ipython_interactive", "mock_credentials", "set_bigframes_engine_in_context"
-)
+@pytest.mark.usefixtures("mock_credentials", "set_bigframes_engine_in_context")
 def test_bigquery_magic_bigframes__bigframes_is_not_installed__should_raise_error():
     if bpd is not None:
         pytest.skip("BigFrames is installed")
 
-    ip = IPython.get_ipython()
+    globalipapp.start_ipython()
+    ip = globalipapp.get_ipython()
     ip.extension_manager.load_extension("bigquery_magics")
     sql = "SELECT 0 AS something"
 
@@ -2589,14 +2529,13 @@ def test_bigquery_magic_bigframes__bigframes_is_not_installed__should_raise_erro
         ip.run_cell_magic("bigquery", "", sql)
 
 
-@pytest.mark.usefixtures(
-    "ipython_interactive", "mock_credentials", "set_bigframes_engine_in_context"
-)
+@pytest.mark.usefixtures("mock_credentials", "set_bigframes_engine_in_context")
 def test_bigquery_magic_bigframes_with_params():
     if bpd is None:
         pytest.skip("BigFrames not installed")
 
-    ip = IPython.get_ipython()
+    globalipapp.start_ipython()
+    ip = globalipapp.get_ipython()
     ip.extension_manager.load_extension("bigquery_magics")
     sql = "SELECT 0 AS @p"
     expected_configuration = {
@@ -2623,14 +2562,13 @@ def test_bigquery_magic_bigframes_with_params():
         )
 
 
-@pytest.mark.usefixtures(
-    "ipython_interactive", "mock_credentials", "set_bigframes_engine_in_context"
-)
+@pytest.mark.usefixtures("mock_credentials", "set_bigframes_engine_in_context")
 def test_bigquery_magic_bigframes_with_max_results():
     if bpd is None:
         pytest.skip("BigFrames not installed")
 
-    ip = IPython.get_ipython()
+    globalipapp.start_ipython()
+    ip = globalipapp.get_ipython()
     ip.extension_manager.load_extension("bigquery_magics")
     sql = "SELECT 0 AS something"
     expected_configuration = {
@@ -2647,14 +2585,13 @@ def test_bigquery_magic_bigframes_with_max_results():
         )
 
 
-@pytest.mark.usefixtures(
-    "ipython_interactive", "mock_credentials", "set_bigframes_engine_in_context"
-)
+@pytest.mark.usefixtures("mock_credentials", "set_bigframes_engine_in_context")
 def test_bigquery_magic_bigframes_with_destination_var(ipython_ns_cleanup):
     if bpd is None:
         pytest.skip("BigFrames not installed")
 
-    ip = IPython.get_ipython()
+    globalipapp.start_ipython()
+    ip = globalipapp.get_ipython()
     ip.extension_manager.load_extension("bigquery_magics")
     sql = "SELECT 0 AS something"
 
@@ -2669,9 +2606,7 @@ def test_bigquery_magic_bigframes_with_destination_var(ipython_ns_cleanup):
         assert df is bf_mock.return_value
 
 
-@pytest.mark.usefixtures(
-    "ipython_interactive", "mock_credentials", "set_bigframes_engine_in_context"
-)
+@pytest.mark.usefixtures("mock_credentials", "set_bigframes_engine_in_context")
 def test_bigquery_magic_bigframes_with_default_variable(
     ipython_ns_cleanup, monkeypatch
 ):
@@ -2680,7 +2615,8 @@ def test_bigquery_magic_bigframes_with_default_variable(
 
     monkeypatch.setattr(bigquery_magics.context, "default_variable", "_bq_df")
 
-    ip = IPython.get_ipython()
+    globalipapp.start_ipython()
+    ip = globalipapp.get_ipython()
     ip.extension_manager.load_extension("bigquery_magics")
     sql = "SELECT 0 AS something"
 
@@ -2695,14 +2631,13 @@ def test_bigquery_magic_bigframes_with_default_variable(
         assert df is bf_mock.return_value
 
 
-@pytest.mark.usefixtures(
-    "ipython_interactive", "mock_credentials", "set_bigframes_engine_in_context"
-)
+@pytest.mark.usefixtures("mock_credentials", "set_bigframes_engine_in_context")
 def test_bigquery_magic_bigframes_with_dry_run__should_fail():
     if bpd is None:
         pytest.skip("BigFrames not installed")
 
-    ip = IPython.get_ipython()
+    globalipapp.start_ipython()
+    ip = globalipapp.get_ipython()
     ip.extension_manager.load_extension("bigquery_magics")
     sql = "SELECT 0 AS @p"
 
@@ -2712,14 +2647,16 @@ def test_bigquery_magic_bigframes_with_dry_run__should_fail():
         ip.run_cell_magic("bigquery", "--dry_run", sql)
 
 
-@pytest.mark.usefixtures("ipython_interactive")
-def test_test_bigquery_magic__extension_not_loaded__is_registered_set_to_false():
+def test_test_bigquery_magic__extension_not_loaded__is_registered():
+    globalipapp.start_ipython()
+    ip = globalipapp.get_ipython()
+    ip.extension_manager.unload_extension("bigquery_magics")
     assert bigquery_magics.is_registered is False
 
 
-@pytest.mark.usefixtures("ipython_interactive")
 def test_test_bigquery_magic__extension_loaded__is_registered_set_to_true():
-    ip = IPython.get_ipython()
+    globalipapp.start_ipython()
+    ip = globalipapp.get_ipython()
     ip.extension_manager.load_extension("bigquery_magics")
 
     assert bigquery_magics.is_registered is True
