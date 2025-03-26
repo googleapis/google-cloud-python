@@ -15,7 +15,7 @@
 from __future__ import annotations
 
 import typing
-from typing import Sequence, Tuple, Union
+from typing import Literal, Sequence, Tuple, Union
 
 import bigframes_vendored.constants as constants
 import bigframes_vendored.pandas.core.groupby as vendored_pandas_groupby
@@ -23,10 +23,10 @@ import jellyfish
 import pandas as pd
 
 from bigframes import session
+from bigframes.core import expression as ex
 from bigframes.core import log_adapter
 import bigframes.core.block_transforms as block_ops
 import bigframes.core.blocks as blocks
-import bigframes.core.expression
 import bigframes.core.ordering as order
 import bigframes.core.utils as utils
 import bigframes.core.validations as validations
@@ -305,13 +305,16 @@ class DataFrameGroupBy(vendored_pandas_groupby.DataFrameGroupBy):
         return self._apply_window_op(agg_ops.DiffOp(periods), window=window)
 
     @validations.requires_ordering()
-    def rolling(self, window: int, min_periods=None) -> windows.Window:
-        # To get n size window, need current row and n-1 preceding rows.
-        window_spec = window_specs.rows(
-            grouping_keys=tuple(self._by_col_ids),
-            start=-(window - 1),
-            end=0,
-            min_periods=min_periods or window,
+    def rolling(
+        self,
+        window: int,
+        min_periods=None,
+        closed: Literal["right", "left", "both", "neither"] = "right",
+    ) -> windows.Window:
+        window_spec = window_specs.WindowSpec(
+            bounds=window_specs.RowsWindowBounds.from_window_size(window, closed),
+            min_periods=min_periods if min_periods is not None else window,
+            grouping_keys=tuple(ex.deref(col) for col in self._by_col_ids),
         )
         block = self._block.order_by(
             [order.ascending_over(col) for col in self._by_col_ids],
@@ -361,7 +364,7 @@ class DataFrameGroupBy(vendored_pandas_groupby.DataFrameGroupBy):
         return dataframe if self._as_index else self._convert_index(dataframe)
 
     def _agg_dict(self, func: typing.Mapping) -> df.DataFrame:
-        aggregations: typing.List[bigframes.core.expression.Aggregation] = []
+        aggregations: typing.List[ex.Aggregation] = []
         column_labels = []
 
         want_aggfunc_level = any(utils.is_list_like(aggs) for aggs in func.values())
@@ -738,13 +741,16 @@ class SeriesGroupBy(vendored_pandas_groupby.SeriesGroupBy):
         return self._apply_window_op(agg_ops.DiffOp(periods), window=window)
 
     @validations.requires_ordering()
-    def rolling(self, window: int, min_periods=None) -> windows.Window:
-        # To get n size window, need current row and n-1 preceding rows.
-        window_spec = window_specs.rows(
-            grouping_keys=tuple(self._by_col_ids),
-            start=-(window - 1),
-            end=0,
-            min_periods=min_periods or window,
+    def rolling(
+        self,
+        window: int,
+        min_periods=None,
+        closed: Literal["right", "left", "both", "neither"] = "right",
+    ) -> windows.Window:
+        window_spec = window_specs.WindowSpec(
+            bounds=window_specs.RowsWindowBounds.from_window_size(window, closed),
+            min_periods=min_periods if min_periods is not None else window,
+            grouping_keys=tuple(ex.deref(col) for col in self._by_col_ids),
         )
         block = self._block.order_by(
             [order.ascending_over(col) for col in self._by_col_ids],
@@ -806,11 +812,9 @@ class SeriesGroupBy(vendored_pandas_groupby.SeriesGroupBy):
         return series.Series(block.select_column(result_id))
 
 
-def agg(input: str, op: agg_ops.AggregateOp) -> bigframes.core.expression.Aggregation:
+def agg(input: str, op: agg_ops.AggregateOp) -> ex.Aggregation:
     if isinstance(op, agg_ops.UnaryAggregateOp):
-        return bigframes.core.expression.UnaryAggregation(
-            op, bigframes.core.expression.deref(input)
-        )
+        return ex.UnaryAggregation(op, ex.deref(input))
     else:
         assert isinstance(op, agg_ops.NullaryAggregateOp)
-        return bigframes.core.expression.NullaryAggregation(op)
+        return ex.NullaryAggregation(op)

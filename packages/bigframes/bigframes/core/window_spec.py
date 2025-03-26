@@ -15,7 +15,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass, replace
 import itertools
-from typing import Mapping, Optional, Set, Tuple, Union
+from typing import Literal, Mapping, Optional, Set, Tuple, Union
 
 import bigframes.core.expression as ex
 import bigframes.core.identifiers as ids
@@ -139,6 +139,21 @@ def inverse_cumulative_rows(
 class RowsWindowBounds:
     start: Optional[int] = None
     end: Optional[int] = None
+
+    @classmethod
+    def from_window_size(
+        cls, window: int, closed: Literal["right", "left", "both", "neither"]
+    ) -> RowsWindowBounds:
+        if closed == "right":
+            return cls(-(window - 1), 0)
+        elif closed == "left":
+            return cls(-window, -1)
+        elif closed == "both":
+            return cls(-window, 0)
+        elif closed == "neither":
+            return cls(-(window - 1), -1)
+        else:
+            raise ValueError(f"Unsupported value for 'closed' parameter: {closed}")
 
     def __post_init__(self):
         if self.start is None:

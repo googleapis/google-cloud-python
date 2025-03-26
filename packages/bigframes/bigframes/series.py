@@ -35,11 +35,10 @@ import pyarrow as pa
 import typing_extensions
 
 import bigframes.core
-from bigframes.core import log_adapter
+from bigframes.core import groupby, log_adapter
 import bigframes.core.block_transforms as block_ops
 import bigframes.core.blocks as blocks
 import bigframes.core.expression as ex
-import bigframes.core.groupby as groupby
 import bigframes.core.indexers
 import bigframes.core.indexes as indexes
 import bigframes.core.ordering as order
@@ -1438,10 +1437,15 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
         return Series(block)
 
     @validations.requires_ordering()
-    def rolling(self, window: int, min_periods=None) -> bigframes.core.window.Window:
-        # To get n size window, need current row and n-1 preceding rows.
-        window_spec = windows.rows(
-            start=-(window - 1), end=0, min_periods=min_periods or window
+    def rolling(
+        self,
+        window: int,
+        min_periods=None,
+        closed: Literal["right", "left", "both", "neither"] = "right",
+    ) -> bigframes.core.window.Window:
+        window_spec = windows.WindowSpec(
+            bounds=windows.RowsWindowBounds.from_window_size(window, closed),
+            min_periods=min_periods if min_periods is not None else window,
         )
         return bigframes.core.window.Window(
             self._block, window_spec, self._block.value_columns, is_series=True
