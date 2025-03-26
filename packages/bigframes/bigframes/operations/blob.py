@@ -23,6 +23,7 @@ import pandas as pd
 import requests
 
 from bigframes import clients
+from bigframes.core import log_adapter
 import bigframes.dataframe
 import bigframes.exceptions as bfe
 from bigframes.operations import base
@@ -33,6 +34,7 @@ FILE_FOLDER_REGEX = r"^.*\/(.*)$"
 FILE_EXT_REGEX = r"(\.[0-9a-zA-Z]+$)"
 
 
+@log_adapter.class_logger
 class BlobAccessor(base.SeriesMethods):
     def __init__(self, *args, **kwargs):
         if not bigframes.options.experiments.blob:
