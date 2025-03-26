@@ -1480,3 +1480,17 @@ def reset_default_session_and_location():
         yield
     bpd.close_session()
     bpd.options.bigquery.location = None
+
+
+@pytest.fixture(scope="session")
+def pdf_gcs_path() -> str:
+    return "gs://bigframes_blob_test/pdfs/*"
+
+
+@pytest.fixture(scope="session")
+def pdf_mm_df(
+    pdf_gcs_path, session: bigframes.Session, bq_connection: str
+) -> bpd.DataFrame:
+    bigframes.options.experiments.blob = True
+
+    return session.from_glob_path(pdf_gcs_path, name="pdf", connection=bq_connection)

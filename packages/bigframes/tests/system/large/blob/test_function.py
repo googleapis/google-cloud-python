@@ -285,3 +285,107 @@ def test_blob_image_normalize_to_bq(images_mm_df: bpd.DataFrame, bq_connection: 
     assert isinstance(actual, bpd.Series)
     assert len(actual) == 2
     assert actual.dtype == dtypes.BYTES_DTYPE
+
+
+@pytest.mark.parametrize(
+    "verbose, expected",
+    [
+        (
+            True,
+            pd.Series(
+                [
+                    {"status": "File has not been decrypted", "content": ""},
+                    {
+                        "status": "",
+                        "content": "Sample  PDF    This  is  a  testing  file.  Some  dummy  messages  are  used  for  testing  purposes.   ",
+                    },
+                ]
+            ),
+        ),
+        (
+            False,
+            pd.Series(
+                [
+                    "",
+                    "Sample  PDF    This  is  a  testing  file.  Some  dummy  messages  are  used  for  testing  purposes.   ",
+                ],
+                name="pdf",
+            ),
+        ),
+    ],
+)
+def test_blob_pdf_extract(
+    pdf_mm_df: bpd.DataFrame,
+    verbose: bool,
+    bq_connection: str,
+    expected: pd.Series,
+):
+    bigframes.options.experiments.blob = True
+
+    actual = (
+        pdf_mm_df["pdf"]
+        .blob.pdf_extract(connection=bq_connection, verbose=verbose)
+        .explode()
+        .to_pandas()
+    )
+
+    pd.testing.assert_series_equal(
+        actual,
+        expected,
+        check_dtype=False,
+        check_index=False,
+    )
+
+
+@pytest.mark.parametrize(
+    "verbose, expected",
+    [
+        (
+            True,
+            pd.Series(
+                [
+                    {"status": "File has not been decrypted", "content": []},
+                    {
+                        "status": "",
+                        "content": [
+                            "Sample  PDF    This  is  a  testing  file.  Some ",
+                            "dummy  messages  are  used  for  testing ",
+                            "purposes.   ",
+                        ],
+                    },
+                ]
+            ),
+        ),
+        (
+            False,
+            pd.Series(
+                [
+                    pd.NA,
+                    "Sample  PDF    This  is  a  testing  file.  Some ",
+                    "dummy  messages  are  used  for  testing ",
+                    "purposes.   ",
+                ],
+            ),
+        ),
+    ],
+)
+def test_blob_pdf_chunk(
+    pdf_mm_df: bpd.DataFrame, verbose: bool, bq_connection: str, expected: pd.Series
+):
+    bigframes.options.experiments.blob = True
+
+    actual = (
+        pdf_mm_df["pdf"]
+        .blob.pdf_chunk(
+            connection=bq_connection, chunk_size=50, overlap_size=10, verbose=verbose
+        )
+        .explode()
+        .to_pandas()
+    )
+
+    pd.testing.assert_series_equal(
+        actual,
+        expected,
+        check_dtype=False,
+        check_index=False,
+    )
