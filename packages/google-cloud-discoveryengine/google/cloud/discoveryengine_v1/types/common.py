@@ -258,6 +258,9 @@ class UserInfo(proto.Message):
             or if
             [UserEvent.direct_user_request][google.cloud.discoveryengine.v1.UserEvent.direct_user_request]
             is set.
+        time_zone (str):
+            Optional. IANA time zone, e.g.
+            Europe/Budapest.
     """
 
     user_id: str = proto.Field(
@@ -267,6 +270,10 @@ class UserInfo(proto.Message):
     user_agent: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+    time_zone: str = proto.Field(
+        proto.STRING,
+        number=3,
     )
 
 

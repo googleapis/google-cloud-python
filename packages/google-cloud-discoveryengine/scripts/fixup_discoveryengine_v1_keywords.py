@@ -112,6 +112,7 @@ class discoveryengineCallTransformer(cst.CSTTransformer):
         'update_document': ('document', 'allow_missing', 'update_mask', ),
         'update_engine': ('engine', 'update_mask', ),
         'update_schema': ('schema', 'allow_missing', ),
+        'update_serving_config': ('serving_config', 'update_mask', ),
         'update_session': ('session', 'update_mask', ),
         'update_target_site': ('target_site', ),
         'write_user_event': ('parent', 'user_event', 'write_async', ),

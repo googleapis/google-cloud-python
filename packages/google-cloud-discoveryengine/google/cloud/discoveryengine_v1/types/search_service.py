@@ -97,9 +97,10 @@ class SearchRequest(proto.Message):
             OneBox. This applies to each OneBox type
             individually. Default number is 10.
         data_store_specs (MutableSequence[google.cloud.discoveryengine_v1.types.SearchRequest.DataStoreSpec]):
-            Specifications that define the specific [DataStore]s to be
-            searched, along with configurations for those data stores.
-            This is only considered for
+            Specifications that define the specific
+            [DataStore][google.cloud.discoveryengine.v1.DataStore]s to
+            be searched, along with configurations for those data
+            stores. This is only considered for
             [Engine][google.cloud.discoveryengine.v1.Engine]s with
             multiple data stores. For engines with a single data store,
             the specs directly under
@@ -583,7 +584,7 @@ class SearchRequest(proto.Message):
             condition_boost_specs (MutableSequence[google.cloud.discoveryengine_v1.types.SearchRequest.BoostSpec.ConditionBoostSpec]):
                 Condition boost specifications. If a document
                 matches multiple conditions in the
-                specifictions, boost scores from these
+                specifications, boost scores from these
                 specifications are all applied and combined in a
                 non-linear way. Maximum number of specifications
                 is 20.

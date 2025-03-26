@@ -49,6 +49,10 @@ from .services.search_tuning_service import (
     SearchTuningServiceAsyncClient,
     SearchTuningServiceClient,
 )
+from .services.serving_config_service import (
+    ServingConfigServiceAsyncClient,
+    ServingConfigServiceClient,
+)
 from .services.site_search_engine_service import (
     SiteSearchEngineServiceAsyncClient,
     SiteSearchEngineServiceClient,
@@ -216,6 +220,8 @@ from .types.search_tuning_service import (
     TrainCustomModelRequest,
     TrainCustomModelResponse,
 )
+from .types.serving_config import ServingConfig
+from .types.serving_config_service import UpdateServingConfigRequest
 from .types.session import Query, Session
 from .types.site_search_engine import (
     Sitemap,
@@ -284,6 +290,7 @@ __all__ = (
     "SchemaServiceAsyncClient",
     "SearchServiceAsyncClient",
     "SearchTuningServiceAsyncClient",
+    "ServingConfigServiceAsyncClient",
     "SiteSearchEngineServiceAsyncClient",
     "UserEventServiceAsyncClient",
     "AdvancedSiteSearchConfig",
@@ -468,6 +475,8 @@ __all__ = (
     "SearchTier",
     "SearchTuningServiceClient",
     "SearchUseCase",
+    "ServingConfig",
+    "ServingConfigServiceClient",
     "Session",
     "SiteSearchEngine",
     "SiteSearchEngineServiceClient",
@@ -489,6 +498,7 @@ __all__ = (
     "UpdateEngineRequest",
     "UpdateSchemaMetadata",
     "UpdateSchemaRequest",
+    "UpdateServingConfigRequest",
     "UpdateSessionRequest",
     "UpdateTargetSiteMetadata",
     "UpdateTargetSiteRequest",

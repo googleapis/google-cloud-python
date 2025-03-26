@@ -3163,7 +3163,11 @@ def test_write_user_event_rest_call_success(request_type):
         "engine": "engine_value",
         "data_store": "data_store_value",
         "event_time": {"seconds": 751, "nanos": 543},
-        "user_info": {"user_id": "user_id_value", "user_agent": "user_agent_value"},
+        "user_info": {
+            "user_id": "user_id_value",
+            "user_agent": "user_agent_value",
+            "time_zone": "time_zone_value",
+        },
         "direct_user_request": True,
         "session_id": "session_id_value",
         "page_info": {

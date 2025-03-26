@@ -172,6 +172,8 @@ from .search_tuning_service import (
     TrainCustomModelRequest,
     TrainCustomModelResponse,
 )
+from .serving_config import ServingConfig
+from .serving_config_service import UpdateServingConfigRequest
 from .session import Query, Session
 from .site_search_engine import (
     Sitemap,
@@ -374,6 +376,8 @@ __all__ = (
     "TrainCustomModelMetadata",
     "TrainCustomModelRequest",
     "TrainCustomModelResponse",
+    "ServingConfig",
+    "UpdateServingConfigRequest",
     "Query",
     "Session",
     "Sitemap",
