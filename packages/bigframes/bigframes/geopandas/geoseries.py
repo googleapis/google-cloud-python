@@ -96,3 +96,6 @@ class GeoSeries(vendored_geoseries.GeoSeries, bigframes.series.Series):
 
     def difference(self: GeoSeries, other: GeoSeries) -> bigframes.series.Series:  # type: ignore
         return self._apply_binary_op(other, ops.geo_st_difference_op)
+
+    def intersection(self: GeoSeries, other: GeoSeries) -> bigframes.series.Series:  # type: ignore
+        return self._apply_binary_op(other, ops.geo_st_intersection_op)

@@ -306,3 +306,96 @@ def test_geo_drop_duplicates():
     pd.testing.assert_series_equal(
         geopandas.GeoSeries(bf_result), pd_result, check_index=False
     )
+
+
+# the GeoSeries and GeoPandas results are not always the same.
+# For example, when the intersection between two polygons is empty,
+# GeoPandas returns 'POLYGON EMPTY' while GeoSeries returns 'GeometryCollection([])'.
+# This is why we are hard-coding the expected results.
+def test_geo_intersection_with_geometry_objects():
+    data1 = [
+        Polygon([(0, 0), (10, 0), (10, 10), (0, 0)]),
+        Polygon([(0, 0), (1, 1), (0, 1), (0, 0)]),
+        Point(0, 1),
+    ]
+
+    data2 = [
+        Polygon([(0, 0), (10, 0), (10, 10), (0, 0)]),
+        Polygon([(0, 0), (1, 1), (0, 1), (0, 0)]),
+        LineString([(2, 0), (0, 2)]),
+    ]
+
+    bf_s1 = bigframes.geopandas.GeoSeries(data=data1)
+    bf_s2 = bigframes.geopandas.GeoSeries(data=data2)
+
+    bf_result = bf_s1.intersection(bf_s2).to_pandas()
+
+    expected = bigframes.geopandas.GeoSeries(
+        [
+            Polygon([(0, 0), (10, 0), (10, 10), (0, 0)]),
+            Polygon([(0, 0), (1, 1), (0, 1), (0, 0)]),
+            GeometryCollection([]),
+        ],
+    ).to_pandas()
+
+    assert bf_result.dtype == "geometry"
+    assert expected.iloc[0].equals(bf_result.iloc[0])
+    assert expected.iloc[1].equals(bf_result.iloc[1])
+    assert expected.iloc[2].equals(bf_result.iloc[2])
+
+
+def test_geo_intersection_with_single_geometry_object():
+    data1 = [
+        Polygon([(0, 0), (10, 0), (10, 10), (0, 0)]),
+        Polygon([(4, 2), (6, 2), (8, 6), (4, 2)]),
+        Point(0, 1),
+    ]
+
+    bf_s1 = bigframes.geopandas.GeoSeries(data=data1)
+    bf_result = bf_s1.intersection(
+        bigframes.geopandas.GeoSeries(
+            [
+                Polygon([(0, 0), (10, 0), (10, 10), (0, 0)]),
+                Polygon([(1, 0), (0, 5), (0, 0), (1, 0)]),
+            ]
+        ),
+    ).to_pandas()
+
+    expected = bigframes.geopandas.GeoSeries(
+        [
+            Polygon([(0, 0), (10, 0), (10, 10), (0, 0)]),
+            GeometryCollection([]),
+            None,
+        ],
+        index=[0, 1, 2],
+    ).to_pandas()
+
+    assert bf_result.dtype == "geometry"
+    assert (expected.iloc[0]).equals(bf_result.iloc[0])
+    assert expected.iloc[1] == bf_result.iloc[1]
+    assert expected.iloc[2] == bf_result.iloc[2]
+
+
+def test_geo_intersection_with_similar_geometry_objects():
+    data1 = [
+        Polygon([(0, 0), (10, 0), (10, 10), (0, 0)]),
+        Polygon([(0, 0), (1, 1), (0, 1)]),
+        Point(0, 1),
+    ]
+
+    bf_s1 = bigframes.geopandas.GeoSeries(data=data1)
+    bf_result = bf_s1.intersection(bf_s1).to_pandas()
+
+    expected = bigframes.geopandas.GeoSeries(
+        [
+            Polygon([(0, 0), (10, 0), (10, 10), (0, 0)]),
+            Polygon([(0, 0), (1, 1), (0, 1)]),
+            Point(0, 1),
+        ],
+        index=[0, 1, 2],
+    ).to_pandas()
+
+    assert bf_result.dtype == "geometry"
+    assert expected.iloc[0].equals(bf_result.iloc[0])
+    assert expected.iloc[1].equals(bf_result.iloc[1])
+    assert expected.iloc[2].equals(bf_result.iloc[2])

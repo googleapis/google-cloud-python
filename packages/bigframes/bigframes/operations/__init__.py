@@ -93,6 +93,7 @@ from bigframes.operations.geo_ops import (
     geo_st_difference_op,
     geo_st_geogfromtext_op,
     geo_st_geogpoint_op,
+    geo_st_intersection_op,
     geo_x_op,
     geo_y_op,
 )
@@ -371,6 +372,7 @@ __all__ = [
     "geo_st_astext_op",
     "geo_st_geogfromtext_op",
     "geo_st_geogpoint_op",
+    "geo_st_intersection_op",
     "geo_x_op",
     "geo_y_op",
     # Numpy ops mapping

@@ -65,3 +65,7 @@ geo_y_op = base_ops.create_unary_op(
         dtypes.is_geo_like, dtypes.FLOAT_DTYPE, description="geo-like"
     ),
 )
+
+geo_st_intersection_op = base_ops.create_binary_op(
+    name="geo_st_intersection", type_signature=op_typing.BinaryGeo()
+)

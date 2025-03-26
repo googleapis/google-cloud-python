@@ -1037,6 +1037,13 @@ def geo_st_geogpoint_op_impl(x: ibis_types.Value, y: ibis_types.Value):
     )
 
 
+@scalar_op_compiler.register_binary_op(ops.geo_st_intersection_op, pass_op=False)
+def geo_st_intersection_op_impl(x: ibis_types.Value, y: ibis_types.Value):
+    return typing.cast(ibis_types.GeoSpatialValue, x).intersection(
+        typing.cast(ibis_types.GeoSpatialValue, y)
+    )
+
+
 @scalar_op_compiler.register_unary_op(ops.geo_x_op)
 def geo_x_op_impl(x: ibis_types.Value):
     return typing.cast(ibis_types.GeoSpatialValue, x).x()

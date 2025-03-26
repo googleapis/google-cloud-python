@@ -211,3 +211,95 @@ def st_difference(
             in other.
     """
     return series._apply_binary_op(other, ops.geo_st_difference_op)
+
+
+def st_intersection(
+    series: bigframes.series.Series, other: bigframes.series.Series
+) -> bigframes.series.Series:
+    """
+    Returns a `GEOGRAPHY` that represents the point set intersection of the two
+    input `GEOGRAPHYs`. Thus, every point in the intersection appears in both
+    `geography_1` and `geography_2`.
+
+    .. note::
+        BigQuery's Geography functions, like `st_intersection`, interpret the geometry
+        data type as a point set on the Earth's surface. A point set is a set
+        of points, lines, and polygons on the WGS84 reference spheroid, with
+        geodesic edges. See: https://cloud.google.com/bigquery/docs/geospatial-data
+
+    **Examples:**
+
+        >>> import bigframes as bpd
+        >>> import bigframes.bigquery as bbq
+        >>> import bigframes.geopandas
+        >>> from shapely.geometry import Polygon, LineString, Point
+        >>> bpd.options.display.progress_bar = None
+
+    We can check two GeoSeries against each other, row by row.
+
+        >>> s1 = bigframes.geopandas.GeoSeries(
+        ...    [
+        ...        Polygon([(0, 0), (2, 2), (0, 2)]),
+        ...        Polygon([(0, 0), (2, 2), (0, 2)]),
+        ...        LineString([(0, 0), (2, 2)]),
+        ...        LineString([(2, 0), (0, 2)]),
+        ...        Point(0, 1),
+        ...    ],
+        ... )
+        >>> s2 = bigframes.geopandas.GeoSeries(
+        ...    [
+        ...        Polygon([(0, 0), (1, 1), (0, 1)]),
+        ...        LineString([(1, 0), (1, 3)]),
+        ...        LineString([(2, 0), (0, 2)]),
+        ...        Point(1, 1),
+        ...        Point(0, 1),
+        ...    ],
+        ...    index=range(1, 6),
+        ... )
+
+        >>> s1
+        0    POLYGON ((0 0, 2 2, 0 2, 0 0))
+        1    POLYGON ((0 0, 2 2, 0 2, 0 0))
+        2             LINESTRING (0 0, 2 2)
+        3             LINESTRING (2 0, 0 2)
+        4                       POINT (0 1)
+        dtype: geometry
+
+        >>> s2
+        1    POLYGON ((0 0, 1 1, 0 1, 0 0))
+        2             LINESTRING (1 0, 1 3)
+        3             LINESTRING (2 0, 0 2)
+        4                       POINT (1 1)
+        5                       POINT (0 1)
+        dtype: geometry
+
+        >>> bbq.st_intersection(s1, s2)
+        0                                    None
+        1    POLYGON ((0 0, 0.99954 1, 0 1, 0 0))
+        2                       POINT (1 1.00046)
+        3                   LINESTRING (2 0, 0 2)
+        4                GEOMETRYCOLLECTION EMPTY
+        5                                    None
+        dtype: geometry
+
+    We can also do intersection of each geometry and a single shapely geometry:
+
+        >>> bbq.st_intersection(s1, bigframes.geopandas.GeoSeries([Polygon([(0, 0), (1, 1), (0, 1)])]))
+        0    POLYGON ((0 0, 0.99954 1, 0 1, 0 0))
+        1                                    None
+        2                                    None
+        3                                    None
+        4                                    None
+        dtype: geometry
+
+    Args:
+        other (GeoSeries or geometric object):
+            The Geoseries (elementwise) or geometric object to find the
+            intersection with.
+
+    Returns:
+        bigframes.geopandas.GeoSeries:
+            The Geoseries (elementwise) of the intersection of points in
+            each aligned geometry with other.
+    """
+    return series._apply_binary_op(other, ops.geo_st_intersection_op)
