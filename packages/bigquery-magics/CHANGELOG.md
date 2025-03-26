@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.9.0](https://github.com/googleapis/python-bigquery-magics/compare/v0.8.1...v0.9.0) (2025-03-26)
+
+
+### Features
+
+* Add --pyformat option to use Python string formatting ([#111](https://github.com/googleapis/python-bigquery-magics/issues/111)) ([bd15a5b](https://github.com/googleapis/python-bigquery-magics/commit/bd15a5b941d14212c6bfaad84b0bc4cfd3220a0f))
+
 ## [0.8.1](https://github.com/googleapis/python-bigquery-magics/compare/v0.8.0...v0.8.1) (2025-03-21)
 
 
