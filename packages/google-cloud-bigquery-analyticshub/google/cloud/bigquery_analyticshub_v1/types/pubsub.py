@@ -17,23 +17,21 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+from google.protobuf import duration_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.protobuf import duration_pb2  # type: ignore
-
-
 __protobuf__ = proto.module(
-    package='google.cloud.bigquery.analyticshub.v1',
+    package="google.cloud.bigquery.analyticshub.v1",
     manifest={
-        'PubSubSubscription',
-        'RetryPolicy',
-        'DeadLetterPolicy',
-        'ExpirationPolicy',
-        'PushConfig',
-        'BigQueryConfig',
-        'CloudStorageConfig',
-        'MessageTransform',
-        'JavaScriptUDF',
+        "PubSubSubscription",
+        "RetryPolicy",
+        "DeadLetterPolicy",
+        "ExpirationPolicy",
+        "PushConfig",
+        "BigQueryConfig",
+        "CloudStorageConfig",
+        "MessageTransform",
+        "JavaScriptUDF",
     },
 )
 
@@ -183,20 +181,20 @@ class PubSubSubscription(proto.Message):
         proto.STRING,
         number=1,
     )
-    push_config: 'PushConfig' = proto.Field(
+    push_config: "PushConfig" = proto.Field(
         proto.MESSAGE,
         number=4,
-        message='PushConfig',
+        message="PushConfig",
     )
-    bigquery_config: 'BigQueryConfig' = proto.Field(
+    bigquery_config: "BigQueryConfig" = proto.Field(
         proto.MESSAGE,
         number=18,
-        message='BigQueryConfig',
+        message="BigQueryConfig",
     )
-    cloud_storage_config: 'CloudStorageConfig' = proto.Field(
+    cloud_storage_config: "CloudStorageConfig" = proto.Field(
         proto.MESSAGE,
         number=22,
-        message='CloudStorageConfig',
+        message="CloudStorageConfig",
     )
     ack_deadline_seconds: int = proto.Field(
         proto.INT32,
@@ -220,24 +218,24 @@ class PubSubSubscription(proto.Message):
         proto.BOOL,
         number=10,
     )
-    expiration_policy: 'ExpirationPolicy' = proto.Field(
+    expiration_policy: "ExpirationPolicy" = proto.Field(
         proto.MESSAGE,
         number=11,
-        message='ExpirationPolicy',
+        message="ExpirationPolicy",
     )
     filter: str = proto.Field(
         proto.STRING,
         number=12,
     )
-    dead_letter_policy: 'DeadLetterPolicy' = proto.Field(
+    dead_letter_policy: "DeadLetterPolicy" = proto.Field(
         proto.MESSAGE,
         number=13,
-        message='DeadLetterPolicy',
+        message="DeadLetterPolicy",
     )
-    retry_policy: 'RetryPolicy' = proto.Field(
+    retry_policy: "RetryPolicy" = proto.Field(
         proto.MESSAGE,
         number=14,
-        message='RetryPolicy',
+        message="RetryPolicy",
     )
     detached: bool = proto.Field(
         proto.BOOL,
@@ -247,10 +245,10 @@ class PubSubSubscription(proto.Message):
         proto.BOOL,
         number=16,
     )
-    message_transforms: MutableSequence['MessageTransform'] = proto.RepeatedField(
+    message_transforms: MutableSequence["MessageTransform"] = proto.RepeatedField(
         proto.MESSAGE,
         number=25,
-        message='MessageTransform',
+        message="MessageTransform",
     )
 
 
@@ -485,19 +483,19 @@ class PushConfig(proto.Message):
     oidc_token: OidcToken = proto.Field(
         proto.MESSAGE,
         number=3,
-        oneof='authentication_method',
+        oneof="authentication_method",
         message=OidcToken,
     )
     pubsub_wrapper: PubsubWrapper = proto.Field(
         proto.MESSAGE,
         number=4,
-        oneof='wrapper',
+        oneof="wrapper",
         message=PubsubWrapper,
     )
     no_wrapper: NoWrapper = proto.Field(
         proto.MESSAGE,
         number=5,
-        oneof='wrapper',
+        oneof="wrapper",
         message=NoWrapper,
     )
     push_endpoint: str = proto.Field(
@@ -687,13 +685,13 @@ class CloudStorageConfig(proto.Message):
     text_config: TextConfig = proto.Field(
         proto.MESSAGE,
         number=4,
-        oneof='output_format',
+        oneof="output_format",
         message=TextConfig,
     )
     avro_config: AvroConfig = proto.Field(
         proto.MESSAGE,
         number=5,
-        oneof='output_format',
+        oneof="output_format",
         message=AvroConfig,
     )
     bucket: str = proto.Field(
@@ -751,11 +749,11 @@ class MessageTransform(proto.Message):
             applied to messages. Defaults to ``false``.
     """
 
-    javascript_udf: 'JavaScriptUDF' = proto.Field(
+    javascript_udf: "JavaScriptUDF" = proto.Field(
         proto.MESSAGE,
         number=2,
-        oneof='transform',
-        message='JavaScriptUDF',
+        oneof="transform",
+        message="JavaScriptUDF",
     )
     enabled: bool = proto.Field(
         proto.BOOL,

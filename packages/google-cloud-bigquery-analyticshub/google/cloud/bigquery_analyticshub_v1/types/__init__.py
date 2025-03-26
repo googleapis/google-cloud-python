@@ -23,6 +23,7 @@ from .analyticshub import (
     DeleteSubscriptionRequest,
     DestinationDataset,
     DestinationDatasetReference,
+    DestinationPubSubSubscription,
     DiscoveryType,
     GetDataExchangeRequest,
     GetListingRequest,
@@ -44,6 +45,7 @@ from .analyticshub import (
     RefreshSubscriptionResponse,
     RevokeSubscriptionRequest,
     RevokeSubscriptionResponse,
+    SharedResourceType,
     SharingEnvironmentConfig,
     SubscribeDataExchangeRequest,
     SubscribeDataExchangeResponse,
@@ -52,6 +54,17 @@ from .analyticshub import (
     Subscription,
     UpdateDataExchangeRequest,
     UpdateListingRequest,
+)
+from .pubsub import (
+    BigQueryConfig,
+    CloudStorageConfig,
+    DeadLetterPolicy,
+    ExpirationPolicy,
+    JavaScriptUDF,
+    MessageTransform,
+    PubSubSubscription,
+    PushConfig,
+    RetryPolicy,
 )
 
 __all__ = (
@@ -64,6 +77,7 @@ __all__ = (
     "DeleteSubscriptionRequest",
     "DestinationDataset",
     "DestinationDatasetReference",
+    "DestinationPubSubSubscription",
     "GetDataExchangeRequest",
     "GetListingRequest",
     "GetSubscriptionRequest",
@@ -93,4 +107,14 @@ __all__ = (
     "UpdateDataExchangeRequest",
     "UpdateListingRequest",
     "DiscoveryType",
+    "SharedResourceType",
+    "BigQueryConfig",
+    "CloudStorageConfig",
+    "DeadLetterPolicy",
+    "ExpirationPolicy",
+    "JavaScriptUDF",
+    "MessageTransform",
+    "PubSubSubscription",
+    "PushConfig",
+    "RetryPolicy",
 )
