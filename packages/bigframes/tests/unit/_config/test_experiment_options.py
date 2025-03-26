@@ -61,18 +61,3 @@ def test_blob_set_true_shows_warning():
         options.blob = True
 
     assert options.blob is True
-
-
-def test_udf_default_false():
-    options = experiment_options.ExperimentOptions()
-
-    assert options.udf is False
-
-
-def test_udf_set_true_shows_warning():
-    options = experiment_options.ExperimentOptions()
-
-    with pytest.warns(bfe.PreviewWarning):
-        options.udf = True
-
-    assert options.udf is True

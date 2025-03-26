@@ -1435,7 +1435,13 @@ class Session(
         name: Optional[str] = None,
         packages: Optional[Sequence[str]] = None,
     ):
-        """Decorator to turn a Python udf into a BigQuery managed function.
+        """Decorator to turn a Python user defined function (udf) into a
+        BigQuery managed function.
+
+        .. note::
+            The udf must be self-contained, i.e. it must not contain any
+            references to an import or variable defined outside the function
+            body.
 
         .. note::
             Please have following IAM roles enabled for you:

@@ -362,4 +362,5 @@ __all__ = [
     "get_global_session",
     "close_session",
     "reset_session",
+    "udf",
 ]

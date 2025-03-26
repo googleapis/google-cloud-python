@@ -64,9 +64,12 @@ def get_remote_function_locations(bq_location):
 
 
 def _get_updated_package_requirements(
-    package_requirements=None, is_row_processor=False
+    package_requirements=None, is_row_processor=False, capture_references=True
 ):
-    requirements = [f"cloudpickle=={cloudpickle.__version__}"]
+    requirements = []
+    if capture_references:
+        requirements.append(f"cloudpickle=={cloudpickle.__version__}")
+
     if is_row_processor:
         # bigframes function will send an entire row of data as json, which
         # would be converted to a pandas series and processed Ensure numpy

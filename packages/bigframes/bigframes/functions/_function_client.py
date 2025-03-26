@@ -53,6 +53,9 @@ _INGRESS_SETTINGS_MAP = types.MappingProxyType(
     }
 )
 
+# BQ managed functions (@udf) currently only support Python 3.11.
+_MANAGED_FUNC_PYTHON_VERSION = "python-3.11"
+
 
 class FunctionClient:
     # Wait time (in seconds) for an IAM binding to take effect after creation.
@@ -193,11 +196,22 @@ class FunctionClient:
         name,
         packages,
         is_row_processor,
+        *,
+        capture_references=False,
     ):
         """Create a BigQuery managed function."""
-        import cloudpickle
 
-        pickled = cloudpickle.dumps(func)
+        # TODO(b/406283812): Expose the capability to pass down
+        # capture_references=True in the public udf API.
+        if (
+            capture_references
+            and (python_version := _utils.get_python_version())
+            != _MANAGED_FUNC_PYTHON_VERSION
+        ):
+            raise bf_formatting.create_exception_with_feedback_link(
+                NotImplementedError,
+                f"Capturing references for udf is currently supported only in Python version {_MANAGED_FUNC_PYTHON_VERSION}, you are running {python_version}.",
+            )
 
         # Create BQ managed function.
         bq_function_args = []
@@ -209,13 +223,15 @@ class FunctionClient:
             bq_function_args.append(f"{name_} {type_}")
 
         managed_function_options = {
-            "runtime_version": _utils.get_python_version(),
+            "runtime_version": _MANAGED_FUNC_PYTHON_VERSION,
             "entry_point": "bigframes_handler",
         }
 
         # Augment user package requirements with any internal package
         # requirements.
-        packages = _utils._get_updated_package_requirements(packages, is_row_processor)
+        packages = _utils._get_updated_package_requirements(
+            packages, is_row_processor, capture_references
+        )
         if packages:
             managed_function_options["packages"] = packages
         managed_function_options_str = self._format_function_options(
@@ -235,20 +251,45 @@ class FunctionClient:
         persistent_func_id = (
             f"`{self._gcp_project_id}.{self._bq_dataset}`.{bq_function_name}"
         )
-        create_function_ddl = textwrap.dedent(
-            f"""
-            CREATE OR REPLACE FUNCTION {persistent_func_id}({','.join(bq_function_args)})
-            RETURNS {bq_function_return_type}
-            LANGUAGE python
-            OPTIONS ({managed_function_options_str})
-            AS r'''
+
+        udf_name = func.__name__
+        if capture_references:
+            # This code path ensures that if the udf body contains any
+            # references to variables and/or imports outside the body, they are
+            # captured as well.
             import cloudpickle
-            udf = cloudpickle.loads({pickled})
-            def bigframes_handler(*args):
-                return udf(*args)
-            '''
-        """
-        ).strip()
+
+            pickled = cloudpickle.dumps(func)
+            udf_code = textwrap.dedent(
+                f"""
+                import cloudpickle
+                {udf_name} = cloudpickle.loads({pickled})
+            """
+            )
+        else:
+            # This code path ensures that if the udf body is self contained,
+            # i.e. there are no references to variables or imports outside the
+            # body.
+            udf_code = textwrap.dedent(inspect.getsource(func))
+            udf_code = udf_code[udf_code.index("def") :]
+
+        create_function_ddl = (
+            textwrap.dedent(
+                f"""
+                CREATE OR REPLACE FUNCTION {persistent_func_id}({','.join(bq_function_args)})
+                RETURNS {bq_function_return_type}
+                LANGUAGE python
+                OPTIONS ({managed_function_options_str})
+                AS r'''
+                __UDF_PLACE_HOLDER__
+                def bigframes_handler(*args):
+                    return {udf_name}(*args)
+                '''
+            """
+            )
+            .strip()
+            .replace("__UDF_PLACE_HOLDER__", udf_code)
+        )
 
         self._ensure_dataset_exists()
         self._create_bq_function(create_function_ddl)

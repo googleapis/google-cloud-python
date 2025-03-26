@@ -58,9 +58,6 @@ import pandas
 
 from . import _function_client, _utils
 
-# BQ managed functions (@udf) currently only support Python 3.11.
-_MANAGED_FUNC_PYTHON_VERSIONS = ("python-3.11",)
-
 
 class FunctionSession:
     """Session to manage bigframes functions."""
@@ -758,7 +755,13 @@ class FunctionSession:
         name: Optional[str] = None,
         packages: Optional[Sequence[str]] = None,
     ):
-        """Decorator to turn a Python udf into a BigQuery managed function.
+        """Decorator to turn a Python user defined function (udf) into a
+        BigQuery managed function.
+
+        .. note::
+            The udf must be self-contained, i.e. it must not contain any
+            references to an import or variable defined outside the function
+            body.
 
         .. note::
             Please have following IAM roles enabled for you:
@@ -809,17 +812,8 @@ class FunctionSession:
                 of the form supported in
                 https://pip.pypa.io/en/stable/reference/requirements-file-format/.
         """
-        if not bigframes.options.experiments.udf:
-            raise bf_formatting.create_exception_with_feedback_link(NotImplementedError)
 
-        # Check the Python version.
-        python_version = _utils.get_python_version()
-        if python_version not in _MANAGED_FUNC_PYTHON_VERSIONS:
-            raise bf_formatting.create_exception_with_feedback_link(
-                RuntimeError,
-                f"Python version {python_version} is not supported yet for "
-                "BigFrames managed function.",
-            )
+        warnings.warn("udf is in preview.", category=bfe.PreviewWarning)
 
         # Some defaults may be used from the session if not provided otherwise.
         session = self._resolve_session(session)
@@ -862,7 +856,7 @@ class FunctionSession:
                             ValueError,
                             "'input_types' was not set and parameter "
                             f"'{parameter.name}' is missing a type annotation. "
-                            "Types are required to use managed function.",
+                            "Types are required to use udf.",
                         )
                     input_types.append(param_type)
             elif not isinstance(input_types, collections.abc.Sequence):
@@ -875,8 +869,7 @@ class FunctionSession:
                     raise bf_formatting.create_exception_with_feedback_link(
                         ValueError,
                         "'output_type' was not set and function is missing a "
-                        "return type annotation. Types are required to use "
-                        "managed function.",
+                        "return type annotation. Types are required to use udf",
                     )
 
             # The function will actually be receiving a pandas Series, but allow
