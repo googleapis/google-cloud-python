@@ -40,7 +40,7 @@ def sample_create_application():
 
     # Initialize request argument(s)
     application = apphub_v1.Application()
-    application.scope.type_ = "REGIONAL"
+    application.scope.type_ = "GLOBAL"
 
     request = apphub_v1.CreateApplicationRequest(
         parent="parent_value",
