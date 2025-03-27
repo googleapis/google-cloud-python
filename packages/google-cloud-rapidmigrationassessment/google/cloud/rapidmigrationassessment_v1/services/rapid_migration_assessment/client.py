@@ -1517,7 +1517,7 @@ class RapidMigrationAssessmentClient(metaclass=RapidMigrationAssessmentClientMet
     ) -> operation.Operation:
         r"""Deletes a single Collector - changes state of
         collector to "Deleting". Background jobs does final
-        deletion thorugh producer api.
+        deletion through producer API.
 
         .. code-block:: python
 

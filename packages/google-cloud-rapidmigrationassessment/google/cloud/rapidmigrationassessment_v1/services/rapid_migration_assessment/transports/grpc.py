@@ -522,7 +522,7 @@ class RapidMigrationAssessmentGrpcTransport(RapidMigrationAssessmentTransport):
 
         Deletes a single Collector - changes state of
         collector to "Deleting". Background jobs does final
-        deletion thorugh producer api.
+        deletion through producer API.
 
         Returns:
             Callable[[~.DeleteCollectorRequest],
