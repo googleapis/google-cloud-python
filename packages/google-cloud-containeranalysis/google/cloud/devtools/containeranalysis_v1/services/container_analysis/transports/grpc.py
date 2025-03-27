@@ -473,6 +473,34 @@ class ContainerAnalysisGrpcTransport(ContainerAnalysisTransport):
             )
         return self._stubs["get_vulnerability_occurrences_summary"]
 
+    @property
+    def export_sbom(
+        self,
+    ) -> Callable[
+        [containeranalysis.ExportSBOMRequest], containeranalysis.ExportSBOMResponse
+    ]:
+        r"""Return a callable for the export sbom method over gRPC.
+
+        Generates an SBOM for the given resource.
+
+        Returns:
+            Callable[[~.ExportSBOMRequest],
+                    ~.ExportSBOMResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "export_sbom" not in self._stubs:
+            self._stubs["export_sbom"] = self._logged_channel.unary_unary(
+                "/google.devtools.containeranalysis.v1.ContainerAnalysis/ExportSBOM",
+                request_serializer=containeranalysis.ExportSBOMRequest.serialize,
+                response_deserializer=containeranalysis.ExportSBOMResponse.deserialize,
+            )
+        return self._stubs["export_sbom"]
+
     def close(self):
         self._logged_channel.close()
 

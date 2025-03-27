@@ -25,6 +25,8 @@ from google.cloud.devtools.containeranalysis_v1.services.container_analysis.clie
     ContainerAnalysisClient,
 )
 from google.cloud.devtools.containeranalysis_v1.types.containeranalysis import (
+    ExportSBOMRequest,
+    ExportSBOMResponse,
     GetVulnerabilityOccurrencesSummaryRequest,
     VulnerabilityOccurrencesSummary,
 )
@@ -32,6 +34,8 @@ from google.cloud.devtools.containeranalysis_v1.types.containeranalysis import (
 __all__ = (
     "ContainerAnalysisClient",
     "ContainerAnalysisAsyncClient",
+    "ExportSBOMRequest",
+    "ExportSBOMResponse",
     "GetVulnerabilityOccurrencesSummaryRequest",
     "VulnerabilityOccurrencesSummary",
 )

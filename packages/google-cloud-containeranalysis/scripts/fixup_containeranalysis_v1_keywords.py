@@ -39,6 +39,7 @@ def partition(
 class containeranalysisCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
+        'export_sbom': ('name', 'cloud_storage_location', ),
         'get_iam_policy': ('resource', 'options', ),
         'get_vulnerability_occurrences_summary': ('parent', 'filter', ),
         'set_iam_policy': ('resource', 'policy', 'update_mask', ),

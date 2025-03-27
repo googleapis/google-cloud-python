@@ -23,6 +23,8 @@ from .services.container_analysis import (
     ContainerAnalysisClient,
 )
 from .types.containeranalysis import (
+    ExportSBOMRequest,
+    ExportSBOMResponse,
     GetVulnerabilityOccurrencesSummaryRequest,
     VulnerabilityOccurrencesSummary,
 )
@@ -30,6 +32,8 @@ from .types.containeranalysis import (
 __all__ = (
     "ContainerAnalysisAsyncClient",
     "ContainerAnalysisClient",
+    "ExportSBOMRequest",
+    "ExportSBOMResponse",
     "GetVulnerabilityOccurrencesSummaryRequest",
     "VulnerabilityOccurrencesSummary",
 )
