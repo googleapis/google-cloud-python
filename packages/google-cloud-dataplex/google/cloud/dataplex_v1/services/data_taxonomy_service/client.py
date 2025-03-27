@@ -78,6 +78,7 @@ from google.cloud.dataplex_v1.types import security, service
 from .transports.base import DEFAULT_CLIENT_INFO, DataTaxonomyServiceTransport
 from .transports.grpc import DataTaxonomyServiceGrpcTransport
 from .transports.grpc_asyncio import DataTaxonomyServiceGrpcAsyncIOTransport
+from .transports.rest import DataTaxonomyServiceRestTransport
 
 
 class DataTaxonomyServiceClientMeta(type):
@@ -93,6 +94,7 @@ class DataTaxonomyServiceClientMeta(type):
     )  # type: Dict[str, Type[DataTaxonomyServiceTransport]]
     _transport_registry["grpc"] = DataTaxonomyServiceGrpcTransport
     _transport_registry["grpc_asyncio"] = DataTaxonomyServiceGrpcAsyncIOTransport
+    _transport_registry["rest"] = DataTaxonomyServiceRestTransport
 
     def get_transport_class(
         cls,

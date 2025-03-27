@@ -76,6 +76,7 @@ from google.cloud.dataplex_v1.types import catalog, service
 from .transports.base import DEFAULT_CLIENT_INFO, CatalogServiceTransport
 from .transports.grpc import CatalogServiceGrpcTransport
 from .transports.grpc_asyncio import CatalogServiceGrpcAsyncIOTransport
+from .transports.rest import CatalogServiceRestTransport
 
 
 class CatalogServiceClientMeta(type):
@@ -91,6 +92,7 @@ class CatalogServiceClientMeta(type):
     )  # type: Dict[str, Type[CatalogServiceTransport]]
     _transport_registry["grpc"] = CatalogServiceGrpcTransport
     _transport_registry["grpc_asyncio"] = CatalogServiceGrpcAsyncIOTransport
+    _transport_registry["rest"] = CatalogServiceRestTransport
 
     def get_transport_class(
         cls,
