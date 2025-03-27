@@ -779,7 +779,7 @@ class ControlServiceClient(metaclass=ControlServiceClientMeta):
 
                 # Initialize request argument(s)
                 control = discoveryengine_v1.Control()
-                control.boost_action.boost = 0.551
+                control.boost_action.fixed_boost = 0.1174
                 control.boost_action.filter = "filter_value"
                 control.boost_action.data_store = "data_store_value"
                 control.display_name = "display_name_value"
@@ -1026,7 +1026,7 @@ class ControlServiceClient(metaclass=ControlServiceClientMeta):
 
                 # Initialize request argument(s)
                 control = discoveryengine_v1.Control()
-                control.boost_action.boost = 0.551
+                control.boost_action.fixed_boost = 0.1174
                 control.boost_action.filter = "filter_value"
                 control.boost_action.data_store = "data_store_value"
                 control.display_name = "display_name_value"

@@ -1142,7 +1142,7 @@ class DocumentServiceClient(metaclass=DocumentServiceClientMeta):
 
                 This field must conform to
                 `RFC-1034 <https://tools.ietf.org/html/rfc1034>`__
-                standard with a length limit of 63 characters.
+                standard with a length limit of 128 characters.
                 Otherwise, an ``INVALID_ARGUMENT`` error is returned.
 
                 This corresponds to the ``document_id`` field

@@ -179,7 +179,7 @@ class CreateDocumentRequest(proto.Message):
 
             This field must conform to
             `RFC-1034 <https://tools.ietf.org/html/rfc1034>`__ standard
-            with a length limit of 63 characters. Otherwise, an
+            with a length limit of 128 characters. Otherwise, an
             ``INVALID_ARGUMENT`` error is returned.
     """
 

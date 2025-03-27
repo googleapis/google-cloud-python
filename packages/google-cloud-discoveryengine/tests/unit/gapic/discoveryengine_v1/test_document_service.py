@@ -6315,6 +6315,7 @@ def test_create_document_rest_call_success(request_type):
                     ],
                 }
             ],
+            "pending_message": "pending_message_value",
         },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
@@ -6554,6 +6555,7 @@ def test_update_document_rest_call_success(request_type):
                     ],
                 }
             ],
+            "pending_message": "pending_message_value",
         },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.

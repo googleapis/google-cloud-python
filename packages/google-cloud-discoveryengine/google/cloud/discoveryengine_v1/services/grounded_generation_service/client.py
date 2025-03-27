@@ -826,7 +826,7 @@ class GroundedGenerationServiceClient(metaclass=GroundedGenerationServiceClientM
 
         Returns:
             Iterable[google.cloud.discoveryengine_v1.types.GenerateGroundedContentResponse]:
-
+                Response for the GenerateGroundedContent method.
         """
 
         # Wrap the RPC method; this adds retry and timeout information,
@@ -905,7 +905,7 @@ class GroundedGenerationServiceClient(metaclass=GroundedGenerationServiceClientM
 
         Returns:
             google.cloud.discoveryengine_v1.types.GenerateGroundedContentResponse:
-
+                Response for the GenerateGroundedContent method.
         """
         # Create or coerce a protobuf request object.
         # - Use the request object if provided (there's no risk of modifying the input as
