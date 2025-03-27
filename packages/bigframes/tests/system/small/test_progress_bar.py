@@ -55,6 +55,19 @@ def test_progress_bar_scalar(penguins_df_default_index: bf.dataframe.DataFrame, 
     with bf.option_context("display.progress_bar", "terminal"):
         penguins_df_default_index["body_mass_g"].head(10).mean()
 
+    assert capsys.readouterr().out == ""
+
+
+def test_progress_bar_scalar_allow_large_results(
+    penguins_df_default_index: bf.dataframe.DataFrame, capsys
+):
+    capsys.readouterr()  # clear output
+
+    with bf.option_context(
+        "display.progress_bar", "terminal", "bigquery.allow_large_results", "True"
+    ):
+        penguins_df_default_index["body_mass_g"].head(10).mean()
+
     assert_loading_msg_exist(capsys.readouterr().out)
 
 

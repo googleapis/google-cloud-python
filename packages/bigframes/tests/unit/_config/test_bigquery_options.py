@@ -183,3 +183,10 @@ def test_client_endpoints_override_set_shows_warning():
 
     with pytest.warns(UserWarning):
         options.client_endpoints_override = {"bqclient": "endpoint_address"}
+
+
+def test_default_options():
+    options = bigquery_options.BigQueryOptions()
+
+    assert options.allow_large_results is False
+    assert options.ordering_mode == "strict"

@@ -89,7 +89,7 @@ class BigQueryOptions:
         kms_key_name: Optional[str] = None,
         skip_bq_connection_check: bool = False,
         *,
-        allow_large_results: bool = True,
+        allow_large_results: bool = False,
         ordering_mode: Literal["strict", "partial"] = "strict",
         client_endpoints_override: Optional[dict] = None,
     ):
