@@ -86,6 +86,9 @@
         uid: bigframes.operations.structs.StructAccessor
       - name: PlotAccessor
         uid: bigframes.operations.plotting.PlotAccessor
+      - name: BlobAccessor
+        uid: bigframes.operations.blob.BlobAccessor
+        status: beta
       name: Series
     - name: Window
       uid: bigframes.core.window.Window
