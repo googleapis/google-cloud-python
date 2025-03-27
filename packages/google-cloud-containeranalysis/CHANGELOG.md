@@ -1,5 +1,17 @@
 # Changelog
 
+## [2.18.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-containeranalysis-v2.17.2...google-cloud-containeranalysis-v2.18.0) (2025-03-27)
+
+
+### Features
+
+* add ExportSBOM API method for v1 ([19c7d9c](https://github.com/googleapis/google-cloud-python/commit/19c7d9c4fba0e362165917a7aed0eebc7f17ff12))
+
+
+### Documentation
+
+* Minor formatting changes to proto headers ([19c7d9c](https://github.com/googleapis/google-cloud-python/commit/19c7d9c4fba0e362165917a7aed0eebc7f17ff12))
+
 ## [2.17.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-containeranalysis-v2.17.1...google-cloud-containeranalysis-v2.17.2) (2025-03-15)
 
 

@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.18](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-analyticshub-v0.4.17...google-cloud-bigquery-analyticshub-v0.4.18) (2025-03-27)
+
+
+### Features
+
+* [google-cloud-bigquery-analyticshub] Support new feature Sharing Cloud Pubsub Streams via AH (GA) and Subscriber Email logging feature ([#13713](https://github.com/googleapis/google-cloud-python/issues/13713)) ([f6a55e3](https://github.com/googleapis/google-cloud-python/commit/f6a55e35fcfd5f58d3268fb3f7a46ffd761c7db3))
+
 ## [0.4.17](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-analyticshub-v0.4.16...google-cloud-bigquery-analyticshub-v0.4.17) (2025-03-15)
 
 
