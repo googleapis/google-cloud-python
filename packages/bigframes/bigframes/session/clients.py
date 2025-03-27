@@ -35,6 +35,8 @@ import bigframes.constants
 import bigframes.exceptions as bfe
 import bigframes.version
 
+from . import environment
+
 _ENV_DEFAULT_PROJECT = "GOOGLE_CLOUD_PROJECT"
 _APPLICATION_NAME = f"bigframes/{bigframes.version.__version__} ibis/9.2.0"
 _SCOPES = ["https://www.googleapis.com/auth/cloud-platform"]
@@ -55,6 +57,21 @@ _BIGQUERYSTORAGE_REGIONAL_ENDPOINT = (
 
 def _get_default_credentials_with_project():
     return pydata_google_auth.default(scopes=_SCOPES, use_local_webserver=False)
+
+
+def _get_application_names():
+    apps = [_APPLICATION_NAME]
+
+    if environment.is_vscode():
+        apps.append("vscode")
+        if environment.is_vscode_google_cloud_code_extension_installed():
+            apps.append(environment.GOOGLE_CLOUD_CODE_EXTENSION_NAME)
+    elif environment.is_jupyter():
+        apps.append("jupyter")
+        if environment.is_jupyter_bigquery_plugin_installed():
+            apps.append(environment.BIGQUERY_JUPYTER_PLUGIN_NAME)
+
+    return " ".join(apps)
 
 
 class ClientsProvider:
@@ -91,9 +108,9 @@ class ClientsProvider:
             )
 
         self._application_name = (
-            f"{_APPLICATION_NAME} {application_name}"
+            f"{_get_application_names()} {application_name}"
             if application_name
-            else _APPLICATION_NAME
+            else _get_application_names()
         )
         self._project = project
 
