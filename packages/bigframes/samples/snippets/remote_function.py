@@ -47,9 +47,8 @@ def run_remote_function_and_read_gbq_function(project_id: str) -> None:
     # of the penguins, which is a real number, into a category, which is a
     # string.
     @bpd.remote_function(
-        float,
-        str,
         reuse=False,
+        cloud_function_service_account="default",
     )
     def get_bucket(num: float) -> str:
         if not num:
@@ -91,10 +90,9 @@ def run_remote_function_and_read_gbq_function(project_id: str) -> None:
     # as a remote function. The custom function in this example has external
     # package dependency, which can be specified via `packages` parameter.
     @bpd.remote_function(
-        str,
-        str,
         reuse=False,
         packages=["cryptography"],
+        cloud_function_service_account="default",
     )
     def get_hash(input: str) -> str:
         from cryptography.fernet import Fernet

@@ -1854,7 +1854,7 @@ class Series(NDFrame):  # type: ignore[misc]
         to potentially reuse a previously deployed `remote_function` from
         the same user defined function.
 
-            >>> @bpd.remote_function(reuse=False)
+            >>> @bpd.remote_function(reuse=False, cloud_function_service_account="default")
             ... def minutes_to_hours(x: int) -> float:
             ...     return x/60
 
@@ -1883,6 +1883,7 @@ class Series(NDFrame):  # type: ignore[misc]
             >>> @bpd.remote_function(
             ...     reuse=False,
             ...     packages=["cryptography"],
+            ...     cloud_function_service_account="default"
             ... )
             ... def get_hash(input: str) -> str:
             ...     from cryptography.fernet import Fernet
@@ -1900,7 +1901,7 @@ class Series(NDFrame):  # type: ignore[misc]
 
         You could return an array output from the remote function.
 
-            >>> @bpd.remote_function(reuse=False)
+            >>> @bpd.remote_function(reuse=False, cloud_function_service_account="default")
             ... def text_analyzer(text: str) -> list[int]:
             ...     words = text.count(" ") + 1
             ...     periods = text.count(".")
@@ -5069,7 +5070,7 @@ class Series(NDFrame):  # type: ignore[misc]
         condition is evaluated based on a complicated business logic which cannot
         be expressed in form of a Series.
 
-            >>> @bpd.remote_function(reuse=False)
+            >>> @bpd.remote_function(reuse=False, cloud_function_service_account="default")
             ... def should_mask(name: str) -> bool:
             ...     hash = 0
             ...     for char_ in name:
@@ -5665,7 +5666,7 @@ class Series(NDFrame):  # type: ignore[misc]
 
         It also accepts a remote function:
 
-            >>> @bpd.remote_function()
+            >>> @bpd.remote_function(cloud_function_service_account="default")
             ... def my_mapper(val: str) -> str:
             ...     vowels = ["a", "e", "i", "o", "u"]
             ...     if val:

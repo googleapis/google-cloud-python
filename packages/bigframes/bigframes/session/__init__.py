@@ -1202,6 +1202,7 @@ class Session(
 
     def remote_function(
         self,
+        *,
         input_types: Union[None, type, Sequence[type]] = None,
         output_type: Optional[type] = None,
         dataset: Optional[str] = None,
@@ -1209,7 +1210,7 @@ class Session(
         reuse: bool = True,
         name: Optional[str] = None,
         packages: Optional[Sequence[str]] = None,
-        cloud_function_service_account: Optional[str] = None,
+        cloud_function_service_account: str,
         cloud_function_kms_key_name: Optional[str] = None,
         cloud_function_docker_repository: Optional[str] = None,
         max_batching_rows: Optional[int] = 1000,
@@ -1327,8 +1328,8 @@ class Session(
                 Explicit name of the external package dependencies. Each dependency
                 is added to the `requirements.txt` as is, and can be of the form
                 supported in https://pip.pypa.io/en/stable/reference/requirements-file-format/.
-            cloud_function_service_account (str, Optional):
-                Service account to use for the cloud functions. If not provided
+            cloud_function_service_account (str):
+                Service account to use for the cloud functions. If "default" provided
                 then the default service account would be used. See
                 https://cloud.google.com/functions/docs/securing/function-identity
                 for more details. Please make sure the service account has the
@@ -1406,8 +1407,8 @@ class Session(
                 `bigframes_remote_function` - The bigquery remote function capable of calling into `bigframes_cloud_function`.
         """
         return self._function_session.remote_function(
-            input_types,
-            output_type,
+            input_types=input_types,
+            output_type=output_type,
             session=self,
             dataset=dataset,
             bigquery_connection=bigquery_connection,
@@ -1499,8 +1500,8 @@ class Session(
                 deployed for the user defined code.
         """
         return self._function_session.udf(
-            input_types,
-            output_type,
+            input_types=input_types,
+            output_type=output_type,
             session=self,
             dataset=dataset,
             bigquery_connection=bigquery_connection,
@@ -1593,7 +1594,7 @@ class Session(
         Another use case is to define your own remote function and use it later.
         For example, define the remote function:
 
-            >>> @bpd.remote_function()
+            >>> @bpd.remote_function(cloud_function_service_account="default")
             ... def tenfold(num: int) -> float:
             ...     return num * 10
 
@@ -1620,7 +1621,7 @@ class Session(
         note, row processor implies that the function has only one input
         parameter.
 
-            >>> @bpd.remote_function()
+            >>> @bpd.remote_function(cloud_function_service_account="default")
             ... def row_sum(s: bpd.Series) -> float:
             ...     return s['a'] + s['b'] + s['c']
 

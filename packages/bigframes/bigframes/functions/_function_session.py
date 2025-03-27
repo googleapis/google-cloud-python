@@ -237,6 +237,7 @@ class FunctionSession:
     # https://github.com/ibis-project/ibis/blob/master/ibis/backends/bigquery/udf/__init__.py
     def remote_function(
         self,
+        *,
         input_types: Union[None, type, Sequence[type]] = None,
         output_type: Optional[type] = None,
         session: Optional[Session] = None,
@@ -251,7 +252,7 @@ class FunctionSession:
         reuse: bool = True,
         name: Optional[str] = None,
         packages: Optional[Sequence[str]] = None,
-        cloud_function_service_account: Optional[str] = None,
+        cloud_function_service_account: str,
         cloud_function_kms_key_name: Optional[str] = None,
         cloud_function_docker_repository: Optional[str] = None,
         max_batching_rows: Optional[int] = 1000,
@@ -384,8 +385,8 @@ class FunctionSession:
                 Explicit name of the external package dependencies. Each dependency
                 is added to the `requirements.txt` as is, and can be of the form
                 supported in https://pip.pypa.io/en/stable/reference/requirements-file-format/.
-            cloud_function_service_account (str, Optional):
-                Service account to use for the cloud functions. If not provided then
+            cloud_function_service_account (str):
+                Service account to use for the cloud functions. If "default" provided then
                 the default service account would be used. See
                 https://cloud.google.com/functions/docs/securing/function-identity
                 for more details. Please make sure the service account has the
@@ -455,22 +456,12 @@ class FunctionSession:
         # Some defaults may be used from the session if not provided otherwise.
         session = self._resolve_session(session)
 
-        # raise a UserWarning if user does not explicitly set cloud_function_service_account to a
-        # user-managed cloud_function_service_account of to default
-        msg = bfe.format_message(
-            "You have not explicitly set a user-managed `cloud_function_service_account`. "
-            "Using the default Compute Engine service account. "
-            "In BigFrames 2.0 onwards, you would have to explicitly set `cloud_function_service_account` "
-            'either to a user-managed service account (preferred) or to `"default"` '
-            "to use the default Compute Engine service account (discouraged). "
-            "See, https://cloud.google.com/functions/docs/securing/function-identity."
-        )
-
+        # If the user forces the cloud function service argument to None, throw
+        # an exception
         if cloud_function_service_account is None:
-            warnings.warn(msg, stacklevel=2, category=FutureWarning)
-
-        if cloud_function_service_account == "default":
-            cloud_function_service_account = None
+            raise ValueError(
+                'You must provide a user managed cloud_function_service_account, or "default" if you would like to let the default service account be used.'
+            )
 
         # A BigQuery client is required to perform BQ operations.
         bigquery_client = self._resolve_bigquery_client(session, bigquery_client)
@@ -615,7 +606,9 @@ class FunctionSession:
                 bq_connection_manager,
                 cloud_function_region,
                 cloud_functions_client,
-                cloud_function_service_account,
+                None
+                if cloud_function_service_account == "default"
+                else cloud_function_service_account,
                 cloud_function_kms_key_name,
                 cloud_function_docker_repository,
                 session=session,  # type: ignore

@@ -17,11 +17,9 @@ import importlib.util
 import inspect
 import math  # must keep this at top level to test udf referring global import
 import os.path
-import re
 import shutil
 import tempfile
 import textwrap
-import typing
 import warnings
 
 import google.api_core.exceptions
@@ -111,11 +109,12 @@ def test_remote_function_multiply_with_ibis(
     try:
 
         @session.remote_function(
-            [int, int],
-            int,
-            dataset_id,
-            bq_cf_connection,
+            input_types=[int, int],
+            output_type=int,
+            dataset=dataset_id,
+            bigquery_connection=bq_cf_connection,
             reuse=False,
+            cloud_function_service_account="default",
         )
         def multiply(x, y):
             return x * y
@@ -165,11 +164,12 @@ def test_remote_function_stringify_with_ibis(
     try:
 
         @session.remote_function(
-            [int],
-            str,
-            dataset_id,
-            bq_cf_connection,
+            input_types=[int],
+            output_type=str,
+            dataset=dataset_id,
+            bigquery_connection=bq_cf_connection,
             reuse=False,
+            cloud_function_service_account="default",
         )
         def stringify(x):
             return f"I got {x}"
@@ -213,11 +213,12 @@ def test_remote_function_binop(session, scalars_dfs, dataset_id, bq_cf_connectio
             return x * abs(y % 4)
 
         remote_func = session.remote_function(
-            [str, int],
-            str,
-            dataset_id,
-            bq_cf_connection,
+            input_types=[str, int],
+            output_type=str,
+            dataset=dataset_id,
+            bigquery_connection=bq_cf_connection,
             reuse=False,
+            cloud_function_service_account="default",
         )(func)
 
         scalars_df, scalars_pandas_df = scalars_dfs
@@ -250,11 +251,12 @@ def test_remote_function_binop_array_output(
             return [len(x), abs(y % 4)]
 
         remote_func = session.remote_function(
-            [str, int],
-            list[int],
-            dataset_id,
-            bq_cf_connection,
+            input_types=[str, int],
+            output_type=list[int],
+            dataset=dataset_id,
+            bigquery_connection=bq_cf_connection,
             reuse=False,
+            cloud_function_service_account="default",
         )(func)
 
         scalars_df, scalars_pandas_df = scalars_dfs
@@ -284,11 +286,12 @@ def test_remote_function_decorator_with_bigframes_series(
     try:
 
         @session.remote_function(
-            [int],
-            int,
-            dataset_id,
-            bq_cf_connection,
+            input_types=[int],
+            output_type=int,
+            dataset=dataset_id,
+            bigquery_connection=bq_cf_connection,
             reuse=False,
+            cloud_function_service_account="default",
         )
         def square(x):
             return x * x
@@ -330,11 +333,12 @@ def test_remote_function_explicit_with_bigframes_series(
             return x + 1
 
         remote_add_one = session.remote_function(
-            [int],
-            int,
-            dataset_id,
-            bq_cf_connection,
+            input_types=[int],
+            output_type=int,
+            dataset=dataset_id,
+            bigquery_connection=bq_cf_connection,
             reuse=False,
+            cloud_function_service_account="default",
         )(add_one)
 
         scalars_df, scalars_pandas_df = scalars_dfs
@@ -380,7 +384,12 @@ def test_remote_function_input_types(session, scalars_dfs, input_types):
         def add_one(x):
             return x + 1
 
-        remote_add_one = session.remote_function(input_types, int, reuse=False)(add_one)
+        remote_add_one = session.remote_function(
+            input_types=input_types,
+            output_type=int,
+            reuse=False,
+            cloud_function_service_account="default",
+        )(add_one)
         assert remote_add_one.input_dtypes == (bigframes.dtypes.INT_DTYPE,)
 
         scalars_df, scalars_pandas_df = scalars_dfs
@@ -406,11 +415,12 @@ def test_remote_function_explicit_dataset_not_created(
     try:
 
         @session.remote_function(
-            [int],
-            int,
-            dataset_id_not_created,
-            bq_cf_connection,
+            input_types=[int],
+            output_type=int,
+            dataset=dataset_id_not_created,
+            bigquery_connection=bq_cf_connection,
             reuse=False,
+            cloud_function_service_account="default",
         )
         def square(x):
             return x * x
@@ -459,11 +469,12 @@ def test_remote_udf_referring_outside_var(
             return NO_SIGN
 
         remote_sign = session.remote_function(
-            [int],
-            int,
-            dataset_id,
-            bq_cf_connection,
+            input_types=[int],
+            output_type=int,
+            dataset=dataset_id,
+            bigquery_connection=bq_cf_connection,
             reuse=False,
+            cloud_function_service_account="default",
         )(sign)
 
         scalars_df, scalars_pandas_df = scalars_dfs
@@ -506,11 +517,12 @@ def test_remote_udf_referring_outside_import(
             return 2 * mymath.pi * radius
 
         remote_circumference = session.remote_function(
-            [float],
-            float,
-            dataset_id,
-            bq_cf_connection,
+            input_types=[float],
+            output_type=float,
+            dataset=dataset_id,
+            bigquery_connection=bq_cf_connection,
             reuse=False,
+            cloud_function_service_account="default",
         )(circumference)
 
         scalars_df, scalars_pandas_df = scalars_dfs
@@ -555,11 +567,12 @@ def test_remote_udf_referring_global_var_and_import(
             return _team_pi
 
         remote_find_team = session.remote_function(
-            [float],
-            str,
-            dataset_id,
-            bq_cf_connection,
+            input_types=[float],
+            output_type=str,
+            dataset=dataset_id,
+            bigquery_connection=bq_cf_connection,
             reuse=False,
+            cloud_function_service_account="default",
         )(find_team)
 
         scalars_df, scalars_pandas_df = scalars_dfs
@@ -627,11 +640,12 @@ def test_remote_function_restore_with_bigframes_series(
         # The first time both the cloud function and the bq remote function don't
         # exist and would be created
         remote_add_one = session.remote_function(
-            [int],
-            int,
-            dataset_id,
-            bq_cf_connection,
+            input_types=[int],
+            output_type=int,
+            dataset=dataset_id,
+            bigquery_connection=bq_cf_connection,
             reuse=True,
+            cloud_function_service_account="default",
         )(add_one_uniq)
 
         # There should have been excactly one cloud function created at this point
@@ -697,11 +711,12 @@ def test_remote_function_restore_with_bigframes_series(
         # exist even though the remote function exists, and goes ahead and recreates
         # the cloud function
         remote_add_one = session.remote_function(
-            [int],
-            int,
-            dataset_id,
-            bq_cf_connection,
+            input_types=[int],
+            output_type=int,
+            dataset=dataset_id,
+            bigquery_connection=bq_cf_connection,
             reuse=True,
+            cloud_function_service_account="default",
         )(add_one_uniq)
 
         # There should be excactly one cloud function again
@@ -743,11 +758,12 @@ def test_remote_udf_mask_default_value(
             return flag
 
         is_odd_remote = session.remote_function(
-            [int],
-            bool,
-            dataset_id,
-            bq_cf_connection,
+            input_types=[int],
+            output_type=bool,
+            dataset=dataset_id,
+            bigquery_connection=bq_cf_connection,
             reuse=False,
+            cloud_function_service_account="default",
         )(is_odd)
 
         scalars_df, scalars_pandas_df = scalars_dfs
@@ -783,11 +799,12 @@ def test_remote_udf_mask_custom_value(
             return flag
 
         is_odd_remote = session.remote_function(
-            [int],
-            bool,
-            dataset_id,
-            bq_cf_connection,
+            input_types=[int],
+            output_type=bool,
+            dataset=dataset_id,
+            bigquery_connection=bq_cf_connection,
             reuse=False,
+            cloud_function_service_account="default",
         )(is_odd)
 
         scalars_df, scalars_pandas_df = scalars_dfs
@@ -817,11 +834,12 @@ def test_remote_udf_lambda(session, scalars_dfs, dataset_id, bq_cf_connection):
         add_one_lambda = lambda x: x + 1  # noqa: E731
 
         add_one_lambda_remote = session.remote_function(
-            [int],
-            int,
-            dataset_id,
-            bq_cf_connection,
+            input_types=[int],
+            output_type=int,
+            dataset=dataset_id,
+            bigquery_connection=bq_cf_connection,
             reuse=False,
+            cloud_function_service_account="default",
         )(add_one_lambda)
 
         scalars_df, scalars_pandas_df = scalars_dfs
@@ -872,12 +890,13 @@ def test_remote_function_with_explicit_name(
 
         # Create the remote function with the name provided explicitly
         square_remote = session.remote_function(
-            [int],
-            int,
-            dataset_id,
-            bq_cf_connection,
+            input_types=[int],
+            output_type=int,
+            dataset=dataset_id,
+            bigquery_connection=bq_cf_connection,
             reuse=False,
             name=rf_name,
+            cloud_function_service_account="default",
         )(square)
 
         # The remote function should reflect the explicitly provided name
@@ -925,12 +944,13 @@ def test_remote_function_with_external_package_dependencies(
 
         # Create the remote function with the name provided explicitly
         pd_np_foo_remote = session.remote_function(
-            [int],
-            float,
-            dataset_id,
-            bq_cf_connection,
+            input_types=[int],
+            output_type=float,
+            dataset=dataset_id,
+            bigquery_connection=bq_cf_connection,
             reuse=False,
             packages=["numpy", "pandas >= 2.0.0"],
+            cloud_function_service_account="default",
         )(pd_np_foo)
 
         # The behavior of the created remote function should be as expected
@@ -1005,11 +1025,12 @@ def test_remote_function_with_explicit_name_reuse(
 
         # Create a new remote function with the name provided explicitly
         square_remote1 = session.remote_function(
-            [int],
-            int,
-            dataset_id,
-            bq_cf_connection,
+            input_types=[int],
+            output_type=int,
+            dataset=dataset_id,
+            bigquery_connection=bq_cf_connection,
             name=rf_name,
+            cloud_function_service_account="default",
         )(square_uniq)
 
         # The remote function should reflect the explicitly provided name
@@ -1030,11 +1051,12 @@ def test_remote_function_with_explicit_name_reuse(
         # explicitly. Since reuse is True by default, the previously created
         # remote function with the same name will be reused.
         square_remote2 = session.remote_function(
-            [int],
-            int,
-            dataset_id,
-            bq_cf_connection,
+            input_types=[int],
+            output_type=int,
+            dataset=dataset_id,
+            bigquery_connection=bq_cf_connection,
             name=rf_name,
+            cloud_function_service_account="default",
         )(square_uniq)
 
         # The new remote function should still reflect the explicitly provided name
@@ -1074,11 +1096,12 @@ def test_remote_function_with_explicit_name_reuse(
         # created remote function with the same name should not be reused since
         # this time it is a different user code.
         plusone_remote = session.remote_function(
-            [int],
-            int,
-            dataset_id,
-            bq_cf_connection,
+            input_types=[int],
+            output_type=int,
+            dataset=dataset_id,
+            bigquery_connection=bq_cf_connection,
             name=rf_name,
+            cloud_function_service_account="default",
         )(plusone_uniq)
 
         # The new remote function should still reflect the explicitly provided name
@@ -1139,7 +1162,13 @@ def test_remote_function_via_session_context_connection_setter(
         # unique dataset_id, even though the cloud function would be reused, the bq
         # remote function would still be created, making use of the bq connection
         # set in the BigQueryOptions above.
-        @session.remote_function([int], int, dataset=dataset_id, reuse=False)
+        @session.remote_function(
+            input_types=[int],
+            output_type=int,
+            dataset=dataset_id,
+            reuse=False,
+            cloud_function_service_account="default",
+        )
         def square(x):
             return x * x
 
@@ -1174,7 +1203,13 @@ def test_remote_function_via_session_context_connection_setter(
 def test_remote_function_default_connection(session, scalars_dfs, dataset_id):
     try:
 
-        @session.remote_function([int], int, dataset=dataset_id, reuse=False)
+        @session.remote_function(
+            input_types=[int],
+            output_type=int,
+            dataset=dataset_id,
+            reuse=False,
+            cloud_function_service_account="default",
+        )
         def square(x):
             return x * x
 
@@ -1209,7 +1244,13 @@ def test_remote_function_default_connection(session, scalars_dfs, dataset_id):
 def test_remote_function_runtime_error(session, scalars_dfs, dataset_id):
     try:
 
-        @session.remote_function([int], int, dataset=dataset_id, reuse=False)
+        @session.remote_function(
+            input_types=[int],
+            output_type=int,
+            dataset=dataset_id,
+            reuse=False,
+            cloud_function_service_account="default",
+        )
         def square(x):
             return x * x
 
@@ -1233,7 +1274,12 @@ def test_remote_function_anonymous_dataset(session, scalars_dfs):
         # function in the bigframes session's anonymous dataset. Use reuse=False
         # param to make sure parallel instances of the test don't step over each
         # other due to the common anonymous dataset.
-        @session.remote_function([int], int, reuse=False)
+        @session.remote_function(
+            input_types=[int],
+            output_type=int,
+            reuse=False,
+            cloud_function_service_account="default",
+        )
         def square(x):
             return x * x
 
@@ -1291,7 +1337,10 @@ def test_remote_function_via_session_custom_sa(scalars_dfs):
     try:
 
         @rf_session.remote_function(
-            [int], int, reuse=False, cloud_function_service_account=gcf_service_account
+            input_types=[int],
+            output_type=int,
+            reuse=False,
+            cloud_function_service_account=gcf_service_account,
         )
         def square_num(x):
             if x is None:
@@ -1322,38 +1371,12 @@ def test_remote_function_via_session_custom_sa(scalars_dfs):
         )
 
 
-@pytest.mark.parametrize(
-    ("remote_function_args"),
-    [
-        pytest.param(
-            {},
-            id="no-set",
-        ),
-        pytest.param(
-            {"cloud_function_service_account": None},
-            id="set-none",
-        ),
-    ],
-)
-def test_remote_function_warns_default_cloud_function_service_account(
-    session, remote_function_args
-):
-    with pytest.warns(FutureWarning) as record:
-        session.remote_function(**remote_function_args)
-
-    len(
-        [
-            warn
-            for warn in record
-            if re.search(
-                (
-                    "You have not explicitly set a user-managed.*Using the default Compute Engine.*service account"
-                ),
-                typing.cast(FutureWarning, warn.message).args[0],
-                re.DOTALL,
-            )
-        ]
-    ) == 1
+def test_remote_function_throws_none_cloud_function_service_account(session):
+    with pytest.raises(
+        ValueError,
+        match='^You must provide a user managed cloud_function_service_account, or "default" if you would like to let the default service account be used.$',
+    ):
+        session.remote_function(cloud_function_service_account=None)
 
 
 @pytest.mark.flaky(retries=2, delay=120)
@@ -1378,9 +1401,10 @@ def test_remote_function_with_gcf_cmek():
     try:
 
         @session.remote_function(
-            [int],
-            int,
+            input_types=[int],
+            output_type=int,
             reuse=False,
+            cloud_function_service_account="default",
             cloud_function_kms_key_name=cmek,
             cloud_function_docker_repository=docker_repository,
         )
@@ -1453,7 +1477,11 @@ def test_remote_function_via_session_vpc(scalars_dfs):
             return x * x
 
         square_num_remote = rf_session.remote_function(
-            [int], int, reuse=False, cloud_function_vpc_connector=gcf_vpc_connector
+            input_types=[int],
+            output_type=int,
+            reuse=False,
+            cloud_function_service_account="default",
+            cloud_function_vpc_connector=gcf_vpc_connector,
         )(square_num)
 
         scalars_df, scalars_pandas_df = scalars_dfs
@@ -1495,7 +1523,11 @@ def test_remote_function_max_batching_rows(session, scalars_dfs, max_batching_ro
             return x * x
 
         square_remote = session.remote_function(
-            [int], int, reuse=False, max_batching_rows=max_batching_rows
+            input_types=[int],
+            output_type=int,
+            reuse=False,
+            max_batching_rows=max_batching_rows,
+            cloud_function_service_account="default",
         )(square)
 
         bq_routine = session.bqclient.get_routine(
@@ -1534,7 +1566,11 @@ def test_remote_function_gcf_timeout(
             return x * x
 
         square_remote = session.remote_function(
-            [int], int, reuse=False, **timeout_args
+            input_types=[int],
+            output_type=int,
+            reuse=False,
+            cloud_function_service_account="default",
+            **timeout_args,
         )(square)
 
         # Assert that the GCF is created with the intended maximum timeout
@@ -1560,7 +1596,13 @@ def test_remote_function_gcf_timeout(
 def test_remote_function_gcf_timeout_max_supported_exceeded(session):
     with pytest.raises(ValueError):
 
-        @session.remote_function([int], int, reuse=False, cloud_function_timeout=1201)
+        @session.remote_function(
+            input_types=[int],
+            output_type=int,
+            reuse=False,
+            cloud_function_service_account="default",
+            cloud_function_timeout=1201,
+        )
         def square(x):
             return x * x
 
@@ -1583,7 +1625,11 @@ def test_remote_function_max_instances(
             return x * x
 
         square_remote = session.remote_function(
-            [int], int, reuse=False, **max_instances_args
+            input_types=[int],
+            output_type=int,
+            reuse=False,
+            cloud_function_service_account="default",
+            **max_instances_args,
         )(square)
 
         # Assert that the GCF is created with the intended max instance count
@@ -1632,7 +1678,10 @@ def test_df_apply_axis_1(session, scalars_dfs):
             )
 
         serialize_row_remote = session.remote_function(
-            bigframes.series.Series, str, reuse=False
+            input_types=bigframes.series.Series,
+            output_type=str,
+            reuse=False,
+            cloud_function_service_account="default",
         )(serialize_row)
 
         assert getattr(serialize_row_remote, "is_row_processor")
@@ -1678,7 +1727,10 @@ def test_df_apply_axis_1_aggregates(session, scalars_dfs):
             )
 
         analyze_remote = session.remote_function(
-            bigframes.series.Series, str, reuse=False
+            input_types=bigframes.series.Series,
+            output_type=str,
+            reuse=False,
+            cloud_function_service_account="default",
         )(analyze)
 
         assert getattr(analyze_remote, "is_row_processor")
@@ -1799,7 +1851,10 @@ def test_df_apply_axis_1_complex(session, pd_df):
             )
 
         serialize_row_remote = session.remote_function(
-            bigframes.series.Series, str, reuse=False
+            input_types=bigframes.series.Series,
+            output_type=str,
+            reuse=False,
+            cloud_function_service_account="default",
         )(serialize_row)
 
         assert getattr(serialize_row_remote, "is_row_processor")
@@ -1856,7 +1911,10 @@ SELECT "pandas na" AS text, NULL AS num
             return float(row["text"])
 
         float_parser_remote = session.remote_function(
-            bigframes.series.Series, float, reuse=False
+            input_types=bigframes.series.Series,
+            output_type=float,
+            reuse=False,
+            cloud_function_service_account="default",
         )(float_parser)
 
         assert getattr(float_parser_remote, "is_row_processor")
@@ -1901,7 +1959,9 @@ def test_remote_function_gcf_memory(
         def square(x: int) -> int:
             return x * x
 
-        square_remote = session.remote_function(reuse=False, **memory_mib_args)(square)
+        square_remote = session.remote_function(
+            reuse=False, cloud_function_service_account="default", **memory_mib_args
+        )(square)
 
         # Assert that the GCF is created with the intended memory
         gcf = session.cloudfunctionsclient.get_function(
@@ -1936,7 +1996,11 @@ def test_remote_function_gcf_memory_unsupported(session, memory_mib):
         match="Invalid value specified for container memory",
     ):
 
-        @session.remote_function(reuse=False, cloud_function_memory_mib=memory_mib)
+        @session.remote_function(
+            reuse=False,
+            cloud_function_service_account="default",
+            cloud_function_memory_mib=memory_mib,
+        )
         def square(x: int) -> int:
             return x * x
 
@@ -1947,7 +2011,7 @@ def test_remote_function_unnamed_removed_w_session_cleanup():
     session = bigframes.connect()
 
     # create an unnamed remote function in the session
-    @session.remote_function(reuse=False)
+    @session.remote_function(reuse=False, cloud_function_service_account="default")
     def foo(x: int) -> int:
         return x + 1
 
@@ -1989,7 +2053,9 @@ def test_remote_function_named_perists_w_session_cleanup():
         name = test_utils.prefixer.Prefixer("bigframes", "").create_prefix()
 
         # create an unnamed remote function in the session
-        @session.remote_function(reuse=False, name=name)
+        @session.remote_function(
+            reuse=False, name=name, cloud_function_service_account="default"
+        )
         def foo(x: int) -> int:
             return x + 1
 
@@ -2030,14 +2096,16 @@ def test_remote_function_clean_up_by_session_id():
         # without it, and later confirm that the former is deleted when the session
         # is cleaned up by session id, but the latter remains
         ## unnamed
-        @session.remote_function(reuse=False)
+        @session.remote_function(reuse=False, cloud_function_service_account="default")
         def foo_unnamed(x: int) -> int:
             return x + 1
 
         ## named
         rf_name = test_utils.prefixer.Prefixer("bigframes", "").create_prefix()
 
-        @session.remote_function(reuse=False, name=rf_name)
+        @session.remote_function(
+            reuse=False, name=rf_name, cloud_function_service_account="default"
+        )
         def foo_named(x: int) -> int:
             return x + 2
 
@@ -2104,7 +2172,12 @@ def test_df_apply_axis_1_multiple_params(session):
 
     try:
 
-        @session.remote_function([int, float, str], str, reuse=False)
+        @session.remote_function(
+            input_types=[int, float, str],
+            output_type=str,
+            reuse=False,
+            cloud_function_service_account="default",
+        )
         def foo(x, y, z):
             return f"I got {x}, {y} and {z}"
 
@@ -2179,7 +2252,12 @@ def test_df_apply_axis_1_multiple_params_array_output(session):
 
     try:
 
-        @session.remote_function([int, float, str], list[str], reuse=False)
+        @session.remote_function(
+            input_types=[int, float, str],
+            output_type=list[str],
+            reuse=False,
+            cloud_function_service_account="default",
+        )
         def foo(x, y, z):
             return [str(x), str(y), z]
 
@@ -2259,7 +2337,12 @@ def test_df_apply_axis_1_single_param_non_series(session):
 
     try:
 
-        @session.remote_function([int], str, reuse=False)
+        @session.remote_function(
+            input_types=[int],
+            output_type=str,
+            reuse=False,
+            cloud_function_service_account="default",
+        )
         def foo(x):
             return f"I got {x}"
 
@@ -2313,7 +2396,7 @@ def test_df_apply_axis_1_array_output(session, scalars_dfs):
     scalars_df, scalars_pandas_df = scalars_dfs
     try:
 
-        @session.remote_function(reuse=False)
+        @session.remote_function(reuse=False, cloud_function_service_account="default")
         def generate_stats(row: pandas.Series) -> list[int]:
             import pandas as pd
 
@@ -2402,7 +2485,9 @@ def test_remote_function_ingress_settings(
                 return x * x
 
             square_remote = session.remote_function(
-                reuse=False, **ingress_settings_args
+                reuse=False,
+                cloud_function_service_account="default",
+                **ingress_settings_args,
             )(square)
 
         default_ingress_setting_warnings = [
@@ -2443,7 +2528,11 @@ def test_remote_function_ingress_settings_unsupported(session):
         ValueError, match="'unknown' not one of the supported ingress settings values"
     ):
 
-        @session.remote_function(reuse=False, cloud_function_ingress_settings="unknown")
+        @session.remote_function(
+            reuse=False,
+            cloud_function_service_account="default",
+            cloud_function_ingress_settings="unknown",
+        )
         def square(x: int) -> int:
             return x * x
 
@@ -2475,6 +2564,7 @@ def test_remote_function_w_context_manager_unnamed(
                 dataset=dataset_id,
                 bigquery_connection=bq_cf_connection,
                 reuse=False,
+                cloud_function_service_account="default",
             )(add_one)
 
             temporary_bigquery_remote_function = (
@@ -2552,6 +2642,7 @@ def test_remote_function_w_context_manager_named(
                 bigquery_connection=bq_cf_connection,
                 reuse=False,
                 name=name,
+                cloud_function_service_account="default",
             )(add_one)
 
             persistent_bigquery_remote_function = (
@@ -2619,6 +2710,7 @@ def test_remote_function_array_output(
             dataset=dataset_id,
             bigquery_connection=bq_cf_connection,
             reuse=False,
+            cloud_function_service_account="default",
         )
         def featurize(x: int) -> list[array_dtype]:  # type: ignore
             return [array_dtype(i) for i in [x, x + 1, x + 2]]
@@ -2657,6 +2749,7 @@ def test_remote_function_array_output_partial_ordering_mode(
             dataset=dataset_id,
             bigquery_connection=bq_cf_connection,
             reuse=False,
+            cloud_function_service_account="default",
         )
         def featurize(x: float) -> list[float]:  # type: ignore
             return [x, x + 1, x + 2]
@@ -2698,6 +2791,7 @@ def test_remote_function_array_output_multiindex(
             dataset=dataset_id,
             bigquery_connection=bq_cf_connection,
             reuse=False,
+            cloud_function_service_account="default",
         )
         def featurize(x: int) -> list[float]:
             return [x, x + 0.5, x + 0.33]

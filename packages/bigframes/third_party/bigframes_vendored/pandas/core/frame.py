@@ -4433,7 +4433,7 @@ class DataFrame(generic.NDFrame):
         to potentially reuse a previously deployed ``remote_function`` from
         the same user defined function.
 
-            >>> @bpd.remote_function(reuse=False)
+            >>> @bpd.remote_function(reuse=False, cloud_function_service_account="default")
             ... def minutes_to_hours(x: int) -> float:
             ...     return x/60
 
@@ -4813,7 +4813,7 @@ class DataFrame(generic.NDFrame):
         to select only the necessary columns before calling `apply()`. Note: This
         feature is currently in **preview**.
 
-            >>> @bpd.remote_function(reuse=False)
+            >>> @bpd.remote_function(reuse=False, cloud_function_service_account="default")
             ... def foo(row: pd.Series) -> int:
             ...     result = 1
             ...     result += row["col1"]
@@ -4828,7 +4828,7 @@ class DataFrame(generic.NDFrame):
         You could return an array output for every input row from the remote
         function.
 
-            >>> @bpd.remote_function(reuse=False)
+            >>> @bpd.remote_function(reuse=False, cloud_function_service_account="default")
             ... def marks_analyzer(marks: pd.Series) -> list[float]:
             ...     import statistics
             ...     average = marks.mean()
@@ -4869,7 +4869,7 @@ class DataFrame(generic.NDFrame):
             <BLANKLINE>
             [2 rows x 3 columns]
 
-            >>> @bpd.remote_function(reuse=False)
+            >>> @bpd.remote_function(reuse=False, cloud_function_service_account="default")
             ... def foo(x: int, y: int, z: int) -> float:
             ...     result = 1
             ...     result += x

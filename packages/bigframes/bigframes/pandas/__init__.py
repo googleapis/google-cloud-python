@@ -65,6 +65,7 @@ except ImportError:
 
 
 def remote_function(
+    *,
     input_types: Union[None, type, Sequence[type]] = None,
     output_type: Optional[type] = None,
     dataset: Optional[str] = None,
@@ -72,7 +73,7 @@ def remote_function(
     reuse: bool = True,
     name: Optional[str] = None,
     packages: Optional[Sequence[str]] = None,
-    cloud_function_service_account: Optional[str] = None,
+    cloud_function_service_account: str,
     cloud_function_kms_key_name: Optional[str] = None,
     cloud_function_docker_repository: Optional[str] = None,
     max_batching_rows: Optional[int] = 1000,
