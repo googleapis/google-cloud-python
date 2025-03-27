@@ -365,7 +365,7 @@ class FunctionClient:
         is_row_processor=False,
         vpc_connector=None,
         memory_mib=1024,
-        ingress_settings="all",
+        ingress_settings="internal-only",
     ):
         """Create a cloud function from the given user defined function."""
 

@@ -260,9 +260,9 @@ class FunctionSession:
         cloud_function_max_instances: Optional[int] = None,
         cloud_function_vpc_connector: Optional[str] = None,
         cloud_function_memory_mib: Optional[int] = 1024,
-        cloud_function_ingress_settings: Optional[
-            Literal["all", "internal-only", "internal-and-gclb"]
-        ] = None,
+        cloud_function_ingress_settings: Literal[
+            "all", "internal-only", "internal-and-gclb"
+        ] = "internal-only",
     ):
         """Decorator to turn a user defined function into a BigQuery remote function.
 
@@ -449,8 +449,9 @@ class FunctionSession:
                 https://cloud.google.com/functions/docs/configuring/memory.
             cloud_function_ingress_settings (str, Optional):
                 Ingress settings controls dictating what traffic can reach the
-                function. By default `all` will be used. It must be one of:
-                `all`, `internal-only`, `internal-and-gclb`. See for more details
+                function. Options are: `all`, `internal-only`, or `internal-and-gclb`.
+                If no setting is provided, `internal-only` will be used by default.
+                See for more details
                 https://cloud.google.com/functions/docs/networking/network-settings#ingress_settings.
         """
         # Some defaults may be used from the session if not provided otherwise.
@@ -507,24 +508,11 @@ class FunctionSession:
             )
 
         if cloud_function_ingress_settings is None:
-            cloud_function_ingress_settings = "all"
+            cloud_function_ingress_settings = "internal-only"
             msg = bfe.format_message(
-                "The `cloud_function_ingress_settings` are set to 'all' by default, "
-                "which will change to 'internal-only' for enhanced security in future version 2.0 onwards. "
-                "However, you will be able to explicitly pass cloud_function_ingress_settings='all' if you need. "
-                "See https://cloud.google.com/functions/docs/networking/network-settings#ingress_settings for details."
+                "The `cloud_function_ingress_settings` is being set to 'internal-only' by default."
             )
-            warnings.warn(msg, category=FutureWarning, stacklevel=2)
-
-        if cloud_function_ingress_settings is None:
-            cloud_function_ingress_settings = "all"
-            msg = bfe.format_message(
-                "The `cloud_function_ingress_settings` are set to 'all' by default, "
-                "which will change to 'internal-only' for enhanced security in future version 2.0 onwards. "
-                "However, you will be able to explicitly pass cloud_function_ingress_settings='all' if you need. "
-                "See https://cloud.google.com/functions/docs/networking/network-settings#ingress_settings for details."
-            )
-            warnings.warn(msg, category=FutureWarning, stacklevel=2)
+            warnings.warn(msg, category=UserWarning, stacklevel=2)
 
         bq_connection_manager = session.bqconnectionmanager
 

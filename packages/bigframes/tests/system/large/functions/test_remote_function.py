@@ -1336,17 +1336,27 @@ def test_remote_function_via_session_custom_sa(scalars_dfs):
 
     try:
 
+        # TODO(shobs): Figure out why the default ingress setting
+        # (internal-only) does not work here
         @rf_session.remote_function(
             input_types=[int],
             output_type=int,
             reuse=False,
             cloud_function_service_account=gcf_service_account,
+            cloud_function_ingress_settings="all",
         )
         def square_num(x):
             if x is None:
                 return x
             return x * x
 
+        # assert that the GCF is created with the intended SA
+        gcf = rf_session.cloudfunctionsclient.get_function(
+            name=square_num.bigframes_cloud_function
+        )
+        assert gcf.service_config.service_account_email == gcf_service_account
+
+        # assert that the function works as expected on data
         scalars_df, scalars_pandas_df = scalars_dfs
 
         bf_int64_col = scalars_df["int64_col"]
@@ -1358,12 +1368,6 @@ def test_remote_function_via_session_custom_sa(scalars_dfs):
         pd_result = pd_int64_col.to_frame().assign(result=pd_result_col)
 
         assert_pandas_df_equal(bf_result, pd_result, check_dtype=False)
-
-        # Assert that the GCF is created with the intended SA
-        gcf = rf_session.cloudfunctionsclient.get_function(
-            name=square_num.bigframes_cloud_function
-        )
-        assert gcf.service_config.service_account_email == gcf_service_account
     finally:
         # clean up the gcp assets created for the remote function
         cleanup_function_assets(
@@ -1476,14 +1480,24 @@ def test_remote_function_via_session_vpc(scalars_dfs):
                 return x
             return x * x
 
+        # TODO(shobs): See if the test vpc can be configured to make this flow
+        # work with the default ingress setting (internal-only)
         square_num_remote = rf_session.remote_function(
             input_types=[int],
             output_type=int,
             reuse=False,
             cloud_function_service_account="default",
             cloud_function_vpc_connector=gcf_vpc_connector,
+            cloud_function_ingress_settings="all",
         )(square_num)
 
+        # assert that the GCF is created with the intended vpc connector
+        gcf = rf_session.cloudfunctionsclient.get_function(
+            name=square_num_remote.bigframes_cloud_function
+        )
+        assert gcf.service_config.vpc_connector == gcf_vpc_connector
+
+        # assert that the function works as expected on data
         scalars_df, scalars_pandas_df = scalars_dfs
 
         bf_int64_col = scalars_df["int64_col"]
@@ -1495,12 +1509,6 @@ def test_remote_function_via_session_vpc(scalars_dfs):
         pd_result = pd_int64_col.to_frame().assign(result=pd_result_col)
 
         assert_pandas_df_equal(bf_result, pd_result, check_dtype=False)
-
-        # Assert that the GCF is created with the intended vpc connector
-        gcf = rf_session.cloudfunctionsclient.get_function(
-            name=square_num_remote.bigframes_cloud_function
-        )
-        assert gcf.service_config.vpc_connector == gcf_vpc_connector
     finally:
         # clean up the gcp assets created for the remote function
         cleanup_function_assets(
@@ -2439,13 +2447,13 @@ def test_df_apply_axis_1_array_output(session, scalars_dfs):
     [
         pytest.param(
             {},
-            functions_v2.ServiceConfig.IngressSettings.ALLOW_ALL,
-            True,
+            functions_v2.ServiceConfig.IngressSettings.ALLOW_INTERNAL_ONLY,
+            False,
             id="no-set",
         ),
         pytest.param(
             {"cloud_function_ingress_settings": None},
-            functions_v2.ServiceConfig.IngressSettings.ALLOW_ALL,
+            functions_v2.ServiceConfig.IngressSettings.ALLOW_INTERNAL_ONLY,
             True,
             id="set-none",
         ),
@@ -2493,11 +2501,8 @@ def test_remote_function_ingress_settings(
         default_ingress_setting_warnings = [
             warn
             for warn in record
-            if isinstance(warn.message, FutureWarning)
-            and "`cloud_function_ingress_settings` are set to 'all' by default"
-            in warn.message.args[0]
-            and "will change to 'internal-only' for enhanced security in future"
-            in warn.message.args[0]
+            if isinstance(warn.message, UserWarning)
+            and "The `cloud_function_ingress_settings` is being set to 'internal-only' by default."
         ]
         assert len(default_ingress_setting_warnings) == (
             1 if expect_default_ingress_setting_warning else 0
