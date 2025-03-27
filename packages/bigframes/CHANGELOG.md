@@ -4,6 +4,41 @@
 
 [1]: https://pypi.org/project/bigframes/#history
 
+## [1.42.0](https://github.com/googleapis/python-bigquery-dataframes/compare/v1.41.0...v1.42.0) (2025-03-27)
+
+
+### Features
+
+* Add `closed` parameter in rolling() ([#1539](https://github.com/googleapis/python-bigquery-dataframes/issues/1539)) ([8bcc89b](https://github.com/googleapis/python-bigquery-dataframes/commit/8bcc89b30022f5ccf9ced80676a279c261c2f697))
+* Add `GeoSeries.difference()` and `bigframes.bigquery.st_difference()` ([#1471](https://github.com/googleapis/python-bigquery-dataframes/issues/1471)) ([e9fe815](https://github.com/googleapis/python-bigquery-dataframes/commit/e9fe8154d83e2674a05d7b670e949368b175ec8b))
+* Add `GeoSeries.intersection()` and `bigframes.bigquery.st_intersection()` ([#1529](https://github.com/googleapis/python-bigquery-dataframes/issues/1529)) ([8542bd4](https://github.com/googleapis/python-bigquery-dataframes/commit/8542bd469ff8775a9073f5a040b4117facfd8513))
+* Add df.take and series.take ([#1509](https://github.com/googleapis/python-bigquery-dataframes/issues/1509)) ([7d00be6](https://github.com/googleapis/python-bigquery-dataframes/commit/7d00be67cf50fdf713c40912f207d14f0f65538f))
+* Add Linear_Regression.global_explain() ([#1446](https://github.com/googleapis/python-bigquery-dataframes/issues/1446)) ([7e5b6a8](https://github.com/googleapis/python-bigquery-dataframes/commit/7e5b6a873d00162ffca3d254d3af276c5f06d866))
+* Allow iloc to support lists of negative indices ([#1497](https://github.com/googleapis/python-bigquery-dataframes/issues/1497)) ([a9cf215](https://github.com/googleapis/python-bigquery-dataframes/commit/a9cf215fb1403fda4ab2b58252f5fedc33aba3e1))
+* Support dry_run in `to_pandas()` ([#1436](https://github.com/googleapis/python-bigquery-dataframes/issues/1436)) ([75fc7e0](https://github.com/googleapis/python-bigquery-dataframes/commit/75fc7e0268dc5b10bdbc33dcf28db97dce62e41c))
+* Support window partition by geo column ([#1512](https://github.com/googleapis/python-bigquery-dataframes/issues/1512)) ([bdcb1e7](https://github.com/googleapis/python-bigquery-dataframes/commit/bdcb1e7929dc2f24c642ddb052629da394f45876))
+* Upgrade BQ managed `udf` to preview ([#1536](https://github.com/googleapis/python-bigquery-dataframes/issues/1536)) ([4a7fe4d](https://github.com/googleapis/python-bigquery-dataframes/commit/4a7fe4d75724e734634d41f18b4957e0877becc3))
+
+
+### Bug Fixes
+
+* Add deprecation warning to TextEmbeddingGenerator model, espeically gemini-1.0-X and gemini-1.5-X ([#1534](https://github.com/googleapis/python-bigquery-dataframes/issues/1534)) ([c93e720](https://github.com/googleapis/python-bigquery-dataframes/commit/c93e7204758435b0306699d3a1332aaf522f576b))
+* Change the default value for pdf extract/chunk ([#1517](https://github.com/googleapis/python-bigquery-dataframes/issues/1517)) ([a70a607](https://github.com/googleapis/python-bigquery-dataframes/commit/a70a607512797463f70ed529f078fcb2d40c85a1))
+* Local data always has sequential index ([#1514](https://github.com/googleapis/python-bigquery-dataframes/issues/1514)) ([014bd33](https://github.com/googleapis/python-bigquery-dataframes/commit/014bd33317966e15d05617c978e847de8c953453))
+* Read_pandas inline returns None when exceeds limit ([#1525](https://github.com/googleapis/python-bigquery-dataframes/issues/1525)) ([578081e](https://github.com/googleapis/python-bigquery-dataframes/commit/578081e978f2cca21ddae8b3ee371972ba723777))
+* Temporary fix for StreamingDataFrame not working backend bug ([#1533](https://github.com/googleapis/python-bigquery-dataframes/issues/1533)) ([6ab4ffd](https://github.com/googleapis/python-bigquery-dataframes/commit/6ab4ffd33d4900da833020ffa7ffc03a93a2b4b2))
+* Tolerate BQ connection service account propagation delay ([#1505](https://github.com/googleapis/python-bigquery-dataframes/issues/1505)) ([6681f1f](https://github.com/googleapis/python-bigquery-dataframes/commit/6681f1f9e30ed2325b85668de8a0b1d3d0e2858b))
+
+
+### Performance Improvements
+
+* Update shape to use quer_and_wait ([#1519](https://github.com/googleapis/python-bigquery-dataframes/issues/1519)) ([34ab9b8](https://github.com/googleapis/python-bigquery-dataframes/commit/34ab9b8abd2c632c806afe69f00d9e7dddb6a8b5))
+
+
+### Documentation
+
+* Update `GeoSeries.difference()` and `bigframes.bigquery.st_difference()` docs ([#1526](https://github.com/googleapis/python-bigquery-dataframes/issues/1526)) ([d553fa2](https://github.com/googleapis/python-bigquery-dataframes/commit/d553fa25fe85b3590269ed2ce08d5dff3bd22dfc))
+
 ## [1.41.0](https://github.com/googleapis/python-bigquery-dataframes/compare/v1.40.0...v1.41.0) (2025-03-19)
 
 
