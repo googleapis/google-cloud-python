@@ -317,6 +317,23 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
+    def topic_path(
+        project: str,
+        topic: str,
+    ) -> str:
+        """Returns a fully-qualified topic string."""
+        return "projects/{project}/topics/{topic}".format(
+            project=project,
+            topic=topic,
+        )
+
+    @staticmethod
+    def parse_topic_path(path: str) -> Dict[str, str]:
+        """Parses a topic path into its component segments."""
+        m = re.match(r"^projects/(?P<project>.+?)/topics/(?P<topic>.+?)$", path)
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def common_billing_account_path(
         billing_account: str,
     ) -> str:
@@ -2235,8 +2252,8 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation.Operation:
-        r"""Creates a Subscription to a Data Exchange. This is a
-        long-running operation as it will create one or more
+        r"""Creates a Subscription to a Data Clean Room. This is
+        a long-running operation as it will create one or more
         linked datasets.
 
         .. code-block:: python
@@ -2907,7 +2924,7 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
         Returns:
             google.cloud.bigquery_analyticshub_v1.types.RevokeSubscriptionResponse:
                 Message for response when you revoke
-                a subscription.
+                a subscription. Empty for now.
 
         """
         # Create or coerce a protobuf request object.

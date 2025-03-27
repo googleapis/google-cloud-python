@@ -34,6 +34,7 @@ from google.cloud.bigquery_analyticshub_v1.types.analyticshub import (
     DeleteSubscriptionRequest,
     DestinationDataset,
     DestinationDatasetReference,
+    DestinationPubSubSubscription,
     DiscoveryType,
     GetDataExchangeRequest,
     GetListingRequest,
@@ -55,6 +56,7 @@ from google.cloud.bigquery_analyticshub_v1.types.analyticshub import (
     RefreshSubscriptionResponse,
     RevokeSubscriptionRequest,
     RevokeSubscriptionResponse,
+    SharedResourceType,
     SharingEnvironmentConfig,
     SubscribeDataExchangeRequest,
     SubscribeDataExchangeResponse,
@@ -63,6 +65,17 @@ from google.cloud.bigquery_analyticshub_v1.types.analyticshub import (
     Subscription,
     UpdateDataExchangeRequest,
     UpdateListingRequest,
+)
+from google.cloud.bigquery_analyticshub_v1.types.pubsub import (
+    BigQueryConfig,
+    CloudStorageConfig,
+    DeadLetterPolicy,
+    ExpirationPolicy,
+    JavaScriptUDF,
+    MessageTransform,
+    PubSubSubscription,
+    PushConfig,
+    RetryPolicy,
 )
 
 __all__ = (
@@ -77,6 +90,7 @@ __all__ = (
     "DeleteSubscriptionRequest",
     "DestinationDataset",
     "DestinationDatasetReference",
+    "DestinationPubSubSubscription",
     "GetDataExchangeRequest",
     "GetListingRequest",
     "GetSubscriptionRequest",
@@ -106,4 +120,14 @@ __all__ = (
     "UpdateDataExchangeRequest",
     "UpdateListingRequest",
     "DiscoveryType",
+    "SharedResourceType",
+    "BigQueryConfig",
+    "CloudStorageConfig",
+    "DeadLetterPolicy",
+    "ExpirationPolicy",
+    "JavaScriptUDF",
+    "MessageTransform",
+    "PubSubSubscription",
+    "PushConfig",
+    "RetryPolicy",
 )

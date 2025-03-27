@@ -684,8 +684,8 @@ class AnalyticsHubServiceGrpcTransport(AnalyticsHubServiceTransport):
     ]:
         r"""Return a callable for the subscribe data exchange method over gRPC.
 
-        Creates a Subscription to a Data Exchange. This is a
-        long-running operation as it will create one or more
+        Creates a Subscription to a Data Clean Room. This is
+        a long-running operation as it will create one or more
         linked datasets.
 
         Returns:
