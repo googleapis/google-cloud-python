@@ -390,27 +390,6 @@ def test_remote_model_predict(
     )
 
 
-@pytest.mark.flaky(retries=2)
-def test_model_generate_text(
-    bqml_palm2_text_generator_model: core.BqmlModel, llm_text_df
-):
-    options = {
-        "temperature": 0.5,
-        "max_output_tokens": 100,
-        "top_k": 20,
-        "top_p": 0.5,
-        "flatten_json_output": True,
-    }
-    # Until b/401630655 is resolved, json not compatible with allow_large_results=False
-    df = bqml_palm2_text_generator_model.generate_text(
-        llm_text_df, options=options
-    ).to_pandas(allow_large_results=True)
-
-    utils.check_pandas_df_schema_and_index(
-        df, columns=utils.ML_GENERATE_TEXT_OUTPUT, index=3, col_exact=False
-    )
-
-
 @pytest.mark.parametrize("id_col_name", [None, "id"])
 def test_model_forecast(
     time_series_bqml_arima_plus_model: core.BqmlModel,

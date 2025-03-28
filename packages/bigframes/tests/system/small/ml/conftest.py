@@ -203,64 +203,6 @@ def xgboost_iris_df(session, xgboost_iris_pandas_df):
 
 
 @pytest.fixture(scope="session")
-def bqml_palm2_text_generator_model(session, bq_connection) -> core.BqmlModel:
-    options = {
-        "remote_service_type": "CLOUD_AI_LARGE_LANGUAGE_MODEL_V1",
-    }
-    return globals.bqml_model_factory().create_remote_model(
-        session=session, connection_name=bq_connection, options=options
-    )
-
-
-@pytest.fixture(scope="session")
-def palm2_text_generator_model(session, bq_connection) -> llm.PaLM2TextGenerator:
-    return llm.PaLM2TextGenerator(session=session, connection_name=bq_connection)
-
-
-@pytest.fixture(scope="session")
-def palm2_text_generator_32k_model(session, bq_connection) -> llm.PaLM2TextGenerator:
-    return llm.PaLM2TextGenerator(
-        model_name="text-bison-32k", session=session, connection_name=bq_connection
-    )
-
-
-@pytest.fixture(scope="function")
-def ephemera_palm2_text_generator_model(
-    session, bq_connection
-) -> llm.PaLM2TextGenerator:
-    return llm.PaLM2TextGenerator(session=session, connection_name=bq_connection)
-
-
-@pytest.fixture(scope="session")
-def palm2_embedding_generator_model(
-    session, bq_connection
-) -> llm.PaLM2TextEmbeddingGenerator:
-    return llm.PaLM2TextEmbeddingGenerator(
-        session=session, connection_name=bq_connection
-    )
-
-
-@pytest.fixture(scope="session")
-def palm2_embedding_generator_model_002(
-    session, bq_connection
-) -> llm.PaLM2TextEmbeddingGenerator:
-    return llm.PaLM2TextEmbeddingGenerator(
-        version="002", session=session, connection_name=bq_connection
-    )
-
-
-@pytest.fixture(scope="session")
-def palm2_embedding_generator_multilingual_model(
-    session, bq_connection
-) -> llm.PaLM2TextEmbeddingGenerator:
-    return llm.PaLM2TextEmbeddingGenerator(
-        model_name="textembedding-gecko-multilingual",
-        session=session,
-        connection_name=bq_connection,
-    )
-
-
-@pytest.fixture(scope="session")
 def linear_remote_model_params() -> dict:
     # Pre-deployed endpoint of linear reg model in Vertex.
     # bigframes-test-linreg2 -> bigframes-test-linreg-endpoint2

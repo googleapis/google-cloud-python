@@ -14,9 +14,7 @@
 
 from typing import cast
 
-import pytest
-
-from bigframes.ml import core, imported, linear_model, llm
+from bigframes.ml import core, imported, linear_model
 
 
 def test_linear_reg_register(
@@ -51,13 +49,6 @@ def test_linear_reg_register_with_params(
             "vertexAiModelId"
         ]
     )
-
-
-def test_palm2_text_generator_register(
-    ephemera_palm2_text_generator_model: llm.PaLM2TextGenerator,
-):
-    with pytest.raises(AttributeError):
-        ephemera_palm2_text_generator_model.register()  # type: ignore
 
 
 def test_imported_tensorflow_register(

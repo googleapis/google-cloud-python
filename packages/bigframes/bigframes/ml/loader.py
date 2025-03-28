@@ -56,11 +56,6 @@ _BQML_MODEL_TYPE_MAPPING = MappingProxyType(
 
 _BQML_ENDPOINT_TYPE_MAPPING = MappingProxyType(
     {
-        llm._TEXT_GENERATOR_BISON_ENDPOINT: llm.PaLM2TextGenerator,
-        llm._TEXT_GENERATOR_BISON_32K_ENDPOINT: llm.PaLM2TextGenerator,
-        llm._EMBEDDING_GENERATOR_GECKO_ENDPOINT: llm.PaLM2TextEmbeddingGenerator,
-        llm._EMBEDDING_GENERATOR_GECKO_MULTILINGUAL_ENDPOINT: llm.PaLM2TextEmbeddingGenerator,
-        llm._GEMINI_PRO_ENDPOINT: llm.GeminiTextGenerator,
         llm._GEMINI_1P5_PRO_PREVIEW_ENDPOINT: llm.GeminiTextGenerator,
         llm._GEMINI_1P5_PRO_FLASH_PREVIEW_ENDPOINT: llm.GeminiTextGenerator,
         llm._GEMINI_1P5_PRO_001_ENDPOINT: llm.GeminiTextGenerator,
@@ -68,6 +63,8 @@ _BQML_ENDPOINT_TYPE_MAPPING = MappingProxyType(
         llm._GEMINI_1P5_FLASH_001_ENDPOINT: llm.GeminiTextGenerator,
         llm._GEMINI_1P5_FLASH_002_ENDPOINT: llm.GeminiTextGenerator,
         llm._GEMINI_2_FLASH_EXP_ENDPOINT: llm.GeminiTextGenerator,
+        llm._GEMINI_2_FLASH_001_ENDPOINT: llm.GeminiTextGenerator,
+        llm._GEMINI_2_FLASH_LITE_001_ENDPOINT: llm.GeminiTextGenerator,
         llm._CLAUDE_3_HAIKU_ENDPOINT: llm.Claude3TextGenerator,
         llm._CLAUDE_3_SONNET_ENDPOINT: llm.Claude3TextGenerator,
         llm._CLAUDE_3_5_SONNET_ENDPOINT: llm.Claude3TextGenerator,
@@ -95,8 +92,6 @@ def from_bq(
     imported.TensorFlowModel,
     imported.ONNXModel,
     imported.XGBoostModel,
-    llm.PaLM2TextGenerator,
-    llm.PaLM2TextEmbeddingGenerator,
     llm.Claude3TextGenerator,
     llm.TextEmbeddingGenerator,
     llm.MultimodalEmbeddingGenerator,
