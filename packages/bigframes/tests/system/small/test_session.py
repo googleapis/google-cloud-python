@@ -630,8 +630,7 @@ def test_read_gbq_w_json(session):
                 )
             ),
     """
-    # TODO(b/401630655): JSON is not compatible with allow_large_results=False
-    df = session.read_gbq(sql, index_col="id").to_pandas(allow_large_results=True)
+    df = session.read_gbq(sql, index_col="id")
 
     assert df.dtypes["json_col"] == pd.ArrowDtype(db_dtypes.JSONArrowType())
 
@@ -651,17 +650,14 @@ def test_read_gbq_w_json_and_compare_w_pandas_json(session):
     df = session.read_gbq("SELECT JSON_OBJECT('foo', 10, 'bar', TRUE) AS json_col")
     assert df.dtypes["json_col"] == pd.ArrowDtype(db_dtypes.JSONArrowType())
 
-    # TODO(b/401630655): JSON is not compatible with allow_large_results=False
-    result = df.to_pandas(allow_large_results=True)
-
     # These JSON strings are compatible with BigQuery's JSON storage,
     pd_df = pd.DataFrame(
         {"json_col": ['{"bar":true,"foo":10}']},
         dtype=pd.ArrowDtype(db_dtypes.JSONArrowType()),
     )
     pd_df.index = pd_df.index.astype("Int64")
-    pd.testing.assert_series_equal(result.dtypes, pd_df.dtypes)
-    pd.testing.assert_series_equal(result["json_col"], pd_df["json_col"])
+    pd.testing.assert_series_equal(df.dtypes, pd_df.dtypes)
+    pd.testing.assert_series_equal(df["json_col"].to_pandas(), pd_df["json_col"])
 
 
 def test_read_gbq_w_json_in_struct(session):
@@ -696,9 +692,6 @@ def test_read_gbq_w_json_in_struct(session):
 
     data = df["struct_col"].struct.field("data")
     assert data.dtype == pd.ArrowDtype(db_dtypes.JSONArrowType())
-
-    # TODO(b/401630655): JSON is not compatible with allow_large_results=False
-    data = data.to_pandas(allow_large_results=True)
 
     assert data[0] == '{"boolean":true}'
     assert data[1] == '{"int":100}'
@@ -738,10 +731,7 @@ def test_read_gbq_w_json_in_array(session):
     assert data.list.len()[0] == 7
     assert data.list[0].dtype == pd.ArrowDtype(db_dtypes.JSONArrowType())
 
-    # TODO(b/401630655): JSON is not compatible with allow_large_results=False
-    pd_data = data.to_pandas(allow_large_results=True)
-
-    assert pd_data[0] == [
+    assert data[0] == [
         '{"boolean":true}',
         '{"int":100}',
         '{"float":0.98}',
@@ -873,7 +863,6 @@ def test_read_pandas_timedelta_dataframes(session, write_engine):
 def test_read_pandas_timedelta_series(session, write_engine):
     expected_series = pd.Series(pd.to_timedelta([1, 2, 3], unit="d"))
 
-    # Until b/401630655 is resolved, json not compatible with allow_large_results=False
     actual_result = (
         session.read_pandas(expected_series, write_engine=write_engine)
         .to_pandas()
@@ -896,10 +885,9 @@ def test_read_pandas_timedelta_index(session, write_engine):
         [1, 2, 3], unit="d"
     )  # to_timedelta returns an index
 
-    # Until b/401630655 is resolved, json not compatible with allow_large_results=False
     actual_result = (
         session.read_pandas(expected_index, write_engine=write_engine)
-        .to_pandas(allow_large_results=True)
+        .to_pandas()
         .astype("timedelta64[ns]")
     )
 
@@ -926,10 +914,9 @@ def test_read_pandas_json_dataframes(session, write_engine):
         {"my_col": pd.Series(json_data, dtype=bigframes.dtypes.JSON_DTYPE)}
     )
 
-    # Until b/401630655 is resolved, json not compatible with allow_large_results=False
     actual_result = session.read_pandas(
         expected_df, write_engine=write_engine
-    ).to_pandas(allow_large_results=True)
+    ).to_pandas()
 
     if write_engine == "bigquery_streaming":
         expected_df.index = pd.Index([pd.NA] * 4, dtype="Int64")
@@ -949,10 +936,9 @@ def test_read_pandas_json_series(session, write_engine):
     ]
     expected_series = pd.Series(json_data, dtype=bigframes.dtypes.JSON_DTYPE)
 
-    # Until b/401630655 is resolved, json not compatible with allow_large_results=False
     actual_result = session.read_pandas(
         expected_series, write_engine=write_engine
-    ).to_pandas(allow_large_results=True)
+    ).to_pandas()
     pd.testing.assert_series_equal(
         actual_result, expected_series, check_index_type=False
     )
@@ -973,10 +959,9 @@ def test_read_pandas_json_index(session, write_engine):
         '{"a":1,"b":["x","y"],"c":{"x":[],"z":false}}',
     ]
     expected_index: pd.Index = pd.Index(json_data, dtype=bigframes.dtypes.JSON_DTYPE)
-    # Until b/401630655 is resolved, json not compatible with allow_large_results=False
     actual_result = session.read_pandas(
         expected_index, write_engine=write_engine
-    ).to_pandas(allow_large_results=True)
+    ).to_pandas()
     pd.testing.assert_index_equal(actual_result, expected_index)
 
 
@@ -1004,10 +989,7 @@ def test_read_pandas_w_nested_json(session, write_engine):
         ),
     )
     with pytest.raises(NotImplementedError, match="Nested JSON types, found in column"):
-        # Until b/401630655 is resolved, json not compatible with allow_large_results=False
-        session.read_pandas(pd_s, write_engine=write_engine).to_pandas(
-            allow_large_results=True
-        )
+        session.read_pandas(pd_s, write_engine=write_engine)
 
 
 @pytest.mark.parametrize(
@@ -1036,10 +1018,7 @@ def test_read_pandas_w_nested_json_index(session, write_engine):
     with pytest.raises(
         NotImplementedError, match="Nested JSON types, found in the index"
     ):
-        # Until b/401630655 is resolved, json not compatible with allow_large_results=False
-        session.read_pandas(pd_idx, write_engine=write_engine).to_pandas(
-            allow_large_results=True
-        )
+        session.read_pandas(pd_idx, write_engine=write_engine)
 
 
 @utils.skip_legacy_pandas

@@ -4607,13 +4607,12 @@ def test_df_drop_duplicates(scalars_df_index, scalars_pandas_df_index, keep, sub
     ],
 )
 def test_df_drop_duplicates_w_json(json_df, keep):
-    bf_df = json_df.drop_duplicates(keep=keep).to_pandas(allow_large_results=True)
+    bf_df = json_df.drop_duplicates(keep=keep).to_pandas()
 
     # drop_duplicates relies on pa.compute.dictionary_encode, which is incompatible
     # with Arrow string extension types. Temporary conversion to standard Pandas
     # strings is required.
-    # allow_large_results=True for b/401630655
-    json_pandas_df = json_df.to_pandas(allow_large_results=True)
+    json_pandas_df = json_df.to_pandas()
     json_pandas_df["json_col"] = json_pandas_df["json_col"].astype(
         pd.StringDtype(storage="pyarrow")
     )

@@ -36,11 +36,7 @@ def test_json_set_at_json_path(json_path, expected_json):
     actual = bbq.json_set(s, json_path_value_pairs=[(json_path, 10)])
     expected = bpd.Series(expected_json, dtype=dtypes.JSON_DTYPE)
 
-    # TODO(b/401630655): JSON is not compatible with allow_large_results=False
-    pd.testing.assert_series_equal(
-        actual.to_pandas(allow_large_results=True),
-        expected.to_pandas(allow_large_results=True),
-    )
+    pd.testing.assert_series_equal(actual.to_pandas(), expected.to_pandas())
 
 
 @pytest.mark.parametrize(
@@ -60,11 +56,7 @@ def test_json_set_at_json_value_type(json_value, expected_json):
     actual = bbq.json_set(s, json_path_value_pairs=[("$.a.b", json_value)])
     expected = bpd.Series(expected_json, dtype=dtypes.JSON_DTYPE)
 
-    # TODO(b/401630655): JSON is not compatible with allow_large_results=False
-    pd.testing.assert_series_equal(
-        actual.to_pandas(allow_large_results=True),
-        expected.to_pandas(allow_large_results=True),
-    )
+    pd.testing.assert_series_equal(actual.to_pandas(), expected.to_pandas())
 
 
 def test_json_set_w_more_pairs():
@@ -77,11 +69,7 @@ def test_json_set_w_more_pairs():
     expected_json = ['{"a": 3, "b": 2}', '{"a": 4, "b": 2}', '{"a": 5, "b": 2, "c": 1}']
     expected = bpd.Series(expected_json, dtype=dtypes.JSON_DTYPE)
 
-    # TODO(b/401630655): JSON is not compatible with allow_large_results=False
-    pd.testing.assert_series_equal(
-        actual.to_pandas(allow_large_results=True),
-        expected.to_pandas(allow_large_results=True),
-    )
+    pd.testing.assert_series_equal(actual.to_pandas(), expected.to_pandas())
 
 
 def test_json_set_w_invalid_value_type():
@@ -114,11 +102,7 @@ def test_json_extract_from_json():
     actual = bbq.json_extract(s, "$.a.b")
     expected = bpd.Series(["[1, 2]", None, "0"], dtype=dtypes.JSON_DTYPE)
 
-    # TODO(b/401630655): JSON is not compatible with allow_large_results=False
-    pd.testing.assert_series_equal(
-        actual.to_pandas(allow_large_results=True),
-        expected.to_pandas(allow_large_results=True),
-    )
+    pd.testing.assert_series_equal(actual.to_pandas(), expected.to_pandas())
 
 
 def test_json_extract_from_string():
@@ -129,11 +113,7 @@ def test_json_extract_from_string():
     actual = bbq.json_extract(s, "$.a.b")
     expected = bpd.Series(["[1,2]", None, "0"], dtype=pd.StringDtype(storage="pyarrow"))
 
-    # TODO(b/401630655): JSON is not compatible with allow_large_results=False
-    pd.testing.assert_series_equal(
-        actual.to_pandas(allow_large_results=True),
-        expected.to_pandas(allow_large_results=True),
-    )
+    pd.testing.assert_series_equal(actual.to_pandas(), expected.to_pandas())
 
 
 def test_json_extract_w_invalid_series_type():
@@ -165,11 +145,7 @@ def test_json_extract_array_from_json():
     expected.index.name = None
     expected.name = None
 
-    # TODO(b/401630655): JSON is not compatible with allow_large_results=False
-    pd.testing.assert_series_equal(
-        actual.to_pandas(allow_large_results=True),
-        expected.to_pandas(allow_large_results=True),
-    )
+    pd.testing.assert_series_equal(actual.to_pandas(), expected.to_pandas())
 
 
 def test_json_extract_array_from_json_strings():
@@ -183,11 +159,7 @@ def test_json_extract_array_from_json_strings():
         dtype=pd.ArrowDtype(pa.list_(pa.string())),
     )
 
-    # TODO(b/401630655): JSON is not compatible with allow_large_results=False
-    pd.testing.assert_series_equal(
-        actual.to_pandas(allow_large_results=True),
-        expected.to_pandas(allow_large_results=True),
-    )
+    pd.testing.assert_series_equal(actual.to_pandas(), expected.to_pandas())
 
 
 def test_json_extract_array_from_json_array_strings():
@@ -201,11 +173,7 @@ def test_json_extract_array_from_json_array_strings():
         dtype=pd.ArrowDtype(pa.list_(pa.string())),
     )
 
-    # TODO(b/401630655): JSON is not compatible with allow_large_results=False
-    pd.testing.assert_series_equal(
-        actual.to_pandas(allow_large_results=True),
-        expected.to_pandas(allow_large_results=True),
-    )
+    pd.testing.assert_series_equal(actual.to_pandas(), expected.to_pandas())
 
 
 def test_json_extract_array_w_invalid_series_type():
@@ -219,11 +187,7 @@ def test_json_extract_string_array_from_json_strings():
     actual = bbq.json_extract_string_array(s, "$.a")
     expected = bpd.Series([["ab", "2", "3 xy"], [], ["4", "5"]])
 
-    # TODO(b/401630655): JSON is not compatible with allow_large_results=False
-    pd.testing.assert_series_equal(
-        actual.to_pandas(allow_large_results=True),
-        expected.to_pandas(allow_large_results=True),
-    )
+    pd.testing.assert_series_equal(actual.to_pandas(), expected.to_pandas())
 
 
 def test_json_extract_string_array_from_array_strings():
@@ -231,11 +195,7 @@ def test_json_extract_string_array_from_array_strings():
     actual = bbq.json_extract_string_array(s)
     expected = bpd.Series([["1", "2", "3"], [], ["4", "5"]])
 
-    # TODO(b/401630655): JSON is not compatible with allow_large_results=False
-    pd.testing.assert_series_equal(
-        actual.to_pandas(allow_large_results=True),
-        expected.to_pandas(allow_large_results=True),
-    )
+    pd.testing.assert_series_equal(actual.to_pandas(), expected.to_pandas())
 
 
 def test_json_extract_string_array_as_float_array_from_array_strings():
@@ -243,11 +203,7 @@ def test_json_extract_string_array_as_float_array_from_array_strings():
     actual = bbq.json_extract_string_array(s, value_dtype=dtypes.FLOAT_DTYPE)
     expected = bpd.Series([[1, 2.5, 3], [], [4, 5]])
 
-    # TODO(b/401630655): JSON is not compatible with allow_large_results=False
-    pd.testing.assert_series_equal(
-        actual.to_pandas(allow_large_results=True),
-        expected.to_pandas(allow_large_results=True),
-    )
+    pd.testing.assert_series_equal(actual.to_pandas(), expected.to_pandas())
 
 
 def test_json_extract_string_array_w_invalid_series_type():

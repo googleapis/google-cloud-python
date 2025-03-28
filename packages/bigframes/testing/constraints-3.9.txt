@@ -6,7 +6,7 @@ geopandas==0.12.2
 google-auth==2.15.0
 google-cloud-bigtable==2.24.0
 google-cloud-pubsub==2.21.4
-google-cloud-bigquery==3.18.0
+google-cloud-bigquery==3.31.0
 google-cloud-functions==1.12.0
 google-cloud-bigquery-connection==1.12.0
 google-cloud-iam==2.12.1
@@ -15,7 +15,7 @@ google-cloud-storage==2.0.0
 jellyfish==0.8.9
 numpy==1.24.0
 pandas==1.5.3
-pandas-gbq==0.26.0
+pandas-gbq==0.26.1
 pyarrow==15.0.2
 pydata-google-auth==1.8.2
 requests==2.27.1

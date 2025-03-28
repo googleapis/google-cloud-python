@@ -55,10 +55,7 @@ def test_blob_version(images_mm_df: bpd.DataFrame):
 
 
 def test_blob_metadata(images_mm_df: bpd.DataFrame):
-    # allow_large_result=False incompatible with json b/401630655
-    with bigframes.option_context(
-        "bigquery.allow_large_results", True, "experiments.blob", True
-    ):
+    with bigframes.option_context("experiments.blob", True):
         actual = images_mm_df["blob_col"].blob.metadata().to_pandas()
         expected = pd.Series(
             [
