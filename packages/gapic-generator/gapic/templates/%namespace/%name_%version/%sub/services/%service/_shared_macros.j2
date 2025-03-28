@@ -264,6 +264,42 @@ def _get_http_options():
 {% endmacro %}
 
 
+{% macro unary_request_interceptor_common(service) %}
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
+        if logging_enabled:  # pragma: NO COVER
+            request_metadata = client_call_details.metadata
+            if isinstance(request, proto.Message):
+                {# TODO(https://github.com/googleapis/gapic-generator-python/issues/2293): Investigate if we can improve this logic
+                    or wait for next gen protobuf.
+                #}
+                request_payload = type(request).to_json(request)
+            elif isinstance(request, google.protobuf.message.Message):
+                request_payload = MessageToJson(request)
+            else:
+                request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
+
+            request_metadata = {
+                key: value.decode("utf-8") if isinstance(value, bytes) else value
+                for key, value in request_metadata
+            }
+            grpc_request = {
+                "payload": request_payload,
+                "requestMethod": "grpc",
+                "metadata": dict(request_metadata),
+            }
+            _LOGGER.debug(
+                f"Sending request for {client_call_details.method}",
+                extra = {
+                    "serviceName": "{{ service.meta.address.proto }}",
+                    "rpcName": str(client_call_details.method),
+                    "request": grpc_request,
+                    {# TODO(https://github.com/googleapis/gapic-generator-python/issues/2275): logging `metadata` seems repetitive and may need to be cleaned up. We're including it within "request" for consistency with REST transport. #}
+                    "metadata": grpc_request["metadata"],
+                },
+            )
+{%- endmacro %}
+
+
 {% macro prep_wrapped_messages_async_method(api, service) %}
 def _prep_wrapped_messages(self, client_info):
     """ Precompute the wrapped methods, overriding the base class method to use async wrappers."""
