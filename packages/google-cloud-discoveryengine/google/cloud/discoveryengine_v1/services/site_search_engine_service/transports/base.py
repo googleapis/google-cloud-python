@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -168,6 +168,21 @@ class SiteSearchEngineServiceTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.create_sitemap: gapic_v1.method.wrap_method(
+                self.create_sitemap,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_sitemap: gapic_v1.method.wrap_method(
+                self.delete_sitemap,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.fetch_sitemaps: gapic_v1.method.wrap_method(
+                self.fetch_sitemaps,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.enable_advanced_site_search: gapic_v1.method.wrap_method(
                 self.enable_advanced_site_search,
                 default_timeout=None,
@@ -289,6 +304,36 @@ class SiteSearchEngineServiceTransport(abc.ABC):
         Union[
             site_search_engine_service.ListTargetSitesResponse,
             Awaitable[site_search_engine_service.ListTargetSitesResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_sitemap(
+        self,
+    ) -> Callable[
+        [site_search_engine_service.CreateSitemapRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_sitemap(
+        self,
+    ) -> Callable[
+        [site_search_engine_service.DeleteSitemapRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def fetch_sitemaps(
+        self,
+    ) -> Callable[
+        [site_search_engine_service.FetchSitemapsRequest],
+        Union[
+            site_search_engine_service.FetchSitemapsResponse,
+            Awaitable[site_search_engine_service.FetchSitemapsResponse],
         ],
     ]:
         raise NotImplementedError()

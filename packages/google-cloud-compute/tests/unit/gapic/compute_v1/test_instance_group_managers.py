@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12557,6 +12557,7 @@ def test_insert_rest_call_success(request_type):
         "name": "name_value",
         "named_ports": [{"name": "name_value", "port": 453}],
         "region": "region_value",
+        "resource_policies": {"workload_policy": "workload_policy_value"},
         "satisfies_pzi": True,
         "satisfies_pzs": True,
         "self_link": "self_link_value",
@@ -13453,6 +13454,7 @@ def test_patch_rest_call_success(request_type):
         "name": "name_value",
         "named_ports": [{"name": "name_value", "port": 453}],
         "region": "region_value",
+        "resource_policies": {"workload_policy": "workload_policy_value"},
         "satisfies_pzi": True,
         "satisfies_pzs": True,
         "self_link": "self_link_value",

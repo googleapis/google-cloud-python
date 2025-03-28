@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -153,6 +153,12 @@ class Control(proto.Message):
             another.
 
             This field is a member of `oneof`_ ``action``.
+        promote_action (google.cloud.discoveryengine_v1.types.Control.PromoteAction):
+            Promote certain links based on predefined
+            trigger queries.
+            This now only supports basic site search.
+
+            This field is a member of `oneof`_ ``action``.
         name (str):
             Immutable. Fully qualified name
             ``projects/*/locations/global/dataStore/*/controls/*``
@@ -191,10 +197,28 @@ class Control(proto.Message):
     class BoostAction(proto.Message):
         r"""Adjusts order of products in returned list.
 
+        This message has `oneof`_ fields (mutually exclusive fields).
+        For each oneof, at most one member field can be set at the same time.
+        Setting any member of the oneof automatically clears all other
+        members.
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
         Attributes:
-            boost (float):
-                Required. Strength of the boost, which should be in [-1, 1].
+            fixed_boost (float):
+                Optional. Strength of the boost, which should be in [-1, 1].
                 Negative boost means demotion. Default is 0.0 (No-op).
+
+                This field is a member of `oneof`_ ``boost_spec``.
+            interpolation_boost_spec (google.cloud.discoveryengine_v1.types.Control.BoostAction.InterpolationBoostSpec):
+                Optional. Complex specification for custom
+                ranking based on customer defined attribute
+                value.
+
+                This field is a member of `oneof`_ ``boost_spec``.
+            boost (float):
+                Strength of the boost, which should be in [-1, 1]. Negative
+                boost means demotion. Default is 0.0 (No-op).
             filter (str):
                 Required. Specifies which products to apply
                 the boost to.
@@ -210,6 +234,137 @@ class Control(proto.Message):
                 projects/123/locations/global/collections/default_collection/dataStores/default_data_store
         """
 
+        class InterpolationBoostSpec(proto.Message):
+            r"""Specification for custom ranking based on customer specified
+            attribute value. It provides more controls for customized
+            ranking than the simple (condition, boost) combination above.
+
+            Attributes:
+                field_name (str):
+                    Optional. The name of the field whose value
+                    will be used to determine the boost amount.
+                attribute_type (google.cloud.discoveryengine_v1.types.Control.BoostAction.InterpolationBoostSpec.AttributeType):
+                    Optional. The attribute type to be used to determine the
+                    boost amount. The attribute value can be derived from the
+                    field value of the specified field_name. In the case of
+                    numerical it is straightforward i.e. attribute_value =
+                    numerical_field_value. In the case of freshness however,
+                    attribute_value = (time.now() - datetime_field_value).
+                interpolation_type (google.cloud.discoveryengine_v1.types.Control.BoostAction.InterpolationBoostSpec.InterpolationType):
+                    Optional. The interpolation type to be
+                    applied to connect the control points listed
+                    below.
+                control_points (MutableSequence[google.cloud.discoveryengine_v1.types.Control.BoostAction.InterpolationBoostSpec.ControlPoint]):
+                    Optional. The control points used to define the curve. The
+                    monotonic function (defined through the interpolation_type
+                    above) passes through the control points listed here.
+            """
+
+            class AttributeType(proto.Enum):
+                r"""The attribute(or function) for which the custom ranking is to
+                be applied.
+
+                Values:
+                    ATTRIBUTE_TYPE_UNSPECIFIED (0):
+                        Unspecified AttributeType.
+                    NUMERICAL (1):
+                        The value of the numerical field will be used to dynamically
+                        update the boost amount. In this case, the attribute_value
+                        (the x value) of the control point will be the actual value
+                        of the numerical field for which the boost_amount is
+                        specified.
+                    FRESHNESS (2):
+                        For the freshness use case the attribute value will be the
+                        duration between the current time and the date in the
+                        datetime field specified. The value must be formatted as an
+                        XSD ``dayTimeDuration`` value (a restricted subset of an ISO
+                        8601 duration value). The pattern for this is:
+                        ``[nD][T[nH][nM][nS]]``. For example, ``5D``, ``3DT12H30M``,
+                        ``T24H``.
+                """
+                ATTRIBUTE_TYPE_UNSPECIFIED = 0
+                NUMERICAL = 1
+                FRESHNESS = 2
+
+            class InterpolationType(proto.Enum):
+                r"""The interpolation type to be applied. Default will be linear
+                (Piecewise Linear).
+
+                Values:
+                    INTERPOLATION_TYPE_UNSPECIFIED (0):
+                        Interpolation type is unspecified. In this
+                        case, it defaults to Linear.
+                    LINEAR (1):
+                        Piecewise linear interpolation will be
+                        applied.
+                """
+                INTERPOLATION_TYPE_UNSPECIFIED = 0
+                LINEAR = 1
+
+            class ControlPoint(proto.Message):
+                r"""The control points used to define the curve. The curve
+                defined through these control points can only be monotonically
+                increasing or decreasing(constant values are acceptable).
+
+                Attributes:
+                    attribute_value (str):
+                        Optional. Can be one of:
+
+                        1. The numerical field value.
+                        2. The duration spec for freshness: The value must be
+                           formatted as an XSD ``dayTimeDuration`` value (a
+                           restricted subset of an ISO 8601 duration value). The
+                           pattern for this is: ``[nD][T[nH][nM][nS]]``.
+                    boost_amount (float):
+                        Optional. The value between -1 to 1 by which to boost the
+                        score if the attribute_value evaluates to the value
+                        specified above.
+                """
+
+                attribute_value: str = proto.Field(
+                    proto.STRING,
+                    number=1,
+                )
+                boost_amount: float = proto.Field(
+                    proto.FLOAT,
+                    number=2,
+                )
+
+            field_name: str = proto.Field(
+                proto.STRING,
+                number=1,
+            )
+            attribute_type: "Control.BoostAction.InterpolationBoostSpec.AttributeType" = proto.Field(
+                proto.ENUM,
+                number=2,
+                enum="Control.BoostAction.InterpolationBoostSpec.AttributeType",
+            )
+            interpolation_type: "Control.BoostAction.InterpolationBoostSpec.InterpolationType" = proto.Field(
+                proto.ENUM,
+                number=3,
+                enum="Control.BoostAction.InterpolationBoostSpec.InterpolationType",
+            )
+            control_points: MutableSequence[
+                "Control.BoostAction.InterpolationBoostSpec.ControlPoint"
+            ] = proto.RepeatedField(
+                proto.MESSAGE,
+                number=4,
+                message="Control.BoostAction.InterpolationBoostSpec.ControlPoint",
+            )
+
+        fixed_boost: float = proto.Field(
+            proto.FLOAT,
+            number=4,
+            oneof="boost_spec",
+        )
+        interpolation_boost_spec: "Control.BoostAction.InterpolationBoostSpec" = (
+            proto.Field(
+                proto.MESSAGE,
+                number=5,
+                oneof="boost_spec",
+                message="Control.BoostAction.InterpolationBoostSpec",
+            )
+        )
         boost: float = proto.Field(
             proto.FLOAT,
             number=1,
@@ -289,6 +444,30 @@ class Control(proto.Message):
             number=1,
         )
 
+    class PromoteAction(proto.Message):
+        r"""Promote certain links based on some trigger queries.
+
+        Example: Promote shoe store link when searching for ``shoe``
+        keyword. The link can be outside of associated data store.
+
+        Attributes:
+            data_store (str):
+                Required. Data store with which this
+                promotion is attached to.
+            search_link_promotion (google.cloud.discoveryengine_v1.types.SearchLinkPromotion):
+                Required. Promotion attached to this action.
+        """
+
+        data_store: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        search_link_promotion: common.SearchLinkPromotion = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            message=common.SearchLinkPromotion,
+        )
+
     boost_action: BoostAction = proto.Field(
         proto.MESSAGE,
         number=6,
@@ -312,6 +491,12 @@ class Control(proto.Message):
         number=10,
         oneof="action",
         message=SynonymsAction,
+    )
+    promote_action: PromoteAction = proto.Field(
+        proto.MESSAGE,
+        number=15,
+        oneof="action",
+        message=PromoteAction,
     )
     name: str = proto.Field(
         proto.STRING,

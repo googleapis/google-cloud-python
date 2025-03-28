@@ -1,6 +1,6 @@
 #! /usr/bin/env python3
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -40,17 +40,29 @@ class networkconnectivityCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
         'accept_hub_spoke': ('name', 'spoke_uri', 'request_id', ),
+        'accept_spoke_update': ('name', 'spoke_uri', 'spoke_etag', 'request_id', ),
         'create_hub': ('parent', 'hub_id', 'hub', 'request_id', ),
         'create_policy_based_route': ('parent', 'policy_based_route_id', 'policy_based_route', 'request_id', ),
+        'create_service_connection_map': ('parent', 'service_connection_map', 'service_connection_map_id', 'request_id', ),
+        'create_service_connection_policy': ('parent', 'service_connection_policy', 'service_connection_policy_id', 'request_id', ),
+        'create_service_connection_token': ('parent', 'service_connection_token', 'service_connection_token_id', 'request_id', ),
         'create_spoke': ('parent', 'spoke_id', 'spoke', 'request_id', ),
         'delete_hub': ('name', 'request_id', ),
         'delete_policy_based_route': ('name', 'request_id', ),
+        'delete_service_class': ('name', 'request_id', 'etag', ),
+        'delete_service_connection_map': ('name', 'request_id', 'etag', ),
+        'delete_service_connection_policy': ('name', 'request_id', 'etag', ),
+        'delete_service_connection_token': ('name', 'request_id', 'etag', ),
         'delete_spoke': ('name', 'request_id', ),
         'get_group': ('name', ),
         'get_hub': ('name', ),
         'get_policy_based_route': ('name', ),
         'get_route': ('name', ),
         'get_route_table': ('name', ),
+        'get_service_class': ('name', ),
+        'get_service_connection_map': ('name', ),
+        'get_service_connection_policy': ('name', ),
+        'get_service_connection_token': ('name', ),
         'get_spoke': ('name', ),
         'list_groups': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
         'list_hubs': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
@@ -58,11 +70,19 @@ class networkconnectivityCallTransformer(cst.CSTTransformer):
         'list_policy_based_routes': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
         'list_routes': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
         'list_route_tables': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
+        'list_service_classes': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
+        'list_service_connection_maps': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
+        'list_service_connection_policies': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
+        'list_service_connection_tokens': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
         'list_spokes': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
         'query_hub_status': ('name', 'page_size', 'page_token', 'filter', 'order_by', 'group_by', ),
         'reject_hub_spoke': ('name', 'spoke_uri', 'request_id', 'details', ),
+        'reject_spoke_update': ('name', 'spoke_uri', 'spoke_etag', 'details', 'request_id', ),
         'update_group': ('group', 'update_mask', 'request_id', ),
         'update_hub': ('hub', 'update_mask', 'request_id', ),
+        'update_service_class': ('service_class', 'update_mask', 'request_id', ),
+        'update_service_connection_map': ('service_connection_map', 'update_mask', 'request_id', ),
+        'update_service_connection_policy': ('service_connection_policy', 'update_mask', 'request_id', ),
         'update_spoke': ('spoke', 'update_mask', 'request_id', ),
     }
 

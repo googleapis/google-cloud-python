@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.12.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-apigee-connect-v1.12.0...google-cloud-apigee-connect-v1.12.1) (2025-03-15)
+
+
+### Bug Fixes
+
+* [Many APIs] Allow Protobuf 6.x ([a1b9294](https://github.com/googleapis/google-cloud-python/commit/a1b9294d0bf6e27c2a951d6df7faf7807dc5420b))
+* remove setup.cfg configuration for creating universal wheels ([#13659](https://github.com/googleapis/google-cloud-python/issues/13659)) ([59bfd42](https://github.com/googleapis/google-cloud-python/commit/59bfd42cf8a2eaeed696a7504890bce5aae815ce))
+
 ## [1.12.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-apigee-connect-v1.11.0...google-cloud-apigee-connect-v1.12.0) (2025-02-12)
 
 

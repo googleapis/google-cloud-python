@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -820,7 +820,7 @@ class KubernetesConfig(proto.Message):
                     Service to the route destination clusters. The
                     Service will always be deployed to the Target
                     cluster even if the HTTPRoute is not. This
-                    option may be used to facilitiate successful DNS
+                    option may be used to facilitate successful DNS
                     lookup in the route destination clusters. Can
                     only be set to true if destinations are
                     specified.
@@ -4595,7 +4595,7 @@ class Rollout(proto.Message):
                 successfully; check Cloud Build logs.
             DEADLINE_EXCEEDED (3):
                 Deployment did not complete within the
-                alloted time.
+                allotted time.
             RELEASE_FAILED (4):
                 Release is in a failed state.
             RELEASE_ABANDONED (5):
@@ -5273,7 +5273,7 @@ class ListRolloutsRequest(proto.Message):
 
 
 class ListRolloutsResponse(proto.Message):
-    r"""ListRolloutsResponse is the response object reutrned by
+    r"""ListRolloutsResponse is the response object returned by
     ``ListRollouts``.
 
     Attributes:
@@ -5857,7 +5857,7 @@ class DeployJobRun(proto.Message):
                 successfully; check Cloud Build logs.
             DEADLINE_EXCEEDED (3):
                 The deploy job run did not complete within
-                the alloted time.
+                the allotted time.
             MISSING_RESOURCES_FOR_CANARY (4):
                 There were missing resources in the runtime
                 environment required for a canary deployment.
@@ -5942,7 +5942,7 @@ class VerifyJobRun(proto.Message):
                 successfully; check Cloud Build logs.
             DEADLINE_EXCEEDED (3):
                 The verify job run did not complete within
-                the alloted time.
+                the allotted time.
             VERIFICATION_CONFIG_NOT_FOUND (4):
                 No Skaffold verify configuration was found.
             CLOUD_BUILD_REQUEST_FAILED (5):
@@ -6014,7 +6014,7 @@ class PredeployJobRun(proto.Message):
                 successfully; check Cloud Build logs.
             DEADLINE_EXCEEDED (3):
                 The predeploy job run did not complete within
-                the alloted time.
+                the allotted time.
             CLOUD_BUILD_REQUEST_FAILED (4):
                 Cloud Build failed to fulfill Cloud Deploy's request. See
                 failure_message for additional details.
@@ -6076,7 +6076,7 @@ class PostdeployJobRun(proto.Message):
                 successfully; check Cloud Build logs.
             DEADLINE_EXCEEDED (3):
                 The postdeploy job run did not complete
-                within the alloted time.
+                within the allotted time.
             CLOUD_BUILD_REQUEST_FAILED (4):
                 Cloud Build failed to fulfill Cloud Deploy's request. See
                 failure_message for additional details.

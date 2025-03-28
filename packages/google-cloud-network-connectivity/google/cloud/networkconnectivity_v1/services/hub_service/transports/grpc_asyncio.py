@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -701,6 +701,60 @@ class HubServiceGrpcAsyncIOTransport(HubServiceTransport):
         return self._stubs["accept_hub_spoke"]
 
     @property
+    def accept_spoke_update(
+        self,
+    ) -> Callable[[hub.AcceptSpokeUpdateRequest], Awaitable[operations_pb2.Operation]]:
+        r"""Return a callable for the accept spoke update method over gRPC.
+
+        Accepts a proposal to update a Network Connectivity
+        Center spoke in a hub.
+
+        Returns:
+            Callable[[~.AcceptSpokeUpdateRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "accept_spoke_update" not in self._stubs:
+            self._stubs["accept_spoke_update"] = self._logged_channel.unary_unary(
+                "/google.cloud.networkconnectivity.v1.HubService/AcceptSpokeUpdate",
+                request_serializer=hub.AcceptSpokeUpdateRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["accept_spoke_update"]
+
+    @property
+    def reject_spoke_update(
+        self,
+    ) -> Callable[[hub.RejectSpokeUpdateRequest], Awaitable[operations_pb2.Operation]]:
+        r"""Return a callable for the reject spoke update method over gRPC.
+
+        Rejects a proposal to update a Network Connectivity
+        Center spoke in a hub.
+
+        Returns:
+            Callable[[~.RejectSpokeUpdateRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "reject_spoke_update" not in self._stubs:
+            self._stubs["reject_spoke_update"] = self._logged_channel.unary_unary(
+                "/google.cloud.networkconnectivity.v1.HubService/RejectSpokeUpdate",
+                request_serializer=hub.RejectSpokeUpdateRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["reject_spoke_update"]
+
+    @property
     def delete_spoke(
         self,
     ) -> Callable[[hub.DeleteSpokeRequest], Awaitable[operations_pb2.Operation]]:
@@ -972,6 +1026,16 @@ class HubServiceGrpcAsyncIOTransport(HubServiceTransport):
             ),
             self.accept_hub_spoke: self._wrap_method(
                 self.accept_hub_spoke,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.accept_spoke_update: self._wrap_method(
+                self.accept_spoke_update,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.reject_spoke_update: self._wrap_method(
+                self.reject_spoke_update,
                 default_timeout=None,
                 client_info=client_info,
             ),

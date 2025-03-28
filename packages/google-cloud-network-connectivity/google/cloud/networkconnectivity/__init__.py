@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,6 +18,12 @@ from google.cloud.networkconnectivity import gapic_version as package_version
 __version__ = package_version.__version__
 
 
+from google.cloud.networkconnectivity_v1.services.cross_network_automation_service.async_client import (
+    CrossNetworkAutomationServiceAsyncClient,
+)
+from google.cloud.networkconnectivity_v1.services.cross_network_automation_service.client import (
+    CrossNetworkAutomationServiceClient,
+)
 from google.cloud.networkconnectivity_v1.services.hub_service.async_client import (
     HubServiceAsyncClient,
 )
@@ -31,9 +37,42 @@ from google.cloud.networkconnectivity_v1.services.policy_based_routing_service.c
     PolicyBasedRoutingServiceClient,
 )
 from google.cloud.networkconnectivity_v1.types.common import OperationMetadata
+from google.cloud.networkconnectivity_v1.types.cross_network_automation import (
+    ConnectionErrorType,
+    CreateServiceConnectionMapRequest,
+    CreateServiceConnectionPolicyRequest,
+    CreateServiceConnectionTokenRequest,
+    DeleteServiceClassRequest,
+    DeleteServiceConnectionMapRequest,
+    DeleteServiceConnectionPolicyRequest,
+    DeleteServiceConnectionTokenRequest,
+    GetServiceClassRequest,
+    GetServiceConnectionMapRequest,
+    GetServiceConnectionPolicyRequest,
+    GetServiceConnectionTokenRequest,
+    Infrastructure,
+    IPVersion,
+    ListServiceClassesRequest,
+    ListServiceClassesResponse,
+    ListServiceConnectionMapsRequest,
+    ListServiceConnectionMapsResponse,
+    ListServiceConnectionPoliciesRequest,
+    ListServiceConnectionPoliciesResponse,
+    ListServiceConnectionTokensRequest,
+    ListServiceConnectionTokensResponse,
+    ServiceClass,
+    ServiceConnectionMap,
+    ServiceConnectionPolicy,
+    ServiceConnectionToken,
+    UpdateServiceClassRequest,
+    UpdateServiceConnectionMapRequest,
+    UpdateServiceConnectionPolicyRequest,
+)
 from google.cloud.networkconnectivity_v1.types.hub import (
     AcceptHubSpokeRequest,
     AcceptHubSpokeResponse,
+    AcceptSpokeUpdateRequest,
+    AcceptSpokeUpdateResponse,
     AutoAccept,
     CreateHubRequest,
     CreateSpokeRequest,
@@ -77,6 +116,8 @@ from google.cloud.networkconnectivity_v1.types.hub import (
     QueryHubStatusResponse,
     RejectHubSpokeRequest,
     RejectHubSpokeResponse,
+    RejectSpokeUpdateRequest,
+    RejectSpokeUpdateResponse,
     Route,
     RouterApplianceInstance,
     RouteTable,
@@ -100,13 +141,46 @@ from google.cloud.networkconnectivity_v1.types.policy_based_routing import (
 )
 
 __all__ = (
+    "CrossNetworkAutomationServiceClient",
+    "CrossNetworkAutomationServiceAsyncClient",
     "HubServiceClient",
     "HubServiceAsyncClient",
     "PolicyBasedRoutingServiceClient",
     "PolicyBasedRoutingServiceAsyncClient",
     "OperationMetadata",
+    "CreateServiceConnectionMapRequest",
+    "CreateServiceConnectionPolicyRequest",
+    "CreateServiceConnectionTokenRequest",
+    "DeleteServiceClassRequest",
+    "DeleteServiceConnectionMapRequest",
+    "DeleteServiceConnectionPolicyRequest",
+    "DeleteServiceConnectionTokenRequest",
+    "GetServiceClassRequest",
+    "GetServiceConnectionMapRequest",
+    "GetServiceConnectionPolicyRequest",
+    "GetServiceConnectionTokenRequest",
+    "ListServiceClassesRequest",
+    "ListServiceClassesResponse",
+    "ListServiceConnectionMapsRequest",
+    "ListServiceConnectionMapsResponse",
+    "ListServiceConnectionPoliciesRequest",
+    "ListServiceConnectionPoliciesResponse",
+    "ListServiceConnectionTokensRequest",
+    "ListServiceConnectionTokensResponse",
+    "ServiceClass",
+    "ServiceConnectionMap",
+    "ServiceConnectionPolicy",
+    "ServiceConnectionToken",
+    "UpdateServiceClassRequest",
+    "UpdateServiceConnectionMapRequest",
+    "UpdateServiceConnectionPolicyRequest",
+    "ConnectionErrorType",
+    "Infrastructure",
+    "IPVersion",
     "AcceptHubSpokeRequest",
     "AcceptHubSpokeResponse",
+    "AcceptSpokeUpdateRequest",
+    "AcceptSpokeUpdateResponse",
     "AutoAccept",
     "CreateHubRequest",
     "CreateSpokeRequest",
@@ -147,6 +221,8 @@ __all__ = (
     "QueryHubStatusResponse",
     "RejectHubSpokeRequest",
     "RejectHubSpokeResponse",
+    "RejectSpokeUpdateRequest",
+    "RejectSpokeUpdateResponse",
     "Route",
     "RouterApplianceInstance",
     "RouteTable",

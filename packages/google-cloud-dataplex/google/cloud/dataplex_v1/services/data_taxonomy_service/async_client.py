@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -28,6 +28,7 @@ from typing import (
     Type,
     Union,
 )
+import warnings
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -367,10 +368,6 @@ class DataTaxonomyServiceAsyncClient:
             request (Optional[Union[google.cloud.dataplex_v1.types.CreateDataTaxonomyRequest, dict]]):
                 The request object. Create DataTaxonomy request.
             parent (:class:`str`):
-                Required. The resource name of the data taxonomy
-                location, of the form:
-                projects/{project_number}/locations/{location_id} where
-                ``location_id`` refers to a GCP region.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -411,6 +408,11 @@ class DataTaxonomyServiceAsyncClient:
                    PII data. It is defined at project level.
 
         """
+        warnings.warn(
+            "DataTaxonomyServiceAsyncClient.create_data_taxonomy is deprecated",
+            DeprecationWarning,
+        )
+
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
@@ -548,6 +550,11 @@ class DataTaxonomyServiceAsyncClient:
                    PII data. It is defined at project level.
 
         """
+        warnings.warn(
+            "DataTaxonomyServiceAsyncClient.update_data_taxonomy is deprecated",
+            DeprecationWarning,
+        )
+
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
@@ -686,6 +693,11 @@ class DataTaxonomyServiceAsyncClient:
                       }
 
         """
+        warnings.warn(
+            "DataTaxonomyServiceAsyncClient.delete_data_taxonomy is deprecated",
+            DeprecationWarning,
+        )
+
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
@@ -811,6 +823,11 @@ class DataTaxonomyServiceAsyncClient:
                 automatically.
 
         """
+        warnings.warn(
+            "DataTaxonomyServiceAsyncClient.list_data_taxonomies is deprecated",
+            DeprecationWarning,
+        )
+
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
@@ -912,8 +929,6 @@ class DataTaxonomyServiceAsyncClient:
             request (Optional[Union[google.cloud.dataplex_v1.types.GetDataTaxonomyRequest, dict]]):
                 The request object. Get DataTaxonomy request.
             name (:class:`str`):
-                Required. The resource name of the DataTaxonomy:
-                projects/{project_number}/locations/{location_id}/dataTaxonomies/{data_taxonomy_id}
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -936,6 +951,11 @@ class DataTaxonomyServiceAsyncClient:
                 defined at project level.
 
         """
+        warnings.warn(
+            "DataTaxonomyServiceAsyncClient.get_data_taxonomy is deprecated",
+            DeprecationWarning,
+        )
+
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
@@ -1081,6 +1101,11 @@ class DataTaxonomyServiceAsyncClient:
                    'CustomerInfo' entity with 'PII' attribute.
 
         """
+        warnings.warn(
+            "DataTaxonomyServiceAsyncClient.create_data_attribute_binding is deprecated",
+            DeprecationWarning,
+        )
+
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
@@ -1220,6 +1245,11 @@ class DataTaxonomyServiceAsyncClient:
                    'CustomerInfo' entity with 'PII' attribute.
 
         """
+        warnings.warn(
+            "DataTaxonomyServiceAsyncClient.update_data_attribute_binding is deprecated",
+            DeprecationWarning,
+        )
+
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
@@ -1361,6 +1391,11 @@ class DataTaxonomyServiceAsyncClient:
                       }
 
         """
+        warnings.warn(
+            "DataTaxonomyServiceAsyncClient.delete_data_attribute_binding is deprecated",
+            DeprecationWarning,
+        )
+
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
@@ -1486,6 +1521,11 @@ class DataTaxonomyServiceAsyncClient:
                 automatically.
 
         """
+        warnings.warn(
+            "DataTaxonomyServiceAsyncClient.list_data_attribute_bindings is deprecated",
+            DeprecationWarning,
+        )
+
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
@@ -1611,6 +1651,11 @@ class DataTaxonomyServiceAsyncClient:
                 attribute.
 
         """
+        warnings.warn(
+            "DataTaxonomyServiceAsyncClient.get_data_attribute_binding is deprecated",
+            DeprecationWarning,
+        )
+
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
@@ -1752,6 +1797,11 @@ class DataTaxonomyServiceAsyncClient:
                    :literal:`\` PII   - ResourceAccessSpec :                 - readers :foo@bar.com   - DataAccessSpec :                 - readers :bar@foo.com`\ \`
 
         """
+        warnings.warn(
+            "DataTaxonomyServiceAsyncClient.create_data_attribute is deprecated",
+            DeprecationWarning,
+        )
+
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
@@ -1889,6 +1939,11 @@ class DataTaxonomyServiceAsyncClient:
                    :literal:`\` PII   - ResourceAccessSpec :                 - readers :foo@bar.com   - DataAccessSpec :                 - readers :bar@foo.com`\ \`
 
         """
+        warnings.warn(
+            "DataTaxonomyServiceAsyncClient.update_data_attribute is deprecated",
+            DeprecationWarning,
+        )
+
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
@@ -2025,6 +2080,11 @@ class DataTaxonomyServiceAsyncClient:
                       }
 
         """
+        warnings.warn(
+            "DataTaxonomyServiceAsyncClient.delete_data_attribute is deprecated",
+            DeprecationWarning,
+        )
+
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
@@ -2147,6 +2207,11 @@ class DataTaxonomyServiceAsyncClient:
                 automatically.
 
         """
+        warnings.warn(
+            "DataTaxonomyServiceAsyncClient.list_data_attributes is deprecated",
+            DeprecationWarning,
+        )
+
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
@@ -2272,6 +2337,11 @@ class DataTaxonomyServiceAsyncClient:
                    :literal:`\` PII   - ResourceAccessSpec :                 - readers :foo@bar.com   - DataAccessSpec :                 - readers :bar@foo.com`\ \`
 
         """
+        warnings.warn(
+            "DataTaxonomyServiceAsyncClient.get_data_attribute is deprecated",
+            DeprecationWarning,
+        )
+
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.

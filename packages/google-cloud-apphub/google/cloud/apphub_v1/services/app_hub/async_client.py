@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -1300,7 +1300,7 @@ class AppHubAsyncClient:
 
         Returns:
             google.cloud.apphub_v1.types.DiscoveredService:
-                DiscoveredService is a network/api
+                DiscoveredService is a network or API
                 interface that exposes some
                 functionality to clients for consumption
                 over the network. A discovered service
@@ -1694,9 +1694,9 @@ class AppHubAsyncClient:
                 An object representing a long-running operation.
 
                 The result type for the operation will be :class:`google.cloud.apphub_v1.types.Service` Service is an App Hub data model that contains a discovered service, which
-                   represents a network/api interface that exposes some
-                   functionality to clients for consumption over the
-                   network.
+                   represents a network or API interface that exposes
+                   some functionality to clients for consumption over
+                   the network.
 
         """
         # Create or coerce a protobuf request object.
@@ -1820,9 +1820,10 @@ class AppHubAsyncClient:
             google.cloud.apphub_v1.types.Service:
                 Service is an App Hub data model that
                 contains a discovered service, which
-                represents a network/api interface that
-                exposes some functionality to clients
-                for consumption over the network.
+                represents a network or API interface
+                that exposes some functionality to
+                clients for consumption over the
+                network.
 
         """
         # Create or coerce a protobuf request object.
@@ -1955,9 +1956,9 @@ class AppHubAsyncClient:
                 An object representing a long-running operation.
 
                 The result type for the operation will be :class:`google.cloud.apphub_v1.types.Service` Service is an App Hub data model that contains a discovered service, which
-                   represents a network/api interface that exposes some
-                   functionality to clients for consumption over the
-                   network.
+                   represents a network or API interface that exposes
+                   some functionality to clients for consumption over
+                   the network.
 
         """
         # Create or coerce a protobuf request object.
@@ -3363,7 +3364,7 @@ class AppHubAsyncClient:
 
                 # Initialize request argument(s)
                 application = apphub_v1.Application()
-                application.scope.type_ = "REGIONAL"
+                application.scope.type_ = "GLOBAL"
 
                 request = apphub_v1.CreateApplicationRequest(
                     parent="parent_value",
@@ -3419,7 +3420,7 @@ class AppHubAsyncClient:
             google.api_core.operation_async.AsyncOperation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be :class:`google.cloud.apphub_v1.types.Application` Application defines the governance boundary for App Hub Entities that
+                The result type for the operation will be :class:`google.cloud.apphub_v1.types.Application` Application defines the governance boundary for App Hub entities that
                    perform a logical end-to-end business function. App
                    Hub supports application level IAM permission to
                    align with governance requirements.
@@ -3545,7 +3546,7 @@ class AppHubAsyncClient:
         Returns:
             google.cloud.apphub_v1.types.Application:
                 Application defines the governance
-                boundary for App Hub Entities that
+                boundary for App Hub entities that
                 perform a logical end-to-end business
                 function. App Hub supports application
                 level IAM permission to align with
@@ -3631,7 +3632,7 @@ class AppHubAsyncClient:
 
                 # Initialize request argument(s)
                 application = apphub_v1.Application()
-                application.scope.type_ = "REGIONAL"
+                application.scope.type_ = "GLOBAL"
 
                 request = apphub_v1.UpdateApplicationRequest(
                     application=application,
@@ -3682,7 +3683,7 @@ class AppHubAsyncClient:
             google.api_core.operation_async.AsyncOperation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be :class:`google.cloud.apphub_v1.types.Application` Application defines the governance boundary for App Hub Entities that
+                The result type for the operation will be :class:`google.cloud.apphub_v1.types.Application` Application defines the governance boundary for App Hub entities that
                    perform a logical end-to-end business function. App
                    Hub supports application level IAM permission to
                    align with governance requirements.

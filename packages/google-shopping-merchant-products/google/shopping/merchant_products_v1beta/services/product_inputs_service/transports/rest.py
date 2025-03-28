@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -81,6 +81,14 @@ class ProductInputsServiceRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_update_product_input(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_update_product_input(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
         transport = ProductInputsServiceRestTransport(interceptor=MyCustomProductInputsServiceInterceptor())
         client = ProductInputsServiceClient(transport=transport)
 
@@ -146,6 +154,54 @@ class ProductInputsServiceRestInterceptor:
         `post_insert_product_input` interceptor. The (possibly modified) response returned by
         `post_insert_product_input` will be passed to
         `post_insert_product_input_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_update_product_input(
+        self,
+        request: productinputs.UpdateProductInputRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        productinputs.UpdateProductInputRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for update_product_input
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the ProductInputsService server.
+        """
+        return request, metadata
+
+    def post_update_product_input(
+        self, response: productinputs.ProductInput
+    ) -> productinputs.ProductInput:
+        """Post-rpc interceptor for update_product_input
+
+        DEPRECATED. Please use the `post_update_product_input_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the ProductInputsService server but before
+        it is returned to user code. This `post_update_product_input` interceptor runs
+        before the `post_update_product_input_with_metadata` interceptor.
+        """
+        return response
+
+    def post_update_product_input_with_metadata(
+        self,
+        response: productinputs.ProductInput,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[productinputs.ProductInput, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_product_input
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ProductInputsService server but before it is returned to user code.
+
+        We recommend only using this `post_update_product_input_with_metadata`
+        interceptor in new development instead of the `post_update_product_input` interceptor.
+        When both interceptors are used, this `post_update_product_input_with_metadata` interceptor runs after the
+        `post_update_product_input` interceptor. The (possibly modified) response returned by
+        `post_update_product_input` will be passed to
+        `post_update_product_input_with_metadata`.
         """
         return response, metadata
 
@@ -531,6 +587,193 @@ class ProductInputsServiceRestTransport(_BaseProductInputsServiceRestTransport):
                 )
             return resp
 
+    class _UpdateProductInput(
+        _BaseProductInputsServiceRestTransport._BaseUpdateProductInput,
+        ProductInputsServiceRestStub,
+    ):
+        def __hash__(self):
+            return hash("ProductInputsServiceRestTransport.UpdateProductInput")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: productinputs.UpdateProductInputRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> productinputs.ProductInput:
+            r"""Call the update product input method over HTTP.
+
+            Args:
+                request (~.productinputs.UpdateProductInputRequest):
+                    The request object. Request message for the
+                UpdateProductInput method. The product
+                (primary input) must exist for the
+                update to succeed. If the update is for
+                a primary product input, the existing
+                primary product input must be from the
+                same data source.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.productinputs.ProductInput:
+                    This resource represents input data you submit for a
+                product, not the processed product that you see in
+                Merchant Center, in Shopping ads, or across Google
+                surfaces. Product inputs, rules and supplemental data
+                source data are combined to create the processed
+                [Product][google.shopping.merchant.products.v1beta.Product].
+
+                Required product input attributes to pass data
+                validation checks are primarily defined in the `Products
+                Data
+                Specification <https://support.google.com/merchants/answer/188494>`__.
+
+                The following attributes are required:
+                [feedLabel][google.shopping.merchant.products.v1beta.Product.feed_label],
+                [contentLanguage][google.shopping.merchant.products.v1beta.Product.content_language]
+                and
+                [offerId][google.shopping.merchant.products.v1beta.Product.offer_id].
+
+                After inserting, updating, or deleting a product input,
+                it may take several minutes before the processed product
+                can be retrieved.
+
+                All fields in the product input and its sub-messages
+                match the English name of their corresponding attribute
+                in the vertical spec with `some
+                exceptions <https://support.google.com/merchants/answer/7052112>`__.
+
+            """
+
+            http_options = (
+                _BaseProductInputsServiceRestTransport._BaseUpdateProductInput._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_update_product_input(
+                request, metadata
+            )
+            transcoded_request = _BaseProductInputsServiceRestTransport._BaseUpdateProductInput._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseProductInputsServiceRestTransport._BaseUpdateProductInput._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseProductInputsServiceRestTransport._BaseUpdateProductInput._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.shopping.merchant.products_v1beta.ProductInputsServiceClient.UpdateProductInput",
+                    extra={
+                        "serviceName": "google.shopping.merchant.products.v1beta.ProductInputsService",
+                        "rpcName": "UpdateProductInput",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = (
+                ProductInputsServiceRestTransport._UpdateProductInput._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = productinputs.ProductInput()
+            pb_resp = productinputs.ProductInput.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_update_product_input(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_product_input_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = productinputs.ProductInput.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.shopping.merchant.products_v1beta.ProductInputsServiceClient.update_product_input",
+                    extra={
+                        "serviceName": "google.shopping.merchant.products.v1beta.ProductInputsService",
+                        "rpcName": "UpdateProductInput",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     @property
     def delete_product_input(
         self,
@@ -548,6 +791,16 @@ class ProductInputsServiceRestTransport(_BaseProductInputsServiceRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._InsertProductInput(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def update_product_input(
+        self,
+    ) -> Callable[
+        [productinputs.UpdateProductInputRequest], productinputs.ProductInput
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._UpdateProductInput(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def kind(self) -> str:

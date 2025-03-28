@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -1673,6 +1673,8 @@ def test_get_connection_profile(request_type, transport: str = "grpc"):
         call.return_value = datastream_resources.ConnectionProfile(
             name="name_value",
             display_name="display_name_value",
+            satisfies_pzs=True,
+            satisfies_pzi=True,
         )
         response = client.get_connection_profile(request)
 
@@ -1686,6 +1688,8 @@ def test_get_connection_profile(request_type, transport: str = "grpc"):
     assert isinstance(response, datastream_resources.ConnectionProfile)
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
+    assert response.satisfies_pzs is True
+    assert response.satisfies_pzi is True
 
 
 def test_get_connection_profile_non_empty_request_with_auto_populated_field():
@@ -1822,6 +1826,8 @@ async def test_get_connection_profile_async(
             datastream_resources.ConnectionProfile(
                 name="name_value",
                 display_name="display_name_value",
+                satisfies_pzs=True,
+                satisfies_pzi=True,
             )
         )
         response = await client.get_connection_profile(request)
@@ -1836,6 +1842,8 @@ async def test_get_connection_profile_async(
     assert isinstance(response, datastream_resources.ConnectionProfile)
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
+    assert response.satisfies_pzs is True
+    assert response.satisfies_pzi is True
 
 
 @pytest.mark.asyncio
@@ -3892,6 +3900,8 @@ def test_get_stream(request_type, transport: str = "grpc"):
             display_name="display_name_value",
             state=datastream_resources.Stream.State.NOT_STARTED,
             customer_managed_encryption_key="customer_managed_encryption_key_value",
+            satisfies_pzs=True,
+            satisfies_pzi=True,
         )
         response = client.get_stream(request)
 
@@ -3910,6 +3920,8 @@ def test_get_stream(request_type, transport: str = "grpc"):
         response.customer_managed_encryption_key
         == "customer_managed_encryption_key_value"
     )
+    assert response.satisfies_pzs is True
+    assert response.satisfies_pzi is True
 
 
 def test_get_stream_non_empty_request_with_auto_populated_field():
@@ -4037,6 +4049,8 @@ async def test_get_stream_async(
                 display_name="display_name_value",
                 state=datastream_resources.Stream.State.NOT_STARTED,
                 customer_managed_encryption_key="customer_managed_encryption_key_value",
+                satisfies_pzs=True,
+                satisfies_pzi=True,
             )
         )
         response = await client.get_stream(request)
@@ -4056,6 +4070,8 @@ async def test_get_stream_async(
         response.customer_managed_encryption_key
         == "customer_managed_encryption_key_value"
     )
+    assert response.satisfies_pzs is True
+    assert response.satisfies_pzi is True
 
 
 @pytest.mark.asyncio
@@ -8211,6 +8227,8 @@ def test_get_private_connection(request_type, transport: str = "grpc"):
             name="name_value",
             display_name="display_name_value",
             state=datastream_resources.PrivateConnection.State.CREATING,
+            satisfies_pzs=True,
+            satisfies_pzi=True,
         )
         response = client.get_private_connection(request)
 
@@ -8225,6 +8243,8 @@ def test_get_private_connection(request_type, transport: str = "grpc"):
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.state == datastream_resources.PrivateConnection.State.CREATING
+    assert response.satisfies_pzs is True
+    assert response.satisfies_pzi is True
 
 
 def test_get_private_connection_non_empty_request_with_auto_populated_field():
@@ -8362,6 +8382,8 @@ async def test_get_private_connection_async(
                 name="name_value",
                 display_name="display_name_value",
                 state=datastream_resources.PrivateConnection.State.CREATING,
+                satisfies_pzs=True,
+                satisfies_pzi=True,
             )
         )
         response = await client.get_private_connection(request)
@@ -8377,6 +8399,8 @@ async def test_get_private_connection_async(
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.state == datastream_resources.PrivateConnection.State.CREATING
+    assert response.satisfies_pzs is True
+    assert response.satisfies_pzi is True
 
 
 @pytest.mark.asyncio
@@ -16992,6 +17016,8 @@ async def test_get_connection_profile_empty_call_grpc_asyncio():
             datastream_resources.ConnectionProfile(
                 name="name_value",
                 display_name="display_name_value",
+                satisfies_pzs=True,
+                satisfies_pzi=True,
             )
         )
         await client.get_connection_profile(request=None)
@@ -17158,6 +17184,8 @@ async def test_get_stream_empty_call_grpc_asyncio():
                 display_name="display_name_value",
                 state=datastream_resources.Stream.State.NOT_STARTED,
                 customer_managed_encryption_key="customer_managed_encryption_key_value",
+                satisfies_pzs=True,
+                satisfies_pzi=True,
             )
         )
         await client.get_stream(request=None)
@@ -17487,6 +17515,8 @@ async def test_get_private_connection_empty_call_grpc_asyncio():
                 name="name_value",
                 display_name="display_name_value",
                 state=datastream_resources.PrivateConnection.State.CREATING,
+                satisfies_pzs=True,
+                satisfies_pzi=True,
             )
         )
         await client.get_private_connection(request=None)
@@ -17857,6 +17887,8 @@ def test_get_connection_profile_rest_call_success(request_type):
         return_value = datastream_resources.ConnectionProfile(
             name="name_value",
             display_name="display_name_value",
+            satisfies_pzs=True,
+            satisfies_pzi=True,
         )
 
         # Wrap the value into a proper Response obj
@@ -17875,6 +17907,8 @@ def test_get_connection_profile_rest_call_success(request_type):
     assert isinstance(response, datastream_resources.ConnectionProfile)
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
+    assert response.satisfies_pzs is True
+    assert response.satisfies_pzi is True
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -17990,6 +18024,8 @@ def test_create_connection_profile_rest_call_success(request_type):
         "update_time": {},
         "labels": {},
         "display_name": "display_name_value",
+        "satisfies_pzs": True,
+        "satisfies_pzi": True,
         "oracle_profile": {
             "hostname": "hostname_value",
             "port": 453,
@@ -18009,6 +18045,7 @@ def test_create_connection_profile_rest_call_success(request_type):
                 "asm_service": "asm_service_value",
                 "connection_attributes": {},
                 "oracle_ssl_config": {},
+                "secret_manager_stored_password": "secret_manager_stored_password_value",
             },
             "secret_manager_stored_password": "secret_manager_stored_password_value",
         },
@@ -18026,6 +18063,7 @@ def test_create_connection_profile_rest_call_success(request_type):
                 "ca_certificate": "ca_certificate_value",
                 "ca_certificate_set": True,
             },
+            "secret_manager_stored_password": "secret_manager_stored_password_value",
         },
         "bigquery_profile": {},
         "postgresql_profile": {
@@ -18034,6 +18072,7 @@ def test_create_connection_profile_rest_call_success(request_type):
             "username": "username_value",
             "password": "password_value",
             "database": "database_value",
+            "secret_manager_stored_password": "secret_manager_stored_password_value",
             "ssl_config": {
                 "server_verification": {"ca_certificate": "ca_certificate_value"},
                 "server_and_client_verification": {
@@ -18049,6 +18088,22 @@ def test_create_connection_profile_rest_call_success(request_type):
             "username": "username_value",
             "password": "password_value",
             "database": "database_value",
+            "secret_manager_stored_password": "secret_manager_stored_password_value",
+        },
+        "salesforce_profile": {
+            "domain": "domain_value",
+            "user_credentials": {
+                "username": "username_value",
+                "password": "password_value",
+                "security_token": "security_token_value",
+                "secret_manager_stored_password": "secret_manager_stored_password_value",
+                "secret_manager_stored_security_token": "secret_manager_stored_security_token_value",
+            },
+            "oauth2_client_credentials": {
+                "client_id": "client_id_value",
+                "client_secret": "client_secret_value",
+                "secret_manager_stored_client_secret": "secret_manager_stored_client_secret_value",
+            },
         },
         "static_service_ip_connectivity": {},
         "forward_ssh_connectivity": {
@@ -18267,6 +18322,8 @@ def test_update_connection_profile_rest_call_success(request_type):
         "update_time": {},
         "labels": {},
         "display_name": "display_name_value",
+        "satisfies_pzs": True,
+        "satisfies_pzi": True,
         "oracle_profile": {
             "hostname": "hostname_value",
             "port": 453,
@@ -18286,6 +18343,7 @@ def test_update_connection_profile_rest_call_success(request_type):
                 "asm_service": "asm_service_value",
                 "connection_attributes": {},
                 "oracle_ssl_config": {},
+                "secret_manager_stored_password": "secret_manager_stored_password_value",
             },
             "secret_manager_stored_password": "secret_manager_stored_password_value",
         },
@@ -18303,6 +18361,7 @@ def test_update_connection_profile_rest_call_success(request_type):
                 "ca_certificate": "ca_certificate_value",
                 "ca_certificate_set": True,
             },
+            "secret_manager_stored_password": "secret_manager_stored_password_value",
         },
         "bigquery_profile": {},
         "postgresql_profile": {
@@ -18311,6 +18370,7 @@ def test_update_connection_profile_rest_call_success(request_type):
             "username": "username_value",
             "password": "password_value",
             "database": "database_value",
+            "secret_manager_stored_password": "secret_manager_stored_password_value",
             "ssl_config": {
                 "server_verification": {"ca_certificate": "ca_certificate_value"},
                 "server_and_client_verification": {
@@ -18326,6 +18386,22 @@ def test_update_connection_profile_rest_call_success(request_type):
             "username": "username_value",
             "password": "password_value",
             "database": "database_value",
+            "secret_manager_stored_password": "secret_manager_stored_password_value",
+        },
+        "salesforce_profile": {
+            "domain": "domain_value",
+            "user_credentials": {
+                "username": "username_value",
+                "password": "password_value",
+                "security_token": "security_token_value",
+                "secret_manager_stored_password": "secret_manager_stored_password_value",
+                "secret_manager_stored_security_token": "secret_manager_stored_security_token_value",
+            },
+            "oauth2_client_credentials": {
+                "client_id": "client_id_value",
+                "client_secret": "client_secret_value",
+                "secret_manager_stored_client_secret": "secret_manager_stored_client_secret_value",
+            },
         },
         "static_service_ip_connectivity": {},
         "forward_ssh_connectivity": {
@@ -18923,6 +18999,8 @@ def test_get_stream_rest_call_success(request_type):
             display_name="display_name_value",
             state=datastream_resources.Stream.State.NOT_STARTED,
             customer_managed_encryption_key="customer_managed_encryption_key_value",
+            satisfies_pzs=True,
+            satisfies_pzi=True,
         )
 
         # Wrap the value into a proper Response obj
@@ -18946,6 +19024,8 @@ def test_get_stream_rest_call_success(request_type):
         response.customer_managed_encryption_key
         == "customer_managed_encryption_key_value"
     )
+    assert response.satisfies_pzs is True
+    assert response.satisfies_pzi is True
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -19188,13 +19268,31 @@ def test_create_stream_rest_call_success(request_type):
                 "transaction_logs": {},
                 "change_tables": {},
             },
+            "salesforce_source_config": {
+                "include_objects": {
+                    "objects": [
+                        {
+                            "object_name": "object_name_value",
+                            "fields": [
+                                {
+                                    "name": "name_value",
+                                    "data_type": "data_type_value",
+                                    "nillable": True,
+                                }
+                            ],
+                        }
+                    ]
+                },
+                "exclude_objects": {},
+                "polling_interval": {"seconds": 751, "nanos": 543},
+            },
         },
         "destination_config": {
             "destination_connection_profile": "destination_connection_profile_value",
             "gcs_destination_config": {
                 "path": "path_value",
                 "file_rotation_mb": 1693,
-                "file_rotation_interval": {"seconds": 751, "nanos": 543},
+                "file_rotation_interval": {},
                 "avro_file_format": {},
                 "json_file_format": {"schema_file_format": 1, "compression": 1},
             },
@@ -19208,6 +19306,13 @@ def test_create_stream_rest_call_success(request_type):
                     }
                 },
                 "data_freshness": {},
+                "blmt_config": {
+                    "bucket": "bucket_value",
+                    "root_path": "root_path_value",
+                    "connection_name": "connection_name_value",
+                    "file_format": 1,
+                    "table_format": 1,
+                },
                 "merge": {},
                 "append_only": {},
             },
@@ -19218,6 +19323,7 @@ def test_create_stream_rest_call_success(request_type):
             "mysql_excluded_objects": {},
             "postgresql_excluded_objects": {},
             "sql_server_excluded_objects": {},
+            "salesforce_excluded_objects": {},
         },
         "backfill_none": {},
         "errors": [
@@ -19231,6 +19337,8 @@ def test_create_stream_rest_call_success(request_type):
         ],
         "customer_managed_encryption_key": "customer_managed_encryption_key_value",
         "last_recovery_time": {},
+        "satisfies_pzs": True,
+        "satisfies_pzi": True,
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -19563,13 +19671,31 @@ def test_update_stream_rest_call_success(request_type):
                 "transaction_logs": {},
                 "change_tables": {},
             },
+            "salesforce_source_config": {
+                "include_objects": {
+                    "objects": [
+                        {
+                            "object_name": "object_name_value",
+                            "fields": [
+                                {
+                                    "name": "name_value",
+                                    "data_type": "data_type_value",
+                                    "nillable": True,
+                                }
+                            ],
+                        }
+                    ]
+                },
+                "exclude_objects": {},
+                "polling_interval": {"seconds": 751, "nanos": 543},
+            },
         },
         "destination_config": {
             "destination_connection_profile": "destination_connection_profile_value",
             "gcs_destination_config": {
                 "path": "path_value",
                 "file_rotation_mb": 1693,
-                "file_rotation_interval": {"seconds": 751, "nanos": 543},
+                "file_rotation_interval": {},
                 "avro_file_format": {},
                 "json_file_format": {"schema_file_format": 1, "compression": 1},
             },
@@ -19583,6 +19709,13 @@ def test_update_stream_rest_call_success(request_type):
                     }
                 },
                 "data_freshness": {},
+                "blmt_config": {
+                    "bucket": "bucket_value",
+                    "root_path": "root_path_value",
+                    "connection_name": "connection_name_value",
+                    "file_format": 1,
+                    "table_format": 1,
+                },
                 "merge": {},
                 "append_only": {},
             },
@@ -19593,6 +19726,7 @@ def test_update_stream_rest_call_success(request_type):
             "mysql_excluded_objects": {},
             "postgresql_excluded_objects": {},
             "sql_server_excluded_objects": {},
+            "salesforce_excluded_objects": {},
         },
         "backfill_none": {},
         "errors": [
@@ -19606,6 +19740,8 @@ def test_update_stream_rest_call_success(request_type):
         ],
         "customer_managed_encryption_key": "customer_managed_encryption_key_value",
         "last_recovery_time": {},
+        "satisfies_pzs": True,
+        "satisfies_pzi": True,
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -20839,6 +20975,8 @@ def test_create_private_connection_rest_call_success(request_type):
             "error_time": {},
             "details": {},
         },
+        "satisfies_pzs": True,
+        "satisfies_pzi": True,
         "vpc_peering_config": {"vpc": "vpc_value", "subnet": "subnet_value"},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
@@ -21047,6 +21185,8 @@ def test_get_private_connection_rest_call_success(request_type):
             name="name_value",
             display_name="display_name_value",
             state=datastream_resources.PrivateConnection.State.CREATING,
+            satisfies_pzs=True,
+            satisfies_pzi=True,
         )
 
         # Wrap the value into a proper Response obj
@@ -21066,6 +21206,8 @@ def test_get_private_connection_rest_call_success(request_type):
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.state == datastream_resources.PrivateConnection.State.CREATING
+    assert response.satisfies_pzs is True
+    assert response.satisfies_pzi is True
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])

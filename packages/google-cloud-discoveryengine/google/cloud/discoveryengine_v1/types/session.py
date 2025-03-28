@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,6 +20,8 @@ from typing import MutableMapping, MutableSequence
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
+from google.cloud.discoveryengine_v1.types import answer as gcd_answer
+
 __protobuf__ = proto.module(
     package="google.cloud.discoveryengine.v1",
     manifest={
@@ -36,6 +38,12 @@ class Session(proto.Message):
         name (str):
             Immutable. Fully qualified name
             ``projects/{project}/locations/global/collections/{collection}/engines/{engine}/sessions/*``
+        display_name (str):
+            Optional. The display name of the session.
+
+            This field is used to identify the session in
+            the UI. By default, the display name is the
+            first turn query text in the session.
         state (google.cloud.discoveryengine_v1.types.Session.State):
             The state of the session.
         user_pseudo_id (str):
@@ -46,6 +54,10 @@ class Session(proto.Message):
             Output only. The time the session started.
         end_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time the session finished.
+        is_pinned (bool):
+            Optional. Whether the session is pinned,
+            pinned session will be displayed on the top of
+            the session list.
     """
 
     class State(proto.Enum):
@@ -72,6 +84,13 @@ class Session(proto.Message):
                 query.
                 Only set if the answer generation (/answer API
                 call) happened in this turn.
+            detailed_answer (google.cloud.discoveryengine_v1.types.Answer):
+                Output only. In
+                [ConversationalSearchService.GetSession][google.cloud.discoveryengine.v1.ConversationalSearchService.GetSession]
+                API, if
+                [GetSessionRequest.include_answer_details][google.cloud.discoveryengine.v1.GetSessionRequest.include_answer_details]
+                is set to true, this field will be populated when getting
+                answer query session.
         """
 
         query: "Query" = proto.Field(
@@ -83,10 +102,19 @@ class Session(proto.Message):
             proto.STRING,
             number=2,
         )
+        detailed_answer: gcd_answer.Answer = proto.Field(
+            proto.MESSAGE,
+            number=7,
+            message=gcd_answer.Answer,
+        )
 
     name: str = proto.Field(
         proto.STRING,
         number=1,
+    )
+    display_name: str = proto.Field(
+        proto.STRING,
+        number=7,
     )
     state: State = proto.Field(
         proto.ENUM,
@@ -111,6 +139,10 @@ class Session(proto.Message):
         proto.MESSAGE,
         number=6,
         message=timestamp_pb2.Timestamp,
+    )
+    is_pinned: bool = proto.Field(
+        proto.BOOL,
+        number=8,
     )
 
 

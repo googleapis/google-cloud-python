@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,6 +19,7 @@ from typing import MutableMapping, MutableSequence
 
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import struct_pb2  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.dialogflowcx_v3beta1.types import data_store_connection, inline
@@ -35,6 +36,14 @@ __protobuf__ = proto.module(
         "UpdateToolRequest",
         "DeleteToolRequest",
         "Tool",
+        "ListToolVersionsRequest",
+        "ListToolVersionsResponse",
+        "CreateToolVersionRequest",
+        "GetToolVersionRequest",
+        "DeleteToolVersionRequest",
+        "RestoreToolVersionRequest",
+        "RestoreToolVersionResponse",
+        "ToolVersion",
         "ExportToolsMetadata",
     },
 )
@@ -351,6 +360,10 @@ class Tool(proto.Message):
             Client side executed function specification.
 
             This field is a member of `oneof`_ ``specification``.
+        connector_spec (google.cloud.dialogflowcx_v3beta1.types.Tool.ConnectorTool):
+            Integration connectors tool specification.
+
+            This field is a member of `oneof`_ ``specification``.
         tool_type (google.cloud.dialogflowcx_v3beta1.types.Tool.ToolType):
             Output only. The tool type.
     """
@@ -491,6 +504,142 @@ class Tool(proto.Message):
             message=struct_pb2.Struct,
         )
 
+    class ConnectorTool(proto.Message):
+        r"""A ConnectorTool enabling using Integration Connectors
+        Connections as tools.
+
+        Attributes:
+            name (str):
+                Required. The full resource name of the referenced
+                Integration Connectors Connection. Format:
+                ``projects/*/locations/*/connections/*``
+            actions (MutableSequence[google.cloud.dialogflowcx_v3beta1.types.Tool.ConnectorTool.Action]):
+                Required. Actions for the tool to use.
+            end_user_auth_config (google.cloud.dialogflowcx_v3beta1.types.Tool.EndUserAuthConfig):
+                Optional. Integration Connectors end-user authentication
+                configuration. If configured, the end-user authentication
+                fields will be passed in the Integration Connectors API
+                request and override the admin, default authentication
+                configured for the Connection. **Note**: The Connection must
+                have authentication override enabled in order to specify an
+                EUC configuration here - otherwise, the ConnectorTool
+                creation will fail. See:
+                https://cloud.google.com/application-integration/docs/configure-connectors-task#configure-authentication-override
+        """
+
+        class Action(proto.Message):
+            r"""Configuration of a Connection operation for the tool to use.
+
+            This message has `oneof`_ fields (mutually exclusive fields).
+            For each oneof, at most one member field can be set at the same time.
+            Setting any member of the oneof automatically clears all other
+            members.
+
+            .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+            Attributes:
+                connection_action_id (str):
+                    ID of a Connection action for the tool to
+                    use.
+
+                    This field is a member of `oneof`_ ``action_spec``.
+                entity_operation (google.cloud.dialogflowcx_v3beta1.types.Tool.ConnectorTool.Action.EntityOperation):
+                    Entity operation configuration for the tool
+                    to use.
+
+                    This field is a member of `oneof`_ ``action_spec``.
+                input_fields (MutableSequence[str]):
+                    Optional. Entity fields to use as inputs for
+                    the operation. If no fields are specified, all
+                    fields of the Entity will be used.
+                output_fields (MutableSequence[str]):
+                    Optional. Entity fields to return from the
+                    operation. If no fields are specified, all
+                    fields of the Entity will be returned.
+            """
+
+            class EntityOperation(proto.Message):
+                r"""Entity CRUD operation specification.
+
+                Attributes:
+                    entity_id (str):
+                        Required. ID of the entity.
+                    operation (google.cloud.dialogflowcx_v3beta1.types.Tool.ConnectorTool.Action.EntityOperation.OperationType):
+                        Required. Operation to perform on the entity.
+                """
+
+                class OperationType(proto.Enum):
+                    r"""The operation to perform on the entity.
+
+                    Values:
+                        OPERATION_TYPE_UNSPECIFIED (0):
+                            Operation type unspecified. Invalid,
+                            ConnectorTool create/update will fail.
+                        LIST (1):
+                            List operation.
+                        GET (2):
+                            Get operation.
+                        CREATE (3):
+                            Create operation.
+                        UPDATE (4):
+                            Update operation.
+                        DELETE (5):
+                            Delete operation.
+                    """
+                    OPERATION_TYPE_UNSPECIFIED = 0
+                    LIST = 1
+                    GET = 2
+                    CREATE = 3
+                    UPDATE = 4
+                    DELETE = 5
+
+                entity_id: str = proto.Field(
+                    proto.STRING,
+                    number=1,
+                )
+                operation: "Tool.ConnectorTool.Action.EntityOperation.OperationType" = (
+                    proto.Field(
+                        proto.ENUM,
+                        number=2,
+                        enum="Tool.ConnectorTool.Action.EntityOperation.OperationType",
+                    )
+                )
+
+            connection_action_id: str = proto.Field(
+                proto.STRING,
+                number=4,
+                oneof="action_spec",
+            )
+            entity_operation: "Tool.ConnectorTool.Action.EntityOperation" = proto.Field(
+                proto.MESSAGE,
+                number=5,
+                oneof="action_spec",
+                message="Tool.ConnectorTool.Action.EntityOperation",
+            )
+            input_fields: MutableSequence[str] = proto.RepeatedField(
+                proto.STRING,
+                number=2,
+            )
+            output_fields: MutableSequence[str] = proto.RepeatedField(
+                proto.STRING,
+                number=3,
+            )
+
+        name: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        actions: MutableSequence["Tool.ConnectorTool.Action"] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=2,
+            message="Tool.ConnectorTool.Action",
+        )
+        end_user_auth_config: "Tool.EndUserAuthConfig" = proto.Field(
+            proto.MESSAGE,
+            number=3,
+            message="Tool.EndUserAuthConfig",
+        )
+
     class Authentication(proto.Message):
         r"""Authentication information required for API calls
 
@@ -547,7 +696,8 @@ class Tool(proto.Message):
                     "https://example.com/act?X-Api-Key=<API KEY>",
                     "X-Api-Key" would be the parameter name.
                 api_key (str):
-                    Required. The API key.
+                    Optional. The API key. If the ``secret_version_for_api_key``
+                    field is set, this field will be ignored.
                 request_location (google.cloud.dialogflowcx_v3beta1.types.Tool.Authentication.RequestLocation):
                     Required. Key location in the request.
             """
@@ -576,8 +726,9 @@ class Tool(proto.Message):
                     Required. The client ID from the OAuth
                     provider.
                 client_secret (str):
-                    Required. The client secret from the OAuth
-                    provider.
+                    Optional. The client secret from the OAuth provider. If the
+                    ``secret_version_for_client_secret`` field is set, this
+                    field will be ignored.
                 token_endpoint (str):
                     Required. The token endpoint in the OAuth
                     provider to exchange for an access token.
@@ -671,7 +822,7 @@ class Tool(proto.Message):
 
             Attributes:
                 token (str):
-                    Required. The text token appended to the text ``Bearer`` to
+                    Optional. The text token appended to the text ``Bearer`` to
                     the request Authorization header. `Session parameters
                     reference <https://cloud.google.com/dialogflow/cx/docs/concept/parameter#session-ref>`__
                     can be used to pass the token dynamically, e.g.
@@ -728,25 +879,20 @@ class Tool(proto.Message):
                     certificates. This can be used to disambiguate
                     the custom CA certificates.
                 cert (bytes):
-                    Required. The allowed custom CA certificates
-                    (in DER format) for HTTPS verification. This
-                    overrides the default SSL trust store. If this
-                    is empty or unspecified, Dialogflow will use
-                    Google's default trust store to verify
-                    certificates. N.B. Make sure the HTTPS server
-                    certificates are signed with "subject alt name".
-                    For instance a certificate can be self-signed
-                    using the following command:
+                    Required. The allowed custom CA certificates (in DER format)
+                    for HTTPS verification. This overrides the default SSL trust
+                    store. If this is empty or unspecified, Dialogflow will use
+                    Google's default trust store to verify certificates. N.B.
+                    Make sure the HTTPS server certificates are signed with
+                    "subject alt name". For instance a certificate can be
+                    self-signed using the following command:
 
                     ::
 
-                        openssl x509
-                        -req -days 200 -in example.com.csr \
-                        -signkey example.com.key \
-                        -out example.com.crt \
-                        -extfile <(printf
-                        "\nsubjectAltName='DNS:www.example.com'")
-
+                          openssl x509 -req -days 200 -in example.com.csr \
+                            -signkey example.com.key \
+                            -out example.com.crt \
+                            -extfile <(printf "\nsubjectAltName='DNS:www.example.com'")
             """
 
             display_name: str = proto.Field(
@@ -780,6 +926,97 @@ class Tool(proto.Message):
         service: str = proto.Field(
             proto.STRING,
             number=1,
+        )
+
+    class EndUserAuthConfig(proto.Message):
+        r"""End-user authentication configuration used for Connection calls. The
+        field values can either be hardcoded authentication values or the
+        names of `session
+        parameters <https://cloud.google.com/dialogflow/cx/docs/concept/parameter#session-ref>`__
+        or `request
+        parameters <https://cloud.google.com/dialogflow/cx/docs/concept/parameter#request-scoped>`__.
+
+        If parameter names are provided, then those parameters can be used
+        to pass the authentication values dynamically, through
+        ``$session.params.param-id`` or ``$request.payload.param-id``.
+
+        This message has `oneof`_ fields (mutually exclusive fields).
+        For each oneof, at most one member field can be set at the same time.
+        Setting any member of the oneof automatically clears all other
+        members.
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+        Attributes:
+            oauth2_auth_code_config (google.cloud.dialogflowcx_v3beta1.types.Tool.EndUserAuthConfig.Oauth2AuthCodeConfig):
+                Oauth 2.0 Authorization Code authentication.
+
+                This field is a member of `oneof`_ ``end_user_auth_config``.
+            oauth2_jwt_bearer_config (google.cloud.dialogflowcx_v3beta1.types.Tool.EndUserAuthConfig.Oauth2JwtBearerConfig):
+                JWT Profile Oauth 2.0 Authorization Grant
+                authentication.
+
+                This field is a member of `oneof`_ ``end_user_auth_config``.
+        """
+
+        class Oauth2AuthCodeConfig(proto.Message):
+            r"""Oauth 2.0 Authorization Code authentication configuration.
+
+            Attributes:
+                oauth_token (str):
+                    Required. Oauth token value or parameter name
+                    to pass it through.
+            """
+
+            oauth_token: str = proto.Field(
+                proto.STRING,
+                number=1,
+            )
+
+        class Oauth2JwtBearerConfig(proto.Message):
+            r"""JWT Profile Oauth 2.0 Authorization Grant authentication
+            configuration.
+
+            Attributes:
+                issuer (str):
+                    Required. Issuer value or parameter name to
+                    pass it through.
+                subject (str):
+                    Required. Subject value or parameter name to
+                    pass it through.
+                client_key (str):
+                    Required. Client key value or parameter name
+                    to pass it through.
+            """
+
+            issuer: str = proto.Field(
+                proto.STRING,
+                number=1,
+            )
+            subject: str = proto.Field(
+                proto.STRING,
+                number=2,
+            )
+            client_key: str = proto.Field(
+                proto.STRING,
+                number=3,
+            )
+
+        oauth2_auth_code_config: "Tool.EndUserAuthConfig.Oauth2AuthCodeConfig" = (
+            proto.Field(
+                proto.MESSAGE,
+                number=2,
+                oneof="end_user_auth_config",
+                message="Tool.EndUserAuthConfig.Oauth2AuthCodeConfig",
+            )
+        )
+        oauth2_jwt_bearer_config: "Tool.EndUserAuthConfig.Oauth2JwtBearerConfig" = (
+            proto.Field(
+                proto.MESSAGE,
+                number=3,
+                oneof="end_user_auth_config",
+                message="Tool.EndUserAuthConfig.Oauth2JwtBearerConfig",
+            )
         )
 
     name: str = proto.Field(
@@ -818,10 +1055,224 @@ class Tool(proto.Message):
         oneof="specification",
         message=FunctionTool,
     )
+    connector_spec: ConnectorTool = proto.Field(
+        proto.MESSAGE,
+        number=15,
+        oneof="specification",
+        message=ConnectorTool,
+    )
     tool_type: ToolType = proto.Field(
         proto.ENUM,
         number=12,
         enum=ToolType,
+    )
+
+
+class ListToolVersionsRequest(proto.Message):
+    r"""The request message for
+    [Tools.ListToolVersions][google.cloud.dialogflow.cx.v3beta1.Tools.ListToolVersions].
+
+    Attributes:
+        parent (str):
+            Required. The parent of the tool versions. Format:
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/tools/<ToolID>``.
+        page_size (int):
+            Optional. The maximum number of items to
+            return in a single page. By default 100 and at
+            most 1000.
+        page_token (str):
+            Optional. The next_page_token value returned from a previous
+            list request.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class ListToolVersionsResponse(proto.Message):
+    r"""The response message for
+    [Tools.ListToolVersions][google.cloud.dialogflow.cx.v3beta1.Tools.ListToolVersions].
+
+    Attributes:
+        tool_versions (MutableSequence[google.cloud.dialogflowcx_v3beta1.types.ToolVersion]):
+            The list of tool versions. There will be a maximum number of
+            items returned based on the page_size field in the request.
+        next_page_token (str):
+            Token to retrieve the next page of results,
+            or empty if there are no more results in the
+            list.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    tool_versions: MutableSequence["ToolVersion"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="ToolVersion",
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class CreateToolVersionRequest(proto.Message):
+    r"""The request message for
+    [Tools.CreateToolVersion][google.cloud.dialogflow.cx.v3beta1.Tools.CreateToolVersion].
+    The request message for
+    [Tools.CreateToolVersion][google.cloud.dialogflow.cx.v3beta1.Tools.CreateToolVersion].
+
+    Attributes:
+        parent (str):
+            Required. The tool to create a version for. Format:
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/tools/<ToolID>``.
+        tool_version (google.cloud.dialogflowcx_v3beta1.types.ToolVersion):
+            Required. The tool version to create.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    tool_version: "ToolVersion" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="ToolVersion",
+    )
+
+
+class GetToolVersionRequest(proto.Message):
+    r"""The request message for
+    [Tools.GetToolVersion][google.cloud.dialogflow.cx.v3beta1.Tools.GetToolVersion].
+
+    Attributes:
+        name (str):
+            Required. The name of the tool version. Format:
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/tools/<ToolID>/versions/<VersionID>``.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class DeleteToolVersionRequest(proto.Message):
+    r"""The request message for
+    [Tools.DeleteToolVersion][google.cloud.dialogflow.cx.v3beta1.Tools.DeleteToolVersion].
+
+    Attributes:
+        name (str):
+            Required. The name of the tool version to delete. Format:
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/tools/<ToolID>/versions/<VersionID>``.
+        force (bool):
+            Optional. This field has no effect for Tools not being used.
+            For Tools that are used:
+
+            -  If ``force`` is set to false, an error will be returned
+               with message indicating the referenced resources.
+            -  If ``force`` is set to true, Dialogflow will remove the
+               tool, as well as any references to the tool.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    force: bool = proto.Field(
+        proto.BOOL,
+        number=2,
+    )
+
+
+class RestoreToolVersionRequest(proto.Message):
+    r"""The request message for
+    [Tools.RestoreToolVersion][google.cloud.dialogflow.cx.v3beta1.Tools.RestoreToolVersion].
+
+    Attributes:
+        name (str):
+            Required. The name of the tool version. Format:
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/tools/<ToolID>/versions/<VersionID>``.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class RestoreToolVersionResponse(proto.Message):
+    r"""The response message for
+    [Tools.RestoreToolVersion][google.cloud.dialogflow.cx.v3beta1.Tools.RestoreToolVersion].
+
+    Attributes:
+        tool (google.cloud.dialogflowcx_v3beta1.types.Tool):
+            The updated tool.
+    """
+
+    tool: "Tool" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="Tool",
+    )
+
+
+class ToolVersion(proto.Message):
+    r"""Tool version is a snapshot of the tool at certain timestamp.
+
+    Attributes:
+        name (str):
+            Identifier. The unique identifier of the tool version.
+            Format:
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/tools/<ToolID>/versions/<VersionID>``.
+        display_name (str):
+            Required. The display name of the tool
+            version.
+        tool (google.cloud.dialogflowcx_v3beta1.types.Tool):
+            Required. Snapshot of the tool to be
+            associated with this version.
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. Last time the tool version was
+            created or modified.
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. Last time the tool version was
+            created or modified.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    display_name: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    tool: "Tool" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="Tool",
+    )
+    create_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=timestamp_pb2.Timestamp,
     )
 
 

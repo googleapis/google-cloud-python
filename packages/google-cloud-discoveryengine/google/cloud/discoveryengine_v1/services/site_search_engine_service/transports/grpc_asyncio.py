@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -559,6 +559,94 @@ class SiteSearchEngineServiceGrpcAsyncIOTransport(SiteSearchEngineServiceTranspo
         return self._stubs["list_target_sites"]
 
     @property
+    def create_sitemap(
+        self,
+    ) -> Callable[
+        [site_search_engine_service.CreateSitemapRequest],
+        Awaitable[operations_pb2.Operation],
+    ]:
+        r"""Return a callable for the create sitemap method over gRPC.
+
+        Creates a [Sitemap][google.cloud.discoveryengine.v1.Sitemap].
+
+        Returns:
+            Callable[[~.CreateSitemapRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_sitemap" not in self._stubs:
+            self._stubs["create_sitemap"] = self._logged_channel.unary_unary(
+                "/google.cloud.discoveryengine.v1.SiteSearchEngineService/CreateSitemap",
+                request_serializer=site_search_engine_service.CreateSitemapRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["create_sitemap"]
+
+    @property
+    def delete_sitemap(
+        self,
+    ) -> Callable[
+        [site_search_engine_service.DeleteSitemapRequest],
+        Awaitable[operations_pb2.Operation],
+    ]:
+        r"""Return a callable for the delete sitemap method over gRPC.
+
+        Deletes a [Sitemap][google.cloud.discoveryengine.v1.Sitemap].
+
+        Returns:
+            Callable[[~.DeleteSitemapRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_sitemap" not in self._stubs:
+            self._stubs["delete_sitemap"] = self._logged_channel.unary_unary(
+                "/google.cloud.discoveryengine.v1.SiteSearchEngineService/DeleteSitemap",
+                request_serializer=site_search_engine_service.DeleteSitemapRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["delete_sitemap"]
+
+    @property
+    def fetch_sitemaps(
+        self,
+    ) -> Callable[
+        [site_search_engine_service.FetchSitemapsRequest],
+        Awaitable[site_search_engine_service.FetchSitemapsResponse],
+    ]:
+        r"""Return a callable for the fetch sitemaps method over gRPC.
+
+        Fetch [Sitemap][google.cloud.discoveryengine.v1.Sitemap]s in a
+        [DataStore][google.cloud.discoveryengine.v1.DataStore].
+
+        Returns:
+            Callable[[~.FetchSitemapsRequest],
+                    Awaitable[~.FetchSitemapsResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "fetch_sitemaps" not in self._stubs:
+            self._stubs["fetch_sitemaps"] = self._logged_channel.unary_unary(
+                "/google.cloud.discoveryengine.v1.SiteSearchEngineService/FetchSitemaps",
+                request_serializer=site_search_engine_service.FetchSitemapsRequest.serialize,
+                response_deserializer=site_search_engine_service.FetchSitemapsResponse.deserialize,
+            )
+        return self._stubs["fetch_sitemaps"]
+
+    @property
     def enable_advanced_site_search(
         self,
     ) -> Callable[
@@ -751,6 +839,21 @@ class SiteSearchEngineServiceGrpcAsyncIOTransport(SiteSearchEngineServiceTranspo
             ),
             self.list_target_sites: self._wrap_method(
                 self.list_target_sites,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_sitemap: self._wrap_method(
+                self.create_sitemap,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_sitemap: self._wrap_method(
+                self.delete_sitemap,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.fetch_sitemaps: self._wrap_method(
+                self.fetch_sitemaps,
                 default_timeout=None,
                 client_info=client_info,
             ),

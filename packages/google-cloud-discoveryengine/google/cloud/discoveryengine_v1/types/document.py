@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -67,7 +67,7 @@ class Document(proto.Message):
 
             Id should conform to
             `RFC-1034 <https://tools.ietf.org/html/rfc1034>`__ standard
-            with a length limit of 63 characters.
+            with a length limit of 128 characters.
         schema_id (str):
             The identifier of the schema located in the
             same data store.
@@ -99,7 +99,8 @@ class Document(proto.Message):
                is populated.
             -  Otherwise, if document is not indexed due to errors, the
                error_samples field is populated.
-            -  Otherwise, index_status is unset.
+            -  Otherwise, if document's index is in progress, the
+               pending_message field is populated.
     """
 
     class Content(proto.Message):
@@ -175,6 +176,10 @@ class Document(proto.Message):
                 A sample of errors encountered while indexing
                 the document. If this field is populated, the
                 document is not indexed due to errors.
+            pending_message (str):
+                Immutable. The message indicates the document
+                index is in progress. If this field is
+                populated, the document index is pending.
         """
 
         index_time: timestamp_pb2.Timestamp = proto.Field(
@@ -186,6 +191,10 @@ class Document(proto.Message):
             proto.MESSAGE,
             number=2,
             message=status_pb2.Status,
+        )
+        pending_message: str = proto.Field(
+            proto.STRING,
+            number=3,
         )
 
     struct_data: struct_pb2.Struct = proto.Field(

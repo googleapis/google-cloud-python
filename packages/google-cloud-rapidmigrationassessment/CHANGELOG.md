@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.1.15](https://github.com/googleapis/google-cloud-python/compare/google-cloud-rapidmigrationassessment-v0.1.14...google-cloud-rapidmigrationassessment-v0.1.15) (2025-03-27)
+
+
+### Documentation
+
+* [google-cloud-rapidmigrationassessment] fix typo in comment ([#13711](https://github.com/googleapis/google-cloud-python/issues/13711)) ([820415a](https://github.com/googleapis/google-cloud-python/commit/820415ae3a28914d5c64861635f009a2aeca5a6a))
+
+## [0.1.14](https://github.com/googleapis/google-cloud-python/compare/google-cloud-rapidmigrationassessment-v0.1.13...google-cloud-rapidmigrationassessment-v0.1.14) (2025-03-15)
+
+
+### Bug Fixes
+
+* [Many APIs] Allow Protobuf 6.x ([7295cbb](https://github.com/googleapis/google-cloud-python/commit/7295cbb7c3122eeff1042c3c543bfc9b8b3ca913))
+
 ## [0.1.13](https://github.com/googleapis/google-cloud-python/compare/google-cloud-rapidmigrationassessment-v0.1.12...google-cloud-rapidmigrationassessment-v0.1.13) (2025-02-18)
 
 

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -24,6 +24,7 @@ import proto  # type: ignore
 __protobuf__ = proto.module(
     package="google.cloud.workflows.v1",
     manifest={
+        "ExecutionHistoryLevel",
         "Workflow",
         "ListWorkflowsRequest",
         "ListWorkflowsResponse",
@@ -32,8 +33,27 @@ __protobuf__ = proto.module(
         "DeleteWorkflowRequest",
         "UpdateWorkflowRequest",
         "OperationMetadata",
+        "ListWorkflowRevisionsRequest",
+        "ListWorkflowRevisionsResponse",
     },
 )
+
+
+class ExecutionHistoryLevel(proto.Enum):
+    r"""Define possible options for enabling the execution history
+    level.
+
+    Values:
+        EXECUTION_HISTORY_LEVEL_UNSPECIFIED (0):
+            The default/unset value.
+        EXECUTION_HISTORY_BASIC (1):
+            Enable execution history basic feature.
+        EXECUTION_HISTORY_DETAILED (2):
+            Enable execution history detailed feature.
+    """
+    EXECUTION_HISTORY_LEVEL_UNSPECIFIED = 0
+    EXECUTION_HISTORY_BASIC = 1
+    EXECUTION_HISTORY_DETAILED = 2
 
 
 class Workflow(proto.Message):
@@ -45,11 +65,14 @@ class Workflow(proto.Message):
         name (str):
             The resource name of the workflow.
             Format:
-            projects/{project}/locations/{location}/workflows/{workflow}
+            projects/{project}/locations/{location}/workflows/{workflow}.
+            This is a workflow-wide field and is not tied to
+            a specific revision.
         description (str):
             Description of the workflow provided by the
-            user. Must be at most 1000 unicode characters
-            long.
+            user. Must be at most 1000 Unicode characters
+            long. This is a workflow-wide field and is not
+            tied to a specific revision.
         state (google.cloud.workflows_v1.types.Workflow.State):
             Output only. State of the workflow
             deployment.
@@ -69,10 +92,13 @@ class Workflow(proto.Message):
             characters.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The timestamp for when the
-            workflow was created.
+            workflow was created. This is a workflow-wide
+            field and is not tied to a specific revision.
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The timestamp for when the
-            workflow was last updated.
+            workflow was last updated. This is a
+            workflow-wide field and is not tied to a
+            specific revision.
         revision_create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The timestamp for the latest
             revision of the workflow's creation.
@@ -84,6 +110,8 @@ class Workflow(proto.Message):
             characters, underscores, and dashes. Label keys
             must start with a letter. International
             characters are allowed.
+            This is a workflow-wide field and is not tied to
+            a specific revision.
         service_account (str):
             The service account associated with the latest workflow
             version. This service account represents the identity of the
@@ -132,8 +160,30 @@ class Workflow(proto.Message):
             Optional. User-defined environment variables
             associated with this workflow revision. This map
             has a maximum length of 20. Each string can take
-            up to 40KiB. Keys cannot be empty strings and
-            cannot start with “GOOGLE” or “WORKFLOWS".
+            up to 4KiB. Keys cannot be empty strings and
+            cannot start with "GOOGLE" or "WORKFLOWS".
+        execution_history_level (google.cloud.workflows_v1.types.ExecutionHistoryLevel):
+            Optional. Describes the execution history
+            level to apply to this workflow.
+        all_kms_keys (MutableSequence[str]):
+            Output only. A list of all KMS crypto keys
+            used to encrypt or decrypt the data associated
+            with the workflow.
+        all_kms_keys_versions (MutableSequence[str]):
+            Output only. A list of all KMS crypto key
+            versions used to encrypt or decrypt the data
+            associated with the workflow.
+        crypto_key_version (str):
+            Output only. The resource name of a KMS
+            crypto key version used to encrypt or decrypt
+            the data associated with the workflow.
+
+            Format:
+
+            projects/{project}/locations/{location}/keyRings/{keyRing}/cryptoKeys/{cryptoKey}/cryptoKeyVersions/{cryptoKeyVersion}
+        tags (MutableMapping[str, str]):
+            Optional. Input only. Immutable. Tags
+            associated with this workflow.
     """
 
     class State(proto.Enum):
@@ -271,6 +321,28 @@ class Workflow(proto.Message):
         proto.STRING,
         number=14,
     )
+    execution_history_level: "ExecutionHistoryLevel" = proto.Field(
+        proto.ENUM,
+        number=15,
+        enum="ExecutionHistoryLevel",
+    )
+    all_kms_keys: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=16,
+    )
+    all_kms_keys_versions: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=17,
+    )
+    crypto_key_version: str = proto.Field(
+        proto.STRING,
+        number=18,
+    )
+    tags: MutableMapping[str, str] = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=19,
+    )
 
 
 class ListWorkflowsRequest(proto.Message):
@@ -299,8 +371,16 @@ class ListWorkflowsRequest(proto.Message):
             ``ListWorkflows`` must match the call that provided the page
             token.
         filter (str):
-            Filter to restrict results to specific
-            workflows.
+            Filter to restrict results to specific workflows. For
+            details, see AIP-160.
+
+            For example, if you are using the Google APIs Explorer:
+
+            ``state="SUCCEEDED"``
+
+            or
+
+            ``createTime>"2023-08-01" AND state="FAILED"``
         order_by (str):
             Comma-separated list of fields that specify
             the order of the results. Default sorting order
@@ -515,6 +595,72 @@ class OperationMetadata(proto.Message):
     api_version: str = proto.Field(
         proto.STRING,
         number=5,
+    )
+
+
+class ListWorkflowRevisionsRequest(proto.Message):
+    r"""Request for the
+    [ListWorkflowRevisions][google.cloud.workflows.v1.Workflows.ListWorkflowRevisions]
+    method.
+
+    Attributes:
+        name (str):
+            Required. Workflow for which the revisions
+            should be listed. Format:
+            projects/{project}/locations/{location}/workflows/{workflow}
+        page_size (int):
+            The maximum number of revisions to return per
+            page. If a value is not specified, a default
+            value of 20 is used. The maximum permitted value
+            is 100. Values greater than 100 are coerced down
+            to 100.
+        page_token (str):
+            The page token, received from a previous
+            ListWorkflowRevisions call. Provide this to
+            retrieve the subsequent page.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class ListWorkflowRevisionsResponse(proto.Message):
+    r"""Response for the
+    [ListWorkflowRevisions][google.cloud.workflows.v1.Workflows.ListWorkflowRevisions]
+    method.
+
+    Attributes:
+        workflows (MutableSequence[google.cloud.workflows_v1.types.Workflow]):
+            The revisions of the workflow, ordered in
+            reverse chronological order.
+        next_page_token (str):
+            A token, which can be sent as ``page_token`` to retrieve the
+            next page. If this field is omitted, there are no subsequent
+            pages.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    workflows: MutableSequence["Workflow"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="Workflow",
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
     )
 
 

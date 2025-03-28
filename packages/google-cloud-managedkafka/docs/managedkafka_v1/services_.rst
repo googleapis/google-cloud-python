@@ -4,3 +4,4 @@ Services for Google Cloud Managedkafka v1 API
     :maxdepth: 2
 
     managed_kafka
+    managed_kafka_connect

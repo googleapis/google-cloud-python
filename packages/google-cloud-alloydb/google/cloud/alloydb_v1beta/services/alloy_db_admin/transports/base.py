@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -168,6 +168,11 @@ class AlloyDBAdminTransport(abc.ABC):
             ),
             self.update_cluster: gapic_v1.method.wrap_method(
                 self.update_cluster,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.export_cluster: gapic_v1.method.wrap_method(
+                self.export_cluster,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -494,6 +499,15 @@ class AlloyDBAdminTransport(abc.ABC):
         self,
     ) -> Callable[
         [service.UpdateClusterRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def export_cluster(
+        self,
+    ) -> Callable[
+        [service.ExportClusterRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()

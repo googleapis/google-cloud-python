@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -100,8 +100,6 @@ class GenerateGroundedContentRequest(proto.Message):
             instance. For multi-turn queries, this is a
             repeated field that contains conversation
             history + latest request.
-
-            Only a single-turn query is supported currently.
         generation_spec (google.cloud.discoveryengine_v1.types.GenerateGroundedContentRequest.GenerationSpec):
             Content generation specification.
         grounding_spec (google.cloud.discoveryengine_v1.types.GenerateGroundedContentRequest.GroundingSpec):
@@ -162,6 +160,11 @@ class GenerateGroundedContentRequest(proto.Message):
                 penalty will be used.
 
                 This field is a member of `oneof`_ ``_frequency_penalty``.
+            seed (int):
+                If specified, custom value for the seed will
+                be used.
+
+                This field is a member of `oneof`_ ``_seed``.
             presence_penalty (float):
                 If specified, custom value for presence
                 penalty will be used.
@@ -200,6 +203,11 @@ class GenerateGroundedContentRequest(proto.Message):
         frequency_penalty: float = proto.Field(
             proto.FLOAT,
             number=8,
+            optional=True,
+        )
+        seed: int = proto.Field(
+            proto.INT32,
+            number=12,
             optional=True,
         )
         presence_penalty: float = proto.Field(
@@ -296,6 +304,11 @@ class GenerateGroundedContentRequest(proto.Message):
                 Search.
 
                 This field is a member of `oneof`_ ``source``.
+            enterprise_web_retrieval_source (google.cloud.discoveryengine_v1.types.GenerateGroundedContentRequest.GroundingSource.EnterpriseWebRetrievalSource):
+                If set, grounding is performed with
+                enterprise web retrieval.
+
+                This field is a member of `oneof`_ ``source``.
         """
 
         class InlineSource(proto.Message):
@@ -381,6 +394,12 @@ class GenerateGroundedContentRequest(proto.Message):
                 message="GenerateGroundedContentRequest.DynamicRetrievalConfiguration",
             )
 
+        class EnterpriseWebRetrievalSource(proto.Message):
+            r"""Params for using enterprise web retrieval as grounding
+            source.
+
+            """
+
         inline_source: "GenerateGroundedContentRequest.GroundingSource.InlineSource" = (
             proto.Field(
                 proto.MESSAGE,
@@ -402,6 +421,12 @@ class GenerateGroundedContentRequest(proto.Message):
             number=3,
             oneof="source",
             message="GenerateGroundedContentRequest.GroundingSource.GoogleSearchSource",
+        )
+        enterprise_web_retrieval_source: "GenerateGroundedContentRequest.GroundingSource.EnterpriseWebRetrievalSource" = proto.Field(
+            proto.MESSAGE,
+            number=8,
+            oneof="source",
+            message="GenerateGroundedContentRequest.GroundingSource.EnterpriseWebRetrievalSource",
         )
 
     class GroundingSpec(proto.Message):
@@ -452,7 +477,7 @@ class GenerateGroundedContentRequest(proto.Message):
 
 
 class GenerateGroundedContentResponse(proto.Message):
-    r"""
+    r"""Response for the ``GenerateGroundedContent`` method.
 
     Attributes:
         candidates (MutableSequence[google.cloud.discoveryengine_v1.types.GenerateGroundedContentResponse.Candidate]):
@@ -503,6 +528,8 @@ class GenerateGroundedContentResponse(proto.Message):
                     GroundingSupport across all claims in the
                     answer candidate. An support to a fact indicates
                     that the claim is supported by the fact.
+                images (MutableSequence[google.cloud.discoveryengine_v1.types.GenerateGroundedContentResponse.Candidate.GroundingMetadata.ImageMetadata]):
+                    Images from the web search.
             """
 
             class RetrievalMetadata(proto.Message):
@@ -664,6 +691,79 @@ class GenerateGroundedContentResponse(proto.Message):
                     optional=True,
                 )
 
+            class ImageMetadata(proto.Message):
+                r"""Metadata about an image from the web search.
+
+                Attributes:
+                    image (google.cloud.discoveryengine_v1.types.GenerateGroundedContentResponse.Candidate.GroundingMetadata.ImageMetadata.Image):
+                        Metadata about the full size image.
+                    thumbnail (google.cloud.discoveryengine_v1.types.GenerateGroundedContentResponse.Candidate.GroundingMetadata.ImageMetadata.Image):
+                        Metadata about the thumbnail.
+                    source (google.cloud.discoveryengine_v1.types.GenerateGroundedContentResponse.Candidate.GroundingMetadata.ImageMetadata.WebsiteInfo):
+                        The details about the website that the image
+                        is from.
+                """
+
+                class WebsiteInfo(proto.Message):
+                    r"""Metadata about the website that the image is from.
+
+                    Attributes:
+                        uri (str):
+                            The url of the website.
+                        title (str):
+                            The title of the website.
+                    """
+
+                    uri: str = proto.Field(
+                        proto.STRING,
+                        number=1,
+                    )
+                    title: str = proto.Field(
+                        proto.STRING,
+                        number=2,
+                    )
+
+                class Image(proto.Message):
+                    r"""Metadata about the image.
+
+                    Attributes:
+                        uri (str):
+                            The url of the image.
+                        width (int):
+                            The width of the image in pixels.
+                        height (int):
+                            The height of the image in pixels.
+                    """
+
+                    uri: str = proto.Field(
+                        proto.STRING,
+                        number=1,
+                    )
+                    width: int = proto.Field(
+                        proto.INT32,
+                        number=2,
+                    )
+                    height: int = proto.Field(
+                        proto.INT32,
+                        number=3,
+                    )
+
+                image: "GenerateGroundedContentResponse.Candidate.GroundingMetadata.ImageMetadata.Image" = proto.Field(
+                    proto.MESSAGE,
+                    number=1,
+                    message="GenerateGroundedContentResponse.Candidate.GroundingMetadata.ImageMetadata.Image",
+                )
+                thumbnail: "GenerateGroundedContentResponse.Candidate.GroundingMetadata.ImageMetadata.Image" = proto.Field(
+                    proto.MESSAGE,
+                    number=2,
+                    message="GenerateGroundedContentResponse.Candidate.GroundingMetadata.ImageMetadata.Image",
+                )
+                source: "GenerateGroundedContentResponse.Candidate.GroundingMetadata.ImageMetadata.WebsiteInfo" = proto.Field(
+                    proto.MESSAGE,
+                    number=3,
+                    message="GenerateGroundedContentResponse.Candidate.GroundingMetadata.ImageMetadata.WebsiteInfo",
+                )
+
             retrieval_metadata: MutableSequence[
                 "GenerateGroundedContentResponse.Candidate.GroundingMetadata.RetrievalMetadata"
             ] = proto.RepeatedField(
@@ -691,6 +791,13 @@ class GenerateGroundedContentResponse(proto.Message):
                 proto.MESSAGE,
                 number=2,
                 message="GenerateGroundedContentResponse.Candidate.GroundingMetadata.GroundingSupport",
+            )
+            images: MutableSequence[
+                "GenerateGroundedContentResponse.Candidate.GroundingMetadata.ImageMetadata"
+            ] = proto.RepeatedField(
+                proto.MESSAGE,
+                number=9,
+                message="GenerateGroundedContentResponse.Candidate.GroundingMetadata.ImageMetadata",
             )
 
         index: int = proto.Field(
@@ -754,8 +861,8 @@ class CheckGroundingRequest(proto.Message):
             Required. The resource name of the grounding config, such as
             ``projects/*/locations/global/groundingConfigs/default_grounding_config``.
         answer_candidate (str):
-            Answer candidate to check. Can have a maximum
-            length of 1024 characters.
+            Answer candidate to check. It can have a
+            maximum length of 4096 tokens.
         facts (MutableSequence[google.cloud.discoveryengine_v1.types.GroundingFact]):
             List of facts for the grounding check.
             We support up to 200 facts.
@@ -831,10 +938,28 @@ class CheckGroundingResponse(proto.Message):
             List of facts cited across all claims in the
             answer candidate. These are derived from the
             facts supplied in the request.
+        cited_facts (MutableSequence[google.cloud.discoveryengine_v1.types.CheckGroundingResponse.CheckGroundingFactChunk]):
+            List of facts cited across all claims in the
+            answer candidate. These are derived from the
+            facts supplied in the request.
         claims (MutableSequence[google.cloud.discoveryengine_v1.types.CheckGroundingResponse.Claim]):
             Claim texts and citation info across all
             claims in the answer candidate.
     """
+
+    class CheckGroundingFactChunk(proto.Message):
+        r"""Fact chunk for grounding check.
+
+        Attributes:
+            chunk_text (str):
+                Text content of the fact chunk. Can be at
+                most 10K characters long.
+        """
+
+        chunk_text: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
 
     class Claim(proto.Message):
         r"""Text and citation info for a claim in the answer candidate.
@@ -844,12 +969,30 @@ class CheckGroundingResponse(proto.Message):
         Attributes:
             start_pos (int):
                 Position indicating the start of the claim in
-                the answer candidate, measured in bytes.
+                the answer candidate, measured in bytes. Note
+                that this is not measured in characters and,
+                therefore, must be rendered in the user
+                interface keeping in mind that some characters
+                may take more than one byte. For example, if the
+                claim text contains non-ASCII characters, the
+                start and end positions vary when measured in
+                characters
+                (programming-language-dependent) and when
+                measured in bytes
+                (programming-language-independent).
 
                 This field is a member of `oneof`_ ``_start_pos``.
             end_pos (int):
                 Position indicating the end of the claim in
-                the answer candidate, exclusive.
+                the answer candidate, exclusive, in bytes. Note
+                that this is not measured in characters and,
+                therefore, must be rendered as such. For
+                example, if the claim text contains non-ASCII
+                characters, the start and end positions vary
+                when measured in characters
+                (programming-language-dependent) and when
+                measured in bytes
+                (programming-language-independent).
 
                 This field is a member of `oneof`_ ``_end_pos``.
             claim_text (str):
@@ -868,10 +1011,7 @@ class CheckGroundingResponse(proto.Message):
                 attribution/grounding check, this field will be set to
                 false. In that case, no grounding check was done for the
                 claim and therefore
-                [citation_indices][google.cloud.discoveryengine.v1.CheckGroundingResponse.Claim.citation_indices],
-                [anti_citation_indices][google.cloud.discoveryengine.v1.CheckGroundingResponse.Claim.anti_citation_indices],
-                and
-                [score][google.cloud.discoveryengine.v1.CheckGroundingResponse.Claim.score]
+                [citation_indices][google.cloud.discoveryengine.v1.CheckGroundingResponse.Claim.citation_indices]
                 should not be returned.
 
                 This field is a member of `oneof`_ ``_grounding_check_required``.
@@ -910,6 +1050,11 @@ class CheckGroundingResponse(proto.Message):
         proto.MESSAGE,
         number=3,
         message=grounding.FactChunk,
+    )
+    cited_facts: MutableSequence[CheckGroundingFactChunk] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=6,
+        message=CheckGroundingFactChunk,
     )
     claims: MutableSequence[Claim] = proto.RepeatedField(
         proto.MESSAGE,

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -76,6 +76,7 @@ from google.cloud.dataplex_v1.types import catalog, service
 from .transports.base import DEFAULT_CLIENT_INFO, CatalogServiceTransport
 from .transports.grpc import CatalogServiceGrpcTransport
 from .transports.grpc_asyncio import CatalogServiceGrpcAsyncIOTransport
+from .transports.rest import CatalogServiceRestTransport
 
 
 class CatalogServiceClientMeta(type):
@@ -91,6 +92,7 @@ class CatalogServiceClientMeta(type):
     )  # type: Dict[str, Type[CatalogServiceTransport]]
     _transport_registry["grpc"] = CatalogServiceGrpcTransport
     _transport_registry["grpc_asyncio"] = CatalogServiceGrpcAsyncIOTransport
+    _transport_registry["rest"] = CatalogServiceRestTransport
 
     def get_transport_class(
         cls,
@@ -3236,11 +3238,6 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
     ) -> catalog.Entry:
         r"""Gets an Entry.
 
-        **Caution**: The BigQuery metadata that is stored in Dataplex
-        Catalog is changing. For more information, see `Changes to
-        BigQuery metadata stored in Dataplex
-        Catalog <https://cloud.google.com/dataplex/docs/biqquery-metadata-changes>`__.
-
         .. code-block:: python
 
             # This snippet has been automatically generated and should be regarded as a
@@ -3346,13 +3343,8 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> catalog.Entry:
-        r"""Looks up a single Entry by name using the permission on the
+        r"""Looks up an entry by name using the permission on the
         source system.
-
-        **Caution**: The BigQuery metadata that is stored in Dataplex
-        Catalog is changing. For more information, see `Changes to
-        BigQuery metadata stored in Dataplex
-        Catalog <https://cloud.google.com/dataplex/docs/biqquery-metadata-changes>`__.
 
         .. code-block:: python
 

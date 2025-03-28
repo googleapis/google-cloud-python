@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -497,6 +497,35 @@ class WorkflowsGrpcAsyncIOTransport(WorkflowsTransport):
             )
         return self._stubs["update_workflow"]
 
+    @property
+    def list_workflow_revisions(
+        self,
+    ) -> Callable[
+        [workflows.ListWorkflowRevisionsRequest],
+        Awaitable[workflows.ListWorkflowRevisionsResponse],
+    ]:
+        r"""Return a callable for the list workflow revisions method over gRPC.
+
+        Lists revisions for a given workflow.
+
+        Returns:
+            Callable[[~.ListWorkflowRevisionsRequest],
+                    Awaitable[~.ListWorkflowRevisionsResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_workflow_revisions" not in self._stubs:
+            self._stubs["list_workflow_revisions"] = self._logged_channel.unary_unary(
+                "/google.cloud.workflows.v1.Workflows/ListWorkflowRevisions",
+                request_serializer=workflows.ListWorkflowRevisionsRequest.serialize,
+                response_deserializer=workflows.ListWorkflowRevisionsResponse.deserialize,
+            )
+        return self._stubs["list_workflow_revisions"]
+
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
@@ -522,6 +551,11 @@ class WorkflowsGrpcAsyncIOTransport(WorkflowsTransport):
             ),
             self.update_workflow: self._wrap_method(
                 self.update_workflow,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_workflow_revisions: self._wrap_method(
+                self.list_workflow_revisions,
                 default_timeout=None,
                 client_info=client_info,
             ),

@@ -233,6 +233,235 @@
           }
         }
       }
+    },
+    "ManagedKafkaConnect": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "ManagedKafkaConnectClient",
+          "rpcs": {
+            "CreateConnectCluster": {
+              "methods": [
+                "create_connect_cluster"
+              ]
+            },
+            "CreateConnector": {
+              "methods": [
+                "create_connector"
+              ]
+            },
+            "DeleteConnectCluster": {
+              "methods": [
+                "delete_connect_cluster"
+              ]
+            },
+            "DeleteConnector": {
+              "methods": [
+                "delete_connector"
+              ]
+            },
+            "GetConnectCluster": {
+              "methods": [
+                "get_connect_cluster"
+              ]
+            },
+            "GetConnector": {
+              "methods": [
+                "get_connector"
+              ]
+            },
+            "ListConnectClusters": {
+              "methods": [
+                "list_connect_clusters"
+              ]
+            },
+            "ListConnectors": {
+              "methods": [
+                "list_connectors"
+              ]
+            },
+            "PauseConnector": {
+              "methods": [
+                "pause_connector"
+              ]
+            },
+            "RestartConnector": {
+              "methods": [
+                "restart_connector"
+              ]
+            },
+            "ResumeConnector": {
+              "methods": [
+                "resume_connector"
+              ]
+            },
+            "StopConnector": {
+              "methods": [
+                "stop_connector"
+              ]
+            },
+            "UpdateConnectCluster": {
+              "methods": [
+                "update_connect_cluster"
+              ]
+            },
+            "UpdateConnector": {
+              "methods": [
+                "update_connector"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "ManagedKafkaConnectAsyncClient",
+          "rpcs": {
+            "CreateConnectCluster": {
+              "methods": [
+                "create_connect_cluster"
+              ]
+            },
+            "CreateConnector": {
+              "methods": [
+                "create_connector"
+              ]
+            },
+            "DeleteConnectCluster": {
+              "methods": [
+                "delete_connect_cluster"
+              ]
+            },
+            "DeleteConnector": {
+              "methods": [
+                "delete_connector"
+              ]
+            },
+            "GetConnectCluster": {
+              "methods": [
+                "get_connect_cluster"
+              ]
+            },
+            "GetConnector": {
+              "methods": [
+                "get_connector"
+              ]
+            },
+            "ListConnectClusters": {
+              "methods": [
+                "list_connect_clusters"
+              ]
+            },
+            "ListConnectors": {
+              "methods": [
+                "list_connectors"
+              ]
+            },
+            "PauseConnector": {
+              "methods": [
+                "pause_connector"
+              ]
+            },
+            "RestartConnector": {
+              "methods": [
+                "restart_connector"
+              ]
+            },
+            "ResumeConnector": {
+              "methods": [
+                "resume_connector"
+              ]
+            },
+            "StopConnector": {
+              "methods": [
+                "stop_connector"
+              ]
+            },
+            "UpdateConnectCluster": {
+              "methods": [
+                "update_connect_cluster"
+              ]
+            },
+            "UpdateConnector": {
+              "methods": [
+                "update_connector"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "ManagedKafkaConnectClient",
+          "rpcs": {
+            "CreateConnectCluster": {
+              "methods": [
+                "create_connect_cluster"
+              ]
+            },
+            "CreateConnector": {
+              "methods": [
+                "create_connector"
+              ]
+            },
+            "DeleteConnectCluster": {
+              "methods": [
+                "delete_connect_cluster"
+              ]
+            },
+            "DeleteConnector": {
+              "methods": [
+                "delete_connector"
+              ]
+            },
+            "GetConnectCluster": {
+              "methods": [
+                "get_connect_cluster"
+              ]
+            },
+            "GetConnector": {
+              "methods": [
+                "get_connector"
+              ]
+            },
+            "ListConnectClusters": {
+              "methods": [
+                "list_connect_clusters"
+              ]
+            },
+            "ListConnectors": {
+              "methods": [
+                "list_connectors"
+              ]
+            },
+            "PauseConnector": {
+              "methods": [
+                "pause_connector"
+              ]
+            },
+            "RestartConnector": {
+              "methods": [
+                "restart_connector"
+              ]
+            },
+            "ResumeConnector": {
+              "methods": [
+                "resume_connector"
+              ]
+            },
+            "StopConnector": {
+              "methods": [
+                "stop_connector"
+              ]
+            },
+            "UpdateConnectCluster": {
+              "methods": [
+                "update_connect_cluster"
+              ]
+            },
+            "UpdateConnector": {
+              "methods": [
+                "update_connector"
+              ]
+            }
+          }
+        }
+      }
     }
   }
 }

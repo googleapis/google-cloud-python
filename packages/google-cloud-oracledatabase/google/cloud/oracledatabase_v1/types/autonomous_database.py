@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -245,11 +245,11 @@ class AutonomousDatabase(proto.Message):
             Optional. The labels or tags associated with
             the Autonomous Database.
         network (str):
-            Required. The name of the VPC network used by
+            Optional. The name of the VPC network used by
             the Autonomous Database in the following format:
             projects/{project}/global/networks/{network}
         cidr (str):
-            Required. The subnet CIDR range for the
+            Optional. The subnet CIDR range for the
             Autonmous Database.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The date and time that the

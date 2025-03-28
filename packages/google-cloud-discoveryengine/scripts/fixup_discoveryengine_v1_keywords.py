@@ -1,6 +1,6 @@
 #! /usr/bin/env python3
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -39,7 +39,7 @@ def partition(
 class discoveryengineCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
-        'answer_query': ('serving_config', 'query', 'session', 'safety_spec', 'related_questions_spec', 'answer_generation_spec', 'search_spec', 'query_understanding_spec', 'asynchronous_mode', 'user_pseudo_id', 'user_labels', ),
+        'answer_query': ('serving_config', 'query', 'session', 'safety_spec', 'related_questions_spec', 'grounding_spec', 'answer_generation_spec', 'search_spec', 'query_understanding_spec', 'asynchronous_mode', 'user_pseudo_id', 'user_labels', 'end_user_spec', ),
         'batch_create_target_sites': ('parent', 'requests', ),
         'batch_get_documents_metadata': ('parent', 'matcher', ),
         'batch_verify_target_sites': ('parent', ),
@@ -54,6 +54,7 @@ class discoveryengineCallTransformer(cst.CSTTransformer):
         'create_engine': ('parent', 'engine', 'engine_id', ),
         'create_schema': ('parent', 'schema', 'schema_id', ),
         'create_session': ('parent', 'session', ),
+        'create_sitemap': ('parent', 'sitemap', ),
         'create_target_site': ('parent', 'target_site', ),
         'delete_control': ('name', ),
         'delete_conversation': ('name', ),
@@ -62,10 +63,12 @@ class discoveryengineCallTransformer(cst.CSTTransformer):
         'delete_engine': ('name', ),
         'delete_schema': ('name', ),
         'delete_session': ('name', ),
+        'delete_sitemap': ('name', ),
         'delete_target_site': ('name', ),
         'disable_advanced_site_search': ('site_search_engine', ),
         'enable_advanced_site_search': ('site_search_engine', ),
         'fetch_domain_verification_status': ('site_search_engine', 'page_size', 'page_token', ),
+        'fetch_sitemaps': ('parent', 'matcher', ),
         'generate_grounded_content': ('location', 'system_instruction', 'contents', 'generation_spec', 'grounding_spec', 'user_labels', ),
         'get_answer': ('name', ),
         'get_control': ('name', ),
@@ -74,11 +77,11 @@ class discoveryengineCallTransformer(cst.CSTTransformer):
         'get_document': ('name', ),
         'get_engine': ('name', ),
         'get_schema': ('name', ),
-        'get_session': ('name', ),
+        'get_session': ('name', 'include_answer_details', ),
         'get_site_search_engine': ('name', ),
         'get_target_site': ('name', ),
         'import_completion_suggestions': ('parent', 'inline_source', 'gcs_source', 'bigquery_source', 'error_config', ),
-        'import_documents': ('parent', 'inline_source', 'gcs_source', 'bigquery_source', 'fhir_store_source', 'spanner_source', 'cloud_sql_source', 'firestore_source', 'alloy_db_source', 'bigtable_source', 'error_config', 'reconciliation_mode', 'update_mask', 'auto_generate_ids', 'id_field', ),
+        'import_documents': ('parent', 'inline_source', 'gcs_source', 'bigquery_source', 'fhir_store_source', 'spanner_source', 'cloud_sql_source', 'firestore_source', 'alloy_db_source', 'bigtable_source', 'error_config', 'reconciliation_mode', 'update_mask', 'auto_generate_ids', 'id_field', 'force_refresh_content', ),
         'import_suggestion_deny_list_entries': ('parent', 'inline_source', 'gcs_source', ),
         'import_user_events': ('parent', 'inline_source', 'gcs_source', 'bigquery_source', 'error_config', ),
         'list_controls': ('parent', 'page_size', 'page_token', 'filter', ),
@@ -98,8 +101,9 @@ class discoveryengineCallTransformer(cst.CSTTransformer):
         'rank': ('ranking_config', 'records', 'model', 'top_n', 'query', 'ignore_record_details_in_response', 'user_labels', ),
         'recommend': ('serving_config', 'user_event', 'page_size', 'filter', 'validate_only', 'params', 'user_labels', ),
         'recrawl_uris': ('site_search_engine', 'uris', 'site_credential', ),
-        'search': ('serving_config', 'branch', 'query', 'image_query', 'page_size', 'page_token', 'offset', 'one_box_page_size', 'data_store_specs', 'filter', 'canonical_filter', 'order_by', 'user_info', 'language_code', 'facet_specs', 'boost_spec', 'params', 'query_expansion_spec', 'spell_correction_spec', 'user_pseudo_id', 'content_search_spec', 'safe_search', 'user_labels', 'search_as_you_type_spec', 'session', 'session_spec', ),
-        'search_lite': ('serving_config', 'branch', 'query', 'image_query', 'page_size', 'page_token', 'offset', 'one_box_page_size', 'data_store_specs', 'filter', 'canonical_filter', 'order_by', 'user_info', 'language_code', 'facet_specs', 'boost_spec', 'params', 'query_expansion_spec', 'spell_correction_spec', 'user_pseudo_id', 'content_search_spec', 'safe_search', 'user_labels', 'search_as_you_type_spec', 'session', 'session_spec', ),
+        'search': ('serving_config', 'branch', 'query', 'image_query', 'page_size', 'page_token', 'offset', 'one_box_page_size', 'data_store_specs', 'filter', 'canonical_filter', 'order_by', 'user_info', 'language_code', 'facet_specs', 'boost_spec', 'params', 'query_expansion_spec', 'spell_correction_spec', 'user_pseudo_id', 'content_search_spec', 'safe_search', 'user_labels', 'search_as_you_type_spec', 'display_spec', 'session', 'session_spec', 'relevance_threshold', 'relevance_score_spec', ),
+        'search_lite': ('serving_config', 'branch', 'query', 'image_query', 'page_size', 'page_token', 'offset', 'one_box_page_size', 'data_store_specs', 'filter', 'canonical_filter', 'order_by', 'user_info', 'language_code', 'facet_specs', 'boost_spec', 'params', 'query_expansion_spec', 'spell_correction_spec', 'user_pseudo_id', 'content_search_spec', 'safe_search', 'user_labels', 'search_as_you_type_spec', 'display_spec', 'session', 'session_spec', 'relevance_threshold', 'relevance_score_spec', ),
+        'stream_answer_query': ('serving_config', 'query', 'session', 'safety_spec', 'related_questions_spec', 'grounding_spec', 'answer_generation_spec', 'search_spec', 'query_understanding_spec', 'asynchronous_mode', 'user_pseudo_id', 'user_labels', 'end_user_spec', ),
         'stream_generate_grounded_content': ('location', 'system_instruction', 'contents', 'generation_spec', 'grounding_spec', 'user_labels', ),
         'train_custom_model': ('data_store', 'gcs_training_input', 'model_type', 'error_config', 'model_id', ),
         'update_control': ('control', 'update_mask', ),
@@ -108,6 +112,7 @@ class discoveryengineCallTransformer(cst.CSTTransformer):
         'update_document': ('document', 'allow_missing', 'update_mask', ),
         'update_engine': ('engine', 'update_mask', ),
         'update_schema': ('schema', 'allow_missing', ),
+        'update_serving_config': ('serving_config', 'update_mask', ),
         'update_session': ('session', 'update_mask', ),
         'update_target_site': ('target_site', ),
         'write_user_event': ('parent', 'user_event', 'write_async', ),

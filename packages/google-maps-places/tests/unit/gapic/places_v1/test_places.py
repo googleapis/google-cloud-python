@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -52,8 +52,10 @@ from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
 from google.geo.type.types import viewport
 from google.oauth2 import service_account
+from google.type import datetime_pb2  # type: ignore
 from google.type import latlng_pb2  # type: ignore
 from google.type import localized_text_pb2  # type: ignore
+from google.type import postal_address_pb2  # type: ignore
 
 from google.maps.places_v1.services.places import (
     PlacesAsyncClient,

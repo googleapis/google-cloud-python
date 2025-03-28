@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+from google.shopping.type.types import types
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -41,7 +42,7 @@ class PrimaryProductDataSource(proto.Message):
 
     Attributes:
         channel (google.shopping.merchant_datasources_v1beta.types.PrimaryProductDataSource.Channel):
-            Required. Immutable. Specifies the type of
+            Optional. Immutable. Specifies the type of
             data source channel.
         feed_label (str):
             Optional. Immutable. The feed label that is specified on the
@@ -83,6 +84,31 @@ class PrimaryProductDataSource(proto.Message):
             Optional. Default rule management of the data
             source. If set, the linked data sources will be
             replaced.
+        destinations (MutableSequence[google.shopping.merchant_datasources_v1beta.types.PrimaryProductDataSource.Destination]):
+            Optional. A list of destinations describing
+            where products of the data source can be shown.
+
+            When retrieving the data source, the list
+            contains all the destinations that can be used
+            for the data source, including the ones that are
+            disabled for the data source but enabled for the
+            account.
+
+            Only destinations that are enabled on the
+            account, for example through program
+            participation, can be enabled on the data
+            source.
+
+            If unset, during creation, the destinations will
+            be inherited based on the account level program
+            participation.
+
+            If set, during creation or update, the data
+            source will be set only for the specified
+            destinations.
+
+            Updating this field requires at least one
+            destination.
     """
 
     class Channel(proto.Enum):
@@ -144,6 +170,46 @@ class PrimaryProductDataSource(proto.Message):
             message="DataSourceReference",
         )
 
+    class Destination(proto.Message):
+        r"""Destinations also known as `Marketing
+        methods <https://support.google.com/merchants/answer/15130232>`__
+        selections.
+
+        Attributes:
+            destination (google.shopping.type.types.Destination.DestinationEnum):
+                `Marketing
+                methods <https://support.google.com/merchants/answer/15130232>`__
+                (also known as destination) selections.
+            state (google.shopping.merchant_datasources_v1beta.types.PrimaryProductDataSource.Destination.State):
+                The state of the destination.
+        """
+
+        class State(proto.Enum):
+            r"""The state of the destination.
+
+            Values:
+                STATE_UNSPECIFIED (0):
+                    Not specified.
+                ENABLED (1):
+                    Indicates that the destination is enabled.
+                DISABLED (2):
+                    Indicates that the destination is disabled.
+            """
+            STATE_UNSPECIFIED = 0
+            ENABLED = 1
+            DISABLED = 2
+
+        destination: types.Destination.DestinationEnum = proto.Field(
+            proto.ENUM,
+            number=1,
+            enum=types.Destination.DestinationEnum,
+        )
+        state: "PrimaryProductDataSource.Destination.State" = proto.Field(
+            proto.ENUM,
+            number=2,
+            enum="PrimaryProductDataSource.Destination.State",
+        )
+
     channel: Channel = proto.Field(
         proto.ENUM,
         number=3,
@@ -167,6 +233,11 @@ class PrimaryProductDataSource(proto.Message):
         proto.MESSAGE,
         number=7,
         message=DefaultRule,
+    )
+    destinations: MutableSequence[Destination] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=10,
+        message=Destination,
     )
 
 

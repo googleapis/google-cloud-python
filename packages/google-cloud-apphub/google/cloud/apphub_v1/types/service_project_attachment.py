@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -39,15 +39,14 @@ class ServiceProjectAttachment(proto.Message):
 
     Attributes:
         name (str):
-            Identifier. The resource name of a
-            ServiceProjectAttachment. Format:
-            "projects/{host-project-id}/locations/global/serviceProjectAttachments/{service-project-id}.".
+            Identifier. The resource name of a ServiceProjectAttachment.
+            Format:
+            ``"projects/{host-project-id}/locations/global/serviceProjectAttachments/{service-project-id}."``
         service_project (str):
-            Required. Immutable. Service project name in
-            the format: "projects/abc" or "projects/123". As
-            input, project name with either project id or
-            number are accepted. As output, this field will
-            contain project number.
+            Required. Immutable. Service project name in the format:
+            ``"projects/abc"`` or ``"projects/123"``. As input, project
+            name with either project id or number are accepted. As
+            output, this field will contain project number.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Create time.
         uid (str):

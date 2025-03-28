@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -334,7 +334,7 @@ class ControlServiceAsyncClient:
 
                 # Initialize request argument(s)
                 control = discoveryengine_v1.Control()
-                control.boost_action.boost = 0.551
+                control.boost_action.fixed_boost = 0.1174
                 control.boost_action.filter = "filter_value"
                 control.boost_action.data_store = "data_store_value"
                 control.display_name = "display_name_value"
@@ -587,7 +587,7 @@ class ControlServiceAsyncClient:
 
                 # Initialize request argument(s)
                 control = discoveryengine_v1.Control()
-                control.boost_action.boost = 0.551
+                control.boost_action.fixed_boost = 0.1174
                 control.boost_action.filter = "filter_value"
                 control.boost_action.data_store = "data_store_value"
                 control.display_name = "display_name_value"

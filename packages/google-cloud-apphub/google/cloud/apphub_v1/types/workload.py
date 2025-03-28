@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -41,9 +41,8 @@ class Workload(proto.Message):
 
     Attributes:
         name (str):
-            Identifier. The resource name of the
-            Workload. Format:
-            "projects/{host-project-id}/locations/{location}/applications/{application-id}/workloads/{workload-id}".
+            Identifier. The resource name of the Workload. Format:
+            ``"projects/{host-project-id}/locations/{location}/applications/{application-id}/workloads/{workload-id}"``
         display_name (str):
             Optional. User-defined name for the Workload.
             Can have a maximum length of 63 characters.
@@ -173,14 +172,15 @@ class WorkloadProperties(proto.Message):
         gcp_project (str):
             Output only. The service project identifier
             that the underlying cloud resource resides in.
-            Empty for non cloud resources.
+            Empty for non-cloud resources.
         location (str):
             Output only. The location that the underlying
-            compute resource resides in (e.g us-west1).
+            compute resource resides in (for example,
+            us-west1).
         zone (str):
             Output only. The location that the underlying
-            compute resource resides in if it is zonal (e.g
-            us-west1-a).
+            compute resource resides in if it is zonal (for
+            example, us-west1-a).
     """
 
     gcp_project: str = proto.Field(
@@ -205,9 +205,9 @@ class DiscoveredWorkload(proto.Message):
 
     Attributes:
         name (str):
-            Identifier. The resource name of the
-            discovered workload. Format:
-            "projects/{host-project-id}/locations/{location}/discoveredWorkloads/{uuid}".
+            Identifier. The resource name of the discovered workload.
+            Format:
+            ``"projects/{host-project-id}/locations/{location}/discoveredWorkloads/{uuid}"``
         workload_reference (google.cloud.apphub_v1.types.WorkloadReference):
             Output only. Reference of an underlying
             compute resource represented by the Workload.

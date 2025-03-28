@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -30,6 +30,10 @@ from .services.accounts_service import AccountsServiceAsyncClient, AccountsServi
 from .services.autofeed_settings_service import (
     AutofeedSettingsServiceAsyncClient,
     AutofeedSettingsServiceClient,
+)
+from .services.automatic_improvements_service import (
+    AutomaticImprovementsServiceAsyncClient,
+    AutomaticImprovementsServiceClient,
 )
 from .services.business_identity_service import (
     BusinessIdentityServiceAsyncClient,
@@ -92,6 +96,14 @@ from .types.autofeedsettings import (
     AutofeedSettings,
     GetAutofeedSettingsRequest,
     UpdateAutofeedSettingsRequest,
+)
+from .types.automaticimprovements import (
+    AutomaticImageImprovements,
+    AutomaticImprovements,
+    AutomaticItemUpdates,
+    AutomaticShippingImprovements,
+    GetAutomaticImprovementsRequest,
+    UpdateAutomaticImprovementsRequest,
 )
 from .types.businessidentity import (
     BusinessIdentity,
@@ -193,6 +205,7 @@ __all__ = (
     "AccountTaxServiceAsyncClient",
     "AccountsServiceAsyncClient",
     "AutofeedSettingsServiceAsyncClient",
+    "AutomaticImprovementsServiceAsyncClient",
     "BusinessIdentityServiceAsyncClient",
     "BusinessInfoServiceAsyncClient",
     "EmailPreferencesServiceAsyncClient",
@@ -217,6 +230,11 @@ __all__ = (
     "Address",
     "AutofeedSettings",
     "AutofeedSettingsServiceClient",
+    "AutomaticImageImprovements",
+    "AutomaticImprovements",
+    "AutomaticImprovementsServiceClient",
+    "AutomaticItemUpdates",
+    "AutomaticShippingImprovements",
     "BusinessDayConfig",
     "BusinessIdentity",
     "BusinessIdentityServiceClient",
@@ -241,6 +259,7 @@ __all__ = (
     "GetAccountRequest",
     "GetAccountTaxRequest",
     "GetAutofeedSettingsRequest",
+    "GetAutomaticImprovementsRequest",
     "GetBusinessIdentityRequest",
     "GetBusinessInfoRequest",
     "GetEmailPreferencesRequest",
@@ -301,6 +320,7 @@ __all__ = (
     "UpdateAccountRequest",
     "UpdateAccountTaxRequest",
     "UpdateAutofeedSettingsRequest",
+    "UpdateAutomaticImprovementsRequest",
     "UpdateBusinessIdentityRequest",
     "UpdateBusinessInfoRequest",
     "UpdateEmailPreferencesRequest",

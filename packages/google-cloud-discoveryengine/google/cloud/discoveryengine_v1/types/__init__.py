@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,9 +17,11 @@ from .answer import Answer
 from .chunk import Chunk
 from .common import (
     CustomAttribute,
+    DoubleList,
     IndustryVertical,
     Interval,
     SearchAddOn,
+    SearchLinkPromotion,
     SearchTier,
     SearchUseCase,
     SolutionType,
@@ -63,7 +65,7 @@ from .conversational_search_service import (
     UpdateSessionRequest,
 )
 from .custom_tuning_model import CustomTuningModel
-from .data_store import DataStore, WorkspaceConfig
+from .data_store import AdvancedSiteSearchConfig, DataStore, WorkspaceConfig
 from .data_store_service import (
     CreateDataStoreMetadata,
     CreateDataStoreRequest,
@@ -149,6 +151,7 @@ from .purge_config import (
 )
 from .rank_service import RankingRecord, RankRequest, RankResponse
 from .recommendation_service import RecommendRequest, RecommendResponse
+from .safety import HarmCategory, SafetyRating
 from .schema import Schema
 from .schema_service import (
     CreateSchemaMetadata,
@@ -169,8 +172,15 @@ from .search_tuning_service import (
     TrainCustomModelRequest,
     TrainCustomModelResponse,
 )
+from .serving_config import ServingConfig
+from .serving_config_service import UpdateServingConfigRequest
 from .session import Query, Session
-from .site_search_engine import SiteSearchEngine, SiteVerificationInfo, TargetSite
+from .site_search_engine import (
+    Sitemap,
+    SiteSearchEngine,
+    SiteVerificationInfo,
+    TargetSite,
+)
 from .site_search_engine_service import (
     BatchCreateTargetSiteMetadata,
     BatchCreateTargetSitesRequest,
@@ -178,8 +188,12 @@ from .site_search_engine_service import (
     BatchVerifyTargetSitesMetadata,
     BatchVerifyTargetSitesRequest,
     BatchVerifyTargetSitesResponse,
+    CreateSitemapMetadata,
+    CreateSitemapRequest,
     CreateTargetSiteMetadata,
     CreateTargetSiteRequest,
+    DeleteSitemapMetadata,
+    DeleteSitemapRequest,
     DeleteTargetSiteMetadata,
     DeleteTargetSiteRequest,
     DisableAdvancedSiteSearchMetadata,
@@ -190,6 +204,8 @@ from .site_search_engine_service import (
     EnableAdvancedSiteSearchResponse,
     FetchDomainVerificationStatusRequest,
     FetchDomainVerificationStatusResponse,
+    FetchSitemapsRequest,
+    FetchSitemapsResponse,
     GetSiteSearchEngineRequest,
     GetTargetSiteRequest,
     ListTargetSitesRequest,
@@ -216,7 +232,9 @@ __all__ = (
     "Answer",
     "Chunk",
     "CustomAttribute",
+    "DoubleList",
     "Interval",
+    "SearchLinkPromotion",
     "UserInfo",
     "IndustryVertical",
     "SearchAddOn",
@@ -258,6 +276,7 @@ __all__ = (
     "UpdateConversationRequest",
     "UpdateSessionRequest",
     "CustomTuningModel",
+    "AdvancedSiteSearchConfig",
     "DataStore",
     "WorkspaceConfig",
     "CreateDataStoreMetadata",
@@ -338,6 +357,8 @@ __all__ = (
     "RankResponse",
     "RecommendRequest",
     "RecommendResponse",
+    "SafetyRating",
+    "HarmCategory",
     "Schema",
     "CreateSchemaMetadata",
     "CreateSchemaRequest",
@@ -355,8 +376,11 @@ __all__ = (
     "TrainCustomModelMetadata",
     "TrainCustomModelRequest",
     "TrainCustomModelResponse",
+    "ServingConfig",
+    "UpdateServingConfigRequest",
     "Query",
     "Session",
+    "Sitemap",
     "SiteSearchEngine",
     "SiteVerificationInfo",
     "TargetSite",
@@ -366,8 +390,12 @@ __all__ = (
     "BatchVerifyTargetSitesMetadata",
     "BatchVerifyTargetSitesRequest",
     "BatchVerifyTargetSitesResponse",
+    "CreateSitemapMetadata",
+    "CreateSitemapRequest",
     "CreateTargetSiteMetadata",
     "CreateTargetSiteRequest",
+    "DeleteSitemapMetadata",
+    "DeleteSitemapRequest",
     "DeleteTargetSiteMetadata",
     "DeleteTargetSiteRequest",
     "DisableAdvancedSiteSearchMetadata",
@@ -378,6 +406,8 @@ __all__ = (
     "EnableAdvancedSiteSearchResponse",
     "FetchDomainVerificationStatusRequest",
     "FetchDomainVerificationStatusResponse",
+    "FetchSitemapsRequest",
+    "FetchSitemapsResponse",
     "GetSiteSearchEngineRequest",
     "GetTargetSiteRequest",
     "ListTargetSitesRequest",

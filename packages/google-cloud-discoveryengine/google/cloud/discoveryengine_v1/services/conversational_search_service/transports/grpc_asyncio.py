@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -555,6 +555,41 @@ class ConversationalSearchServiceGrpcAsyncIOTransport(
         return self._stubs["answer_query"]
 
     @property
+    def stream_answer_query(
+        self,
+    ) -> Callable[
+        [conversational_search_service.AnswerQueryRequest],
+        Awaitable[conversational_search_service.AnswerQueryResponse],
+    ]:
+        r"""Return a callable for the stream answer query method over gRPC.
+
+        Answer query method (streaming).
+
+        It takes one
+        [AnswerQueryRequest][google.cloud.discoveryengine.v1.AnswerQueryRequest]
+        and returns multiple
+        [AnswerQueryResponse][google.cloud.discoveryengine.v1.AnswerQueryResponse]
+        messages in a stream.
+
+        Returns:
+            Callable[[~.AnswerQueryRequest],
+                    Awaitable[~.AnswerQueryResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "stream_answer_query" not in self._stubs:
+            self._stubs["stream_answer_query"] = self._logged_channel.unary_stream(
+                "/google.cloud.discoveryengine.v1.ConversationalSearchService/StreamAnswerQuery",
+                request_serializer=conversational_search_service.AnswerQueryRequest.serialize,
+                response_deserializer=conversational_search_service.AnswerQueryResponse.deserialize,
+            )
+        return self._stubs["stream_answer_query"]
+
+    @property
     def get_answer(
         self,
     ) -> Callable[
@@ -772,6 +807,11 @@ class ConversationalSearchServiceGrpcAsyncIOTransport(
             ),
             self.answer_query: self._wrap_method(
                 self.answer_query,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.stream_answer_query: self._wrap_method(
+                self.stream_answer_query,
                 default_timeout=None,
                 client_info=client_info,
             ),

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -499,10 +499,9 @@ class QuotaAdjusterSettingsManagerAsyncClient:
                 The request object. Request for getting
                 QuotaAdjusterSettings
             name (:class:`str`):
-                Required. Name of the config.
-                Required to be “settings”, as only a
-                single setting per container will be
-                supported initially.
+                Required. Name of the ``quotaAdjusterSettings``
+                configuration. Only a single setting per project is
+                supported.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this

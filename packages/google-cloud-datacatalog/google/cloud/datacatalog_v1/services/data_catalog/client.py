@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -121,8 +121,10 @@ class DataCatalogClientMeta(type):
 
 
 class DataCatalogClient(metaclass=DataCatalogClientMeta):
-    """Data Catalog API service allows you to discover, understand,
-    and manage your data.
+    """Deprecated: Please use Dataplex Catalog instead.
+
+    Data Catalog API service allows you to discover, understand, and
+    manage your data.
     """
 
     @staticmethod
@@ -950,6 +952,10 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
                 resolve additional pages automatically.
 
         """
+        warnings.warn(
+            "DataCatalogClient.search_catalog is deprecated", DeprecationWarning
+        )
+
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
@@ -1123,6 +1129,10 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
                    [Entry][google.cloud.datacatalog.v1.Entry] resources.
 
         """
+        warnings.warn(
+            "DataCatalogClient.create_entry_group is deprecated", DeprecationWarning
+        )
+
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
@@ -1246,6 +1256,10 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
                    [Entry][google.cloud.datacatalog.v1.Entry] resources.
 
         """
+        warnings.warn(
+            "DataCatalogClient.get_entry_group is deprecated", DeprecationWarning
+        )
+
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
@@ -1376,6 +1390,10 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
                    [Entry][google.cloud.datacatalog.v1.Entry] resources.
 
         """
+        warnings.warn(
+            "DataCatalogClient.update_entry_group is deprecated", DeprecationWarning
+        )
+
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
@@ -1484,6 +1502,10 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
                 but for metadata keys ending with the suffix `-bin`, the corresponding values must
                 be of type `bytes`.
         """
+        warnings.warn(
+            "DataCatalogClient.delete_entry_group is deprecated", DeprecationWarning
+        )
+
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
@@ -1594,6 +1616,10 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
                 resolve additional pages automatically.
 
         """
+        warnings.warn(
+            "DataCatalogClient.list_entry_groups is deprecated", DeprecationWarning
+        )
+
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
@@ -1761,6 +1787,10 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
                    [Tag][google.cloud.datacatalog.v1.Tag].
 
         """
+        warnings.warn(
+            "DataCatalogClient.create_entry is deprecated", DeprecationWarning
+        )
+
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
@@ -1928,6 +1958,10 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
                    [Tag][google.cloud.datacatalog.v1.Tag].
 
         """
+        warnings.warn(
+            "DataCatalogClient.update_entry is deprecated", DeprecationWarning
+        )
+
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
@@ -2040,6 +2074,10 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
                 but for metadata keys ending with the suffix `-bin`, the corresponding values must
                 be of type `bytes`.
         """
+        warnings.warn(
+            "DataCatalogClient.delete_entry is deprecated", DeprecationWarning
+        )
+
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
@@ -2154,6 +2192,8 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
                    [Tag][google.cloud.datacatalog.v1.Tag].
 
         """
+        warnings.warn("DataCatalogClient.get_entry is deprecated", DeprecationWarning)
+
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
@@ -2266,6 +2306,10 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
                    [Tag][google.cloud.datacatalog.v1.Tag].
 
         """
+        warnings.warn(
+            "DataCatalogClient.lookup_entry is deprecated", DeprecationWarning
+        )
+
         # Create or coerce a protobuf request object.
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2361,6 +2405,10 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
                 resolve additional pages automatically.
 
         """
+        warnings.warn(
+            "DataCatalogClient.list_entries is deprecated", DeprecationWarning
+        )
+
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
@@ -2477,6 +2525,10 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
                 descriptions of entries.
 
         """
+        warnings.warn(
+            "DataCatalogClient.modify_entry_overview is deprecated", DeprecationWarning
+        )
+
         # Create or coerce a protobuf request object.
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2564,6 +2616,10 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
             google.cloud.datacatalog_v1.types.Contacts:
                 Contact people for the entry.
         """
+        warnings.warn(
+            "DataCatalogClient.modify_entry_contacts is deprecated", DeprecationWarning
+        )
+
         # Create or coerce a protobuf request object.
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2691,6 +2747,10 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
                    template to tag resources.
 
         """
+        warnings.warn(
+            "DataCatalogClient.create_tag_template is deprecated", DeprecationWarning
+        )
+
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
@@ -2813,6 +2873,10 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
                    template to tag resources.
 
         """
+        warnings.warn(
+            "DataCatalogClient.get_tag_template is deprecated", DeprecationWarning
+        )
+
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
@@ -2956,6 +3020,10 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
                    template to tag resources.
 
         """
+        warnings.warn(
+            "DataCatalogClient.update_tag_template is deprecated", DeprecationWarning
+        )
+
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
@@ -3075,6 +3143,10 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
                 but for metadata keys ending with the suffix `-bin`, the corresponding values must
                 be of type `bytes`.
         """
+        warnings.warn(
+            "DataCatalogClient.delete_tag_template is deprecated", DeprecationWarning
+        )
+
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
@@ -3219,6 +3291,11 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
                 within a tag template.
 
         """
+        warnings.warn(
+            "DataCatalogClient.create_tag_template_field is deprecated",
+            DeprecationWarning,
+        )
+
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
@@ -3376,6 +3453,11 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
                 within a tag template.
 
         """
+        warnings.warn(
+            "DataCatalogClient.update_tag_template_field is deprecated",
+            DeprecationWarning,
+        )
+
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
@@ -3506,6 +3588,11 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
                 within a tag template.
 
         """
+        warnings.warn(
+            "DataCatalogClient.rename_tag_template_field is deprecated",
+            DeprecationWarning,
+        )
+
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
@@ -3631,6 +3718,11 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
                 within a tag template.
 
         """
+        warnings.warn(
+            "DataCatalogClient.rename_tag_template_field_enum_value is deprecated",
+            DeprecationWarning,
+        )
+
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
@@ -3753,6 +3845,11 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
                 but for metadata keys ending with the suffix `-bin`, the corresponding values must
                 be of type `bytes`.
         """
+        warnings.warn(
+            "DataCatalogClient.delete_tag_template_field is deprecated",
+            DeprecationWarning,
+        )
+
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
@@ -3899,6 +3996,8 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
                    or view tags.
 
         """
+        warnings.warn("DataCatalogClient.create_tag is deprecated", DeprecationWarning)
+
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
@@ -4032,6 +4131,8 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
                    or view tags.
 
         """
+        warnings.warn("DataCatalogClient.update_tag is deprecated", DeprecationWarning)
+
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
@@ -4133,6 +4234,8 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
                 but for metadata keys ending with the suffix `-bin`, the corresponding values must
                 be of type `bytes`.
         """
+        warnings.warn("DataCatalogClient.delete_tag is deprecated", DeprecationWarning)
+
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
@@ -4250,6 +4353,8 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
                 resolve additional pages automatically.
 
         """
+        warnings.warn("DataCatalogClient.list_tags is deprecated", DeprecationWarning)
+
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
@@ -4381,6 +4486,10 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
                    [ReconcileTags][google.cloud.datacatalog.v1.DataCatalog.ReconcileTags].
 
         """
+        warnings.warn(
+            "DataCatalogClient.reconcile_tags is deprecated", DeprecationWarning
+        )
+
         # Create or coerce a protobuf request object.
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -4484,6 +4593,8 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
                    Empty for now
 
         """
+        warnings.warn("DataCatalogClient.star_entry is deprecated", DeprecationWarning)
+
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
@@ -4595,6 +4706,10 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
                    Empty for now
 
         """
+        warnings.warn(
+            "DataCatalogClient.unstar_entry is deprecated", DeprecationWarning
+        )
+
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
@@ -4752,6 +4867,10 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
                    documentation](\ https://cloud.google.com/iam/docs/).
 
         """
+        warnings.warn(
+            "DataCatalogClient.set_iam_policy is deprecated", DeprecationWarning
+        )
+
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
@@ -4914,6 +5033,10 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
                    documentation](\ https://cloud.google.com/iam/docs/).
 
         """
+        warnings.warn(
+            "DataCatalogClient.get_iam_policy is deprecated", DeprecationWarning
+        )
+
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
@@ -5030,6 +5153,10 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
             google.iam.v1.iam_policy_pb2.TestIamPermissionsResponse:
                 Response message for TestIamPermissions method.
         """
+        warnings.warn(
+            "DataCatalogClient.test_iam_permissions is deprecated", DeprecationWarning
+        )
+
         # Create or coerce a protobuf request object.
         if isinstance(request, dict):
             # - The request isn't a proto-plus wrapped type,
@@ -5144,6 +5271,10 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
                    [ImportEntries][google.cloud.datacatalog.v1.DataCatalog.ImportEntries].
 
         """
+        warnings.warn(
+            "DataCatalogClient.import_entries is deprecated", DeprecationWarning
+        )
+
         # Create or coerce a protobuf request object.
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -5242,6 +5373,8 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
                    [RetrieveEffectiveConfig][google.cloud.datacatalog.v1.DataCatalog.RetrieveEffectiveConfig].
 
         """
+        warnings.warn("DataCatalogClient.set_config is deprecated", DeprecationWarning)
+
         # Create or coerce a protobuf request object.
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -5331,6 +5464,10 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
                    [RetrieveConfig][google.cloud.datacatalog.v1.DataCatalog.RetrieveConfig].
 
         """
+        warnings.warn(
+            "DataCatalogClient.retrieve_config is deprecated", DeprecationWarning
+        )
+
         # Create or coerce a protobuf request object.
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -5426,6 +5563,11 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
                    [RetrieveEffectiveConfig][google.cloud.datacatalog.v1.DataCatalog.RetrieveEffectiveConfig].
 
         """
+        warnings.warn(
+            "DataCatalogClient.retrieve_effective_config is deprecated",
+            DeprecationWarning,
+        )
+
         # Create or coerce a protobuf request object.
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.

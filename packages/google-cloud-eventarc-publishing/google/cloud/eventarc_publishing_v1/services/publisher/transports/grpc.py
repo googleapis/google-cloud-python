@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -123,7 +123,8 @@ class PublisherGrpcTransport(PublisherTransport):
     A partner is a third-party event provider that is integrated
     with Eventarc.
 
-    A subscriber is a GCP customer interested in receiving events.
+    A subscriber is a Google Cloud customer interested in receiving
+    events.
 
     Channel is a first-class Eventarc resource that is created and
     managed by the subscriber in their Google Cloud project. A

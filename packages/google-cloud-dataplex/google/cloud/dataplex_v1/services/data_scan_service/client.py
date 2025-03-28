@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -84,6 +84,7 @@ from google.cloud.dataplex_v1.types import (
 from .transports.base import DEFAULT_CLIENT_INFO, DataScanServiceTransport
 from .transports.grpc import DataScanServiceGrpcTransport
 from .transports.grpc_asyncio import DataScanServiceGrpcAsyncIOTransport
+from .transports.rest import DataScanServiceRestTransport
 
 
 class DataScanServiceClientMeta(type):
@@ -99,6 +100,7 @@ class DataScanServiceClientMeta(type):
     )  # type: Dict[str, Type[DataScanServiceTransport]]
     _transport_registry["grpc"] = DataScanServiceGrpcTransport
     _transport_registry["grpc_asyncio"] = DataScanServiceGrpcAsyncIOTransport
+    _transport_registry["rest"] = DataScanServiceRestTransport
 
     def get_transport_class(
         cls,

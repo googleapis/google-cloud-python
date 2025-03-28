@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -114,9 +114,9 @@ class Engine(proto.Message):
         industry_vertical (google.cloud.discoveryengine_v1.types.IndustryVertical):
             The industry vertical that the engine registers. The
             restriction of the Engine industry vertical is based on
-            [DataStore][google.cloud.discoveryengine.v1.DataStore]: If
-            unspecified, default to ``GENERIC``. Vertical on Engine has
-            to match vertical of the DataStore linked to the engine.
+            [DataStore][google.cloud.discoveryengine.v1.DataStore]:
+            Vertical on Engine has to match vertical of the DataStore
+            linked to the engine.
         common_config (google.cloud.discoveryengine_v1.types.Engine.CommonConfig):
             Common config spec that specifies the
             metadata of the engine.
@@ -186,6 +186,20 @@ class Engine(proto.Message):
                 API after engine creation. Use
                 [ChatEngineMetadata.dialogflow_agent][google.cloud.discoveryengine.v1.Engine.ChatEngineMetadata.dialogflow_agent]
                 for actual agent association after Engine is created.
+            allow_cross_region (bool):
+                Optional. If the flag set to true, we allow the agent and
+                engine are in different locations, otherwise the agent and
+                engine are required to be in the same location. The flag is
+                set to false by default.
+
+                Note that the ``allow_cross_region`` are one-time consumed
+                by and passed to
+                [EngineService.CreateEngine][google.cloud.discoveryengine.v1.EngineService.CreateEngine].
+                It means they cannot be retrieved using
+                [EngineService.GetEngine][google.cloud.discoveryengine.v1.EngineService.GetEngine]
+                or
+                [EngineService.ListEngines][google.cloud.discoveryengine.v1.EngineService.ListEngines]
+                API after engine creation.
         """
 
         class AgentCreationConfig(proto.Message):
@@ -248,6 +262,10 @@ class Engine(proto.Message):
         dialogflow_agent_to_link: str = proto.Field(
             proto.STRING,
             number=2,
+        )
+        allow_cross_region: bool = proto.Field(
+            proto.BOOL,
+            number=3,
         )
 
     class CommonConfig(proto.Message):

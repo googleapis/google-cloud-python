@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -5555,6 +5555,9 @@ def test_insert_rest_call_success(request_type):
             {
                 "balancing_mode": "balancing_mode_value",
                 "capacity_scaler": 0.1575,
+                "custom_metrics": [
+                    {"dry_run": True, "max_utilization": 0.1633, "name": "name_value"}
+                ],
                 "description": "description_value",
                 "failover": True,
                 "group": "group_value",
@@ -5630,6 +5633,7 @@ def test_insert_rest_call_success(request_type):
             "minimum_ring_size": 1829,
         },
         "creation_timestamp": "creation_timestamp_value",
+        "custom_metrics": [{"dry_run": True, "name": "name_value"}],
         "custom_request_headers": [
             "custom_request_headers_value1",
             "custom_request_headers_value2",
@@ -5647,6 +5651,7 @@ def test_insert_rest_call_success(request_type):
             "failover_ratio": 0.1494,
         },
         "fingerprint": "fingerprint_value",
+        "ha_policy": {"fast_i_p_move": "fast_i_p_move_value"},
         "health_checks": ["health_checks_value1", "health_checks_value2"],
         "iap": {
             "enabled": True,
@@ -6238,6 +6243,9 @@ def test_patch_rest_call_success(request_type):
             {
                 "balancing_mode": "balancing_mode_value",
                 "capacity_scaler": 0.1575,
+                "custom_metrics": [
+                    {"dry_run": True, "max_utilization": 0.1633, "name": "name_value"}
+                ],
                 "description": "description_value",
                 "failover": True,
                 "group": "group_value",
@@ -6313,6 +6321,7 @@ def test_patch_rest_call_success(request_type):
             "minimum_ring_size": 1829,
         },
         "creation_timestamp": "creation_timestamp_value",
+        "custom_metrics": [{"dry_run": True, "name": "name_value"}],
         "custom_request_headers": [
             "custom_request_headers_value1",
             "custom_request_headers_value2",
@@ -6330,6 +6339,7 @@ def test_patch_rest_call_success(request_type):
             "failover_ratio": 0.1494,
         },
         "fingerprint": "fingerprint_value",
+        "ha_policy": {"fast_i_p_move": "fast_i_p_move_value"},
         "health_checks": ["health_checks_value1", "health_checks_value2"],
         "iap": {
             "enabled": True,
@@ -7368,6 +7378,9 @@ def test_update_rest_call_success(request_type):
             {
                 "balancing_mode": "balancing_mode_value",
                 "capacity_scaler": 0.1575,
+                "custom_metrics": [
+                    {"dry_run": True, "max_utilization": 0.1633, "name": "name_value"}
+                ],
                 "description": "description_value",
                 "failover": True,
                 "group": "group_value",
@@ -7443,6 +7456,7 @@ def test_update_rest_call_success(request_type):
             "minimum_ring_size": 1829,
         },
         "creation_timestamp": "creation_timestamp_value",
+        "custom_metrics": [{"dry_run": True, "name": "name_value"}],
         "custom_request_headers": [
             "custom_request_headers_value1",
             "custom_request_headers_value2",
@@ -7460,6 +7474,7 @@ def test_update_rest_call_success(request_type):
             "failover_ratio": 0.1494,
         },
         "fingerprint": "fingerprint_value",
+        "ha_policy": {"fast_i_p_move": "fast_i_p_move_value"},
         "health_checks": ["health_checks_value1", "health_checks_value2"],
         "iap": {
             "enabled": True,

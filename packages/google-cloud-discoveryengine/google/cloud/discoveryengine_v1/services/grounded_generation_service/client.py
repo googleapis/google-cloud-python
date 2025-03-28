@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -826,7 +826,7 @@ class GroundedGenerationServiceClient(metaclass=GroundedGenerationServiceClientM
 
         Returns:
             Iterable[google.cloud.discoveryengine_v1.types.GenerateGroundedContentResponse]:
-
+                Response for the GenerateGroundedContent method.
         """
 
         # Wrap the RPC method; this adds retry and timeout information,
@@ -905,7 +905,7 @@ class GroundedGenerationServiceClient(metaclass=GroundedGenerationServiceClientM
 
         Returns:
             google.cloud.discoveryengine_v1.types.GenerateGroundedContentResponse:
-
+                Response for the GenerateGroundedContent method.
         """
         # Create or coerce a protobuf request object.
         # - Use the request object if provided (there's no risk of modifying the input as

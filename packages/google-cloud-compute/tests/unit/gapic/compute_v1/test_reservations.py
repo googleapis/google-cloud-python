@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -4807,10 +4807,14 @@ def test_insert_rest_call_success(request_type):
         "id": 205,
         "kind": "kind_value",
         "name": "name_value",
+        "reservation_sharing_policy": {
+            "service_share_type": "service_share_type_value"
+        },
         "resource_policies": {},
         "resource_status": {
             "specific_sku_allocation": {
-                "source_instance_template_id": "source_instance_template_id_value"
+                "source_instance_template_id": "source_instance_template_id_value",
+                "utilizations": {},
             }
         },
         "satisfies_pzs": True,
@@ -5925,10 +5929,14 @@ def test_update_rest_call_success(request_type):
         "id": 205,
         "kind": "kind_value",
         "name": "name_value",
+        "reservation_sharing_policy": {
+            "service_share_type": "service_share_type_value"
+        },
         "resource_policies": {},
         "resource_status": {
             "specific_sku_allocation": {
-                "source_instance_template_id": "source_instance_template_id_value"
+                "source_instance_template_id": "source_instance_template_id_value",
+                "utilizations": {},
             }
         },
         "satisfies_pzs": True,

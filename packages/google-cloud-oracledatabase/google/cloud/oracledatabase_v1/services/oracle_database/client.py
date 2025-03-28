@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -2922,14 +2922,9 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
                 client = oracledatabase_v1.OracleDatabaseClient()
 
                 # Initialize request argument(s)
-                autonomous_database = oracledatabase_v1.AutonomousDatabase()
-                autonomous_database.network = "network_value"
-                autonomous_database.cidr = "cidr_value"
-
                 request = oracledatabase_v1.CreateAutonomousDatabaseRequest(
                     parent="parent_value",
                     autonomous_database_id="autonomous_database_id_value",
-                    autonomous_database=autonomous_database,
                 )
 
                 # Make the request

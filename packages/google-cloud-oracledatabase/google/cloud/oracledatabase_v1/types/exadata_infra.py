@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -377,8 +377,8 @@ class MaintenanceWindow(proto.Message):
             4.
         patching_mode (google.cloud.oracledatabase_v1.types.MaintenanceWindow.PatchingMode):
             Optional. Cloud CloudExadataInfrastructure
-            node patching method, either "ROLLING"
-            or "NONROLLING". Default value is ROLLING.
+            node patching method, either "ROLLING" or
+            "NONROLLING". Default value is ROLLING.
         custom_action_timeout_mins (int):
             Optional. Determines the amount of time the
             system will wait before the start of each

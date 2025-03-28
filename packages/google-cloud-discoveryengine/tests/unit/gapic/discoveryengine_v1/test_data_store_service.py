@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -4558,6 +4558,10 @@ def test_create_data_store_rest_call_success(request_type):
         "default_schema_id": "default_schema_id_value",
         "content_config": 1,
         "create_time": {"seconds": 751, "nanos": 543},
+        "advanced_site_search_config": {
+            "disable_initial_index": True,
+            "disable_automatic_refresh": True,
+        },
         "billing_estimation": {
             "structured_data_size": 2152,
             "unstructured_data_size": 2379,
@@ -5196,6 +5200,10 @@ def test_update_data_store_rest_call_success(request_type):
         "default_schema_id": "default_schema_id_value",
         "content_config": 1,
         "create_time": {"seconds": 751, "nanos": 543},
+        "advanced_site_search_config": {
+            "disable_initial_index": True,
+            "disable_automatic_refresh": True,
+        },
         "billing_estimation": {
             "structured_data_size": 2152,
             "unstructured_data_size": 2379,

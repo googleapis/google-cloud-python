@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -22,6 +22,7 @@ import re
 from typing import (
     Callable,
     Dict,
+    Iterable,
     Mapping,
     MutableMapping,
     MutableSequence,
@@ -70,6 +71,7 @@ from google.cloud.discoveryengine_v1.services.conversational_search_service impo
 )
 from google.cloud.discoveryengine_v1.types import (
     conversational_search_service,
+    safety,
     search_service,
 )
 from google.cloud.discoveryengine_v1.types import conversation as gcd_conversation
@@ -1690,6 +1692,107 @@ class ConversationalSearchServiceClient(
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.answer_query]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("serving_config", request.serving_config),)
+            ),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def stream_answer_query(
+        self,
+        request: Optional[
+            Union[conversational_search_service.AnswerQueryRequest, dict]
+        ] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> Iterable[conversational_search_service.AnswerQueryResponse]:
+        r"""Answer query method (streaming).
+
+        It takes one
+        [AnswerQueryRequest][google.cloud.discoveryengine.v1.AnswerQueryRequest]
+        and returns multiple
+        [AnswerQueryResponse][google.cloud.discoveryengine.v1.AnswerQueryResponse]
+        messages in a stream.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import discoveryengine_v1
+
+            def sample_stream_answer_query():
+                # Create a client
+                client = discoveryengine_v1.ConversationalSearchServiceClient()
+
+                # Initialize request argument(s)
+                query = discoveryengine_v1.Query()
+                query.text = "text_value"
+
+                request = discoveryengine_v1.AnswerQueryRequest(
+                    serving_config="serving_config_value",
+                    query=query,
+                )
+
+                # Make the request
+                stream = client.stream_answer_query(request=request)
+
+                # Handle the response
+                for response in stream:
+                    print(response)
+
+        Args:
+            request (Union[google.cloud.discoveryengine_v1.types.AnswerQueryRequest, dict]):
+                The request object. Request message for
+                [ConversationalSearchService.AnswerQuery][google.cloud.discoveryengine.v1.ConversationalSearchService.AnswerQuery]
+                method.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            Iterable[google.cloud.discoveryengine_v1.types.AnswerQueryResponse]:
+                Response message for
+                   [ConversationalSearchService.AnswerQuery][google.cloud.discoveryengine.v1.ConversationalSearchService.AnswerQuery]
+                   method.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, conversational_search_service.AnswerQueryRequest):
+            request = conversational_search_service.AnswerQueryRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.stream_answer_query]
 
         # Certain fields should be provided within the metadata header;
         # add these here.

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -40,7 +40,7 @@ def sample_create_application():
 
     # Initialize request argument(s)
     application = apphub_v1.Application()
-    application.scope.type_ = "REGIONAL"
+    application.scope.type_ = "GLOBAL"
 
     request = apphub_v1.CreateApplicationRequest(
         parent="parent_value",

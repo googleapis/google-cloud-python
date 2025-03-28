@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -631,7 +631,7 @@ class EnvironmentsGrpcTransport(EnvironmentsTransport):
         Creates a user workloads Secret.
 
         This method is supported for Cloud Composer environments in
-        versions composer-3.\ *.*-airflow-*.*.\* and newer.
+        versions composer-3-airflow-\ *.*.\ *-build.* and newer.
 
         Returns:
             Callable[[~.CreateUserWorkloadsSecretRequest],
@@ -665,7 +665,7 @@ class EnvironmentsGrpcTransport(EnvironmentsTransport):
         field in the response are cleared.
 
         This method is supported for Cloud Composer environments in
-        versions composer-3.\ *.*-airflow-*.*.\* and newer.
+        versions composer-3-airflow-\ *.*.\ *-build.* and newer.
 
         Returns:
             Callable[[~.GetUserWorkloadsSecretRequest],
@@ -697,7 +697,7 @@ class EnvironmentsGrpcTransport(EnvironmentsTransport):
         Lists user workloads Secrets.
 
         This method is supported for Cloud Composer environments in
-        versions composer-3.\ *.*-airflow-*.*.\* and newer.
+        versions composer-3-airflow-\ *.*.\ *-build.* and newer.
 
         Returns:
             Callable[[~.ListUserWorkloadsSecretsRequest],
@@ -731,7 +731,7 @@ class EnvironmentsGrpcTransport(EnvironmentsTransport):
         Updates a user workloads Secret.
 
         This method is supported for Cloud Composer environments in
-        versions composer-3.\ *.*-airflow-*.*.\* and newer.
+        versions composer-3-airflow-\ *.*.\ *-build.* and newer.
 
         Returns:
             Callable[[~.UpdateUserWorkloadsSecretRequest],
@@ -762,7 +762,7 @@ class EnvironmentsGrpcTransport(EnvironmentsTransport):
         Deletes a user workloads Secret.
 
         This method is supported for Cloud Composer environments in
-        versions composer-3.\ *.*-airflow-*.*.\* and newer.
+        versions composer-3-airflow-\ *.*.\ *-build.* and newer.
 
         Returns:
             Callable[[~.DeleteUserWorkloadsSecretRequest],
@@ -797,7 +797,7 @@ class EnvironmentsGrpcTransport(EnvironmentsTransport):
         Creates a user workloads ConfigMap.
 
         This method is supported for Cloud Composer environments in
-        versions composer-3.\ *.*-airflow-*.*.\* and newer.
+        versions composer-3-airflow-\ *.*.\ *-build.* and newer.
 
         Returns:
             Callable[[~.CreateUserWorkloadsConfigMapRequest],
@@ -831,7 +831,7 @@ class EnvironmentsGrpcTransport(EnvironmentsTransport):
         Gets an existing user workloads ConfigMap.
 
         This method is supported for Cloud Composer environments in
-        versions composer-3.\ *.*-airflow-*.*.\* and newer.
+        versions composer-3-airflow-\ *.*.\ *-build.* and newer.
 
         Returns:
             Callable[[~.GetUserWorkloadsConfigMapRequest],
@@ -866,7 +866,7 @@ class EnvironmentsGrpcTransport(EnvironmentsTransport):
         Lists user workloads ConfigMaps.
 
         This method is supported for Cloud Composer environments in
-        versions composer-3.\ *.*-airflow-*.*.\* and newer.
+        versions composer-3-airflow-\ *.*.\ *-build.* and newer.
 
         Returns:
             Callable[[~.ListUserWorkloadsConfigMapsRequest],
@@ -901,7 +901,7 @@ class EnvironmentsGrpcTransport(EnvironmentsTransport):
         Updates a user workloads ConfigMap.
 
         This method is supported for Cloud Composer environments in
-        versions composer-3.\ *.*-airflow-*.*.\* and newer.
+        versions composer-3-airflow-\ *.*.\ *-build.* and newer.
 
         Returns:
             Callable[[~.UpdateUserWorkloadsConfigMapRequest],
@@ -933,7 +933,7 @@ class EnvironmentsGrpcTransport(EnvironmentsTransport):
         Deletes a user workloads ConfigMap.
 
         This method is supported for Cloud Composer environments in
-        versions composer-3.\ *.*-airflow-*.*.\* and newer.
+        versions composer-3-airflow-\ *.*.\ *-build.* and newer.
 
         Returns:
             Callable[[~.DeleteUserWorkloadsConfigMapRequest],

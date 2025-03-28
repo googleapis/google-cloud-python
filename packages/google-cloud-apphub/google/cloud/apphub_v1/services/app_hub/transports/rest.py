@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -3432,7 +3432,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             Returns:
                 ~.application.Application:
                     Application defines the governance
-                boundary for App Hub Entities that
+                boundary for App Hub entities that
                 perform a logical end-to-end business
                 function. App Hub supports application
                 level IAM permission to align with
@@ -3585,7 +3585,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
 
             Returns:
                 ~.service.DiscoveredService:
-                    DiscoveredService is a network/api
+                    DiscoveredService is a network or API
                 interface that exposes some
                 functionality to clients for consumption
                 over the network. A discovered service
@@ -3889,9 +3889,10 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
                 ~.service.Service:
                     Service is an App Hub data model that
                 contains a discovered service, which
-                represents a network/api interface that
-                exposes some functionality to clients
-                for consumption over the network.
+                represents a network or API interface
+                that exposes some functionality to
+                clients for consumption over the
+                network.
 
             """
 

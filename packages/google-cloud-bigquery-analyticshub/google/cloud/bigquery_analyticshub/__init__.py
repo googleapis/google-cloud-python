@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -34,6 +34,7 @@ from google.cloud.bigquery_analyticshub_v1.types.analyticshub import (
     DeleteSubscriptionRequest,
     DestinationDataset,
     DestinationDatasetReference,
+    DestinationPubSubSubscription,
     DiscoveryType,
     GetDataExchangeRequest,
     GetListingRequest,
@@ -55,6 +56,7 @@ from google.cloud.bigquery_analyticshub_v1.types.analyticshub import (
     RefreshSubscriptionResponse,
     RevokeSubscriptionRequest,
     RevokeSubscriptionResponse,
+    SharedResourceType,
     SharingEnvironmentConfig,
     SubscribeDataExchangeRequest,
     SubscribeDataExchangeResponse,
@@ -63,6 +65,17 @@ from google.cloud.bigquery_analyticshub_v1.types.analyticshub import (
     Subscription,
     UpdateDataExchangeRequest,
     UpdateListingRequest,
+)
+from google.cloud.bigquery_analyticshub_v1.types.pubsub import (
+    BigQueryConfig,
+    CloudStorageConfig,
+    DeadLetterPolicy,
+    ExpirationPolicy,
+    JavaScriptUDF,
+    MessageTransform,
+    PubSubSubscription,
+    PushConfig,
+    RetryPolicy,
 )
 
 __all__ = (
@@ -77,6 +90,7 @@ __all__ = (
     "DeleteSubscriptionRequest",
     "DestinationDataset",
     "DestinationDatasetReference",
+    "DestinationPubSubSubscription",
     "GetDataExchangeRequest",
     "GetListingRequest",
     "GetSubscriptionRequest",
@@ -106,4 +120,14 @@ __all__ = (
     "UpdateDataExchangeRequest",
     "UpdateListingRequest",
     "DiscoveryType",
+    "SharedResourceType",
+    "BigQueryConfig",
+    "CloudStorageConfig",
+    "DeadLetterPolicy",
+    "ExpirationPolicy",
+    "JavaScriptUDF",
+    "MessageTransform",
+    "PubSubSubscription",
+    "PushConfig",
+    "RetryPolicy",
 )

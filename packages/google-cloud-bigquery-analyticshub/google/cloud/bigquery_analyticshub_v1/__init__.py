@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -32,6 +32,7 @@ from .types.analyticshub import (
     DeleteSubscriptionRequest,
     DestinationDataset,
     DestinationDatasetReference,
+    DestinationPubSubSubscription,
     DiscoveryType,
     GetDataExchangeRequest,
     GetListingRequest,
@@ -53,6 +54,7 @@ from .types.analyticshub import (
     RefreshSubscriptionResponse,
     RevokeSubscriptionRequest,
     RevokeSubscriptionResponse,
+    SharedResourceType,
     SharingEnvironmentConfig,
     SubscribeDataExchangeRequest,
     SubscribeDataExchangeResponse,
@@ -62,23 +64,40 @@ from .types.analyticshub import (
     UpdateDataExchangeRequest,
     UpdateListingRequest,
 )
+from .types.pubsub import (
+    BigQueryConfig,
+    CloudStorageConfig,
+    DeadLetterPolicy,
+    ExpirationPolicy,
+    JavaScriptUDF,
+    MessageTransform,
+    PubSubSubscription,
+    PushConfig,
+    RetryPolicy,
+)
 
 __all__ = (
     "AnalyticsHubServiceAsyncClient",
     "AnalyticsHubServiceClient",
+    "BigQueryConfig",
+    "CloudStorageConfig",
     "CreateDataExchangeRequest",
     "CreateListingRequest",
     "DataExchange",
     "DataProvider",
+    "DeadLetterPolicy",
     "DeleteDataExchangeRequest",
     "DeleteListingRequest",
     "DeleteSubscriptionRequest",
     "DestinationDataset",
     "DestinationDatasetReference",
+    "DestinationPubSubSubscription",
     "DiscoveryType",
+    "ExpirationPolicy",
     "GetDataExchangeRequest",
     "GetListingRequest",
     "GetSubscriptionRequest",
+    "JavaScriptUDF",
     "ListDataExchangesRequest",
     "ListDataExchangesResponse",
     "ListListingsRequest",
@@ -90,12 +109,17 @@ __all__ = (
     "ListSubscriptionsRequest",
     "ListSubscriptionsResponse",
     "Listing",
+    "MessageTransform",
     "OperationMetadata",
+    "PubSubSubscription",
     "Publisher",
+    "PushConfig",
     "RefreshSubscriptionRequest",
     "RefreshSubscriptionResponse",
+    "RetryPolicy",
     "RevokeSubscriptionRequest",
     "RevokeSubscriptionResponse",
+    "SharedResourceType",
     "SharingEnvironmentConfig",
     "SubscribeDataExchangeRequest",
     "SubscribeDataExchangeResponse",

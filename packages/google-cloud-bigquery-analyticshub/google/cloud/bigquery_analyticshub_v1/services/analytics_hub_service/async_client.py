@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -102,6 +102,8 @@ class AnalyticsHubServiceAsyncClient:
     )
     table_path = staticmethod(AnalyticsHubServiceClient.table_path)
     parse_table_path = staticmethod(AnalyticsHubServiceClient.parse_table_path)
+    topic_path = staticmethod(AnalyticsHubServiceClient.topic_path)
+    parse_topic_path = staticmethod(AnalyticsHubServiceClient.parse_topic_path)
     common_billing_account_path = staticmethod(
         AnalyticsHubServiceClient.common_billing_account_path
     )
@@ -1776,8 +1778,8 @@ class AnalyticsHubServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation_async.AsyncOperation:
-        r"""Creates a Subscription to a Data Exchange. This is a
-        long-running operation as it will create one or more
+        r"""Creates a Subscription to a Data Clean Room. This is
+        a long-running operation as it will create one or more
         linked datasets.
 
         .. code-block:: python
@@ -2461,7 +2463,7 @@ class AnalyticsHubServiceAsyncClient:
         Returns:
             google.cloud.bigquery_analyticshub_v1.types.RevokeSubscriptionResponse:
                 Message for response when you revoke
-                a subscription.
+                a subscription. Empty for now.
 
         """
         # Create or coerce a protobuf request object.

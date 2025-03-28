@@ -1,5 +1,30 @@
 # Changelog
 
+## [2.9.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataplex-v2.8.0...google-cloud-dataplex-v2.9.0) (2025-03-27)
+
+
+### Features
+
+* Add support for REST transport ([fe3dc62](https://github.com/googleapis/google-cloud-python/commit/fe3dc623808a5c40c157bf4fe55e8dd1fac39320))
+
+## [2.8.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataplex-v2.7.1...google-cloud-dataplex-v2.8.0) (2025-03-15)
+
+
+### Features
+
+* [google-cloud-dataplex] Add custom BigQuery dataset location support in Auto Discovery ([#13641](https://github.com/googleapis/google-cloud-python/issues/13641)) ([90298dd](https://github.com/googleapis/google-cloud-python/commit/90298dd8ff2ab164af41848e91c789e87305f426))
+
+
+### Bug Fixes
+
+* [Many APIs] Allow Protobuf 6.x ([feb5353](https://github.com/googleapis/google-cloud-python/commit/feb53532240bb70a94b359b519f0f41f95875a33))
+* remove setup.cfg configuration for creating universal wheels ([#13659](https://github.com/googleapis/google-cloud-python/issues/13659)) ([59bfd42](https://github.com/googleapis/google-cloud-python/commit/59bfd42cf8a2eaeed696a7504890bce5aae815ce))
+
+
+### Documentation
+
+* update the Dataplex Catalog proto to remove the info about schema ([90298dd](https://github.com/googleapis/google-cloud-python/commit/90298dd8ff2ab164af41848e91c789e87305f426))
+
 ## [2.7.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataplex-v2.7.0...google-cloud-dataplex-v2.7.1) (2025-02-18)
 
 

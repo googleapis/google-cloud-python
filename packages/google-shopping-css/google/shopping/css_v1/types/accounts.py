@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -211,6 +211,10 @@ class Account(proto.Message):
             group for CSS domains; CSS domain for MC
             accounts. Returned only if the user has access
             to the parent account.
+            Note: For MC sub-accounts, this is also the CSS
+            domain that is the parent resource of the MCA
+            account, since we are effectively flattening the
+            hierarchy.".
 
             This field is a member of `oneof`_ ``_parent``.
         label_ids (MutableSequence[int]):

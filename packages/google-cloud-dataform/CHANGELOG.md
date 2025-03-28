@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.6.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataform-v0.6.0...google-cloud-dataform-v0.6.1) (2025-03-15)
+
+
+### Features
+
+* [google-cloud-dataform] Dataform V1 Public APIs ([#13639](https://github.com/googleapis/google-cloud-python/issues/13639)) ([7828c61](https://github.com/googleapis/google-cloud-python/commit/7828c61c6462b2b2397a8849601356b96cf7e6e5))
+
+
+### Bug Fixes
+
+* [Many APIs] Allow Protobuf 6.x ([feb5353](https://github.com/googleapis/google-cloud-python/commit/feb53532240bb70a94b359b519f0f41f95875a33))
+* remove setup.cfg configuration for creating universal wheels ([#13659](https://github.com/googleapis/google-cloud-python/issues/13659)) ([59bfd42](https://github.com/googleapis/google-cloud-python/commit/59bfd42cf8a2eaeed696a7504890bce5aae815ce))
+
 ## [0.6.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataform-v0.5.16...google-cloud-dataform-v0.6.0) (2025-03-03)
 
 

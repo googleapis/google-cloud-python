@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -171,6 +171,11 @@ class ConversationalSearchServiceTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.stream_answer_query: gapic_v1.method.wrap_method(
+                self.stream_answer_query,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.get_answer: gapic_v1.method.wrap_method(
                 self.get_answer,
                 default_timeout=None,
@@ -289,6 +294,18 @@ class ConversationalSearchServiceTransport(abc.ABC):
 
     @property
     def answer_query(
+        self,
+    ) -> Callable[
+        [conversational_search_service.AnswerQueryRequest],
+        Union[
+            conversational_search_service.AnswerQueryResponse,
+            Awaitable[conversational_search_service.AnswerQueryResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def stream_answer_query(
         self,
     ) -> Callable[
         [conversational_search_service.AnswerQueryRequest],

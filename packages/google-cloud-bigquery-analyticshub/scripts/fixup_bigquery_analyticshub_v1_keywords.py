@@ -1,6 +1,6 @@
 #! /usr/bin/env python3
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -56,8 +56,8 @@ class bigquery_analyticshubCallTransformer(cst.CSTTransformer):
         'refresh_subscription': ('name', ),
         'revoke_subscription': ('name', ),
         'set_iam_policy': ('resource', 'policy', 'update_mask', ),
-        'subscribe_data_exchange': ('name', 'destination', 'subscription', 'subscriber_contact', ),
-        'subscribe_listing': ('name', 'destination_dataset', ),
+        'subscribe_data_exchange': ('name', 'destination', 'subscription', 'destination_dataset', 'subscriber_contact', ),
+        'subscribe_listing': ('name', 'destination_dataset', 'destination_pubsub_subscription', ),
         'test_iam_permissions': ('resource', 'permissions', ),
         'update_data_exchange': ('update_mask', 'data_exchange', ),
         'update_listing': ('update_mask', 'listing', ),

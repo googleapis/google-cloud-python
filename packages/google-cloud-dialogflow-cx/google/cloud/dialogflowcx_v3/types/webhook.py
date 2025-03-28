@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -226,7 +226,7 @@ class Webhook(proto.Message):
                     Required. The client ID provided by the 3rd
                     party platform.
                 client_secret (str):
-                    Required. The client secret provided by the
+                    Optional. The client secret provided by the
                     3rd party platform.
                 token_endpoint (str):
                     Required. The token endpoint provided by the

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -35,14 +35,14 @@ __protobuf__ = proto.module(
 
 class Service(proto.Message):
     r"""Service is an App Hub data model that contains a discovered
-    service, which represents a network/api interface that exposes
-    some functionality to clients for consumption over the network.
+    service, which represents a network or API interface that
+    exposes some functionality to clients for consumption over the
+    network.
 
     Attributes:
         name (str):
-            Identifier. The resource name of a Service.
-            Format:
-            "projects/{host-project-id}/locations/{location}/applications/{application-id}/services/{service-id}".
+            Identifier. The resource name of a Service. Format:
+            ``"projects/{host-project-id}/locations/{location}/applications/{application-id}/services/{service-id}"``
         display_name (str):
             Optional. User-defined name for the Service.
             Can have a maximum length of 63 characters.
@@ -154,9 +154,9 @@ class ServiceReference(proto.Message):
 
     Attributes:
         uri (str):
-            Output only. The underlying resource URI (For
+            Output only. The underlying resource URI. For
             example, URI of Forwarding Rule, URL Map, and
-            Backend Service).
+            Backend Service.
     """
 
     uri: str = proto.Field(
@@ -197,15 +197,15 @@ class ServiceProperties(proto.Message):
 
 
 class DiscoveredService(proto.Message):
-    r"""DiscoveredService is a network/api interface that exposes
+    r"""DiscoveredService is a network or API interface that exposes
     some functionality to clients for consumption over the network.
     A discovered service can be registered to a App Hub service.
 
     Attributes:
         name (str):
-            Identifier. The resource name of the
-            discovered service. Format:
-            "projects/{host-project-id}/locations/{location}/discoveredServices/{uuid}"".
+            Identifier. The resource name of the discovered service.
+            Format:
+            ``"projects/{host-project-id}/locations/{location}/discoveredServices/{uuid}"``
         service_reference (google.cloud.apphub_v1.types.ServiceReference):
             Output only. Reference to an underlying
             networking resource that can comprise a Service.

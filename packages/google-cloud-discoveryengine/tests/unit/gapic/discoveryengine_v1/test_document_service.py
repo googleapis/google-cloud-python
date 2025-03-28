@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -6315,6 +6315,7 @@ def test_create_document_rest_call_success(request_type):
                     ],
                 }
             ],
+            "pending_message": "pending_message_value",
         },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
@@ -6554,6 +6555,7 @@ def test_update_document_rest_call_success(request_type):
                     ],
                 }
             ],
+            "pending_message": "pending_message_value",
         },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -46,6 +46,7 @@ __protobuf__ = proto.module(
         "ProductWeight",
         "ProductStatus",
         "CloudExportAdditionalProperties",
+        "ProductSustainabilityIncentive",
     },
 )
 
@@ -486,6 +487,9 @@ class Attributes(proto.Message):
             projects, ensuring that discounts on merchants'
             offers do not fall below this value, thereby
             preserving the offer's value and profitability.
+        sustainability_incentives (MutableSequence[google.shopping.merchant_products_v1beta.types.ProductSustainabilityIncentive]):
+            The list of sustainability incentive
+            programs.
     """
 
     identifier_exists: bool = proto.Field(
@@ -941,6 +945,13 @@ class Attributes(proto.Message):
         proto.MESSAGE,
         number=124,
         message=types.Price,
+    )
+    sustainability_incentives: MutableSequence[
+        "ProductSustainabilityIncentive"
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=138,
+        message="ProductSustainabilityIncentive",
     )
 
 
@@ -1925,6 +1936,76 @@ class CloudExportAdditionalProperties(proto.Message):
         proto.STRING,
         number=8,
         optional=True,
+    )
+
+
+class ProductSustainabilityIncentive(proto.Message):
+    r"""Information regarding sustainability-related incentive
+    programs such as rebates or tax relief.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        amount (google.shopping.type.types.Price):
+            The fixed amount of the incentive.
+
+            This field is a member of `oneof`_ ``value``.
+        percentage (float):
+            The percentage of the sale price that the
+            incentive is applied to.
+
+            This field is a member of `oneof`_ ``value``.
+        type_ (google.shopping.merchant_products_v1beta.types.ProductSustainabilityIncentive.Type):
+            Sustainability incentive program.
+
+            This field is a member of `oneof`_ ``_type``.
+    """
+
+    class Type(proto.Enum):
+        r"""Types of supported sustainability incentive programs.
+
+        Values:
+            TYPE_UNSPECIFIED (0):
+                Unspecified or unknown sustainability
+                incentive type.
+            EV_TAX_CREDIT (1):
+                Program offering tax liability reductions for
+                electric vehicles and, in some countries,
+                plug-in hybrids. These reductions can be based
+                on a specific amount or a percentage of the sale
+                price.
+            EV_PRICE_DISCOUNT (2):
+                A subsidy program, often called an
+                environmental bonus, provides a purchase grant
+                for electric vehicles and, in some countries,
+                plug-in hybrids. The grant amount may be a fixed
+                sum or a percentage of the sale price.
+        """
+        TYPE_UNSPECIFIED = 0
+        EV_TAX_CREDIT = 1
+        EV_PRICE_DISCOUNT = 2
+
+    amount: types.Price = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        oneof="value",
+        message=types.Price,
+    )
+    percentage: float = proto.Field(
+        proto.DOUBLE,
+        number=3,
+        oneof="value",
+    )
+    type_: Type = proto.Field(
+        proto.ENUM,
+        number=1,
+        optional=True,
+        enum=Type,
     )
 
 

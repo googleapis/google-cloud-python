@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -97,12 +97,15 @@ class SearchRequest(proto.Message):
             OneBox. This applies to each OneBox type
             individually. Default number is 10.
         data_store_specs (MutableSequence[google.cloud.discoveryengine_v1.types.SearchRequest.DataStoreSpec]):
-            Specs defining dataStores to filter on in a
-            search call and configurations for those
-            dataStores. This is only considered for engines
-            with multiple dataStores use case. For single
-            dataStore within an engine, they should use the
-            specs at the top level.
+            Specifications that define the specific
+            [DataStore][google.cloud.discoveryengine.v1.DataStore]s to
+            be searched, along with configurations for those data
+            stores. This is only considered for
+            [Engine][google.cloud.discoveryengine.v1.Engine]s with
+            multiple data stores. For engines with a single data store,
+            the specs directly under
+            [SearchRequest][google.cloud.discoveryengine.v1.SearchRequest]
+            should be used.
         filter (str):
             The filter syntax consists of an expression language for
             constructing a predicate from one or more fields of the
@@ -153,7 +156,7 @@ class SearchRequest(proto.Message):
             returned.
         user_info (google.cloud.discoveryengine_v1.types.UserInfo):
             Information about the end user. Highly recommended for
-            analytics.
+            analytics and personalization.
             [UserInfo.user_agent][google.cloud.discoveryengine.v1.UserInfo.user_agent]
             is used to deduce ``device_type`` for analytics.
         language_code (str):
@@ -248,6 +251,9 @@ class SearchRequest(proto.Message):
             Search as you type configuration. Only supported for the
             [IndustryVertical.MEDIA][google.cloud.discoveryengine.v1.IndustryVertical.MEDIA]
             vertical.
+        display_spec (google.cloud.discoveryengine_v1.types.SearchRequest.DisplaySpec):
+            Optional. Config for display feature, like
+            match highlighting on search results.
         session (str):
             The session resource name. Optional.
 
@@ -285,7 +291,44 @@ class SearchRequest(proto.Message):
             Session specification.
 
             Can be used only when ``session`` is set.
+        relevance_threshold (google.cloud.discoveryengine_v1.types.SearchRequest.RelevanceThreshold):
+            The relevance threshold of the search
+            results.
+            Default to Google defined threshold, leveraging
+            a balance of precision and recall to deliver
+            both highly accurate results and comprehensive
+            coverage of relevant information.
+
+            This feature is not supported for healthcare
+            search.
+        relevance_score_spec (google.cloud.discoveryengine_v1.types.SearchRequest.RelevanceScoreSpec):
+            Optional. The specification for returning the
+            relevance score.
     """
+
+    class RelevanceThreshold(proto.Enum):
+        r"""The relevance threshold of the search results. The higher
+        relevance threshold is, the higher relevant results are shown
+        and the less number of results are returned.
+
+        Values:
+            RELEVANCE_THRESHOLD_UNSPECIFIED (0):
+                Default value. In this case, server behavior
+                defaults to Google defined threshold.
+            LOWEST (1):
+                Lowest relevance threshold.
+            LOW (2):
+                Low relevance threshold.
+            MEDIUM (3):
+                Medium relevance threshold.
+            HIGH (4):
+                High relevance threshold.
+        """
+        RELEVANCE_THRESHOLD_UNSPECIFIED = 0
+        LOWEST = 1
+        LOW = 2
+        MEDIUM = 3
+        HIGH = 4
 
     class ImageQuery(proto.Message):
         r"""Specifies the image query input.
@@ -322,6 +365,10 @@ class SearchRequest(proto.Message):
                 data store specified by data_store field. For more
                 information on filtering, see
                 `Filtering <https://cloud.google.com/generative-ai-app-builder/docs/filter-search-metadata>`__
+            boost_spec (google.cloud.discoveryengine_v1.types.SearchRequest.BoostSpec):
+                Optional. Boost specification to boost certain documents.
+                For more information on boosting, see
+                `Boosting <https://cloud.google.com/generative-ai-app-builder/docs/boost-search-results>`__
         """
 
         data_store: str = proto.Field(
@@ -331,6 +378,11 @@ class SearchRequest(proto.Message):
         filter: str = proto.Field(
             proto.STRING,
             number=5,
+        )
+        boost_spec: "SearchRequest.BoostSpec" = proto.Field(
+            proto.MESSAGE,
+            number=6,
+            message="SearchRequest.BoostSpec",
         )
 
     class FacetSpec(proto.Message):
@@ -532,7 +584,7 @@ class SearchRequest(proto.Message):
             condition_boost_specs (MutableSequence[google.cloud.discoveryengine_v1.types.SearchRequest.BoostSpec.ConditionBoostSpec]):
                 Condition boost specifications. If a document
                 matches multiple conditions in the
-                specifictions, boost scores from these
+                specifications, boost scores from these
                 specifications are all applied and combined in a
                 non-linear way. Maximum number of specifications
                 is 20.
@@ -842,8 +894,8 @@ class SearchRequest(proto.Message):
                     Returns documents in the search result.
                 CHUNKS (2):
                     Returns chunks in the search result. Only available if the
-                    [DataStore.DocumentProcessingConfig.chunking_config][] is
-                    specified.
+                    [DocumentProcessingConfig.chunking_config][google.cloud.discoveryengine.v1.DocumentProcessingConfig.chunking_config]
+                    is specified.
             """
             SEARCH_RESULT_MODE_UNSPECIFIED = 0
             DOCUMENTS = 1
@@ -1227,15 +1279,53 @@ class SearchRequest(proto.Message):
                     Disables Search As You Type.
                 ENABLED (2):
                     Enables Search As You Type.
+                AUTO (3):
+                    Automatic switching between
+                    search-as-you-type and standard search modes,
+                    ideal for single-API implementations (e.g.,
+                    debouncing).
             """
             CONDITION_UNSPECIFIED = 0
             DISABLED = 1
             ENABLED = 2
+            AUTO = 3
 
         condition: "SearchRequest.SearchAsYouTypeSpec.Condition" = proto.Field(
             proto.ENUM,
             number=1,
             enum="SearchRequest.SearchAsYouTypeSpec.Condition",
+        )
+
+    class DisplaySpec(proto.Message):
+        r"""Specifies features for display, like match highlighting.
+
+        Attributes:
+            match_highlighting_condition (google.cloud.discoveryengine_v1.types.SearchRequest.DisplaySpec.MatchHighlightingCondition):
+                The condition under which match highlighting
+                should occur.
+        """
+
+        class MatchHighlightingCondition(proto.Enum):
+            r"""Enum describing under which condition match highlighting
+            should occur.
+
+            Values:
+                MATCH_HIGHLIGHTING_CONDITION_UNSPECIFIED (0):
+                    Server behavior is the same as
+                    ``MATCH_HIGHLIGHTING_DISABLED``.
+                MATCH_HIGHLIGHTING_DISABLED (1):
+                    Disables match highlighting on all documents.
+                MATCH_HIGHLIGHTING_ENABLED (2):
+                    Enables match highlighting on all documents.
+            """
+            MATCH_HIGHLIGHTING_CONDITION_UNSPECIFIED = 0
+            MATCH_HIGHLIGHTING_DISABLED = 1
+            MATCH_HIGHLIGHTING_ENABLED = 2
+
+        match_highlighting_condition: "SearchRequest.DisplaySpec.MatchHighlightingCondition" = proto.Field(
+            proto.ENUM,
+            number=1,
+            enum="SearchRequest.DisplaySpec.MatchHighlightingCondition",
         )
 
     class SessionSpec(proto.Message):
@@ -1277,7 +1367,7 @@ class SearchRequest(proto.Message):
                 search results can be used for the subsequent /answer api
                 call.
 
-                This field is simliar to the ``summary_result_count`` field
+                This field is similar to the ``summary_result_count`` field
                 in
                 [SearchRequest.ContentSearchSpec.SummarySpec.summary_result_count][google.cloud.discoveryengine.v1.SearchRequest.ContentSearchSpec.SummarySpec.summary_result_count].
 
@@ -1295,6 +1385,21 @@ class SearchRequest(proto.Message):
             proto.INT32,
             number=2,
             optional=True,
+        )
+
+    class RelevanceScoreSpec(proto.Message):
+        r"""The specification for returning the document relevance score.
+
+        Attributes:
+            return_relevance_score (bool):
+                Optional. Whether to return the relevance
+                score for search results. The higher the score,
+                the more relevant the document is to the query.
+        """
+
+        return_relevance_score: bool = proto.Field(
+            proto.BOOL,
+            number=1,
         )
 
     serving_config: str = proto.Field(
@@ -1405,6 +1510,11 @@ class SearchRequest(proto.Message):
         number=31,
         message=SearchAsYouTypeSpec,
     )
+    display_spec: DisplaySpec = proto.Field(
+        proto.MESSAGE,
+        number=38,
+        message=DisplaySpec,
+    )
     session: str = proto.Field(
         proto.STRING,
         number=41,
@@ -1413,6 +1523,16 @@ class SearchRequest(proto.Message):
         proto.MESSAGE,
         number=42,
         message=SessionSpec,
+    )
+    relevance_threshold: RelevanceThreshold = proto.Field(
+        proto.ENUM,
+        number=44,
+        enum=RelevanceThreshold,
+    )
+    relevance_score_spec: RelevanceScoreSpec = proto.Field(
+        proto.MESSAGE,
+        number=52,
+        message=RelevanceScoreSpec,
     )
 
 
@@ -1471,6 +1591,8 @@ class SearchResponse(proto.Message):
             Only set if
             [SearchRequest.session][google.cloud.discoveryengine.v1.SearchRequest.session]
             is provided. See its description for more details.
+        search_link_promotions (MutableSequence[google.cloud.discoveryengine_v1.types.SearchLinkPromotion]):
+            Promotions for site search.
     """
 
     class SearchResult(proto.Message):
@@ -1489,6 +1611,9 @@ class SearchResponse(proto.Message):
                 [SearchRequest.ContentSearchSpec.search_result_mode][google.cloud.discoveryengine.v1.SearchRequest.ContentSearchSpec.search_result_mode]
                 is set to
                 [CHUNKS][google.cloud.discoveryengine.v1.SearchRequest.ContentSearchSpec.SearchResultMode.CHUNKS].
+            model_scores (MutableMapping[str, google.cloud.discoveryengine_v1.types.DoubleList]):
+                Output only. Google provided available
+                scores.
         """
 
         id: str = proto.Field(
@@ -1504,6 +1629,12 @@ class SearchResponse(proto.Message):
             proto.MESSAGE,
             number=18,
             message=gcd_chunk.Chunk,
+        )
+        model_scores: MutableMapping[str, common.DoubleList] = proto.MapField(
+            proto.STRING,
+            proto.MESSAGE,
+            number=4,
+            message=common.DoubleList,
         )
 
     class Facet(proto.Message):
@@ -1660,6 +1791,10 @@ class SearchResponse(proto.Message):
                     intent. Only used when
                     [SearchRequest.ContentSearchSpec.SummarySpec.ignore_non_answer_seeking_query]
                     is set to ``true``.
+                TIME_OUT (10):
+                    The time out case.
+
+                    Google skips the summary if the time out.
             """
             SUMMARY_SKIPPED_REASON_UNSPECIFIED = 0
             ADVERSARIAL_QUERY_IGNORED = 1
@@ -1671,6 +1806,7 @@ class SearchResponse(proto.Message):
             JAIL_BREAKING_QUERY_IGNORED = 7
             CUSTOMER_POLICY_VIOLATION = 8
             NON_SUMMARY_SEEKING_QUERY_IGNORED_V2 = 9
+            TIME_OUT = 10
 
         class SafetyAttributes(proto.Message):
             r"""Safety Attribute categories and their associated confidence
@@ -1969,6 +2105,13 @@ class SearchResponse(proto.Message):
         proto.MESSAGE,
         number=19,
         message=SessionInfo,
+    )
+    search_link_promotions: MutableSequence[
+        common.SearchLinkPromotion
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=23,
+        message=common.SearchLinkPromotion,
     )
 
 

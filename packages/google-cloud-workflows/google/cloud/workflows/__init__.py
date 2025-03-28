@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -25,7 +25,10 @@ from google.cloud.workflows_v1.services.workflows.client import WorkflowsClient
 from google.cloud.workflows_v1.types.workflows import (
     CreateWorkflowRequest,
     DeleteWorkflowRequest,
+    ExecutionHistoryLevel,
     GetWorkflowRequest,
+    ListWorkflowRevisionsRequest,
+    ListWorkflowRevisionsResponse,
     ListWorkflowsRequest,
     ListWorkflowsResponse,
     OperationMetadata,
@@ -39,9 +42,12 @@ __all__ = (
     "CreateWorkflowRequest",
     "DeleteWorkflowRequest",
     "GetWorkflowRequest",
+    "ListWorkflowRevisionsRequest",
+    "ListWorkflowRevisionsResponse",
     "ListWorkflowsRequest",
     "ListWorkflowsResponse",
     "OperationMetadata",
     "UpdateWorkflowRequest",
     "Workflow",
+    "ExecutionHistoryLevel",
 )

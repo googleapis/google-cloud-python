@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -48,6 +48,7 @@ from google.api_core import operation_async  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
 
 from google.cloud.dialogflowcx_v3beta1.services.tools import pagers
 from google.cloud.dialogflowcx_v3beta1.types import tool
@@ -85,6 +86,8 @@ class ToolsAsyncClient:
     parse_service_path = staticmethod(ToolsClient.parse_service_path)
     tool_path = staticmethod(ToolsClient.tool_path)
     parse_tool_path = staticmethod(ToolsClient.parse_tool_path)
+    tool_version_path = staticmethod(ToolsClient.tool_version_path)
+    parse_tool_version_path = staticmethod(ToolsClient.parse_tool_version_path)
     common_billing_account_path = staticmethod(ToolsClient.common_billing_account_path)
     parse_common_billing_account_path = staticmethod(
         ToolsClient.parse_common_billing_account_path
@@ -992,6 +995,588 @@ class ToolsAsyncClient:
             timeout=timeout,
             metadata=metadata,
         )
+
+    async def list_tool_versions(
+        self,
+        request: Optional[Union[tool.ListToolVersionsRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> pagers.ListToolVersionsAsyncPager:
+        r"""List versions of the specified
+        [Tool][google.cloud.dialogflow.cx.v3beta1.Tool].
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import dialogflowcx_v3beta1
+
+            async def sample_list_tool_versions():
+                # Create a client
+                client = dialogflowcx_v3beta1.ToolsAsyncClient()
+
+                # Initialize request argument(s)
+                request = dialogflowcx_v3beta1.ListToolVersionsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_tool_versions(request=request)
+
+                # Handle the response
+                async for response in page_result:
+                    print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.dialogflowcx_v3beta1.types.ListToolVersionsRequest, dict]]):
+                The request object. The request message for
+                [Tools.ListToolVersions][google.cloud.dialogflow.cx.v3beta1.Tools.ListToolVersions].
+            parent (:class:`str`):
+                Required. The parent of the tool versions. Format:
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/tools/<ToolID>``.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.dialogflowcx_v3beta1.services.tools.pagers.ListToolVersionsAsyncPager:
+                The response message for
+                   [Tools.ListToolVersions][google.cloud.dialogflow.cx.v3beta1.Tools.ListToolVersions].
+
+                Iterating over this object will yield results and
+                resolve additional pages automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [parent]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, tool.ListToolVersionsRequest):
+            request = tool.ListToolVersionsRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_tool_versions
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__aiter__` convenience method.
+        response = pagers.ListToolVersionsAsyncPager(
+            method=rpc,
+            request=request,
+            response=response,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def create_tool_version(
+        self,
+        request: Optional[Union[tool.CreateToolVersionRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        tool_version: Optional[tool.ToolVersion] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> tool.ToolVersion:
+        r"""Creates a version for the specified
+        [Tool][google.cloud.dialogflow.cx.v3beta1.Tool].
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import dialogflowcx_v3beta1
+
+            async def sample_create_tool_version():
+                # Create a client
+                client = dialogflowcx_v3beta1.ToolsAsyncClient()
+
+                # Initialize request argument(s)
+                tool_version = dialogflowcx_v3beta1.ToolVersion()
+                tool_version.display_name = "display_name_value"
+                tool_version.tool.open_api_spec.text_schema = "text_schema_value"
+                tool_version.tool.display_name = "display_name_value"
+                tool_version.tool.description = "description_value"
+
+                request = dialogflowcx_v3beta1.CreateToolVersionRequest(
+                    parent="parent_value",
+                    tool_version=tool_version,
+                )
+
+                # Make the request
+                response = await client.create_tool_version(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.dialogflowcx_v3beta1.types.CreateToolVersionRequest, dict]]):
+                The request object. The request message for
+                [Tools.CreateToolVersion][google.cloud.dialogflow.cx.v3beta1.Tools.CreateToolVersion].
+                The request message for
+                [Tools.CreateToolVersion][google.cloud.dialogflow.cx.v3beta1.Tools.CreateToolVersion].
+            parent (:class:`str`):
+                Required. The tool to create a version for. Format:
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/tools/<ToolID>``.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            tool_version (:class:`google.cloud.dialogflowcx_v3beta1.types.ToolVersion`):
+                Required. The tool version to create.
+                This corresponds to the ``tool_version`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.dialogflowcx_v3beta1.types.ToolVersion:
+                Tool version is a snapshot of the
+                tool at certain timestamp.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [parent, tool_version]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, tool.CreateToolVersionRequest):
+            request = tool.CreateToolVersionRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+        if tool_version is not None:
+            request.tool_version = tool_version
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_tool_version
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def get_tool_version(
+        self,
+        request: Optional[Union[tool.GetToolVersionRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> tool.ToolVersion:
+        r"""Retrieves the specified version of the
+        [Tool][google.cloud.dialogflow.cx.v3beta1.Tool].
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import dialogflowcx_v3beta1
+
+            async def sample_get_tool_version():
+                # Create a client
+                client = dialogflowcx_v3beta1.ToolsAsyncClient()
+
+                # Initialize request argument(s)
+                request = dialogflowcx_v3beta1.GetToolVersionRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = await client.get_tool_version(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.dialogflowcx_v3beta1.types.GetToolVersionRequest, dict]]):
+                The request object. The request message for
+                [Tools.GetToolVersion][google.cloud.dialogflow.cx.v3beta1.Tools.GetToolVersion].
+            name (:class:`str`):
+                Required. The name of the tool version. Format:
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/tools/<ToolID>/versions/<VersionID>``.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.dialogflowcx_v3beta1.types.ToolVersion:
+                Tool version is a snapshot of the
+                tool at certain timestamp.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [name]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, tool.GetToolVersionRequest):
+            request = tool.GetToolVersionRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_tool_version
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def delete_tool_version(
+        self,
+        request: Optional[Union[tool.DeleteToolVersionRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> None:
+        r"""Deletes the specified version of the
+        [Tool][google.cloud.dialogflow.cx.v3beta1.Tool].
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import dialogflowcx_v3beta1
+
+            async def sample_delete_tool_version():
+                # Create a client
+                client = dialogflowcx_v3beta1.ToolsAsyncClient()
+
+                # Initialize request argument(s)
+                request = dialogflowcx_v3beta1.DeleteToolVersionRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                await client.delete_tool_version(request=request)
+
+        Args:
+            request (Optional[Union[google.cloud.dialogflowcx_v3beta1.types.DeleteToolVersionRequest, dict]]):
+                The request object. The request message for
+                [Tools.DeleteToolVersion][google.cloud.dialogflow.cx.v3beta1.Tools.DeleteToolVersion].
+            name (:class:`str`):
+                Required. The name of the tool version to delete.
+                Format:
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/tools/<ToolID>/versions/<VersionID>``.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [name]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, tool.DeleteToolVersionRequest):
+            request = tool.DeleteToolVersionRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_tool_version
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+    async def restore_tool_version(
+        self,
+        request: Optional[Union[tool.RestoreToolVersionRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> tool.RestoreToolVersionResponse:
+        r"""Retrieves the specified version of the Tool and
+        stores it as the current tool draft, returning the tool
+        with resources updated.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import dialogflowcx_v3beta1
+
+            async def sample_restore_tool_version():
+                # Create a client
+                client = dialogflowcx_v3beta1.ToolsAsyncClient()
+
+                # Initialize request argument(s)
+                request = dialogflowcx_v3beta1.RestoreToolVersionRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = await client.restore_tool_version(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.dialogflowcx_v3beta1.types.RestoreToolVersionRequest, dict]]):
+                The request object. The request message for
+                [Tools.RestoreToolVersion][google.cloud.dialogflow.cx.v3beta1.Tools.RestoreToolVersion].
+            name (:class:`str`):
+                Required. The name of the tool version. Format:
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/tools/<ToolID>/versions/<VersionID>``.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.dialogflowcx_v3beta1.types.RestoreToolVersionResponse:
+                The response message for
+                   [Tools.RestoreToolVersion][google.cloud.dialogflow.cx.v3beta1.Tools.RestoreToolVersion].
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [name]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, tool.RestoreToolVersionRequest):
+            request = tool.RestoreToolVersionRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.restore_tool_version
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
 
     async def list_operations(
         self,

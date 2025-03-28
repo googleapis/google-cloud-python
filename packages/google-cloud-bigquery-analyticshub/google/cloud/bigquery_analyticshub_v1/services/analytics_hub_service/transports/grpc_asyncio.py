@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -699,8 +699,8 @@ class AnalyticsHubServiceGrpcAsyncIOTransport(AnalyticsHubServiceTransport):
     ]:
         r"""Return a callable for the subscribe data exchange method over gRPC.
 
-        Creates a Subscription to a Data Exchange. This is a
-        long-running operation as it will create one or more
+        Creates a Subscription to a Data Clean Room. This is
+        a long-running operation as it will create one or more
         linked datasets.
 
         Returns:

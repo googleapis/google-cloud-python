@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -72,6 +72,7 @@ from .types.datastream_resources import (
     JsonFileFormat,
     MysqlColumn,
     MysqlDatabase,
+    MysqlGtidPosition,
     MysqlLogPosition,
     MysqlProfile,
     MysqlRdbms,
@@ -97,6 +98,11 @@ from .types.datastream_resources import (
     PrivateConnection,
     PrivateConnectivity,
     Route,
+    SalesforceField,
+    SalesforceObject,
+    SalesforceOrg,
+    SalesforceProfile,
+    SalesforceSourceConfig,
     SourceConfig,
     SourceObjectIdentifier,
     SqlServerChangeTables,
@@ -162,6 +168,7 @@ __all__ = (
     "LookupStreamObjectRequest",
     "MysqlColumn",
     "MysqlDatabase",
+    "MysqlGtidPosition",
     "MysqlLogPosition",
     "MysqlProfile",
     "MysqlRdbms",
@@ -189,6 +196,11 @@ __all__ = (
     "PrivateConnectivity",
     "Route",
     "RunStreamRequest",
+    "SalesforceField",
+    "SalesforceObject",
+    "SalesforceOrg",
+    "SalesforceProfile",
+    "SalesforceSourceConfig",
     "SourceConfig",
     "SourceObjectIdentifier",
     "SqlServerChangeTables",

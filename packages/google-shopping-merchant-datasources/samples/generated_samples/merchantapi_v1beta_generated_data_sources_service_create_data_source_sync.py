@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -40,7 +40,6 @@ def sample_create_data_source():
 
     # Initialize request argument(s)
     data_source = merchant_datasources_v1beta.DataSource()
-    data_source.primary_product_data_source.channel = "PRODUCTS"
     data_source.display_name = "display_name_value"
 
     request = merchant_datasources_v1beta.CreateDataSourceRequest(

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -56,6 +56,7 @@ class UserEvent(proto.Message):
             -  ``view-home-page``: View of the home page.
             -  ``view-category-page``: View of a category page, e.g.
                Home > Men > Jeans
+            -  ``add-feedback``: Add a user feedback.
 
             Retail-related values:
 
@@ -69,6 +70,24 @@ class UserEvent(proto.Message):
                song, etc.
             -  ``media-complete``: Finished or stopped midway through a
                video, song, etc.
+
+            Custom conversion value:
+
+            -  ``conversion``: Customer defined conversion event.
+        conversion_type (str):
+            Optional. Conversion type.
+
+            Required if
+            [UserEvent.event_type][google.cloud.discoveryengine.v1.UserEvent.event_type]
+            is ``conversion``. This is a customer-defined conversion
+            name in lowercase letters or numbers separated by "-", such
+            as "watch", "good-visit" etc.
+
+            Do not set the field if
+            [UserEvent.event_type][google.cloud.discoveryengine.v1.UserEvent.event_type]
+            is not ``conversion``. This mixes the custom conversion
+            event with predefined events like ``search``, ``view-item``
+            etc.
         user_pseudo_id (str):
             Required. A unique identifier for tracking visitors.
 
@@ -273,11 +292,18 @@ class UserEvent(proto.Message):
             other ways.
         media_info (google.cloud.discoveryengine_v1.types.MediaInfo):
             Media-specific info.
+        panels (MutableSequence[google.cloud.discoveryengine_v1.types.PanelInfo]):
+            Optional. List of panels associated with this
+            event. Used for page-level impression data.
     """
 
     event_type: str = proto.Field(
         proto.STRING,
         number=1,
+    )
+    conversion_type: str = proto.Field(
+        proto.STRING,
+        number=21,
     )
     user_pseudo_id: str = proto.Field(
         proto.STRING,
@@ -365,6 +391,11 @@ class UserEvent(proto.Message):
         proto.MESSAGE,
         number=18,
         message="MediaInfo",
+    )
+    panels: MutableSequence["PanelInfo"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=22,
+        message="PanelInfo",
     )
 
 
@@ -674,6 +705,17 @@ class DocumentInfo(proto.Message):
         joined (bool):
             Output only. Whether the referenced Document
             can be found in the data store.
+        conversion_value (float):
+            Optional. The conversion value associated with this
+            Document. Must be set if
+            [UserEvent.event_type][google.cloud.discoveryengine.v1.UserEvent.event_type]
+            is "conversion".
+
+            For example, a value of 1000 signifies that 1000 seconds
+            were spent viewing a Document for the ``watch`` conversion
+            type.
+
+            This field is a member of `oneof`_ ``_conversion_value``.
     """
 
     id: str = proto.Field(
@@ -704,6 +746,11 @@ class DocumentInfo(proto.Message):
         proto.BOOL,
         number=5,
     )
+    conversion_value: float = proto.Field(
+        proto.FLOAT,
+        number=7,
+        optional=True,
+    )
 
 
 class PanelInfo(proto.Message):
@@ -730,6 +777,9 @@ class PanelInfo(proto.Message):
             is set.
 
             This field is a member of `oneof`_ ``_total_panels``.
+        documents (MutableSequence[google.cloud.discoveryengine_v1.types.DocumentInfo]):
+            Optional. The document IDs associated with
+            this panel.
     """
 
     panel_id: str = proto.Field(
@@ -749,6 +799,11 @@ class PanelInfo(proto.Message):
         proto.INT32,
         number=5,
         optional=True,
+    )
+    documents: MutableSequence["DocumentInfo"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=6,
+        message="DocumentInfo",
     )
 
 

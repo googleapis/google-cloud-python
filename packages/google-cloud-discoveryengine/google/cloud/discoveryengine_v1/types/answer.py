@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -21,6 +21,8 @@ from google.protobuf import struct_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
+from google.cloud.discoveryengine_v1.types import safety
+
 __protobuf__ = proto.module(
     package="google.cloud.discoveryengine.v1",
     manifest={
@@ -32,6 +34,8 @@ __protobuf__ = proto.module(
 class Answer(proto.Message):
     r"""Defines an answer.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         name (str):
             Immutable. Fully qualified name
@@ -40,8 +44,15 @@ class Answer(proto.Message):
             The state of the answer generation.
         answer_text (str):
             The textual answer.
+        grounding_score (float):
+            A score in the range of [0, 1] describing how grounded the
+            answer is by the reference chunks.
+
+            This field is a member of `oneof`_ ``_grounding_score``.
         citations (MutableSequence[google.cloud.discoveryengine_v1.types.Answer.Citation]):
             Citations.
+        grounding_supports (MutableSequence[google.cloud.discoveryengine_v1.types.Answer.GroundingSupport]):
+            Optional. Grounding supports.
         references (MutableSequence[google.cloud.discoveryengine_v1.types.Answer.Reference]):
             References.
         related_questions (MutableSequence[str]):
@@ -58,6 +69,8 @@ class Answer(proto.Message):
             Output only. Answer creation timestamp.
         complete_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Answer completed timestamp.
+        safety_ratings (MutableSequence[google.cloud.discoveryengine_v1.types.SafetyRating]):
+            Optional. Safety ratings.
     """
 
     class State(proto.Enum):
@@ -72,11 +85,14 @@ class Answer(proto.Message):
                 Answer generation currently failed.
             SUCCEEDED (3):
                 Answer generation has succeeded.
+            STREAMING (4):
+                Answer generation is currently in progress.
         """
         STATE_UNSPECIFIED = 0
         IN_PROGRESS = 1
         FAILED = 2
         SUCCEEDED = 3
+        STREAMING = 4
 
     class AnswerSkippedReason(proto.Enum):
         r"""An enum for answer skipped reasons.
@@ -148,9 +164,16 @@ class Answer(proto.Message):
         Attributes:
             start_index (int):
                 Index indicates the start of the segment,
-                measured in bytes (UTF-8 unicode).
+                measured in bytes (UTF-8 unicode). If there are
+                multi-byte characters,such as non-ASCII
+                characters, the index measurement is longer than
+                the string length.
             end_index (int):
                 End of the attributed segment, exclusive.
+                Measured in bytes (UTF-8 unicode). If there are
+                multi-byte characters,such as non-ASCII
+                characters, the index measurement is longer than
+                the string length.
             sources (MutableSequence[google.cloud.discoveryengine_v1.types.Answer.CitationSource]):
                 Citation sources for the attributed segment.
         """
@@ -180,6 +203,59 @@ class Answer(proto.Message):
         reference_id: str = proto.Field(
             proto.STRING,
             number=1,
+        )
+
+    class GroundingSupport(proto.Message):
+        r"""Grounding support for a claim in ``answer_text``.
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+        Attributes:
+            start_index (int):
+                Required. Index indicates the start of the
+                claim, measured in bytes (UTF-8 unicode).
+            end_index (int):
+                Required. End of the claim, exclusive.
+            grounding_score (float):
+                A score in the range of [0, 1] describing how grounded is a
+                specific claim by the references. Higher value means that
+                the claim is better supported by the reference chunks.
+
+                This field is a member of `oneof`_ ``_grounding_score``.
+            grounding_check_required (bool):
+                Indicates that this claim required grounding check. When the
+                system decided this claim didn't require
+                attribution/grounding check, this field is set to false. In
+                that case, no grounding check was done for the claim and
+                therefore ``grounding_score``, ``sources`` is not returned.
+
+                This field is a member of `oneof`_ ``_grounding_check_required``.
+            sources (MutableSequence[google.cloud.discoveryengine_v1.types.Answer.CitationSource]):
+                Optional. Citation sources for the claim.
+        """
+
+        start_index: int = proto.Field(
+            proto.INT64,
+            number=1,
+        )
+        end_index: int = proto.Field(
+            proto.INT64,
+            number=2,
+        )
+        grounding_score: float = proto.Field(
+            proto.DOUBLE,
+            number=3,
+            optional=True,
+        )
+        grounding_check_required: bool = proto.Field(
+            proto.BOOL,
+            number=4,
+            optional=True,
+        )
+        sources: MutableSequence["Answer.CitationSource"] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=5,
+            message="Answer.CitationSource",
         )
 
     class Reference(proto.Message):
@@ -378,6 +454,10 @@ class Answer(proto.Message):
                     Document resource name.
                 struct_data (google.protobuf.struct_pb2.Struct):
                     Structured search data.
+                title (str):
+                    Output only. The title of the document.
+                uri (str):
+                    Output only. The URI of the document.
             """
 
             document: str = proto.Field(
@@ -388,6 +468,14 @@ class Answer(proto.Message):
                 proto.MESSAGE,
                 number=2,
                 message=struct_pb2.Struct,
+            )
+            title: str = proto.Field(
+                proto.STRING,
+                number=3,
+            )
+            uri: str = proto.Field(
+                proto.STRING,
+                number=4,
             )
 
         unstructured_document_info: "Answer.Reference.UnstructuredDocumentInfo" = (
@@ -705,10 +793,20 @@ class Answer(proto.Message):
         proto.STRING,
         number=3,
     )
+    grounding_score: float = proto.Field(
+        proto.DOUBLE,
+        number=12,
+        optional=True,
+    )
     citations: MutableSequence[Citation] = proto.RepeatedField(
         proto.MESSAGE,
         number=4,
         message=Citation,
+    )
+    grounding_supports: MutableSequence[GroundingSupport] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=13,
+        message=GroundingSupport,
     )
     references: MutableSequence[Reference] = proto.RepeatedField(
         proto.MESSAGE,
@@ -743,6 +841,11 @@ class Answer(proto.Message):
         proto.MESSAGE,
         number=9,
         message=timestamp_pb2.Timestamp,
+    )
+    safety_ratings: MutableSequence[safety.SafetyRating] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=14,
+        message=safety.SafetyRating,
     )
 
 

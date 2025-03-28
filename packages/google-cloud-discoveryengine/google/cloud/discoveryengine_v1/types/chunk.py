@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -51,7 +51,7 @@ class Chunk(proto.Message):
             Output only. Represents the relevance score based on
             similarity. Higher score indicates higher chunk relevance.
             The score is in range [-1.0, 1.0]. Only populated on
-            [SearchService.SearchResponse][].
+            [SearchResponse][google.cloud.discoveryengine.v1.SearchResponse].
 
             This field is a member of `oneof`_ ``_relevance_score``.
         document_metadata (google.cloud.discoveryengine_v1.types.Chunk.DocumentMetadata):

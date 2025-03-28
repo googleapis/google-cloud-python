@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -1237,7 +1237,7 @@ class DatabaseTableSpec(proto.Message):
             table and present only in the Dataplex table
             entries.
         database_view_spec (google.cloud.datacatalog_v1.types.DatabaseTableSpec.DatabaseViewSpec):
-            Spec what aplies to tables that are actually
+            Spec what applies to tables that are actually
             views. Not set for "real" tables.
     """
 
@@ -1889,12 +1889,12 @@ class FeatureOnlineStoreSpec(proto.Message):
 
     Attributes:
         storage_type (google.cloud.datacatalog_v1.types.FeatureOnlineStoreSpec.StorageType):
-            Output only. Type of underelaying storage for
+            Output only. Type of underlying storage for
             the FeatureOnlineStore.
     """
 
     class StorageType(proto.Enum):
-        r"""Type of underlaying storage type.
+        r"""Type of underlying storage type.
 
         Values:
             STORAGE_TYPE_UNSPECIFIED (0):
@@ -1902,7 +1902,7 @@ class FeatureOnlineStoreSpec(proto.Message):
             BIGTABLE (1):
                 Underlsying storgae is Bigtable.
             OPTIMIZED (2):
-                Underlaying is optimized online server
+                Underlying is optimized online server
                 (Lightning).
         """
         STORAGE_TYPE_UNSPECIFIED = 0

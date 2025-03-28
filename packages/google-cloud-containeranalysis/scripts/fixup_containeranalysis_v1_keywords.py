@@ -1,6 +1,6 @@
 #! /usr/bin/env python3
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -39,6 +39,7 @@ def partition(
 class containeranalysisCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
+        'export_sbom': ('name', 'cloud_storage_location', ),
         'get_iam_policy': ('resource', 'options', ),
         'get_vulnerability_occurrences_summary': ('parent', 'filter', ),
         'set_iam_policy': ('resource', 'policy', 'update_mask', ),

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,14 +19,18 @@ from typing import Dict, Type
 from .base import DataplexServiceTransport
 from .grpc import DataplexServiceGrpcTransport
 from .grpc_asyncio import DataplexServiceGrpcAsyncIOTransport
+from .rest import DataplexServiceRestInterceptor, DataplexServiceRestTransport
 
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[DataplexServiceTransport]]
 _transport_registry["grpc"] = DataplexServiceGrpcTransport
 _transport_registry["grpc_asyncio"] = DataplexServiceGrpcAsyncIOTransport
+_transport_registry["rest"] = DataplexServiceRestTransport
 
 __all__ = (
     "DataplexServiceTransport",
     "DataplexServiceGrpcTransport",
     "DataplexServiceGrpcAsyncIOTransport",
+    "DataplexServiceRestTransport",
+    "DataplexServiceRestInterceptor",
 )

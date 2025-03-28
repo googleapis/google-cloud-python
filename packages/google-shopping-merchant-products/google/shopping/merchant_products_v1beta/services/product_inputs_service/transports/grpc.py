@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -356,6 +356,38 @@ class ProductInputsServiceGrpcTransport(ProductInputsServiceTransport):
                 response_deserializer=productinputs.ProductInput.deserialize,
             )
         return self._stubs["insert_product_input"]
+
+    @property
+    def update_product_input(
+        self,
+    ) -> Callable[
+        [productinputs.UpdateProductInputRequest], productinputs.ProductInput
+    ]:
+        r"""Return a callable for the update product input method over gRPC.
+
+        Updates the existing product input in your Merchant
+        Center account.
+        After inserting, updating, or deleting a product input,
+        it may take several minutes before the processed product
+        can be retrieved.
+
+        Returns:
+            Callable[[~.UpdateProductInputRequest],
+                    ~.ProductInput]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_product_input" not in self._stubs:
+            self._stubs["update_product_input"] = self._logged_channel.unary_unary(
+                "/google.shopping.merchant.products.v1beta.ProductInputsService/UpdateProductInput",
+                request_serializer=productinputs.UpdateProductInputRequest.serialize,
+                response_deserializer=productinputs.ProductInput.deserialize,
+            )
+        return self._stubs["update_product_input"]
 
     @property
     def delete_product_input(

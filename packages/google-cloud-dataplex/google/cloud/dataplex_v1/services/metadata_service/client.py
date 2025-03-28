@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -72,6 +72,7 @@ from google.cloud.dataplex_v1.types import metadata_
 from .transports.base import DEFAULT_CLIENT_INFO, MetadataServiceTransport
 from .transports.grpc import MetadataServiceGrpcTransport
 from .transports.grpc_asyncio import MetadataServiceGrpcAsyncIOTransport
+from .transports.rest import MetadataServiceRestTransport
 
 
 class MetadataServiceClientMeta(type):
@@ -87,6 +88,7 @@ class MetadataServiceClientMeta(type):
     )  # type: Dict[str, Type[MetadataServiceTransport]]
     _transport_registry["grpc"] = MetadataServiceGrpcTransport
     _transport_registry["grpc_asyncio"] = MetadataServiceGrpcAsyncIOTransport
+    _transport_registry["rest"] = MetadataServiceRestTransport
 
     def get_transport_class(
         cls,

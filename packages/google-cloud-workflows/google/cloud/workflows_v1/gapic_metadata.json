@@ -25,6 +25,11 @@
                 "get_workflow"
               ]
             },
+            "ListWorkflowRevisions": {
+              "methods": [
+                "list_workflow_revisions"
+              ]
+            },
             "ListWorkflows": {
               "methods": [
                 "list_workflows"
@@ -55,6 +60,11 @@
                 "get_workflow"
               ]
             },
+            "ListWorkflowRevisions": {
+              "methods": [
+                "list_workflow_revisions"
+              ]
+            },
             "ListWorkflows": {
               "methods": [
                 "list_workflows"
@@ -83,6 +93,11 @@
             "GetWorkflow": {
               "methods": [
                 "get_workflow"
+              ]
+            },
+            "ListWorkflowRevisions": {
+              "methods": [
+                "list_workflow_revisions"
               ]
             },
             "ListWorkflows": {

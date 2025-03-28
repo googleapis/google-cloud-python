@@ -253,6 +253,11 @@
                 "list_sessions"
               ]
             },
+            "StreamAnswerQuery": {
+              "methods": [
+                "stream_answer_query"
+              ]
+            },
             "UpdateConversation": {
               "methods": [
                 "update_conversation"
@@ -323,6 +328,11 @@
                 "list_sessions"
               ]
             },
+            "StreamAnswerQuery": {
+              "methods": [
+                "stream_answer_query"
+              ]
+            },
             "UpdateConversation": {
               "methods": [
                 "update_conversation"
@@ -391,6 +401,11 @@
             "ListSessions": {
               "methods": [
                 "list_sessions"
+              ]
+            },
+            "StreamAnswerQuery": {
+              "methods": [
+                "stream_answer_query"
               ]
             },
             "UpdateConversation": {
@@ -1092,6 +1107,40 @@
         }
       }
     },
+    "ServingConfigService": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "ServingConfigServiceClient",
+          "rpcs": {
+            "UpdateServingConfig": {
+              "methods": [
+                "update_serving_config"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "ServingConfigServiceAsyncClient",
+          "rpcs": {
+            "UpdateServingConfig": {
+              "methods": [
+                "update_serving_config"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "ServingConfigServiceClient",
+          "rpcs": {
+            "UpdateServingConfig": {
+              "methods": [
+                "update_serving_config"
+              ]
+            }
+          }
+        }
+      }
+    },
     "SiteSearchEngineService": {
       "clients": {
         "grpc": {
@@ -1107,9 +1156,19 @@
                 "batch_verify_target_sites"
               ]
             },
+            "CreateSitemap": {
+              "methods": [
+                "create_sitemap"
+              ]
+            },
             "CreateTargetSite": {
               "methods": [
                 "create_target_site"
+              ]
+            },
+            "DeleteSitemap": {
+              "methods": [
+                "delete_sitemap"
               ]
             },
             "DeleteTargetSite": {
@@ -1130,6 +1189,11 @@
             "FetchDomainVerificationStatus": {
               "methods": [
                 "fetch_domain_verification_status"
+              ]
+            },
+            "FetchSitemaps": {
+              "methods": [
+                "fetch_sitemaps"
               ]
             },
             "GetSiteSearchEngine": {
@@ -1172,9 +1236,19 @@
                 "batch_verify_target_sites"
               ]
             },
+            "CreateSitemap": {
+              "methods": [
+                "create_sitemap"
+              ]
+            },
             "CreateTargetSite": {
               "methods": [
                 "create_target_site"
+              ]
+            },
+            "DeleteSitemap": {
+              "methods": [
+                "delete_sitemap"
               ]
             },
             "DeleteTargetSite": {
@@ -1195,6 +1269,11 @@
             "FetchDomainVerificationStatus": {
               "methods": [
                 "fetch_domain_verification_status"
+              ]
+            },
+            "FetchSitemaps": {
+              "methods": [
+                "fetch_sitemaps"
               ]
             },
             "GetSiteSearchEngine": {
@@ -1237,9 +1316,19 @@
                 "batch_verify_target_sites"
               ]
             },
+            "CreateSitemap": {
+              "methods": [
+                "create_sitemap"
+              ]
+            },
             "CreateTargetSite": {
               "methods": [
                 "create_target_site"
+              ]
+            },
+            "DeleteSitemap": {
+              "methods": [
+                "delete_sitemap"
               ]
             },
             "DeleteTargetSite": {
@@ -1260,6 +1349,11 @@
             "FetchDomainVerificationStatus": {
               "methods": [
                 "fetch_domain_verification_status"
+              ]
+            },
+            "FetchSitemaps": {
+              "methods": [
+                "fetch_sitemaps"
               ]
             },
             "GetSiteSearchEngine": {

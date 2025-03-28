@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -2355,6 +2355,14 @@ class _BaseDlpServiceRestTransport(DlpServiceTransport):
                 {
                     "method": "get",
                     "uri": "/v2/{parent=locations/*}/infoTypes",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v2/{parent=projects/*/locations/*}/infoTypes",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v2/{parent=organizations/*/locations/*}/infoTypes",
                 },
             ]
             return http_options

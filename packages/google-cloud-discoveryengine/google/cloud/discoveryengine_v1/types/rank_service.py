@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -51,7 +51,10 @@ class RankingRecord(proto.Message):
             should be set otherwise an INVALID_ARGUMENT error is thrown.
         score (float):
             The score of this record based on the given
-            query and selected model.
+            query and selected model. The score will be
+            rounded to 2 decimal places. If the score is
+            close to 0, it will be rounded to 0.0001 to
+            avoid returning unset.
     """
 
     id: str = proto.Field(
@@ -86,7 +89,7 @@ class RankRequest(proto.Message):
             The identifier of the model to use. It is one of:
 
             -  ``semantic-ranker-512@latest``: Semantic ranking model
-               with maxiumn input token size 512.
+               with maximum input token size 512.
 
             It is set to ``semantic-ranker-512@latest`` by default if
             unspecified.

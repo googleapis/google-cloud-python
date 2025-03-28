@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -40,7 +40,6 @@ def sample_insert_product_input():
 
     # Initialize request argument(s)
     product_input = merchant_products_v1beta.ProductInput()
-    product_input.channel = "LOCAL"
     product_input.offer_id = "offer_id_value"
     product_input.content_language = "content_language_value"
     product_input.feed_label = "feed_label_value"

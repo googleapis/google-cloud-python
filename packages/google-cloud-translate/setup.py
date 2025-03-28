@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -46,7 +46,7 @@ dependencies = [
     "google-cloud-core >= 1.4.4, <3.0.0",
     "proto-plus >= 1.22.3, <2.0.0",
     "proto-plus >= 1.25.0, <2.0.0; python_version >= '3.13'",
-    "protobuf>=3.20.2,<6.0.0,!=4.21.0,!=4.21.1,!=4.21.2,!=4.21.3,!=4.21.4,!=4.21.5",
+    "protobuf>=3.20.2,<7.0.0,!=4.21.0,!=4.21.1,!=4.21.2,!=4.21.3,!=4.21.4,!=4.21.5",
     "grpc-google-iam-v1 >= 0.14.0, <1.0.0",
 ]
 extras = {}

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -1643,7 +1643,7 @@ class EnvironmentsAsyncClient:
         unit that runs a single Composer component.
 
         This method is supported for Cloud Composer environments in
-        versions composer-3.\ *.*-airflow-*.*.\* and newer.
+        versions composer-2.\ *.*-airflow-*.*.\* and newer.
 
         .. code-block:: python
 
@@ -1776,7 +1776,7 @@ class EnvironmentsAsyncClient:
         r"""Creates a user workloads Secret.
 
         This method is supported for Cloud Composer environments in
-        versions composer-3.\ *.*-airflow-*.*.\* and newer.
+        versions composer-3-airflow-\ *.*.\ *-build.* and newer.
 
         .. code-block:: python
 
@@ -1903,7 +1903,7 @@ class EnvironmentsAsyncClient:
         field in the response are cleared.
 
         This method is supported for Cloud Composer environments in
-        versions composer-3.\ *.*-airflow-*.*.\* and newer.
+        versions composer-3-airflow-\ *.*.\ *-build.* and newer.
 
         .. code-block:: python
 
@@ -2020,7 +2020,7 @@ class EnvironmentsAsyncClient:
         r"""Lists user workloads Secrets.
 
         This method is supported for Cloud Composer environments in
-        versions composer-3.\ *.*-airflow-*.*.\* and newer.
+        versions composer-3-airflow-\ *.*.\ *-build.* and newer.
 
         .. code-block:: python
 
@@ -2151,7 +2151,7 @@ class EnvironmentsAsyncClient:
         r"""Updates a user workloads Secret.
 
         This method is supported for Cloud Composer environments in
-        versions composer-3.\ *.*-airflow-*.*.\* and newer.
+        versions composer-3-airflow-\ *.*.\ *-build.* and newer.
 
         .. code-block:: python
 
@@ -2268,7 +2268,7 @@ class EnvironmentsAsyncClient:
         r"""Deletes a user workloads Secret.
 
         This method is supported for Cloud Composer environments in
-        versions composer-3.\ *.*-airflow-*.*.\* and newer.
+        versions composer-3-airflow-\ *.*.\ *-build.* and newer.
 
         .. code-block:: python
 
@@ -2373,7 +2373,7 @@ class EnvironmentsAsyncClient:
         r"""Creates a user workloads ConfigMap.
 
         This method is supported for Cloud Composer environments in
-        versions composer-3.\ *.*-airflow-*.*.\* and newer.
+        versions composer-3-airflow-\ *.*.\ *-build.* and newer.
 
         .. code-block:: python
 
@@ -2500,7 +2500,7 @@ class EnvironmentsAsyncClient:
         r"""Gets an existing user workloads ConfigMap.
 
         This method is supported for Cloud Composer environments in
-        versions composer-3.\ *.*-airflow-*.*.\* and newer.
+        versions composer-3-airflow-\ *.*.\ *-build.* and newer.
 
         .. code-block:: python
 
@@ -2617,7 +2617,7 @@ class EnvironmentsAsyncClient:
         r"""Lists user workloads ConfigMaps.
 
         This method is supported for Cloud Composer environments in
-        versions composer-3.\ *.*-airflow-*.*.\* and newer.
+        versions composer-3-airflow-\ *.*.\ *-build.* and newer.
 
         .. code-block:: python
 
@@ -2749,7 +2749,7 @@ class EnvironmentsAsyncClient:
         r"""Updates a user workloads ConfigMap.
 
         This method is supported for Cloud Composer environments in
-        versions composer-3.\ *.*-airflow-*.*.\* and newer.
+        versions composer-3-airflow-\ *.*.\ *-build.* and newer.
 
         .. code-block:: python
 
@@ -2872,7 +2872,7 @@ class EnvironmentsAsyncClient:
         r"""Deletes a user workloads ConfigMap.
 
         This method is supported for Cloud Composer environments in
-        versions composer-3.\ *.*-airflow-*.*.\* and newer.
+        versions composer-3-airflow-\ *.*.\ *-build.* and newer.
 
         .. code-block:: python
 

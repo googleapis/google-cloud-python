@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -2030,6 +2030,9 @@ class ImportItem(proto.Message):
             The ``update_mask`` field is ignored when an entry is
             created or re-created.
 
+            In an aspect-only metadata job (when entry sync mode is
+            ``NONE``), set this value to ``aspects``.
+
             Dataplex also determines which entries and aspects to modify
             by comparing the values and timestamps that you provide in
             the metadata import file with the values and timestamps that
@@ -2043,19 +2046,19 @@ class ImportItem(proto.Message):
                the entry.
             -  ``{aspect_type_reference}@{path}``: matches aspects that
                belong to the specified aspect type and path.
-            -  ``<aspect_type_reference>@*`` : matches aspects of the
+            -  ``{aspect_type_reference}@*`` : matches aspects of the
                given type for all paths.
             -  ``*@path`` : matches aspects of all types on the given
-               path. Replace ``{aspect_type_reference}`` with a
-               reference to the aspect type, in the format
-               ``{project_id_or_number}.{location_id}.{aspect_type_id}``.
+               path.
 
-            If you leave this field empty, it is treated as specifying
-            exactly those aspects that are present within the specified
-            entry.
+            Replace ``{aspect_type_reference}`` with a reference to the
+            aspect type, in the format
+            ``{project_id_or_number}.{location_id}.{aspect_type_id}``.
 
-            In ``FULL`` entry sync mode, Dataplex implicitly adds the
-            keys for all of the required aspects of an entry.
+            In ``FULL`` entry sync mode, if you leave this field empty,
+            it is treated as specifying exactly those aspects that are
+            present within the specified entry. Dataplex implicitly adds
+            the keys for all of the required aspects of an entry.
     """
 
     entry: "Entry" = proto.Field(
@@ -2334,7 +2337,16 @@ class MetadataJob(proto.Message):
         )
 
     class ImportJobSpec(proto.Message):
-        r"""Job specification for a metadata import job
+        r"""Job specification for a metadata import job.
+
+        You can run the following kinds of metadata import jobs:
+
+        -  Full sync of entries with incremental import of their aspects.
+           Supported for custom entries.
+        -  Incremental import of aspects only. Supported for aspects that
+           belong to custom entries and system entries. For custom entries,
+           you can modify both optional aspects and required aspects. For
+           system entries, you can modify optional aspects.
 
         Attributes:
             source_storage_uri (str):
@@ -2366,16 +2378,9 @@ class MetadataJob(proto.Message):
                 Required. A boundary on the scope of impact
                 that the metadata import job can have.
             entry_sync_mode (google.cloud.dataplex_v1.types.MetadataJob.ImportJobSpec.SyncMode):
-                Required. The sync mode for entries. Only ``FULL`` mode is
-                supported for entries. All entries in the job's scope are
-                modified. If an entry exists in Dataplex but isn't included
-                in the metadata import file, the entry is deleted when you
-                run the metadata job.
+                Required. The sync mode for entries.
             aspect_sync_mode (google.cloud.dataplex_v1.types.MetadataJob.ImportJobSpec.SyncMode):
-                Required. The sync mode for aspects. Only ``INCREMENTAL``
-                mode is supported for aspects. An aspect is modified only if
-                the metadata import file includes a reference to the aspect
-                in the ``update_mask`` field and the ``aspect_keys`` field.
+                Required. The sync mode for aspects.
             log_level (google.cloud.dataplex_v1.types.MetadataJob.ImportJobSpec.LogLevel):
                 Optional. The level of logs to write to Cloud Logging for
                 this job.
@@ -2390,8 +2395,9 @@ class MetadataJob(proto.Message):
         """
 
         class SyncMode(proto.Enum):
-            r"""Specifies how the entries and aspects in a metadata job are
-            updated.
+            r"""Specifies how the entries and aspects in a metadata job are updated.
+            For more information, see `Sync
+            mode <https://cloud.google.com/dataplex/docs/import-metadata#sync-mode>`__.
 
             Values:
                 SYNC_MODE_UNSPECIFIED (0):
@@ -2403,16 +2409,22 @@ class MetadataJob(proto.Message):
                     resource is deleted when you run the metadata
                     job. Use this mode to perform a full sync of the
                     set of entries in the job scope.
+
+                    This sync mode is supported for entries.
                 INCREMENTAL (2):
-                    Only the entries and aspects that are
-                    explicitly included in the metadata import file
-                    are modified. Use this mode to modify a subset
-                    of resources while leaving unreferenced
-                    resources unchanged.
+                    Only the resources that are explicitly
+                    included in the metadata import file are
+                    modified. Use this mode to modify a subset of
+                    resources while leaving unreferenced resources
+                    unchanged.
+
+                    This sync mode is supported for aspects.
                 NONE (3):
-                    If entry sync mode is NONE, then the entry-specific fields
-                    (apart from aspects) are not modified and the aspects are
-                    modified according to the aspect_sync_mode
+                    If entry sync mode is ``NONE``, then aspects are modified
+                    according to the aspect sync mode. Other metadata that
+                    belongs to entries in the job's scope isn't modified.
+
+                    This sync mode is supported for entries.
             """
             SYNC_MODE_UNSPECIFIED = 0
             FULL = 1
@@ -2457,8 +2469,8 @@ class MetadataJob(proto.Message):
                     Required. The entry group that is in scope for the import
                     job, specified as a relative resource name in the format
                     ``projects/{project_number_or_id}/locations/{location_id}/entryGroups/{entry_group_id}``.
-                    Only entries that belong to the specified entry group are
-                    affected by the job.
+                    Only entries and aspects that belong to the specified entry
+                    group are affected by the job.
 
                     Must contain exactly one element. The entry group and the
                     job must be in the same location.
@@ -2466,8 +2478,8 @@ class MetadataJob(proto.Message):
                     Required. The entry types that are in scope for the import
                     job, specified as relative resource names in the format
                     ``projects/{project_number_or_id}/locations/{location_id}/entryTypes/{entry_type_id}``.
-                    The job modifies only the entries that belong to these entry
-                    types.
+                    The job modifies only the entries and aspects that belong to
+                    these entry types.
 
                     If the metadata import file attempts to modify an entry
                     whose type isn't included in this list, the import job is
@@ -2481,6 +2493,9 @@ class MetadataJob(proto.Message):
                     ``projects/{project_number_or_id}/locations/{location_id}/aspectTypes/{aspect_type_id}``.
                     The job modifies only the aspects that belong to these
                     aspect types.
+
+                    This field is required when creating an aspect-only import
+                    job.
 
                     If the metadata import file attempts to modify an aspect
                     whose type isn't included in this list, the import job is

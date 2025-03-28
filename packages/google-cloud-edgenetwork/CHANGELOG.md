@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.16](https://github.com/googleapis/google-cloud-python/compare/google-cloud-edgenetwork-v0.1.15...google-cloud-edgenetwork-v0.1.16) (2025-03-15)
+
+
+### Bug Fixes
+
+* [Many APIs] Allow Protobuf 6.x ([e06ee32](https://github.com/googleapis/google-cloud-python/commit/e06ee325de4125cdfcaf040a77dc9ccc82843260))
+
 ## [0.1.15](https://github.com/googleapis/google-cloud-python/compare/google-cloud-edgenetwork-v0.1.14...google-cloud-edgenetwork-v0.1.15) (2025-02-12)
 
 

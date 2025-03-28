@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -165,6 +165,31 @@ class ToolsTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.list_tool_versions: gapic_v1.method.wrap_method(
+                self.list_tool_versions,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_tool_version: gapic_v1.method.wrap_method(
+                self.create_tool_version,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_tool_version: gapic_v1.method.wrap_method(
+                self.get_tool_version,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_tool_version: gapic_v1.method.wrap_method(
+                self.delete_tool_version,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.restore_tool_version: gapic_v1.method.wrap_method(
+                self.restore_tool_version,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.get_location: gapic_v1.method.wrap_method(
                 self.get_location,
                 default_timeout=None,
@@ -251,6 +276,53 @@ class ToolsTransport(abc.ABC):
         self,
     ) -> Callable[
         [tool.DeleteToolRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_tool_versions(
+        self,
+    ) -> Callable[
+        [tool.ListToolVersionsRequest],
+        Union[tool.ListToolVersionsResponse, Awaitable[tool.ListToolVersionsResponse]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_tool_version(
+        self,
+    ) -> Callable[
+        [tool.CreateToolVersionRequest],
+        Union[tool.ToolVersion, Awaitable[tool.ToolVersion]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_tool_version(
+        self,
+    ) -> Callable[
+        [tool.GetToolVersionRequest],
+        Union[tool.ToolVersion, Awaitable[tool.ToolVersion]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_tool_version(
+        self,
+    ) -> Callable[
+        [tool.DeleteToolVersionRequest],
+        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def restore_tool_version(
+        self,
+    ) -> Callable[
+        [tool.RestoreToolVersionRequest],
+        Union[
+            tool.RestoreToolVersionResponse, Awaitable[tool.RestoreToolVersionResponse]
+        ],
     ]:
         raise NotImplementedError()
 

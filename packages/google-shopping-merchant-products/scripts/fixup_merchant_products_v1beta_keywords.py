@@ -1,6 +1,6 @@
 #! /usr/bin/env python3
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -43,6 +43,7 @@ class merchant_productsCallTransformer(cst.CSTTransformer):
         'get_product': ('name', ),
         'insert_product_input': ('parent', 'product_input', 'data_source', ),
         'list_products': ('parent', 'page_size', 'page_token', ),
+        'update_product_input': ('product_input', 'data_source', 'update_mask', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:

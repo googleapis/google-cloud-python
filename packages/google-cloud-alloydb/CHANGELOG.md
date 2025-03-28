@@ -1,5 +1,32 @@
 # Changelog
 
+## [0.4.5](https://github.com/googleapis/google-cloud-python/compare/google-cloud-alloydb-v0.4.4...google-cloud-alloydb-v0.4.5) (2025-03-19)
+
+
+### Features
+
+* **v1beta:** A new message `ExportClusterRequest` is added ([923f33e](https://github.com/googleapis/google-cloud-python/commit/923f33e2b49d602ee66cf4914bf8ce6cb6ca0e7f))
+* **v1beta:** A new message `ExportClusterResponse` is added ([923f33e](https://github.com/googleapis/google-cloud-python/commit/923f33e2b49d602ee66cf4914bf8ce6cb6ca0e7f))
+* **v1beta:** A new message `GcsDestination` is added ([923f33e](https://github.com/googleapis/google-cloud-python/commit/923f33e2b49d602ee66cf4914bf8ce6cb6ca0e7f))
+* **v1beta:** A new method `ExportCluster` is added to service `AlloyDBAdmin` ([923f33e](https://github.com/googleapis/google-cloud-python/commit/923f33e2b49d602ee66cf4914bf8ce6cb6ca0e7f))
+
+
+### Documentation
+
+* **v1beta:** A comment for field `database_flags` in message `.google.cloud.alloydb.v1beta.Instance` is changed ([923f33e](https://github.com/googleapis/google-cloud-python/commit/923f33e2b49d602ee66cf4914bf8ce6cb6ca0e7f))
+* **v1beta:** A comment for field `id` in message `.google.cloud.alloydb.v1beta.Instance` is changed ([923f33e](https://github.com/googleapis/google-cloud-python/commit/923f33e2b49d602ee66cf4914bf8ce6cb6ca0e7f))
+* **v1beta:** A comment for field `ip` in message `.google.cloud.alloydb.v1beta.Instance` is changed ([923f33e](https://github.com/googleapis/google-cloud-python/commit/923f33e2b49d602ee66cf4914bf8ce6cb6ca0e7f))
+* **v1beta:** A comment for field `requested_cancellation` in message `.google.cloud.alloydb.v1beta.OperationMetadata` is changed ([923f33e](https://github.com/googleapis/google-cloud-python/commit/923f33e2b49d602ee66cf4914bf8ce6cb6ca0e7f))
+* **v1beta:** A comment for field `state` in message `.google.cloud.alloydb.v1beta.Instance` is changed ([923f33e](https://github.com/googleapis/google-cloud-python/commit/923f33e2b49d602ee66cf4914bf8ce6cb6ca0e7f))
+* **v1beta:** A comment for field `zone_id` in message `.google.cloud.alloydb.v1beta.Instance` is changed ([923f33e](https://github.com/googleapis/google-cloud-python/commit/923f33e2b49d602ee66cf4914bf8ce6cb6ca0e7f))
+
+## [0.4.4](https://github.com/googleapis/google-cloud-python/compare/google-cloud-alloydb-v0.4.3...google-cloud-alloydb-v0.4.4) (2025-03-15)
+
+
+### Bug Fixes
+
+* [Many APIs] Allow Protobuf 6.x ([a1b9294](https://github.com/googleapis/google-cloud-python/commit/a1b9294d0bf6e27c2a951d6df7faf7807dc5420b))
+
 ## [0.4.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-alloydb-v0.4.2...google-cloud-alloydb-v0.4.3) (2025-02-18)
 
 

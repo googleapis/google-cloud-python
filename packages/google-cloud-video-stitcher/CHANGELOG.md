@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.7.17](https://github.com/googleapis/google-cloud-python/compare/google-cloud-video-stitcher-v0.7.16...google-cloud-video-stitcher-v0.7.17) (2025-03-15)
+
+
+### Bug Fixes
+
+* [Many APIs] Allow Protobuf 6.x ([4757dae](https://github.com/googleapis/google-cloud-python/commit/4757daede978618382ba46f4aa91bb9cfd9b937b))
+* remove setup.cfg configuration for creating universal wheels ([#13659](https://github.com/googleapis/google-cloud-python/issues/13659)) ([59bfd42](https://github.com/googleapis/google-cloud-python/commit/59bfd42cf8a2eaeed696a7504890bce5aae815ce))
+
 ## [0.7.16](https://github.com/googleapis/google-cloud-python/compare/google-cloud-video-stitcher-v0.7.15...google-cloud-video-stitcher-v0.7.16) (2025-02-12)
 
 

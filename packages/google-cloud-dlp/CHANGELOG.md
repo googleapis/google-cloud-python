@@ -4,6 +4,27 @@
 
 [1]: https://pypi.org/project/google-cloud-dlp/#history
 
+## [3.29.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dlp-v3.28.1...google-cloud-dlp-v3.29.0) (2025-03-19)
+
+
+### Features
+
+* add sample findings for data profiles ([7a7e679](https://github.com/googleapis/google-cloud-python/commit/7a7e6795deed2761892174e15992d808225c657f))
+* list tags on resources for data profiles ([7a7e679](https://github.com/googleapis/google-cloud-python/commit/7a7e6795deed2761892174e15992d808225c657f))
+
+
+### Documentation
+
+* updated documentation for various fields and messages ([7a7e679](https://github.com/googleapis/google-cloud-python/commit/7a7e6795deed2761892174e15992d808225c657f))
+
+## [3.28.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dlp-v3.28.0...google-cloud-dlp-v3.28.1) (2025-03-15)
+
+
+### Bug Fixes
+
+* [Many APIs] Allow Protobuf 6.x ([feb5353](https://github.com/googleapis/google-cloud-python/commit/feb53532240bb70a94b359b519f0f41f95875a33))
+* remove setup.cfg configuration for creating universal wheels ([#13659](https://github.com/googleapis/google-cloud-python/issues/13659)) ([59bfd42](https://github.com/googleapis/google-cloud-python/commit/59bfd42cf8a2eaeed696a7504890bce5aae815ce))
+
 ## [3.28.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dlp-v3.27.0...google-cloud-dlp-v3.28.0) (2025-02-24)
 
 

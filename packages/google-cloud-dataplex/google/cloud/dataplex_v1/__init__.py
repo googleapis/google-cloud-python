@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -138,6 +138,7 @@ from .types.datascans import (
     UpdateDataScanRequest,
 )
 from .types.logs import (
+    BusinessGlossaryEvent,
     DataQualityScanRuleResult,
     DataScanEvent,
     DiscoveryEvent,
@@ -227,6 +228,7 @@ __all__ = (
     "AspectType",
     "Asset",
     "AssetStatus",
+    "BusinessGlossaryEvent",
     "CancelJobRequest",
     "CancelMetadataJobRequest",
     "CatalogServiceClient",

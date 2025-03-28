@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -274,7 +274,7 @@ class _BaseManagedKafkaRestTransport(ManagedKafkaTransport):
             http_options: List[Dict[str, str]] = [
                 {
                     "method": "delete",
-                    "uri": "/v1/{name=projects/*/locations/*/clusters/*/consumerGroups/*}",
+                    "uri": "/v1/{name=projects/*/locations/*/clusters/*/consumerGroups/**}",
                 },
             ]
             return http_options
@@ -415,7 +415,7 @@ class _BaseManagedKafkaRestTransport(ManagedKafkaTransport):
             http_options: List[Dict[str, str]] = [
                 {
                     "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*/clusters/*/consumerGroups/*}",
+                    "uri": "/v1/{name=projects/*/locations/*/clusters/*/consumerGroups/**}",
                 },
             ]
             return http_options
@@ -711,7 +711,7 @@ class _BaseManagedKafkaRestTransport(ManagedKafkaTransport):
             http_options: List[Dict[str, str]] = [
                 {
                     "method": "patch",
-                    "uri": "/v1/{consumer_group.name=projects/*/locations/*/clusters/*/consumerGroups/*}",
+                    "uri": "/v1/{consumer_group.name=projects/*/locations/*/clusters/*/consumerGroups/**}",
                     "body": "consumer_group",
                 },
             ]

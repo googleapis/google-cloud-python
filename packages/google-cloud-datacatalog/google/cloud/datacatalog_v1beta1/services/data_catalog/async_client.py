@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -28,6 +28,7 @@ from typing import (
     Type,
     Union,
 )
+import warnings
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -76,8 +77,10 @@ _LOGGER = std_logging.getLogger(__name__)
 
 
 class DataCatalogAsyncClient:
-    """Data Catalog API service allows clients to discover,
-    understand, and manage their data.
+    """Deprecated: Please use Dataplex Catalog instead.
+
+    Data Catalog API service allows clients to discover, understand,
+    and manage their data.
     """
 
     _client: DataCatalogClient
@@ -419,6 +422,10 @@ class DataCatalogAsyncClient:
                 resolve additional pages automatically.
 
         """
+        warnings.warn(
+            "DataCatalogAsyncClient.search_catalog is deprecated", DeprecationWarning
+        )
+
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
@@ -573,6 +580,11 @@ class DataCatalogAsyncClient:
                    resources.
 
         """
+        warnings.warn(
+            "DataCatalogAsyncClient.create_entry_group is deprecated",
+            DeprecationWarning,
+        )
+
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
@@ -707,6 +719,11 @@ class DataCatalogAsyncClient:
                    resources.
 
         """
+        warnings.warn(
+            "DataCatalogAsyncClient.update_entry_group is deprecated",
+            DeprecationWarning,
+        )
+
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
@@ -833,6 +850,10 @@ class DataCatalogAsyncClient:
                    resources.
 
         """
+        warnings.warn(
+            "DataCatalogAsyncClient.get_entry_group is deprecated", DeprecationWarning
+        )
+
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
@@ -942,6 +963,11 @@ class DataCatalogAsyncClient:
                 but for metadata keys ending with the suffix `-bin`, the corresponding values must
                 be of type `bytes`.
         """
+        warnings.warn(
+            "DataCatalogAsyncClient.delete_entry_group is deprecated",
+            DeprecationWarning,
+        )
+
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
@@ -1057,6 +1083,10 @@ class DataCatalogAsyncClient:
                 resolve additional pages automatically.
 
         """
+        warnings.warn(
+            "DataCatalogAsyncClient.list_entry_groups is deprecated", DeprecationWarning
+        )
+
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
@@ -1224,6 +1254,10 @@ class DataCatalogAsyncClient:
                    [Tag][google.cloud.datacatalog.v1beta1.Tag].
 
         """
+        warnings.warn(
+            "DataCatalogAsyncClient.create_entry is deprecated", DeprecationWarning
+        )
+
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
@@ -1394,6 +1428,10 @@ class DataCatalogAsyncClient:
                    [Tag][google.cloud.datacatalog.v1beta1.Tag].
 
         """
+        warnings.warn(
+            "DataCatalogAsyncClient.update_entry is deprecated", DeprecationWarning
+        )
+
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
@@ -1507,6 +1545,10 @@ class DataCatalogAsyncClient:
                 but for metadata keys ending with the suffix `-bin`, the corresponding values must
                 be of type `bytes`.
         """
+        warnings.warn(
+            "DataCatalogAsyncClient.delete_entry is deprecated", DeprecationWarning
+        )
+
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
@@ -1626,6 +1668,10 @@ class DataCatalogAsyncClient:
                    [Tag][google.cloud.datacatalog.v1beta1.Tag].
 
         """
+        warnings.warn(
+            "DataCatalogAsyncClient.get_entry is deprecated", DeprecationWarning
+        )
+
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
@@ -1742,6 +1788,10 @@ class DataCatalogAsyncClient:
                    [Tag][google.cloud.datacatalog.v1beta1.Tag].
 
         """
+        warnings.warn(
+            "DataCatalogAsyncClient.lookup_entry is deprecated", DeprecationWarning
+        )
+
         # Create or coerce a protobuf request object.
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1836,6 +1886,10 @@ class DataCatalogAsyncClient:
                 resolve additional pages automatically.
 
         """
+        warnings.warn(
+            "DataCatalogAsyncClient.list_entries is deprecated", DeprecationWarning
+        )
+
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
@@ -1989,6 +2043,11 @@ class DataCatalogAsyncClient:
                    template to tag resources.
 
         """
+        warnings.warn(
+            "DataCatalogAsyncClient.create_tag_template is deprecated",
+            DeprecationWarning,
+        )
+
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
@@ -2112,6 +2171,10 @@ class DataCatalogAsyncClient:
                    template to tag resources.
 
         """
+        warnings.warn(
+            "DataCatalogAsyncClient.get_tag_template is deprecated", DeprecationWarning
+        )
+
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
@@ -2251,6 +2314,11 @@ class DataCatalogAsyncClient:
                    template to tag resources.
 
         """
+        warnings.warn(
+            "DataCatalogAsyncClient.update_tag_template is deprecated",
+            DeprecationWarning,
+        )
+
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
@@ -2374,6 +2442,11 @@ class DataCatalogAsyncClient:
                 but for metadata keys ending with the suffix `-bin`, the corresponding values must
                 be of type `bytes`.
         """
+        warnings.warn(
+            "DataCatalogAsyncClient.delete_tag_template is deprecated",
+            DeprecationWarning,
+        )
+
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
@@ -2520,6 +2593,11 @@ class DataCatalogAsyncClient:
                 within a tag template.
 
         """
+        warnings.warn(
+            "DataCatalogAsyncClient.create_tag_template_field is deprecated",
+            DeprecationWarning,
+        )
+
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
@@ -2677,6 +2755,11 @@ class DataCatalogAsyncClient:
                 within a tag template.
 
         """
+        warnings.warn(
+            "DataCatalogAsyncClient.update_tag_template_field is deprecated",
+            DeprecationWarning,
+        )
+
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
@@ -2808,6 +2891,11 @@ class DataCatalogAsyncClient:
                 within a tag template.
 
         """
+        warnings.warn(
+            "DataCatalogAsyncClient.rename_tag_template_field is deprecated",
+            DeprecationWarning,
+        )
+
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
@@ -2936,6 +3024,11 @@ class DataCatalogAsyncClient:
                 within a tag template.
 
         """
+        warnings.warn(
+            "DataCatalogAsyncClient.rename_tag_template_field_enum_value is deprecated",
+            DeprecationWarning,
+        )
+
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
@@ -3060,6 +3153,11 @@ class DataCatalogAsyncClient:
                 but for metadata keys ending with the suffix `-bin`, the corresponding values must
                 be of type `bytes`.
         """
+        warnings.warn(
+            "DataCatalogAsyncClient.delete_tag_template_field is deprecated",
+            DeprecationWarning,
+        )
+
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
@@ -3198,6 +3296,10 @@ class DataCatalogAsyncClient:
                    or view tags.
 
         """
+        warnings.warn(
+            "DataCatalogAsyncClient.create_tag is deprecated", DeprecationWarning
+        )
+
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
@@ -3338,6 +3440,10 @@ class DataCatalogAsyncClient:
                    or view tags.
 
         """
+        warnings.warn(
+            "DataCatalogAsyncClient.update_tag is deprecated", DeprecationWarning
+        )
+
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
@@ -3443,6 +3549,10 @@ class DataCatalogAsyncClient:
                 but for metadata keys ending with the suffix `-bin`, the corresponding values must
                 be of type `bytes`.
         """
+        warnings.warn(
+            "DataCatalogAsyncClient.delete_tag is deprecated", DeprecationWarning
+        )
+
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
@@ -3565,6 +3675,10 @@ class DataCatalogAsyncClient:
                 resolve additional pages automatically.
 
         """
+        warnings.warn(
+            "DataCatalogAsyncClient.list_tags is deprecated", DeprecationWarning
+        )
+
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
@@ -3733,6 +3847,10 @@ class DataCatalogAsyncClient:
                    documentation](\ https://cloud.google.com/iam/docs/).
 
         """
+        warnings.warn(
+            "DataCatalogAsyncClient.set_iam_policy is deprecated", DeprecationWarning
+        )
+
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
@@ -3891,6 +4009,10 @@ class DataCatalogAsyncClient:
                    documentation](\ https://cloud.google.com/iam/docs/).
 
         """
+        warnings.warn(
+            "DataCatalogAsyncClient.get_iam_policy is deprecated", DeprecationWarning
+        )
+
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
@@ -4003,6 +4125,11 @@ class DataCatalogAsyncClient:
             google.iam.v1.iam_policy_pb2.TestIamPermissionsResponse:
                 Response message for TestIamPermissions method.
         """
+        warnings.warn(
+            "DataCatalogAsyncClient.test_iam_permissions is deprecated",
+            DeprecationWarning,
+        )
+
         # Create or coerce a protobuf request object.
         # - The request isn't a proto-plus wrapped type,
         #   so it must be constructed via keyword expansion.

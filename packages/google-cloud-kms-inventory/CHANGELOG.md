@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.14](https://github.com/googleapis/google-cloud-python/compare/google-cloud-kms-inventory-v0.2.13...google-cloud-kms-inventory-v0.2.14) (2025-03-15)
+
+
+### Bug Fixes
+
+* [Many APIs] Allow Protobuf 6.x ([e06ee32](https://github.com/googleapis/google-cloud-python/commit/e06ee325de4125cdfcaf040a77dc9ccc82843260))
+
 ## [0.2.13](https://github.com/googleapis/google-cloud-python/compare/google-cloud-kms-inventory-v0.2.12...google-cloud-kms-inventory-v0.2.13) (2025-02-12)
 
 

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,6 +19,7 @@ from typing import Dict, Type
 from .base import DataTaxonomyServiceTransport
 from .grpc import DataTaxonomyServiceGrpcTransport
 from .grpc_asyncio import DataTaxonomyServiceGrpcAsyncIOTransport
+from .rest import DataTaxonomyServiceRestInterceptor, DataTaxonomyServiceRestTransport
 
 # Compile a registry of transports.
 _transport_registry = (
@@ -26,9 +27,12 @@ _transport_registry = (
 )  # type: Dict[str, Type[DataTaxonomyServiceTransport]]
 _transport_registry["grpc"] = DataTaxonomyServiceGrpcTransport
 _transport_registry["grpc_asyncio"] = DataTaxonomyServiceGrpcAsyncIOTransport
+_transport_registry["rest"] = DataTaxonomyServiceRestTransport
 
 __all__ = (
     "DataTaxonomyServiceTransport",
     "DataTaxonomyServiceGrpcTransport",
     "DataTaxonomyServiceGrpcAsyncIOTransport",
+    "DataTaxonomyServiceRestTransport",
+    "DataTaxonomyServiceRestInterceptor",
 )

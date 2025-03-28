@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -30,6 +30,7 @@ __protobuf__ = proto.module(
     package="google.cloud.discoveryengine.v1",
     manifest={
         "DataStore",
+        "AdvancedSiteSearchConfig",
         "WorkspaceConfig",
     },
 )
@@ -67,7 +68,7 @@ class DataStore(proto.Message):
                enrolled.
         default_schema_id (str):
             Output only. The id of the default
-            [Schema][google.cloud.discoveryengine.v1.Schema] asscociated
+            [Schema][google.cloud.discoveryengine.v1.Schema] associated
             to this data store.
         content_config (google.cloud.discoveryengine_v1.types.DataStore.ContentConfig):
             Immutable. The content config of the data store. If this
@@ -77,6 +78,9 @@ class DataStore(proto.Message):
             Output only. Timestamp the
             [DataStore][google.cloud.discoveryengine.v1.DataStore] was
             created at.
+        advanced_site_search_config (google.cloud.discoveryengine_v1.types.AdvancedSiteSearchConfig):
+            Optional. Configuration for advanced site
+            search.
         billing_estimation (google.cloud.discoveryengine_v1.types.DataStore.BillingEstimation):
             Output only. Data size estimation for
             billing.
@@ -95,10 +99,12 @@ class DataStore(proto.Message):
             provisioning it. If unset, a default vertical specialized
             schema will be used.
 
-            This field is only used by [CreateDataStore][] API, and will
-            be ignored if used in other APIs. This field will be omitted
-            from all API responses including [CreateDataStore][] API. To
-            retrieve a schema of a
+            This field is only used by
+            [CreateDataStore][google.cloud.discoveryengine.v1.DataStoreService.CreateDataStore]
+            API, and will be ignored if used in other APIs. This field
+            will be omitted from all API responses including
+            [CreateDataStore][google.cloud.discoveryengine.v1.DataStoreService.CreateDataStore]
+            API. To retrieve a schema of a
             [DataStore][google.cloud.discoveryengine.v1.DataStore], use
             [SchemaService.GetSchema][google.cloud.discoveryengine.v1.SchemaService.GetSchema]
             API instead.
@@ -214,6 +220,11 @@ class DataStore(proto.Message):
         number=4,
         message=timestamp_pb2.Timestamp,
     )
+    advanced_site_search_config: "AdvancedSiteSearchConfig" = proto.Field(
+        proto.MESSAGE,
+        number=12,
+        message="AdvancedSiteSearchConfig",
+    )
     billing_estimation: BillingEstimation = proto.Field(
         proto.MESSAGE,
         number=23,
@@ -233,6 +244,36 @@ class DataStore(proto.Message):
         proto.MESSAGE,
         number=28,
         message=schema.Schema,
+    )
+
+
+class AdvancedSiteSearchConfig(proto.Message):
+    r"""Configuration data for advance site search.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        disable_initial_index (bool):
+            If set true, initial indexing is disabled for
+            the DataStore.
+
+            This field is a member of `oneof`_ ``_disable_initial_index``.
+        disable_automatic_refresh (bool):
+            If set true, automatic refresh is disabled
+            for the DataStore.
+
+            This field is a member of `oneof`_ ``_disable_automatic_refresh``.
+    """
+
+    disable_initial_index: bool = proto.Field(
+        proto.BOOL,
+        number=3,
+        optional=True,
+    )
+    disable_automatic_refresh: bool = proto.Field(
+        proto.BOOL,
+        number=4,
+        optional=True,
     )
 
 
@@ -278,6 +319,8 @@ class WorkspaceConfig(proto.Message):
                 Workspace Data Store contains Groups data
             GOOGLE_KEEP (7):
                 Workspace Data Store contains Keep data
+            GOOGLE_PEOPLE (8):
+                Workspace Data Store contains People data
         """
         TYPE_UNSPECIFIED = 0
         GOOGLE_DRIVE = 1
@@ -287,6 +330,7 @@ class WorkspaceConfig(proto.Message):
         GOOGLE_CHAT = 5
         GOOGLE_GROUPS = 6
         GOOGLE_KEEP = 7
+        GOOGLE_PEOPLE = 8
 
     type_: Type = proto.Field(
         proto.ENUM,

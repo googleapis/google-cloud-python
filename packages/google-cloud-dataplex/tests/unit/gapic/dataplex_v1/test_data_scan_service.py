@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -22,15 +22,19 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
+from collections.abc import AsyncIterable, Iterable
 import json
 import math
 
 from google.api_core import api_core_version
+from google.protobuf import json_format
 import grpc
 from grpc.experimental import aio
 from proto.marshal.rules import wrappers
 from proto.marshal.rules.dates import DurationRule, TimestampRule
 import pytest
+from requests import PreparedRequest, Request, Response
+from requests.sessions import Session
 
 try:
     from google.auth.aio import credentials as ga_credentials_async
@@ -394,6 +398,7 @@ def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
     [
         (DataScanServiceClient, "grpc"),
         (DataScanServiceAsyncClient, "grpc_asyncio"),
+        (DataScanServiceClient, "rest"),
     ],
 )
 def test_data_scan_service_client_from_service_account_info(
@@ -409,7 +414,11 @@ def test_data_scan_service_client_from_service_account_info(
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == ("dataplex.googleapis.com:443")
+        assert client.transport._host == (
+            "dataplex.googleapis.com:443"
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://dataplex.googleapis.com"
+        )
 
 
 @pytest.mark.parametrize(
@@ -417,6 +426,7 @@ def test_data_scan_service_client_from_service_account_info(
     [
         (transports.DataScanServiceGrpcTransport, "grpc"),
         (transports.DataScanServiceGrpcAsyncIOTransport, "grpc_asyncio"),
+        (transports.DataScanServiceRestTransport, "rest"),
     ],
 )
 def test_data_scan_service_client_service_account_always_use_jwt(
@@ -442,6 +452,7 @@ def test_data_scan_service_client_service_account_always_use_jwt(
     [
         (DataScanServiceClient, "grpc"),
         (DataScanServiceAsyncClient, "grpc_asyncio"),
+        (DataScanServiceClient, "rest"),
     ],
 )
 def test_data_scan_service_client_from_service_account_file(
@@ -464,13 +475,18 @@ def test_data_scan_service_client_from_service_account_file(
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == ("dataplex.googleapis.com:443")
+        assert client.transport._host == (
+            "dataplex.googleapis.com:443"
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://dataplex.googleapis.com"
+        )
 
 
 def test_data_scan_service_client_get_transport_class():
     transport = DataScanServiceClient.get_transport_class()
     available_transports = [
         transports.DataScanServiceGrpcTransport,
+        transports.DataScanServiceRestTransport,
     ]
     assert transport in available_transports
 
@@ -487,6 +503,7 @@ def test_data_scan_service_client_get_transport_class():
             transports.DataScanServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
+        (DataScanServiceClient, transports.DataScanServiceRestTransport, "rest"),
     ],
 )
 @mock.patch.object(
@@ -654,6 +671,18 @@ def test_data_scan_service_client_client_options(
             DataScanServiceAsyncClient,
             transports.DataScanServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
+            "false",
+        ),
+        (
+            DataScanServiceClient,
+            transports.DataScanServiceRestTransport,
+            "rest",
+            "true",
+        ),
+        (
+            DataScanServiceClient,
+            transports.DataScanServiceRestTransport,
+            "rest",
             "false",
         ),
     ],
@@ -970,6 +999,7 @@ def test_data_scan_service_client_client_api_endpoint(client_class):
             transports.DataScanServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
+        (DataScanServiceClient, transports.DataScanServiceRestTransport, "rest"),
     ],
 )
 def test_data_scan_service_client_client_options_scopes(
@@ -1012,6 +1042,7 @@ def test_data_scan_service_client_client_options_scopes(
             "grpc_asyncio",
             grpc_helpers_async,
         ),
+        (DataScanServiceClient, transports.DataScanServiceRestTransport, "rest", None),
     ],
 )
 def test_data_scan_service_client_client_options_credentials_file(
@@ -4565,6 +4596,1852 @@ async def test_generate_data_quality_rules_flattened_error_async():
         )
 
 
+def test_create_data_scan_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = DataScanServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.create_data_scan in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.create_data_scan
+        ] = mock_rpc
+
+        request = {}
+        client.create_data_scan(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.create_data_scan(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_create_data_scan_rest_required_fields(
+    request_type=datascans.CreateDataScanRequest,
+):
+    transport_class = transports.DataScanServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request_init["data_scan_id"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+    assert "dataScanId" not in jsonified_request
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_data_scan._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+    assert "dataScanId" in jsonified_request
+    assert jsonified_request["dataScanId"] == request_init["data_scan_id"]
+
+    jsonified_request["parent"] = "parent_value"
+    jsonified_request["dataScanId"] = "data_scan_id_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_data_scan._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "data_scan_id",
+            "validate_only",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+    assert "dataScanId" in jsonified_request
+    assert jsonified_request["dataScanId"] == "data_scan_id_value"
+
+    client = DataScanServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.create_data_scan(request)
+
+            expected_params = [
+                (
+                    "dataScanId",
+                    "",
+                ),
+                ("$alt", "json;enum-encoding=int"),
+            ]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_create_data_scan_rest_unset_required_fields():
+    transport = transports.DataScanServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.create_data_scan._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "dataScanId",
+                "validateOnly",
+            )
+        )
+        & set(
+            (
+                "parent",
+                "dataScan",
+                "dataScanId",
+            )
+        )
+    )
+
+
+def test_create_data_scan_rest_flattened():
+    client = DataScanServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            data_scan=datascans.DataScan(name="name_value"),
+            data_scan_id="data_scan_id_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        client.create_data_scan(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*}/dataScans" % client.transport._host,
+            args[1],
+        )
+
+
+def test_create_data_scan_rest_flattened_error(transport: str = "rest"):
+    client = DataScanServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_data_scan(
+            datascans.CreateDataScanRequest(),
+            parent="parent_value",
+            data_scan=datascans.DataScan(name="name_value"),
+            data_scan_id="data_scan_id_value",
+        )
+
+
+def test_update_data_scan_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = DataScanServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.update_data_scan in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.update_data_scan
+        ] = mock_rpc
+
+        request = {}
+        client.update_data_scan(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.update_data_scan(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_update_data_scan_rest_required_fields(
+    request_type=datascans.UpdateDataScanRequest,
+):
+    transport_class = transports.DataScanServiceRestTransport
+
+    request_init = {}
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_data_scan._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_data_scan._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "update_mask",
+            "validate_only",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+
+    client = DataScanServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "patch",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.update_data_scan(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_update_data_scan_rest_unset_required_fields():
+    transport = transports.DataScanServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.update_data_scan._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "updateMask",
+                "validateOnly",
+            )
+        )
+        & set(("dataScan",))
+    )
+
+
+def test_update_data_scan_rest_flattened():
+    client = DataScanServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "data_scan": {
+                "name": "projects/sample1/locations/sample2/dataScans/sample3"
+            }
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            data_scan=datascans.DataScan(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        client.update_data_scan(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{data_scan.name=projects/*/locations/*/dataScans/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_update_data_scan_rest_flattened_error(transport: str = "rest"):
+    client = DataScanServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_data_scan(
+            datascans.UpdateDataScanRequest(),
+            data_scan=datascans.DataScan(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+def test_delete_data_scan_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = DataScanServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.delete_data_scan in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.delete_data_scan
+        ] = mock_rpc
+
+        request = {}
+        client.delete_data_scan(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.delete_data_scan(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_delete_data_scan_rest_required_fields(
+    request_type=datascans.DeleteDataScanRequest,
+):
+    transport_class = transports.DataScanServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_data_scan._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_data_scan._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("force",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = DataScanServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "delete",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.delete_data_scan(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_delete_data_scan_rest_unset_required_fields():
+    transport = transports.DataScanServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.delete_data_scan._get_unset_required_fields({})
+    assert set(unset_fields) == (set(("force",)) & set(("name",)))
+
+
+def test_delete_data_scan_rest_flattened():
+    client = DataScanServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/dataScans/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        client.delete_data_scan(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/dataScans/*}" % client.transport._host,
+            args[1],
+        )
+
+
+def test_delete_data_scan_rest_flattened_error(transport: str = "rest"):
+    client = DataScanServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_data_scan(
+            datascans.DeleteDataScanRequest(),
+            name="name_value",
+        )
+
+
+def test_get_data_scan_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = DataScanServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.get_data_scan in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.get_data_scan] = mock_rpc
+
+        request = {}
+        client.get_data_scan(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.get_data_scan(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_get_data_scan_rest_required_fields(request_type=datascans.GetDataScanRequest):
+    transport_class = transports.DataScanServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_data_scan._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_data_scan._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("view",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = DataScanServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = datascans.DataScan()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = datascans.DataScan.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.get_data_scan(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_data_scan_rest_unset_required_fields():
+    transport = transports.DataScanServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_data_scan._get_unset_required_fields({})
+    assert set(unset_fields) == (set(("view",)) & set(("name",)))
+
+
+def test_get_data_scan_rest_flattened():
+    client = DataScanServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = datascans.DataScan()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/dataScans/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = datascans.DataScan.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        client.get_data_scan(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/dataScans/*}" % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_data_scan_rest_flattened_error(transport: str = "rest"):
+    client = DataScanServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_data_scan(
+            datascans.GetDataScanRequest(),
+            name="name_value",
+        )
+
+
+def test_list_data_scans_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = DataScanServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.list_data_scans in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.list_data_scans] = mock_rpc
+
+        request = {}
+        client.list_data_scans(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.list_data_scans(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_list_data_scans_rest_required_fields(
+    request_type=datascans.ListDataScansRequest,
+):
+    transport_class = transports.DataScanServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_data_scans._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_data_scans._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "filter",
+            "order_by",
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = DataScanServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = datascans.ListDataScansResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = datascans.ListDataScansResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.list_data_scans(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_data_scans_rest_unset_required_fields():
+    transport = transports.DataScanServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_data_scans._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "filter",
+                "orderBy",
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+def test_list_data_scans_rest_flattened():
+    client = DataScanServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = datascans.ListDataScansResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = datascans.ListDataScansResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        client.list_data_scans(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*}/dataScans" % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_data_scans_rest_flattened_error(transport: str = "rest"):
+    client = DataScanServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_data_scans(
+            datascans.ListDataScansRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_data_scans_rest_pager(transport: str = "rest"):
+    client = DataScanServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            datascans.ListDataScansResponse(
+                data_scans=[
+                    datascans.DataScan(),
+                    datascans.DataScan(),
+                    datascans.DataScan(),
+                ],
+                next_page_token="abc",
+            ),
+            datascans.ListDataScansResponse(
+                data_scans=[],
+                next_page_token="def",
+            ),
+            datascans.ListDataScansResponse(
+                data_scans=[
+                    datascans.DataScan(),
+                ],
+                next_page_token="ghi",
+            ),
+            datascans.ListDataScansResponse(
+                data_scans=[
+                    datascans.DataScan(),
+                    datascans.DataScan(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(datascans.ListDataScansResponse.to_json(x) for x in response)
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        pager = client.list_data_scans(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, datascans.DataScan) for i in results)
+
+        pages = list(client.list_data_scans(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+def test_run_data_scan_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = DataScanServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.run_data_scan in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.run_data_scan] = mock_rpc
+
+        request = {}
+        client.run_data_scan(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.run_data_scan(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_run_data_scan_rest_required_fields(request_type=datascans.RunDataScanRequest):
+    transport_class = transports.DataScanServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).run_data_scan._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).run_data_scan._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = DataScanServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = datascans.RunDataScanResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = datascans.RunDataScanResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.run_data_scan(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_run_data_scan_rest_unset_required_fields():
+    transport = transports.DataScanServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.run_data_scan._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+def test_run_data_scan_rest_flattened():
+    client = DataScanServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = datascans.RunDataScanResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/dataScans/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = datascans.RunDataScanResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        client.run_data_scan(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/dataScans/*}:run"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_run_data_scan_rest_flattened_error(transport: str = "rest"):
+    client = DataScanServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.run_data_scan(
+            datascans.RunDataScanRequest(),
+            name="name_value",
+        )
+
+
+def test_get_data_scan_job_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = DataScanServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.get_data_scan_job in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.get_data_scan_job
+        ] = mock_rpc
+
+        request = {}
+        client.get_data_scan_job(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.get_data_scan_job(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_get_data_scan_job_rest_required_fields(
+    request_type=datascans.GetDataScanJobRequest,
+):
+    transport_class = transports.DataScanServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_data_scan_job._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_data_scan_job._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("view",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = DataScanServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = datascans.DataScanJob()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = datascans.DataScanJob.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.get_data_scan_job(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_data_scan_job_rest_unset_required_fields():
+    transport = transports.DataScanServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_data_scan_job._get_unset_required_fields({})
+    assert set(unset_fields) == (set(("view",)) & set(("name",)))
+
+
+def test_get_data_scan_job_rest_flattened():
+    client = DataScanServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = datascans.DataScanJob()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/dataScans/sample3/jobs/sample4"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = datascans.DataScanJob.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        client.get_data_scan_job(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/dataScans/*/jobs/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_data_scan_job_rest_flattened_error(transport: str = "rest"):
+    client = DataScanServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_data_scan_job(
+            datascans.GetDataScanJobRequest(),
+            name="name_value",
+        )
+
+
+def test_list_data_scan_jobs_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = DataScanServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.list_data_scan_jobs in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.list_data_scan_jobs
+        ] = mock_rpc
+
+        request = {}
+        client.list_data_scan_jobs(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.list_data_scan_jobs(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_list_data_scan_jobs_rest_required_fields(
+    request_type=datascans.ListDataScanJobsRequest,
+):
+    transport_class = transports.DataScanServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_data_scan_jobs._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_data_scan_jobs._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "filter",
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = DataScanServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = datascans.ListDataScanJobsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = datascans.ListDataScanJobsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.list_data_scan_jobs(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_data_scan_jobs_rest_unset_required_fields():
+    transport = transports.DataScanServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_data_scan_jobs._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "filter",
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+def test_list_data_scan_jobs_rest_flattened():
+    client = DataScanServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = datascans.ListDataScanJobsResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/dataScans/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = datascans.ListDataScanJobsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        client.list_data_scan_jobs(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*/dataScans/*}/jobs"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_data_scan_jobs_rest_flattened_error(transport: str = "rest"):
+    client = DataScanServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_data_scan_jobs(
+            datascans.ListDataScanJobsRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_data_scan_jobs_rest_pager(transport: str = "rest"):
+    client = DataScanServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            datascans.ListDataScanJobsResponse(
+                data_scan_jobs=[
+                    datascans.DataScanJob(),
+                    datascans.DataScanJob(),
+                    datascans.DataScanJob(),
+                ],
+                next_page_token="abc",
+            ),
+            datascans.ListDataScanJobsResponse(
+                data_scan_jobs=[],
+                next_page_token="def",
+            ),
+            datascans.ListDataScanJobsResponse(
+                data_scan_jobs=[
+                    datascans.DataScanJob(),
+                ],
+                next_page_token="ghi",
+            ),
+            datascans.ListDataScanJobsResponse(
+                data_scan_jobs=[
+                    datascans.DataScanJob(),
+                    datascans.DataScanJob(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            datascans.ListDataScanJobsResponse.to_json(x) for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/dataScans/sample3"
+        }
+
+        pager = client.list_data_scan_jobs(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, datascans.DataScanJob) for i in results)
+
+        pages = list(client.list_data_scan_jobs(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+def test_generate_data_quality_rules_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = DataScanServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.generate_data_quality_rules
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.generate_data_quality_rules
+        ] = mock_rpc
+
+        request = {}
+        client.generate_data_quality_rules(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.generate_data_quality_rules(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_generate_data_quality_rules_rest_required_fields(
+    request_type=datascans.GenerateDataQualityRulesRequest,
+):
+    transport_class = transports.DataScanServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).generate_data_quality_rules._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).generate_data_quality_rules._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = DataScanServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = datascans.GenerateDataQualityRulesResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = datascans.GenerateDataQualityRulesResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.generate_data_quality_rules(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_generate_data_quality_rules_rest_unset_required_fields():
+    transport = transports.DataScanServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.generate_data_quality_rules._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+def test_generate_data_quality_rules_rest_flattened():
+    client = DataScanServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = datascans.GenerateDataQualityRulesResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/dataScans/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = datascans.GenerateDataQualityRulesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        client.generate_data_quality_rules(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/dataScans/*}:generateDataQualityRules"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_generate_data_quality_rules_rest_flattened_error(transport: str = "rest"):
+    client = DataScanServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.generate_data_quality_rules(
+            datascans.GenerateDataQualityRulesRequest(),
+            name="name_value",
+        )
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.DataScanServiceGrpcTransport(
@@ -4646,6 +6523,7 @@ def test_transport_get_channel():
     [
         transports.DataScanServiceGrpcTransport,
         transports.DataScanServiceGrpcAsyncIOTransport,
+        transports.DataScanServiceRestTransport,
     ],
 )
 def test_transport_adc(transport_class):
@@ -5128,6 +7006,2244 @@ async def test_generate_data_quality_rules_empty_call_grpc_asyncio():
         assert args[0] == request_msg
 
 
+def test_transport_kind_rest():
+    transport = DataScanServiceClient.get_transport_class("rest")(
+        credentials=ga_credentials.AnonymousCredentials()
+    )
+    assert transport.kind == "rest"
+
+
+def test_create_data_scan_rest_bad_request(
+    request_type=datascans.CreateDataScanRequest,
+):
+    client = DataScanServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.create_data_scan(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        datascans.CreateDataScanRequest,
+        dict,
+    ],
+)
+def test_create_data_scan_rest_call_success(request_type):
+    client = DataScanServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request_init["data_scan"] = {
+        "name": "name_value",
+        "uid": "uid_value",
+        "description": "description_value",
+        "display_name": "display_name_value",
+        "labels": {},
+        "state": 1,
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "data": {"entity": "entity_value", "resource": "resource_value"},
+        "execution_spec": {
+            "trigger": {"on_demand": {}, "schedule": {"cron": "cron_value"}},
+            "field": "field_value",
+        },
+        "execution_status": {
+            "latest_job_start_time": {},
+            "latest_job_end_time": {},
+            "latest_job_create_time": {},
+        },
+        "type_": 1,
+        "data_quality_spec": {
+            "rules": [
+                {
+                    "range_expectation": {
+                        "min_value": "min_value_value",
+                        "max_value": "max_value_value",
+                        "strict_min_enabled": True,
+                        "strict_max_enabled": True,
+                    },
+                    "non_null_expectation": {},
+                    "set_expectation": {"values": ["values_value1", "values_value2"]},
+                    "regex_expectation": {"regex": "regex_value"},
+                    "uniqueness_expectation": {},
+                    "statistic_range_expectation": {
+                        "statistic": 1,
+                        "min_value": "min_value_value",
+                        "max_value": "max_value_value",
+                        "strict_min_enabled": True,
+                        "strict_max_enabled": True,
+                    },
+                    "row_condition_expectation": {
+                        "sql_expression": "sql_expression_value"
+                    },
+                    "table_condition_expectation": {
+                        "sql_expression": "sql_expression_value"
+                    },
+                    "sql_assertion": {"sql_statement": "sql_statement_value"},
+                    "column": "column_value",
+                    "ignore_null": True,
+                    "dimension": "dimension_value",
+                    "threshold": 0.973,
+                    "name": "name_value",
+                    "description": "description_value",
+                    "suspended": True,
+                }
+            ],
+            "sampling_percent": 0.17070000000000002,
+            "row_filter": "row_filter_value",
+            "post_scan_actions": {
+                "bigquery_export": {"results_table": "results_table_value"},
+                "notification_report": {
+                    "recipients": {"emails": ["emails_value1", "emails_value2"]},
+                    "score_threshold_trigger": {"score_threshold": 0.1608},
+                    "job_failure_trigger": {},
+                    "job_end_trigger": {},
+                },
+            },
+        },
+        "data_profile_spec": {
+            "sampling_percent": 0.17070000000000002,
+            "row_filter": "row_filter_value",
+            "post_scan_actions": {
+                "bigquery_export": {"results_table": "results_table_value"}
+            },
+            "include_fields": {
+                "field_names": ["field_names_value1", "field_names_value2"]
+            },
+            "exclude_fields": {},
+        },
+        "data_discovery_spec": {
+            "bigquery_publishing_config": {
+                "table_type": 1,
+                "connection": "connection_value",
+                "location": "location_value",
+            },
+            "storage_config": {
+                "include_patterns": [
+                    "include_patterns_value1",
+                    "include_patterns_value2",
+                ],
+                "exclude_patterns": [
+                    "exclude_patterns_value1",
+                    "exclude_patterns_value2",
+                ],
+                "csv_options": {
+                    "header_rows": 1171,
+                    "delimiter": "delimiter_value",
+                    "encoding": "encoding_value",
+                    "type_inference_disabled": True,
+                    "quote": "quote_value",
+                },
+                "json_options": {
+                    "encoding": "encoding_value",
+                    "type_inference_disabled": True,
+                },
+            },
+        },
+        "data_quality_result": {
+            "passed": True,
+            "score": 0.54,
+            "dimensions": [
+                {"dimension": {"name": "name_value"}, "passed": True, "score": 0.54}
+            ],
+            "columns": [{"column": "column_value", "score": 0.54}],
+            "rules": [
+                {
+                    "rule": {},
+                    "passed": True,
+                    "evaluated_count": 1603,
+                    "passed_count": 1288,
+                    "null_count": 1091,
+                    "pass_ratio": 0.1077,
+                    "failing_rows_query": "failing_rows_query_value",
+                    "assertion_row_count": 2071,
+                }
+            ],
+            "row_count": 992,
+            "scanned_data": {
+                "incremental_field": {
+                    "field": "field_value",
+                    "start": "start_value",
+                    "end": "end_value",
+                }
+            },
+            "post_scan_actions_result": {
+                "bigquery_export_result": {"state": 1, "message": "message_value"}
+            },
+        },
+        "data_profile_result": {
+            "row_count": 992,
+            "profile": {
+                "fields": [
+                    {
+                        "name": "name_value",
+                        "type_": "type__value",
+                        "mode": "mode_value",
+                        "profile": {
+                            "null_ratio": 0.1081,
+                            "distinct_ratio": 0.1504,
+                            "top_n_values": [
+                                {"value": "value_value", "count": 553, "ratio": 0.543}
+                            ],
+                            "string_profile": {
+                                "min_length": 1061,
+                                "max_length": 1063,
+                                "average_length": 0.1468,
+                            },
+                            "integer_profile": {
+                                "average": 0.731,
+                                "standard_deviation": 0.1907,
+                                "min_": 419,
+                                "quartiles": [987, 988],
+                                "max_": 421,
+                            },
+                            "double_profile": {
+                                "average": 0.731,
+                                "standard_deviation": 0.1907,
+                                "min_": 0.419,
+                                "quartiles": [0.987, 0.988],
+                                "max_": 0.421,
+                            },
+                        },
+                    }
+                ]
+            },
+            "scanned_data": {},
+            "post_scan_actions_result": {
+                "bigquery_export_result": {"state": 1, "message": "message_value"}
+            },
+        },
+        "data_discovery_result": {"bigquery_publishing": {"dataset": "dataset_value"}},
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = datascans.CreateDataScanRequest.meta.fields["data_scan"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["data_scan"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["data_scan"][field])):
+                    del request_init["data_scan"][field][i][subfield]
+            else:
+                del request_init["data_scan"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.create_data_scan(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_data_scan_rest_interceptors(null_interceptor):
+    transport = transports.DataScanServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DataScanServiceRestInterceptor(),
+    )
+    client = DataScanServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.DataScanServiceRestInterceptor, "post_create_data_scan"
+    ) as post, mock.patch.object(
+        transports.DataScanServiceRestInterceptor, "post_create_data_scan_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
+        transports.DataScanServiceRestInterceptor, "pre_create_data_scan"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        post_with_metadata.assert_not_called()
+        pb_message = datascans.CreateDataScanRequest.pb(
+            datascans.CreateDataScanRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = datascans.CreateDataScanRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
+
+        client.create_data_scan(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+        post_with_metadata.assert_called_once()
+
+
+def test_update_data_scan_rest_bad_request(
+    request_type=datascans.UpdateDataScanRequest,
+):
+    client = DataScanServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "data_scan": {"name": "projects/sample1/locations/sample2/dataScans/sample3"}
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.update_data_scan(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        datascans.UpdateDataScanRequest,
+        dict,
+    ],
+)
+def test_update_data_scan_rest_call_success(request_type):
+    client = DataScanServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "data_scan": {"name": "projects/sample1/locations/sample2/dataScans/sample3"}
+    }
+    request_init["data_scan"] = {
+        "name": "projects/sample1/locations/sample2/dataScans/sample3",
+        "uid": "uid_value",
+        "description": "description_value",
+        "display_name": "display_name_value",
+        "labels": {},
+        "state": 1,
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "data": {"entity": "entity_value", "resource": "resource_value"},
+        "execution_spec": {
+            "trigger": {"on_demand": {}, "schedule": {"cron": "cron_value"}},
+            "field": "field_value",
+        },
+        "execution_status": {
+            "latest_job_start_time": {},
+            "latest_job_end_time": {},
+            "latest_job_create_time": {},
+        },
+        "type_": 1,
+        "data_quality_spec": {
+            "rules": [
+                {
+                    "range_expectation": {
+                        "min_value": "min_value_value",
+                        "max_value": "max_value_value",
+                        "strict_min_enabled": True,
+                        "strict_max_enabled": True,
+                    },
+                    "non_null_expectation": {},
+                    "set_expectation": {"values": ["values_value1", "values_value2"]},
+                    "regex_expectation": {"regex": "regex_value"},
+                    "uniqueness_expectation": {},
+                    "statistic_range_expectation": {
+                        "statistic": 1,
+                        "min_value": "min_value_value",
+                        "max_value": "max_value_value",
+                        "strict_min_enabled": True,
+                        "strict_max_enabled": True,
+                    },
+                    "row_condition_expectation": {
+                        "sql_expression": "sql_expression_value"
+                    },
+                    "table_condition_expectation": {
+                        "sql_expression": "sql_expression_value"
+                    },
+                    "sql_assertion": {"sql_statement": "sql_statement_value"},
+                    "column": "column_value",
+                    "ignore_null": True,
+                    "dimension": "dimension_value",
+                    "threshold": 0.973,
+                    "name": "name_value",
+                    "description": "description_value",
+                    "suspended": True,
+                }
+            ],
+            "sampling_percent": 0.17070000000000002,
+            "row_filter": "row_filter_value",
+            "post_scan_actions": {
+                "bigquery_export": {"results_table": "results_table_value"},
+                "notification_report": {
+                    "recipients": {"emails": ["emails_value1", "emails_value2"]},
+                    "score_threshold_trigger": {"score_threshold": 0.1608},
+                    "job_failure_trigger": {},
+                    "job_end_trigger": {},
+                },
+            },
+        },
+        "data_profile_spec": {
+            "sampling_percent": 0.17070000000000002,
+            "row_filter": "row_filter_value",
+            "post_scan_actions": {
+                "bigquery_export": {"results_table": "results_table_value"}
+            },
+            "include_fields": {
+                "field_names": ["field_names_value1", "field_names_value2"]
+            },
+            "exclude_fields": {},
+        },
+        "data_discovery_spec": {
+            "bigquery_publishing_config": {
+                "table_type": 1,
+                "connection": "connection_value",
+                "location": "location_value",
+            },
+            "storage_config": {
+                "include_patterns": [
+                    "include_patterns_value1",
+                    "include_patterns_value2",
+                ],
+                "exclude_patterns": [
+                    "exclude_patterns_value1",
+                    "exclude_patterns_value2",
+                ],
+                "csv_options": {
+                    "header_rows": 1171,
+                    "delimiter": "delimiter_value",
+                    "encoding": "encoding_value",
+                    "type_inference_disabled": True,
+                    "quote": "quote_value",
+                },
+                "json_options": {
+                    "encoding": "encoding_value",
+                    "type_inference_disabled": True,
+                },
+            },
+        },
+        "data_quality_result": {
+            "passed": True,
+            "score": 0.54,
+            "dimensions": [
+                {"dimension": {"name": "name_value"}, "passed": True, "score": 0.54}
+            ],
+            "columns": [{"column": "column_value", "score": 0.54}],
+            "rules": [
+                {
+                    "rule": {},
+                    "passed": True,
+                    "evaluated_count": 1603,
+                    "passed_count": 1288,
+                    "null_count": 1091,
+                    "pass_ratio": 0.1077,
+                    "failing_rows_query": "failing_rows_query_value",
+                    "assertion_row_count": 2071,
+                }
+            ],
+            "row_count": 992,
+            "scanned_data": {
+                "incremental_field": {
+                    "field": "field_value",
+                    "start": "start_value",
+                    "end": "end_value",
+                }
+            },
+            "post_scan_actions_result": {
+                "bigquery_export_result": {"state": 1, "message": "message_value"}
+            },
+        },
+        "data_profile_result": {
+            "row_count": 992,
+            "profile": {
+                "fields": [
+                    {
+                        "name": "name_value",
+                        "type_": "type__value",
+                        "mode": "mode_value",
+                        "profile": {
+                            "null_ratio": 0.1081,
+                            "distinct_ratio": 0.1504,
+                            "top_n_values": [
+                                {"value": "value_value", "count": 553, "ratio": 0.543}
+                            ],
+                            "string_profile": {
+                                "min_length": 1061,
+                                "max_length": 1063,
+                                "average_length": 0.1468,
+                            },
+                            "integer_profile": {
+                                "average": 0.731,
+                                "standard_deviation": 0.1907,
+                                "min_": 419,
+                                "quartiles": [987, 988],
+                                "max_": 421,
+                            },
+                            "double_profile": {
+                                "average": 0.731,
+                                "standard_deviation": 0.1907,
+                                "min_": 0.419,
+                                "quartiles": [0.987, 0.988],
+                                "max_": 0.421,
+                            },
+                        },
+                    }
+                ]
+            },
+            "scanned_data": {},
+            "post_scan_actions_result": {
+                "bigquery_export_result": {"state": 1, "message": "message_value"}
+            },
+        },
+        "data_discovery_result": {"bigquery_publishing": {"dataset": "dataset_value"}},
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = datascans.UpdateDataScanRequest.meta.fields["data_scan"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["data_scan"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["data_scan"][field])):
+                    del request_init["data_scan"][field][i][subfield]
+            else:
+                del request_init["data_scan"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.update_data_scan(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_data_scan_rest_interceptors(null_interceptor):
+    transport = transports.DataScanServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DataScanServiceRestInterceptor(),
+    )
+    client = DataScanServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.DataScanServiceRestInterceptor, "post_update_data_scan"
+    ) as post, mock.patch.object(
+        transports.DataScanServiceRestInterceptor, "post_update_data_scan_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
+        transports.DataScanServiceRestInterceptor, "pre_update_data_scan"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        post_with_metadata.assert_not_called()
+        pb_message = datascans.UpdateDataScanRequest.pb(
+            datascans.UpdateDataScanRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = datascans.UpdateDataScanRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
+
+        client.update_data_scan(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+        post_with_metadata.assert_called_once()
+
+
+def test_delete_data_scan_rest_bad_request(
+    request_type=datascans.DeleteDataScanRequest,
+):
+    client = DataScanServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/dataScans/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.delete_data_scan(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        datascans.DeleteDataScanRequest,
+        dict,
+    ],
+)
+def test_delete_data_scan_rest_call_success(request_type):
+    client = DataScanServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/dataScans/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.delete_data_scan(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_data_scan_rest_interceptors(null_interceptor):
+    transport = transports.DataScanServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DataScanServiceRestInterceptor(),
+    )
+    client = DataScanServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.DataScanServiceRestInterceptor, "post_delete_data_scan"
+    ) as post, mock.patch.object(
+        transports.DataScanServiceRestInterceptor, "post_delete_data_scan_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
+        transports.DataScanServiceRestInterceptor, "pre_delete_data_scan"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        post_with_metadata.assert_not_called()
+        pb_message = datascans.DeleteDataScanRequest.pb(
+            datascans.DeleteDataScanRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = datascans.DeleteDataScanRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
+
+        client.delete_data_scan(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+        post_with_metadata.assert_called_once()
+
+
+def test_get_data_scan_rest_bad_request(request_type=datascans.GetDataScanRequest):
+    client = DataScanServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/dataScans/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.get_data_scan(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        datascans.GetDataScanRequest,
+        dict,
+    ],
+)
+def test_get_data_scan_rest_call_success(request_type):
+    client = DataScanServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/dataScans/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = datascans.DataScan(
+            name="name_value",
+            uid="uid_value",
+            description="description_value",
+            display_name="display_name_value",
+            state=resources.State.ACTIVE,
+            type_=datascans.DataScanType.DATA_QUALITY,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = datascans.DataScan.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.get_data_scan(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, datascans.DataScan)
+    assert response.name == "name_value"
+    assert response.uid == "uid_value"
+    assert response.description == "description_value"
+    assert response.display_name == "display_name_value"
+    assert response.state == resources.State.ACTIVE
+    assert response.type_ == datascans.DataScanType.DATA_QUALITY
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_data_scan_rest_interceptors(null_interceptor):
+    transport = transports.DataScanServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DataScanServiceRestInterceptor(),
+    )
+    client = DataScanServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DataScanServiceRestInterceptor, "post_get_data_scan"
+    ) as post, mock.patch.object(
+        transports.DataScanServiceRestInterceptor, "post_get_data_scan_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
+        transports.DataScanServiceRestInterceptor, "pre_get_data_scan"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        post_with_metadata.assert_not_called()
+        pb_message = datascans.GetDataScanRequest.pb(datascans.GetDataScanRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = datascans.DataScan.to_json(datascans.DataScan())
+        req.return_value.content = return_value
+
+        request = datascans.GetDataScanRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = datascans.DataScan()
+        post_with_metadata.return_value = datascans.DataScan(), metadata
+
+        client.get_data_scan(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+        post_with_metadata.assert_called_once()
+
+
+def test_list_data_scans_rest_bad_request(request_type=datascans.ListDataScansRequest):
+    client = DataScanServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.list_data_scans(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        datascans.ListDataScansRequest,
+        dict,
+    ],
+)
+def test_list_data_scans_rest_call_success(request_type):
+    client = DataScanServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = datascans.ListDataScansResponse(
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = datascans.ListDataScansResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.list_data_scans(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListDataScansPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_data_scans_rest_interceptors(null_interceptor):
+    transport = transports.DataScanServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DataScanServiceRestInterceptor(),
+    )
+    client = DataScanServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DataScanServiceRestInterceptor, "post_list_data_scans"
+    ) as post, mock.patch.object(
+        transports.DataScanServiceRestInterceptor, "post_list_data_scans_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
+        transports.DataScanServiceRestInterceptor, "pre_list_data_scans"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        post_with_metadata.assert_not_called()
+        pb_message = datascans.ListDataScansRequest.pb(datascans.ListDataScansRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = datascans.ListDataScansResponse.to_json(
+            datascans.ListDataScansResponse()
+        )
+        req.return_value.content = return_value
+
+        request = datascans.ListDataScansRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = datascans.ListDataScansResponse()
+        post_with_metadata.return_value = datascans.ListDataScansResponse(), metadata
+
+        client.list_data_scans(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+        post_with_metadata.assert_called_once()
+
+
+def test_run_data_scan_rest_bad_request(request_type=datascans.RunDataScanRequest):
+    client = DataScanServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/dataScans/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.run_data_scan(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        datascans.RunDataScanRequest,
+        dict,
+    ],
+)
+def test_run_data_scan_rest_call_success(request_type):
+    client = DataScanServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/dataScans/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = datascans.RunDataScanResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = datascans.RunDataScanResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.run_data_scan(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, datascans.RunDataScanResponse)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_run_data_scan_rest_interceptors(null_interceptor):
+    transport = transports.DataScanServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DataScanServiceRestInterceptor(),
+    )
+    client = DataScanServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DataScanServiceRestInterceptor, "post_run_data_scan"
+    ) as post, mock.patch.object(
+        transports.DataScanServiceRestInterceptor, "post_run_data_scan_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
+        transports.DataScanServiceRestInterceptor, "pre_run_data_scan"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        post_with_metadata.assert_not_called()
+        pb_message = datascans.RunDataScanRequest.pb(datascans.RunDataScanRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = datascans.RunDataScanResponse.to_json(
+            datascans.RunDataScanResponse()
+        )
+        req.return_value.content = return_value
+
+        request = datascans.RunDataScanRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = datascans.RunDataScanResponse()
+        post_with_metadata.return_value = datascans.RunDataScanResponse(), metadata
+
+        client.run_data_scan(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+        post_with_metadata.assert_called_once()
+
+
+def test_get_data_scan_job_rest_bad_request(
+    request_type=datascans.GetDataScanJobRequest,
+):
+    client = DataScanServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/dataScans/sample3/jobs/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.get_data_scan_job(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        datascans.GetDataScanJobRequest,
+        dict,
+    ],
+)
+def test_get_data_scan_job_rest_call_success(request_type):
+    client = DataScanServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/dataScans/sample3/jobs/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = datascans.DataScanJob(
+            name="name_value",
+            uid="uid_value",
+            state=datascans.DataScanJob.State.RUNNING,
+            message="message_value",
+            type_=datascans.DataScanType.DATA_QUALITY,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = datascans.DataScanJob.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.get_data_scan_job(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, datascans.DataScanJob)
+    assert response.name == "name_value"
+    assert response.uid == "uid_value"
+    assert response.state == datascans.DataScanJob.State.RUNNING
+    assert response.message == "message_value"
+    assert response.type_ == datascans.DataScanType.DATA_QUALITY
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_data_scan_job_rest_interceptors(null_interceptor):
+    transport = transports.DataScanServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DataScanServiceRestInterceptor(),
+    )
+    client = DataScanServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DataScanServiceRestInterceptor, "post_get_data_scan_job"
+    ) as post, mock.patch.object(
+        transports.DataScanServiceRestInterceptor,
+        "post_get_data_scan_job_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
+        transports.DataScanServiceRestInterceptor, "pre_get_data_scan_job"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        post_with_metadata.assert_not_called()
+        pb_message = datascans.GetDataScanJobRequest.pb(
+            datascans.GetDataScanJobRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = datascans.DataScanJob.to_json(datascans.DataScanJob())
+        req.return_value.content = return_value
+
+        request = datascans.GetDataScanJobRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = datascans.DataScanJob()
+        post_with_metadata.return_value = datascans.DataScanJob(), metadata
+
+        client.get_data_scan_job(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+        post_with_metadata.assert_called_once()
+
+
+def test_list_data_scan_jobs_rest_bad_request(
+    request_type=datascans.ListDataScanJobsRequest,
+):
+    client = DataScanServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/dataScans/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.list_data_scan_jobs(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        datascans.ListDataScanJobsRequest,
+        dict,
+    ],
+)
+def test_list_data_scan_jobs_rest_call_success(request_type):
+    client = DataScanServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/dataScans/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = datascans.ListDataScanJobsResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = datascans.ListDataScanJobsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.list_data_scan_jobs(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListDataScanJobsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_data_scan_jobs_rest_interceptors(null_interceptor):
+    transport = transports.DataScanServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DataScanServiceRestInterceptor(),
+    )
+    client = DataScanServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DataScanServiceRestInterceptor, "post_list_data_scan_jobs"
+    ) as post, mock.patch.object(
+        transports.DataScanServiceRestInterceptor,
+        "post_list_data_scan_jobs_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
+        transports.DataScanServiceRestInterceptor, "pre_list_data_scan_jobs"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        post_with_metadata.assert_not_called()
+        pb_message = datascans.ListDataScanJobsRequest.pb(
+            datascans.ListDataScanJobsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = datascans.ListDataScanJobsResponse.to_json(
+            datascans.ListDataScanJobsResponse()
+        )
+        req.return_value.content = return_value
+
+        request = datascans.ListDataScanJobsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = datascans.ListDataScanJobsResponse()
+        post_with_metadata.return_value = datascans.ListDataScanJobsResponse(), metadata
+
+        client.list_data_scan_jobs(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+        post_with_metadata.assert_called_once()
+
+
+def test_generate_data_quality_rules_rest_bad_request(
+    request_type=datascans.GenerateDataQualityRulesRequest,
+):
+    client = DataScanServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/dataScans/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.generate_data_quality_rules(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        datascans.GenerateDataQualityRulesRequest,
+        dict,
+    ],
+)
+def test_generate_data_quality_rules_rest_call_success(request_type):
+    client = DataScanServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/dataScans/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = datascans.GenerateDataQualityRulesResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = datascans.GenerateDataQualityRulesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.generate_data_quality_rules(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, datascans.GenerateDataQualityRulesResponse)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_generate_data_quality_rules_rest_interceptors(null_interceptor):
+    transport = transports.DataScanServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DataScanServiceRestInterceptor(),
+    )
+    client = DataScanServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DataScanServiceRestInterceptor, "post_generate_data_quality_rules"
+    ) as post, mock.patch.object(
+        transports.DataScanServiceRestInterceptor,
+        "post_generate_data_quality_rules_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
+        transports.DataScanServiceRestInterceptor, "pre_generate_data_quality_rules"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        post_with_metadata.assert_not_called()
+        pb_message = datascans.GenerateDataQualityRulesRequest.pb(
+            datascans.GenerateDataQualityRulesRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = datascans.GenerateDataQualityRulesResponse.to_json(
+            datascans.GenerateDataQualityRulesResponse()
+        )
+        req.return_value.content = return_value
+
+        request = datascans.GenerateDataQualityRulesRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = datascans.GenerateDataQualityRulesResponse()
+        post_with_metadata.return_value = (
+            datascans.GenerateDataQualityRulesResponse(),
+            metadata,
+        )
+
+        client.generate_data_quality_rules(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+        post_with_metadata.assert_called_once()
+
+
+def test_get_location_rest_bad_request(request_type=locations_pb2.GetLocationRequest):
+    client = DataScanServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type()
+    request = json_format.ParseDict(
+        {"name": "projects/sample1/locations/sample2"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.get_location(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        locations_pb2.GetLocationRequest,
+        dict,
+    ],
+)
+def test_get_location_rest(request_type):
+    client = DataScanServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    request_init = {"name": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = locations_pb2.Location()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        response = client.get_location(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, locations_pb2.Location)
+
+
+def test_list_locations_rest_bad_request(
+    request_type=locations_pb2.ListLocationsRequest,
+):
+    client = DataScanServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type()
+    request = json_format.ParseDict({"name": "projects/sample1"}, request)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.list_locations(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        locations_pb2.ListLocationsRequest,
+        dict,
+    ],
+)
+def test_list_locations_rest(request_type):
+    client = DataScanServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    request_init = {"name": "projects/sample1"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = locations_pb2.ListLocationsResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        response = client.list_locations(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, locations_pb2.ListLocationsResponse)
+
+
+def test_cancel_operation_rest_bad_request(
+    request_type=operations_pb2.CancelOperationRequest,
+):
+    client = DataScanServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type()
+    request = json_format.ParseDict(
+        {"name": "projects/sample1/locations/sample2/operations/sample3"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.cancel_operation(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        operations_pb2.CancelOperationRequest,
+        dict,
+    ],
+)
+def test_cancel_operation_rest(request_type):
+    client = DataScanServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    request_init = {"name": "projects/sample1/locations/sample2/operations/sample3"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = "{}"
+        response_value.content = json_return_value.encode("UTF-8")
+
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        response = client.cancel_operation(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_delete_operation_rest_bad_request(
+    request_type=operations_pb2.DeleteOperationRequest,
+):
+    client = DataScanServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type()
+    request = json_format.ParseDict(
+        {"name": "projects/sample1/locations/sample2/operations/sample3"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.delete_operation(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        operations_pb2.DeleteOperationRequest,
+        dict,
+    ],
+)
+def test_delete_operation_rest(request_type):
+    client = DataScanServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    request_init = {"name": "projects/sample1/locations/sample2/operations/sample3"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = "{}"
+        response_value.content = json_return_value.encode("UTF-8")
+
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        response = client.delete_operation(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_get_operation_rest_bad_request(
+    request_type=operations_pb2.GetOperationRequest,
+):
+    client = DataScanServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type()
+    request = json_format.ParseDict(
+        {"name": "projects/sample1/locations/sample2/operations/sample3"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.get_operation(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        operations_pb2.GetOperationRequest,
+        dict,
+    ],
+)
+def test_get_operation_rest(request_type):
+    client = DataScanServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    request_init = {"name": "projects/sample1/locations/sample2/operations/sample3"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        response = client.get_operation(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, operations_pb2.Operation)
+
+
+def test_list_operations_rest_bad_request(
+    request_type=operations_pb2.ListOperationsRequest,
+):
+    client = DataScanServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type()
+    request = json_format.ParseDict(
+        {"name": "projects/sample1/locations/sample2"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.list_operations(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        operations_pb2.ListOperationsRequest,
+        dict,
+    ],
+)
+def test_list_operations_rest(request_type):
+    client = DataScanServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    request_init = {"name": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.ListOperationsResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        response = client.list_operations(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, operations_pb2.ListOperationsResponse)
+
+
+def test_initialize_client_w_rest():
+    client = DataScanServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    assert client is not None
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_data_scan_empty_call_rest():
+    client = DataScanServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.create_data_scan), "__call__") as call:
+        client.create_data_scan(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = datascans.CreateDataScanRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_data_scan_empty_call_rest():
+    client = DataScanServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.update_data_scan), "__call__") as call:
+        client.update_data_scan(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = datascans.UpdateDataScanRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_data_scan_empty_call_rest():
+    client = DataScanServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.delete_data_scan), "__call__") as call:
+        client.delete_data_scan(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = datascans.DeleteDataScanRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_data_scan_empty_call_rest():
+    client = DataScanServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_data_scan), "__call__") as call:
+        client.get_data_scan(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = datascans.GetDataScanRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_data_scans_empty_call_rest():
+    client = DataScanServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_data_scans), "__call__") as call:
+        client.list_data_scans(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = datascans.ListDataScansRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_run_data_scan_empty_call_rest():
+    client = DataScanServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.run_data_scan), "__call__") as call:
+        client.run_data_scan(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = datascans.RunDataScanRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_data_scan_job_empty_call_rest():
+    client = DataScanServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_data_scan_job), "__call__"
+    ) as call:
+        client.get_data_scan_job(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = datascans.GetDataScanJobRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_data_scan_jobs_empty_call_rest():
+    client = DataScanServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_data_scan_jobs), "__call__"
+    ) as call:
+        client.list_data_scan_jobs(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = datascans.ListDataScanJobsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_generate_data_quality_rules_empty_call_rest():
+    client = DataScanServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.generate_data_quality_rules), "__call__"
+    ) as call:
+        client.generate_data_quality_rules(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = datascans.GenerateDataQualityRulesRequest()
+
+        assert args[0] == request_msg
+
+
+def test_data_scan_service_rest_lro_client():
+    client = DataScanServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    transport = client.transport
+
+    # Ensure that we have an api-core operations client.
+    assert isinstance(
+        transport.operations_client,
+        operations_v1.AbstractOperationsClient,
+    )
+
+    # Ensure that subsequent calls to the property send the exact same object.
+    assert transport.operations_client is transport.operations_client
+
+
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
     client = DataScanServiceClient(
@@ -5267,6 +9383,7 @@ def test_data_scan_service_transport_auth_adc(transport_class):
     [
         transports.DataScanServiceGrpcTransport,
         transports.DataScanServiceGrpcAsyncIOTransport,
+        transports.DataScanServiceRestTransport,
     ],
 )
 def test_data_scan_service_transport_auth_gdch_credentials(transport_class):
@@ -5364,11 +9481,23 @@ def test_data_scan_service_grpc_transport_client_cert_source_for_mtls(transport_
             )
 
 
+def test_data_scan_service_http_transport_client_cert_source_for_mtls():
+    cred = ga_credentials.AnonymousCredentials()
+    with mock.patch(
+        "google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"
+    ) as mock_configure_mtls_channel:
+        transports.DataScanServiceRestTransport(
+            credentials=cred, client_cert_source_for_mtls=client_cert_source_callback
+        )
+        mock_configure_mtls_channel.assert_called_once_with(client_cert_source_callback)
+
+
 @pytest.mark.parametrize(
     "transport_name",
     [
         "grpc",
         "grpc_asyncio",
+        "rest",
     ],
 )
 def test_data_scan_service_host_no_port(transport_name):
@@ -5379,7 +9508,11 @@ def test_data_scan_service_host_no_port(transport_name):
         ),
         transport=transport_name,
     )
-    assert client.transport._host == ("dataplex.googleapis.com:443")
+    assert client.transport._host == (
+        "dataplex.googleapis.com:443"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://dataplex.googleapis.com"
+    )
 
 
 @pytest.mark.parametrize(
@@ -5387,6 +9520,7 @@ def test_data_scan_service_host_no_port(transport_name):
     [
         "grpc",
         "grpc_asyncio",
+        "rest",
     ],
 )
 def test_data_scan_service_host_with_port(transport_name):
@@ -5397,7 +9531,57 @@ def test_data_scan_service_host_with_port(transport_name):
         ),
         transport=transport_name,
     )
-    assert client.transport._host == ("dataplex.googleapis.com:8000")
+    assert client.transport._host == (
+        "dataplex.googleapis.com:8000"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://dataplex.googleapis.com:8000"
+    )
+
+
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        "rest",
+    ],
+)
+def test_data_scan_service_client_transport_session_collision(transport_name):
+    creds1 = ga_credentials.AnonymousCredentials()
+    creds2 = ga_credentials.AnonymousCredentials()
+    client1 = DataScanServiceClient(
+        credentials=creds1,
+        transport=transport_name,
+    )
+    client2 = DataScanServiceClient(
+        credentials=creds2,
+        transport=transport_name,
+    )
+    session1 = client1.transport.create_data_scan._session
+    session2 = client2.transport.create_data_scan._session
+    assert session1 != session2
+    session1 = client1.transport.update_data_scan._session
+    session2 = client2.transport.update_data_scan._session
+    assert session1 != session2
+    session1 = client1.transport.delete_data_scan._session
+    session2 = client2.transport.delete_data_scan._session
+    assert session1 != session2
+    session1 = client1.transport.get_data_scan._session
+    session2 = client2.transport.get_data_scan._session
+    assert session1 != session2
+    session1 = client1.transport.list_data_scans._session
+    session2 = client2.transport.list_data_scans._session
+    assert session1 != session2
+    session1 = client1.transport.run_data_scan._session
+    session2 = client2.transport.run_data_scan._session
+    assert session1 != session2
+    session1 = client1.transport.get_data_scan_job._session
+    session2 = client2.transport.get_data_scan_job._session
+    assert session1 != session2
+    session1 = client1.transport.list_data_scan_jobs._session
+    session2 = client2.transport.list_data_scan_jobs._session
+    assert session1 != session2
+    session1 = client1.transport.generate_data_quality_rules._session
+    session2 = client2.transport.generate_data_quality_rules._session
+    assert session1 != session2
 
 
 def test_data_scan_service_grpc_transport_channel():
@@ -6703,8 +10887,21 @@ async def test_transport_close_grpc_asyncio():
         close.assert_called_once()
 
 
+def test_transport_close_rest():
+    client = DataScanServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    with mock.patch.object(
+        type(getattr(client.transport, "_session")), "close"
+    ) as close:
+        with client:
+            close.assert_not_called()
+        close.assert_called_once()
+
+
 def test_client_ctx():
     transports = [
+        "rest",
         "grpc",
     ]
     for transport in transports:

@@ -1,5 +1,25 @@
 # Changelog
 
+## [0.13.8](https://github.com/googleapis/google-cloud-python/compare/google-cloud-discoveryengine-v0.13.7...google-cloud-discoveryengine-v0.13.8) (2025-03-27)
+
+
+### Features
+
+* add time_zone in user info ([4e8f5f3](https://github.com/googleapis/google-cloud-python/commit/4e8f5f33cc5e309dafde4495f8f69df4202f8933))
+* move serving config update API to GA ([4e8f5f3](https://github.com/googleapis/google-cloud-python/commit/4e8f5f33cc5e309dafde4495f8f69df4202f8933))
+
+
+### Documentation
+
+* keep the API doc up-to-date with recent changes ([4e8f5f3](https://github.com/googleapis/google-cloud-python/commit/4e8f5f33cc5e309dafde4495f8f69df4202f8933))
+
+## [0.13.7](https://github.com/googleapis/google-cloud-python/compare/google-cloud-discoveryengine-v0.13.6...google-cloud-discoveryengine-v0.13.7) (2025-03-15)
+
+
+### Bug Fixes
+
+* [Many APIs] Allow Protobuf 6.x ([feb5353](https://github.com/googleapis/google-cloud-python/commit/feb53532240bb70a94b359b519f0f41f95875a33))
+
 ## [0.13.6](https://github.com/googleapis/google-cloud-python/compare/google-cloud-discoveryengine-v0.13.5...google-cloud-discoveryengine-v0.13.6) (2025-02-12)
 
 

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@ from .productinputs import (
     DeleteProductInputRequest,
     InsertProductInputRequest,
     ProductInput,
+    UpdateProductInputRequest,
 )
 from .products import (
     GetProductRequest,
@@ -37,6 +38,7 @@ from .products_common import (
     ProductStatus,
     ProductStructuredDescription,
     ProductStructuredTitle,
+    ProductSustainabilityIncentive,
     ProductWeight,
     Shipping,
     ShippingDimension,
@@ -52,6 +54,7 @@ __all__ = (
     "DeleteProductInputRequest",
     "InsertProductInputRequest",
     "ProductInput",
+    "UpdateProductInputRequest",
     "GetProductRequest",
     "ListProductsRequest",
     "ListProductsResponse",
@@ -68,6 +71,7 @@ __all__ = (
     "ProductStatus",
     "ProductStructuredDescription",
     "ProductStructuredTitle",
+    "ProductSustainabilityIncentive",
     "ProductWeight",
     "Shipping",
     "ShippingDimension",

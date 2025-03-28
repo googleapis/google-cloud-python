@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@ import proto  # type: ignore
 
 from google.cloud.discoveryengine_v1.types import conversation as gcd_conversation
 from google.cloud.discoveryengine_v1.types import answer as gcd_answer
-from google.cloud.discoveryengine_v1.types import search_service
+from google.cloud.discoveryengine_v1.types import safety, search_service
 from google.cloud.discoveryengine_v1.types import session as gcd_session
 
 __protobuf__ = proto.module(
@@ -396,6 +396,8 @@ class AnswerQueryRequest(proto.Message):
             Model specification.
         related_questions_spec (google.cloud.discoveryengine_v1.types.AnswerQueryRequest.RelatedQuestionsSpec):
             Related questions specification.
+        grounding_spec (google.cloud.discoveryengine_v1.types.AnswerQueryRequest.GroundingSpec):
+            Optional. Grounding specification.
         answer_generation_spec (google.cloud.discoveryengine_v1.types.AnswerQueryRequest.AnswerGenerationSpec):
             Answer generation specification.
         search_spec (google.cloud.discoveryengine_v1.types.AnswerQueryRequest.SearchSpec):
@@ -451,20 +453,83 @@ class AnswerQueryRequest(proto.Message):
             See `Google Cloud
             Document <https://cloud.google.com/resource-manager/docs/creating-managing-labels#requirements>`__
             for more details.
+        end_user_spec (google.cloud.discoveryengine_v1.types.AnswerQueryRequest.EndUserSpec):
+            Optional. End user specification.
     """
 
     class SafetySpec(proto.Message):
-        r"""Safety specification.
+        r"""Safety specification. There are two use cases:
+
+        1. when only safety_spec.enable is set, the BLOCK_LOW_AND_ABOVE
+           threshold will be applied for all categories.
+        2. when safety_spec.enable is set and some safety_settings are set,
+           only specified safety_settings are applied.
 
         Attributes:
             enable (bool):
                 Enable the safety filtering on the answer
                 response. It is false by default.
+            safety_settings (MutableSequence[google.cloud.discoveryengine_v1.types.AnswerQueryRequest.SafetySpec.SafetySetting]):
+                Optional. Safety settings. This settings are effective only
+                when the safety_spec.enable is true.
         """
+
+        class SafetySetting(proto.Message):
+            r"""Safety settings.
+
+            Attributes:
+                category (google.cloud.discoveryengine_v1.types.HarmCategory):
+                    Required. Harm category.
+                threshold (google.cloud.discoveryengine_v1.types.AnswerQueryRequest.SafetySpec.SafetySetting.HarmBlockThreshold):
+                    Required. The harm block threshold.
+            """
+
+            class HarmBlockThreshold(proto.Enum):
+                r"""Probability based thresholds levels for blocking.
+
+                Values:
+                    HARM_BLOCK_THRESHOLD_UNSPECIFIED (0):
+                        Unspecified harm block threshold.
+                    BLOCK_LOW_AND_ABOVE (1):
+                        Block low threshold and above (i.e. block
+                        more).
+                    BLOCK_MEDIUM_AND_ABOVE (2):
+                        Block medium threshold and above.
+                    BLOCK_ONLY_HIGH (3):
+                        Block only high threshold (i.e. block less).
+                    BLOCK_NONE (4):
+                        Block none.
+                    OFF (5):
+                        Turn off the safety filter.
+                """
+                HARM_BLOCK_THRESHOLD_UNSPECIFIED = 0
+                BLOCK_LOW_AND_ABOVE = 1
+                BLOCK_MEDIUM_AND_ABOVE = 2
+                BLOCK_ONLY_HIGH = 3
+                BLOCK_NONE = 4
+                OFF = 5
+
+            category: safety.HarmCategory = proto.Field(
+                proto.ENUM,
+                number=1,
+                enum=safety.HarmCategory,
+            )
+            threshold: "AnswerQueryRequest.SafetySpec.SafetySetting.HarmBlockThreshold" = proto.Field(
+                proto.ENUM,
+                number=2,
+                enum="AnswerQueryRequest.SafetySpec.SafetySetting.HarmBlockThreshold",
+            )
 
         enable: bool = proto.Field(
             proto.BOOL,
             number=1,
+        )
+        safety_settings: MutableSequence[
+            "AnswerQueryRequest.SafetySpec.SafetySetting"
+        ] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=2,
+            message="AnswerQueryRequest.SafetySpec.SafetySetting",
         )
 
     class RelatedQuestionsSpec(proto.Message):
@@ -478,6 +543,50 @@ class AnswerQueryRequest(proto.Message):
         enable: bool = proto.Field(
             proto.BOOL,
             number=1,
+        )
+
+    class GroundingSpec(proto.Message):
+        r"""Grounding specification.
+
+        Attributes:
+            include_grounding_supports (bool):
+                Optional. Specifies whether to include grounding_supports in
+                the answer. The default value is ``false``.
+
+                When this field is set to ``true``, returned answer will
+                have ``grounding_score`` and will contain GroundingSupports
+                for each claim.
+            filtering_level (google.cloud.discoveryengine_v1.types.AnswerQueryRequest.GroundingSpec.FilteringLevel):
+                Optional. Specifies whether to enable the
+                filtering based on grounding score and at what
+                level.
+        """
+
+        class FilteringLevel(proto.Enum):
+            r"""Level to filter based on answer grounding.
+
+            Values:
+                FILTERING_LEVEL_UNSPECIFIED (0):
+                    Default is no filter
+                FILTERING_LEVEL_LOW (1):
+                    Filter answers based on a low threshold.
+                FILTERING_LEVEL_HIGH (2):
+                    Filter answers based on a high threshold.
+            """
+            FILTERING_LEVEL_UNSPECIFIED = 0
+            FILTERING_LEVEL_LOW = 1
+            FILTERING_LEVEL_HIGH = 2
+
+        include_grounding_supports: bool = proto.Field(
+            proto.BOOL,
+            number=2,
+        )
+        filtering_level: "AnswerQueryRequest.GroundingSpec.FilteringLevel" = (
+            proto.Field(
+                proto.ENUM,
+                number=3,
+                enum="AnswerQueryRequest.GroundingSpec.FilteringLevel",
+            )
         )
 
     class AnswerGenerationSpec(proto.Message):
@@ -954,6 +1063,9 @@ class AnswerQueryRequest(proto.Message):
                 Query classification specification.
             query_rephraser_spec (google.cloud.discoveryengine_v1.types.AnswerQueryRequest.QueryUnderstandingSpec.QueryRephraserSpec):
                 Query rephraser specification.
+            disable_spell_correction (bool):
+                Optional. Whether to disable spell correction. The default
+                value is ``false``.
         """
 
         class QueryClassificationSpec(proto.Message):
@@ -1006,7 +1118,44 @@ class AnswerQueryRequest(proto.Message):
                     The max number is 5 steps.
                     If not set or set to < 1, it will be set to 1 by
                     default.
+                model_spec (google.cloud.discoveryengine_v1.types.AnswerQueryRequest.QueryUnderstandingSpec.QueryRephraserSpec.ModelSpec):
+                    Optional. Query Rephraser Model
+                    specification.
             """
+
+            class ModelSpec(proto.Message):
+                r"""Query Rephraser Model specification.
+
+                Attributes:
+                    model_type (google.cloud.discoveryengine_v1.types.AnswerQueryRequest.QueryUnderstandingSpec.QueryRephraserSpec.ModelSpec.ModelType):
+                        Optional. Enabled query rephraser model type.
+                        If not set, it will use LARGE by default.
+                """
+
+                class ModelType(proto.Enum):
+                    r"""Query rephraser types. Currently only supports single-hop
+                    (max_rephrase_steps = 1) model selections. For multi-hop
+                    (max_rephrase_steps > 1), there is only one default model.
+
+                    Values:
+                        MODEL_TYPE_UNSPECIFIED (0):
+                            Unspecified model type.
+                        SMALL (1):
+                            Small query rephraser model. Gemini 1.0 XS
+                            model.
+                        LARGE (2):
+                            Large query rephraser model. Gemini 1.0 Pro
+                            model.
+                    """
+                    MODEL_TYPE_UNSPECIFIED = 0
+                    SMALL = 1
+                    LARGE = 2
+
+                model_type: "AnswerQueryRequest.QueryUnderstandingSpec.QueryRephraserSpec.ModelSpec.ModelType" = proto.Field(
+                    proto.ENUM,
+                    number=1,
+                    enum="AnswerQueryRequest.QueryUnderstandingSpec.QueryRephraserSpec.ModelSpec.ModelType",
+                )
 
             disable: bool = proto.Field(
                 proto.BOOL,
@@ -1015,6 +1164,11 @@ class AnswerQueryRequest(proto.Message):
             max_rephrase_steps: int = proto.Field(
                 proto.INT32,
                 number=2,
+            )
+            model_spec: "AnswerQueryRequest.QueryUnderstandingSpec.QueryRephraserSpec.ModelSpec" = proto.Field(
+                proto.MESSAGE,
+                number=3,
+                message="AnswerQueryRequest.QueryUnderstandingSpec.QueryRephraserSpec.ModelSpec",
             )
 
         query_classification_spec: "AnswerQueryRequest.QueryUnderstandingSpec.QueryClassificationSpec" = proto.Field(
@@ -1026,6 +1180,83 @@ class AnswerQueryRequest(proto.Message):
             proto.MESSAGE,
             number=2,
             message="AnswerQueryRequest.QueryUnderstandingSpec.QueryRephraserSpec",
+        )
+        disable_spell_correction: bool = proto.Field(
+            proto.BOOL,
+            number=3,
+        )
+
+    class EndUserSpec(proto.Message):
+        r"""End user specification.
+
+        Attributes:
+            end_user_metadata (MutableSequence[google.cloud.discoveryengine_v1.types.AnswerQueryRequest.EndUserSpec.EndUserMetaData]):
+                Optional. End user metadata.
+        """
+
+        class EndUserMetaData(proto.Message):
+            r"""End user metadata.
+
+            .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+            Attributes:
+                chunk_info (google.cloud.discoveryengine_v1.types.AnswerQueryRequest.EndUserSpec.EndUserMetaData.ChunkInfo):
+                    Chunk information.
+
+                    This field is a member of `oneof`_ ``content``.
+            """
+
+            class ChunkInfo(proto.Message):
+                r"""Chunk information.
+
+                Attributes:
+                    content (str):
+                        Chunk textual content. It is limited to 8000
+                        characters.
+                    document_metadata (google.cloud.discoveryengine_v1.types.AnswerQueryRequest.EndUserSpec.EndUserMetaData.ChunkInfo.DocumentMetadata):
+                        Metadata of the document from the current
+                        chunk.
+                """
+
+                class DocumentMetadata(proto.Message):
+                    r"""Document metadata contains the information of the document of
+                    the current chunk.
+
+                    Attributes:
+                        title (str):
+                            Title of the document.
+                    """
+
+                    title: str = proto.Field(
+                        proto.STRING,
+                        number=1,
+                    )
+
+                content: str = proto.Field(
+                    proto.STRING,
+                    number=1,
+                )
+                document_metadata: "AnswerQueryRequest.EndUserSpec.EndUserMetaData.ChunkInfo.DocumentMetadata" = proto.Field(
+                    proto.MESSAGE,
+                    number=2,
+                    message="AnswerQueryRequest.EndUserSpec.EndUserMetaData.ChunkInfo.DocumentMetadata",
+                )
+
+            chunk_info: "AnswerQueryRequest.EndUserSpec.EndUserMetaData.ChunkInfo" = (
+                proto.Field(
+                    proto.MESSAGE,
+                    number=1,
+                    oneof="content",
+                    message="AnswerQueryRequest.EndUserSpec.EndUserMetaData.ChunkInfo",
+                )
+            )
+
+        end_user_metadata: MutableSequence[
+            "AnswerQueryRequest.EndUserSpec.EndUserMetaData"
+        ] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="AnswerQueryRequest.EndUserSpec.EndUserMetaData",
         )
 
     serving_config: str = proto.Field(
@@ -1050,6 +1281,11 @@ class AnswerQueryRequest(proto.Message):
         proto.MESSAGE,
         number=5,
         message=RelatedQuestionsSpec,
+    )
+    grounding_spec: GroundingSpec = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message=GroundingSpec,
     )
     answer_generation_spec: AnswerGenerationSpec = proto.Field(
         proto.MESSAGE,
@@ -1078,6 +1314,11 @@ class AnswerQueryRequest(proto.Message):
         proto.STRING,
         proto.STRING,
         number=13,
+    )
+    end_user_spec: EndUserSpec = proto.Field(
+        proto.MESSAGE,
+        number=14,
+        message=EndUserSpec,
     )
 
 
@@ -1208,11 +1449,18 @@ class GetSessionRequest(proto.Message):
         name (str):
             Required. The resource name of the Session to get. Format:
             ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store_id}/sessions/{session_id}``
+        include_answer_details (bool):
+            Optional. If set to true, the full session
+            including all answer details will be returned.
     """
 
     name: str = proto.Field(
         proto.STRING,
         number=1,
+    )
+    include_answer_details: bool = proto.Field(
+        proto.BOOL,
+        number=2,
     )
 
 
@@ -1243,8 +1491,14 @@ class ListSessionsRequest(proto.Message):
             -  ``update_time``
             -  ``create_time``
             -  ``session_name``
+            -  ``is_pinned``
 
-            Example: "update_time desc" "create_time".
+            Example:
+
+            -  "update_time desc"
+            -  "create_time"
+            -  "is_pinned desc,update_time desc": list sessions by
+               is_pinned first, then by update_time.
     """
 
     parent: str = proto.Field(

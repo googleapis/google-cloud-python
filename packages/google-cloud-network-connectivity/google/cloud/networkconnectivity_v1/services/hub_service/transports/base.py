@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -195,6 +195,16 @@ class HubServiceTransport(abc.ABC):
             ),
             self.accept_hub_spoke: gapic_v1.method.wrap_method(
                 self.accept_hub_spoke,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.accept_spoke_update: gapic_v1.method.wrap_method(
+                self.accept_spoke_update,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.reject_spoke_update: gapic_v1.method.wrap_method(
+                self.reject_spoke_update,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -406,6 +416,24 @@ class HubServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [hub.AcceptHubSpokeRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def accept_spoke_update(
+        self,
+    ) -> Callable[
+        [hub.AcceptSpokeUpdateRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def reject_spoke_update(
+        self,
+    ) -> Callable[
+        [hub.RejectSpokeUpdateRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()

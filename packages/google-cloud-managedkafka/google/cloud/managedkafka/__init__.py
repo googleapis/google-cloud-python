@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -24,6 +24,12 @@ from google.cloud.managedkafka_v1.services.managed_kafka.async_client import (
 from google.cloud.managedkafka_v1.services.managed_kafka.client import (
     ManagedKafkaClient,
 )
+from google.cloud.managedkafka_v1.services.managed_kafka_connect.async_client import (
+    ManagedKafkaConnectAsyncClient,
+)
+from google.cloud.managedkafka_v1.services.managed_kafka_connect.client import (
+    ManagedKafkaConnectClient,
+)
 from google.cloud.managedkafka_v1.types.managed_kafka import (
     CreateClusterRequest,
     CreateTopicRequest,
@@ -43,10 +49,37 @@ from google.cloud.managedkafka_v1.types.managed_kafka import (
     UpdateConsumerGroupRequest,
     UpdateTopicRequest,
 )
+from google.cloud.managedkafka_v1.types.managed_kafka_connect import (
+    CreateConnectClusterRequest,
+    CreateConnectorRequest,
+    DeleteConnectClusterRequest,
+    DeleteConnectorRequest,
+    GetConnectClusterRequest,
+    GetConnectorRequest,
+    ListConnectClustersRequest,
+    ListConnectClustersResponse,
+    ListConnectorsRequest,
+    ListConnectorsResponse,
+    PauseConnectorRequest,
+    PauseConnectorResponse,
+    RestartConnectorRequest,
+    RestartConnectorResponse,
+    ResumeConnectorRequest,
+    ResumeConnectorResponse,
+    StopConnectorRequest,
+    StopConnectorResponse,
+    UpdateConnectClusterRequest,
+    UpdateConnectorRequest,
+)
 from google.cloud.managedkafka_v1.types.resources import (
     AccessConfig,
     CapacityConfig,
     Cluster,
+    ConnectAccessConfig,
+    ConnectCluster,
+    ConnectGcpConfig,
+    ConnectNetworkConfig,
+    Connector,
     ConsumerGroup,
     ConsumerPartitionMetadata,
     ConsumerTopicMetadata,
@@ -54,12 +87,15 @@ from google.cloud.managedkafka_v1.types.resources import (
     NetworkConfig,
     OperationMetadata,
     RebalanceConfig,
+    TaskRetryPolicy,
     Topic,
 )
 
 __all__ = (
     "ManagedKafkaClient",
     "ManagedKafkaAsyncClient",
+    "ManagedKafkaConnectClient",
+    "ManagedKafkaConnectAsyncClient",
     "CreateClusterRequest",
     "CreateTopicRequest",
     "DeleteClusterRequest",
@@ -77,9 +113,34 @@ __all__ = (
     "UpdateClusterRequest",
     "UpdateConsumerGroupRequest",
     "UpdateTopicRequest",
+    "CreateConnectClusterRequest",
+    "CreateConnectorRequest",
+    "DeleteConnectClusterRequest",
+    "DeleteConnectorRequest",
+    "GetConnectClusterRequest",
+    "GetConnectorRequest",
+    "ListConnectClustersRequest",
+    "ListConnectClustersResponse",
+    "ListConnectorsRequest",
+    "ListConnectorsResponse",
+    "PauseConnectorRequest",
+    "PauseConnectorResponse",
+    "RestartConnectorRequest",
+    "RestartConnectorResponse",
+    "ResumeConnectorRequest",
+    "ResumeConnectorResponse",
+    "StopConnectorRequest",
+    "StopConnectorResponse",
+    "UpdateConnectClusterRequest",
+    "UpdateConnectorRequest",
     "AccessConfig",
     "CapacityConfig",
     "Cluster",
+    "ConnectAccessConfig",
+    "ConnectCluster",
+    "ConnectGcpConfig",
+    "ConnectNetworkConfig",
+    "Connector",
     "ConsumerGroup",
     "ConsumerPartitionMetadata",
     "ConsumerTopicMetadata",
@@ -87,5 +148,6 @@ __all__ = (
     "NetworkConfig",
     "OperationMetadata",
     "RebalanceConfig",
+    "TaskRetryPolicy",
     "Topic",
 )

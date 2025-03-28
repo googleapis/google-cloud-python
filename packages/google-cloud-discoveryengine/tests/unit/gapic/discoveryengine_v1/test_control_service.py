@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -1392,7 +1392,7 @@ def test_create_control_flattened():
         client.create_control(
             parent="parent_value",
             control=gcd_control.Control(
-                boost_action=gcd_control.Control.BoostAction(boost=0.551)
+                boost_action=gcd_control.Control.BoostAction(fixed_boost=0.1174)
             ),
             control_id="control_id_value",
         )
@@ -1406,7 +1406,7 @@ def test_create_control_flattened():
         assert arg == mock_val
         arg = args[0].control
         mock_val = gcd_control.Control(
-            boost_action=gcd_control.Control.BoostAction(boost=0.551)
+            boost_action=gcd_control.Control.BoostAction(fixed_boost=0.1174)
         )
         assert arg == mock_val
         arg = args[0].control_id
@@ -1426,7 +1426,7 @@ def test_create_control_flattened_error():
             control_service.CreateControlRequest(),
             parent="parent_value",
             control=gcd_control.Control(
-                boost_action=gcd_control.Control.BoostAction(boost=0.551)
+                boost_action=gcd_control.Control.BoostAction(fixed_boost=0.1174)
             ),
             control_id="control_id_value",
         )
@@ -1449,7 +1449,7 @@ async def test_create_control_flattened_async():
         response = await client.create_control(
             parent="parent_value",
             control=gcd_control.Control(
-                boost_action=gcd_control.Control.BoostAction(boost=0.551)
+                boost_action=gcd_control.Control.BoostAction(fixed_boost=0.1174)
             ),
             control_id="control_id_value",
         )
@@ -1463,7 +1463,7 @@ async def test_create_control_flattened_async():
         assert arg == mock_val
         arg = args[0].control
         mock_val = gcd_control.Control(
-            boost_action=gcd_control.Control.BoostAction(boost=0.551)
+            boost_action=gcd_control.Control.BoostAction(fixed_boost=0.1174)
         )
         assert arg == mock_val
         arg = args[0].control_id
@@ -1484,7 +1484,7 @@ async def test_create_control_flattened_error_async():
             control_service.CreateControlRequest(),
             parent="parent_value",
             control=gcd_control.Control(
-                boost_action=gcd_control.Control.BoostAction(boost=0.551)
+                boost_action=gcd_control.Control.BoostAction(fixed_boost=0.1174)
             ),
             control_id="control_id_value",
         )
@@ -2069,7 +2069,7 @@ def test_update_control_flattened():
         # using the keyword arguments to the method.
         client.update_control(
             control=gcd_control.Control(
-                boost_action=gcd_control.Control.BoostAction(boost=0.551)
+                boost_action=gcd_control.Control.BoostAction(fixed_boost=0.1174)
             ),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
@@ -2080,7 +2080,7 @@ def test_update_control_flattened():
         _, args, _ = call.mock_calls[0]
         arg = args[0].control
         mock_val = gcd_control.Control(
-            boost_action=gcd_control.Control.BoostAction(boost=0.551)
+            boost_action=gcd_control.Control.BoostAction(fixed_boost=0.1174)
         )
         assert arg == mock_val
         arg = args[0].update_mask
@@ -2099,7 +2099,7 @@ def test_update_control_flattened_error():
         client.update_control(
             control_service.UpdateControlRequest(),
             control=gcd_control.Control(
-                boost_action=gcd_control.Control.BoostAction(boost=0.551)
+                boost_action=gcd_control.Control.BoostAction(fixed_boost=0.1174)
             ),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
@@ -2121,7 +2121,7 @@ async def test_update_control_flattened_async():
         # using the keyword arguments to the method.
         response = await client.update_control(
             control=gcd_control.Control(
-                boost_action=gcd_control.Control.BoostAction(boost=0.551)
+                boost_action=gcd_control.Control.BoostAction(fixed_boost=0.1174)
             ),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
@@ -2132,7 +2132,7 @@ async def test_update_control_flattened_async():
         _, args, _ = call.mock_calls[0]
         arg = args[0].control
         mock_val = gcd_control.Control(
-            boost_action=gcd_control.Control.BoostAction(boost=0.551)
+            boost_action=gcd_control.Control.BoostAction(fixed_boost=0.1174)
         )
         assert arg == mock_val
         arg = args[0].update_mask
@@ -2152,7 +2152,7 @@ async def test_update_control_flattened_error_async():
         await client.update_control(
             control_service.UpdateControlRequest(),
             control=gcd_control.Control(
-                boost_action=gcd_control.Control.BoostAction(boost=0.551)
+                boost_action=gcd_control.Control.BoostAction(fixed_boost=0.1174)
             ),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
@@ -3183,7 +3183,7 @@ def test_create_control_rest_flattened():
         mock_args = dict(
             parent="parent_value",
             control=gcd_control.Control(
-                boost_action=gcd_control.Control.BoostAction(boost=0.551)
+                boost_action=gcd_control.Control.BoostAction(fixed_boost=0.1174)
             ),
             control_id="control_id_value",
         )
@@ -3225,7 +3225,7 @@ def test_create_control_rest_flattened_error(transport: str = "rest"):
             control_service.CreateControlRequest(),
             parent="parent_value",
             control=gcd_control.Control(
-                boost_action=gcd_control.Control.BoostAction(boost=0.551)
+                boost_action=gcd_control.Control.BoostAction(fixed_boost=0.1174)
             ),
             control_id="control_id_value",
         )
@@ -3545,7 +3545,7 @@ def test_update_control_rest_flattened():
         # get truthy value for each flattened field
         mock_args = dict(
             control=gcd_control.Control(
-                boost_action=gcd_control.Control.BoostAction(boost=0.551)
+                boost_action=gcd_control.Control.BoostAction(fixed_boost=0.1174)
             ),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
@@ -3586,7 +3586,7 @@ def test_update_control_rest_flattened_error(transport: str = "rest"):
         client.update_control(
             control_service.UpdateControlRequest(),
             control=gcd_control.Control(
-                boost_action=gcd_control.Control.BoostAction(boost=0.551)
+                boost_action=gcd_control.Control.BoostAction(fixed_boost=0.1174)
             ),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
@@ -4450,6 +4450,15 @@ def test_create_control_rest_call_success(request_type):
     request_init = {"parent": "projects/sample1/locations/sample2/dataStores/sample3"}
     request_init["control"] = {
         "boost_action": {
+            "fixed_boost": 0.1174,
+            "interpolation_boost_spec": {
+                "field_name": "field_name_value",
+                "attribute_type": 1,
+                "interpolation_type": 1,
+                "control_points": [
+                    {"attribute_value": "attribute_value_value", "boost_amount": 0.1306}
+                ],
+            },
             "boost": 0.551,
             "filter": "filter_value",
             "data_store": "data_store_value",
@@ -4457,6 +4466,16 @@ def test_create_control_rest_call_success(request_type):
         "filter_action": {"filter": "filter_value", "data_store": "data_store_value"},
         "redirect_action": {"redirect_uri": "redirect_uri_value"},
         "synonyms_action": {"synonyms": ["synonyms_value1", "synonyms_value2"]},
+        "promote_action": {
+            "data_store": "data_store_value",
+            "search_link_promotion": {
+                "title": "title_value",
+                "uri": "uri_value",
+                "image_uri": "image_uri_value",
+                "description": "description_value",
+                "enabled": True,
+            },
+        },
         "name": "name_value",
         "display_name": "display_name_value",
         "associated_serving_config_ids": [
@@ -4802,6 +4821,15 @@ def test_update_control_rest_call_success(request_type):
     }
     request_init["control"] = {
         "boost_action": {
+            "fixed_boost": 0.1174,
+            "interpolation_boost_spec": {
+                "field_name": "field_name_value",
+                "attribute_type": 1,
+                "interpolation_type": 1,
+                "control_points": [
+                    {"attribute_value": "attribute_value_value", "boost_amount": 0.1306}
+                ],
+            },
             "boost": 0.551,
             "filter": "filter_value",
             "data_store": "data_store_value",
@@ -4809,6 +4837,16 @@ def test_update_control_rest_call_success(request_type):
         "filter_action": {"filter": "filter_value", "data_store": "data_store_value"},
         "redirect_action": {"redirect_uri": "redirect_uri_value"},
         "synonyms_action": {"synonyms": ["synonyms_value1", "synonyms_value2"]},
+        "promote_action": {
+            "data_store": "data_store_value",
+            "search_link_promotion": {
+                "title": "title_value",
+                "uri": "uri_value",
+                "image_uri": "image_uri_value",
+                "description": "description_value",
+                "enabled": True,
+            },
+        },
         "name": "projects/sample1/locations/sample2/dataStores/sample3/controls/sample4",
         "display_name": "display_name_value",
         "associated_serving_config_ids": [

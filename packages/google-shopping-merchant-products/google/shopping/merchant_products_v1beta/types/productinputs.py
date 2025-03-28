@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+from google.protobuf import field_mask_pb2  # type: ignore
 from google.shopping.type.types import types
 import proto  # type: ignore
 
@@ -27,6 +28,7 @@ __protobuf__ = proto.module(
     manifest={
         "ProductInput",
         "InsertProductInputRequest",
+        "UpdateProductInputRequest",
         "DeleteProductInputRequest",
     },
 )
@@ -72,7 +74,7 @@ class ProductInput(proto.Message):
             Output only. The name of the processed product. Format:
             ``"{product.name=accounts/{account}/products/{product}}"``
         channel (google.shopping.type.types.Channel.ChannelEnum):
-            Required. Immutable. The
+            Immutable. The
             `channel <https://support.google.com/merchants/answer/7361332>`__
             of the product.
         offer_id (str):
@@ -178,8 +180,11 @@ class InsertProductInputRequest(proto.Message):
             Required. The primary or supplemental product data source
             name. If the product already exists and data source provided
             is different, then the product will be moved to a new data
-            source. Format:
-            ``accounts/{account}/dataSources/{datasource}``.
+            source.
+
+            Only API data sources are supported.
+
+            Format: ``accounts/{account}/dataSources/{datasource}``.
     """
 
     parent: str = proto.Field(
@@ -190,6 +195,62 @@ class InsertProductInputRequest(proto.Message):
         proto.MESSAGE,
         number=2,
         message="ProductInput",
+    )
+    data_source: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class UpdateProductInputRequest(proto.Message):
+    r"""Request message for the UpdateProductInput method.
+    The product (primary input) must exist for the update to
+    succeed. If the update is for a primary product input, the
+    existing primary product input must be from the same data
+    source.
+
+    Attributes:
+        product_input (google.shopping.merchant_products_v1beta.types.ProductInput):
+            Required. The product input resource to
+            update. Information you submit will be applied
+            to the processed product as well.
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Optional. The list of product attributes to be updated.
+
+            If the update mask is omitted, then it is treated as implied
+            field mask equivalent to all fields that are populated (have
+            a non-empty value).
+
+            Attributes specified in the update mask without a value
+            specified in the body will be deleted from the product.
+
+            Update mask can only be specified for top level fields in
+            attributes and custom attributes.
+
+            To specify the update mask for custom attributes you need to
+            add the ``custom_attribute.`` prefix.
+
+            Providing special "*" value for full product replacement is
+            not supported.
+        data_source (str):
+            Required. The primary or supplemental product data source
+            where ``data_source`` name identifies the product input to
+            be updated.
+
+            Only API data sources are supported.
+
+            Format: ``accounts/{account}/dataSources/{datasource}``.
+    """
+
+    product_input: "ProductInput" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="ProductInput",
+    )
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
     )
     data_source: str = proto.Field(
         proto.STRING,

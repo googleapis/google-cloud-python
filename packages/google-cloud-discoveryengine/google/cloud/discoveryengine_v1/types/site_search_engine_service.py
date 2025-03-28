@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -40,6 +40,12 @@ __protobuf__ = proto.module(
         "ListTargetSitesResponse",
         "BatchCreateTargetSiteMetadata",
         "BatchCreateTargetSitesResponse",
+        "CreateSitemapRequest",
+        "DeleteSitemapRequest",
+        "FetchSitemapsRequest",
+        "CreateSitemapMetadata",
+        "DeleteSitemapMetadata",
+        "FetchSitemapsResponse",
         "EnableAdvancedSiteSearchRequest",
         "EnableAdvancedSiteSearchResponse",
         "EnableAdvancedSiteSearchMetadata",
@@ -427,6 +433,211 @@ class BatchCreateTargetSitesResponse(proto.Message):
     )
 
 
+class CreateSitemapRequest(proto.Message):
+    r"""Request message for
+    [SiteSearchEngineService.CreateSitemap][google.cloud.discoveryengine.v1.SiteSearchEngineService.CreateSitemap]
+    method.
+
+    Attributes:
+        parent (str):
+            Required. Parent resource name of the
+            [SiteSearchEngine][google.cloud.discoveryengine.v1.SiteSearchEngine],
+            such as
+            ``projects/*/locations/*/collections/*/dataStores/*/siteSearchEngine``.
+        sitemap (google.cloud.discoveryengine_v1.types.Sitemap):
+            Required. The
+            [Sitemap][google.cloud.discoveryengine.v1.Sitemap] to
+            create.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    sitemap: gcd_site_search_engine.Sitemap = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=gcd_site_search_engine.Sitemap,
+    )
+
+
+class DeleteSitemapRequest(proto.Message):
+    r"""Request message for
+    [SiteSearchEngineService.DeleteSitemap][google.cloud.discoveryengine.v1.SiteSearchEngineService.DeleteSitemap]
+    method.
+
+    Attributes:
+        name (str):
+            Required. Full resource name of
+            [Sitemap][google.cloud.discoveryengine.v1.Sitemap], such as
+            ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/siteSearchEngine/sitemaps/{sitemap}``.
+
+            If the caller does not have permission to access the
+            [Sitemap][google.cloud.discoveryengine.v1.Sitemap],
+            regardless of whether or not it exists, a PERMISSION_DENIED
+            error is returned.
+
+            If the requested
+            [Sitemap][google.cloud.discoveryengine.v1.Sitemap] does not
+            exist, a NOT_FOUND error is returned.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class FetchSitemapsRequest(proto.Message):
+    r"""Request message for
+    [SiteSearchEngineService.FetchSitemaps][google.cloud.discoveryengine.v1.SiteSearchEngineService.FetchSitemaps]
+    method.
+
+    Attributes:
+        parent (str):
+            Required. Parent resource name of the
+            [SiteSearchEngine][google.cloud.discoveryengine.v1.SiteSearchEngine],
+            such as
+            ``projects/*/locations/*/collections/*/dataStores/*/siteSearchEngine``.
+        matcher (google.cloud.discoveryengine_v1.types.FetchSitemapsRequest.Matcher):
+            Optional. If specified, fetches the matching
+            [Sitemap][google.cloud.discoveryengine.v1.Sitemap]s. If not
+            specified, fetches all
+            [Sitemap][google.cloud.discoveryengine.v1.Sitemap]s in the
+            [DataStore][google.cloud.discoveryengine.v1.DataStore].
+    """
+
+    class UrisMatcher(proto.Message):
+        r"""Matcher for the [Sitemap][google.cloud.discoveryengine.v1.Sitemap]s
+        by their uris.
+
+        Attributes:
+            uris (MutableSequence[str]):
+                The [Sitemap][google.cloud.discoveryengine.v1.Sitemap] uris.
+        """
+
+        uris: MutableSequence[str] = proto.RepeatedField(
+            proto.STRING,
+            number=1,
+        )
+
+    class Matcher(proto.Message):
+        r"""Matcher for the [Sitemap][google.cloud.discoveryengine.v1.Sitemap]s.
+        Currently only supports uris matcher.
+
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+        Attributes:
+            uris_matcher (google.cloud.discoveryengine_v1.types.FetchSitemapsRequest.UrisMatcher):
+                Matcher by sitemap URIs.
+
+                This field is a member of `oneof`_ ``matcher``.
+        """
+
+        uris_matcher: "FetchSitemapsRequest.UrisMatcher" = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            oneof="matcher",
+            message="FetchSitemapsRequest.UrisMatcher",
+        )
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    matcher: Matcher = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=Matcher,
+    )
+
+
+class CreateSitemapMetadata(proto.Message):
+    r"""Metadata related to the progress of the
+    [SiteSearchEngineService.CreateSitemap][google.cloud.discoveryengine.v1.SiteSearchEngineService.CreateSitemap]
+    operation. This will be returned by the
+    google.longrunning.Operation.metadata field.
+
+    Attributes:
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            Operation create time.
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
+            Operation last update time. If the operation
+            is done, this is also the finish time.
+    """
+
+    create_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+
+
+class DeleteSitemapMetadata(proto.Message):
+    r"""Metadata related to the progress of the
+    [SiteSearchEngineService.DeleteSitemap][google.cloud.discoveryengine.v1.SiteSearchEngineService.DeleteSitemap]
+    operation. This will be returned by the
+    google.longrunning.Operation.metadata field.
+
+    Attributes:
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            Operation create time.
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
+            Operation last update time. If the operation
+            is done, this is also the finish time.
+    """
+
+    create_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+
+
+class FetchSitemapsResponse(proto.Message):
+    r"""Response message for
+    [SiteSearchEngineService.FetchSitemaps][google.cloud.discoveryengine.v1.SiteSearchEngineService.FetchSitemaps]
+    method.
+
+    Attributes:
+        sitemaps_metadata (MutableSequence[google.cloud.discoveryengine_v1.types.FetchSitemapsResponse.SitemapMetadata]):
+            List of [Sitemap][google.cloud.discoveryengine.v1.Sitemap]s
+            fetched.
+    """
+
+    class SitemapMetadata(proto.Message):
+        r"""Contains a [Sitemap][google.cloud.discoveryengine.v1.Sitemap] and
+        its metadata.
+
+        Attributes:
+            sitemap (google.cloud.discoveryengine_v1.types.Sitemap):
+                The [Sitemap][google.cloud.discoveryengine.v1.Sitemap].
+        """
+
+        sitemap: gcd_site_search_engine.Sitemap = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            message=gcd_site_search_engine.Sitemap,
+        )
+
+    sitemaps_metadata: MutableSequence[SitemapMetadata] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=SitemapMetadata,
+    )
+
+
 class EnableAdvancedSiteSearchRequest(proto.Message):
     r"""Request message for
     [SiteSearchEngineService.EnableAdvancedSiteSearch][google.cloud.discoveryengine.v1.SiteSearchEngineService.EnableAdvancedSiteSearch]
@@ -551,10 +762,7 @@ class RecrawlUrisRequest(proto.Message):
             [TargetSite][google.cloud.discoveryengine.v1.TargetSite] in
             ``site_search_engine``.
         site_credential (str):
-            Optional. Full resource name of the [SiteCredential][], such
-            as
-            ``projects/*/locations/*/collections/*/dataStores/*/siteSearchEngine/siteCredentials/*``.
-            Only set to crawl private URIs.
+            Optional. Credential id to use for crawling.
     """
 
     site_search_engine: str = proto.Field(
@@ -673,10 +881,26 @@ class RecrawlUrisMetadata(proto.Message):
             Operation last update time. If the operation
             is done, this is also the finish time.
         invalid_uris (MutableSequence[str]):
+            Unique URIs in the request that have invalid
+            format. Sample limited to 1000.
+        invalid_uris_count (int):
+            Total number of unique URIs in the request
+            that have invalid format.
+        noindex_uris (MutableSequence[str]):
+            URIs that have no index meta tag. Sample
+            limited to 1000.
+        noindex_uris_count (int):
+            Total number of URIs that have no index meta
+            tag.
+        uris_not_matching_target_sites (MutableSequence[str]):
             Unique URIs in the request that don't match
             any TargetSite in the DataStore, only match
             TargetSites that haven't been fully indexed, or
-            match a TargetSite with type EXCLUDE.
+            match a TargetSite with type EXCLUDE. Sample
+            limited to 1000.
+        uris_not_matching_target_sites_count (int):
+            Total number of URIs that don't match any
+            TargetSites.
         valid_uris_count (int):
             Total number of unique URIs in the request that are not in
             invalid_uris.
@@ -704,6 +928,26 @@ class RecrawlUrisMetadata(proto.Message):
     invalid_uris: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
+    )
+    invalid_uris_count: int = proto.Field(
+        proto.INT32,
+        number=8,
+    )
+    noindex_uris: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=11,
+    )
+    noindex_uris_count: int = proto.Field(
+        proto.INT32,
+        number=12,
+    )
+    uris_not_matching_target_sites: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=9,
+    )
+    uris_not_matching_target_sites_count: int = proto.Field(
+        proto.INT32,
+        number=10,
     )
     valid_uris_count: int = proto.Field(
         proto.INT32,

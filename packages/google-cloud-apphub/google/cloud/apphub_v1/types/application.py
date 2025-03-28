@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -33,15 +33,14 @@ __protobuf__ = proto.module(
 
 class Application(proto.Message):
     r"""Application defines the governance boundary for App Hub
-    Entities that perform a logical end-to-end business function.
+    entities that perform a logical end-to-end business function.
     App Hub supports application level IAM permission to align with
     governance requirements.
 
     Attributes:
         name (str):
-            Identifier. The resource name of an
-            Application. Format:
-            "projects/{host-project-id}/locations/{location}/applications/{application-id}".
+            Identifier. The resource name of an Application. Format:
+            ``"projects/{host-project-id}/locations/{location}/applications/{application-id}"``
         display_name (str):
             Optional. User-defined name for the
             Application. Can have a maximum length of 63
@@ -145,9 +144,12 @@ class Scope(proto.Message):
                 Unspecified type.
             REGIONAL (1):
                 Regional type.
+            GLOBAL (2):
+                Global type.
         """
         TYPE_UNSPECIFIED = 0
         REGIONAL = 1
+        GLOBAL = 2
 
     type_: Type = proto.Field(
         proto.ENUM,

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -59,12 +59,16 @@ class Entitlement(proto.Message):
                 Entitlement and Account are active.
             ACCOUNT_SUSPENDED (4):
                 Account is suspended.
+            NOT_APPROVED_IN_PRIVATE_MARKETPLACE (5):
+                Entitlement is not approved in private
+                marketplace.
         """
         STATE_UNSPECIFIED = 0
         ACCOUNT_NOT_LINKED = 1
         ACCOUNT_NOT_ACTIVE = 2
         ACTIVE = 3
         ACCOUNT_SUSPENDED = 4
+        NOT_APPROVED_IN_PRIVATE_MARKETPLACE = 5
 
     name: str = proto.Field(
         proto.STRING,

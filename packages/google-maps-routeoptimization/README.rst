@@ -3,7 +3,7 @@ Python Client for Route Optimization API
 
 |preview| |pypi| |versions|
 
-`Route Optimization API`_: he Route Optimization API assigns tasks and routes to a vehicle fleet, optimizing against the objectives and constraints that you supply for your transportation goals.
+`Route Optimization API`_: The Route Optimization API assigns tasks and routes to a vehicle fleet, optimizing against the objectives and constraints that you supply for your transportation goals.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
