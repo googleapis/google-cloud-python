@@ -57,8 +57,7 @@ git config --global --add safe.directory "${PROJECT_ROOT}"
 
 # Workaround for older pip not able to resolve dependencies. See internal
 # issue 316909553.
-python3.10 -m pip install pip==23.3.2
-python3.10 -m pip install --require-hashes -r .kokoro/requirements.txt
+python3.10 -m pip install pip==25.0.1
 
 # Disable buffering, so that the logs stream through.
 export PYTHONUNBUFFERED=1
