@@ -65,10 +65,14 @@ except ImportError:
 
 
 def remote_function(
-    *,
+    # Make sure that the input/output types, and dataset can be used
+    # positionally. This avoids the worst of the breaking change from 1.x to
+    # 2.x while still preventing possible mixups between consecutive str
+    # parameters.
     input_types: Union[None, type, Sequence[type]] = None,
     output_type: Optional[type] = None,
     dataset: Optional[str] = None,
+    *,
     bigquery_connection: Optional[str] = None,
     reuse: bool = True,
     name: Optional[str] = None,

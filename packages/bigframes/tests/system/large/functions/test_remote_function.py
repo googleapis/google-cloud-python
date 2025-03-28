@@ -109,9 +109,11 @@ def test_remote_function_multiply_with_ibis(
     try:
 
         @session.remote_function(
-            input_types=[int, int],
-            output_type=int,
-            dataset=dataset_id,
+            # Make sure that the input/output types can be used positionally.
+            # This avoids the worst of the breaking change from 1.x to 2.x.
+            [int, int],
+            int,
+            dataset_id,
             bigquery_connection=bq_cf_connection,
             reuse=False,
             cloud_function_service_account="default",
@@ -164,9 +166,11 @@ def test_remote_function_stringify_with_ibis(
     try:
 
         @session.remote_function(
-            input_types=[int],
-            output_type=str,
-            dataset=dataset_id,
+            # Make sure that the input/output types can be used positionally.
+            # This avoids the worst of the breaking change from 1.x to 2.x.
+            [int],
+            str,
+            dataset_id,
             bigquery_connection=bq_cf_connection,
             reuse=False,
             cloud_function_service_account="default",
@@ -213,9 +217,11 @@ def test_remote_function_binop(session, scalars_dfs, dataset_id, bq_cf_connectio
             return x * abs(y % 4)
 
         remote_func = session.remote_function(
-            input_types=[str, int],
-            output_type=str,
-            dataset=dataset_id,
+            # Make sure that the input/output types can be used positionally.
+            # This avoids the worst of the breaking change from 1.x to 2.x.
+            [str, int],
+            str,
+            dataset_id,
             bigquery_connection=bq_cf_connection,
             reuse=False,
             cloud_function_service_account="default",
@@ -251,9 +257,11 @@ def test_remote_function_binop_array_output(
             return [len(x), abs(y % 4)]
 
         remote_func = session.remote_function(
-            input_types=[str, int],
-            output_type=list[int],
-            dataset=dataset_id,
+            # Make sure that the input/output types can be used positionally.
+            # This avoids the worst of the breaking change from 1.x to 2.x.
+            [str, int],
+            list[int],
+            dataset_id,
             bigquery_connection=bq_cf_connection,
             reuse=False,
             cloud_function_service_account="default",
@@ -286,9 +294,11 @@ def test_remote_function_decorator_with_bigframes_series(
     try:
 
         @session.remote_function(
-            input_types=[int],
-            output_type=int,
-            dataset=dataset_id,
+            # Make sure that the input/output types can be used positionally.
+            # This avoids the worst of the breaking change from 1.x to 2.x.
+            [int],
+            int,
+            dataset_id,
             bigquery_connection=bq_cf_connection,
             reuse=False,
             cloud_function_service_account="default",
@@ -333,9 +343,11 @@ def test_remote_function_explicit_with_bigframes_series(
             return x + 1
 
         remote_add_one = session.remote_function(
-            input_types=[int],
-            output_type=int,
-            dataset=dataset_id,
+            # Make sure that the input/output types can be used positionally.
+            # This avoids the worst of the breaking change from 1.x to 2.x.
+            [int],
+            int,
+            dataset_id,
             bigquery_connection=bq_cf_connection,
             reuse=False,
             cloud_function_service_account="default",
@@ -385,8 +397,10 @@ def test_remote_function_input_types(session, scalars_dfs, input_types):
             return x + 1
 
         remote_add_one = session.remote_function(
-            input_types=input_types,
-            output_type=int,
+            # Make sure that the input/output types can be used positionally.
+            # This avoids the worst of the breaking change from 1.x to 2.x.
+            input_types,
+            int,
             reuse=False,
             cloud_function_service_account="default",
         )(add_one)
@@ -415,8 +429,10 @@ def test_remote_function_explicit_dataset_not_created(
     try:
 
         @session.remote_function(
-            input_types=[int],
-            output_type=int,
+            # Make sure that the input/output types can be used positionally.
+            # This avoids the worst of the breaking change from 1.x to 2.x.
+            [int],
+            int,
             dataset=dataset_id_not_created,
             bigquery_connection=bq_cf_connection,
             reuse=False,
@@ -469,9 +485,11 @@ def test_remote_udf_referring_outside_var(
             return NO_SIGN
 
         remote_sign = session.remote_function(
-            input_types=[int],
-            output_type=int,
-            dataset=dataset_id,
+            # Make sure that the input/output types can be used positionally.
+            # This avoids the worst of the breaking change from 1.x to 2.x.
+            [int],
+            int,
+            dataset_id,
             bigquery_connection=bq_cf_connection,
             reuse=False,
             cloud_function_service_account="default",
@@ -517,9 +535,11 @@ def test_remote_udf_referring_outside_import(
             return 2 * mymath.pi * radius
 
         remote_circumference = session.remote_function(
-            input_types=[float],
-            output_type=float,
-            dataset=dataset_id,
+            # Make sure that the input/output types can be used positionally.
+            # This avoids the worst of the breaking change from 1.x to 2.x.
+            [float],
+            float,
+            dataset_id,
             bigquery_connection=bq_cf_connection,
             reuse=False,
             cloud_function_service_account="default",
