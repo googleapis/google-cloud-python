@@ -16,6 +16,7 @@ from datetime import datetime
 import typing
 
 import pandas as pd
+import pyarrow as pa
 import pytest
 import pytz
 
@@ -388,150 +389,190 @@ def test_merge_series(scalars_dfs, merge_how):
 
 
 def _convert_pandas_category(pd_s: pd.Series):
+    """
+    Transforms a pandas Series with Categorical dtype into a bigframes-compatible
+    Series representing intervals."
+    """
+    # When `labels=False`
+    if pd.api.types.is_integer_dtype(pd_s.dtype) or pd.api.types.is_float_dtype(
+        pd_s.dtype
+    ):
+        return pd_s.astype("Int64")
+
     if not isinstance(pd_s.dtype, pd.CategoricalDtype):
-        raise ValueError("Input must be a pandas Series with categorical data.")
+        raise ValueError(
+            f"Input must be a pandas Series with categorical data: {pd_s.dtype}"
+        )
 
-    if len(pd_s.dtype.categories) == 0:
-        return pd.Series([pd.NA] * len(pd_s), name=pd_s.name)
-
-    pd_interval: pd.IntervalIndex = pd_s.cat.categories[pd_s.cat.codes]  # type: ignore
-    if pd_interval.closed == "left":
+    if pd_s.cat.categories.dtype.closed == "left":  # type: ignore
         left_key = "left_inclusive"
         right_key = "right_exclusive"
     else:
         left_key = "left_exclusive"
         right_key = "right_inclusive"
-    return pd.Series(
-        [
-            {left_key: interval.left, right_key: interval.right}
+
+    subtype = pd_s.cat.categories.dtype.subtype  # type: ignore
+    if pd.api.types.is_float_dtype(subtype):
+        interval_dtype = pa.float64()
+    elif pd.api.types.is_integer_dtype(subtype):
+        interval_dtype = pa.int64()
+    else:
+        raise ValueError(f"Unknown category type: {subtype}")
+
+    dtype = pd.ArrowDtype(
+        pa.struct(
+            [
+                pa.field(left_key, interval_dtype, nullable=True),
+                pa.field(right_key, interval_dtype, nullable=True),
+            ]
+        )
+    )
+
+    if len(pd_s.dtype.categories) == 0:
+        data = [pd.NA] * len(pd_s)
+    else:
+        data = [
+            {left_key: interval.left, right_key: interval.right}  # type: ignore
             if pd.notna(val)
             else pd.NA
-            for val, interval in zip(pd_s, pd_interval)
-        ],
+            for val, interval in zip(pd_s, pd_s.cat.categories[pd_s.cat.codes])  # type: ignore
+        ]
+
+    return pd.Series(
+        data=data,
         name=pd_s.name,
+        dtype=dtype,
+        index=pd_s.index.astype("Int64"),
     )
 
 
 @pytest.mark.parametrize(
-    ("right"),
+    ("right", "labels"),
     [
-        pytest.param(True),
-        pytest.param(False),
+        pytest.param(True, None, id="right_w_none_labels"),
+        pytest.param(True, False, id="right_w_false_labels"),
+        pytest.param(False, None, id="left_w_none_labels"),
+        pytest.param(False, False, id="left_w_false_labels"),
     ],
 )
-def test_cut(scalars_dfs, right):
+def test_cut_by_int_bins(scalars_dfs, labels, right):
     scalars_df, scalars_pandas_df = scalars_dfs
 
-    pd_result = pd.cut(scalars_pandas_df["float64_col"], 5, labels=False, right=right)
-    bf_result = bpd.cut(scalars_df["float64_col"], 5, labels=False, right=right)
+    pd_result = pd.cut(scalars_pandas_df["float64_col"], 5, labels=labels, right=right)
+    bf_result = bpd.cut(scalars_df["float64_col"], 5, labels=labels, right=right)
 
-    # make sure the result is a supported dtype
-    assert bf_result.dtype == bpd.Int64Dtype()
-    pd_result = pd_result.astype("Int64")
+    pd_result = _convert_pandas_category(pd_result)
     pd.testing.assert_series_equal(bf_result.to_pandas(), pd_result)
 
 
 @pytest.mark.parametrize(
-    ("right"),
+    ("breaks", "right", "labels"),
     [
-        pytest.param(True),
-        pytest.param(False),
+        pytest.param(
+            [0, 5, 10, 15, 20, 100, 1000],
+            True,
+            None,
+            id="int_breaks_w_right_closed_and_none_labels",
+        ),
+        pytest.param(
+            [0, 5, 10, 15, 20, 100, 1000],
+            False,
+            False,
+            id="int_breaks_w_left_closed_and_false_labels",
+        ),
+        pytest.param(
+            [0.5, 10.5, 15.5, 20.5, 100.5, 1000.5],
+            False,
+            None,
+            id="float_breaks_w_left_closed_and_none_labels",
+        ),
+        pytest.param(
+            [0, 5, 10.5, 15.5, 20, 100, 1000.5],
+            True,
+            False,
+            id="mixed_types_breaks_w_right_closed_and_false_labels",
+        ),
     ],
 )
-def test_cut_default_labels(scalars_dfs, right):
+def test_cut_numeric_breaks(scalars_dfs, breaks, right, labels):
     scalars_df, scalars_pandas_df = scalars_dfs
 
-    pd_result = pd.cut(scalars_pandas_df["float64_col"], 5, right=right)
-    bf_result = bpd.cut(scalars_df["float64_col"], 5, right=right).to_pandas()
-
-    # Convert to match data format
-    pd_result_converted = _convert_pandas_category(pd_result)
-    pd.testing.assert_series_equal(
-        bf_result, pd_result_converted, check_index=False, check_dtype=False
+    pd_result = pd.cut(
+        scalars_pandas_df["float64_col"], breaks, right=right, labels=labels
     )
+    bf_result = bpd.cut(
+        scalars_df["float64_col"], breaks, right=right, labels=labels
+    ).to_pandas()
+
+    pd_result_converted = _convert_pandas_category(pd_result)
+    pd.testing.assert_series_equal(bf_result, pd_result_converted)
 
 
 @pytest.mark.parametrize(
-    ("breaks", "right"),
+    ("bins", "right", "labels"),
     [
-        pytest.param([0, 5, 10, 15, 20, 100, 1000], True, id="int_right"),
-        pytest.param([0, 5, 10, 15, 20, 100, 1000], False, id="int_left"),
-        pytest.param([0.5, 10.5, 15.5, 20.5, 100.5, 1000.5], False, id="float_left"),
-        pytest.param([0, 5, 10.5, 15.5, 20, 100, 1000.5], True, id="mixed_right"),
+        pytest.param(
+            [(-5, 2), (2, 3), (-3000, -10)], True, None, id="tuple_right_w_none_labels"
+        ),
+        pytest.param(
+            [(-5, 2), (2, 3), (-3000, -10)],
+            False,
+            False,
+            id="tuple_left_w_false_labels",
+        ),
+        pytest.param(
+            pd.IntervalIndex.from_tuples([(1, 2), (2, 3), (4, 5)]),
+            True,
+            False,
+            id="interval_right_w_none_labels",
+        ),
+        pytest.param(
+            pd.IntervalIndex.from_tuples([(1, 2), (2, 3), (4, 5)]),
+            False,
+            None,
+            id="interval_left_w_false_labels",
+        ),
     ],
 )
-def test_cut_numeric_breaks(scalars_dfs, breaks, right):
+def test_cut_with_interval(scalars_dfs, bins, right, labels):
     scalars_df, scalars_pandas_df = scalars_dfs
+    bf_result = bpd.cut(
+        scalars_df["int64_too"], bins, labels=labels, right=right
+    ).to_pandas()
 
-    pd_result = pd.cut(scalars_pandas_df["float64_col"], breaks, right=right)
-    bf_result = bpd.cut(scalars_df["float64_col"], breaks, right=right).to_pandas()
+    if isinstance(bins, list):
+        bins = pd.IntervalIndex.from_tuples(bins)
+    pd_result = pd.cut(scalars_pandas_df["int64_too"], bins, labels=labels, right=right)
 
-    # Convert to match data format
     pd_result_converted = _convert_pandas_category(pd_result)
-
-    pd.testing.assert_series_equal(
-        bf_result, pd_result_converted, check_index=False, check_dtype=False
-    )
+    pd.testing.assert_series_equal(bf_result, pd_result_converted)
 
 
 @pytest.mark.parametrize(
     "bins",
     [
-        pytest.param([], id="empty_list"),
+        pytest.param([], id="empty_breaks"),
         pytest.param(
-            [1], id="single_int_list", marks=pytest.mark.skip(reason="b/404338651")
+            [1], id="single_int_breaks", marks=pytest.mark.skip(reason="b/404338651")
         ),
         pytest.param(pd.IntervalIndex.from_tuples([]), id="empty_interval_index"),
     ],
 )
-def test_cut_w_edge_cases(scalars_dfs, bins):
+def test_cut_by_edge_cases_bins(scalars_dfs, bins):
     scalars_df, scalars_pandas_df = scalars_dfs
     bf_result = bpd.cut(scalars_df["int64_too"], bins, labels=False).to_pandas()
     if isinstance(bins, list):
         bins = pd.IntervalIndex.from_tuples(bins)
     pd_result = pd.cut(scalars_pandas_df["int64_too"], bins, labels=False)
 
-    # Convert to match data format
     pd_result_converted = _convert_pandas_category(pd_result)
-
-    pd.testing.assert_series_equal(
-        bf_result, pd_result_converted, check_index=False, check_dtype=False
-    )
+    pd.testing.assert_series_equal(bf_result, pd_result_converted)
 
 
-@pytest.mark.parametrize(
-    ("bins", "right"),
-    [
-        pytest.param([(-5, 2), (2, 3), (-3000, -10)], True, id="tuple_right"),
-        pytest.param([(-5, 2), (2, 3), (-3000, -10)], False, id="tuple_left"),
-        pytest.param(
-            pd.IntervalIndex.from_tuples([(1, 2), (2, 3), (4, 5)]),
-            True,
-            id="interval_right",
-        ),
-        pytest.param(
-            pd.IntervalIndex.from_tuples([(1, 2), (2, 3), (4, 5)]),
-            False,
-            id="interval_left",
-        ),
-    ],
-)
-def test_cut_with_interval(scalars_dfs, bins, right):
-    scalars_df, scalars_pandas_df = scalars_dfs
-    bf_result = bpd.cut(
-        scalars_df["int64_too"], bins, labels=False, right=right
-    ).to_pandas()
-
-    if isinstance(bins, list):
-        bins = pd.IntervalIndex.from_tuples(bins)
-    pd_result = pd.cut(scalars_pandas_df["int64_too"], bins, labels=False, right=right)
-
-    # Convert to match data format
-    pd_result_converted = _convert_pandas_category(pd_result)
-
-    pd.testing.assert_series_equal(
-        bf_result, pd_result_converted, check_index=False, check_dtype=False
-    )
+def test_cut_empty_array_raises_error():
+    bf_df = bpd.Series([])
+    with pytest.raises(ValueError, match="Cannot cut empty array"):
+        bpd.cut(bf_df, bins=5)
 
 
 @pytest.mark.parametrize(

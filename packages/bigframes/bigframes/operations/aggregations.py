@@ -347,7 +347,7 @@ class CutOp(UnaryWindowOp):
         return False
 
     def output_type(self, *input_types: dtypes.ExpressionType) -> dtypes.ExpressionType:
-        if isinstance(self.bins, int) and (self.labels is False):
+        if self.labels is False:
             return dtypes.INT_DTYPE
         else:
             # Assumption: buckets use same numeric type
