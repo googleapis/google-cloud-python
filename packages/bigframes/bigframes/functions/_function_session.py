@@ -807,9 +807,13 @@ class FunctionSession:
 
         bq_location, _ = _utils.get_remote_function_locations(bigquery_client.location)
 
-        # A connection is required for BQ managed function.
-        bq_connection_id = self._resolve_bigquery_connection_id(
-            session, dataset_ref, bq_location, bigquery_connection
+        # A connection is optional for BQ managed function.
+        bq_connection_id = (
+            self._resolve_bigquery_connection_id(
+                session, dataset_ref, bq_location, bigquery_connection
+            )
+            if bigquery_connection
+            else None
         )
 
         bq_connection_manager = session.bqconnectionmanager
@@ -907,6 +911,7 @@ class FunctionSession:
                 name=name,
                 packages=packages,
                 is_row_processor=is_row_processor,
+                bq_connection_id=bq_connection_id,
             )
 
             # TODO(shobs): Find a better way to support udfs with param named

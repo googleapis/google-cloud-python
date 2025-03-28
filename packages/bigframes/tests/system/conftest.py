@@ -185,8 +185,13 @@ def session_tokyo(tokyo_location: str) -> Generator[bigframes.Session, None, Non
 
 
 @pytest.fixture(scope="session")
-def bq_connection(bigquery_client: bigquery.Client) -> str:
-    return f"{bigquery_client.project}.{bigquery_client.location}.bigframes-rf-conn"
+def bq_connection_name() -> str:
+    return "bigframes-rf-conn"
+
+
+@pytest.fixture(scope="session")
+def bq_connection(bigquery_client: bigquery.Client, bq_connection_name: str) -> str:
+    return f"{bigquery_client.project}.{bigquery_client.location}.{bq_connection_name}"
 
 
 @pytest.fixture(scope="session", autouse=True)
