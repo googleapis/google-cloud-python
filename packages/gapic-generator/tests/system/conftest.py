@@ -12,13 +12,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import collections
+
 import grpc
 from unittest import mock
 import os
 import pytest
 
+from typing import Sequence, Tuple
+
 from google.api_core.client_options import ClientOptions  # type: ignore
+from google.showcase_v1beta1.services.echo.transports import EchoRestInterceptor
 
 try:
     from google.auth.aio import credentials as ga_credentials_async
@@ -42,6 +45,7 @@ if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
     try:
         from google.showcase_v1beta1.services.echo.transports import (
             AsyncEchoRestTransport,
+            AsyncEchoRestInterceptor,
         )
 
         HAS_ASYNC_REST_ECHO_TRANSPORT = True
@@ -248,7 +252,51 @@ def messaging(use_mtls, request):
     return construct_client(MessagingClient, use_mtls, transport_name=request.param)
 
 
-class MetadataClientInterceptor(
+class EchoMetadataClientRestInterceptor(EchoRestInterceptor):
+    request_metadata: Sequence[Tuple[str, str]] = []
+    response_metadata: Sequence[Tuple[str, str]] = []
+
+    def pre_echo(self, request, metadata):
+        self.request_metadata = metadata
+        return request, metadata
+
+    def post_echo_with_metadata(self, request, metadata):
+        self.response_metadata = metadata
+        return request, metadata
+
+    def pre_expand(self, request, metadata):
+        self.request_metadata = metadata
+        return request, metadata
+
+    def post_expand_with_metadata(self, request, metadata):
+        self.response_metadata = metadata
+        return request, metadata
+
+
+if HAS_ASYNC_REST_ECHO_TRANSPORT:
+
+    class EchoMetadataClientRestAsyncInterceptor(AsyncEchoRestInterceptor):
+        request_metadata: Sequence[Tuple[str, str]] = []
+        response_metadata: Sequence[Tuple[str, str]] = []
+
+        async def pre_echo(self, request, metadata):
+            self.request_metadata = metadata
+            return request, metadata
+
+        async def post_echo_with_metadata(self, request, metadata):
+            self.response_metadata = metadata
+            return request, metadata
+
+        async def pre_expand(self, request, metadata):
+            self.request_metadata = metadata
+            return request, metadata
+
+        async def post_expand_with_metadata(self, request, metadata):
+            self.response_metadata = metadata
+            return request, metadata
+
+
+class EchoMetadataClientGrpcInterceptor(
     grpc.UnaryUnaryClientInterceptor,
     grpc.UnaryStreamClientInterceptor,
     grpc.StreamUnaryClientInterceptor,
@@ -257,42 +305,94 @@ class MetadataClientInterceptor(
     def __init__(self, key, value):
         self._key = key
         self._value = value
+        self.request_metadata = []
+        self.response_metadata = []
 
-    def _add_metadata(self, client_call_details):
+    def _add_request_metadata(self, client_call_details):
         if client_call_details.metadata is not None:
             client_call_details.metadata.append((self._key, self._value))
+            self.request_metadata = client_call_details.metadata
 
     def intercept_unary_unary(self, continuation, client_call_details, request):
-        self._add_metadata(client_call_details)
+        self._add_request_metadata(client_call_details)
         response = continuation(client_call_details, request)
+        metadata = [(k, str(v)) for k, v in response.trailing_metadata()]
+        self.response_metadata = metadata
         return response
 
     def intercept_unary_stream(self, continuation, client_call_details, request):
-        self._add_metadata(client_call_details)
+        self._add_request_metadata(client_call_details)
         response_it = continuation(client_call_details, request)
         return response_it
 
     def intercept_stream_unary(
         self, continuation, client_call_details, request_iterator
     ):
-        self._add_metadata(client_call_details)
+        self._add_request_metadata(client_call_details)
         response = continuation(client_call_details, request_iterator)
         return response
 
     def intercept_stream_stream(
         self, continuation, client_call_details, request_iterator
     ):
-        self._add_metadata(client_call_details)
+        self._add_request_metadata(client_call_details)
+        response_it = continuation(client_call_details, request_iterator)
+        return response_it
+
+
+class EchoMetadataClientGrpcAsyncInterceptor(
+    grpc.aio.UnaryUnaryClientInterceptor,
+    grpc.aio.UnaryStreamClientInterceptor,
+    grpc.aio.StreamUnaryClientInterceptor,
+    grpc.aio.StreamStreamClientInterceptor,
+):
+    def __init__(self, key, value):
+        self._key = key
+        self._value = value
+        self.request_metadata = []
+        self.response_metadata = []
+
+    async def _add_request_metadata(self, client_call_details):
+        if client_call_details.metadata is not None:
+            client_call_details.metadata.append((self._key, self._value))
+            self.request_metadata = client_call_details.metadata
+
+    async def intercept_unary_unary(self, continuation, client_call_details, request):
+        await self._add_request_metadata(client_call_details)
+        response = await continuation(client_call_details, request)
+        metadata = [(k, str(v)) for k, v in await response.trailing_metadata()]
+        self.response_metadata = metadata
+        return response
+
+    async def intercept_unary_stream(self, continuation, client_call_details, request):
+        self._add_request_metadata(client_call_details)
+        response_it = continuation(client_call_details, request)
+        return response_it
+
+    async def intercept_stream_unary(
+        self, continuation, client_call_details, request_iterator
+    ):
+        self._add_request_metadata(client_call_details)
+        response = continuation(client_call_details, request_iterator)
+        return response
+
+    async def intercept_stream_stream(
+        self, continuation, client_call_details, request_iterator
+    ):
+        self._add_request_metadata(client_call_details)
         response_it = continuation(client_call_details, request_iterator)
         return response_it
 
 
 @pytest.fixture
-def intercepted_echo(use_mtls):
+def intercepted_echo_grpc(use_mtls):
     # The interceptor adds 'showcase-trailer' client metadata. Showcase server
-    # echos any metadata with key 'showcase-trailer', so the same metadata
+    # echoes any metadata with key 'showcase-trailer', so the same metadata
     # should appear as trailing metadata in the response.
-    interceptor = MetadataClientInterceptor("showcase-trailer", "intercepted")
+    interceptor = EchoMetadataClientGrpcInterceptor(
+        "showcase-trailer",
+        "intercepted",
+    )
     host = "localhost:7469"
     channel = (
         grpc.secure_channel(host, ssl_credentials)
@@ -304,4 +404,58 @@ def intercepted_echo(use_mtls):
         credentials=ga_credentials.AnonymousCredentials(),
         channel=intercept_channel,
     )
-    return EchoClient(transport=transport)
+    return EchoClient(transport=transport), interceptor
+
+
+@pytest.fixture
+def intercepted_echo_grpc_async():
+    # The interceptor adds 'showcase-trailer' client metadata. Showcase server
+    # echoes any metadata with key 'showcase-trailer', so the same metadata
+    # should appear as trailing metadata in the response.
+    interceptor = EchoMetadataClientGrpcAsyncInterceptor(
+        "showcase-trailer",
+        "intercepted",
+    )
+    host = "localhost:7469"
+    channel = grpc.aio.insecure_channel(host, interceptors=[interceptor])
+    # intercept_channel = grpc.aio.intercept_channel(channel, interceptor)
+    transport = EchoAsyncClient.get_transport_class("grpc_asyncio")(
+        credentials=ga_credentials.AnonymousCredentials(),
+        channel=channel,
+    )
+    return EchoAsyncClient(transport=transport), interceptor
+
+
+@pytest.fixture
+def intercepted_echo_rest():
+    transport_name = "rest"
+    transport_cls = EchoClient.get_transport_class(transport_name)
+    interceptor = EchoMetadataClientRestInterceptor()
+
+    # The custom host explicitly bypasses https.
+    transport = transport_cls(
+        credentials=ga_credentials.AnonymousCredentials(),
+        host="localhost:7469",
+        url_scheme="http",
+        interceptor=interceptor,
+    )
+    return EchoClient(transport=transport), interceptor
+
+
+@pytest.fixture
+def intercepted_echo_rest_async():
+    if not HAS_ASYNC_REST_ECHO_TRANSPORT:
+        pytest.skip("Skipping test with async rest.")
+
+    transport_name = "rest_asyncio"
+    transport_cls = EchoAsyncClient.get_transport_class(transport_name)
+    interceptor = EchoMetadataClientRestAsyncInterceptor()
+
+    # The custom host explicitly bypasses https.
+    transport = transport_cls(
+        credentials=async_anonymous_credentials(),
+        host="localhost:7469",
+        url_scheme="http",
+        interceptor=interceptor,
+    )
+    return EchoAsyncClient(transport=transport), interceptor
