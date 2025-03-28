@@ -39,15 +39,14 @@ class ServiceProjectAttachment(proto.Message):
 
     Attributes:
         name (str):
-            Identifier. The resource name of a
-            ServiceProjectAttachment. Format:
-            "projects/{host-project-id}/locations/global/serviceProjectAttachments/{service-project-id}.".
+            Identifier. The resource name of a ServiceProjectAttachment.
+            Format:
+            ``"projects/{host-project-id}/locations/global/serviceProjectAttachments/{service-project-id}."``
         service_project (str):
-            Required. Immutable. Service project name in
-            the format: "projects/abc" or "projects/123". As
-            input, project name with either project id or
-            number are accepted. As output, this field will
-            contain project number.
+            Required. Immutable. Service project name in the format:
+            ``"projects/abc"`` or ``"projects/123"``. As input, project
+            name with either project id or number are accepted. As
+            output, this field will contain project number.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Create time.
         uid (str):

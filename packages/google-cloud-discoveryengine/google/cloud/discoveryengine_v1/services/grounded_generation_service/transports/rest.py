@@ -576,7 +576,7 @@ class GroundedGenerationServiceRestTransport(
 
             Returns:
                 ~.grounded_generation_service.GenerateGroundedContentResponse:
-
+                    Response for the ``GenerateGroundedContent`` method.
             """
 
             http_options = (

@@ -23,10 +23,64 @@ import proto  # type: ignore
 __protobuf__ = proto.module(
     package="google.devtools.containeranalysis.v1",
     manifest={
+        "ExportSBOMRequest",
+        "ExportSBOMResponse",
         "GetVulnerabilityOccurrencesSummaryRequest",
         "VulnerabilityOccurrencesSummary",
     },
 )
+
+
+class ExportSBOMRequest(proto.Message):
+    r"""The request to generate and export SBOM. Target must be
+    specified for the request.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        name (str):
+            Required. The name of the resource in the form of
+            ``projects/[PROJECT_ID]/resources/[RESOURCE_URL]``.
+        cloud_storage_location (google.cloud.devtools.containeranalysis_v1.types.ExportSBOMRequest.CloudStorageLocation):
+            Optional. Empty placeholder to denote that
+            this is a Google Cloud Storage export request.
+
+            This field is a member of `oneof`_ ``target``.
+    """
+
+    class CloudStorageLocation(proto.Message):
+        r"""Empty placeholder to denote that this is a Google Cloud
+        Storage export request.
+
+        """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    cloud_storage_location: CloudStorageLocation = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        oneof="target",
+        message=CloudStorageLocation,
+    )
+
+
+class ExportSBOMResponse(proto.Message):
+    r"""The response from a call to ExportSBOM.
+
+    Attributes:
+        discovery_occurrence (str):
+            The name of the discovery occurrence in the form
+            "projects/{project_id}/occurrences/{OCCURRENCE_ID} It can be
+            used to track the progress of the SBOM export.
+    """
+
+    discovery_occurrence: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class GetVulnerabilityOccurrencesSummaryRequest(proto.Message):

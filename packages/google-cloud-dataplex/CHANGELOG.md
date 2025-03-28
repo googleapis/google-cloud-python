@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.9.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataplex-v2.8.0...google-cloud-dataplex-v2.9.0) (2025-03-27)
+
+
+### Features
+
+* Add support for REST transport ([fe3dc62](https://github.com/googleapis/google-cloud-python/commit/fe3dc623808a5c40c157bf4fe55e8dd1fac39320))
+
 ## [2.8.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataplex-v2.7.1...google-cloud-dataplex-v2.8.0) (2025-03-15)
 
 

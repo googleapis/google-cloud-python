@@ -84,6 +84,7 @@ from google.cloud.dataplex_v1.types import (
 from .transports.base import DEFAULT_CLIENT_INFO, DataScanServiceTransport
 from .transports.grpc import DataScanServiceGrpcTransport
 from .transports.grpc_asyncio import DataScanServiceGrpcAsyncIOTransport
+from .transports.rest import DataScanServiceRestTransport
 
 
 class DataScanServiceClientMeta(type):
@@ -99,6 +100,7 @@ class DataScanServiceClientMeta(type):
     )  # type: Dict[str, Type[DataScanServiceTransport]]
     _transport_registry["grpc"] = DataScanServiceGrpcTransport
     _transport_registry["grpc_asyncio"] = DataScanServiceGrpcAsyncIOTransport
+    _transport_registry["rest"] = DataScanServiceRestTransport
 
     def get_transport_class(
         cls,

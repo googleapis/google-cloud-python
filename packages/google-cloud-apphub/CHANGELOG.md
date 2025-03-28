@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.1.9](https://github.com/googleapis/google-cloud-python/compare/google-cloud-apphub-v0.1.8...google-cloud-apphub-v0.1.9) (2025-03-27)
+
+
+### Features
+
+* add enum `Type.GLOBAL` ([5293282](https://github.com/googleapis/google-cloud-python/commit/5293282236161407d435a51afd08d28bc032415d))
+
+
+### Documentation
+
+* misc comment updates, formatting ([5293282](https://github.com/googleapis/google-cloud-python/commit/5293282236161407d435a51afd08d28bc032415d))
+
 ## [0.1.8](https://github.com/googleapis/google-cloud-python/compare/google-cloud-apphub-v0.1.7...google-cloud-apphub-v0.1.8) (2025-03-15)
 
 

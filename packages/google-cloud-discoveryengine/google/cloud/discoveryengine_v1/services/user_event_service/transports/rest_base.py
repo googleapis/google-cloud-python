@@ -179,6 +179,11 @@ class _BaseUserEventServiceRestTransport(UserEventServiceTransport):
                     "uri": "/v1/{parent=projects/*/locations/*/collections/*/dataStores/*}/userEvents:import",
                     "body": "*",
                 },
+                {
+                    "method": "post",
+                    "uri": "/v1/{parent=projects/*/locations/*}/userEvents:import",
+                    "body": "*",
+                },
             ]
             return http_options
 
