@@ -31,8 +31,6 @@ def cut(
     age ranges. Supports binning into an equal number of bins, or a
     pre-specified array of bins.
 
-    ``labels=False`` implies you just want the bins back.
-
     **Examples:**
 
         >>> import bigframes.pandas as bpd
@@ -55,7 +53,16 @@ def cut(
             3     {'left_exclusive': 7.5, 'right_inclusive': 10.0}
             dtype: struct<left_exclusive: double, right_inclusive: double>[pyarrow]
 
-    Cut with an integer (equal-width bins) and labels=False:
+    Cut with the same bins, but assign them specific labels:
+
+        >>> bpd.cut(s, bins=3, labels=["bad", "medium", "good"])
+        0    bad
+        1    bad
+        2    medium
+        3    good
+        dtype: string
+
+    `labels=False` implies you want the bins back.
 
         >>> bpd.cut(s, bins=4, labels=False)
         0    0
@@ -67,7 +74,6 @@ def cut(
     Cut with pd.IntervalIndex, requires importing pandas for IntervalIndex:
 
         >>> import pandas as pd
-
         >>> interval_index = pd.IntervalIndex.from_tuples([(0, 1), (1, 5), (5, 20)])
         >>> bpd.cut(s, bins=interval_index)
         0                                            <NA>
@@ -107,7 +113,7 @@ def cut(
         dtype: struct<left_inclusive: int64, right_exclusive: int64>[pyarrow]
 
     Args:
-        x (Series):
+        x (bigframes.pandas.Series):
             The input Series to be binned. Must be 1-dimensional.
         bins (int, pd.IntervalIndex, Iterable):
             The criteria to bin by.
@@ -127,10 +133,11 @@ def cut(
             ``right == True`` (the default), then the `bins` ``[1, 2, 3, 4]``
             indicate (1,2], (2,3], (3,4]. This argument is ignored when
             `bins` is an IntervalIndex.
-        labels (default None):
+        labels (bool, Iterable, default None):
             Specifies the labels for the returned bins. Must be the same length as
             the resulting bins. If False, returns only integer indicators of the
-            bins. This affects the type of the output container.
+            bins. This affects the type of the output container. This argument is
+            ignored when `bins` is an IntervalIndex. If True, raises an error.
 
     Returns:
         bigframes.pandas.Series:

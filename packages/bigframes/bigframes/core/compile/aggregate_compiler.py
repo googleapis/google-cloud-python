@@ -366,7 +366,13 @@ def _(
         for this_bin in range(op.bins):
             if op.labels is False:
                 value = compile_ibis_types.literal_to_ibis_scalar(
-                    this_bin, force_dtype=pd.Int64Dtype()
+                    this_bin,
+                    force_dtype=pd.Int64Dtype(),
+                )
+            elif isinstance(op.labels, typing.Iterable):
+                value = compile_ibis_types.literal_to_ibis_scalar(
+                    list(op.labels)[this_bin],
+                    force_dtype=pd.StringDtype(storage="pyarrow"),
                 )
             else:
                 left_adj = adj if this_bin == 0 and op.right else 0
@@ -402,7 +408,13 @@ def _(
 
             if op.labels is False:
                 value = compile_ibis_types.literal_to_ibis_scalar(
-                    this_bin, force_dtype=pd.Int64Dtype()
+                    this_bin,
+                    force_dtype=pd.Int64Dtype(),
+                )
+            elif isinstance(op.labels, typing.Iterable):
+                value = compile_ibis_types.literal_to_ibis_scalar(
+                    list(op.labels)[this_bin],
+                    force_dtype=pd.StringDtype(storage="pyarrow"),
                 )
             else:
                 if op.right:
