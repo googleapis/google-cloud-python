@@ -174,6 +174,7 @@ def test_get_success_json():
         method="GET",
         url=_metadata._METADATA_ROOT + PATH,
         headers=_metadata._METADATA_HEADERS,
+        timeout=_metadata._METADATA_DEFAULT_TIMEOUT,
     )
     assert result[key] == value
 
@@ -192,6 +193,7 @@ def test_get_success_json_content_type_charset():
         method="GET",
         url=_metadata._METADATA_ROOT + PATH,
         headers=_metadata._METADATA_HEADERS,
+        timeout=_metadata._METADATA_DEFAULT_TIMEOUT,
     )
     assert result[key] == value
 
@@ -211,6 +213,7 @@ def test_get_success_retry(mock_sleep):
         method="GET",
         url=_metadata._METADATA_ROOT + PATH,
         headers=_metadata._METADATA_HEADERS,
+        timeout=_metadata._METADATA_DEFAULT_TIMEOUT,
     )
     assert request.call_count == 2
     assert result[key] == value
@@ -226,6 +229,7 @@ def test_get_success_text():
         method="GET",
         url=_metadata._METADATA_ROOT + PATH,
         headers=_metadata._METADATA_HEADERS,
+        timeout=_metadata._METADATA_DEFAULT_TIMEOUT,
     )
     assert result == data
 
@@ -241,6 +245,7 @@ def test_get_success_params():
         method="GET",
         url=_metadata._METADATA_ROOT + PATH + "?recursive=true",
         headers=_metadata._METADATA_HEADERS,
+        timeout=_metadata._METADATA_DEFAULT_TIMEOUT,
     )
     assert result == data
 
@@ -255,6 +260,7 @@ def test_get_success_recursive_and_params():
         method="GET",
         url=_metadata._METADATA_ROOT + PATH + "?recursive=true",
         headers=_metadata._METADATA_HEADERS,
+        timeout=_metadata._METADATA_DEFAULT_TIMEOUT,
     )
     assert result == data
 
@@ -269,6 +275,7 @@ def test_get_success_recursive():
         method="GET",
         url=_metadata._METADATA_ROOT + PATH + "?recursive=true",
         headers=_metadata._METADATA_HEADERS,
+        timeout=_metadata._METADATA_DEFAULT_TIMEOUT,
     )
     assert result == data
 
@@ -290,6 +297,7 @@ def test_get_success_custom_root_new_variable():
         method="GET",
         url="http://{}/computeMetadata/v1/{}".format(fake_root, PATH),
         headers=_metadata._METADATA_HEADERS,
+        timeout=_metadata._METADATA_DEFAULT_TIMEOUT,
     )
 
 
@@ -310,6 +318,7 @@ def test_get_success_custom_root_old_variable():
         method="GET",
         url="http://{}/computeMetadata/v1/{}".format(fake_root, PATH),
         headers=_metadata._METADATA_HEADERS,
+        timeout=_metadata._METADATA_DEFAULT_TIMEOUT,
     )
 
 
@@ -326,6 +335,7 @@ def test_get_failure(mock_sleep):
         method="GET",
         url=_metadata._METADATA_ROOT + PATH,
         headers=_metadata._METADATA_HEADERS,
+        timeout=_metadata._METADATA_DEFAULT_TIMEOUT,
     )
 
 
@@ -338,6 +348,7 @@ def test_get_return_none_for_not_found_error():
         method="GET",
         url=_metadata._METADATA_ROOT + PATH,
         headers=_metadata._METADATA_HEADERS,
+        timeout=_metadata._METADATA_DEFAULT_TIMEOUT,
     )
 
 
@@ -357,6 +368,7 @@ def test_get_failure_connection_failed(mock_sleep):
         method="GET",
         url=_metadata._METADATA_ROOT + PATH,
         headers=_metadata._METADATA_HEADERS,
+        timeout=_metadata._METADATA_DEFAULT_TIMEOUT,
     )
     assert request.call_count == 5
 
@@ -375,6 +387,7 @@ def test_get_too_many_requests_retryable_error_failure():
         method="GET",
         url=_metadata._METADATA_ROOT + PATH,
         headers=_metadata._METADATA_HEADERS,
+        timeout=_metadata._METADATA_DEFAULT_TIMEOUT,
     )
     assert request.call_count == 5
 
@@ -391,6 +404,7 @@ def test_get_failure_bad_json():
         method="GET",
         url=_metadata._METADATA_ROOT + PATH,
         headers=_metadata._METADATA_HEADERS,
+        timeout=_metadata._METADATA_DEFAULT_TIMEOUT,
     )
 
 
@@ -404,6 +418,7 @@ def test_get_project_id():
         method="GET",
         url=_metadata._METADATA_ROOT + "project/project-id",
         headers=_metadata._METADATA_HEADERS,
+        timeout=_metadata._METADATA_DEFAULT_TIMEOUT,
     )
     assert project_id == project
 
@@ -419,6 +434,7 @@ def test_get_universe_domain_success():
         method="GET",
         url=_metadata._METADATA_ROOT + "universe/universe-domain",
         headers=_metadata._METADATA_HEADERS,
+        timeout=_metadata._METADATA_DEFAULT_TIMEOUT,
     )
     assert universe_domain == "fake_universe_domain"
 
@@ -432,6 +448,7 @@ def test_get_universe_domain_success_empty_response():
         method="GET",
         url=_metadata._METADATA_ROOT + "universe/universe-domain",
         headers=_metadata._METADATA_HEADERS,
+        timeout=_metadata._METADATA_DEFAULT_TIMEOUT,
     )
     assert universe_domain == "googleapis.com"
 
@@ -447,6 +464,7 @@ def test_get_universe_domain_not_found():
         method="GET",
         url=_metadata._METADATA_ROOT + "universe/universe-domain",
         headers=_metadata._METADATA_HEADERS,
+        timeout=_metadata._METADATA_DEFAULT_TIMEOUT,
     )
     assert universe_domain == "googleapis.com"
 
@@ -467,6 +485,7 @@ def test_get_universe_domain_retryable_error_failure():
         method="GET",
         url=_metadata._METADATA_ROOT + "universe/universe-domain",
         headers=_metadata._METADATA_HEADERS,
+        timeout=_metadata._METADATA_DEFAULT_TIMEOUT,
     )
     assert request.call_count == 5
 
@@ -509,11 +528,13 @@ def test_get_universe_domain_retryable_error_success():
         method="GET",
         url=_metadata._METADATA_ROOT + "universe/universe-domain",
         headers=_metadata._METADATA_HEADERS,
+        timeout=_metadata._METADATA_DEFAULT_TIMEOUT,
     )
     request_ok.assert_called_once_with(
         method="GET",
         url=_metadata._METADATA_ROOT + "universe/universe-domain",
         headers=_metadata._METADATA_HEADERS,
+        timeout=_metadata._METADATA_DEFAULT_TIMEOUT,
     )
 
     assert universe_domain == "fake_universe_domain"
@@ -533,6 +554,7 @@ def test_get_universe_domain_other_error():
         method="GET",
         url=_metadata._METADATA_ROOT + "universe/universe-domain",
         headers=_metadata._METADATA_HEADERS,
+        timeout=_metadata._METADATA_DEFAULT_TIMEOUT,
     )
 
 
@@ -557,6 +579,7 @@ def test_get_service_account_token(utcnow, mock_metrics_header_value):
             "metadata-flavor": "Google",
             "x-goog-api-client": ACCESS_TOKEN_REQUEST_METRICS_HEADER_VALUE,
         },
+        timeout=_metadata._METADATA_DEFAULT_TIMEOUT,
     )
     assert token == "token"
     assert expiry == utcnow() + datetime.timedelta(seconds=ttl)
@@ -583,6 +606,7 @@ def test_get_service_account_token_with_scopes_list(utcnow, mock_metrics_header_
             "metadata-flavor": "Google",
             "x-goog-api-client": ACCESS_TOKEN_REQUEST_METRICS_HEADER_VALUE,
         },
+        timeout=_metadata._METADATA_DEFAULT_TIMEOUT,
     )
     assert token == "token"
     assert expiry == utcnow() + datetime.timedelta(seconds=ttl)
@@ -611,6 +635,7 @@ def test_get_service_account_token_with_scopes_string(
             "metadata-flavor": "Google",
             "x-goog-api-client": ACCESS_TOKEN_REQUEST_METRICS_HEADER_VALUE,
         },
+        timeout=_metadata._METADATA_DEFAULT_TIMEOUT,
     )
     assert token == "token"
     assert expiry == utcnow() + datetime.timedelta(seconds=ttl)
@@ -628,6 +653,7 @@ def test_get_service_account_info():
         method="GET",
         url=_metadata._METADATA_ROOT + PATH + "/?recursive=true",
         headers=_metadata._METADATA_HEADERS,
+        timeout=_metadata._METADATA_DEFAULT_TIMEOUT,
     )
 
     assert info[key] == value
