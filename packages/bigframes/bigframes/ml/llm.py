@@ -21,7 +21,6 @@ import warnings
 
 import bigframes_vendored.constants as constants
 from google.cloud import bigquery
-import typing_extensions
 
 from bigframes import dtypes, exceptions
 import bigframes.bigquery as bbq
@@ -403,10 +402,6 @@ class MultimodalEmbeddingGenerator(base.RetriableRemotePredictor):
         return new_model.session.read_gbq_model(model_name)
 
 
-@typing_extensions.deprecated(
-    "gemini-1.5-X are going to be deprecated. Use gemini-2.0-X (https://cloud.google.com/python/docs/reference/bigframes/latest/bigframes.ml.llm.GeminiTextGenerator) instead. ",
-    category=exceptions.ApiDeprecationWarning,
-)
 @log_adapter.class_logger
 class GeminiTextGenerator(base.RetriableRemotePredictor):
     """Gemini text generator LLM model.

@@ -810,20 +810,6 @@ def test_llm_gemini_pro_score_params(llm_fine_tune_df_default_index, model_name)
 @pytest.mark.parametrize(
     "model_name",
     (
-        "gemini-1.5-pro-001",
-        "gemini-1.5-pro-002",
-        "gemini-1.5-flash-001",
-        "gemini-1.5-flash-002",
-    ),
-)
-def test_gemini_text_generator_deprecated(model_name):
-    with pytest.warns(exceptions.ApiDeprecationWarning):
-        llm.GeminiTextGenerator(model_name=model_name)
-
-
-@pytest.mark.parametrize(
-    "model_name",
-    (
         "gemini-1.5-pro-preview-0514",
         "gemini-1.5-flash-preview-0514",
         "gemini-2.0-flash-exp",
