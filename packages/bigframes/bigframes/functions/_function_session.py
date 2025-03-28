@@ -167,7 +167,7 @@ class FunctionSession:
         if not bigquery_connection:
             bigquery_connection = session._bq_connection  # type: ignore
 
-        bigquery_connection = clients.resolve_full_bq_connection_name(
+        bigquery_connection = clients.get_canonical_bq_connection_id(
             bigquery_connection,
             default_project=dataset_ref.project,
             default_location=bq_location,

@@ -2819,3 +2819,33 @@ def test_remote_function_array_output_multiindex(
         cleanup_function_assets(
             featurize, session.bqclient, session.cloudfunctionsclient
         )
+
+
+@pytest.mark.flaky(retries=2, delay=120)
+def test_remote_function_connection_path_format(
+    session, scalars_dfs, dataset_id, bq_cf_connection
+):
+    try:
+
+        @session.remote_function(
+            dataset=dataset_id,
+            bigquery_connection=f"projects/{session.bqclient.project}/locations/{session._location}/connections/{bq_cf_connection}",
+            reuse=False,
+            cloud_function_service_account="default",
+        )
+        def foo(x: int) -> int:
+            return x + 1
+
+        scalars_df, scalars_pandas_df = scalars_dfs
+
+        bf_int64_col = scalars_df["int64_too"]
+        bf_result = bf_int64_col.apply(foo).to_pandas()
+
+        pd_int64_col = scalars_pandas_df["int64_too"]
+        pd_result = pd_int64_col.apply(foo)
+
+        # ignore any dtype disparity
+        pandas.testing.assert_series_equal(pd_result, bf_result, check_dtype=False)
+    finally:
+        # clean up the gcp assets created for the remote function
+        cleanup_function_assets(foo, session.bqclient, session.cloudfunctionsclient)

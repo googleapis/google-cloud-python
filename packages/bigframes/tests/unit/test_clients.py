@@ -17,33 +17,51 @@ import pytest
 from bigframes import clients
 
 
-def test_get_connection_name_full_connection_id():
-    connection_name = clients.resolve_full_bq_connection_name(
+def test_get_canonical_bq_connection_id_connection_id_only():
+    connection_id = clients.get_canonical_bq_connection_id(
         "connection-id", default_project="default-project", default_location="us"
     )
-    assert connection_name == "default-project.us.connection-id"
+    assert connection_id == "default-project.us.connection-id"
 
 
-def test_get_connection_name_full_location_connection_id():
-    connection_name = clients.resolve_full_bq_connection_name(
+def test_get_canonical_bq_connection_id_location_and_connection_id():
+    connection_id = clients.get_canonical_bq_connection_id(
         "eu.connection-id", default_project="default-project", default_location="us"
     )
-    assert connection_name == "default-project.eu.connection-id"
+    assert connection_id == "default-project.eu.connection-id"
 
 
-def test_get_connection_name_full_all():
-    connection_name = clients.resolve_full_bq_connection_name(
+def test_get_canonical_bq_connection_id_already_canonical():
+    connection_id = clients.get_canonical_bq_connection_id(
         "my-project.eu.connection-id",
         default_project="default-project",
         default_location="us",
     )
-    assert connection_name == "my-project.eu.connection-id"
+    assert connection_id == "my-project.eu.connection-id"
 
 
-def test_get_connection_name_full_raise_value_error():
-    with pytest.raises(ValueError):
-        clients.resolve_full_bq_connection_name(
+def test_get_canonical_bq_connection_id_invalid():
+    with pytest.raises(ValueError, match="Invalid connection id format"):
+        clients.get_canonical_bq_connection_id(
             "my-project.eu.connection-id.extra_field",
+            default_project="default-project",
+            default_location="us",
+        )
+
+
+def test_get_canonical_bq_connection_id_valid_path():
+    connection_id = clients.get_canonical_bq_connection_id(
+        "projects/project_id/locations/northamerica-northeast1/connections/connection-id",
+        default_project="default-project",
+        default_location="us",
+    )
+    assert connection_id == "project_id.northamerica-northeast1.connection-id"
+
+
+def test_get_canonical_bq_connection_id_invalid_path():
+    with pytest.raises(ValueError, match="Invalid connection id format"):
+        clients.get_canonical_bq_connection_id(
+            "/projects/project_id/locations/northamerica-northeast1/connections/connection-id",
             default_project="default-project",
             default_location="us",
         )

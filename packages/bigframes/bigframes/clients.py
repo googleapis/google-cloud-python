@@ -17,6 +17,7 @@
 from __future__ import annotations
 
 import logging
+import textwrap
 import time
 from typing import cast, Optional
 
@@ -28,21 +29,46 @@ from google.iam.v1 import iam_policy_pb2, policy_pb2
 logger = logging.getLogger(__name__)
 
 
-def resolve_full_bq_connection_name(
-    connection_name: str, default_project: str, default_location: str
+def get_canonical_bq_connection_id(
+    connection_id: str, default_project: str, default_location: str
 ) -> str:
-    """Retrieve the full connection name of the form <PROJECT_NUMBER/PROJECT_ID>.<LOCATION>.<CONNECTION_ID>.
-    Use default project, location or connection_id when any of them are missing."""
-    if connection_name.count(".") == 2:
-        return connection_name
+    """
+    Retrieve the full connection id of the form
+    <PROJECT_NUMBER/PROJECT_ID>.<LOCATION>.<CONNECTION_ID>.
+    Use default project, location or connection_id when any of them are missing.
+    """
 
-    if connection_name.count(".") == 1:
-        return f"{default_project}.{connection_name}"
+    if "/" in connection_id:
+        fields = connection_id.split("/")
+        if (
+            len(fields) == 6
+            and fields[0] == "projects"
+            and fields[2] == "locations"
+            and fields[4] == "connections"
+        ):
+            return ".".join((fields[1], fields[3], fields[5]))
+    else:
+        if connection_id.count(".") == 2:
+            return connection_id
 
-    if connection_name.count(".") == 0:
-        return f"{default_project}.{default_location}.{connection_name}"
+        if connection_id.count(".") == 1:
+            return f"{default_project}.{connection_id}"
 
-    raise ValueError(f"Invalid connection name format: {connection_name}.")
+        if connection_id.count(".") == 0:
+            return f"{default_project}.{default_location}.{connection_id}"
+
+    raise ValueError(
+        textwrap.dedent(
+            f"""
+        Invalid connection id format: {connection_id}.
+        Only the following formats are supported:
+            <project-id>.<location>.<connection-id>,
+            <location>.<connection-id>,
+            <connection-id>,
+            projects/<project-id>/locations/<location>/connections/<connection-id>
+        """
+        ).strip()
+    )
 
 
 class BqConnectionManager:

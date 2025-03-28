@@ -1775,8 +1775,8 @@ class Session(
         """Create the connection with the session settings and try to attach iam role to the connection SA.
         If any of project, location or connection isn't specified, use the session defaults. Returns fully-qualified connection name."""
         connection = self._bq_connection if not connection else connection
-        connection = bigframes.clients.resolve_full_bq_connection_name(
-            connection_name=connection,
+        connection = bigframes.clients.get_canonical_bq_connection_id(
+            connection_id=connection,
             default_project=self._project,
             default_location=self._location,
         )

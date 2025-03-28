@@ -297,7 +297,7 @@ class BlobAccessor(base.SeriesMethods):
             ValueError: If the connection cannot be resolved to a valid string.
         """
         connection = connection or self._block.session._bq_connection
-        return clients.resolve_full_bq_connection_name(
+        return clients.get_canonical_bq_connection_id(
             connection,
             default_project=self._block.session._project,
             default_location=self._block.session._location,
