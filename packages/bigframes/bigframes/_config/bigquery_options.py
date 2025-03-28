@@ -258,7 +258,8 @@ class BigQueryOptions:
 
     @property
     def use_regional_endpoints(self) -> bool:
-        """Flag to connect to regional API endpoints.
+        """Flag to connect to regional API endpoints for BigQuery API and
+        BigQuery Storage API.
 
         .. note::
             Use of regional endpoints is a feature in Preview and available only
@@ -267,18 +268,16 @@ class BigQueryOptions:
             "us-east5", "us-east7", "us-south1", "us-west1", "us-west2", "us-west3"
             and "us-west4".
 
-        .. deprecated:: 0.13.0
-            Use of locational endpoints is available only in selected projects.
-
-        Requires that ``location`` is set. For supported regions, for example
-        ``europe-west3``, you need to specify ``location='europe-west3'`` and
-        ``use_regional_endpoints=True``, and then BigQuery DataFrames would
-        connect to the BigQuery endpoint ``bigquery.europe-west3.rep.googleapis.com``.
-        For not supported regions, for example ``asia-northeast1``, when you
-        specify ``location='asia-northeast1'`` and ``use_regional_endpoints=True``,
-        a different endpoint (called locational endpoint, now deprecated, used
-        to provide weaker promise on the request remaining within the location
-        during transit) ``europe-west3-bigquery.googleapis.com`` would be used.
+        Requires that ``location`` is set. For [supported regions](https://cloud.google.com/bigquery/docs/regional-endpoints),
+        for example ``europe-west3``, you need to specify
+        ``location='europe-west3'`` and ``use_regional_endpoints=True``, and
+        then BigQuery DataFrames would connect to the BigQuery endpoint
+        ``bigquery.europe-west3.rep.googleapis.com``. For not supported regions,
+        for example ``asia-northeast1``, when you specify
+        ``location='asia-northeast1'`` and ``use_regional_endpoints=True``,
+        the global endpoint ``bigquery.googleapis.com`` would be used, which
+        does not promise any guarantee on the request remaining within the
+        location during transit.
 
         Returns:
             bool:
