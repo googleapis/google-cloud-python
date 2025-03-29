@@ -106,7 +106,7 @@ class BqConnectionManager:
         )
         if service_account_id:
             logger.info(
-                f"Connector {project_id}.{location}.{connection_id} already exists"
+                f"BQ connection {project_id}.{location}.{connection_id} already exists"
             )
         else:
             connection_name, service_account_id = self._create_bq_connection(
@@ -116,9 +116,14 @@ class BqConnectionManager:
                 f"Created BQ connection {connection_name} with service account id: {service_account_id}"
             )
         service_account_id = cast(str, service_account_id)
+
         # Ensure IAM role on the BQ connection
         # https://cloud.google.com/bigquery/docs/reference/standard-sql/remote-functions#grant_permission_on_function
-        self._ensure_iam_binding(project_id, service_account_id, iam_role)
+        try:
+            self._ensure_iam_binding(project_id, service_account_id, iam_role)
+        except google.api_core.exceptions.PermissionDenied as ex:
+            ex.message = f"Failed ensuring IAM binding (role={iam_role}, service-account={service_account_id}). {ex.message}"
+            raise
 
     # Introduce retries to accommodate transient errors like:
     # (1) Etag mismatch,
