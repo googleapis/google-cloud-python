@@ -4381,13 +4381,13 @@ def test__resample(scalars_df_index, scalars_pandas_df_index, append, level, col
 
 
 def test_series_struct_get_field_by_attribute(
-    nested_structs_df, nested_structs_pandas_df, nested_structs_pandas_type
+    nested_structs_df, nested_structs_pandas_df
 ):
     if Version(pd.__version__) < Version("2.2.0"):
         pytest.skip("struct accessor is not supported before pandas 2.2")
 
     bf_series = nested_structs_df["person"]
-    df_series = nested_structs_pandas_df["person"].astype(nested_structs_pandas_type)
+    df_series = nested_structs_pandas_df["person"]
 
     pd.testing.assert_series_equal(
         bf_series.address.city.to_pandas(),

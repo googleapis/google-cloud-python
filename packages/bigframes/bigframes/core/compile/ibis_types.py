@@ -388,7 +388,8 @@ def literal_to_ibis_scalar(
         # Ibis has bug for casting nulltype to geospatial, so we perform intermediate cast first
         geotype = ibis_dtypes.GeoSpatial(geotype="geography", srid=4326, nullable=True)
         return bigframes_vendored.ibis.literal(None, geotype)
-    ibis_dtype = BIGFRAMES_TO_IBIS[force_dtype] if force_dtype else None
+
+    ibis_dtype = bigframes_dtype_to_ibis_dtype(force_dtype) if force_dtype else None
 
     if pd.api.types.is_list_like(literal):
         if validate:

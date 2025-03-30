@@ -40,6 +40,16 @@ def test_concat_dataframe(scalars_dfs, ordered):
     assert_pandas_df_equal(bf_result, pd_result, ignore_order=not ordered)
 
 
+def test_concat_dataframe_w_struct_cols(nested_structs_df, nested_structs_pandas_df):
+    """Avoid regressions for internal issue 407107482"""
+    empty_bf_df = bpd.DataFrame(session=nested_structs_df._block.session)
+    bf_result = bpd.concat((empty_bf_df, nested_structs_df), ignore_index=True)
+    bf_result = bf_result.to_pandas()
+    pd_result = pd.concat((pd.DataFrame(), nested_structs_pandas_df), ignore_index=True)
+    pd_result.index = pd_result.index.astype("Int64")
+    pd.testing.assert_frame_equal(bf_result, pd_result)
+
+
 def test_concat_series(scalars_dfs):
     scalars_df, scalars_pandas_df = scalars_dfs
     bf_result = bpd.concat(

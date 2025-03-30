@@ -465,7 +465,7 @@ def nested_structs_df(
 
 
 @pytest.fixture(scope="session")
-def nested_structs_pandas_df() -> pd.DataFrame:
+def nested_structs_pandas_df(nested_structs_pandas_type: pd.ArrowDtype) -> pd.DataFrame:
     """pd.DataFrame pointing at test data."""
 
     df = pd.read_json(
@@ -473,6 +473,7 @@ def nested_structs_pandas_df() -> pd.DataFrame:
         lines=True,
     )
     df = df.set_index("id")
+    df["person"] = df["person"].astype(nested_structs_pandas_type)
     return df
 
 
