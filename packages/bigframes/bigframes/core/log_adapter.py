@@ -110,25 +110,42 @@ def submit_pandas_labels(
     bq_client.query(query, job_config=job_config)
 
 
-def class_logger(decorated_cls):
+def class_logger(decorated_cls=None, /, *, include_internal_calls=False):
     """Decorator that adds logging functionality to each method of the class."""
-    for attr_name, attr_value in decorated_cls.__dict__.items():
-        if callable(attr_value) and (attr_name not in _excluded_methods):
-            if isinstance(attr_value, staticmethod):
-                # TODO(b/390244171) support for staticmethod
-                pass
-            else:
+
+    def wrap(cls):
+        for attr_name, attr_value in cls.__dict__.items():
+            if callable(attr_value) and (attr_name not in _excluded_methods):
+                if isinstance(attr_value, staticmethod):
+                    # TODO(b/390244171) support for staticmethod
+                    pass
+                else:
+                    setattr(
+                        cls,
+                        attr_name,
+                        method_logger(
+                            attr_value,
+                            cls,
+                            include_internal_calls,
+                        ),
+                    )
+            elif isinstance(attr_value, property):
                 setattr(
-                    decorated_cls, attr_name, method_logger(attr_value, decorated_cls)
+                    cls,
+                    attr_name,
+                    property_logger(attr_value, cls, include_internal_calls),
                 )
-        elif isinstance(attr_value, property):
-            setattr(
-                decorated_cls, attr_name, property_logger(attr_value, decorated_cls)
-            )
-    return decorated_cls
+        return cls
+
+    if decorated_cls is None:
+        # The logger is used with parentheses
+        return wrap
+
+    # The logger is used without parentheses
+    return wrap(decorated_cls)
 
 
-def method_logger(method, decorated_cls):
+def method_logger(method, decorated_cls, include_internal_calls: bool):
     """Decorator that adds logging functionality to a method."""
 
     @functools.wraps(method)
@@ -138,7 +155,7 @@ def method_logger(method, decorated_cls):
         full_method_name = f"{class_name.lower()}-{api_method_name}"
 
         # Track directly called methods
-        if len(_call_stack) == 0:
+        if len(_call_stack) == 0 or include_internal_calls:
             add_api_method(full_method_name)
 
         _call_stack.append(full_method_name)
@@ -167,7 +184,7 @@ def method_logger(method, decorated_cls):
     return wrapper
 
 
-def property_logger(prop, decorated_cls):
+def property_logger(prop, decorated_cls, include_internal_calls: bool):
     """Decorator that adds logging functionality to a property."""
 
     def shared_wrapper(f):
@@ -177,7 +194,7 @@ def property_logger(prop, decorated_cls):
             property_name = f.__name__
             full_property_name = f"{class_name.lower()}-{property_name.lower()}"
 
-            if len(_call_stack) == 0:
+            if len(_call_stack) == 0 or include_internal_calls:
                 add_api_method(full_property_name)
 
             _call_stack.append(full_property_name)

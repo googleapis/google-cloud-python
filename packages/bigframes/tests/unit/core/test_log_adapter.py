@@ -40,7 +40,14 @@ def test_instance():
             pass
 
         def method2(self):
+            self.method3()
+
+        def method3(self):
             pass
+
+        @property
+        def my_field(self):
+            return 0
 
     return TestClass()
 
@@ -51,9 +58,49 @@ def test_method_logging(test_instance):
 
     # Check if the methods were added to the _api_methods list
     api_methods = log_adapter.get_and_reset_api_methods()
-    assert api_methods is not None
     assert "testclass-method1" in api_methods
     assert "testclass-method2" in api_methods
+    assert "testclass-method3" not in api_methods
+
+
+def test_property_logging(test_instance):
+    test_instance.my_field
+
+    # Check if the properties were added to the _api_methods list
+    api_methods = log_adapter.get_and_reset_api_methods()
+    assert "testclass-my_field" in api_methods
+
+
+def test_method_logging__include_internal_calls():
+    @log_adapter.class_logger(include_internal_calls=True)
+    class TestClass:
+        def public_method(self):
+            self._internal_method()
+
+        def _internal_method(self):
+            pass
+
+    TestClass().public_method()
+
+    api_methods = log_adapter.get_and_reset_api_methods()
+    assert "testclass-public_method" in api_methods
+    assert "testclass-_internal_method" in api_methods
+
+
+def test_method_logging__exclude_internal_calls():
+    @log_adapter.class_logger(include_internal_calls=False)
+    class TestClass:
+        def public_method(self):
+            self._internal_method()
+
+        def _internal_method(self):
+            pass
+
+    TestClass().public_method()
+
+    api_methods = log_adapter.get_and_reset_api_methods()
+    assert "testclass-public_method" in api_methods
+    assert "testclass-_internal_method" not in api_methods
 
 
 def test_add_api_method_limit(test_instance):
