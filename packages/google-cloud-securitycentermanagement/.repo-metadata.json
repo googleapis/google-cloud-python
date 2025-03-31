@@ -10,8 +10,8 @@
     "library_type": "GAPIC_AUTO",
     "repo": "googleapis/google-cloud-python",
     "distribution_name": "google-cloud-securitycentermanagement",
-    "api_id": "securitycentermanagement.googleapis.com",
+    "api_id": "securitycenter.googleapis.com",
     "default_version": "v1",
     "codeowner_team": "",
-    "api_shortname": "securitycentermanagement"
+    "api_shortname": "securitycenter"
 }
