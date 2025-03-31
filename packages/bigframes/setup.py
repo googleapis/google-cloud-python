@@ -117,6 +117,7 @@ setuptools.setup(
     version=version_id,
     description=description,
     long_description=readme,
+    long_description_content_type="text/x-rst",
     author="Google LLC",
     author_email="bigframes-feedback@google.com",
     license="Apache 2.0",

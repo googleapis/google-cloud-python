@@ -12,22 +12,29 @@ powered by the BigQuery engine.
 BigQuery DataFrames is an open-source package. You can run
 ``pip install --upgrade bigframes`` to install the latest version.
 
-.. raw:: html
+⚠️ Warning: Breaking Changes in BigQuery DataFrames v2.0
+--------------------------------------------------------
 
-    <div style="border: 1px solid #f5c6cb;
-    background-color: #f8d7da; color: #721c24; padding: 15px; margin-bottom: 20px; border-radius: 4px; font-size: 90%;">
-        <p style="margin-top: 0; font-weight: bold;">⚠️ Breaking Changes in BigQuery DataFrames v2.0</p>
-        <p>Version 2.0 introduces breaking changes for improved security and performance. Key default behaviors have changed:</p>
-        <ul>
-            <li><strong>Large Results (&gt;10GB):</strong> The default value for <code>allow_large_results</code> has changed to False. Methods like <code>to_pandas()</code> will now fail if the query result's compressed data size exceeds 10GB, unless large results are explicitly permitted.</li>
-            <li><strong>Remote Function Security:</strong>The library no longer automatically lets the Compute Engine default service account become the identity of the Cloud Run functions. If that is desired, it has to be indicated by passing cloud_function_service_account="default". And network ingress now defaults to "internal-only".</li>
-            <li><strong>@remote_function Argument Passing:</strong> Arguments other than input_types, output_type, and dataset to remote_function must now be passed using keyword syntax, as positional arguments are no longer supported.</li>
-            <li><strong>Endpoint Connections:</strong> Automatic fallback to locational endpoints in certain regions is removed. </li>
-            <li><strong>LLM Updates (Gemini Integration):</strong> Integrations now default to the <code>gemini-2.0-flash-001</code> model. PaLM2 support has been removed; please migrate any existing PaLM2 usage to Gemini. Note: The current default model will be removed in Version 3.0.</li>
-        </ul>
-        <p><strong>Important:</strong> If you are not ready to adapt to these changes, please pin your dependency to a version less than 2.0 (e.g., <code>bigframes==1.42.0</code>) to avoid disruption.</p>
-        <p style="margin-bottom: 0;"> To learn about these changes and how to migrate to version 2.0, see:  <a href="https://cloud.google.com/bigquery/docs/bigquery-dataframes-introduction" style="color: #842029; text-decoration: underline;">updated introduction guide</a>.</p>
-    </div>
+Version 2.0 introduces breaking changes for improved security and performance. Key default behaviors have changed, including
+
+* **Large Results (>10GB):** The default value for ``allow_large_results`` has changed to ``False``.
+  Methods like ``to_pandas()`` will now fail if the query result's compressed data size exceeds 10GB,
+  unless large results are explicitly permitted.
+* **Remote Function Security:** The library no longer automatically lets the Compute Engine default service
+  account become the identity of the Cloud Run functions. If that is desired, it has to be indicated by passing
+  ``cloud_function_service_account="default"``. And network ingress now defaults to ``"internal-only"``.
+* **@remote_function Argument Passing:** Arguments other than ``input_types``, ``output_type``, and ``dataset``
+  to ``remote_function`` must now be passed using keyword syntax, as positional arguments are no longer supported.
+* **Endpoint Connections:** Automatic fallback to locational endpoints in certain regions is removed.
+* **LLM Updates (Gemini Integration):** Integrations now default to the ``gemini-2.0-flash-001`` model.
+  PaLM2 support has been removed; please migrate any existing PaLM2 usage to Gemini. **Note:** The current default
+  model will be removed in Version 3.0.
+
+**Important:** If you are not ready to adapt to these changes, please pin your dependency to a version less than 2.0
+(e.g., ``bigframes==1.42.0``) to avoid disruption.
+
+To learn about these changes and how to migrate to version 2.0, see the
+`updated introduction guide <https://cloud.google.com/bigquery/docs/bigquery-dataframes-introduction>`_.
 
 .. |GA| image:: https://img.shields.io/badge/support-GA-gold.svg
    :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#general-availability

@@ -184,6 +184,14 @@ def lint_setup_py(session):
     session.install("docutils", "pygments")
     session.run("python", "setup.py", "check", "--restructuredtext", "--strict")
 
+    session.install("twine", "wheel")
+    shutil.rmtree("build", ignore_errors=True)
+    shutil.rmtree("dist", ignore_errors=True)
+    session.run("python", "setup.py", "sdist")
+    session.run(
+        "python", "-m", "twine", "check", *pathlib.Path("dist").glob("*.tar.gz")
+    )
+
 
 def install_unittest_dependencies(session, install_test_extra, *constraints):
     standard_deps = UNIT_TEST_STANDARD_DEPENDENCIES + UNIT_TEST_DEPENDENCIES
