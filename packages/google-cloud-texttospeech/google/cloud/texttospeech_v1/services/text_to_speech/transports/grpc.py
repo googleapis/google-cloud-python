@@ -385,7 +385,7 @@ class TextToSpeechGrpcTransport(TextToSpeechTransport):
         r"""Return a callable for the streaming synthesize method over gRPC.
 
         Performs bidirectional streaming speech synthesis:
-        receive audio while sending text.
+        receives audio while sending text.
 
         Returns:
             Callable[[~.StreamingSynthesizeRequest],
