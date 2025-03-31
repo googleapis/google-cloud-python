@@ -13,6 +13,7 @@
 # limitations under the License.
 
 from concurrent.futures import ThreadPoolExecutor
+import time
 
 import google
 import google.api_core.exceptions
@@ -58,7 +59,11 @@ def test_bq_session_create_temp_table_clustered(bigquery_client: bigquery.Client
 
     session_resource_manager.close()
     with pytest.raises(google.api_core.exceptions.NotFound):
-        bigquery_client.get_table(session_table_ref)
+        # It may take time for the underlying tables to get cleaned up after
+        # closing the session, so wait at least 1 minute to check.
+        for _ in range(6):
+            bigquery_client.get_table(session_table_ref)
+            time.sleep(10)
 
 
 def test_bq_session_create_multi_temp_tables(bigquery_client: bigquery.Client):

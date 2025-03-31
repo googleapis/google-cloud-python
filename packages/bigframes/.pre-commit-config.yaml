@@ -31,11 +31,11 @@ repos:
     hooks:
     - id: black
 -   repo: https://github.com/pycqa/flake8
-    rev: 6.1.0
+    rev: 7.1.2
     hooks:
     - id: flake8
 -   repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v1.10.0
+    rev: v1.15.0
     hooks:
     -   id: mypy
         additional_dependencies: [types-requests, types-tabulate, pandas-stubs<=2.2.3.241126]

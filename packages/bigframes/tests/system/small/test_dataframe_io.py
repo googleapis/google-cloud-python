@@ -35,6 +35,7 @@ from google.cloud import bigquery
 
 import bigframes
 import bigframes.dataframe
+import bigframes.enums
 import bigframes.features
 import bigframes.pandas as bpd
 
@@ -286,6 +287,30 @@ def test_to_pandas_batches_w_correct_dtypes(scalars_df_default_index):
     for df in scalars_df_default_index.to_pandas_batches():
         actual = df.dtypes
         pd.testing.assert_series_equal(actual, expected)
+
+
+@pytest.mark.parametrize("allow_large_results", (True, False))
+def test_to_pandas_batches_w_page_size_and_max_results(session, allow_large_results):
+    """Verify to_pandas_batches() APIs returns the expected page size.
+
+    Regression test for b/407521010.
+    """
+    bf_df = session.read_gbq(
+        "bigquery-public-data.usa_names.usa_1910_2013",
+        index_col=bigframes.enums.DefaultIndexKind.NULL,
+    )
+    expected_column_count = len(bf_df.columns)
+
+    batch_count = 0
+    for pd_df in bf_df.to_pandas_batches(
+        page_size=42, allow_large_results=allow_large_results, max_results=42 * 3
+    ):
+        batch_row_count, batch_column_count = pd_df.shape
+        batch_count += 1
+        assert batch_column_count == expected_column_count
+        assert batch_row_count == 42
+
+    assert batch_count == 3
 
 
 @pytest.mark.parametrize(
