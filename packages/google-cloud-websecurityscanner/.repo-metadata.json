@@ -10,9 +10,9 @@
     "library_type": "GAPIC_AUTO",
     "repo": "googleapis/google-cloud-python",
     "distribution_name": "google-cloud-websecurityscanner",
-    "api_id": "websecurityscanner.googleapis.com",
+    "api_id": "securitycenter.googleapis.com",
     "requires_billing": true,
     "default_version": "v1",
     "codeowner_team": "",
-    "api_shortname": "websecurityscanner"
+    "api_shortname": "securitycenter"
 }
