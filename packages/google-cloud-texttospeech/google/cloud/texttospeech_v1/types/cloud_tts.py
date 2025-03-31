@@ -91,11 +91,11 @@ class AudioEncoding(proto.Enum):
             MP3 audio at 32kbps.
         OGG_OPUS (3):
             Opus encoded audio wrapped in an ogg
-            container. The result will be a file which can
-            be played natively on Android, and in browsers
-            (at least Chrome and Firefox). The quality of
-            the encoding is considerably higher than MP3
-            while using approximately the same bitrate.
+            container. The result is a file which can be
+            played natively on Android, and in browsers (at
+            least Chrome and Firefox). The quality of the
+            encoding is considerably higher than MP3 while
+            using approximately the same bitrate.
         MULAW (5):
             8-bit samples that compand 14-bit audio
             samples using G.711 PCMU/mu-law. Audio content
@@ -107,7 +107,7 @@ class AudioEncoding(proto.Enum):
         PCM (7):
             Uncompressed 16-bit signed little-endian
             samples (Linear PCM). Note that as opposed to
-            LINEAR16, audio will not be wrapped in a WAV (or
+            LINEAR16, audio won't be wrapped in a WAV (or
             any other) header.
     """
     AUDIO_ENCODING_UNSPECIFIED = 0
@@ -202,7 +202,7 @@ class AdvancedVoiceOptions(proto.Message):
     Attributes:
         low_latency_journey_synthesis (bool):
             Only for Journey voices. If false, the
-            synthesis will be context aware and have higher
+            synthesis is context aware and has a higher
             latency.
 
             This field is a member of `oneof`_ ``_low_latency_journey_synthesis``.
@@ -268,10 +268,10 @@ class CustomPronunciationParams(proto.Message):
 
     Attributes:
         phrase (str):
-            The phrase to which the customization will be
-            applied. The phrase can be multiple words (in
-            the case of proper nouns etc), but should not
-            span to a whole sentence.
+            The phrase to which the customization is
+            applied. The phrase can be multiple words, such
+            as proper nouns, but shouldn't span the length
+            of the sentence.
 
             This field is a member of `oneof`_ ``_phrase``.
         phonetic_encoding (google.cloud.texttospeech_v1.types.CustomPronunciationParams.PhoneticEncoding):
@@ -292,10 +292,10 @@ class CustomPronunciationParams(proto.Message):
             PHONETIC_ENCODING_UNSPECIFIED (0):
                 Not specified.
             PHONETIC_ENCODING_IPA (1):
-                IPA. (e.g. apple -> ˈæpəl )
+                IPA, such as apple -> ˈæpəl.
                 https://en.wikipedia.org/wiki/International_Phonetic_Alphabet
             PHONETIC_ENCODING_X_SAMPA (2):
-                X-SAMPA (e.g. apple -> "{p@l" )
+                X-SAMPA, such as apple -> "{p@l".
                 https://en.wikipedia.org/wiki/X-SAMPA
         """
         PHONETIC_ENCODING_UNSPECIFIED = 0
@@ -325,8 +325,7 @@ class CustomPronunciations(proto.Message):
 
     Attributes:
         pronunciations (MutableSequence[google.cloud.texttospeech_v1.types.CustomPronunciationParams]):
-            The pronunciation customizations to be
-            applied.
+            The pronunciation customizations are applied.
     """
 
     pronunciations: MutableSequence["CustomPronunciationParams"] = proto.RepeatedField(
@@ -345,7 +344,7 @@ class MultiSpeakerMarkup(proto.Message):
     """
 
     class Turn(proto.Message):
-        r"""A Multi-speaker turn.
+        r"""A multi-speaker turn.
 
         Attributes:
             speaker (str):
@@ -405,21 +404,19 @@ class SynthesisInput(proto.Message):
 
             This field is a member of `oneof`_ ``input_source``.
         custom_pronunciations (google.cloud.texttospeech_v1.types.CustomPronunciations):
-            Optional. The pronunciation customizations to
-            be applied to the input. If this is set, the
-            input will be synthesized using the given
+            Optional. The pronunciation customizations
+            are applied to the input. If this is set, the
+            input is synthesized using the given
             pronunciation customizations.
 
-            The initial support will be for EFIGS (English,
-            French, Italian, German, Spanish) languages, as
-            provided in VoiceSelectionParams. Journey and
-            Instant Clone voices are not supported yet.
+            The initial support is for en-us, with plans to
+            expand to other locales in the future. Instant
+            Clone voices aren't supported.
 
             In order to customize the pronunciation of a
             phrase, there must be an exact match of the
             phrase in the input types. If using SSML, the
-            phrase must not be inside a phoneme tag
-            (entirely or partially).
+            phrase must not be inside a phoneme tag.
     """
 
     text: str = proto.Field(
@@ -481,8 +478,9 @@ class VoiceSelectionParams(proto.Message):
             the custom voice matching the specified configuration.
         voice_clone (google.cloud.texttospeech_v1.types.VoiceCloneParams):
             Optional. The configuration for a voice clone. If
-            [VoiceCloneParams.voice_clone_key] is set, the service will
-            choose the voice clone matching the specified configuration.
+            [VoiceCloneParams.voice_clone_key] is set, the service
+            chooses the voice clone matching the specified
+            configuration.
     """
 
     language_code: str = proto.Field(
@@ -519,10 +517,10 @@ class AudioConfig(proto.Message):
             stream.
         speaking_rate (float):
             Optional. Input only. Speaking rate/speed, in the range
-            [0.25, 4.0]. 1.0 is the normal native speed supported by the
+            [0.25, 2.0]. 1.0 is the normal native speed supported by the
             specific voice. 2.0 is twice as fast, and 0.5 is half as
             fast. If unset(0.0), defaults to the native 1.0 speed. Any
-            other values < 0.25 or > 4.0 will return an error.
+            other values < 0.25 or > 2.0 will return an error.
         pitch (float):
             Optional. Input only. Speaking pitch, in the range [-20.0,
             20.0]. 20 means increase 20 semitones from the original
@@ -669,12 +667,18 @@ class StreamingAudioConfig(proto.Message):
 
     Attributes:
         audio_encoding (google.cloud.texttospeech_v1.types.AudioEncoding):
-            Required. The format of the audio byte stream. For now,
-            streaming only supports PCM and OGG_OPUS. All other
-            encodings will return an error.
+            Required. The format of the audio byte stream. Streaming
+            supports PCM, ALAW, MULAW and OGG_OPUS. All other encodings
+            return an error.
         sample_rate_hertz (int):
             Optional. The synthesis sample rate (in
             hertz) for this audio.
+        speaking_rate (float):
+            Optional. Input only. Speaking rate/speed, in the range
+            [0.25, 2.0]. 1.0 is the normal native speed supported by the
+            specific voice. 2.0 is twice as fast, and 0.5 is half as
+            fast. If unset(0.0), defaults to the native 1.0 speed. Any
+            other values < 0.25 or > 2.0 will return an error.
     """
 
     audio_encoding: "AudioEncoding" = proto.Field(
@@ -685,6 +689,10 @@ class StreamingAudioConfig(proto.Message):
     sample_rate_hertz: int = proto.Field(
         proto.INT32,
         number=2,
+    )
+    speaking_rate: float = proto.Field(
+        proto.DOUBLE,
+        number=3,
     )
 
 
@@ -699,6 +707,20 @@ class StreamingSynthesizeConfig(proto.Message):
         streaming_audio_config (google.cloud.texttospeech_v1.types.StreamingAudioConfig):
             Optional. The configuration of the
             synthesized audio.
+        custom_pronunciations (google.cloud.texttospeech_v1.types.CustomPronunciations):
+            Optional. The pronunciation customizations
+            are applied to the input. If this is set, the
+            input is synthesized using the given
+            pronunciation customizations.
+
+            The initial support is for en-us, with plans to
+            expand to other locales in the future. Instant
+            Clone voices aren't supported.
+
+            In order to customize the pronunciation of a
+            phrase, there must be an exact match of the
+            phrase in the input types. If using SSML, the
+            phrase must not be inside a phoneme tag.
     """
 
     voice: "VoiceSelectionParams" = proto.Field(
@@ -711,6 +733,11 @@ class StreamingSynthesizeConfig(proto.Message):
         number=4,
         message="StreamingAudioConfig",
     )
+    custom_pronunciations: "CustomPronunciations" = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message="CustomPronunciations",
+    )
 
 
 class StreamingSynthesisInput(proto.Message):
@@ -722,10 +749,8 @@ class StreamingSynthesisInput(proto.Message):
         text (str):
             The raw text to be synthesized. It is
             recommended that each input contains complete,
-            terminating sentences, as this will likely
-            result in better prosody in the output audio.
-            That being said, users are free to input text
-            however they please.
+            terminating sentences, which results in better
+            prosody in the output audio.
 
             This field is a member of `oneof`_ ``input_source``.
     """
