@@ -38,3 +38,7 @@ class TestBaseHandler(unittest.TestCase):
     def test_flush_is_abstract_and_optional(self):
         target = self._make_one("client", "name")
         target.flush()
+
+    def test_close_is_abstract_and_optional(self):
+        target = self._make_one("client", "name")
+        target.close()

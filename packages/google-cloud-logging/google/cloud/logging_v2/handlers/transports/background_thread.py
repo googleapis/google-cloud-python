@@ -38,6 +38,13 @@ _WORKER_THREAD_NAME = "google.cloud.logging.Worker"
 _WORKER_TERMINATOR = object()
 _LOGGER = logging.getLogger(__name__)
 
+_CLOSE_THREAD_SHUTDOWN_ERROR_MSG = (
+    "CloudLoggingHandler shutting down, cannot send logs entries to Cloud Logging due to "
+    "inconsistent threading behavior at shutdown. To avoid this issue, flush the logging handler "
+    "manually or switch to StructuredLogHandler. You can also close the CloudLoggingHandler manually "
+    "via handler.close or client.close."
+)
+
 
 def _get_many(queue_, *, max_items=None, max_latency=0):
     """Get multiple items from a Queue.
@@ -140,9 +147,11 @@ class _Worker(object):
                 else:
                     batch.log(**item)
 
-            self._safely_commit_batch(batch)
+            # We cannot commit logs upstream if the main thread is shutting down
+            if threading.main_thread().is_alive():
+                self._safely_commit_batch(batch)
 
-            for _ in items:
+            for it in items:
                 self._queue.task_done()
 
         _LOGGER.debug("Background thread exited gracefully.")
@@ -162,7 +171,7 @@ class _Worker(object):
             )
             self._thread.daemon = True
             self._thread.start()
-            atexit.register(self._main_thread_terminated)
+            atexit.register(self._handle_exit)
 
     def stop(self, *, grace_period=None):
         """Signals the background thread to stop.
@@ -202,25 +211,25 @@ class _Worker(object):
 
             return success
 
-    def _main_thread_terminated(self):
-        """Callback that attempts to send pending logs before termination."""
+    def _close(self, close_msg):
+        """Callback that attempts to send pending logs before termination if the main thread is alive."""
         if not self.is_alive:
             return
 
         if not self._queue.empty():
-            print(
-                "Program shutting down, attempting to send %d queued log "
-                "entries to Cloud Logging..." % (self._queue.qsize(),),
-                file=sys.stderr,
-            )
+            print(close_msg, file=sys.stderr)
 
-        if self.stop(grace_period=self._grace_period):
+        if threading.main_thread().is_alive() and self.stop(
+            grace_period=self._grace_period
+        ):
             print("Sent all pending logs.", file=sys.stderr)
-        else:
+        elif not self._queue.empty():
             print(
                 "Failed to send %d pending logs." % (self._queue.qsize(),),
                 file=sys.stderr,
             )
+
+        self._thread = None
 
     def enqueue(self, record, message, **kwargs):
         """Queues a log entry to be written by the background thread.
@@ -250,6 +259,26 @@ class _Worker(object):
     def flush(self):
         """Submit any pending log records."""
         self._queue.join()
+
+    def close(self):
+        """Signals the worker thread to stop, then closes the transport thread.
+
+        This call will attempt to send pending logs before termination, and
+        should be followed up by disowning the transport object.
+        """
+        atexit.unregister(self._handle_exit)
+        self._close(
+            "Background thread shutting down, attempting to send %d queued log "
+            "entries to Cloud Logging..." % (self._queue.qsize(),)
+        )
+
+    def _handle_exit(self):
+        """Handle system exit.
+
+        Since we cannot send pending logs during system shutdown due to thread errors,
+        log an error message to stderr to notify the user.
+        """
+        self._close(_CLOSE_THREAD_SHUTDOWN_ERROR_MSG)
 
 
 class BackgroundThreadTransport(Transport):
@@ -285,6 +314,7 @@ class BackgroundThreadTransport(Transport):
         """
         self.client = client
         logger = self.client.logger(name, resource=resource)
+        self.grace_period = grace_period
         self.worker = _Worker(
             logger,
             grace_period=grace_period,
@@ -307,3 +337,7 @@ class BackgroundThreadTransport(Transport):
     def flush(self):
         """Submit any pending log records."""
         self.worker.flush()
+
+    def close(self):
+        """Closes the worker thread."""
+        self.worker.close()
