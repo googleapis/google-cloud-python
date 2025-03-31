@@ -21,6 +21,10 @@ deep-copy-regex:
     dest: /owl-bot-staging/google-cloud-iam/$1
   - source: /google/iam/credentials/(v.*)/.*-py
     dest: /owl-bot-staging/google-cloud-iam/$1
+  - source: /google/iam/v3beta/.*-py
+    dest: /owl-bot-staging/google-cloud-iam/$1
+  - source: /google/iam/v3/.*-py
+    dest: /owl-bot-staging/google-cloud-iam/$1
   - source: /google/iam/v2beta/.*-py
     dest: /owl-bot-staging/google-cloud-iam/$1
   - source: /google/iam/v2/.*-py
