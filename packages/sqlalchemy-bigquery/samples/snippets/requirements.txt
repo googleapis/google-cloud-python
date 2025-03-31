@@ -1,5 +1,5 @@
 alembic===1.14.0; python_version == '3.8'
-alembic==1.15.1;  python_version >= '3.9'
+alembic==1.15.2;  python_version >= '3.9'
 certifi==2025.1.31
 charset-normalizer==3.4.1
 geoalchemy2==0.17.1
@@ -28,7 +28,7 @@ packaging==24.2
 proto-plus==1.26.1
 protobuf===5.28.3; python_version >= '3.8'
 pyasn1==0.6.1
-pyasn1-modules==0.4.1
+pyasn1-modules==0.4.2
 pyparsing===3.1.4; python_version == '3.8'
 pyparsing==3.2.3; python_version >= '3.9'
 python-dateutil==2.9.0.post0
