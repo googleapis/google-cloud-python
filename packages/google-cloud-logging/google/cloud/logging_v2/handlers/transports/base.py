@@ -51,3 +51,11 @@ class Transport(object):
 
         For blocking/sync transports, this is a no-op.
         """
+        pass
+
+    def close(self):
+        """Closes the transport and cleans up resources used by it.
+
+        This call should be followed up by disowning the transport.
+        """
+        pass

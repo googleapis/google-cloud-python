@@ -842,6 +842,7 @@ class TestClient(unittest.TestCase):
 
         (handler,) = args
         self.assertIsInstance(handler, CloudLoggingHandler)
+        self.assertIn(handler, client._handlers)
 
         handler.transport.worker.stop()
 
@@ -882,6 +883,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(handler.name, name)
         self.assertEqual(handler.resource, resource)
         self.assertEqual(handler.labels, labels)
+        self.assertIn(handler, client._handlers)
 
         handler.transport.worker.stop()
 
@@ -929,6 +931,168 @@ class TestClient(unittest.TestCase):
             "log_level": 20,
         }
         self.assertEqual(kwargs, expected_kwargs)
+        self.assertIn(handler, client._handlers)
+
+    def test_flush_handlers_cloud_logging_handler(self):
+        import io
+        from google.cloud.logging.handlers import CloudLoggingHandler
+        from google.cloud.logging import Resource
+
+        name = "test-logger"
+        resource = Resource("resource_type", {"resource_label": "value"})
+        labels = {"handler_label": "value"}
+        stream = io.BytesIO()
+
+        credentials = _make_credentials()
+        client = self._make_one(
+            project=self.PROJECT, credentials=credentials, _use_grpc=False
+        )
+
+        with mock.patch("google.cloud.logging_v2.client.setup_logging") as mocked:
+            client.setup_logging(
+                name=name, resource=resource, labels=labels, stream=stream
+            )
+
+        self.assertEqual(len(mocked.mock_calls), 1)
+        _, args, kwargs = mocked.mock_calls[0]
+
+        (handler,) = args
+        self.assertIsInstance(handler, CloudLoggingHandler)
+
+        handler.flush = mock.Mock()
+        client.flush_handlers()
+        handler.flush.assert_called_once_with()
+
+    def test_flush_handlers_cloud_logging_handler_no_setup_logging(self):
+        from google.cloud.logging.handlers import CloudLoggingHandler
+
+        credentials = _make_credentials()
+        client = self._make_one(
+            project=self.PROJECT, credentials=credentials, _use_grpc=False
+        )
+
+        handler = CloudLoggingHandler(client)
+        self.assertIn(handler, client._handlers)
+
+        handler.flush = mock.Mock()
+        client.flush_handlers()
+        handler.flush.assert_called_once_with()
+
+    def test_flush_handlers_structured_log(self):
+        import io
+        from google.cloud.logging.handlers import StructuredLogHandler
+        from google.cloud.logging import Resource
+        from google.cloud.logging_v2.client import _GKE_RESOURCE_TYPE
+
+        name = "test-logger"
+        resource = Resource(_GKE_RESOURCE_TYPE, {"resource_label": "value"})
+        labels = {"handler_label": "value"}
+        stream = io.BytesIO()
+
+        credentials = _make_credentials()
+        client = self._make_one(
+            project=self.PROJECT, credentials=credentials, _use_grpc=False
+        )
+
+        with mock.patch("google.cloud.logging_v2.client.setup_logging") as mocked:
+            client.setup_logging(
+                name=name, resource=resource, labels=labels, stream=stream
+            )
+
+        self.assertEqual(len(mocked.mock_calls), 1)
+        _, args, kwargs = mocked.mock_calls[0]
+
+        (handler,) = args
+        self.assertIsInstance(handler, StructuredLogHandler)
+
+        handler.flush = mock.Mock()
+        client.flush_handlers()
+        handler.flush.assert_called_once_with()
+
+    def test_close_cloud_logging_handler(self):
+        import contextlib
+        import io
+        from google.cloud.logging.handlers import CloudLoggingHandler
+        from google.cloud.logging import Resource
+
+        name = "test-logger"
+        resource = Resource("resource_type", {"resource_label": "value"})
+        labels = {"handler_label": "value"}
+        stream = io.BytesIO()
+
+        credentials = _make_credentials()
+        client = self._make_one(
+            project=self.PROJECT, credentials=credentials, _use_grpc=False
+        )
+
+        with mock.patch("google.cloud.logging_v2.client.setup_logging") as mocked:
+            client.setup_logging(
+                name=name, resource=resource, labels=labels, stream=stream
+            )
+
+        self.assertEqual(len(mocked.mock_calls), 1)
+        _, args, kwargs = mocked.mock_calls[0]
+
+        (handler,) = args
+        self.assertIsInstance(handler, CloudLoggingHandler)
+
+        handler.close = mock.Mock()
+        with contextlib.closing(client):
+            pass
+
+        handler.close.assert_called_once_with()
+
+    def test_close_cloud_logging_handler_no_setup_logging(self):
+        import contextlib
+        from google.cloud.logging.handlers import CloudLoggingHandler
+
+        credentials = _make_credentials()
+        client = self._make_one(
+            project=self.PROJECT, credentials=credentials, _use_grpc=False
+        )
+
+        handler = CloudLoggingHandler(client)
+        self.assertIn(handler, client._handlers)
+
+        handler.close = mock.Mock()
+        with contextlib.closing(client):
+            pass
+
+        handler.close.assert_called_once_with()
+
+    def test_close_structured_log_handler(self):
+        import contextlib
+        import io
+        from google.cloud.logging.handlers import StructuredLogHandler
+        from google.cloud.logging import Resource
+        from google.cloud.logging_v2.client import _GKE_RESOURCE_TYPE
+
+        name = "test-logger"
+        resource = Resource(_GKE_RESOURCE_TYPE, {"resource_label": "value"})
+        labels = {"handler_label": "value"}
+        stream = io.BytesIO()
+
+        credentials = _make_credentials()
+        client = self._make_one(
+            project=self.PROJECT, credentials=credentials, _use_grpc=False
+        )
+
+        with mock.patch("google.cloud.logging_v2.client.setup_logging") as mocked:
+            client.setup_logging(
+                name=name, resource=resource, labels=labels, stream=stream
+            )
+
+        self.assertEqual(len(mocked.mock_calls), 1)
+        _, args, kwargs = mocked.mock_calls[0]
+
+        (handler,) = args
+        self.assertIsInstance(handler, StructuredLogHandler)
+
+        handler.close = mock.Mock()
+        with contextlib.closing(client):
+            pass
+
+        handler.close.assert_called_once_with()
 
 
 class _Connection(object):

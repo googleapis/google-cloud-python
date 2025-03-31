@@ -34,6 +34,7 @@ from google.api_core.exceptions import ServiceUnavailable
 import google.cloud.logging
 from google.cloud._helpers import UTC
 from google.cloud.logging_v2.handlers import CloudLoggingHandler
+from google.cloud.logging_v2.handlers.transports import BackgroundThreadTransport
 from google.cloud.logging_v2.handlers.transports import SyncTransport
 from google.cloud.logging_v2 import client
 from google.cloud.logging_v2.resource import Resource
@@ -718,6 +719,72 @@ class TestLogging(unittest.TestCase):
             self.assertEqual(entries[0].trace, expected_trace_id)
             self.assertEqual(entries[0].span_id, expected_span_id)
             self.assertTrue(entries[0].trace_sampled, expected_tracesampled)
+
+    def test_log_handler_close(self):
+        from multiprocessing import Process
+
+        LOG_MESSAGE = "This is a test of handler.close before exiting."
+        LOGGER_NAME = "close-test"
+        handler_name = self._logger_name(LOGGER_NAME)
+
+        # only create the logger to delete, hidden otherwise
+        logger = Config.CLIENT.logger(handler_name)
+        self.to_delete.append(logger)
+
+        # Run a simulation of logging an entry then immediately shutting down.
+        # The .close() function before the process exits should prevent the
+        # thread shutdown error and let us log the message.
+        def subprocess_main():
+            # logger.delete and logger.list_entries work by filtering on log name, so we
+            # can create new objects with the same name and have the queries on the parent
+            # process still work.
+            handler = CloudLoggingHandler(
+                Config.CLIENT, name=handler_name, transport=BackgroundThreadTransport
+            )
+            cloud_logger = logging.getLogger(LOGGER_NAME)
+            cloud_logger.addHandler(handler)
+            cloud_logger.warning(LOG_MESSAGE)
+            handler.close()
+
+        proc = Process(target=subprocess_main)
+        proc.start()
+        proc.join()
+        entries = _list_entries(logger)
+        self.assertEqual(len(entries), 1)
+        self.assertEqual(entries[0].payload, LOG_MESSAGE)
+
+    def test_log_client_flush_handlers(self):
+        from multiprocessing import Process
+
+        LOG_MESSAGE = "This is a test of client.flush_handlers before exiting."
+        LOGGER_NAME = "close-test"
+        handler_name = self._logger_name(LOGGER_NAME)
+
+        # only create the logger to delete, hidden otherwise
+        logger = Config.CLIENT.logger(handler_name)
+        self.to_delete.append(logger)
+
+        # Run a simulation of logging an entry then immediately shutting down.
+        # The .close() function before the process exits should prevent the
+        # thread shutdown error and let us log the message.
+        def subprocess_main():
+            # logger.delete and logger.list_entries work by filtering on log name, so we
+            # can create new objects with the same name and have the queries on the parent
+            # process still work.
+            handler = CloudLoggingHandler(
+                Config.CLIENT, name=handler_name, transport=BackgroundThreadTransport
+            )
+            cloud_logger = logging.getLogger(LOGGER_NAME)
+            cloud_logger.addHandler(handler)
+            cloud_logger.warning(LOG_MESSAGE)
+            Config.CLIENT.flush_handlers()
+
+        proc = Process(target=subprocess_main)
+        proc.start()
+        proc.join()
+        entries = _list_entries(logger)
+        self.assertEqual(len(entries), 1)
+        self.assertEqual(entries[0].payload, LOG_MESSAGE)
 
     def test_create_metric(self):
         METRIC_NAME = "test-create-metric%s" % (_RESOURCE_ID,)

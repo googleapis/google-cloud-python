@@ -12,12 +12,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import contextlib
 import time
 import logging
 import queue
+import re
 import unittest
 
 import mock
+
+from io import StringIO
 
 
 class TestBackgroundThreadHandler(unittest.TestCase):
@@ -176,6 +180,11 @@ class TestBackgroundThreadHandler(unittest.TestCase):
 class Test_Worker(unittest.TestCase):
     NAME = "python_logger"
 
+    def setUp(self):
+        import sys
+
+        print("In method", self._testMethodName, file=sys.stderr)
+
     @staticmethod
     def _get_target_class():
         from google.cloud.logging_v2.handlers.transports import background_thread
@@ -187,9 +196,26 @@ class Test_Worker(unittest.TestCase):
 
     def _start_with_thread_patch(self, worker):
         with mock.patch("threading.Thread", new=_Thread) as thread_mock:
-            with mock.patch("atexit.register") as atexit_mock:
-                worker.start()
-                return thread_mock, atexit_mock
+            worker.start()
+            return thread_mock
+
+    @staticmethod
+    @contextlib.contextmanager
+    def _init_atexit_mock():
+        atexit_mock = _AtexitMock()
+        with mock.patch.multiple(
+            "atexit", register=atexit_mock.register, unregister=atexit_mock.unregister
+        ):
+            yield atexit_mock
+
+    @staticmethod
+    @contextlib.contextmanager
+    def _init_main_thread_is_alive_mock(is_alive):
+        with mock.patch("threading.main_thread") as main_thread_func_mock:
+            main_thread_obj_mock = mock.Mock()
+            main_thread_func_mock.return_value = main_thread_obj_mock
+            main_thread_obj_mock.is_alive = mock.Mock(return_value=is_alive)
+            yield
 
     def test_constructor(self):
         logger = _Logger(self.NAME)
@@ -216,14 +242,15 @@ class Test_Worker(unittest.TestCase):
 
         worker = self._make_one(_Logger(self.NAME))
 
-        _, atexit_mock = self._start_with_thread_patch(worker)
+        with self._init_atexit_mock() as atexit_mock:
+            self._start_with_thread_patch(worker)
 
         self.assertTrue(worker.is_alive)
         self.assertIsNotNone(worker._thread)
         self.assertTrue(worker._thread.daemon)
         self.assertEqual(worker._thread._target, worker._thread_main)
         self.assertEqual(worker._thread._name, background_thread._WORKER_THREAD_NAME)
-        atexit_mock.assert_called_once_with(worker._main_thread_terminated)
+        self.assertIn(worker._handle_exit, atexit_mock.registered_funcs)
 
         # Calling start again should not start a new thread.
         current_thread = worker._thread
@@ -260,29 +287,33 @@ class Test_Worker(unittest.TestCase):
 
         self.assertEqual(thread._timeout, None)
 
-    def test__main_thread_terminated(self):
+    def test__close(self):
         worker = self._make_one(_Logger(self.NAME))
 
         self._start_with_thread_patch(worker)
-        worker._main_thread_terminated()
+        worker._close("")
 
         self.assertFalse(worker.is_alive)
 
         # Calling twice should not be an error
-        worker._main_thread_terminated()
+        worker._close("")
 
-    def test__main_thread_terminated_non_empty_queue(self):
+    def test__close_non_empty_queue(self):
         worker = self._make_one(_Logger(self.NAME))
+        msg = "My Message"
 
         self._start_with_thread_patch(worker)
         record = mock.Mock()
         record.created = time.time()
         worker.enqueue(record, "")
-        worker._main_thread_terminated()
+
+        with mock.patch("sys.stderr", new_callable=StringIO) as stderr_mock:
+            worker._close(msg)
+            self.assertIn(msg, stderr_mock.getvalue())
 
         self.assertFalse(worker.is_alive)
 
-    def test__main_thread_terminated_did_not_join(self):
+    def test__close_did_not_join(self):
         worker = self._make_one(_Logger(self.NAME))
 
         self._start_with_thread_patch(worker)
@@ -290,7 +321,65 @@ class Test_Worker(unittest.TestCase):
         record = mock.Mock()
         record.created = time.time()
         worker.enqueue(record, "")
-        worker._main_thread_terminated()
+        worker._close("")
+
+        self.assertFalse(worker.is_alive)
+
+    def test__handle_exit(self):
+        from google.cloud.logging_v2.handlers.transports.background_thread import (
+            _CLOSE_THREAD_SHUTDOWN_ERROR_MSG,
+        )
+
+        worker = self._make_one(_Logger(self.NAME))
+
+        with mock.patch("sys.stderr", new_callable=StringIO) as stderr_mock:
+            with self._init_main_thread_is_alive_mock(False):
+                with self._init_atexit_mock():
+                    self._start_with_thread_patch(worker)
+                    self._enqueue_record(worker, "test")
+                    worker._handle_exit()
+
+            self.assertRegex(
+                stderr_mock.getvalue(),
+                re.compile("^%s$" % _CLOSE_THREAD_SHUTDOWN_ERROR_MSG, re.MULTILINE),
+            )
+
+            self.assertRegex(
+                stderr_mock.getvalue(),
+                re.compile(
+                    r"^Failed to send %d pending logs\.$" % worker._queue.qsize(),
+                    re.MULTILINE,
+                ),
+            )
+
+    def test__handle_exit_no_items(self):
+        worker = self._make_one(_Logger(self.NAME))
+
+        with mock.patch("sys.stderr", new_callable=StringIO) as stderr_mock:
+            with self._init_main_thread_is_alive_mock(False):
+                with self._init_atexit_mock():
+                    self._start_with_thread_patch(worker)
+                    worker._handle_exit()
+
+            self.assertEqual(stderr_mock.getvalue(), "")
+
+    def test_close_unregister_atexit(self):
+        worker = self._make_one(_Logger(self.NAME))
+
+        with mock.patch("sys.stderr", new_callable=StringIO) as stderr_mock:
+            with self._init_atexit_mock() as atexit_mock:
+                self._start_with_thread_patch(worker)
+                self.assertIn(worker._handle_exit, atexit_mock.registered_funcs)
+                worker.close()
+                self.assertNotIn(worker._handle_exit, atexit_mock.registered_funcs)
+
+            self.assertNotRegex(
+                stderr_mock.getvalue(),
+                re.compile(
+                    r"^Failed to send %d pending logs\.$" % worker._queue.qsize(),
+                    re.MULTILINE,
+                ),
+            )
 
         self.assertFalse(worker.is_alive)
 
@@ -401,6 +490,23 @@ class Test_Worker(unittest.TestCase):
         # The last batch should not have been executed because it had no items.
         self.assertFalse(worker._cloud_logger._batch.commit_called)
         self.assertEqual(worker._queue.qsize(), 0)
+
+    def test__thread_main_main_thread_terminated(self):
+        from google.cloud.logging_v2.handlers.transports import background_thread
+
+        worker = self._make_one(_Logger(self.NAME))
+        self._enqueue_record(worker, "1")
+        worker._queue.put_nowait(background_thread._WORKER_TERMINATOR)
+
+        with mock.patch("threading.main_thread") as main_thread_func_mock:
+            main_thread_obj_mock = mock.Mock()
+            main_thread_func_mock.return_value = main_thread_obj_mock
+            main_thread_obj_mock.is_alive = mock.Mock(return_value=False)
+            self._enqueue_record(worker, "1")
+            self._enqueue_record(worker, "2")
+            worker._thread_main()
+
+        self.assertFalse(worker._cloud_logger._batch.commit_called)
 
     @mock.patch("time.time", autospec=True, return_value=1)
     def test__thread_main_max_latency(self, time):
@@ -565,3 +671,16 @@ class _Client(object):
     def logger(self, name, resource=None):  # pylint: disable=unused-argument
         self._logger = _Logger(name, resource=resource)
         return self._logger
+
+
+class _AtexitMock(object):
+    """_AtexitMock is a simulation of registering/unregistering functions in atexit using a dummy set."""
+
+    def __init__(self):
+        self.registered_funcs = set()
+
+    def register(self, func):
+        self.registered_funcs.add(func)
+
+    def unregister(self, func):
+        self.registered_funcs.remove(func)

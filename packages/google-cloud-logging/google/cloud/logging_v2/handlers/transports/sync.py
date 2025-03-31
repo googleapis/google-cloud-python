@@ -59,3 +59,10 @@ class SyncTransport(Transport):
             labels=labels,
             **kwargs,
         )
+
+    def close(self):
+        """Closes the transport and cleans up resources used by it.
+
+        This call is usually followed up by cleaning up the reference to the transport.
+        """
+        self.logger = None

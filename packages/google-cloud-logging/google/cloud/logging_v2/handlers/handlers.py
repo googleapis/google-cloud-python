@@ -188,7 +188,10 @@ class CloudLoggingHandler(logging.StreamHandler):
             resource = detect_resource(client.project)
         self.name = name
         self.client = client
+        client._handlers.add(self)
         self.transport = transport(client, name, resource=resource)
+        self._transport_open = True
+        self._transport_cls = transport
         self.project_id = client.project
         self.resource = resource
         self.labels = labels
@@ -213,6 +216,12 @@ class CloudLoggingHandler(logging.StreamHandler):
         labels = {**add_resource_labels(resource, record), **(labels or {})} or None
 
         # send off request
+        if not self._transport_open:
+            self.transport = self._transport_cls(
+                self.client, self.name, resource=self.resource
+            )
+            self._transport_open = True
+
         self.transport.send(
             record,
             message,
@@ -224,6 +233,21 @@ class CloudLoggingHandler(logging.StreamHandler):
             http_request=record._http_request,
             source_location=record._source_location,
         )
+
+    def flush(self):
+        """Forces the Transport object to submit any pending log records.
+
+        For SyncTransport, this is a no-op.
+        """
+        super(CloudLoggingHandler, self).flush()
+        if self._transport_open:
+            self.transport.flush()
+
+    def close(self):
+        """Closes the log handler and cleans up all Transport objects used."""
+        self.transport.close()
+        self.transport = None
+        self._transport_open = False
 
 
 def _format_and_parse_message(record, formatter_handler):

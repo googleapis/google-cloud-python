@@ -149,6 +149,8 @@ class Client(ClientWithProject):
         else:
             self._use_grpc = _use_grpc
 
+        self._handlers = set()
+
     @property
     def logging_api(self):
         """Helper for logging-related API calls.
@@ -411,4 +413,17 @@ class Client(ClientWithProject):
             dict: keyword args passed to handler constructor
         """
         handler = self.get_default_handler(**kw)
+        self._handlers.add(handler)
         setup_logging(handler, log_level=log_level, excluded_loggers=excluded_loggers)
+
+    def flush_handlers(self):
+        """Flushes all Python log handlers associated with this Client."""
+
+        for handler in self._handlers:
+            handler.flush()
+
+    def close(self):
+        """Closes the Client and all handlers associated with this Client."""
+        super(Client, self).close()
+        for handler in self._handlers:
+            handler.close()
