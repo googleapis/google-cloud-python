@@ -33,13 +33,6 @@ _BQML_PARAMS_MAPPING = {
     "max_iterations": "maxIterations",
 }
 
-_TEXT_GENERATOR_BISON_ENDPOINT = "text-bison"
-_TEXT_GENERATOR_BISON_32K_ENDPOINT = "text-bison-32k"
-_TEXT_GENERATOR_ENDPOINTS = (
-    _TEXT_GENERATOR_BISON_ENDPOINT,
-    _TEXT_GENERATOR_BISON_32K_ENDPOINT,
-)
-
 _TEXT_EMBEDDING_005_ENDPOINT = "text-embedding-005"
 _TEXT_EMBEDDING_004_ENDPOINT = "text-embedding-004"
 _TEXT_MULTILINGUAL_EMBEDDING_002_ENDPOINT = "text-multilingual-embedding-002"
@@ -101,7 +94,6 @@ _CLAUDE_3_ENDPOINTS = (
 
 
 _ML_GENERATE_TEXT_STATUS = "ml_generate_text_status"
-_ML_EMBED_TEXT_STATUS = "ml_embed_text_status"
 _ML_GENERATE_EMBEDDING_STATUS = "ml_generate_embedding_status"
 
 _MODEL_NOT_SUPPORTED_WARNING = (
