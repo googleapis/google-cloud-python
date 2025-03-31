@@ -961,7 +961,7 @@ class TextToSpeechClient(metaclass=TextToSpeechClientMeta):
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> Iterable[cloud_tts.StreamingSynthesizeResponse]:
         r"""Performs bidirectional streaming speech synthesis:
-        receive audio while sending text.
+        receives audio while sending text.
 
         .. code-block:: python
 
