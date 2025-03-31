@@ -1,0 +1,2 @@
+recursive-include google/cloud/texttospeech *.py
+recursive-include google/cloud/texttospeech_v1beta1 *.py
