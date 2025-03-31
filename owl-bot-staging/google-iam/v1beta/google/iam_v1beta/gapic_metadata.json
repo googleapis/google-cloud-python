@@ -1,0 +1,143 @@
+ {
+  "comment": "This file maps proto services/RPCs to the corresponding library clients/methods",
+  "language": "python",
+  "libraryPackage": "google.iam_v1beta",
+  "protoPackage": "google.iam.v1beta",
+  "schema": "1.0",
+  "services": {
+    "WorkloadIdentityPools": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "WorkloadIdentityPoolsClient",
+          "rpcs": {
+            "CreateWorkloadIdentityPool": {
+              "methods": [
+                "create_workload_identity_pool"
+              ]
+            },
+            "CreateWorkloadIdentityPoolProvider": {
+              "methods": [
+                "create_workload_identity_pool_provider"
+              ]
+            },
+            "DeleteWorkloadIdentityPool": {
+              "methods": [
+                "delete_workload_identity_pool"
+              ]
+            },
+            "DeleteWorkloadIdentityPoolProvider": {
+              "methods": [
+                "delete_workload_identity_pool_provider"
+              ]
+            },
+            "GetWorkloadIdentityPool": {
+              "methods": [
+                "get_workload_identity_pool"
+              ]
+            },
+            "GetWorkloadIdentityPoolProvider": {
+              "methods": [
+                "get_workload_identity_pool_provider"
+              ]
+            },
+            "ListWorkloadIdentityPoolProviders": {
+              "methods": [
+                "list_workload_identity_pool_providers"
+              ]
+            },
+            "ListWorkloadIdentityPools": {
+              "methods": [
+                "list_workload_identity_pools"
+              ]
+            },
+            "UndeleteWorkloadIdentityPool": {
+              "methods": [
+                "undelete_workload_identity_pool"
+              ]
+            },
+            "UndeleteWorkloadIdentityPoolProvider": {
+              "methods": [
+                "undelete_workload_identity_pool_provider"
+              ]
+            },
+            "UpdateWorkloadIdentityPool": {
+              "methods": [
+                "update_workload_identity_pool"
+              ]
+            },
+            "UpdateWorkloadIdentityPoolProvider": {
+              "methods": [
+                "update_workload_identity_pool_provider"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "WorkloadIdentityPoolsAsyncClient",
+          "rpcs": {
+            "CreateWorkloadIdentityPool": {
+              "methods": [
+                "create_workload_identity_pool"
+              ]
+            },
+            "CreateWorkloadIdentityPoolProvider": {
+              "methods": [
+                "create_workload_identity_pool_provider"
+              ]
+            },
+            "DeleteWorkloadIdentityPool": {
+              "methods": [
+                "delete_workload_identity_pool"
+              ]
+            },
+            "DeleteWorkloadIdentityPoolProvider": {
+              "methods": [
+                "delete_workload_identity_pool_provider"
+              ]
+            },
+            "GetWorkloadIdentityPool": {
+              "methods": [
+                "get_workload_identity_pool"
+              ]
+            },
+            "GetWorkloadIdentityPoolProvider": {
+              "methods": [
+                "get_workload_identity_pool_provider"
+              ]
+            },
+            "ListWorkloadIdentityPoolProviders": {
+              "methods": [
+                "list_workload_identity_pool_providers"
+              ]
+            },
+            "ListWorkloadIdentityPools": {
+              "methods": [
+                "list_workload_identity_pools"
+              ]
+            },
+            "UndeleteWorkloadIdentityPool": {
+              "methods": [
+                "undelete_workload_identity_pool"
+              ]
+            },
+            "UndeleteWorkloadIdentityPoolProvider": {
+              "methods": [
+                "undelete_workload_identity_pool_provider"
+              ]
+            },
+            "UpdateWorkloadIdentityPool": {
+              "methods": [
+                "update_workload_identity_pool"
+              ]
+            },
+            "UpdateWorkloadIdentityPoolProvider": {
+              "methods": [
+                "update_workload_identity_pool_provider"
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}
