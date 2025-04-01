@@ -992,6 +992,9 @@ class Repository(proto.Message):
         satisfies_pzi (bool):
             Output only. If set, the repository satisfies
             physical zone isolation.
+        registry_uri (str):
+            Output only. The repository endpoint, for example:
+            ``us-docker.pkg.dev/my-proj/my-repo``.
     """
 
     class Format(proto.Enum):
@@ -1288,6 +1291,10 @@ class Repository(proto.Message):
     satisfies_pzi: bool = proto.Field(
         proto.BOOL,
         number=22,
+    )
+    registry_uri: str = proto.Field(
+        proto.STRING,
+        number=26,
     )
 
 

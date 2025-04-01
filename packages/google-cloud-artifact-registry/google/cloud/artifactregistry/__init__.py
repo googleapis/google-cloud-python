@@ -68,6 +68,8 @@ from google.cloud.artifactregistry_v1.types.file import (
     UpdateFileRequest,
 )
 from google.cloud.artifactregistry_v1.types.generic import GenericArtifact
+from google.cloud.artifactregistry_v1.types.go import GoModule
+from google.cloud.artifactregistry_v1.types.kfp_artifact import KfpArtifact
 from google.cloud.artifactregistry_v1.types.package import (
     DeletePackageRequest,
     GetPackageRequest,
@@ -179,6 +181,8 @@ __all__ = (
     "ListFilesResponse",
     "UpdateFileRequest",
     "GenericArtifact",
+    "GoModule",
+    "KfpArtifact",
     "DeletePackageRequest",
     "GetPackageRequest",
     "ListPackagesRequest",
