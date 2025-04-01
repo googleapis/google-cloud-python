@@ -18,7 +18,6 @@ from functools import partial
 import json
 import os
 import re
-import random
 import socket
 
 import mock
@@ -251,25 +250,15 @@ class TestInstalledAppFlow(object):
             CLIENT_SECRETS_INFO, scopes=self.SCOPES
         )
 
-    def is_port_in_use(self, port, host="localhost"):
-        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-            return s.connect_ex((host, port)) == 0
-
     @pytest.fixture
     def port(self):
         # Creating a new server at the same port will result in
         # a 'Address already in use' error for a brief
         # period of time after the socket has been closed.
-        # Work around this in the tests by choosing a different port each time.
-        # https://stackoverflow.com/questions/6380057/python-binding-socket-address-already-in-use
-        random_port = -1
-        for _ in range(10):
-            random_port = random.randrange(60400, 60900)
-            if not self.is_port_in_use(random_port):
-                break
-        else:
-            raise OSError("Could not find a free port")
-        yield random_port
+        # Work around this in the tests by letting the OS pick an available port each time.
+        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+            s.bind(("localhost", 0))
+            return s.getsockname()[1]
 
     @pytest.fixture
     def socket(self, port):
