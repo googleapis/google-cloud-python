@@ -72,7 +72,7 @@ bqstorage = [
   "pyarrow >= 4.0.0",
 ]
 pandas = [
-  "pandas >= 1.1.4",
+  "pandas >= 1.3.0",
   "pandas-gbq >= 0.26.1",
   "grpcio >= 1.47.0, < 2.0.0",
   "grpcio >= 1.49.1, < 2.0.0; python_version >= '3.11'",

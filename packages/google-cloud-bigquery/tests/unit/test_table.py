@@ -4143,14 +4143,8 @@ class TestRowIterator(unittest.TestCase):
         )
         self.assertEqual(df.name.dtype.name, "string")
 
-        # While pyproject.toml lists pandas 1.1 as the lowest supported version of
-        # pandas, the pip resolver is not able to resolve pandas 1.1 and numpy
-        if hasattr(pandas, "Float64Dtype"):
-            self.assertEqual(list(df.miles), [1.77, 6.66, 2.0])
-            self.assertEqual(df.miles.dtype.name, "Float64")
-        else:
-            self.assertEqual(list(df.miles), ["1.77", "6.66", "2.0"])
-            self.assertEqual(df.miles.dtype.name, "string")
+        self.assertEqual(list(df.miles), [1.77, 6.66, 2.0])
+        self.assertEqual(df.miles.dtype.name, "Float64")
 
         if hasattr(pandas, "ArrowDtype"):
             self.assertEqual(
