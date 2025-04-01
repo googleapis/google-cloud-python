@@ -299,6 +299,11 @@ class ModelManipulationSqlGenerator(BaseSqlGenerator):
         return "\n".join(parts)
 
     # ML prediction TVFs
+    def ml_recommend(self, source_sql: str) -> str:
+        """Encode ML.RECOMMEND for BQML"""
+        return f"""SELECT * FROM ML.RECOMMEND(MODEL {self._model_ref_sql()},
+  ({source_sql}))"""
+
     def ml_predict(self, source_sql: str) -> str:
         """Encode ML.PREDICT for BQML"""
         return f"""SELECT * FROM ML.PREDICT(MODEL {self._model_ref_sql()},

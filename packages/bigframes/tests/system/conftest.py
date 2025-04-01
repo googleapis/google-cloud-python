@@ -320,6 +320,7 @@ def load_test_data_tables(
         ("repeated", "repeated_schema.json", "repeated.jsonl"),
         ("json", "json_schema.json", "json.jsonl"),
         ("penguins", "penguins_schema.json", "penguins.jsonl"),
+        ("ratings", "ratings_schema.json", "ratings.jsonl"),
         ("time_series", "time_series_schema.json", "time_series.jsonl"),
         ("hockey_players", "hockey_players.json", "hockey_players.jsonl"),
         ("matrix_2by3", "matrix_2by3.json", "matrix_2by3.jsonl"),
@@ -414,6 +415,11 @@ def json_table_id(test_data_tables) -> str:
 @pytest.fixture(scope="session")
 def penguins_table_id(test_data_tables) -> str:
     return test_data_tables["penguins"]
+
+
+@pytest.fixture(scope="session")
+def ratings_table_id(test_data_tables) -> str:
+    return test_data_tables["ratings"]
 
 
 @pytest.fixture(scope="session")
@@ -767,6 +773,14 @@ def penguins_df_null_index(
 ) -> bigframes.dataframe.DataFrame:
     """DataFrame pointing at test data."""
     return unordered_session.read_gbq(penguins_table_id)
+
+
+@pytest.fixture(scope="session")
+def ratings_df_default_index(
+    ratings_table_id: str, session: bigframes.Session
+) -> bigframes.dataframe.DataFrame:
+    """DataFrame pointing at test data."""
+    return session.read_gbq(ratings_table_id)
 
 
 @pytest.fixture(scope="session")

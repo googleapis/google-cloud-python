@@ -117,6 +117,12 @@ class BqmlModel(BaseBqml):
         """Get the BQML model associated with this wrapper"""
         return self._model
 
+    def recommend(self, input_data: bpd.DataFrame) -> bpd.DataFrame:
+        return self._apply_ml_tvf(
+            input_data,
+            self._model_manipulation_sql_generator.ml_recommend,
+        )
+
     def predict(self, input_data: bpd.DataFrame) -> bpd.DataFrame:
         return self._apply_ml_tvf(
             input_data,
