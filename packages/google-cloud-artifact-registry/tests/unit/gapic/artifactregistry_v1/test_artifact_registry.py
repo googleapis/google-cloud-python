@@ -5839,6 +5839,7 @@ def test_get_repository(request_type, transport: str = "grpc"):
             cleanup_policy_dry_run=True,
             disallow_unspecified_mode=True,
             satisfies_pzi=True,
+            registry_uri="registry_uri_value",
         )
         response = client.get_repository(request)
 
@@ -5860,6 +5861,7 @@ def test_get_repository(request_type, transport: str = "grpc"):
     assert response.cleanup_policy_dry_run is True
     assert response.disallow_unspecified_mode is True
     assert response.satisfies_pzi is True
+    assert response.registry_uri == "registry_uri_value"
 
 
 def test_get_repository_non_empty_request_with_auto_populated_field():
@@ -5995,6 +5997,7 @@ async def test_get_repository_async(
                 cleanup_policy_dry_run=True,
                 disallow_unspecified_mode=True,
                 satisfies_pzi=True,
+                registry_uri="registry_uri_value",
             )
         )
         response = await client.get_repository(request)
@@ -6017,6 +6020,7 @@ async def test_get_repository_async(
     assert response.cleanup_policy_dry_run is True
     assert response.disallow_unspecified_mode is True
     assert response.satisfies_pzi is True
+    assert response.registry_uri == "registry_uri_value"
 
 
 @pytest.mark.asyncio
@@ -6589,6 +6593,7 @@ def test_update_repository(request_type, transport: str = "grpc"):
             cleanup_policy_dry_run=True,
             disallow_unspecified_mode=True,
             satisfies_pzi=True,
+            registry_uri="registry_uri_value",
         )
         response = client.update_repository(request)
 
@@ -6610,6 +6615,7 @@ def test_update_repository(request_type, transport: str = "grpc"):
     assert response.cleanup_policy_dry_run is True
     assert response.disallow_unspecified_mode is True
     assert response.satisfies_pzi is True
+    assert response.registry_uri == "registry_uri_value"
 
 
 def test_update_repository_non_empty_request_with_auto_populated_field():
@@ -6747,6 +6753,7 @@ async def test_update_repository_async(
                 cleanup_policy_dry_run=True,
                 disallow_unspecified_mode=True,
                 satisfies_pzi=True,
+                registry_uri="registry_uri_value",
             )
         )
         response = await client.update_repository(request)
@@ -6769,6 +6776,7 @@ async def test_update_repository_async(
     assert response.cleanup_policy_dry_run is True
     assert response.disallow_unspecified_mode is True
     assert response.satisfies_pzi is True
+    assert response.registry_uri == "registry_uri_value"
 
 
 @pytest.mark.asyncio
@@ -29421,6 +29429,7 @@ async def test_get_repository_empty_call_grpc_asyncio():
                 cleanup_policy_dry_run=True,
                 disallow_unspecified_mode=True,
                 satisfies_pzi=True,
+                registry_uri="registry_uri_value",
             )
         )
         await client.get_repository(request=None)
@@ -29486,6 +29495,7 @@ async def test_update_repository_empty_call_grpc_asyncio():
                 cleanup_policy_dry_run=True,
                 disallow_unspecified_mode=True,
                 satisfies_pzi=True,
+                registry_uri="registry_uri_value",
             )
         )
         await client.update_repository(request=None)
@@ -31984,6 +31994,7 @@ def test_get_repository_rest_call_success(request_type):
             cleanup_policy_dry_run=True,
             disallow_unspecified_mode=True,
             satisfies_pzi=True,
+            registry_uri="registry_uri_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -32010,6 +32021,7 @@ def test_get_repository_rest_call_success(request_type):
     assert response.cleanup_policy_dry_run is True
     assert response.disallow_unspecified_mode is True
     assert response.satisfies_pzi is True
+    assert response.registry_uri == "registry_uri_value"
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -32182,6 +32194,7 @@ def test_create_repository_rest_call_success(request_type):
         },
         "disallow_unspecified_mode": True,
         "satisfies_pzi": True,
+        "registry_uri": "registry_uri_value",
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -32451,6 +32464,7 @@ def test_update_repository_rest_call_success(request_type):
         },
         "disallow_unspecified_mode": True,
         "satisfies_pzi": True,
+        "registry_uri": "registry_uri_value",
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -32535,6 +32549,7 @@ def test_update_repository_rest_call_success(request_type):
             cleanup_policy_dry_run=True,
             disallow_unspecified_mode=True,
             satisfies_pzi=True,
+            registry_uri="registry_uri_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -32561,6 +32576,7 @@ def test_update_repository_rest_call_success(request_type):
     assert response.cleanup_policy_dry_run is True
     assert response.disallow_unspecified_mode is True
     assert response.satisfies_pzi is True
+    assert response.registry_uri == "registry_uri_value"
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])

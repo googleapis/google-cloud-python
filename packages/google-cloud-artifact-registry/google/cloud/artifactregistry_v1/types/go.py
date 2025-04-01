@@ -17,37 +17,33 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.protobuf import timestamp_pb2  # type: ignore
-
-
 __protobuf__ = proto.module(
-    package='google.devtools.artifactregistry.v1',
+    package="google.devtools.artifactregistry.v1",
     manifest={
-        'GenericArtifact',
+        "GoModule",
     },
 )
 
 
-class GenericArtifact(proto.Message):
-    r"""GenericArtifact represents a generic artifact
+class GoModule(proto.Message):
+    r"""GoModule represents a Go module.
 
     Attributes:
         name (str):
-            Resource name of the generic artifact. project, location,
-            repository, package_id and version_id create a unique
-            generic artifact. i.e.
-            "projects/test-project/locations/us-west4/repositories/test-repo/
-            genericArtifacts/package_id:version_id".
+            The resource name of a Go module.
         version (str):
-            The version of the generic artifact.
+            The version of the Go module. Must be a valid
+            canonical version as defined in
+            https://go.dev/ref/mod#glos-canonical-version.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
-            Output only. The time when the Generic module
-            is created.
+            Output only. The time when the Go module is
+            created.
         update_time (google.protobuf.timestamp_pb2.Timestamp):
-            Output only. The time when the Generic module
-            is updated.
+            Output only. The time when the Go module is
+            updated.
     """
 
     name: str = proto.Field(

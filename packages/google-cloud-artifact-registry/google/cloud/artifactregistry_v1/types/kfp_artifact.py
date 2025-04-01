@@ -19,33 +19,29 @@ from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
 
-from google.protobuf import timestamp_pb2  # type: ignore
-
-
 __protobuf__ = proto.module(
-    package='google.devtools.artifactregistry.v1',
+    package="google.devtools.artifactregistry.v1",
     manifest={
-        'GoModule',
+        "KfpArtifact",
     },
 )
 
 
-class GoModule(proto.Message):
-    r"""GoModule represents a Go module.
+class KfpArtifact(proto.Message):
+    r"""A detailed representation of a KFP artifact.
 
     Attributes:
         name (str):
-            The resource name of a Go module.
+            Output only. Resource name of the KFP
+            artifact. Since users don't directly interact
+            with this resource, the name will be derived
+            from the associated version. For example, when
+            version = ".../versions/sha256:abcdef...", the
+            name will be
+            ".../kfpArtifacts/sha256:abcdef...".
         version (str):
-            The version of the Go module. Must be a valid
-            canonical version as defined in
-            https://go.dev/ref/mod#glos-canonical-version.
-        create_time (google.protobuf.timestamp_pb2.Timestamp):
-            Output only. The time when the Go module is
-            created.
-        update_time (google.protobuf.timestamp_pb2.Timestamp):
-            Output only. The time when the Go module is
-            updated.
+            The version associated with the KFP artifact.
+            Must follow the Semantic Versioning standard.
     """
 
     name: str = proto.Field(
@@ -55,16 +51,6 @@ class GoModule(proto.Message):
     version: str = proto.Field(
         proto.STRING,
         number=2,
-    )
-    create_time: timestamp_pb2.Timestamp = proto.Field(
-        proto.MESSAGE,
-        number=3,
-        message=timestamp_pb2.Timestamp,
-    )
-    update_time: timestamp_pb2.Timestamp = proto.Field(
-        proto.MESSAGE,
-        number=4,
-        message=timestamp_pb2.Timestamp,
     )
 
 
