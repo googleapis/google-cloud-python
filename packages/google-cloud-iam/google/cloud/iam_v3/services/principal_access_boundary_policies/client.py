@@ -1441,9 +1441,11 @@ class PrincipalAccessBoundaryPoliciesClient(
 
         Returns:
             google.cloud.iam_v3.services.principal_access_boundary_policies.pagers.ListPrincipalAccessBoundaryPoliciesPager:
-                Iterating over this object will yield
-                results and resolve additional pages
-                automatically.
+                Response message for
+                ListPrincipalAccessBoundaryPolicies
+                method.  Iterating over this object will
+                yield results and resolve additional
+                pages automatically.
 
         """
         # Create or coerce a protobuf request object.

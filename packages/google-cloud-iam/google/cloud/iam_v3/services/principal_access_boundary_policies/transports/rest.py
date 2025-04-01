@@ -1145,6 +1145,9 @@ class PrincipalAccessBoundaryPoliciesRestTransport(
 
                 Returns:
                     ~.principal_access_boundary_policies_service.ListPrincipalAccessBoundaryPoliciesResponse:
+                        Response message for
+                    ListPrincipalAccessBoundaryPolicies
+                    method.
 
             """
 

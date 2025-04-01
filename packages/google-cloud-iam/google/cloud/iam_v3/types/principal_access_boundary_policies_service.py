@@ -227,7 +227,8 @@ class ListPrincipalAccessBoundaryPoliciesRequest(proto.Message):
 
 
 class ListPrincipalAccessBoundaryPoliciesResponse(proto.Message):
-    r"""
+    r"""Response message for ListPrincipalAccessBoundaryPolicies
+    method.
 
     Attributes:
         principal_access_boundary_policies (MutableSequence[google.cloud.iam_v3.types.PrincipalAccessBoundaryPolicy]):
