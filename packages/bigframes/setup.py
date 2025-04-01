@@ -83,6 +83,7 @@ extras = {
         "pre-commit",
         "nox",
         "google-cloud-testutils",
+        "freezegun",
     ],
 }
 extras["all"] = list(sorted(frozenset(itertools.chain.from_iterable(extras.values()))))

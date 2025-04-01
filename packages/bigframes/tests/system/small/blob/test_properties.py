@@ -12,10 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import db_dtypes  # type: ignore
 import pandas as pd
 
 import bigframes
+import bigframes.dtypes as dtypes
 import bigframes.pandas as bpd
 
 
@@ -59,26 +59,24 @@ def test_blob_metadata(images_mm_df: bpd.DataFrame):
         actual = images_mm_df["blob_col"].blob.metadata().to_pandas()
         expected = pd.Series(
             [
-                {
-                    "content_type": "image/jpeg",
-                    "md5_hash": "e130ad042261a1883cd2cc06831cf748",
-                    "size": 338390,
-                    "updated": 1739574332000000,
-                },
-                {
-                    "content_type": "image/jpeg",
-                    "md5_hash": "e2ae3191ff2b809fd0935f01a537c650",
-                    "size": 43333,
-                    "updated": 1739574332000000,
-                },
+                (
+                    '{"content_type":"image/jpeg",'
+                    '"md5_hash":"e130ad042261a1883cd2cc06831cf748",'
+                    '"size":338390,'
+                    '"updated":1739574332000000}'
+                ),
+                (
+                    '{"content_type":"image/jpeg",'
+                    '"md5_hash":"e2ae3191ff2b809fd0935f01a537c650",'
+                    '"size":43333,'
+                    '"updated":1739574332000000}'
+                ),
             ],
             name="metadata",
-            dtype=db_dtypes.JSONDtype(),
+            dtype=dtypes.JSON_DTYPE,
         )
-
-        pd.testing.assert_series_equal(
-            actual, expected, check_dtype=False, check_index_type=False
-        )
+        expected.index = expected.index.astype(dtypes.INT_DTYPE)
+        pd.testing.assert_series_equal(actual, expected)
 
 
 def test_blob_content_type(images_mm_df: bpd.DataFrame):

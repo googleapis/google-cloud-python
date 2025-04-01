@@ -69,7 +69,6 @@ UNIT_TEST_PYTHON_VERSIONS = ["3.9", "3.10", "3.11", "3.12", "3.13"]
 UNIT_TEST_STANDARD_DEPENDENCIES = [
     "mock",
     "asyncmock",
-    "freezegun",
     PYTEST_VERSION,
     "pytest-cov",
     "pytest-asyncio",

@@ -15,7 +15,6 @@
 import datetime
 import unittest.mock as mock
 
-import freezegun
 import google.cloud.bigquery
 import pytest
 
@@ -47,6 +46,8 @@ def bq_client():
 
 
 def test_bqsyncedclock_get_time(bq_client):
+    freezegun = pytest.importorskip("freezegun")
+
     # this initial local time is actually irrelevant, only the ticks matter
     initial_local_datetime = datetime.datetime(
         year=1, month=7, day=12, hour=15, minute=6, second=3
