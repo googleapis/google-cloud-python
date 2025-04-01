@@ -13,4 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-__version__ = "0.0.0"  # {x-release-please-version}
+from .async_client import PolicyBindingsAsyncClient
+from .client import PolicyBindingsClient
+
+__all__ = (
+    "PolicyBindingsClient",
+    "PolicyBindingsAsyncClient",
+)
