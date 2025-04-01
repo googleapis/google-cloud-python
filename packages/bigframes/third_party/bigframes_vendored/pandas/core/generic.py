@@ -1052,36 +1052,59 @@ class NDFrame(indexing.IndexingMixin):
         self,
         window,
         min_periods: int | None = None,
+        on: str | None = None,
+        closed: Literal["right", "left", "both", "neither"] = "right",
     ):
         """
         Provide rolling window calculations.
 
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+
+            >>> s = bpd.Series([0,1,2,3,4])
+            >>> s.rolling(window=3).min()
+            0    <NA>
+            1    <NA>
+            2       0
+            3       1
+            4       2
+            dtype: Int64
+
+            >>> df = bpd.DataFrame({'A': [0,1,2,3], 'B': [0,2,4,6]})
+            >>> df.rolling(window=2, on='A', closed='both').sum()
+            A     B
+            0  0  <NA>
+            1  1     2
+            2  2     6
+            3  3    12
+            <BLANKLINE>
+            [4 rows x 2 columns]
+
         Args:
-            window (int, timedelta, str, offset, or BaseIndexer subclass):
+            window (int):
                 Size of the moving window.
 
                 If an integer, the fixed number of observations used for
                 each window.
 
-                If a timedelta, str, or offset, the time period of each window. Each
-                window will be a variable sized based on the observations included in
-                the time-period. This is only valid for datetime-like indexes.
-                To learn more about the offsets & frequency strings, please see `this link
-                <https://pandas.pydata.org/pandas-docs/stable/user_guide/timeseries.html#offset-aliases>`__.
-
-                If a BaseIndexer subclass, the window boundaries
-                based on the defined ``get_window_bounds`` method. Additional rolling
-                keyword arguments, namely ``min_periods``, ``center``, ``closed`` and
-                ``step`` will be passed to ``get_window_bounds``.
-
             min_periods (int, default None):
                 Minimum number of observations in window required to have a value;
                 otherwise, result is ``np.nan``.
 
-                For a window that is specified by an offset, ``min_periods`` will default to 1.
-
                 For a window that is specified by an integer, ``min_periods`` will default
                 to the size of the window.
+
+            on (str, optional):
+                For a DataFrame, a column label on which to calculate the rolling window,
+                rather than the DataFrame’s index.
+
+            closed (str, default 'right'):
+                If 'right', the first point in the window is excluded from calculations.
+                If 'left', the last point in the window is excluded from calculations.
+                If 'both', the no points in the window are excluded from calculations.
+                If 'neither', the first and last points in the window are excluded from calculations.
 
         Returns:
             bigframes.core.window.Window: ``Window`` subclass if a ``win_type`` is passed.

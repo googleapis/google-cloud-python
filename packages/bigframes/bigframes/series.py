@@ -1378,7 +1378,9 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
     ) -> Any:
         return self._block.get_stat(self._value_column, op)
 
-    def _apply_window_op(self, op: agg_ops.WindowOp, window_spec: windows.WindowSpec):
+    def _apply_window_op(
+        self, op: agg_ops.UnaryWindowOp, window_spec: windows.WindowSpec
+    ):
         block = self._block
         block, result_id = block.apply_window_op(
             self._value_column, op, window_spec=window_spec, result_label=self.name

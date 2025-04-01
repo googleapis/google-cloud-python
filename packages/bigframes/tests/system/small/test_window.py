@@ -20,12 +20,9 @@ import pytest
 def rolling_dfs(scalars_dfs):
     bf_df, pd_df = scalars_dfs
 
-    target_cols = ["int64_too", "float64_col", "bool_col"]
+    target_cols = ["int64_too", "float64_col", "int64_col"]
 
-    bf_df = bf_df[target_cols].set_index("bool_col")
-    pd_df = pd_df[target_cols].set_index("bool_col")
-
-    return bf_df, pd_df
+    return bf_df[target_cols], pd_df[target_cols]
 
 
 @pytest.fixture(scope="module")
@@ -49,31 +46,65 @@ def test_dataframe_rolling_closed_param(rolling_dfs, closed):
 @pytest.mark.parametrize("closed", ["left", "right", "both", "neither"])
 def test_dataframe_groupby_rolling_closed_param(rolling_dfs, closed):
     bf_df, pd_df = rolling_dfs
+    # Need to specify column subset for comparison due to b/406841327
+    check_columns = ["float64_col", "int64_col"]
 
     actual_result = (
-        bf_df.groupby(level=0).rolling(window=3, closed=closed).sum().to_pandas()
+        bf_df.groupby(bf_df["int64_too"] % 2)
+        .rolling(window=3, closed=closed)
+        .sum()
+        .to_pandas()
     )
 
-    expected_result = pd_df.groupby(level=0).rolling(window=3, closed=closed).sum()
-    pd.testing.assert_frame_equal(actual_result, expected_result, check_dtype=False)
+    expected_result = (
+        pd_df.groupby(pd_df["int64_too"] % 2).rolling(window=3, closed=closed).sum()
+    )
+    pd.testing.assert_frame_equal(
+        actual_result[check_columns], expected_result, check_dtype=False
+    )
 
 
-def test_dataframe_rolling_default_closed_param(rolling_dfs):
+def test_dataframe_rolling_on(rolling_dfs):
     bf_df, pd_df = rolling_dfs
 
-    actual_result = bf_df.rolling(window=3).sum().to_pandas()
+    actual_result = bf_df.rolling(window=3, on="int64_too").sum().to_pandas()
 
-    expected_result = pd_df.rolling(window=3).sum()
+    expected_result = pd_df.rolling(window=3, on="int64_too").sum()
     pd.testing.assert_frame_equal(actual_result, expected_result, check_dtype=False)
 
 
-def test_dataframe_groupby_rolling_default_closed_param(rolling_dfs):
+def test_dataframe_rolling_on_invalid_column_raise_error(rolling_dfs):
+    bf_df, _ = rolling_dfs
+
+    with pytest.raises(ValueError):
+        bf_df.rolling(window=3, on="whatever").sum()
+
+
+def test_dataframe_groupby_rolling_on(rolling_dfs):
     bf_df, pd_df = rolling_dfs
+    # Need to specify column subset for comparison due to b/406841327
+    check_columns = ["float64_col", "int64_col"]
 
-    actual_result = bf_df.groupby(level=0).rolling(window=3).sum().to_pandas()
+    actual_result = (
+        bf_df.groupby(bf_df["int64_too"] % 2)
+        .rolling(window=3, on="float64_col")
+        .sum()
+        .to_pandas()
+    )
 
-    expected_result = pd_df.groupby(level=0).rolling(window=3).sum()
-    pd.testing.assert_frame_equal(actual_result, expected_result, check_dtype=False)
+    expected_result = (
+        pd_df.groupby(pd_df["int64_too"] % 2).rolling(window=3, on="float64_col").sum()
+    )
+    pd.testing.assert_frame_equal(
+        actual_result[check_columns], expected_result, check_dtype=False
+    )
+
+
+def test_dataframe_groupby_rolling_on_invalid_column_raise_error(rolling_dfs):
+    bf_df, _ = rolling_dfs
+
+    with pytest.raises(ValueError):
+        bf_df.groupby(level=0).rolling(window=3, on="whatever").sum()
 
 
 @pytest.mark.parametrize("closed", ["left", "right", "both", "neither"])
@@ -100,24 +131,6 @@ def test_series_groupby_rolling_closed_param(rolling_series, closed):
     expected_result = (
         df_series.groupby(df_series % 2).rolling(window=3, closed=closed).sum()
     )
-    pd.testing.assert_series_equal(actual_result, expected_result, check_dtype=False)
-
-
-def test_series_rolling_default_closed_param(rolling_series):
-    bf_series, df_series = rolling_series
-
-    actual_result = bf_series.rolling(window=3).sum().to_pandas()
-
-    expected_result = df_series.rolling(window=3).sum()
-    pd.testing.assert_series_equal(actual_result, expected_result, check_dtype=False)
-
-
-def test_series_groupby_rolling_default_closed_param(rolling_series):
-    bf_series, df_series = rolling_series
-
-    actual_result = bf_series.groupby(bf_series % 2).rolling(window=3).sum().to_pandas()
-
-    expected_result = df_series.groupby(df_series % 2).rolling(window=3).sum()
     pd.testing.assert_series_equal(actual_result, expected_result, check_dtype=False)
 
 
@@ -181,8 +194,12 @@ def test_series_window_agg_ops(rolling_series, windowing, agg_op):
         pytest.param(lambda x: x.var(), id="var"),
     ],
 )
-def test_dataframe_window_agg_ops(rolling_dfs, windowing, agg_op):
-    bf_df, pd_df = rolling_dfs
+def test_dataframe_window_agg_ops(scalars_dfs, windowing, agg_op):
+    bf_df, pd_df = scalars_dfs
+    target_columns = ["int64_too", "float64_col", "bool_col"]
+    index_column = "bool_col"
+    bf_df = bf_df[target_columns].set_index(index_column)
+    pd_df = pd_df[target_columns].set_index(index_column)
 
     bf_result = agg_op(windowing(bf_df)).to_pandas()
 

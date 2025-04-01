@@ -187,10 +187,12 @@ class RangeWindowBounds:
 class WindowSpec:
     """
     Specifies a window over which aggregate and analytic function may be applied.
-    grouping_keys: set of column ids to group on
-    preceding: Number of preceding rows in the window
-    following: Number of preceding rows in the window
-    ordering: List of columns ids and ordering direction to override base ordering
+
+    Attributes:
+        grouping_keys: A set of column ids to group on
+        bounds: The window boundaries
+        ordering: A list of columns ids and ordering direction to override base ordering
+        min_periods: The minimum number of observations in window required to have a value
     """
 
     grouping_keys: Tuple[ex.DerefOp, ...] = tuple()

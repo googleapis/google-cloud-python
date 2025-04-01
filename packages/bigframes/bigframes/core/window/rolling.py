@@ -34,12 +34,16 @@ class Window(vendored_pandas_rolling.Window):
         value_column_ids: typing.Sequence[str],
         drop_null_groups: bool = True,
         is_series: bool = False,
+        skip_agg_column_id: str | None = None,
     ):
         self._block = block
         self._window_spec = window_spec
         self._value_column_ids = value_column_ids
         self._drop_null_groups = drop_null_groups
         self._is_series = is_series
+        # The column ID that won't be aggregated on.
+        # This is equivalent to pandas `on` parameter in rolling()
+        self._skip_agg_column_id = skip_agg_column_id
 
     def count(self):
         return self._apply_aggregate(agg_ops.count_op)
@@ -66,10 +70,37 @@ class Window(vendored_pandas_rolling.Window):
         self,
         op: agg_ops.UnaryAggregateOp,
     ):
-        block = self._block
-        labels = [block.col_id_to_label[col] for col in self._value_column_ids]
-        block, result_ids = block.multi_apply_window_op(
-            self._value_column_ids,
+        agg_col_ids = [
+            col_id
+            for col_id in self._value_column_ids
+            if col_id != self._skip_agg_column_id
+        ]
+        agg_block = self._aggregate_block(op, agg_col_ids)
+
+        if self._skip_agg_column_id is not None:
+            # Concat the skipped column to the result.
+            agg_block, _ = agg_block.join(
+                self._block.select_column(self._skip_agg_column_id), how="outer"
+            )
+
+        if self._is_series:
+            from bigframes.series import Series
+
+            return Series(agg_block)
+        else:
+            from bigframes.dataframe import DataFrame
+
+            # Preserve column order.
+            column_labels = [
+                self._block.col_id_to_label[col_id] for col_id in self._value_column_ids
+            ]
+            return DataFrame(agg_block)._reindex_columns(column_labels)
+
+    def _aggregate_block(
+        self, op: agg_ops.UnaryAggregateOp, agg_col_ids: typing.List[str]
+    ) -> blocks.Block:
+        block, result_ids = self._block.multi_apply_window_op(
+            agg_col_ids,
             op,
             self._window_spec,
             skip_null_groups=self._drop_null_groups,
@@ -85,13 +116,5 @@ class Window(vendored_pandas_rolling.Window):
             )
             block = block.set_index(col_ids=index_ids)
 
-        if self._is_series:
-            from bigframes.series import Series
-
-            return Series(block.select_columns(result_ids).with_column_labels(labels))
-        else:
-            from bigframes.dataframe import DataFrame
-
-            return DataFrame(
-                block.select_columns(result_ids).with_column_labels(labels)
-            )
+        labels = [self._block.col_id_to_label[col] for col in agg_col_ids]
+        return block.select_columns(result_ids).with_column_labels(labels)

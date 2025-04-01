@@ -3312,14 +3312,21 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         self,
         window: int,
         min_periods=None,
+        on: str | None = None,
         closed: Literal["right", "left", "both", "neither"] = "right",
     ) -> bigframes.core.window.Window:
         window_def = windows.WindowSpec(
             bounds=windows.RowsWindowBounds.from_window_size(window, closed),
             min_periods=min_periods if min_periods is not None else window,
         )
+        skip_agg_col_id = (
+            None if on is None else self._block.resolve_label_exact_or_error(on)
+        )
         return bigframes.core.window.Window(
-            self._block, window_def, self._block.value_columns
+            self._block,
+            window_def,
+            self._block.value_columns,
+            skip_agg_column_id=skip_agg_col_id,
         )
 
     @validations.requires_ordering()
@@ -3483,7 +3490,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
 
     def _apply_window_op(
         self,
-        op: agg_ops.WindowOp,
+        op: agg_ops.UnaryWindowOp,
         window_spec: windows.WindowSpec,
     ):
         block, result_ids = self._block.multi_apply_window_op(

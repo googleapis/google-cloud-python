@@ -294,7 +294,7 @@ class SeriesGroupBy(vendored_pandas_groupby.SeriesGroupBy):
 
     def _apply_window_op(
         self,
-        op: agg_ops.WindowOp,
+        op: agg_ops.UnaryWindowOp,
         discard_name=False,
         window: typing.Optional[window_specs.WindowSpec] = None,
         never_skip_nulls: bool = False,

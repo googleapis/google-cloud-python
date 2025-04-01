@@ -1035,6 +1035,16 @@ class GroupBy:
                 For a window that is specified by an integer, ``min_periods`` will default
                 to the size of the window.
 
+            on (str, optional):
+                For a DataFrame, a column label on which to calculate the rolling window,
+                rather than the DataFrame’s index.
+
+            closed (str, default 'right'):
+                If 'right', the first point in the window is excluded from calculations.
+                If 'left', the last point in the window is excluded from calculations.
+                If 'both', the no points in the window are excluded from calculations.
+                If 'neither', the first and last points in the window are excluded from calculations.
+
         Returns:
             bigframes.pandas.DataFrame or bigframes.pandas.Series:
                 Return a new grouper with our rolling appended.

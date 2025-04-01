@@ -987,7 +987,7 @@ class Block:
     def multi_apply_window_op(
         self,
         columns: typing.Sequence[str],
-        op: agg_ops.WindowOp,
+        op: agg_ops.UnaryWindowOp,
         window_spec: windows.WindowSpec,
         *,
         skip_null_groups: bool = False,
@@ -1058,7 +1058,7 @@ class Block:
     def apply_window_op(
         self,
         column: str,
-        op: agg_ops.WindowOp,
+        op: agg_ops.UnaryWindowOp,
         window_spec: windows.WindowSpec,
         *,
         result_label: Label = None,
