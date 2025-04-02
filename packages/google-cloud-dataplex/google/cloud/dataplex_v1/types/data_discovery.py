@@ -262,9 +262,8 @@ class DataDiscoveryResult(proto.Message):
 
         Attributes:
             dataset (str):
-                Output only. The BigQuery dataset to publish to. It takes
-                the form ``projects/{project_id}/datasets/{dataset_id}``. If
-                not set, the service creates a default publishing dataset.
+                Output only. The BigQuery dataset the
+                discovered tables are published to.
         """
 
         dataset: str = proto.Field(
