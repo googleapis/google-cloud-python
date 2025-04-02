@@ -303,10 +303,10 @@ class BlobAccessor(base.SeriesMethods):
             default_location=self._block.session._location,
         )
 
-    def _get_runtime_json_str(
-        self, mode: str = "R", with_metadata: bool = False
+    def get_runtime_json_str(
+        self, mode: str = "R", *, with_metadata: bool = False
     ) -> bigframes.series.Series:
-        """Get the runtime and apply the ToJSONSTring transformation.
+        """Get the runtime (contains signed URL to access gcs data) and apply the ToJSONSTring transformation.
 
         .. note::
             BigFrames Blob is still under experiments. It may not work and
@@ -317,7 +317,7 @@ class BlobAccessor(base.SeriesMethods):
                 Default to "R". Possible values are "R" (read-only) and
                 "RW" (read-write)
             with_metadata (bool, default False): whether to include metadata
-                in the JOSN string. Default to False.
+                in the JSON string. Default to False.
 
         Returns:
             str: the runtime object in the JSON string.
@@ -365,7 +365,7 @@ class BlobAccessor(base.SeriesMethods):
         import bigframes.blob._functions as blob_func
 
         connection = self._resolve_connection(connection)
-        df = self._get_runtime_json_str(mode="R").to_frame()
+        df = self.get_runtime_json_str(mode="R").to_frame()
 
         if dst is None:
             ext = self.uri().str.extract(FILE_EXT_REGEX)
@@ -404,7 +404,7 @@ class BlobAccessor(base.SeriesMethods):
             container_memory=container_memory,
         ).udf()
 
-        dst_rt = dst.blob._get_runtime_json_str(mode="RW")
+        dst_rt = dst.blob.get_runtime_json_str(mode="RW")
 
         df = df.join(dst_rt, how="outer")
         df["ksize_x"], df["ksize_y"] = ksize
@@ -461,7 +461,7 @@ class BlobAccessor(base.SeriesMethods):
         import bigframes.blob._functions as blob_func
 
         connection = self._resolve_connection(connection)
-        df = self._get_runtime_json_str(mode="R").to_frame()
+        df = self.get_runtime_json_str(mode="R").to_frame()
 
         if dst is None:
             ext = self.uri().str.extract(FILE_EXT_REGEX)
@@ -501,7 +501,7 @@ class BlobAccessor(base.SeriesMethods):
             container_memory=container_memory,
         ).udf()
 
-        dst_rt = dst.blob._get_runtime_json_str(mode="RW")
+        dst_rt = dst.blob.get_runtime_json_str(mode="RW")
 
         df = df.join(dst_rt, how="outer")
         df["dsize_x"], df["dsizye_y"] = dsize
@@ -552,7 +552,7 @@ class BlobAccessor(base.SeriesMethods):
         import bigframes.blob._functions as blob_func
 
         connection = self._resolve_connection(connection)
-        df = self._get_runtime_json_str(mode="R").to_frame()
+        df = self.get_runtime_json_str(mode="R").to_frame()
 
         if dst is None:
             ext = self.uri().str.extract(FILE_EXT_REGEX)
@@ -593,7 +593,7 @@ class BlobAccessor(base.SeriesMethods):
             container_memory=container_memory,
         ).udf()
 
-        dst_rt = dst.blob._get_runtime_json_str(mode="RW")
+        dst_rt = dst.blob.get_runtime_json_str(mode="RW")
 
         df = df.join(dst_rt, how="outer")
         df["alpha"] = alpha
@@ -657,7 +657,7 @@ class BlobAccessor(base.SeriesMethods):
             container_memory=container_memory,
         ).udf()
 
-        src_rt = self._get_runtime_json_str(mode="R")
+        src_rt = self.get_runtime_json_str(mode="R")
 
         res = src_rt.apply(pdf_extract_udf)
 
@@ -736,7 +736,7 @@ class BlobAccessor(base.SeriesMethods):
             container_memory=container_memory,
         ).udf()
 
-        src_rt = self._get_runtime_json_str(mode="R")
+        src_rt = self.get_runtime_json_str(mode="R")
         df = src_rt.to_frame()
         df["chunk_size"] = chunk_size
         df["overlap_size"] = overlap_size
