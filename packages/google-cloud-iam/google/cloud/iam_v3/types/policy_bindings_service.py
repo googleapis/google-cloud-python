@@ -218,12 +218,12 @@ class ListPolicyBindingsRequest(proto.Message):
 
             Some examples of filter queries:
 
-            \| Query \| Description \|
-            \|------------------|-----------------------------------------------------\|
-            \| ``target:ex*`` \| The binding target's name starts with
-            "ex". \| \| ``target:example`` \| The binding target's name
-            is ``example``. \| \| ``policy:example`` \| The binding
-            policy's name is ``example``. \|
+            -  ``target:ex*``: The binding target's name starts with
+               "ex".
+            -  ``target:example``: The binding target's name is
+               ``example``.
+            -  ``policy:example``: The binding policy's name is
+               ``example``.
     """
 
     parent: str = proto.Field(
