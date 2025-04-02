@@ -782,6 +782,7 @@ def notebook(session: nox.Session):
         "notebooks/vertex_sdk/sdk2_bigframes_tensorflow.ipynb",  # Needs BUCKET_URI.
         # The experimental notebooks imagine features that don't yet
         # exist or only exist as temporary prototypes.
+        "notebooks/experimental/ai_operators.ipynb",
         "notebooks/experimental/longer_ml_demo.ipynb",
         "notebooks/experimental/semantic_operators.ipynb",
         # The notebooks that are added for more use cases, such as backing a
