@@ -31,6 +31,7 @@ __protobuf__ = proto.module(
         "DataScanEvent",
         "DataQualityScanRuleResult",
         "BusinessGlossaryEvent",
+        "EntryLinkEvent",
     },
 )
 
@@ -1404,6 +1405,48 @@ class BusinessGlossaryEvent(proto.Message):
         GLOSSARY_TERM_CREATE = 7
         GLOSSARY_TERM_UPDATE = 8
         GLOSSARY_TERM_DELETE = 9
+
+    message: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    event_type: EventType = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=EventType,
+    )
+    resource: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class EntryLinkEvent(proto.Message):
+    r"""Payload associated with Entry related log events.
+
+    Attributes:
+        message (str):
+            The log message.
+        event_type (google.cloud.dataplex_v1.types.EntryLinkEvent.EventType):
+            The type of the event.
+        resource (str):
+            Name of the resource.
+    """
+
+    class EventType(proto.Enum):
+        r"""Type of entry link log event.
+
+        Values:
+            EVENT_TYPE_UNSPECIFIED (0):
+                An unspecified event type.
+            ENTRY_LINK_CREATE (1):
+                EntryLink create event.
+            ENTRY_LINK_DELETE (2):
+                EntryLink delete event.
+        """
+        EVENT_TYPE_UNSPECIFIED = 0
+        ENTRY_LINK_CREATE = 1
+        ENTRY_LINK_DELETE = 2
 
     message: str = proto.Field(
         proto.STRING,
