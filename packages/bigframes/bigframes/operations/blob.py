@@ -325,13 +325,6 @@ class BlobAccessor(base.SeriesMethods):
         runtime = self._get_runtime(mode=mode, with_metadata=with_metadata)
         return runtime._apply_unary_op(ops.ToJSONString())
 
-    # TODO(b/404605969): remove cleanups when UDF fixes dataset deletion.
-    def _add_to_cleanup_set(self, udf):
-        """Add udf name to session cleanup set. Won't need this after UDF fixes dataset deletion."""
-        self.session._function_session._update_temp_artifacts(
-            udf.bigframes_bigquery_function, ""
-        )
-
     def image_blur(
         self,
         ksize: tuple[int, int],
@@ -412,8 +405,6 @@ class BlobAccessor(base.SeriesMethods):
 
         res = self._df_apply_udf(df, image_blur_udf)
         res.cache()  # to execute the udf
-
-        self._add_to_cleanup_set(image_blur_udf)
 
         return dst
 
@@ -511,8 +502,6 @@ class BlobAccessor(base.SeriesMethods):
         res = self._df_apply_udf(df, image_resize_udf)
         res.cache()  # to execute the udf
 
-        self._add_to_cleanup_set(image_resize_udf)
-
         return dst
 
     def image_normalize(
@@ -604,8 +593,6 @@ class BlobAccessor(base.SeriesMethods):
         res = self._df_apply_udf(df, image_normalize_udf)
         res.cache()  # to execute the udf
 
-        self._add_to_cleanup_set(image_normalize_udf)
-
         return dst
 
     def pdf_extract(
@@ -663,7 +650,6 @@ class BlobAccessor(base.SeriesMethods):
 
         content_series = res._apply_unary_op(ops.JSONValue(json_path="$.content"))
 
-        self._add_to_cleanup_set(pdf_extract_udf)
         if verbose:
             status_series = res._apply_unary_op(ops.JSONValue(json_path="$.status"))
             res_df = bpd.DataFrame({"status": status_series, "content": content_series})
@@ -744,7 +730,6 @@ class BlobAccessor(base.SeriesMethods):
         res = self._df_apply_udf(df, pdf_chunk_udf)
 
         content_series = bbq.json_extract_string_array(res, "$.content")
-        self._add_to_cleanup_set(pdf_chunk_udf)
         if verbose:
             status_series = res._apply_unary_op(ops.JSONValue(json_path="$.status"))
             res_df = bpd.DataFrame({"status": status_series, "content": content_series})

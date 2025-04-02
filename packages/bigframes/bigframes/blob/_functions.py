@@ -102,6 +102,9 @@ AS r\"\"\"
     def udf(self):
         """Create and return the UDF object."""
         udf_name = self._create_udf()
+
+        # TODO(b/404605969): remove cleanups when UDF fixes dataset deletion.
+        self._session._function_session._update_temp_artifacts(udf_name, "")
         return self._session.read_gbq_function(udf_name)
 
 
