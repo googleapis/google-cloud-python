@@ -221,10 +221,12 @@ class GbqDataLoader:
             [ordering_col],
         )
         destination_table = bigquery.Table(destination, schema=schema)
-        # TODO(swast): Confirm that the index is written.
+
+        # `insert_rows_from_dataframe` does not include the DataFrame's index,
+        # so reset_index() is called first.
         for errors in self._bqclient.insert_rows_from_dataframe(
             destination_table,
-            pandas_dataframe_copy,
+            pandas_dataframe_copy.reset_index(),
         ):
             if errors:
                 raise ValueError(
@@ -509,6 +511,7 @@ class GbqDataLoader:
             job_config.clustering_fields = index_cols[:_MAX_CLUSTER_COLUMNS]
 
         if isinstance(filepath_or_buffer, str):
+            filepath_or_buffer = os.path.expanduser(filepath_or_buffer)
             if filepath_or_buffer.startswith("gs://"):
                 load_job = self._bqclient.load_table_from_uri(
                     filepath_or_buffer, table, job_config=job_config
