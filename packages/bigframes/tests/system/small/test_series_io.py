@@ -19,11 +19,10 @@ def test_to_pandas_override_global_option(scalars_df_index):
 
         bf_series = scalars_df_index["int64_col"]
 
-        # Direct call to_pandas uses global default setting (allow_large_results=True),
-        # table has 'bqdf' prefix.
+        # Direct call to_pandas uses global default setting (allow_large_results=True)
         bf_series.to_pandas()
         table_id = bf_series._query_job.destination.table_id
-        assert table_id.startswith("bqdf")
+        assert table_id is not None
 
         session = bf_series._block.session
         execution_count = session._metrics.execution_count

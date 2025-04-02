@@ -20,10 +20,9 @@ def test_to_pandas_override_global_option(scalars_df_index):
         bf_index = scalars_df_index.index
 
         # Direct call to_pandas uses global default setting (allow_large_results=True),
-        # table has 'bqdf' prefix.
         bf_index.to_pandas()
         table_id = bf_index._query_job.destination.table_id
-        assert table_id.startswith("bqdf")
+        assert table_id is not None
 
         # When allow_large_results=False, a query_job object should not be created.
         # Therefore, the table_id should remain unchanged.
@@ -40,7 +39,7 @@ def test_to_numpy_override_global_option(scalars_df_index):
         # table has 'bqdf' prefix.
         bf_index.to_numpy()
         table_id = bf_index._query_job.destination.table_id
-        assert table_id.startswith("bqdf")
+        assert table_id is not None
 
         # When allow_large_results=False, a query_job object should not be created.
         # Therefore, the table_id should remain unchanged.

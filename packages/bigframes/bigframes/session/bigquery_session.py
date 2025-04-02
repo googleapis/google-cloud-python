@@ -23,6 +23,7 @@ import bigframes_vendored.ibis.backends.bigquery.datatypes as ibis_bq
 import google.cloud.bigquery as bigquery
 
 from bigframes.core.compile import googlesql
+from bigframes.session import temporary_storage
 
 KEEPALIVE_QUERY_TIMEOUT_SECONDS = 5.0
 
@@ -32,20 +33,21 @@ KEEPALIVE_FREQUENCY = datetime.timedelta(hours=6)
 logger = logging.getLogger(__name__)
 
 
-class SessionResourceManager:
+class SessionResourceManager(temporary_storage.TemporaryStorageManager):
     """
     Responsible for allocating and cleaning up temporary gbq tables used by a BigFrames session.
     """
 
-    def __init__(
-        self, bqclient: bigquery.Client, location: str, *, kms_key: Optional[str] = None
-    ):
+    def __init__(self, bqclient: bigquery.Client, location: str):
         self.bqclient = bqclient
-        self.location = location
-        self._kms_key = kms_key
+        self._location = location
         self._session_id: Optional[str] = None
         self._sessiondaemon: Optional[RecurringTaskDaemon] = None
         self._session_lock = threading.RLock()
+
+    @property
+    def location(self):
+        return self._location
 
     def create_temp_table(
         self, schema: Sequence[bigquery.SchemaField], cluster_cols: Sequence[str] = []
@@ -56,17 +58,13 @@ class SessionResourceManager:
         with self._session_lock:
             table_ref = bigquery.TableReference(
                 bigquery.DatasetReference(self.bqclient.project, "_SESSION"),
-                uuid.uuid4().hex,
+                f"bqdf_{uuid.uuid4()}",
             )
             job_config = bigquery.QueryJobConfig(
                 connection_properties=[
                     bigquery.ConnectionProperty("session_id", self._get_session_id())
                 ]
             )
-            if self._kms_key:
-                job_config.destination_encryption_configuration = (
-                    bigquery.EncryptionConfiguration(kms_key_name=self._kms_key)
-                )
 
             ibis_schema = ibis_bq.BigQuerySchema.to_ibis(list(schema))
 
@@ -87,7 +85,6 @@ class SessionResourceManager:
             ddl = f"CREATE TEMP TABLE `_SESSION`.{googlesql.identifier(table_ref.table_id)} ({fields_string}){cluster_string}"
 
             job = self.bqclient.query(ddl, job_config=job_config)
-
             job.result()
             # return the fully qualified table, so it can be used outside of the session
             return job.destination

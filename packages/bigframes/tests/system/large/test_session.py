@@ -72,12 +72,12 @@ def test_close(session: bigframes.Session):
     )
     full_id_1 = bigframes.session._io.bigquery.create_temp_table(
         session.bqclient,
-        session._temp_storage_manager.allocate_temp_table(),
+        session._anon_dataset_manager.allocate_temp_table(),
         expiration,
     )
     full_id_2 = bigframes.session._io.bigquery.create_temp_table(
         session.bqclient,
-        session._temp_storage_manager.allocate_temp_table(),
+        session._anon_dataset_manager.allocate_temp_table(),
         expiration,
     )
 
@@ -112,12 +112,12 @@ def test_clean_up_by_session_id():
     )
     bigframes.session._io.bigquery.create_temp_table(
         session.bqclient,
-        session._temp_storage_manager.allocate_temp_table(),
+        session._anon_dataset_manager.allocate_temp_table(),
         expiration,
     )
     bigframes.session._io.bigquery.create_temp_table(
         session.bqclient,
-        session._temp_storage_manager.allocate_temp_table(),
+        session._anon_dataset_manager.allocate_temp_table(),
         expiration,
     )
 
@@ -157,10 +157,11 @@ def test_clean_up_via_context_manager(session_creator):
     with session_creator() as session:
         bqclient = session.bqclient
 
-        full_id_1 = session._temp_storage_manager.allocate_and_create_temp_table(
+        full_id_1 = session._anon_dataset_manager.create_temp_table(
             [bigquery.SchemaField("a", "INT64")], cluster_cols=[]
         )
-        full_id_2 = session._temp_storage_manager.allocate_and_create_temp_table(
+        assert session._session_resource_manager is not None
+        full_id_2 = session._session_resource_manager.create_temp_table(
             [bigquery.SchemaField("b", "STRING")], cluster_cols=["b"]
         )
 

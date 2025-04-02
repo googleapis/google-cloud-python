@@ -18,13 +18,14 @@ import uuid
 
 import google.cloud.bigquery as bigquery
 
-import bigframes.constants as constants
+from bigframes import constants
+from bigframes.session import temporary_storage
 import bigframes.session._io.bigquery as bf_io_bigquery
 
 _TEMP_TABLE_ID_FORMAT = "bqdf{date}_{session_id}_{random_id}"
 
 
-class AnonymousDatasetManager:
+class AnonymousDatasetManager(temporary_storage.TemporaryStorageManager):
     """
     Responsible for allocating and cleaning up temporary gbq tables used by a BigFrames session.
     """
@@ -38,10 +39,10 @@ class AnonymousDatasetManager:
         kms_key: Optional[str] = None
     ):
         self.bqclient = bqclient
-        self.location = location
+        self._location = location
         self.dataset = bf_io_bigquery.create_bq_dataset_reference(
             self.bqclient,
-            location=self.location,
+            location=self._location,
             api_name="session-__init__",
         )
 
@@ -49,8 +50,12 @@ class AnonymousDatasetManager:
         self._table_ids: List[bigquery.TableReference] = []
         self._kms_key = kms_key
 
-    def allocate_and_create_temp_table(
-        self, schema: Sequence[bigquery.SchemaField], cluster_cols: Sequence[str]
+    @property
+    def location(self):
+        return self._location
+
+    def create_temp_table(
+        self, schema: Sequence[bigquery.SchemaField], cluster_cols: Sequence[str] = []
     ) -> bigquery.TableReference:
         """
         Allocates and and creates a table in the anonymous dataset.
@@ -99,7 +104,8 @@ class AnonymousDatasetManager:
         )
         return self.dataset.table(table_id)
 
-    def clean_up_tables(self):
+    def close(self):
         """Delete tables that were created with this session's session_id."""
         for table_ref in self._table_ids:
             self.bqclient.delete_table(table_ref, not_found_ok=True)
+        self._table_ids.clear()
