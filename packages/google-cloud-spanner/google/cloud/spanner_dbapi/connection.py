@@ -20,11 +20,7 @@ from google.api_core.gapic_v1.client_info import ClientInfo
 from google.cloud import spanner_v1 as spanner
 from google.cloud.spanner_dbapi import partition_helper
 from google.cloud.spanner_dbapi.batch_dml_executor import BatchMode, BatchDmlExecutor
-from google.cloud.spanner_dbapi.parse_utils import _get_statement_type
-from google.cloud.spanner_dbapi.parsed_statement import (
-    StatementType,
-    AutocommitDmlMode,
-)
+from google.cloud.spanner_dbapi.parsed_statement import AutocommitDmlMode
 from google.cloud.spanner_dbapi.partition_helper import PartitionId
 from google.cloud.spanner_dbapi.parsed_statement import ParsedStatement, Statement
 from google.cloud.spanner_dbapi.transaction_helper import TransactionRetryHelper
@@ -702,10 +698,6 @@ class Connection:
         self._autocommit_dml_mode = autocommit_dml_mode
 
     def _partitioned_query_validation(self, partitioned_query, statement):
-        if _get_statement_type(Statement(partitioned_query)) is not StatementType.QUERY:
-            raise ProgrammingError(
-                "Only queries can be partitioned. Invalid statement: " + statement.sql
-            )
         if self.read_only is not True and self._client_transaction_started is True:
             raise ProgrammingError(
                 "Partitioned query is not supported, because the connection is in a read/write transaction."

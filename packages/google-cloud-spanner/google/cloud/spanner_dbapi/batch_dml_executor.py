@@ -54,9 +54,12 @@ class BatchDmlExecutor:
         """
         from google.cloud.spanner_dbapi import ProgrammingError
 
+        # Note: Let the server handle it if the client-side parser did not
+        # recognize the type of statement.
         if (
             parsed_statement.statement_type != StatementType.UPDATE
             and parsed_statement.statement_type != StatementType.INSERT
+            and parsed_statement.statement_type != StatementType.UNKNOWN
         ):
             raise ProgrammingError("Only DML statements are allowed in batch DML mode.")
         self._statements.append(parsed_statement.statement)

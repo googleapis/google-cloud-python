@@ -155,6 +155,7 @@ STMT_UPDATING = "UPDATING"
 STMT_INSERT = "INSERT"
 
 # Heuristic for identifying statements that don't need to be run as updates.
+# TODO: This and the other regexes do not match statements that start with a hint.
 RE_NON_UPDATE = re.compile(r"^\W*(SELECT|GRAPH|FROM)", re.IGNORECASE)
 
 RE_WITH = re.compile(r"^\s*(WITH)", re.IGNORECASE)
@@ -162,18 +163,22 @@ RE_WITH = re.compile(r"^\s*(WITH)", re.IGNORECASE)
 # DDL statements follow
 # https://cloud.google.com/spanner/docs/data-definition-language
 RE_DDL = re.compile(
-    r"^\s*(CREATE|ALTER|DROP|GRANT|REVOKE|RENAME)", re.IGNORECASE | re.DOTALL
+    r"^\s*(CREATE|ALTER|DROP|GRANT|REVOKE|RENAME|ANALYZE)", re.IGNORECASE | re.DOTALL
 )
 
-RE_IS_INSERT = re.compile(r"^\s*(INSERT)", re.IGNORECASE | re.DOTALL)
+# TODO: These do not match statements that start with a hint.
+RE_IS_INSERT = re.compile(r"^\s*(INSERT\s+)", re.IGNORECASE | re.DOTALL)
+RE_IS_UPDATE = re.compile(r"^\s*(UPDATE\s+)", re.IGNORECASE | re.DOTALL)
+RE_IS_DELETE = re.compile(r"^\s*(DELETE\s+)", re.IGNORECASE | re.DOTALL)
 
 RE_INSERT = re.compile(
     # Only match the `INSERT INTO <table_name> (columns...)
     # otherwise the rest of the statement could be a complex
     # operation.
-    r"^\s*INSERT INTO (?P<table_name>[^\s\(\)]+)\s*\((?P<columns>[^\(\)]+)\)",
+    r"^\s*INSERT(?:\s+INTO)?\s+(?P<table_name>[^\s\(\)]+)\s*\((?P<columns>[^\(\)]+)\)",
     re.IGNORECASE | re.DOTALL,
 )
+"""Deprecated: Use the RE_IS_INSERT, RE_IS_UPDATE, and RE_IS_DELETE regexes"""
 
 RE_VALUES_TILL_END = re.compile(r"VALUES\s*\(.+$", re.IGNORECASE | re.DOTALL)
 
@@ -259,8 +264,13 @@ def _get_statement_type(statement):
         # statements and doesn't yet support WITH for DML statements.
         return StatementType.QUERY
 
-    statement.sql = ensure_where_clause(query)
-    return StatementType.UPDATE
+    if RE_IS_UPDATE.match(query) or RE_IS_DELETE.match(query):
+        # TODO: Remove this? It makes more sense to have this in SQLAlchemy and
+        #       Django than here.
+        statement.sql = ensure_where_clause(query)
+        return StatementType.UPDATE
+
+    return StatementType.UNKNOWN
 
 
 def sql_pyformat_args_to_spanner(sql, params):
@@ -355,7 +365,7 @@ def get_param_types(params):
 def ensure_where_clause(sql):
     """
     Cloud Spanner requires a WHERE clause on UPDATE and DELETE statements.
-    Add a dummy WHERE clause if non detected.
+    Add a dummy WHERE clause if not detected.
 
     :type sql: str
     :param sql: SQL code to check.

@@ -74,11 +74,31 @@ class TestParseUtils(unittest.TestCase):
             ("REVOKE SELECT ON TABLE Singers TO ROLE parent", StatementType.DDL),
             ("GRANT ROLE parent TO ROLE child", StatementType.DDL),
             ("INSERT INTO table (col1) VALUES (1)", StatementType.INSERT),
+            ("INSERT table (col1) VALUES (1)", StatementType.INSERT),
+            ("INSERT OR UPDATE table (col1) VALUES (1)", StatementType.INSERT),
+            ("INSERT OR IGNORE table (col1) VALUES (1)", StatementType.INSERT),
             ("UPDATE table SET col1 = 1 WHERE col1 = NULL", StatementType.UPDATE),
+            ("delete from table WHERE col1 = 2", StatementType.UPDATE),
+            ("delete from table WHERE col1 in (select 1)", StatementType.UPDATE),
+            ("dlete from table where col1 = 2", StatementType.UNKNOWN),
+            ("udpate table set col2=1 where col1 = 2", StatementType.UNKNOWN),
+            ("begin foo", StatementType.UNKNOWN),
+            ("begin transaction foo", StatementType.UNKNOWN),
+            ("commit foo", StatementType.UNKNOWN),
+            ("commit transaction foo", StatementType.UNKNOWN),
+            ("rollback foo", StatementType.UNKNOWN),
+            ("rollback transaction foo", StatementType.UNKNOWN),
+            ("show variable", StatementType.UNKNOWN),
+            ("show variable read_timestamp foo", StatementType.UNKNOWN),
+            ("INSERTs INTO table (col1) VALUES (1)", StatementType.UNKNOWN),
+            ("UPDATEs table SET col1 = 1 WHERE col1 = NULL", StatementType.UNKNOWN),
+            ("DELETEs from table WHERE col1 = 2", StatementType.UNKNOWN),
         )
 
         for query, want_class in cases:
-            self.assertEqual(classify_statement(query).statement_type, want_class)
+            self.assertEqual(
+                classify_statement(query).statement_type, want_class, query
+            )
 
     def test_partition_query_classify_stmt(self):
         parsed_statement = classify_statement(

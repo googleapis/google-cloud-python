@@ -21,18 +21,18 @@ from google.cloud.spanner_dbapi.parsed_statement import (
     Statement,
 )
 
-RE_BEGIN = re.compile(r"^\s*(BEGIN|START)(TRANSACTION)?", re.IGNORECASE)
-RE_COMMIT = re.compile(r"^\s*(COMMIT)(TRANSACTION)?", re.IGNORECASE)
-RE_ROLLBACK = re.compile(r"^\s*(ROLLBACK)(TRANSACTION)?", re.IGNORECASE)
+RE_BEGIN = re.compile(r"^\s*(BEGIN|START)(\s+TRANSACTION)?\s*$", re.IGNORECASE)
+RE_COMMIT = re.compile(r"^\s*(COMMIT)(\s+TRANSACTION)?\s*$", re.IGNORECASE)
+RE_ROLLBACK = re.compile(r"^\s*(ROLLBACK)(\s+TRANSACTION)?\s*$", re.IGNORECASE)
 RE_SHOW_COMMIT_TIMESTAMP = re.compile(
-    r"^\s*(SHOW)\s+(VARIABLE)\s+(COMMIT_TIMESTAMP)", re.IGNORECASE
+    r"^\s*(SHOW)\s+(VARIABLE)\s+(COMMIT_TIMESTAMP)\s*$", re.IGNORECASE
 )
 RE_SHOW_READ_TIMESTAMP = re.compile(
-    r"^\s*(SHOW)\s+(VARIABLE)\s+(READ_TIMESTAMP)", re.IGNORECASE
+    r"^\s*(SHOW)\s+(VARIABLE)\s+(READ_TIMESTAMP)\s*$", re.IGNORECASE
 )
-RE_START_BATCH_DML = re.compile(r"^\s*(START)\s+(BATCH)\s+(DML)", re.IGNORECASE)
-RE_RUN_BATCH = re.compile(r"^\s*(RUN)\s+(BATCH)", re.IGNORECASE)
-RE_ABORT_BATCH = re.compile(r"^\s*(ABORT)\s+(BATCH)", re.IGNORECASE)
+RE_START_BATCH_DML = re.compile(r"^\s*(START)\s+(BATCH)\s+(DML)\s*$", re.IGNORECASE)
+RE_RUN_BATCH = re.compile(r"^\s*(RUN)\s+(BATCH)\s*$", re.IGNORECASE)
+RE_ABORT_BATCH = re.compile(r"^\s*(ABORT)\s+(BATCH)\s*$", re.IGNORECASE)
 RE_PARTITION_QUERY = re.compile(r"^\s*(PARTITION)\s+(.+)", re.IGNORECASE)
 RE_RUN_PARTITION = re.compile(r"^\s*(RUN)\s+(PARTITION)\s+(.+)", re.IGNORECASE)
 RE_RUN_PARTITIONED_QUERY = re.compile(

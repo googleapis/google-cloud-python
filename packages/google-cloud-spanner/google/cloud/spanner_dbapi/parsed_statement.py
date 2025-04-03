@@ -17,6 +17,7 @@ from typing import Any, List
 
 
 class StatementType(Enum):
+    UNKNOWN = 0
     CLIENT_SIDE = 1
     DDL = 2
     QUERY = 3

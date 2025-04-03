@@ -404,9 +404,12 @@ class Cursor(object):
             # For every operation, we've got to ensure that any prior DDL
             # statements were run.
             self.connection.run_prior_DDL_statements()
+            # Treat UNKNOWN statements as if they are DML and let the server
+            # determine what is wrong with it.
             if self._parsed_statement.statement_type in (
                 StatementType.INSERT,
                 StatementType.UPDATE,
+                StatementType.UNKNOWN,
             ):
                 statements = []
                 for params in seq_of_params:
