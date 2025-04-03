@@ -44,7 +44,7 @@ def test_to_pandas_batches_override_global_option(
                     page_size=500, max_results=1500, allow_large_results=True
                 )
             )
-            assert len(w) == 2
+            assert len(w) == 1
             assert issubclass(w[0].category, FutureWarning)
             assert "The query result size has exceeded 10 GB." in str(w[0].message)
 

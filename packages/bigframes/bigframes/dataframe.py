@@ -1634,6 +1634,39 @@ class DataFrame(vendored_pandas_frame.DataFrame):
     ) -> pandas.DataFrame | pandas.Series:
         """Write DataFrame to pandas DataFrame.
 
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+            >>> df = bpd.DataFrame({'col': [4, 2, 2]})
+
+        Download the data from BigQuery and convert it into an in-memory pandas DataFrame.
+
+            >>> df.to_pandas()
+               col
+            0    4
+            1    2
+            2    2
+
+        Estimate job statistics without processing or downloading data by using `dry_run=True`.
+
+            >>> df.to_pandas(dry_run=True) # doctest: +SKIP
+            columnCount                                                            1
+            columnDtypes                                              {'col': Int64}
+            indexLevel                                                             1
+            indexDtypes                                                      [Int64]
+            projectId                                                  bigframes-dev
+            location                                                              US
+            jobType                                                            QUERY
+            destinationTable       {'projectId': 'bigframes-dev', 'datasetId': '_...
+            useLegacySql                                                       False
+            referencedTables                                                    None
+            totalBytesProcessed                                                    0
+            cacheHit                                                           False
+            statementType                                                     SELECT
+            creationTime                            2025-04-02 20:17:12.038000+00:00
+            dtype: object
+
         Args:
             max_download_size (int, default None):
                 Download size threshold in MB. If max_download_size is exceeded when downloading data
@@ -1666,9 +1699,6 @@ class DataFrame(vendored_pandas_frame.DataFrame):
                 downsampled rows and all columns of this DataFrame. If dry_run is set, a pandas
                 Series containing dry run statistics will be returned.
         """
-
-        # TODO(orrbradford): Optimize this in future. Potentially some cases where we can return the stored query job
-
         if dry_run:
             dry_run_stats, dry_run_job = self._block._compute_dry_run(
                 max_download_size=max_download_size,
@@ -1702,11 +1732,40 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         page_size and max_results determine the size and number of batches,
         see https://cloud.google.com/python/docs/reference/bigquery/latest/google.cloud.bigquery.job.QueryJob#google_cloud_bigquery_job_QueryJob_result
 
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+            >>> df = bpd.DataFrame({'col': [4, 3, 2, 2, 3]})
+
+        Iterate through the results in batches, limiting the total rows yielded
+        across all batches via `max_results`:
+
+            >>> for df_batch in df.to_pandas_batches(max_results=3):
+            ...     print(df_batch)
+               col
+            0    4
+            1    3
+            2    2
+
+        Alternatively, control the approximate size of each batch using `page_size`
+        and fetch batches manually using `next()`:
+
+            >>> it = df.to_pandas_batches(page_size=2)
+            >>> next(it)
+               col
+            0    4
+            1    3
+            >>> next(it)
+               col
+            2    2
+            3    2
+
         Args:
             page_size (int, default None):
-                The size of each batch.
+                The maximum number of rows of each batch. Non-positive values are ignored.
             max_results (int, default None):
-                If given, only download this many rows at maximum.
+                The maximum total number of rows of all batches.
             allow_large_results (bool, default None):
                 If not None, overrides the global setting to allow or disallow large query results
                 over the default size limit of 10 GB.

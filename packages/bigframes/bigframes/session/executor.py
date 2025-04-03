@@ -264,7 +264,13 @@ class BigQueryCachingExecutor(Executor):
 
         # Though we provide the read client, iterator may or may not use it based on what is efficient for the result
         def iterator_supplier():
-            return iterator.to_arrow_iterable(bqstorage_client=self.bqstoragereadclient)
+            # Workaround issue fixed by: https://github.com/googleapis/python-bigquery/pull/2154
+            if iterator._page_size is not None or iterator.max_results is not None:
+                return iterator.to_arrow_iterable(bqstorage_client=None)
+            else:
+                return iterator.to_arrow_iterable(
+                    bqstorage_client=self.bqstoragereadclient
+                )
 
         if query_job:
             size_bytes = self.bqclient.get_table(query_job.destination).num_bytes

@@ -385,6 +385,39 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
     ) -> pandas.Series:
         """Writes Series to pandas Series.
 
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+            >>> s = bpd.Series([4, 3, 2])
+
+        Download the data from BigQuery and convert it into an in-memory pandas Series.
+
+            >>> s.to_pandas()
+            0    4
+            1    3
+            2    2
+            dtype: Int64
+
+        Estimate job statistics without processing or downloading data by using `dry_run=True`.
+
+            >>> s.to_pandas(dry_run=True) # doctest: +SKIP
+            columnCount                                                            1
+            columnDtypes                                               {None: Int64}
+            indexLevel                                                             1
+            indexDtypes                                                      [Int64]
+            projectId                                                  bigframes-dev
+            location                                                              US
+            jobType                                                            QUERY
+            destinationTable       {'projectId': 'bigframes-dev', 'datasetId': '_...
+            useLegacySql                                                       False
+            referencedTables                                                    None
+            totalBytesProcessed                                                    0
+            cacheHit                                                           False
+            statementType                                                     SELECT
+            creationTime                            2025-04-03 18:54:59.219000+00:00
+            dtype: object
+
         Args:
             max_download_size (int, default None):
                 Download size threshold in MB. If max_download_size is exceeded when downloading data
