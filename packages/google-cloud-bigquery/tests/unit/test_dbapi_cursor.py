@@ -161,6 +161,7 @@ class TestCursor(unittest.TestCase):
             mock_rows,
         )
         mock_rows.max_results = None
+        mock_rows.page_size = None
         type(mock_rows).job_id = mock.PropertyMock(return_value="test-job-id")
         type(mock_rows).location = mock.PropertyMock(return_value="test-location")
         type(mock_rows).num_dml_affected_rows = mock.PropertyMock(
