@@ -211,7 +211,9 @@ class StreamingRecognitionConfig(proto.Message):
 
             The ``single_utterance`` field can only be used with
             specified models, otherwise an error is thrown. The
-            ``model`` field in [``RecognitionConfig``][] must be set to:
+            ``model`` field in
+            [RecognitionConfig][google.cloud.speech.v1p1beta1.RecognitionConfig]
+            must be set to:
 
             -  ``command_and_search``
             -  ``phone_call`` AND additional field
@@ -360,7 +362,7 @@ class RecognitionConfig(proto.Message):
             documentation. When speech adaptation is set it supersedes
             the ``speech_contexts`` field.
         transcript_normalization (google.cloud.speech_v1p1beta1.types.TranscriptNormalization):
-            Use transcription normalization to
+            Optional. Use transcription normalization to
             automatically replace parts of the transcript
             with phrases of your choosing. For
             StreamingRecognize, this normalization only
@@ -409,7 +411,7 @@ class RecognitionConfig(proto.Message):
         enable_speaker_diarization (bool):
             If 'true', enables speaker detection for each recognized
             word in the top alternative of the recognition result using
-            a speaker_tag provided in the WordInfo. Note: Use
+            a speaker_label provided in the WordInfo. Note: Use
             diarization_config instead.
         diarization_speaker_count (int):
             If set, specifies the estimated number of speakers in the
@@ -576,9 +578,12 @@ class RecognitionConfig(proto.Message):
                 file being used.
             WEBM_OPUS (9):
                 Opus encoded audio frames in WebM container
-                (`OggOpus <https://wiki.xiph.org/OggOpus>`__).
+                (`WebM <https://www.webmproject.org/docs/container/>`__).
                 ``sample_rate_hertz`` must be one of 8000, 12000, 16000,
                 24000, or 48000.
+            ALAW (10):
+                8-bit samples that compand 13-bit audio
+                samples using G.711 PCMU/a-law.
         """
         ENCODING_UNSPECIFIED = 0
         LINEAR16 = 1
@@ -590,6 +595,7 @@ class RecognitionConfig(proto.Message):
         SPEEX_WITH_HEADER_BYTE = 7
         MP3 = 8
         WEBM_OPUS = 9
+        ALAW = 10
 
     encoding: AudioEncoding = proto.Field(
         proto.ENUM,
@@ -696,7 +702,7 @@ class SpeakerDiarizationConfig(proto.Message):
         enable_speaker_diarization (bool):
             If 'true', enables speaker detection for each recognized
             word in the top alternative of the recognition result using
-            a speaker_tag provided in the WordInfo.
+            a speaker_label provided in the WordInfo.
         min_speaker_count (int):
             Minimum number of speakers in the
             conversation. This range gives you more
@@ -1042,6 +1048,10 @@ class RecognizeResponse(proto.Message):
         request_id (int):
             The ID associated with the request. This is a
             unique ID specific only to the given request.
+        using_legacy_models (bool):
+            Whether request used legacy asr models (was
+            not automatically migrated to use conformer
+            models).
     """
 
     results: MutableSequence["SpeechRecognitionResult"] = proto.RepeatedField(
@@ -1062,6 +1072,10 @@ class RecognizeResponse(proto.Message):
     request_id: int = proto.Field(
         proto.INT64,
         number=8,
+    )
+    using_legacy_models: bool = proto.Field(
+        proto.BOOL,
+        number=9,
     )
 
 
@@ -1523,8 +1537,17 @@ class WordInfo(proto.Message):
             speaker within the audio. This field specifies which one of
             those speakers was detected to have spoken this word. Value
             ranges from '1' to diarization_speaker_count. speaker_tag is
-            set if enable_speaker_diarization = 'true' and only in the
-            top alternative.
+            set if enable_speaker_diarization = 'true' and only for the
+            top alternative. Note: Use speaker_label instead.
+        speaker_label (str):
+            Output only. A label value assigned for every unique speaker
+            within the audio. This field specifies which speaker was
+            detected to have spoken this word. For some models, like
+            medical_conversation this can be actual speaker role, for
+            example "patient" or "provider", but generally this would be
+            a number identifying a speaker. This field is only set if
+            enable_speaker_diarization = 'true' and only for the top
+            alternative.
     """
 
     start_time: duration_pb2.Duration = proto.Field(
@@ -1548,6 +1571,10 @@ class WordInfo(proto.Message):
     speaker_tag: int = proto.Field(
         proto.INT32,
         number=5,
+    )
+    speaker_label: str = proto.Field(
+        proto.STRING,
+        number=6,
     )
 
 
