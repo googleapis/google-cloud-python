@@ -17,6 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -44,7 +45,69 @@ class CustomClass(proto.Message):
             the resource id of the CustomClass. Case sensitive.
         items (MutableSequence[google.cloud.speech_v1p1beta1.types.CustomClass.ClassItem]):
             A collection of class items.
+        kms_key_name (str):
+            Output only. The `KMS key
+            name <https://cloud.google.com/kms/docs/resource-hierarchy#keys>`__
+            with which the content of the ClassItem is encrypted. The
+            expected format is
+            ``projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}``.
+        kms_key_version_name (str):
+            Output only. The `KMS key version
+            name <https://cloud.google.com/kms/docs/resource-hierarchy#key_versions>`__
+            with which content of the ClassItem is encrypted. The
+            expected format is
+            ``projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}/cryptoKeyVersions/{crypto_key_version}``.
+        uid (str):
+            Output only. System-assigned unique
+            identifier for the CustomClass. This field is
+            not used.
+        display_name (str):
+            Output only. User-settable, human-readable
+            name for the CustomClass. Must be 63 characters
+            or less. This field is not used.
+        state (google.cloud.speech_v1p1beta1.types.CustomClass.State):
+            Output only. The CustomClass lifecycle state.
+            This field is not used.
+        delete_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The time at which this resource
+            was requested for deletion. This field is not
+            used.
+        expire_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The time at which this resource
+            will be purged. This field is not used.
+        annotations (MutableMapping[str, str]):
+            Output only. Allows users to store small
+            amounts of arbitrary data. Both the key and the
+            value must be 63 characters or less each. At
+            most 100 annotations.
+            This field is not used.
+        etag (str):
+            Output only. This checksum is computed by the
+            server based on the value of other fields. This
+            may be sent on update, undelete, and delete
+            requests to ensure the client has an up-to-date
+            value before proceeding. This field is not used.
+        reconciling (bool):
+            Output only. Whether or not this CustomClass
+            is in the process of being updated. This field
+            is not used.
     """
+
+    class State(proto.Enum):
+        r"""Set of states that define the lifecycle of a CustomClass.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                Unspecified state.  This is only used/useful
+                for distinguishing unset values.
+            ACTIVE (2):
+                The normal and active state.
+            DELETED (4):
+                This CustomClass has been deleted.
+        """
+        STATE_UNSPECIFIED = 0
+        ACTIVE = 2
+        DELETED = 4
 
     class ClassItem(proto.Message):
         r"""An item of the class.
@@ -72,6 +135,50 @@ class CustomClass(proto.Message):
         number=3,
         message=ClassItem,
     )
+    kms_key_name: str = proto.Field(
+        proto.STRING,
+        number=6,
+    )
+    kms_key_version_name: str = proto.Field(
+        proto.STRING,
+        number=7,
+    )
+    uid: str = proto.Field(
+        proto.STRING,
+        number=8,
+    )
+    display_name: str = proto.Field(
+        proto.STRING,
+        number=9,
+    )
+    state: State = proto.Field(
+        proto.ENUM,
+        number=10,
+        enum=State,
+    )
+    delete_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=11,
+        message=timestamp_pb2.Timestamp,
+    )
+    expire_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=12,
+        message=timestamp_pb2.Timestamp,
+    )
+    annotations: MutableMapping[str, str] = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=13,
+    )
+    etag: str = proto.Field(
+        proto.STRING,
+        number=14,
+    )
+    reconciling: bool = proto.Field(
+        proto.BOOL,
+        number=15,
+    )
 
 
 class PhraseSet(proto.Message):
@@ -95,7 +202,69 @@ class PhraseSet(proto.Message):
             and 20. We recommend using a binary search approach to
             finding the optimal value for your use case as well as
             adding phrases both with and without boost to your requests.
+        kms_key_name (str):
+            Output only. The `KMS key
+            name <https://cloud.google.com/kms/docs/resource-hierarchy#keys>`__
+            with which the content of the PhraseSet is encrypted. The
+            expected format is
+            ``projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}``.
+        kms_key_version_name (str):
+            Output only. The `KMS key version
+            name <https://cloud.google.com/kms/docs/resource-hierarchy#key_versions>`__
+            with which content of the PhraseSet is encrypted. The
+            expected format is
+            ``projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}/cryptoKeyVersions/{crypto_key_version}``.
+        uid (str):
+            Output only. System-assigned unique
+            identifier for the PhraseSet. This field is not
+            used.
+        display_name (str):
+            Output only. User-settable, human-readable
+            name for the PhraseSet. Must be 63 characters or
+            less. This field is not used.
+        state (google.cloud.speech_v1p1beta1.types.PhraseSet.State):
+            Output only. The CustomClass lifecycle state.
+            This field is not used.
+        delete_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The time at which this resource
+            was requested for deletion. This field is not
+            used.
+        expire_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The time at which this resource
+            will be purged. This field is not used.
+        annotations (MutableMapping[str, str]):
+            Output only. Allows users to store small
+            amounts of arbitrary data. Both the key and the
+            value must be 63 characters or less each. At
+            most 100 annotations.
+            This field is not used.
+        etag (str):
+            Output only. This checksum is computed by the
+            server based on the value of other fields. This
+            may be sent on update, undelete, and delete
+            requests to ensure the client has an up-to-date
+            value before proceeding. This field is not used.
+        reconciling (bool):
+            Output only. Whether or not this PhraseSet is
+            in the process of being updated. This field is
+            not used.
     """
+
+    class State(proto.Enum):
+        r"""Set of states that define the lifecycle of a CustomClass.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                Unspecified state.  This is only used/useful
+                for distinguishing unset values.
+            ACTIVE (2):
+                The normal and active state.
+            DELETED (4):
+                This CustomClass has been deleted.
+        """
+        STATE_UNSPECIFIED = 0
+        ACTIVE = 2
+        DELETED = 4
 
     class Phrase(proto.Message):
         r"""A phrases containing words and phrase "hints" so that the speech
@@ -166,6 +335,50 @@ class PhraseSet(proto.Message):
     boost: float = proto.Field(
         proto.FLOAT,
         number=4,
+    )
+    kms_key_name: str = proto.Field(
+        proto.STRING,
+        number=7,
+    )
+    kms_key_version_name: str = proto.Field(
+        proto.STRING,
+        number=8,
+    )
+    uid: str = proto.Field(
+        proto.STRING,
+        number=9,
+    )
+    display_name: str = proto.Field(
+        proto.STRING,
+        number=10,
+    )
+    state: State = proto.Field(
+        proto.ENUM,
+        number=11,
+        enum=State,
+    )
+    delete_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=12,
+        message=timestamp_pb2.Timestamp,
+    )
+    expire_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=13,
+        message=timestamp_pb2.Timestamp,
+    )
+    annotations: MutableMapping[str, str] = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=14,
+    )
+    etag: str = proto.Field(
+        proto.STRING,
+        number=15,
+    )
+    reconciling: bool = proto.Field(
+        proto.BOOL,
+        number=16,
     )
 
 
