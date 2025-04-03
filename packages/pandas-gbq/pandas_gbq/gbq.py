@@ -271,7 +271,6 @@ class GbqConnector(object):
         rfc9110_delimiter=False,
         bigquery_client=None,
     ):
-        global context
         from google.api_core.exceptions import ClientError, GoogleAPIError
 
         from pandas_gbq import auth
@@ -869,8 +868,6 @@ def read_gbq(
     df: DataFrame
         DataFrame representing results of query.
     """
-    global context
-
     if dialect is None:
         dialect = context.dialect
 
