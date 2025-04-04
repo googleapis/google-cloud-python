@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import datetime
 import decimal
 import math
 import re
@@ -478,6 +479,11 @@ class BigQueryCompiler(SQLGlotCompiler):
             return sge.convert(str(value))
 
         elif dtype.is_int64():
+            # allows directly using values out of a duration arrow array
+            if isinstance(value, datetime.timedelta):
+                value = (
+                    (value.days * 3600 * 24) + value.seconds
+                ) * 1_000_000 + value.microseconds
             return sge.convert(np.int64(value))
         return None
 
@@ -1024,7 +1030,7 @@ class BigQueryCompiler(SQLGlotCompiler):
         # Avoid creating temp tables for small data, which is how memtable is
         # used in BigQuery DataFrames. Inspired by:
         # https://github.com/ibis-project/ibis/blob/efa6fb72bf4c790450d00a926d7bd809dade5902/ibis/backends/druid/compiler.py#L95
-        tuples = data.to_frame().itertuples(index=False)
+        rows = data.to_pyarrow(schema=None).to_pylist()  # type: ignore
         quoted = self.quoted
         columns = [sg.column(col, quoted=quoted) for col in schema.names]
         array_expr = sge.DataType(
@@ -1042,10 +1048,10 @@ class BigQueryCompiler(SQLGlotCompiler):
             sge.Struct(
                 expressions=tuple(
                     self.visit_Literal(None, value=value, dtype=type_)
-                    for value, type_ in zip(row, schema.types)
+                    for value, type_ in zip(row.values(), schema.types)
                 )
             )
-            for row in tuples
+            for row in rows
         ]
         expr = sge.Unnest(
             expressions=[

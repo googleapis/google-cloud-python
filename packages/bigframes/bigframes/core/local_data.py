@@ -16,10 +16,35 @@
 
 from __future__ import annotations
 
+import dataclasses
+import functools
+import uuid
+
 import pyarrow as pa
 
 import bigframes.core.schema as schemata
 import bigframes.dtypes
+
+
+@dataclasses.dataclass(frozen=True)
+class LocalTableMetadata:
+    total_bytes: int
+    row_count: int
+
+    @classmethod
+    def from_arrow(cls, table: pa.Table):
+        return cls(total_bytes=table.nbytes, row_count=table.num_rows)
+
+
+@dataclasses.dataclass(frozen=True)
+class ManagedArrowTable:
+    data: pa.Table = dataclasses.field(hash=False)
+    schema: schemata.ArraySchema = dataclasses.field(hash=False)
+    id: uuid.UUID = dataclasses.field(default_factory=uuid.uuid4)
+
+    @functools.cached_property
+    def metadata(self):
+        return LocalTableMetadata.from_arrow(self.data)
 
 
 def arrow_schema_to_bigframes(arrow_schema: pa.Schema) -> schemata.ArraySchema:

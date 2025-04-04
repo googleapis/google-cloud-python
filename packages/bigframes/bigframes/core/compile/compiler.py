@@ -14,7 +14,6 @@
 from __future__ import annotations
 
 import functools
-import io
 import typing
 
 import bigframes_vendored.ibis.backends.bigquery as ibis_bigquery
@@ -22,16 +21,13 @@ import bigframes_vendored.ibis.expr.api as ibis_api
 import bigframes_vendored.ibis.expr.datatypes as ibis_dtypes
 import bigframes_vendored.ibis.expr.types as ibis_types
 import google.cloud.bigquery
-import pandas as pd
+import pyarrow as pa
 
 from bigframes import dtypes, operations
-from bigframes.core import utils
 import bigframes.core.compile.compiled as compiled
 import bigframes.core.compile.concat as concat_impl
 import bigframes.core.compile.explode
-import bigframes.core.compile.ibis_types
 import bigframes.core.compile.scalar_op_compiler as compile_scalar
-import bigframes.core.compile.schema_translator
 import bigframes.core.nodes as nodes
 import bigframes.core.ordering as bf_ordering
 import bigframes.core.rewrite as rewrites
@@ -161,18 +157,21 @@ def compile_fromrange(
 
 @_compile_node.register
 def compile_readlocal(node: nodes.ReadLocalNode, *args):
-    array_as_pd = pd.read_feather(
-        io.BytesIO(node.feather_bytes),
-        columns=[item.source_id for item in node.scan_list.items],
-    )
-
-    # Convert timedeltas to microseconds for compatibility with BigQuery
-    _ = utils.replace_timedeltas_with_micros(array_as_pd)
-
     offsets = node.offsets_col.sql if node.offsets_col else None
-    return compiled.UnorderedIR.from_pandas(
-        array_as_pd, node.scan_list, offsets=offsets
+    pa_table = node.local_data_source.data
+    bq_schema = node.schema.to_bigquery()
+
+    pa_table = pa_table.select(list(item.source_id for item in node.scan_list.items))
+    pa_table = pa_table.rename_columns(
+        {item.source_id: item.id.sql for item in node.scan_list.items}
     )
+
+    if offsets:
+        pa_table = pa_table.append_column(
+            offsets, pa.array(range(pa_table.num_rows), type=pa.int64())
+        )
+        bq_schema = (*bq_schema, google.cloud.bigquery.SchemaField(offsets, "INT64"))
+    return compiled.UnorderedIR.from_polars(pa_table, bq_schema)
 
 
 @_compile_node.register

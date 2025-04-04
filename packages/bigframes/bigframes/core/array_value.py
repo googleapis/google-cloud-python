@@ -16,7 +16,6 @@ from __future__ import annotations
 from dataclasses import dataclass
 import datetime
 import functools
-import io
 import typing
 from typing import Iterable, List, Mapping, Optional, Sequence, Tuple
 import warnings
@@ -24,7 +23,6 @@ import warnings
 import google.cloud.bigquery
 import pandas
 import pyarrow as pa
-import pyarrow.feather as pa_feather
 
 import bigframes.core.expression as ex
 import bigframes.core.guid
@@ -63,21 +61,16 @@ class ArrayValue:
         adapted_table = local_data.adapt_pa_table(arrow_table)
         schema = local_data.arrow_schema_to_bigframes(adapted_table.schema)
 
-        iobytes = io.BytesIO()
-        pa_feather.write_feather(adapted_table, iobytes)
-        # Scan all columns by default, we define this list as it can be pruned while preserving source_def
         scan_list = nodes.ScanList(
             tuple(
                 nodes.ScanItem(ids.ColumnId(item.column), item.dtype, item.column)
                 for item in schema.items
             )
         )
-
+        data_source = local_data.ManagedArrowTable(adapted_table, schema)
         node = nodes.ReadLocalNode(
-            iobytes.getvalue(),
-            data_schema=schema,
+            data_source,
             session=session,
-            n_rows=arrow_table.num_rows,
             scan_list=scan_list,
         )
         return cls(node)

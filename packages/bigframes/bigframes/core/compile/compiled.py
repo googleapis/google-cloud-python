@@ -26,7 +26,8 @@ import bigframes_vendored.ibis.expr.datatypes as ibis_dtypes
 from bigframes_vendored.ibis.expr.operations import window as ibis_expr_window
 import bigframes_vendored.ibis.expr.operations as ibis_ops
 import bigframes_vendored.ibis.expr.types as ibis_types
-import pandas
+from google.cloud import bigquery
+import pyarrow as pa
 
 import bigframes.core.compile.aggregate_compiler as agg_compiler
 import bigframes.core.compile.googlesql
@@ -34,7 +35,6 @@ import bigframes.core.compile.ibis_types
 import bigframes.core.compile.scalar_op_compiler as op_compilers
 import bigframes.core.compile.scalar_op_compiler as scalar_op_compiler
 import bigframes.core.expression as ex
-import bigframes.core.guid
 from bigframes.core.ordering import OrderingExpression
 import bigframes.core.sql
 from bigframes.core.window_spec import RangeWindowBounds, RowsWindowBounds, WindowSpec
@@ -279,11 +279,8 @@ class UnorderedIR:
         )
 
     @classmethod
-    def from_pandas(
-        cls,
-        pd_df: pandas.DataFrame,
-        scan_cols: bigframes.core.nodes.ScanList,
-        offsets: typing.Optional[str] = None,
+    def from_polars(
+        cls, pa_table: pa.Table, schema: Sequence[bigquery.SchemaField]
     ) -> UnorderedIR:
         # TODO: add offsets
         """
@@ -292,37 +289,16 @@ class UnorderedIR:
         Assumed that the dataframe has unique string column names and bigframes-suppported
         dtypes.
         """
+        import bigframes_vendored.ibis.backends.bigquery.datatypes as third_party_ibis_bqtypes
 
-        # ibis memtable cannot handle NA, must convert to None
-        # this destroys the schema however
-        ibis_values = pd_df.astype("object").where(pandas.notnull(pd_df), None)  # type: ignore
-        if offsets:
-            ibis_values = ibis_values.assign(**{offsets: range(len(pd_df))})
         # derive the ibis schema from the original pandas schema
-        ibis_schema = [
-            (
-                local_label,
-                bigframes.core.compile.ibis_types.bigframes_dtype_to_ibis_dtype(dtype),
-            )
-            for id, dtype, local_label in scan_cols.items
-        ]
-        if offsets:
-            ibis_schema.append((offsets, ibis_dtypes.int64))
-
         keys_memtable = bigframes_vendored.ibis.memtable(
-            ibis_values, schema=bigframes_vendored.ibis.schema(ibis_schema)
+            pa_table,
+            schema=third_party_ibis_bqtypes.BigQuerySchema.to_ibis(list(schema)),
         )
-
-        columns = [
-            keys_memtable[local_label].name(col_id.sql)
-            for col_id, _, local_label in scan_cols.items
-        ]
-        if offsets:
-            columns.append(keys_memtable[offsets].name(offsets))
-
         return cls(
             keys_memtable,
-            columns=columns,
+            columns=tuple(keys_memtable[key] for key in keys_memtable.columns),
         )
 
     def join(
