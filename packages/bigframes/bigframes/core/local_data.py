@@ -71,5 +71,13 @@ def arrow_type_replacements(type: pa.DataType) -> pa.DataType:
     if pa.types.is_large_string(type):
         # simple string type can handle the largest strings needed
         return pa.string()
+    if pa.types.is_null(type):
+        # null as a type not allowed, default type is float64 for bigframes
+        return pa.float64()
+    if pa.types.is_list(type):
+        new_field_t = arrow_type_replacements(type.value_type)
+        if new_field_t != type.value_type:
+            return pa.list_(new_field_t)
+        return type
     else:
         return type

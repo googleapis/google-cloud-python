@@ -4342,6 +4342,20 @@ def test_series_explode_w_aggregate():
     assert s.explode().sum() == pd_s.explode().sum()
 
 
+@skip_legacy_pandas
+def test_series_construct_empty_array():
+    s = bigframes.pandas.Series([[]])
+    expected = pd.Series(
+        [[]],
+        dtype=pd.ArrowDtype(pa.list_(pa.float64())),
+        index=pd.Index([0], dtype=pd.Int64Dtype()),
+    )
+    pd.testing.assert_series_equal(
+        expected,
+        s.to_pandas(),
+    )
+
+
 @pytest.mark.parametrize(
     ("data"),
     [

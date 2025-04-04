@@ -108,20 +108,9 @@ MAX_INLINE_DF_BYTES = 5000
 
 logger = logging.getLogger(__name__)
 
-# Excludes geography and nested (array, struct) datatypes
-INLINABLE_DTYPES: Sequence[bigframes.dtypes.Dtype] = (
-    pandas.BooleanDtype(),
-    pandas.Float64Dtype(),
-    pandas.Int64Dtype(),
-    pandas.StringDtype(storage="pyarrow"),
-    pandas.ArrowDtype(pa.binary()),
-    pandas.ArrowDtype(pa.date32()),
-    pandas.ArrowDtype(pa.time64("us")),
-    pandas.ArrowDtype(pa.timestamp("us")),
-    pandas.ArrowDtype(pa.timestamp("us", tz="UTC")),
-    pandas.ArrowDtype(pa.decimal128(38, 9)),
-    pandas.ArrowDtype(pa.decimal256(76, 38)),
-    pandas.ArrowDtype(pa.duration("us")),
+NON_INLINABLE_DTYPES: Sequence[bigframes.dtypes.Dtype] = (
+    # Currently excluded as doesn't have arrow type
+    bigframes.dtypes.GEO_DTYPE,
 )
 
 
@@ -852,7 +841,7 @@ class Session(
         # Make sure all types are inlinable to avoid escaping errors.
         inline_types = inline_df._block.expr.schema.dtypes
         noninlinable_types = [
-            dtype for dtype in inline_types if dtype not in INLINABLE_DTYPES
+            dtype for dtype in inline_types if dtype in NON_INLINABLE_DTYPES
         ]
         if len(noninlinable_types) != 0:
             raise ValueError(

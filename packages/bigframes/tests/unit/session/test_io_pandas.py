@@ -24,6 +24,7 @@ import pandas.arrays
 import pandas.testing
 import pyarrow  # type: ignore
 import pytest
+import shapely  # type: ignore
 
 import bigframes.core.schema
 import bigframes.features
@@ -503,3 +504,17 @@ def test_read_pandas_with_bigframes_dataframe():
         ValueError, match=re.escape("read_pandas() expects a pandas.DataFrame")
     ):
         session.read_pandas(df)
+
+
+def test_read_pandas_inline_w_noninlineable_type_raises_error():
+    session = resources.create_bigquery_session()
+    data = [
+        shapely.Point(1, 1),
+        shapely.Point(2, 1),
+        shapely.Point(1, 2),
+    ]
+    s = pandas.Series(data, dtype=geopandas.array.GeometryDtype())
+    with pytest.raises(
+        ValueError, match="Could not (convert|inline) with a BigQuery type:"
+    ):
+        session.read_pandas(s, write_engine="bigquery_inline")
