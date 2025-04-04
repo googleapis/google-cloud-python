@@ -1,0 +1,34 @@
+# Ignore sensitive files
+.env
+.env.local
+.env.*.local
+*.pem
+*.key
+*.crt
+*.cert
+*.p12
+*.pfx
+secrets.json
+
+# Ignore log files
+*.log
+
+# Ignore build artifacts
+node_modules
+dist
+build
+
+# Ignore system files
+.DS_Store
+Thumbs.db
+
+# Ignore IDE files
+.vscode
+.idea
+
+# Ignore temporary files
+*.tmp
+*.swp
+
+# Ignore coverage reports
+coverage
