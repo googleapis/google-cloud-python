@@ -120,7 +120,7 @@ class GeoSeries:
 
             >>> s.boundary
             0    LINESTRING (0 0, 1 1, 0 1, 0 0)
-            1              MULTIPOINT (0 0, 1 0)
+            1          MULTIPOINT ((0 0), (1 0))
             2           GEOMETRYCOLLECTION EMPTY
             dtype: geometry
 
