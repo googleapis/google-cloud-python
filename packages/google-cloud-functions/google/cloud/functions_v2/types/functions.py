@@ -136,8 +136,8 @@ class Function(proto.Message):
             Output only. The deployed url for the
             function.
         kms_key_name (str):
-            [Preview] Resource name of a KMS crypto key (managed by the
-            user) used to encrypt/decrypt function resources.
+            Resource name of a KMS crypto key (managed by the user) used
+            to encrypt/decrypt function resources.
 
             It must match the pattern
             ``projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}``.
@@ -557,7 +557,12 @@ class BuildConfig(proto.Message):
         docker_registry (google.cloud.functions_v2.types.BuildConfig.DockerRegistry):
             Docker Registry to use for this deployment. This
             configuration is only applicable to 1st Gen functions, 2nd
-            Gen functions can only use Artifact Registry.
+            Gen functions can only use Artifact Registry. Deprecated: As
+            of March 2025, ``CONTAINER_REGISTRY`` option is no longer
+            available in response to Container Registry's deprecation:
+            https://cloud.google.com/artifact-registry/docs/transition/transition-from-gcr
+            Please use Artifact Registry instead, which is the default
+            choice.
 
             If unspecified, it defaults to ``ARTIFACT_REGISTRY``. If
             ``docker_repository`` field is specified, this field should
@@ -572,10 +577,7 @@ class BuildConfig(proto.Message):
 
             It must match the pattern
             ``projects/{project}/locations/{location}/repositories/{repository}``.
-
-            Cross-project repositories are not supported. Cross-location
-            repositories are not supported. Repository format must be
-            'DOCKER'.
+            Repository format must be 'DOCKER'.
         service_account (str):
             Service account to be used for building the container. The
             format of this field is
@@ -1191,14 +1193,15 @@ class GetFunctionRequest(proto.Message):
             Required. The name of the function which
             details should be obtained.
         revision (str):
-            Optional. The version of the 1st gen function
-            whose details should be obtained. The version of
-            a 1st gen function is an integer that starts
-            from 1 and gets incremented on redeployments.
-            GCF may keep historical configs for old versions
-            of 1st gen function. This field can be specified
-            to fetch the historical configs. This field is
-            valid only for GCF 1st gen function.
+            Optional. The optional version of the 1st gen
+            function whose details should be obtained. The
+            version of a 1st gen function is an integer that
+            starts from 1 and gets incremented on
+            redeployments. GCF may keep historical configs
+            for old versions of 1st gen function. This field
+            can be specified to fetch the historical
+            configs. This field is valid only for GCF 1st
+            gen function.
     """
 
     name: str = proto.Field(
@@ -1242,7 +1245,7 @@ class ListFunctionsRequest(proto.Message):
         order_by (str):
             The sorting order of the resources returned.
             Value should be a comma separated list of
-            fields. The default sorting oder is ascending.
+            fields. The default sorting order is ascending.
             See https://google.aip.dev/132#ordering.
     """
 
@@ -1384,9 +1387,9 @@ class GenerateUploadUrlRequest(proto.Message):
             Storage signed URL should be generated, specified in the
             format ``projects/*/locations/*``.
         kms_key_name (str):
-            [Preview] Resource name of a KMS crypto key (managed by the
-            user) used to encrypt/decrypt function source code objects
-            in intermediate Cloud Storage buckets. When you generate an
+            Resource name of a KMS crypto key (managed by the user) used
+            to encrypt/decrypt function source code objects in
+            intermediate Cloud Storage buckets. When you generate an
             upload url and upload your source code, it gets copied to an
             intermediate Cloud Storage bucket. The source code is then
             copied to a versioned directory in the sources bucket in the
@@ -1776,7 +1779,7 @@ class Stage(proto.Message):
             NAME_UNSPECIFIED (0):
                 Not specified. Invalid name.
             ARTIFACT_REGISTRY (1):
-                Artifact Regsitry Stage
+                Artifact Registry Stage
             BUILD (2):
                 Build Stage
             SERVICE (3):

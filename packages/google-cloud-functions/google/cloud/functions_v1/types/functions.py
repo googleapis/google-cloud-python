@@ -283,7 +283,12 @@ class CloudFunction(proto.Message):
             repositories are not supported. Repository format must be
             'DOCKER'.
         docker_registry (google.cloud.functions_v1.types.CloudFunction.DockerRegistry):
-            Docker Registry to use for this deployment.
+            Docker Registry to use for this deployment. As of March
+            2025, ``CONTAINER_REGISTRY`` option is no longer available
+            in response to Container Registry's deprecation:
+            https://cloud.google.com/artifact-registry/docs/transition/transition-from-gcr
+            Please use Artifact Registry instead, which is the default
+            choice.
 
             If unspecified, it defaults to ``ARTIFACT_REGISTRY``. If
             ``docker_repository`` field is specified, this field should
@@ -757,12 +762,12 @@ class SecretEnvVar(proto.Message):
         key (str):
             Name of the environment variable.
         project_id (str):
-            Project identifier (preferrably project
-            number but can also be the project ID) of the
-            project that contains the secret. If not set, it
-            will be populated with the function's project
-            assuming that the secret exists in the same
-            project as of the function.
+            Project identifier (preferably project number
+            but can also be the project ID) of the project
+            that contains the secret. If not set, it will be
+            populated with the function's project assuming
+            that the secret exists in the same project as of
+            the function.
         secret (str):
             Name of the secret in secret manager (not the
             full resource name).
