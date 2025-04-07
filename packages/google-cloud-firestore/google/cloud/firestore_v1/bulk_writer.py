@@ -228,6 +228,8 @@ class BulkWriter(AsyncBulkWriterMixin):
 
     Usage:
 
+    .. code-block:: python
+
         # Instantiate the BulkWriter. This works from either `Client` or
         # `AsyncClient`.
         db = firestore.Client()

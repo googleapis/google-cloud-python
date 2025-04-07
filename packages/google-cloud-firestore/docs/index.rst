@@ -14,6 +14,7 @@ API Reference
 
   firestore_v1/aggregation
   firestore_v1/batch
+  firestore_v1/bulk_writer
   firestore_v1/client
   firestore_v1/collection
   firestore_v1/document
