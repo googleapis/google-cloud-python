@@ -5492,6 +5492,11 @@ def test_create_connectivity_test_rest_call_success(request_type):
                                 "ncc_spoke_uri": "ncc_spoke_uri_value",
                                 "advertised_route_source_router_uri": "advertised_route_source_router_uri_value",
                                 "advertised_route_next_hop_uri": "advertised_route_next_hop_uri_value",
+                                "next_hop_uri": "next_hop_uri_value",
+                                "next_hop_network_uri": "next_hop_network_uri_value",
+                                "originating_route_uri": "originating_route_uri_value",
+                                "originating_route_display_name": "originating_route_display_name_value",
+                                "ncc_hub_route_uri": "ncc_hub_route_uri_value",
                             },
                             "endpoint": {},
                             "google_service": {
@@ -5534,6 +5539,16 @@ def test_create_connectivity_test_rest_call_success(request_type):
                                 "display_name": "display_name_value",
                                 "uri": "uri_value",
                                 "location": "location_value",
+                            },
+                            "direct_vpc_egress_connection": {
+                                "network_uri": "network_uri_value",
+                                "subnetwork_uri": "subnetwork_uri_value",
+                                "selected_ip_range": "selected_ip_range_value",
+                                "selected_ip_address": "selected_ip_address_value",
+                                "region": "region_value",
+                            },
+                            "serverless_external_connection": {
+                                "selected_ip_address": "selected_ip_address_value"
                             },
                             "deliver": {
                                 "target": 1,
@@ -6029,6 +6044,11 @@ def test_update_connectivity_test_rest_call_success(request_type):
                                 "ncc_spoke_uri": "ncc_spoke_uri_value",
                                 "advertised_route_source_router_uri": "advertised_route_source_router_uri_value",
                                 "advertised_route_next_hop_uri": "advertised_route_next_hop_uri_value",
+                                "next_hop_uri": "next_hop_uri_value",
+                                "next_hop_network_uri": "next_hop_network_uri_value",
+                                "originating_route_uri": "originating_route_uri_value",
+                                "originating_route_display_name": "originating_route_display_name_value",
+                                "ncc_hub_route_uri": "ncc_hub_route_uri_value",
                             },
                             "endpoint": {},
                             "google_service": {
@@ -6071,6 +6091,16 @@ def test_update_connectivity_test_rest_call_success(request_type):
                                 "display_name": "display_name_value",
                                 "uri": "uri_value",
                                 "location": "location_value",
+                            },
+                            "direct_vpc_egress_connection": {
+                                "network_uri": "network_uri_value",
+                                "subnetwork_uri": "subnetwork_uri_value",
+                                "selected_ip_range": "selected_ip_range_value",
+                                "selected_ip_address": "selected_ip_address_value",
+                                "region": "region_value",
+                            },
+                            "serverless_external_connection": {
+                                "selected_ip_address": "selected_ip_address_value"
                             },
                             "deliver": {
                                 "target": 1,
