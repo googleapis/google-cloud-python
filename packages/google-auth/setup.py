@@ -34,6 +34,7 @@ extras = {
     "reauth": "pyu2f>=0.1.5",
     "enterprise_cert": ["cryptography", "pyopenssl"],
     "pyjwt": ["pyjwt>=2.0", "cryptography>=38.0.3"],
+    "urllib3": ["urllib3", "packaging"],
 }
 
 with io.open("README.rst", "r") as fh:
