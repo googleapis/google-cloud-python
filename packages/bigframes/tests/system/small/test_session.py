@@ -39,6 +39,33 @@ import bigframes.ml.linear_model
 from tests.system import utils
 
 
+@pytest.fixture(scope="module")
+def df_and_local_csv(scalars_df_index):
+    # The auto detects of BigQuery load job have restrictions to detect the bytes,
+    # datetime, numeric and geometry types, so they're skipped here.
+    drop_columns = ["bytes_col", "datetime_col", "numeric_col", "geography_col"]
+    scalars_df_index = scalars_df_index.drop(columns=drop_columns)
+
+    with tempfile.TemporaryDirectory() as dir:
+        # Prepares local CSV file for reading
+        path = dir + "/write_df_to_local_csv_file.csv"
+        scalars_df_index.to_csv(path, index=True)
+        yield scalars_df_index, path
+
+
+@pytest.fixture(scope="module")
+def df_and_gcs_csv(scalars_df_index, gcs_folder):
+    # The auto detects of BigQuery load job have restrictions to detect the bytes,
+    # datetime, numeric and geometry types, so they're skipped here.
+    drop_columns = ["bytes_col", "datetime_col", "numeric_col", "geography_col"]
+    scalars_df_index = scalars_df_index.drop(columns=drop_columns)
+
+    path = gcs_folder + "test_read_csv_w_write_engine*.csv"
+    read_path = utils.get_first_file_from_wildcard(path)
+    scalars_df_index.to_csv(path, index=True)
+    return scalars_df_index, read_path
+
+
 def test_read_gbq_tokyo(
     session_tokyo: bigframes.Session,
     scalars_table_tokyo: str,
@@ -1078,7 +1105,6 @@ def test_read_pandas_w_nested_json_index(session, write_engine):
     pd.testing.assert_index_equal(bq_idx, pd_idx)
 
 
-@utils.skip_legacy_pandas
 @pytest.mark.parametrize(
     ("write_engine",),
     (
@@ -1088,43 +1114,23 @@ def test_read_pandas_w_nested_json_index(session, write_engine):
         ("bigquery_streaming",),
     ),
 )
-def test_read_csv_for_gcs_file_w_default_engine(
-    session, scalars_dfs, gcs_folder, write_engine
-):
-    scalars_df, scalars_pandas_df = scalars_dfs
-    path = gcs_folder + "test_read_csv_gcs_default_engine_w_index*.csv"
-    read_path = utils.get_first_file_from_wildcard(path)
-    scalars_df.to_csv(path, index=True)
-    dtype = scalars_df.dtypes.to_dict()
-    dtype.pop("geography_col")
-    result_df = session.read_csv(
-        read_path,
-        # Convert default pandas dtypes to match BigQuery DataFrames dtypes.
-        dtype=dtype,
-        write_engine=write_engine,
+def test_read_csv_for_gcs_file_w_write_engine(session, df_and_gcs_csv, write_engine):
+    scalars_df, path = df_and_gcs_csv
+
+    # Compares results for pandas and bigframes engines
+    pd_df = session.read_csv(
+        path,
         index_col="rowindex",
+        write_engine=write_engine,
+        dtype=scalars_df.dtypes.to_dict(),
     )
+    pd.testing.assert_frame_equal(pd_df.to_pandas(), scalars_df.to_pandas())
 
-    # The auto detects of BigQuery load job have restrictions to detect the bytes,
-    # datetime, numeric and geometry types, so they're skipped here.
-    drop_columns = ["bytes_col", "numeric_col", "geography_col"]
-    result_df = result_df.drop(columns=drop_columns)
-    scalars_pandas_df = scalars_pandas_df.drop(columns=drop_columns)
-    pd.testing.assert_frame_equal(result_df.to_pandas(), scalars_pandas_df)
-
-
-def test_read_csv_for_gcs_file_w_bq_engine(session, scalars_dfs, gcs_folder):
-    scalars_df, scalars_pandas_df = scalars_dfs
-    path = gcs_folder + "test_read_csv_gcs_bq_engine_w_index*.csv"
-    scalars_df.to_csv(path, index=True)
-    result_df = session.read_csv(path, engine="bigquery", index_col="rowindex")
-
-    # The auto detects of BigQuery load job have restrictions to detect the bytes,
-    # datetime, numeric and geometry types, so they're skipped here.
-    drop_columns = ["bytes_col", "datetime_col", "numeric_col", "geography_col"]
-    result_df = result_df.drop(columns=drop_columns)
-    scalars_pandas_df = scalars_pandas_df.drop(columns=drop_columns)
-    pd.testing.assert_frame_equal(result_df.to_pandas(), scalars_pandas_df)
+    if write_engine in ("default", "bigquery_load"):
+        bf_df = session.read_csv(
+            path, engine="bigquery", index_col="rowindex", write_engine=write_engine
+        )
+        pd.testing.assert_frame_equal(bf_df.to_pandas(), pd_df.to_pandas())
 
 
 @pytest.mark.parametrize(
@@ -1134,90 +1140,77 @@ def test_read_csv_for_gcs_file_w_bq_engine(session, scalars_dfs, gcs_folder):
         pytest.param("\t", id="custom_sep"),
     ],
 )
-@utils.skip_legacy_pandas
-def test_read_csv_local_default_engine(session, scalars_dfs, sep):
-    scalars_df, scalars_pandas_df = scalars_dfs
+def test_read_csv_for_local_file_w_sep(session, df_and_local_csv, sep):
+    scalars_df, _ = df_and_local_csv
+
     with tempfile.TemporaryDirectory() as dir:
-        path = dir + "/test_read_csv_local_default_engine.csv"
+        # Prepares local CSV file for reading
+        path = dir + "/test_read_csv_for_local_file_w_sep.csv"
         scalars_df.to_csv(path, index=True, sep=sep)
-        dtype = scalars_df.dtypes.to_dict()
-        dtype.pop("geography_col")
-        result_df = session.read_csv(
-            path,
-            sep=sep,
-            # Convert default pandas dtypes to match BigQuery DataFrames dtypes.
-            dtype=dtype,
-            index_col="rowindex",
-        )
 
-        # The auto detects of BigQuery load job have restrictions to detect the bytes,
-        # datetime, numeric and geometry types, so they're skipped here.
-        drop_columns = ["bytes_col", "numeric_col", "geography_col"]
-        result_df = result_df.drop(columns=drop_columns)
-        scalars_pandas_df = scalars_pandas_df.drop(columns=drop_columns)
-        pd.testing.assert_frame_equal(result_df.to_pandas(), scalars_pandas_df)
-
-
-@pytest.mark.parametrize(
-    "sep",
-    [
-        pytest.param(",", id="default_sep"),
-        pytest.param("\t", id="custom_sep"),
-    ],
-)
-def test_read_csv_local_bq_engine(session, scalars_dfs, sep):
-    scalars_df, scalars_pandas_df = scalars_dfs
-    with tempfile.TemporaryDirectory() as dir:
-        path = dir + "/test_read_csv_local_bq_engine.csv"
-        scalars_df.to_csv(path, index=True, sep=sep)
-        result_df = session.read_csv(
-            path, engine="bigquery", sep=sep, index_col="rowindex"
-        )
-
-        # The auto detects of BigQuery load job have restrictions to detect the bytes,
-        # datetime, numeric and geometry types, so they're skipped here.
-        drop_columns = ["bytes_col", "datetime_col", "numeric_col", "geography_col"]
-        result_df = result_df.drop(columns=drop_columns)
-        scalars_pandas_df = scalars_pandas_df.drop(columns=drop_columns)
-        pd.testing.assert_frame_equal(result_df.to_pandas(), scalars_pandas_df)
-
-
-def test_read_csv_localbuffer_bq_engine(session, scalars_dfs):
-    scalars_df, scalars_pandas_df = scalars_dfs
-    with tempfile.TemporaryDirectory() as dir:
-        path = dir + "/test_read_csv_local_bq_engine.csv"
-        scalars_df.to_csv(path, index=True)
+        # Compares results for pandas and bigframes engines
         with open(path, "rb") as buffer:
-            result_df = session.read_csv(
-                buffer, engine="bigquery", index_col="rowindex"
+            bf_df = session.read_csv(
+                buffer, engine="bigquery", index_col="rowindex", sep=sep
             )
+        with open(path, "rb") as buffer:
+            # Convert default pandas dtypes to match BigQuery DataFrames dtypes.
+            pd_df = session.read_csv(
+                buffer, index_col="rowindex", sep=sep, dtype=scalars_df.dtypes.to_dict()
+            )
+        pd.testing.assert_frame_equal(bf_df.to_pandas(), scalars_df.to_pandas())
+        pd.testing.assert_frame_equal(bf_df.to_pandas(), pd_df.to_pandas())
 
-        # The auto detects of BigQuery load job have restrictions to detect the bytes,
-        # datetime, numeric and geometry types, so they're skipped here.
-        drop_columns = ["bytes_col", "datetime_col", "numeric_col", "geography_col"]
-        result_df = result_df.drop(columns=drop_columns)
-        scalars_pandas_df = scalars_pandas_df.drop(columns=drop_columns)
-        pd.testing.assert_frame_equal(result_df.to_pandas(), scalars_pandas_df)
 
+def test_read_csv_w_index_col_false(session, df_and_local_csv):
+    # Compares results for pandas and bigframes engines
+    scalars_df, path = df_and_local_csv
+    with open(path, "rb") as buffer:
+        bf_df = session.read_csv(
+            buffer,
+            engine="bigquery",
+            index_col=False,
+        )
+    with open(path, "rb") as buffer:
+        # Convert default pandas dtypes to match BigQuery DataFrames dtypes.
+        pd_df = session.read_csv(
+            buffer, index_col=False, dtype=scalars_df.dtypes.to_dict()
+        )
 
-def test_read_csv_bq_engine_supports_index_col_false(
-    session, scalars_df_index, gcs_folder
-):
-    path = gcs_folder + "test_read_csv_bq_engine_supports_index_col_false*.csv"
-    read_path = utils.get_first_file_from_wildcard(path)
-    scalars_df_index.to_csv(path)
-
-    df = session.read_csv(
-        read_path,
-        # Normally, pandas uses the first column as the index. index_col=False
-        # turns off that behavior.
-        index_col=False,
-    )
-    assert df.shape[0] == scalars_df_index.shape[0]
+    assert bf_df.shape[0] == scalars_df.shape[0]
+    assert bf_df.shape[0] == pd_df.shape[0]
 
     # We use a default index because of index_col=False, so the previous index
     # column is just loaded as a column.
-    assert len(df.columns) == len(scalars_df_index.columns) + 1
+    assert len(bf_df.columns) == len(scalars_df.columns) + 1
+    assert len(bf_df.columns) == len(pd_df.columns)
+
+    # BigFrames requires `sort_index()` because BigQuery doesn't preserve row IDs
+    # (b/280889935) or guarantee row ordering.
+    bf_df = bf_df.set_index("rowindex").sort_index()
+    pd_df = pd_df.set_index("rowindex")
+
+    pd.testing.assert_frame_equal(bf_df.to_pandas(), scalars_df.to_pandas())
+    pd.testing.assert_frame_equal(bf_df.to_pandas(), pd_df.to_pandas())
+
+
+def test_read_csv_w_index_col_column_label(session, df_and_gcs_csv):
+    scalars_df, path = df_and_gcs_csv
+    bf_df = session.read_csv(path, engine="bigquery", index_col="rowindex")
+
+    # Convert default pandas dtypes to match BigQuery DataFrames dtypes.
+    pd_df = session.read_csv(
+        path, index_col="rowindex", dtype=scalars_df.dtypes.to_dict()
+    )
+
+    assert bf_df.shape == scalars_df.shape
+    assert bf_df.shape == pd_df.shape
+
+    assert len(bf_df.columns) == len(scalars_df.columns)
+    assert len(bf_df.columns) == len(pd_df.columns)
+
+    pd.testing.assert_frame_equal(bf_df.to_pandas(), scalars_df.to_pandas())
+    pd.testing.assert_frame_equal(bf_df.to_pandas(), pd_df.to_pandas())
 
 
 @pytest.mark.parametrize(
@@ -1252,155 +1245,62 @@ def test_read_csv_default_engine_throws_not_implemented_error(
         session.read_csv(read_path, **kwargs)
 
 
-def test_read_csv_gcs_default_engine_w_header(session, scalars_df_index, gcs_folder):
-    path = gcs_folder + "test_read_csv_gcs_default_engine_w_header*.csv"
-    read_path = utils.get_first_file_from_wildcard(path)
-    scalars_df_index.to_csv(path)
-
-    # Skips header=N rows, normally considers the N+1th row as the header, but overridden by
-    # passing the `names` argument. In this case, pandas will skip the N+1th row too, take
-    # the column names from `names`, and begin reading data from the N+2th row.
-    df = session.read_csv(
-        read_path,
-        header=2,
-        names=scalars_df_index.columns.to_list(),
-    )
-    assert df.shape[0] == scalars_df_index.shape[0] - 2
-    assert len(df.columns) == len(scalars_df_index.columns)
-
-
-def test_read_csv_gcs_bq_engine_w_header(session, scalars_df_index, gcs_folder):
-    path = gcs_folder + "test_read_csv_gcs_bq_engine_w_header*.csv"
-    scalars_df_index.to_csv(path, index=False)
-
-    # Skip the header and the first 2 data rows. Note that one line of header
-    # also got added while writing the csv through `to_csv`, so we would have to
-    # pass headers=3 in the `read_csv` to skip reading the header and two rows.
-    # Without provided schema, the column names would be like `bool_field_0`,
-    # `string_field_1` and etc.
-    df = session.read_csv(path, header=3, engine="bigquery")
-    assert df.shape[0] == scalars_df_index.shape[0] - 2
-    assert len(df.columns) == len(scalars_df_index.columns)
-
-
-def test_read_csv_local_default_engine_w_header(session, scalars_pandas_df_index):
-    with tempfile.TemporaryDirectory() as dir:
-        path = dir + "/test_read_csv_local_default_engine_w_header.csv"
-        # Using the pandas to_csv method because the BQ one does not support local write.
-        scalars_pandas_df_index.to_csv(path, index=False)
-
-        # Skips header=N rows. Normally row N+1 would be the header now, but overridden by
-        # passing the `names` argument. In this case, pandas will skip row N+1 too, infer
-        # the column names from `names`, and begin reading data from row N+2.
-        df = session.read_csv(
-            path,
-            header=2,
-            names=scalars_pandas_df_index.columns.to_list(),
-        )
-        assert df.shape[0] == scalars_pandas_df_index.shape[0] - 2
-        assert len(df.columns) == len(scalars_pandas_df_index.columns)
-
-
-def test_read_csv_local_bq_engine_w_header(session, scalars_pandas_df_index):
-    with tempfile.TemporaryDirectory() as dir:
-        path = dir + "/test_read_csv_local_bq_engine_w_header.csv"
-        # Using the pandas to_csv method because the BQ one does not support local write.
-        scalars_pandas_df_index.to_csv(path, index=False)
-
-        # Skip the header and the first 2 data rows. Note that one line of
-        # header also got added while writing the csv through `to_csv`, so we
-        # would have to pass headers=3 in the `read_csv` to skip reading the
-        # header and two rows. Without provided schema, the column names would
-        # be like `bool_field_0`, `string_field_1` and etc.
-        df = session.read_csv(path, header=3, engine="bigquery")
-        assert df.shape[0] == scalars_pandas_df_index.shape[0] - 2
-        assert len(df.columns) == len(scalars_pandas_df_index.columns)
-
-
-def test_read_csv_gcs_default_engine_w_index_col_name(
-    session, scalars_df_default_index, gcs_folder
-):
-    path = gcs_folder + "test_read_csv_gcs_default_engine_w_index_col_name*.csv"
-    read_path = utils.get_first_file_from_wildcard(path)
-    scalars_df_default_index.to_csv(path)
-
-    df = session.read_csv(read_path, index_col="rowindex")
-    scalars_df_default_index = scalars_df_default_index.set_index(
-        "rowindex"
-    ).sort_index()
-    pd.testing.assert_index_equal(df.columns, scalars_df_default_index.columns)
-    assert df.index.name == "rowindex"
-
-
-def test_read_csv_gcs_default_engine_w_index_col_index(
-    session, scalars_df_default_index, gcs_folder
-):
-    path = gcs_folder + "test_read_csv_gcs_default_engine_w_index_col_index*.csv"
-    read_path = utils.get_first_file_from_wildcard(path)
-    scalars_df_default_index.to_csv(path)
-
-    index_col = scalars_df_default_index.columns.to_list().index("rowindex")
-    df = session.read_csv(read_path, index_col=index_col)
-    scalars_df_default_index = scalars_df_default_index.set_index(
-        "rowindex"
-    ).sort_index()
-    pd.testing.assert_index_equal(df.columns, scalars_df_default_index.columns)
-    assert df.index.name == "rowindex"
-
-
-def test_read_csv_local_default_engine_w_index_col_name(
-    session, scalars_pandas_df_default_index
-):
-    with tempfile.TemporaryDirectory() as dir:
-        path = dir + "/test_read_csv_local_default_engine_w_index_col_name"
-        # Using the pandas to_csv method because the BQ one does not support local write.
-        scalars_pandas_df_default_index.to_csv(path, index=False)
-
-        df = session.read_csv(path, index_col="rowindex")
-        scalars_pandas_df_default_index = scalars_pandas_df_default_index.set_index(
-            "rowindex"
-        ).sort_index()
-        pd.testing.assert_index_equal(
-            df.columns, scalars_pandas_df_default_index.columns
-        )
-        assert df.index.name == "rowindex"
-
-
-def test_read_csv_local_default_engine_w_index_col_index(
-    session, scalars_pandas_df_default_index
-):
-    with tempfile.TemporaryDirectory() as dir:
-        path = dir + "/test_read_csv_local_default_engine_w_index_col_index"
-        # Using the pandas to_csv method because the BQ one does not support local write.
-        scalars_pandas_df_default_index.to_csv(path, index=False)
-
-        index_col = scalars_pandas_df_default_index.columns.to_list().index("rowindex")
-        df = session.read_csv(path, index_col=index_col)
-        scalars_pandas_df_default_index = scalars_pandas_df_default_index.set_index(
-            "rowindex"
-        ).sort_index()
-        pd.testing.assert_index_equal(
-            df.columns, scalars_pandas_df_default_index.columns
-        )
-        assert df.index.name == "rowindex"
-
-
 @pytest.mark.parametrize(
-    "engine",
-    [
-        pytest.param("bigquery", id="bq_engine"),
-        pytest.param(None, id="default_engine"),
-    ],
+    "header",
+    [0, 1, 5],
 )
-def test_read_csv_gcs_w_usecols(session, scalars_df_index, gcs_folder, engine):
-    path = gcs_folder + "test_read_csv_gcs_w_usecols"
-    path = path + "_default_engine*.csv" if engine is None else path + "_bq_engine*.csv"
-    read_path = utils.get_first_file_from_wildcard(path) if engine is None else path
-    scalars_df_index.to_csv(path)
+def test_read_csv_for_gcs_file_w_header(session, df_and_gcs_csv, header):
+    # Compares results for pandas and bigframes engines
+    scalars_df, path = df_and_gcs_csv
+    bf_df = session.read_csv(path, engine="bigquery", index_col=False, header=header)
+    pd_df = session.read_csv(
+        path, index_col=False, header=header, dtype=scalars_df.dtypes.to_dict()
+    )
 
-    # df should only have 1 column which is bool_col.
-    df = session.read_csv(read_path, usecols=["bool_col"], engine=engine)
-    assert len(df.columns) == 1
+    # b/408461403: workaround the issue where the slice does not work for DataFrame.
+    expected_df = session.read_pandas(scalars_df.to_pandas()[header:])
+
+    assert pd_df.shape[0] == expected_df.shape[0]
+    assert bf_df.shape[0] == pd_df.shape[0]
+
+    # We use a default index because of index_col=False, so the previous index
+    # column is just loaded as a column.
+    assert len(pd_df.columns) == len(expected_df.columns) + 1
+    assert len(bf_df.columns) == len(pd_df.columns)
+
+    # When `header > 0`, pandas and BigFrames may handle column naming differently.
+    # Pandas uses the literal content of the specified header row for column names,
+    # regardless of what it is. BigQuery, however, might generate default names based
+    # on data type (e.g.,bool_field_0,string_field_1, etc.).
+    if header == 0:
+        # BigFrames requires `sort_index()` because BigQuery doesn't preserve row IDs
+        # (b/280889935) or guarantee row ordering.
+        bf_df = bf_df.set_index("rowindex").sort_index()
+        pd_df = pd_df.set_index("rowindex")
+        pd.testing.assert_frame_equal(bf_df.to_pandas(), scalars_df.to_pandas())
+        pd.testing.assert_frame_equal(bf_df.to_pandas(), pd_df.to_pandas())
+
+
+def test_read_csv_w_usecols(session, df_and_local_csv):
+    # Compares results for pandas and bigframes engines
+    scalars_df, path = df_and_local_csv
+    with open(path, "rb") as buffer:
+        bf_df = session.read_csv(
+            buffer,
+            engine="bigquery",
+            usecols=["bool_col"],
+        )
+    with open(path, "rb") as buffer:
+        # Convert default pandas dtypes to match BigQuery DataFrames dtypes.
+        pd_df = session.read_csv(
+            buffer,
+            usecols=["bool_col"],
+            dtype=scalars_df[["bool_col"]].dtypes.to_dict(),
+        )
+
+    # Cannot compare two dataframe due to b/408499371.
+    assert len(bf_df.columns) == 1
+    assert len(pd_df.columns) == 1
 
 
 @pytest.mark.parametrize(
@@ -1434,20 +1334,13 @@ def test_read_csv_local_w_usecols(session, scalars_pandas_df_index, engine):
         pytest.param(None, id="default_engine"),
     ],
 )
-def test_read_csv_others(session, engine):
+def test_read_csv_for_others_files(session, engine):
     uri = "https://raw.githubusercontent.com/googleapis/python-bigquery-dataframes/main/tests/data/people.csv"
     df = session.read_csv(uri, engine=engine)
     assert len(df.columns) == 3
 
 
-@pytest.mark.parametrize(
-    "engine",
-    [
-        pytest.param("bigquery", id="bq_engine"),
-        pytest.param(None, id="default_engine"),
-    ],
-)
-def test_read_csv_local_w_encoding(session, penguins_pandas_df_default_index, engine):
+def test_read_csv_local_w_encoding(session, penguins_pandas_df_default_index):
     with tempfile.TemporaryDirectory() as dir:
         path = dir + "/test_read_csv_local_w_encoding.csv"
         # Using the pandas to_csv method because the BQ one does not support local write.
@@ -1455,12 +1348,23 @@ def test_read_csv_local_w_encoding(session, penguins_pandas_df_default_index, en
         penguins_pandas_df_default_index.to_csv(path, index=True, encoding="ISO-8859-1")
 
         # File can only be read using the same character encoding as when written.
-        result_df = session.read_csv(
-            path, engine=engine, encoding="ISO-8859-1", index_col="rowindex"
+        pd_df = session.read_csv(
+            path,
+            index_col="rowindex",
+            encoding="ISO-8859-1",
+            dtype=penguins_pandas_df_default_index.dtypes.to_dict(),
         )
+
+        bf_df = session.read_csv(
+            path, engine="bigquery", index_col="rowindex", encoding="ISO-8859-1"
+        )
+        # BigFrames requires `sort_index()` because BigQuery doesn't preserve row IDs
+        # (b/280889935) or guarantee row ordering.
+        bf_df = bf_df.sort_index()
         pd.testing.assert_frame_equal(
-            result_df.to_pandas(), penguins_pandas_df_default_index
+            bf_df.to_pandas(), penguins_pandas_df_default_index
         )
+        pd.testing.assert_frame_equal(bf_df.to_pandas(), pd_df.to_pandas())
 
 
 def test_read_pickle_local(session, penguins_pandas_df_default_index, tmp_path):

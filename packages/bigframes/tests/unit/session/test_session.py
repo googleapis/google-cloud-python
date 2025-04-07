@@ -135,7 +135,7 @@ CLUSTERED_OR_PARTITIONED_TABLES = [
         ),
     ],
 )
-def test_read_csv_bq_engine_throws_not_implemented_error(kwargs, match):
+def test_read_csv_w_bq_engine_raises_error(kwargs, match):
     session = resources.create_bigquery_session()
 
     with pytest.raises(NotImplementedError, match=match):
@@ -148,9 +148,10 @@ def test_read_csv_bq_engine_throws_not_implemented_error(kwargs, match):
         ("c",),
         ("python",),
         ("pyarrow",),
+        ("python-fwf",),
     ),
 )
-def test_read_csv_pandas_engines_index_col_sequential_int64_not_supported(engine):
+def test_read_csv_w_pandas_engines_raises_error_for_sequential_int64_index_col(engine):
     session = resources.create_bigquery_session()
 
     with pytest.raises(NotImplementedError, match="index_col"):
@@ -159,6 +160,22 @@ def test_read_csv_pandas_engines_index_col_sequential_int64_not_supported(engine
             engine=engine,
             index_col=bigframes.enums.DefaultIndexKind.SEQUENTIAL_INT64,
         )
+
+
+@pytest.mark.parametrize(
+    ("kwargs"),
+    [
+        pytest.param({"chunksize": 5}, id="with_chunksize"),
+        pytest.param({"iterator": True}, id="with_iterator"),
+    ],
+)
+def test_read_csv_w_pandas_engines_raises_error_for_unsupported_args(kwargs):
+    session = resources.create_bigquery_session()
+    with pytest.raises(
+        NotImplementedError,
+        match="'chunksize' and 'iterator' arguments are not supported.",
+    ):
+        session.read_csv("path/to/csv.csv", **kwargs)
 
 
 @pytest.mark.parametrize(
