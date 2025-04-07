@@ -590,6 +590,7 @@ class Block:
         page_size: Optional[int] = None,
         max_results: Optional[int] = None,
         allow_large_results: Optional[bool] = None,
+        squeeze: Optional[bool] = False,
     ):
         """Download results one message at a time.
 
@@ -605,7 +606,10 @@ class Block:
         for record_batch in execute_result.arrow_batches():
             df = io_pandas.arrow_to_pandas(record_batch, self.expr.schema)
             self._copy_index_to_pandas(df)
-            yield df
+            if squeeze:
+                yield df.squeeze(axis=1)
+            else:
+                yield df
 
     def _copy_index_to_pandas(self, df: pd.DataFrame):
         """Set the index on pandas DataFrame to match this block.
