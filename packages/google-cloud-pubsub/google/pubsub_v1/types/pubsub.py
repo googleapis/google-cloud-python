@@ -1119,7 +1119,7 @@ class JavaScriptUDF(proto.Message):
                  *
                  * @param  {Object<string, any>} metadata - Pub/Sub message metadata.
                  * Keys:
-                 *   - (required) 'message_id'  : {string}
+                 *   - (optional) 'message_id'  : {string}
                  *   - (optional) 'publish_time': {string} YYYY-MM-DDTHH:MM:SSZ format
                  *   - (optional) 'ordering_key': {string}
                  */
