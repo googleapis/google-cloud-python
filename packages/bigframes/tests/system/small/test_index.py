@@ -426,11 +426,3 @@ def test_multiindex_repr_includes_all_names(session):
     )
     index = session.read_pandas(df).set_index(["A", "B"]).index
     assert "names=['A', 'B']" in repr(index)
-
-
-def test_to_pandas_dry_run(scalars_df_index):
-    index = scalars_df_index.index
-
-    result = index.to_pandas(dry_run=True)
-
-    assert len(result) == 14

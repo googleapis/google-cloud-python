@@ -30,6 +30,14 @@ def test_to_pandas_override_global_option(scalars_df_index):
         assert bf_index._query_job.destination.table_id == table_id
 
 
+def test_to_pandas_dry_run(scalars_df_index):
+    index = scalars_df_index.index
+
+    result = index.to_pandas(dry_run=True)
+
+    assert len(result) == 14
+
+
 def test_to_numpy_override_global_option(scalars_df_index):
     with bigframes.option_context("bigquery.allow_large_results", True):
 

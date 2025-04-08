@@ -5203,9 +5203,7 @@ def test_query_complexity_repeated_subtrees(
     # See: https://github.com/python/cpython/issues/112282
     reason="setrecursionlimit has no effect on the Python C stack since Python 3.12.",
 )
-def test_query_complexity_repeated_analytic(
-    scalars_df_index, scalars_pandas_df_index, with_multiquery_execution
-):
+def test_query_complexity_repeated_analytic(scalars_df_index, scalars_pandas_df_index):
     bf_df = scalars_df_index[["int64_col", "int64_too"]]
     pd_df = scalars_pandas_df_index[["int64_col", "int64_too"]]
     # Uses LAG analytic operator, each in a new SELECT
@@ -5215,22 +5213,6 @@ def test_query_complexity_repeated_analytic(
     bf_result = bf_df.to_pandas()
     pd_result = pd_df
     assert_pandas_df_equal(bf_result, pd_result)
-
-
-def test_to_pandas_downsampling_option_override(session):
-    df = session.read_gbq("bigframes-dev.bigframes_tests_sys.batting")
-    download_size = 1
-
-    # limits only apply for allow_large_result=True
-    df = df.to_pandas(
-        max_download_size=download_size,
-        sampling_method="head",
-        allow_large_results=True,
-    )
-
-    total_memory_bytes = df.memory_usage(deep=True).sum()
-    total_memory_mb = total_memory_bytes / (1024 * 1024)
-    assert total_memory_mb == pytest.approx(download_size, rel=0.5)
 
 
 def test_to_gbq_and_create_dataset(session, scalars_df_index, dataset_id_not_created):

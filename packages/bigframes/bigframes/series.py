@@ -35,6 +35,7 @@ from typing import (
     Tuple,
     Union,
 )
+import warnings
 
 import bigframes_vendored.constants as constants
 import bigframes_vendored.pandas.core.series as vendored_pandas_series
@@ -61,6 +62,7 @@ from bigframes.core.window import rolling
 import bigframes.core.window_spec as windows
 import bigframes.dataframe
 import bigframes.dtypes
+import bigframes.exceptions as bfe
 import bigframes.formatting_helpers as formatter
 import bigframes.operations as ops
 import bigframes.operations.aggregations as agg_ops
@@ -432,17 +434,27 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
 
         Args:
             max_download_size (int, default None):
-                Download size threshold in MB. If max_download_size is exceeded when downloading data
-                (e.g., to_pandas()), the data will be downsampled if
-                bigframes.options.sampling.enable_downsampling is True, otherwise, an error will be
-                raised. If set to a value other than None, this will supersede the global config.
+                .. deprecated:: 2.0.0
+                    ``max_download_size`` parameter is deprecated. Please use ``to_pandas_batches()``
+                    method instead.
+
+                Download size threshold in MB. If ``max_download_size`` is exceeded when downloading data,
+                the data will be downsampled if ``bigframes.options.sampling.enable_downsampling`` is
+                ``True``, otherwise, an error will be raised. If set to a value other than ``None``,
+                this will supersede the global config.
             sampling_method (str, default None):
+                .. deprecated:: 2.0.0
+                    ``sampling_method`` parameter is deprecated. Please use ``sample()`` method instead.
+
                 Downsampling algorithms to be chosen from, the choices are: "head": This algorithm
                 returns a portion of the data from the beginning. It is fast and requires minimal
                 computations to perform the downsampling; "uniform": This algorithm returns uniform
                 random samples of the data. If set to a value other than None, this will supersede
                 the global config.
             random_state (int, default None):
+                .. deprecated:: 2.0.0
+                    ``random_state`` parameter is deprecated. Please use ``sample()`` method instead.
+
                 The seed for the uniform downsampling algorithm. If provided, the uniform method may
                 take longer to execute and require more computation. If set to a value other than
                 None, this will supersede the global config.
@@ -461,6 +473,19 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
                 is not exceeded; otherwise, a pandas Series with downsampled rows of the DataFrame. If dry_run
                 is set to True, a pandas Series containing dry run statistics will be returned.
         """
+        if max_download_size is not None:
+            msg = bfe.format_message(
+                "DEPRECATED: The `max_download_size` parameters for `Series.to_pandas()` "
+                "are deprecated and will be removed soon. Please use `Series.to_pandas_batches()`."
+            )
+            warnings.warn(msg, category=FutureWarning)
+        if sampling_method is not None or random_state is not None:
+            msg = bfe.format_message(
+                "DEPRECATED: The `sampling_method` and `random_state` parameters for "
+                "`Series.to_pandas()` are deprecated and will be removed soon. "
+                "Please use `Series.sample().to_pandas()` instead for sampling."
+            )
+            warnings.warn(msg, category=FutureWarning)
 
         if dry_run:
             dry_run_stats, dry_run_job = self._block._compute_dry_run(

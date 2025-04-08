@@ -15,6 +15,7 @@ import pandas as pd
 import pytest
 
 import bigframes
+import bigframes.series
 
 
 def test_to_pandas_override_global_option(scalars_df_index):
@@ -35,6 +36,36 @@ def test_to_pandas_override_global_option(scalars_df_index):
         bf_series.to_pandas(allow_large_results=False)
         assert bf_series._query_job.destination.table_id == table_id
         assert session._metrics.execution_count - execution_count == 1
+
+
+@pytest.mark.parametrize(
+    ("kwargs", "message"),
+    [
+        pytest.param(
+            {"sampling_method": "head"},
+            r"DEPRECATED[\S\s]*sampling_method[\S\s]*Series.sample",
+            id="sampling_method",
+        ),
+        pytest.param(
+            {"random_state": 10},
+            r"DEPRECATED[\S\s]*random_state[\S\s]*Series.sample",
+            id="random_state",
+        ),
+        pytest.param(
+            {"max_download_size": 10},
+            r"DEPRECATED[\S\s]*max_download_size[\S\s]*Series.to_pandas_batches",
+            id="max_download_size",
+        ),
+    ],
+)
+def test_to_pandas_warns_deprecated_parameters(scalars_df_index, kwargs, message):
+    s: bigframes.series.Series = scalars_df_index["int64_col"]
+    with pytest.warns(FutureWarning, match=message):
+        s.to_pandas(
+            # limits only apply for allow_large_result=True
+            allow_large_results=True,
+            **kwargs,
+        )
 
 
 @pytest.mark.parametrize(

@@ -266,6 +266,62 @@ def test_to_pandas_override_global_option(scalars_df_index):
         assert scalars_df_index._query_job.destination.table_id == table_id
 
 
+def test_to_pandas_downsampling_option_override(session):
+    df = session.read_gbq("bigframes-dev.bigframes_tests_sys.batting")
+    download_size = 1
+
+    with pytest.warns(
+        UserWarning, match="The data size .* exceeds the maximum download limit"
+    ):
+        # limits only apply for allow_large_result=True
+        df = df.to_pandas(
+            max_download_size=download_size,
+            sampling_method="head",
+            allow_large_results=True,
+        )
+
+    total_memory_bytes = df.memory_usage(deep=True).sum()
+    total_memory_mb = total_memory_bytes / (1024 * 1024)
+    assert total_memory_mb == pytest.approx(download_size, rel=0.5)
+
+
+@pytest.mark.parametrize(
+    ("kwargs", "message"),
+    [
+        pytest.param(
+            {"sampling_method": "head"},
+            r"DEPRECATED[\S\s]*sampling_method[\S\s]*DataFrame.sample",
+            id="sampling_method",
+        ),
+        pytest.param(
+            {"random_state": 10},
+            r"DEPRECATED[\S\s]*random_state[\S\s]*DataFrame.sample",
+            id="random_state",
+        ),
+        pytest.param(
+            {"max_download_size": 10},
+            r"DEPRECATED[\S\s]*max_download_size[\S\s]*DataFrame.to_pandas_batches",
+            id="max_download_size",
+        ),
+    ],
+)
+def test_to_pandas_warns_deprecated_parameters(scalars_df_index, kwargs, message):
+    with pytest.warns(FutureWarning, match=message):
+        scalars_df_index.to_pandas(
+            # limits only apply for allow_large_result=True
+            allow_large_results=True,
+            **kwargs,
+        )
+
+
+def test_to_pandas_dry_run(session, scalars_pandas_df_multi_index):
+    bf_df = session.read_pandas(scalars_pandas_df_multi_index)
+
+    result = bf_df.to_pandas(dry_run=True)
+
+    assert len(result) == 14
+
+
 def test_to_arrow_override_global_option(scalars_df_index):
     # Direct call to_arrow uses global default setting (allow_large_results=True),
     with bigframes.option_context("bigquery.allow_large_results", True):
@@ -813,11 +869,3 @@ def test_to_sql_query_named_index_excluded(
     utils.assert_pandas_df_equal(
         roundtrip.to_pandas(), pd_df, check_index_type=False, ignore_order=True
     )
-
-
-def test_to_pandas_dry_run(session, scalars_pandas_df_multi_index):
-    bf_df = session.read_pandas(scalars_pandas_df_multi_index)
-
-    result = bf_df.to_pandas(dry_run=True)
-
-    assert len(result) == 14
