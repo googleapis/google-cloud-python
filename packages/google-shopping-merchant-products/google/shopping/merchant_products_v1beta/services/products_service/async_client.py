@@ -63,9 +63,7 @@ _LOGGER = std_logging.getLogger(__name__)
 
 
 class ProductsServiceAsyncClient:
-    """Service to use Product resource.
-    This service works for products with online channel only.
-    """
+    """Service to use Product resource."""
 
     _client: ProductsServiceClient
 
@@ -341,9 +339,9 @@ class ProductsServiceAsyncClient:
                 Required. The name of the product to retrieve. Format:
                 ``accounts/{account}/products/{product}`` where the last
                 section ``product`` consists of 4 parts:
-                channel~content_language~feed_label~offer_id example for
-                product name is
-                "accounts/123/products/online~en~US~sku123"
+                ``channel~content_language~feed_label~offer_id`` example
+                for product name is
+                ``accounts/123/products/online~en~US~sku123``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -362,8 +360,7 @@ class ProductsServiceAsyncClient:
                    inputs][google.shopping.merchant.products.v1main.ProductInput]
                    after applying rules and supplemental data sources.
                    This processed product matches what is shown in your
-                   Merchant Center account and in Shopping ads and other
-                   surfaces across Google. Each product is built from
+                   Merchant Center account. Each product is built from
                    exactly one primary data source product input, and
                    multiple supplemental data source inputs. After
                    inserting, updating, or deleting a product input, it
@@ -435,14 +432,14 @@ class ProductsServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListProductsAsyncPager:
-        r"""Lists the processed products in your Merchant Center
-        account. The response might contain fewer items than
-        specified by pageSize. Rely on pageToken to determine if
-        there are more items to be requested.
+        r"""Lists the processed products in your Merchant Center account.
+        The response might contain fewer items than specified by
+        ``pageSize``. Rely on ``pageToken`` to determine if there are
+        more items to be requested.
 
-        After inserting, updating, or deleting a product input,
-        it may take several minutes before the updated processed
-        product can be retrieved.
+        After inserting, updating, or deleting a product input, it may
+        take several minutes before the updated processed product can be
+        retrieved.
 
         .. code-block:: python
 
@@ -476,9 +473,8 @@ class ProductsServiceAsyncClient:
                 The request object. Request message for the ListProducts
                 method.
             parent (:class:`str`):
-                Required. The account to list
-                processed products for. Format:
-                accounts/{account}
+                Required. The account to list processed products for.
+                Format: ``accounts/{account}``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
