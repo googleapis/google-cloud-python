@@ -405,7 +405,7 @@ class ArrayValue:
         skip_reproject_unsafe: skips the reprojection step, can be used when performing many non-dependent window operations, user responsible for not nesting window expressions, or using outputs as join, filter or aggregation keys before a reprojection
         """
         # TODO: Support non-deterministic windowing
-        if window_spec.row_bounded or not op.order_independent:
+        if window_spec.is_row_bounded or not op.order_independent:
             if self.node.order_ambiguous and not self.session._strictly_ordered:
                 if not self.session._allows_ambiguity:
                     raise ValueError(

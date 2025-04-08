@@ -19,6 +19,7 @@ from bigframes.core.rewrite.order import pull_up_order
 from bigframes.core.rewrite.pruning import column_pruning
 from bigframes.core.rewrite.slices import pullup_limit_from_slice, rewrite_slice
 from bigframes.core.rewrite.timedeltas import rewrite_timedelta_expressions
+from bigframes.core.rewrite.windows import rewrite_range_rolling
 
 __all__ = [
     "legacy_join_as_projection",
@@ -29,4 +30,5 @@ __all__ = [
     "remap_variables",
     "pull_up_order",
     "column_pruning",
+    "rewrite_range_rolling",
 ]

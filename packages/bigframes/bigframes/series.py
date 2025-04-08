@@ -57,6 +57,7 @@ import bigframes.core.scalar as scalars
 import bigframes.core.utils as utils
 import bigframes.core.validations as validations
 import bigframes.core.window
+from bigframes.core.window import rolling
 import bigframes.core.window_spec as windows
 import bigframes.dataframe
 import bigframes.dtypes
@@ -1549,16 +1550,22 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
     @validations.requires_ordering()
     def rolling(
         self,
-        window: int,
-        min_periods=None,
+        window: int | pandas.Timedelta | numpy.timedelta64 | datetime.timedelta | str,
+        min_periods: int | None = None,
         closed: Literal["right", "left", "both", "neither"] = "right",
     ) -> bigframes.core.window.Window:
-        window_spec = windows.WindowSpec(
-            bounds=windows.RowsWindowBounds.from_window_size(window, closed),
-            min_periods=min_periods if min_periods is not None else window,
-        )
-        return bigframes.core.window.Window(
-            self._block, window_spec, self._block.value_columns, is_series=True
+        if isinstance(window, int):
+            # Rows rolling
+            window_spec = windows.WindowSpec(
+                bounds=windows.RowsWindowBounds.from_window_size(window, closed),
+                min_periods=window if min_periods is None else min_periods,
+            )
+            return bigframes.core.window.Window(
+                self._block, window_spec, self._block.value_columns, is_series=True
+            )
+
+        return rolling.create_range_window(
+            self._block, window, min_periods, closed, is_series=True
         )
 
     @validations.requires_ordering()

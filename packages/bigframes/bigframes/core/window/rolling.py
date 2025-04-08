@@ -14,12 +14,18 @@
 
 from __future__ import annotations
 
+import datetime
 import typing
 
 import bigframes_vendored.pandas.core.window.rolling as vendored_pandas_rolling
+import numpy
+import pandas
 
-from bigframes.core import log_adapter, window_spec
+from bigframes import dtypes
+from bigframes.core import expression as ex
+from bigframes.core import log_adapter, ordering, window_spec
 import bigframes.core.blocks as blocks
+from bigframes.core.window import ordering as window_ordering
 import bigframes.operations.aggregations as agg_ops
 
 
@@ -118,3 +124,38 @@ class Window(vendored_pandas_rolling.Window):
 
         labels = [self._block.col_id_to_label[col] for col in agg_col_ids]
         return block.select_columns(result_ids).with_column_labels(labels)
+
+
+def create_range_window(
+    block: blocks.Block,
+    window: pandas.Timedelta | numpy.timedelta64 | datetime.timedelta | str,
+    min_periods: int | None,
+    closed: typing.Literal["right", "left", "both", "neither"],
+    is_series: bool,
+) -> Window:
+
+    index_dtypes = block.index.dtypes
+    if len(index_dtypes) > 1:
+        raise ValueError("Range rolling on MultiIndex is not supported")
+    if index_dtypes[0] != dtypes.TIMESTAMP_DTYPE:
+        raise ValueError("Index type should be timestamps with timezones")
+
+    order_direction = window_ordering.find_order_direction(
+        block.expr.node, block.index_columns[0]
+    )
+    if order_direction is None:
+        raise ValueError(
+            "The index might not be in a monotonic order. Please sort the index before rolling."
+        )
+    if isinstance(window, str):
+        window = pandas.Timedelta(window)
+    spec = window_spec.WindowSpec(
+        bounds=window_spec.RangeWindowBounds.from_timedelta_window(window, closed),
+        min_periods=1 if min_periods is None else min_periods,
+        ordering=(
+            ordering.OrderingExpression(
+                ex.deref(block.index_columns[0]), order_direction
+            ),
+        ),
+    )
+    return Window(block, spec, block.value_columns, is_series=is_series)

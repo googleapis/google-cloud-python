@@ -16,7 +16,7 @@ from __future__ import annotations
 import dataclasses
 import functools
 import itertools
-from typing import cast, Optional, Sequence, Tuple, TYPE_CHECKING, Union
+from typing import cast, Optional, Sequence, Tuple, TYPE_CHECKING
 
 import bigframes.core
 from bigframes.core import window_spec
@@ -359,6 +359,7 @@ class PolarsCompiler:
             return df.with_columns([agg_expr])
 
         else:  # row-bounded window
+            assert isinstance(window.bounds, window_spec.RowsWindowBounds)
             # Polars API semi-bounded, and any grouped rolling window challenging
             # https://github.com/pola-rs/polars/issues/4799
             # https://github.com/pola-rs/polars/issues/8976
@@ -382,9 +383,7 @@ class PolarsCompiler:
             return pl.concat([df, results], how="horizontal")
 
 
-def _get_period(
-    bounds: Union[window_spec.RowsWindowBounds, window_spec.RangeWindowBounds]
-) -> Optional[int]:
+def _get_period(bounds: window_spec.RowsWindowBounds) -> Optional[int]:
     """Returns None if the boundary is infinite."""
     if bounds.start is None or bounds.end is None:
         return None

@@ -12,12 +12,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import datetime
+
+import numpy as np
 import pandas as pd
 import pytest
 
 
 @pytest.fixture(scope="module")
-def rolling_dfs(scalars_dfs):
+def rows_rolling_dfs(scalars_dfs):
     bf_df, pd_df = scalars_dfs
 
     target_cols = ["int64_too", "float64_col", "int64_col"]
@@ -26,7 +29,23 @@ def rolling_dfs(scalars_dfs):
 
 
 @pytest.fixture(scope="module")
-def rolling_series(scalars_dfs):
+def range_rolling_dfs(session):
+    pd_df = pd.DataFrame(
+        {
+            "ts_col": pd.Timestamp("20250101", tz="UTC")
+            + pd.to_timedelta(np.arange(10), "s"),
+            "dt_col": pd.Timestamp("20250101") + pd.to_timedelta(np.arange(10), "s"),
+            "int_col": np.arange(10),
+        }
+    )
+
+    bf_df = session.read_pandas(pd_df)
+
+    return bf_df, pd_df
+
+
+@pytest.fixture(scope="module")
+def rows_rolling_series(scalars_dfs):
     bf_df, pd_df = scalars_dfs
     target_col = "int64_too"
 
@@ -34,8 +53,8 @@ def rolling_series(scalars_dfs):
 
 
 @pytest.mark.parametrize("closed", ["left", "right", "both", "neither"])
-def test_dataframe_rolling_closed_param(rolling_dfs, closed):
-    bf_df, pd_df = rolling_dfs
+def test_dataframe_rolling_closed_param(rows_rolling_dfs, closed):
+    bf_df, pd_df = rows_rolling_dfs
 
     actual_result = bf_df.rolling(window=3, closed=closed).sum().to_pandas()
 
@@ -44,8 +63,8 @@ def test_dataframe_rolling_closed_param(rolling_dfs, closed):
 
 
 @pytest.mark.parametrize("closed", ["left", "right", "both", "neither"])
-def test_dataframe_groupby_rolling_closed_param(rolling_dfs, closed):
-    bf_df, pd_df = rolling_dfs
+def test_dataframe_groupby_rolling_closed_param(rows_rolling_dfs, closed):
+    bf_df, pd_df = rows_rolling_dfs
     # Need to specify column subset for comparison due to b/406841327
     check_columns = ["float64_col", "int64_col"]
 
@@ -64,8 +83,8 @@ def test_dataframe_groupby_rolling_closed_param(rolling_dfs, closed):
     )
 
 
-def test_dataframe_rolling_on(rolling_dfs):
-    bf_df, pd_df = rolling_dfs
+def test_dataframe_rolling_on(rows_rolling_dfs):
+    bf_df, pd_df = rows_rolling_dfs
 
     actual_result = bf_df.rolling(window=3, on="int64_too").sum().to_pandas()
 
@@ -73,15 +92,15 @@ def test_dataframe_rolling_on(rolling_dfs):
     pd.testing.assert_frame_equal(actual_result, expected_result, check_dtype=False)
 
 
-def test_dataframe_rolling_on_invalid_column_raise_error(rolling_dfs):
-    bf_df, _ = rolling_dfs
+def test_dataframe_rolling_on_invalid_column_raise_error(rows_rolling_dfs):
+    bf_df, _ = rows_rolling_dfs
 
     with pytest.raises(ValueError):
         bf_df.rolling(window=3, on="whatever").sum()
 
 
-def test_dataframe_groupby_rolling_on(rolling_dfs):
-    bf_df, pd_df = rolling_dfs
+def test_dataframe_groupby_rolling_on(rows_rolling_dfs):
+    bf_df, pd_df = rows_rolling_dfs
     # Need to specify column subset for comparison due to b/406841327
     check_columns = ["float64_col", "int64_col"]
 
@@ -100,16 +119,16 @@ def test_dataframe_groupby_rolling_on(rolling_dfs):
     )
 
 
-def test_dataframe_groupby_rolling_on_invalid_column_raise_error(rolling_dfs):
-    bf_df, _ = rolling_dfs
+def test_dataframe_groupby_rolling_on_invalid_column_raise_error(rows_rolling_dfs):
+    bf_df, _ = rows_rolling_dfs
 
     with pytest.raises(ValueError):
         bf_df.groupby(level=0).rolling(window=3, on="whatever").sum()
 
 
 @pytest.mark.parametrize("closed", ["left", "right", "both", "neither"])
-def test_series_rolling_closed_param(rolling_series, closed):
-    bf_series, df_series = rolling_series
+def test_series_rolling_closed_param(rows_rolling_series, closed):
+    bf_series, df_series = rows_rolling_series
 
     actual_result = bf_series.rolling(window=3, closed=closed).sum().to_pandas()
 
@@ -118,8 +137,8 @@ def test_series_rolling_closed_param(rolling_series, closed):
 
 
 @pytest.mark.parametrize("closed", ["left", "right", "both", "neither"])
-def test_series_groupby_rolling_closed_param(rolling_series, closed):
-    bf_series, df_series = rolling_series
+def test_series_groupby_rolling_closed_param(rows_rolling_series, closed):
+    bf_series, df_series = rows_rolling_series
 
     actual_result = (
         bf_series.groupby(bf_series % 2)
@@ -159,8 +178,8 @@ def test_series_groupby_rolling_closed_param(rolling_series, closed):
         pytest.param(lambda x: x.var(), id="var"),
     ],
 )
-def test_series_window_agg_ops(rolling_series, windowing, agg_op):
-    bf_series, pd_series = rolling_series
+def test_series_window_agg_ops(rows_rolling_series, windowing, agg_op):
+    bf_series, pd_series = rows_rolling_series
 
     actual_result = agg_op(windowing(bf_series)).to_pandas()
 
@@ -205,3 +224,69 @@ def test_dataframe_window_agg_ops(scalars_dfs, windowing, agg_op):
 
     pd_result = agg_op(windowing(pd_df))
     pd.testing.assert_frame_equal(pd_result, bf_result, check_dtype=False)
+
+
+@pytest.mark.parametrize("closed", ["left", "right", "both", "neither"])
+@pytest.mark.parametrize(
+    "window",  # skipped numpy timedelta because Pandas does not support it.
+    [pd.Timedelta("3s"), datetime.timedelta(seconds=3), "3s"],
+)
+@pytest.mark.parametrize("ascending", [True, False])
+def test_series_range_rolling(range_rolling_dfs, window, closed, ascending):
+    bf_df, pd_df = range_rolling_dfs
+    bf_series = bf_df.set_index("ts_col")["int_col"]
+    pd_series = pd_df.set_index("ts_col")["int_col"]
+
+    actual_result = (
+        bf_series.sort_index(ascending=ascending)
+        .rolling(window=window, closed=closed)
+        .min()
+        .to_pandas()
+    )
+
+    expected_result = (
+        pd_series.sort_index(ascending=ascending)
+        .rolling(window=window, closed=closed)
+        .min()
+    )
+    pd.testing.assert_series_equal(
+        actual_result, expected_result, check_dtype=False, check_index=False
+    )
+
+
+def test_range_rolling_order_info_lookup(range_rolling_dfs):
+    bf_df, pd_df = range_rolling_dfs
+
+    actual_result = (
+        bf_df.set_index("ts_col")
+        .sort_index(ascending=False)["int_col"]
+        .isin(bf_df["int_col"])
+        .rolling(window="3s")
+        .count()
+        .to_pandas()
+    )
+
+    expected_result = (
+        pd_df.set_index("ts_col")
+        .sort_index(ascending=False)["int_col"]
+        .isin(pd_df["int_col"])
+        .rolling(window="3s")
+        .count()
+    )
+    pd.testing.assert_series_equal(
+        actual_result, expected_result, check_dtype=False, check_index=False
+    )
+
+
+def test_range_rolling_unsupported_index_type_raise_error(range_rolling_dfs):
+    bf_df, _ = range_rolling_dfs
+
+    with pytest.raises(ValueError):
+        bf_df["int_col"].sort_index().rolling(window="3s")
+
+
+def test_range_rolling_unsorted_column_raise_error(range_rolling_dfs):
+    bf_df, _ = range_rolling_dfs
+
+    with pytest.raises(ValueError):
+        bf_df["int_col"].rolling(window="3s")
