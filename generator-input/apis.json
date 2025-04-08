@@ -1,0 +1,3681 @@
+{
+    "apis": [
+        {
+            "id": "."
+        },
+        {
+            "id": "gapic/metadata"
+        },
+        {
+            "id": "grafeas"
+        },
+        {
+            "grpc_service_config": "grafeas_grpc_service_config.json",
+            "id": "grafeas/v1",
+            "python-gapic-namespace": "grafeas",
+            "service_yaml": "grafeas_v1.yaml",
+            "transport": "grpc+rest",
+            "warehouse-package-name": "grafeas"
+        },
+        {
+            "id": "google"
+        },
+        {
+            "id": "google/ai/generativelanguage"
+        },
+        {
+            "grpc_service_config": "generativeai_grpc_service_config.json",
+            "id": "google/ai/generativelanguage/v1beta2",
+            "service_yaml": "generativelanguage_v1beta2.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "grpc_service_config": "generativeai_grpc_service_config.json",
+            "id": "google/ai/generativelanguage/v1alpha",
+            "service_yaml": "generativelanguage_v1alpha.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "grpc_service_config": "generativeai_grpc_service_config.json",
+            "id": "google/ai/generativelanguage/v1",
+            "service_yaml": "generativelanguage_v1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "grpc_service_config": "generativeai_grpc_service_config.json",
+            "id": "google/ai/generativelanguage/v1beta3",
+            "service_yaml": "generativelanguage_v1beta3.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "grpc_service_config": "generativeai_grpc_service_config.json",
+            "id": "google/ai/generativelanguage/v1beta",
+            "service_yaml": "generativelanguage_v1beta.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/example/library"
+        },
+        {
+            "grpc_service_config": "library_grpc_service_config.json",
+            "id": "google/example/library/v1",
+            "service_yaml": "//google/example/library:library_example_v1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/home/graph"
+        },
+        {
+            "grpc_service_config": "homegraph_grpc_service_config.json",
+            "id": "google/home/graph/v1",
+            "service_yaml": "homegraph_v1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "grpc_service_config": "smart_device_management_grpc_service_config.json",
+            "id": "google/home/enterprise/sdm/v1",
+            "service_yaml": "smartdevicemanagement_v1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/storagetransfer"
+        },
+        {
+            "id": "google/storagetransfer/logging"
+        },
+        {
+            "grpc_service_config": "storagetransfer_grpc_service_config.json",
+            "id": "google/storagetransfer/v1",
+            "python-gapic-namespace": "google.cloud",
+            "service_yaml": "storagetransfer_v1.yaml",
+            "transport": "grpc+rest",
+            "warehouse-package-name": "google-cloud-storage-transfer"
+        },
+        {
+            "id": "google/logging"
+        },
+        {
+            "id": "google/logging/type"
+        },
+        {
+            "grpc_service_config": "logging_grpc_service_config.json",
+            "id": "google/logging/v2",
+            "python-gapic-namespace": "google.cloud",
+            "service_yaml": "logging_v2.yaml",
+            "transport": "grpc"
+        },
+        {
+            "id": "google/shopping/merchant/products"
+        },
+        {
+            "grpc_service_config": "products_grpc_service_config.json",
+            "id": "google/shopping/merchant/products/v1beta",
+            "python-gapic-namespace": "google.shopping",
+            "service_yaml": "merchantapi_v1beta.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/shopping/merchant/lfp"
+        },
+        {
+            "grpc_service_config": "lfp_grpc_service_config.json",
+            "id": "google/shopping/merchant/lfp/v1beta",
+            "python-gapic-namespace": "google.shopping",
+            "service_yaml": "merchantapi_v1beta.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/shopping/merchant/reports"
+        },
+        {
+            "grpc_service_config": "reports_grpc_service_config.json",
+            "id": "google/shopping/merchant/reports/v1beta",
+            "python-gapic-namespace": "google.shopping",
+            "service_yaml": "merchantapi_v1beta.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/shopping/merchant/conversions"
+        },
+        {
+            "grpc_service_config": "conversions_grpc_service_config.json",
+            "id": "google/shopping/merchant/conversions/v1beta",
+            "python-gapic-namespace": "google.shopping",
+            "service_yaml": "merchantapi_v1beta.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "grpc_service_config": "productstudio_grpc_service_config.json",
+            "id": "google/shopping/merchant/productstudio/v1alpha",
+            "service_yaml": "merchantapi_v1alpha.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/shopping/merchant/inventories"
+        },
+        {
+            "grpc_service_config": "inventories_grpc_service_config.json",
+            "id": "google/shopping/merchant/inventories/v1beta",
+            "python-gapic-namespace": "google.shopping",
+            "service_yaml": "merchantapi_v1beta.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/shopping/merchant/notifications"
+        },
+        {
+            "grpc_service_config": "notifications_grpc_service_config.json",
+            "id": "google/shopping/merchant/notifications/v1beta",
+            "python-gapic-namespace": "google.shopping",
+            "service_yaml": "merchantapi_v1beta.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/shopping/merchant/accounts"
+        },
+        {
+            "grpc_service_config": "accounts_grpc_service_config.json",
+            "id": "google/shopping/merchant/accounts/v1beta",
+            "python-gapic-namespace": "google.shopping",
+            "service_yaml": "merchantapi_v1beta.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/shopping/merchant/quota"
+        },
+        {
+            "grpc_service_config": "quota_grpc_service_config.json",
+            "id": "google/shopping/merchant/quota/v1beta",
+            "python-gapic-namespace": "google.shopping",
+            "service_yaml": "merchantapi_v1beta.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/shopping/merchant/reviews"
+        },
+        {
+            "grpc_service_config": "reviews_grpc_service_config.json",
+            "id": "google/shopping/merchant/reviews/v1beta",
+            "python-gapic-namespace": "google.shopping",
+            "service_yaml": "merchantapi_v1beta.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/shopping/merchant/promotions"
+        },
+        {
+            "grpc_service_config": "promotions_grpc_service_config.json",
+            "id": "google/shopping/merchant/promotions/v1beta",
+            "python-gapic-namespace": "google.shopping",
+            "service_yaml": "merchantapi_v1beta.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/shopping/merchant/datasources"
+        },
+        {
+            "grpc_service_config": "datasources_grpc_service_config.json",
+            "id": "google/shopping/merchant/datasources/v1beta",
+            "python-gapic-namespace": "google.shopping",
+            "service_yaml": "merchantapi_v1beta.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/shopping/type",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/shopping/css"
+        },
+        {
+            "grpc_service_config": "css_grpc_service_config.json",
+            "id": "google/shopping/css/v1",
+            "service_yaml": "css_v1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/search/partnerdataingestion/logging/v1"
+        },
+        {
+            "id": "google/chat"
+        },
+        {
+            "id": "google/chat/logging/v1"
+        },
+        {
+            "grpc_service_config": "chat_grpc_service_config.json",
+            "id": "google/chat/v1",
+            "python-gapic-namespace": "google.apps",
+            "service_yaml": "chat_v1.yaml",
+            "transport": "grpc+rest",
+            "warehouse-package-name": "google-apps-chat"
+        },
+        {
+            "id": "google/type"
+        },
+        {
+            "id": "google/dataflow"
+        },
+        {
+            "grpc_service_config": "dataflow_grpc_service_config.json",
+            "id": "google/dataflow/v1beta3",
+            "python-gapic-namespace": "google.cloud",
+            "service_yaml": "dataflow_v1beta3.yaml",
+            "transport": "grpc+rest",
+            "warehouse-package-name": "google-cloud-dataflow-client"
+        },
+        {
+            "id": "google/ads/admob"
+        },
+        {
+            "id": "google/ads/admob/v1",
+            "service_yaml": "//google/ads/admob:admob_v1.yaml",
+            "transport": "rest"
+        },
+        {
+            "id": "google/ads/admanager"
+        },
+        {
+            "grpc_service_config": "admanager_grpc_service_config.json",
+            "id": "google/ads/admanager/v1",
+            "service_yaml": "admanager_v1.yaml",
+            "transport": "rest"
+        },
+        {
+            "grpc_service_config": "searchads360_grpc_service_config.json",
+            "id": "google/ads/searchads360/v0"
+        },
+        {
+            "id": "google/ads/searchads360/v0/common"
+        },
+        {
+            "id": "google/ads/searchads360/v0/enums"
+        },
+        {
+            "id": "google/ads/searchads360/v0/services"
+        },
+        {
+            "id": "google/ads/searchads360/v0/resources"
+        },
+        {
+            "grpc_service_config": "googleads_grpc_service_config.json",
+            "id": "google/ads/googleads/v17",
+            "service_yaml": "googleads_v17.yaml",
+            "warehouse-package-name": "google-ads"
+        },
+        {
+            "id": "google/ads/googleads/v17/errors"
+        },
+        {
+            "id": "google/ads/googleads/v17/common"
+        },
+        {
+            "id": "google/ads/googleads/v17/enums"
+        },
+        {
+            "id": "google/ads/googleads/v17/services"
+        },
+        {
+            "id": "google/ads/googleads/v17/resources"
+        },
+        {
+            "grpc_service_config": "googleads_grpc_service_config.json",
+            "id": "google/ads/googleads/v19",
+            "service_yaml": "googleads_v19.yaml",
+            "warehouse-package-name": "google-ads"
+        },
+        {
+            "id": "google/ads/googleads/v19/errors"
+        },
+        {
+            "id": "google/ads/googleads/v19/common"
+        },
+        {
+            "id": "google/ads/googleads/v19/enums"
+        },
+        {
+            "id": "google/ads/googleads/v19/services"
+        },
+        {
+            "id": "google/ads/googleads/v19/resources"
+        },
+        {
+            "grpc_service_config": "googleads_grpc_service_config.json",
+            "id": "google/ads/googleads/v18",
+            "service_yaml": "googleads_v18.yaml",
+            "warehouse-package-name": "google-ads"
+        },
+        {
+            "id": "google/ads/googleads/v18/errors"
+        },
+        {
+            "id": "google/ads/googleads/v18/common"
+        },
+        {
+            "id": "google/ads/googleads/v18/enums"
+        },
+        {
+            "id": "google/ads/googleads/v18/services"
+        },
+        {
+            "id": "google/ads/googleads/v18/resources"
+        },
+        {
+            "grpc_service_config": "ui_detection_grpc_service_config.json",
+            "id": "google/chromeos/uidetection/v1",
+            "service_yaml": "chromeosuidetection_v1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/chromeos/moblab"
+        },
+        {
+            "grpc_service_config": "moblab_grpc_service_config.json",
+            "id": "google/chromeos/moblab/v1beta1",
+            "service_yaml": "chromeosmoblab_v1beta1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/cloud"
+        },
+        {
+            "id": "google/cloud/cloudcontrolspartner"
+        },
+        {
+            "grpc_service_config": "cloudcontrolspartner_v1_grpc_service_config.json",
+            "id": "google/cloud/cloudcontrolspartner/v1",
+            "service_yaml": "cloudcontrolspartner_v1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "grpc_service_config": "cloudcontrolspartner_v1beta_grpc_service_config.json",
+            "id": "google/cloud/cloudcontrolspartner/v1beta",
+            "service_yaml": "cloudcontrolspartner_v1beta.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "grpc_service_config": "secretmanager_grpc_service_config.json",
+            "id": "google/cloud/secrets/v1beta1",
+            "python-gapic-namespace": "google.cloud",
+            "service_yaml": "//google/cloud/secrets/v1beta1:secretmanager_v1beta1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/cloud/gdchardwaremanagement"
+        },
+        {
+            "grpc_service_config": "gdchardwaremanagement_v1alpha_grpc_service_config.json",
+            "id": "google/cloud/gdchardwaremanagement/v1alpha",
+            "service_yaml": "gdchardwaremanagement_v1alpha.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/cloud/iot"
+        },
+        {
+            "grpc_service_config": "cloudiot_grpc_service_config.json",
+            "id": "google/cloud/iot/v1",
+            "service_yaml": "cloudiot_v1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/cloud/retail"
+        },
+        {
+            "grpc_service_config": "retail_grpc_service_config.json",
+            "id": "google/cloud/retail/v2beta",
+            "service_yaml": "retail_v2beta.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "grpc_service_config": "retail_grpc_service_config.json",
+            "id": "google/cloud/retail/v2alpha",
+            "service_yaml": "retail_v2alpha.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "grpc_service_config": "retail_grpc_service_config.json",
+            "id": "google/cloud/retail/v2",
+            "service_yaml": "retail_v2.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/cloud/videointelligence"
+        },
+        {
+            "grpc_service_config": "videointelligence_grpc_service_config.json",
+            "id": "google/cloud/videointelligence/v1p1beta1",
+            "service_yaml": "videointelligence_v1p1beta1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "grpc_service_config": "videointelligence_grpc_service_config.json",
+            "id": "google/cloud/videointelligence/v1beta2",
+            "service_yaml": "videointelligence_v1beta2.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "grpc_service_config": "videointelligence_grpc_service_config.json",
+            "id": "google/cloud/videointelligence/v1p3beta1",
+            "service_yaml": "videointelligence_v1p3beta1.yaml",
+            "transport": "grpc"
+        },
+        {
+            "grpc_service_config": "videointelligence_grpc_service_config.json",
+            "id": "google/cloud/videointelligence/v1",
+            "service_yaml": "videointelligence_v1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "grpc_service_config": "videointelligence_grpc_service_config.json",
+            "id": "google/cloud/videointelligence/v1p2beta1",
+            "service_yaml": "videointelligence_v1p2beta1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/cloud/gkeconnect/gateway"
+        },
+        {
+            "grpc_service_config": "connectgateway_v1beta1_grpc_service_config.json",
+            "id": "google/cloud/gkeconnect/gateway/v1beta1",
+            "service_yaml": "connectgateway_v1beta1.yaml",
+            "transport": "rest",
+            "warehouse-package-name": "google-cloud-gke-connect-gateway"
+        },
+        {
+            "grpc_service_config": "connectgateway_v1_grpc_service_config.json",
+            "id": "google/cloud/gkeconnect/gateway/v1",
+            "service_yaml": "connectgateway_v1.yaml",
+            "transport": "rest",
+            "warehouse-package-name": "google-cloud-gke-connect-gateway"
+        },
+        {
+            "id": "google/cloud/policysimulator"
+        },
+        {
+            "grpc_service_config": "policysimulator_v1_grpc_service_config.json",
+            "id": "google/cloud/policysimulator/v1",
+            "service_yaml": "policysimulator_v1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/cloud/gsuiteaddons"
+        },
+        {
+            "id": "google/cloud/gsuiteaddons/logging/v1"
+        },
+        {
+            "grpc_service_config": "gsuiteaddons_grpc_service_config.json",
+            "id": "google/cloud/gsuiteaddons/v1",
+            "service_yaml": "gsuiteaddons_v1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/cloud/recaptchaenterprise"
+        },
+        {
+            "grpc_service_config": "recaptchaenterprise_grpc_service_config.json",
+            "id": "google/cloud/recaptchaenterprise/v1beta1",
+            "service_yaml": "recaptchaenterprise_v1beta1.yaml",
+            "transport": "grpc+rest",
+            "warehouse-package-name": "google-cloud-recaptcha-enterprise"
+        },
+        {
+            "grpc_service_config": "recaptchaenterprise_grpc_service_config.json",
+            "id": "google/cloud/recaptchaenterprise/v1",
+            "service_yaml": "recaptchaenterprise_v1.yaml",
+            "transport": "grpc",
+            "warehouse-package-name": "google-cloud-recaptcha-enterprise"
+        },
+        {
+            "grpc_service_config": "timeseries_insights_grpc_service_config.json",
+            "id": "google/cloud/timeseriesinsights/v1",
+            "service_yaml": "timeseriesinsights_v1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/cloud/workflows"
+        },
+        {
+            "id": "google/cloud/workflows/type"
+        },
+        {
+            "grpc_service_config": "workflows_grpc_service_config.json",
+            "id": "google/cloud/workflows/v1",
+            "service_yaml": "workflows_v1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/cloud/workflows/executions"
+        },
+        {
+            "grpc_service_config": "executions_grpc_service_config.json",
+            "id": "google/cloud/workflows/executions/v1",
+            "service_yaml": "workflowexecutions_v1.yaml",
+            "transport": "grpc"
+        },
+        {
+            "grpc_service_config": "executions_grpc_service_config.json",
+            "id": "google/cloud/workflows/executions/v1beta",
+            "service_yaml": "workflowexecutions_v1beta.yaml",
+            "transport": "grpc"
+        },
+        {
+            "grpc_service_config": "workflows_grpc_service_config.json",
+            "id": "google/cloud/workflows/v1beta",
+            "service_yaml": "workflows_v1beta.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/cloud/speech"
+        },
+        {
+            "grpc_service_config": "speech_grpc_service_config.json",
+            "id": "google/cloud/speech/v1p1beta1",
+            "service_yaml": "speech_v1p1beta1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "grpc_service_config": "speech_grpc_service_config.json",
+            "id": "google/cloud/speech/v1",
+            "service_yaml": "speech_v1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "grpc_service_config": "speech_grpc_service_config.json",
+            "id": "google/cloud/speech/v2",
+            "service_yaml": "speech_v2.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/cloud/migrationcenter"
+        },
+        {
+            "grpc_service_config": "migrationcenter_grpc_service_config.json",
+            "id": "google/cloud/migrationcenter/v1",
+            "service_yaml": "migrationcenter_v1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/cloud/recommendationengine"
+        },
+        {
+            "grpc_service_config": "recommendationengine_grpc_service_config.json",
+            "id": "google/cloud/recommendationengine/v1beta1",
+            "service_yaml": "recommendationengine_v1beta1.yaml",
+            "transport": "grpc+rest",
+            "warehouse-package-name": "google-cloud-recommendations-ai"
+        },
+        {
+            "id": "google/cloud/billing"
+        },
+        {
+            "grpc_service_config": "cloud_billing_grpc_service_config.json",
+            "id": "google/cloud/billing/v1",
+            "service_yaml": "cloudbilling_v1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/cloud/billing/budgets"
+        },
+        {
+            "grpc_service_config": "billingbudgets_grpc_service_config.json",
+            "id": "google/cloud/billing/budgets/v1beta1",
+            "service_yaml": "billingbudgets.yaml",
+            "transport": "grpc"
+        },
+        {
+            "grpc_service_config": "billingbudgets_grpc_service_config.json",
+            "id": "google/cloud/billing/budgets/v1",
+            "service_yaml": "billingbudgets.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/cloud/parallelstore"
+        },
+        {
+            "grpc_service_config": "parallelstore_v1_grpc_service_config.json",
+            "id": "google/cloud/parallelstore/v1",
+            "service_yaml": "parallelstore_v1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "grpc_service_config": "parallelstore_v1beta_grpc_service_config.json",
+            "id": "google/cloud/parallelstore/v1beta",
+            "service_yaml": "parallelstore_v1beta.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/cloud/baremetalsolution"
+        },
+        {
+            "grpc_service_config": "baremetalsolution_grpc_service_config.json",
+            "id": "google/cloud/baremetalsolution/v2",
+            "python-gapic-namespace": "google.cloud",
+            "service_yaml": "baremetalsolution_v2.yaml",
+            "transport": "grpc+rest",
+            "warehouse-package-name": "google-cloud-bare-metal-solution"
+        },
+        {
+            "id": "google/cloud/developerconnect"
+        },
+        {
+            "grpc_service_config": "developerconnect_v1_grpc_service_config.json",
+            "id": "google/cloud/developerconnect/v1",
+            "service_yaml": "developerconnect_v1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/cloud/vmwareengine"
+        },
+        {
+            "grpc_service_config": "vmwareengine_grpc_service_config.json",
+            "id": "google/cloud/vmwareengine/v1",
+            "service_yaml": "vmwareengine_v1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/cloud/apigeeregistry"
+        },
+        {
+            "grpc_service_config": "apigeeregistry_grpc_service_config.json",
+            "id": "google/cloud/apigeeregistry/v1",
+            "python-gapic-namespace": "google.cloud",
+            "service_yaml": "apigeeregistry_v1.yaml",
+            "transport": "grpc+rest",
+            "warehouse-package-name": "google-cloud-apigee-registry"
+        },
+        {
+            "id": "google/cloud/scheduler"
+        },
+        {
+            "grpc_service_config": "cloudscheduler_grpc_service_config.json",
+            "id": "google/cloud/scheduler/v1beta1",
+            "service_yaml": "cloudscheduler_v1beta1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "grpc_service_config": "cloudscheduler_grpc_service_config.json",
+            "id": "google/cloud/scheduler/v1",
+            "service_yaml": "cloudscheduler_v1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/cloud/commerce/consumer/procurement"
+        },
+        {
+            "grpc_service_config": "commerceconsumerprocurement_grpc_service_config.json",
+            "id": "google/cloud/commerce/consumer/procurement/v1alpha1",
+            "python-gapic-namespace": "google.cloud",
+            "service_yaml": "cloudcommerceconsumerprocurement_v1alpha1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "grpc_service_config": "commerceconsumerprocurement_v1_grpc_service_config.json",
+            "id": "google/cloud/commerce/consumer/procurement/v1",
+            "python-gapic-namespace": "google.cloud",
+            "service_yaml": "cloudcommerceconsumerprocurement_v1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/cloud/common",
+            "transport": "grpc"
+        },
+        {
+            "id": "google/cloud/ids"
+        },
+        {
+            "id": "google/cloud/ids/logging/v1"
+        },
+        {
+            "grpc_service_config": "ids_grpc_service_config.json",
+            "id": "google/cloud/ids/v1",
+            "service_yaml": "ids_v1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/cloud/identitytoolkit/logging"
+        },
+        {
+            "grpc_service_config": "identitytoolkit_grpc_service_config.json",
+            "id": "google/cloud/identitytoolkit/v2",
+            "python-gapic-namespace": "google.cloud",
+            "service_yaml": "identitytoolkit_v2.yaml",
+            "transport": "grpc+rest",
+            "warehouse-package-name": "google-cloud-identity-toolkit"
+        },
+        {
+            "id": "google/cloud/redis"
+        },
+        {
+            "grpc_service_config": "redis_grpc_service_config.json",
+            "id": "google/cloud/redis/v1beta1",
+            "service_yaml": "redis_v1beta1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "grpc_service_config": "redis_grpc_service_config.json",
+            "id": "google/cloud/redis/v1",
+            "service_yaml": "redis_v1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/cloud/redis/cluster"
+        },
+        {
+            "grpc_service_config": "redis_cluster_v1beta1_grpc_service_config.json",
+            "id": "google/cloud/redis/cluster/v1beta1",
+            "python-gapic-namespace": "google.cloud",
+            "service_yaml": "redis_v1beta1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "grpc_service_config": "redis_cluster_v1_grpc_service_config.json",
+            "id": "google/cloud/redis/cluster/v1",
+            "python-gapic-namespace": "google.cloud",
+            "service_yaml": "redis_v1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/cloud/binaryauthorization"
+        },
+        {
+            "grpc_service_config": "binaryauthorization_grpc_service_config.json",
+            "id": "google/cloud/binaryauthorization/v1beta1",
+            "service_yaml": "binaryauthorization_v1beta1.yaml",
+            "transport": "grpc+rest",
+            "warehouse-package-name": "google-cloud-binary-authorization"
+        },
+        {
+            "grpc_service_config": "binaryauthorization_grpc_service_config.json",
+            "id": "google/cloud/binaryauthorization/v1",
+            "service_yaml": "binaryauthorization_v1.yaml",
+            "transport": "grpc+rest",
+            "warehouse-package-name": "google-cloud-binary-authorization"
+        },
+        {
+            "grpc_service_config": "contentwarehouse_grpc_service_config.json",
+            "id": "google/cloud/contentwarehouse/v1",
+            "service_yaml": "contentwarehouse_v1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/cloud/domains"
+        },
+        {
+            "grpc_service_config": "domains_grpc_service_config.json",
+            "id": "google/cloud/domains/v1beta1",
+            "service_yaml": "domains_v1beta1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "grpc_service_config": "domains_grpc_service_config.json",
+            "id": "google/cloud/domains/v1alpha2",
+            "service_yaml": "domains_v1alpha2.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "grpc_service_config": "domains_grpc_service_config.json",
+            "id": "google/cloud/domains/v1",
+            "service_yaml": "domains_v1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/cloud/orgpolicy"
+        },
+        {
+            "id": "google/cloud/orgpolicy/v1"
+        },
+        {
+            "grpc_service_config": "orgpolicy_grpc_service_config.json",
+            "id": "google/cloud/orgpolicy/v2",
+            "service_yaml": "orgpolicy_v2.yaml",
+            "transport": "grpc+rest",
+            "warehouse-package-name": "google-cloud-org-policy"
+        },
+        {
+            "id": "google/cloud/automl"
+        },
+        {
+            "grpc_service_config": "automl_grpc_service_config.json",
+            "id": "google/cloud/automl/v1beta1",
+            "service_yaml": "automl_v1beta1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "grpc_service_config": "automl_grpc_service_config.json",
+            "id": "google/cloud/automl/v1",
+            "service_yaml": "automl_v1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/cloud/translate"
+        },
+        {
+            "grpc_service_config": "translate_grpc_service_config.json",
+            "id": "google/cloud/translate/v3",
+            "service_yaml": "translate_v3.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "grpc_service_config": "translate_grpc_service_config.json",
+            "id": "google/cloud/translate/v3beta1",
+            "service_yaml": "translate_v3beta1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/cloud/datalabeling"
+        },
+        {
+            "grpc_service_config": "datalabeling_grpc_service_config.json",
+            "id": "google/cloud/datalabeling/v1beta1",
+            "service_yaml": "datalabeling_v1beta1.yaml",
+            "transport": "grpc"
+        },
+        {
+            "id": "google/cloud/clouddms"
+        },
+        {
+            "id": "google/cloud/clouddms/logging/v1"
+        },
+        {
+            "grpc_service_config": "library_grpc_service_config.json",
+            "id": "google/cloud/clouddms/v1",
+            "service_yaml": "datamigration_v1.yaml",
+            "transport": "grpc",
+            "warehouse-package-name": "google-cloud-dms"
+        },
+        {
+            "id": "google/cloud/apphub"
+        },
+        {
+            "grpc_service_config": "apphub_v1_grpc_service_config.json",
+            "id": "google/cloud/apphub/v1",
+            "service_yaml": "apphub_v1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/cloud/oracledatabase"
+        },
+        {
+            "grpc_service_config": "oracledatabase_v1_grpc_service_config.json",
+            "id": "google/cloud/oracledatabase/v1",
+            "service_yaml": "oracledatabase_v1.yaml",
+            "transport": "rest"
+        },
+        {
+            "id": "google/cloud/run"
+        },
+        {
+            "grpc_service_config": "run_grpc_service_config.json",
+            "id": "google/cloud/run/v2",
+            "service_yaml": "run_v2.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/cloud/managedidentities"
+        },
+        {
+            "grpc_service_config": "managedidentities_grpc_service_config.json",
+            "id": "google/cloud/managedidentities/v1beta1",
+            "service_yaml": "managedidentities_v1beta1.yaml",
+            "transport": "grpc"
+        },
+        {
+            "grpc_service_config": "managedidentities_grpc_service_config.json",
+            "id": "google/cloud/managedidentities/v1",
+            "service_yaml": "managedidentities_v1.yaml",
+            "transport": "grpc",
+            "warehouse-package-name": "google-cloud-managed-identities"
+        },
+        {
+            "id": "google/cloud/optimization"
+        },
+        {
+            "grpc_service_config": "cloudoptimization_grpc_service_config.json",
+            "id": "google/cloud/optimization/v1",
+            "service_yaml": "cloudoptimization_v1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/cloud/deploy"
+        },
+        {
+            "grpc_service_config": "clouddeploy_grpc_service_config.json",
+            "id": "google/cloud/deploy/v1",
+            "service_yaml": "clouddeploy_v1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/cloud/networkanalyzer/logging/v1",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/cloud/location"
+        },
+        {
+            "id": "google/cloud/workstations"
+        },
+        {
+            "id": "google/cloud/workstations/logging/v1"
+        },
+        {
+            "grpc_service_config": "workstations_grpc_service_config.json",
+            "id": "google/cloud/workstations/v1",
+            "service_yaml": "workstations_v1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "grpc_service_config": "workstations_grpc_service_config.json",
+            "id": "google/cloud/workstations/v1beta",
+            "service_yaml": "workstations_v1beta.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/cloud/discoveryengine"
+        },
+        {
+            "grpc_service_config": "discoveryengine_grpc_service_config.json",
+            "id": "google/cloud/discoveryengine/v1alpha",
+            "service_yaml": "discoveryengine_v1alpha.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "grpc_service_config": "discoveryengine_grpc_service_config.json",
+            "id": "google/cloud/discoveryengine/v1",
+            "service_yaml": "discoveryengine_v1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "grpc_service_config": "discoveryengine_grpc_service_config.json",
+            "id": "google/cloud/discoveryengine/v1beta",
+            "service_yaml": "discoveryengine_v1beta.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "grpc_service_config": "securityposture_v1_grpc_service_config.json",
+            "id": "google/cloud/securityposture/v1",
+            "service_yaml": "securityposture_v1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/cloud/networkmanagement"
+        },
+        {
+            "grpc_service_config": "networkmanagement_grpc_service_config.json",
+            "id": "google/cloud/networkmanagement/v1beta1",
+            "service_yaml": "networkmanagement_v1beta1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "grpc_service_config": "networkmanagement_grpc_service_config.json",
+            "id": "google/cloud/networkmanagement/v1",
+            "python-gapic-namespace": "google.cloud",
+            "service_yaml": "networkmanagement_v1.yaml",
+            "transport": "grpc+rest",
+            "warehouse-package-name": "google-cloud-network-management"
+        },
+        {
+            "id": "google/cloud/gkebackup"
+        },
+        {
+            "id": "google/cloud/gkebackup/logging/v1",
+            "transport": "grpc+rest"
+        },
+        {
+            "grpc_service_config": "gkebackup_grpc_service_config.json",
+            "id": "google/cloud/gkebackup/v1",
+            "python-gapic-namespace": "google.cloud",
+            "service_yaml": "gkebackup_v1.yaml",
+            "transport": "grpc+rest",
+            "warehouse-package-name": "google-cloud-gke-backup"
+        },
+        {
+            "id": "google/cloud/saasaccelerator/management/logs/v1"
+        },
+        {
+            "id": "google/cloud/gkemulticloud"
+        },
+        {
+            "grpc_service_config": "gkemulticloud_grpc_service_config.json",
+            "id": "google/cloud/gkemulticloud/v1",
+            "python-gapic-namespace": "google.cloud",
+            "service_yaml": "gkemulticloud_v1.yaml",
+            "transport": "grpc+rest",
+            "warehouse-package-name": "google-cloud-gke-multicloud"
+        },
+        {
+            "id": "google/cloud/backupdr"
+        },
+        {
+            "id": "google/cloud/backupdr/logging/v1",
+            "transport": "grpc+rest"
+        },
+        {
+            "grpc_service_config": "backupdr_grpc_service_config.json",
+            "id": "google/cloud/backupdr/v1",
+            "service_yaml": "backupdr_v1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/cloud/channel"
+        },
+        {
+            "grpc_service_config": "cloudchannel_grpc_service_config.json",
+            "id": "google/cloud/channel/v1",
+            "service_yaml": "cloudchannel_v1.yaml",
+            "transport": "grpc"
+        },
+        {
+            "id": "google/cloud/sql"
+        },
+        {
+            "grpc_service_config": "sqladmin_grpc_service_config.json",
+            "id": "google/cloud/sql/v1beta4",
+            "service_yaml": "sqladmin_v1beta4.yaml",
+            "transport": "grpc"
+        },
+        {
+            "grpc_service_config": "sqladmin_grpc_service_config.json",
+            "id": "google/cloud/sql/v1",
+            "service_yaml": "sqladmin_v1.yaml",
+            "transport": "grpc"
+        },
+        {
+            "id": "google/cloud/abuseevent/logging/v1",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/cloud/dialogflow"
+        },
+        {
+            "id": "google/cloud/dialogflow/cx"
+        },
+        {
+            "grpc_service_config": "dialogflow_grpc_service_config.json",
+            "id": "google/cloud/dialogflow/cx/v3",
+            "python-gapic-namespace": "google.cloud",
+            "service_yaml": "dialogflow_v3.yaml",
+            "transport": "grpc+rest",
+            "warehouse-package-name": "google-cloud-dialogflow-cx"
+        },
+        {
+            "grpc_service_config": "dialogflow_grpc_service_config.json",
+            "id": "google/cloud/dialogflow/cx/v3beta1",
+            "python-gapic-namespace": "google.cloud",
+            "service_yaml": "dialogflow_v3beta1.yaml",
+            "transport": "grpc+rest",
+            "warehouse-package-name": "google-cloud-dialogflow-cx"
+        },
+        {
+            "grpc_service_config": "dialogflow_grpc_service_config.json",
+            "id": "google/cloud/dialogflow/v2",
+            "service_yaml": "dialogflow_v2.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "grpc_service_config": "dialogflow_grpc_service_config.json",
+            "id": "google/cloud/dialogflow/v2beta1",
+            "service_yaml": "dialogflow_v2beta1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/cloud/orchestration/airflow/service"
+        },
+        {
+            "grpc_service_config": "composer_grpc_service_config.json",
+            "id": "google/cloud/orchestration/airflow/service/v1beta1",
+            "service_yaml": "composer_v1beta1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "grpc_service_config": "composer_grpc_service_config.json",
+            "id": "google/cloud/orchestration/airflow/service/v1",
+            "service_yaml": "composer_v1.yaml",
+            "transport": "grpc+rest",
+            "warehouse-package-name": "google-cloud-orchestration-airflow"
+        },
+        {
+            "id": "google/cloud/alloydb"
+        },
+        {
+            "grpc_service_config": "alloydb_v1alpha_grpc_service_config.json",
+            "id": "google/cloud/alloydb/v1alpha",
+            "service_yaml": "alloydb_v1alpha.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "grpc_service_config": "alloydb_v1_grpc_service_config.json",
+            "id": "google/cloud/alloydb/v1",
+            "service_yaml": "alloydb_v1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "grpc_service_config": "alloydb_v1beta_grpc_service_config.json",
+            "id": "google/cloud/alloydb/v1beta",
+            "service_yaml": "alloydb_v1beta.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/cloud/alloydb/connectors/v1alpha"
+        },
+        {
+            "id": "google/cloud/alloydb/connectors/v1",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/cloud/alloydb/connectors/v1beta"
+        },
+        {
+            "id": "google/cloud/managedkafka"
+        },
+        {
+            "grpc_service_config": "managedkafka_v1_grpc_service_config.json",
+            "id": "google/cloud/managedkafka/v1",
+            "service_yaml": "managedkafka_v1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/cloud/apigateway"
+        },
+        {
+            "grpc_service_config": "apigateway_grpc_service_config.json",
+            "id": "google/cloud/apigateway/v1",
+            "service_yaml": "apigateway_v1.yaml",
+            "transport": "grpc+rest",
+            "warehouse-package-name": "google-cloud-api-gateway"
+        },
+        {
+            "id": "google/cloud/healthcare/logging"
+        },
+        {
+            "id": "google/cloud/filestore"
+        },
+        {
+            "grpc_service_config": "file_grpc_service_config.json",
+            "id": "google/cloud/filestore/v1beta1"
+        },
+        {
+            "grpc_service_config": "file_grpc_service_config.json",
+            "id": "google/cloud/filestore/v1",
+            "service_yaml": "file_v1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/cloud/contactcenterinsights"
+        },
+        {
+            "grpc_service_config": "contactcenterinsights_grpc_service_config.json",
+            "id": "google/cloud/contactcenterinsights/v1",
+            "python-gapic-namespace": "google.cloud",
+            "service_yaml": "contactcenterinsights_v1.yaml",
+            "transport": "grpc+rest",
+            "warehouse-package-name": "google-cloud-contact-center-insights"
+        },
+        {
+            "id": "google/cloud/datastream"
+        },
+        {
+            "grpc_service_config": "datastream_grpc_service_config.json",
+            "id": "google/cloud/datastream/v1alpha1",
+            "service_yaml": "datastream_v1alpha1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/cloud/datastream/logging/v1",
+            "transport": "grpc+rest"
+        },
+        {
+            "grpc_service_config": "datastream_grpc_service_config.json",
+            "id": "google/cloud/datastream/v1",
+            "service_yaml": "datastream_v1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/cloud/datapipelines/logging/v1"
+        },
+        {
+            "id": "google/cloud/runtimeconfig"
+        },
+        {
+            "id": "google/cloud/lifesciences"
+        },
+        {
+            "grpc_service_config": "lifesciences_grpc_service_config.json",
+            "id": "google/cloud/lifesciences/v2beta",
+            "service_yaml": "lifesciences_v2beta.yaml",
+            "transport": "grpc+rest",
+            "warehouse-package-name": "google-cloud-life-sciences"
+        },
+        {
+            "id": "google/cloud/texttospeech"
+        },
+        {
+            "grpc_service_config": "texttospeech_grpc_service_config.json",
+            "id": "google/cloud/texttospeech/v1beta1",
+            "service_yaml": "texttospeech_v1beta1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "grpc_service_config": "texttospeech_grpc_service_config.json",
+            "id": "google/cloud/texttospeech/v1",
+            "service_yaml": "texttospeech_v1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/cloud/telcoautomation"
+        },
+        {
+            "grpc_service_config": "telcoautomation_v1alpha1_grpc_service_config.json",
+            "id": "google/cloud/telcoautomation/v1alpha1",
+            "service_yaml": "telcoautomation_v1alpha1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "grpc_service_config": "telcoautomation_v1_grpc_service_config.json",
+            "id": "google/cloud/telcoautomation/v1",
+            "service_yaml": "telcoautomation_v1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/cloud/integrations/v1alpha",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/cloud/webrisk"
+        },
+        {
+            "grpc_service_config": "webrisk_grpc_service_config.json",
+            "id": "google/cloud/webrisk/v1beta1",
+            "service_yaml": "webrisk_v1beta1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "grpc_service_config": "webrisk_grpc_service_config.json",
+            "id": "google/cloud/webrisk/v1",
+            "service_yaml": "webrisk_v1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/cloud/metastore"
+        },
+        {
+            "grpc_service_config": "metastore_grpc_service_config.json",
+            "id": "google/cloud/metastore/v1alpha",
+            "service_yaml": "metastore_v1alpha.yaml",
+            "transport": "grpc+rest",
+            "warehouse-package-name": "google-cloud-dataproc-metastore"
+        },
+        {
+            "id": "google/cloud/metastore/logging/v1"
+        },
+        {
+            "grpc_service_config": "metastore_grpc_service_config.json",
+            "id": "google/cloud/metastore/v1",
+            "service_yaml": "metastore_v1.yaml",
+            "transport": "grpc+rest",
+            "warehouse-package-name": "google-cloud-dataproc-metastore"
+        },
+        {
+            "grpc_service_config": "metastore_grpc_service_config.json",
+            "id": "google/cloud/metastore/v1beta",
+            "service_yaml": "metastore_v1beta.yaml",
+            "transport": "grpc+rest",
+            "warehouse-package-name": "google-cloud-dataproc-metastore"
+        },
+        {
+            "id": "google/cloud/accessapproval"
+        },
+        {
+            "grpc_service_config": "accessapproval_grpc_service_config.json",
+            "id": "google/cloud/accessapproval/v1",
+            "service_yaml": "accessapproval_v1.yaml",
+            "transport": "grpc+rest",
+            "warehouse-package-name": "google-cloud-access-approval"
+        },
+        {
+            "id": "google/cloud/datafusion"
+        },
+        {
+            "grpc_service_config": "datafusion_grpc_service_config.json",
+            "id": "google/cloud/datafusion/v1beta1",
+            "service_yaml": "datafusion_v1beta1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "grpc_service_config": "datafusion_grpc_service_config.json",
+            "id": "google/cloud/datafusion/v1",
+            "python-gapic-namespace": "google.cloud",
+            "service_yaml": "datafusion_v1.yaml",
+            "transport": "grpc+rest",
+            "warehouse-package-name": "google-cloud-data-fusion"
+        },
+        {
+            "id": "google/cloud/certificatemanager"
+        },
+        {
+            "id": "google/cloud/certificatemanager/logging/v1"
+        },
+        {
+            "grpc_service_config": "certificatemanager_grpc_service_config.json",
+            "id": "google/cloud/certificatemanager/v1",
+            "python-gapic-namespace": "google.cloud",
+            "service_yaml": "certificatemanager_v1.yaml",
+            "transport": "grpc+rest",
+            "warehouse-package-name": "google-cloud-certificate-manager"
+        },
+        {
+            "id": "google/cloud/vmmigration"
+        },
+        {
+            "grpc_service_config": "vmmigration_v1_grpc_service_config.json",
+            "id": "google/cloud/vmmigration/v1",
+            "service_yaml": "vmmigration_v1.yaml",
+            "transport": "grpc+rest",
+            "warehouse-package-name": "google-cloud-vm-migration"
+        },
+        {
+            "id": "google/cloud/policytroubleshooter"
+        },
+        {
+            "grpc_service_config": "checker_grpc_service_config.json",
+            "id": "google/cloud/policytroubleshooter/v1",
+            "service_yaml": "policytroubleshooter_v1.yaml",
+            "transport": "grpc+rest",
+            "warehouse-package-name": "google-cloud-policy-troubleshooter"
+        },
+        {
+            "id": "google/cloud/policytroubleshooter/iam"
+        },
+        {
+            "grpc_service_config": "policytroubleshooter_v3_grpc_service_config.json",
+            "id": "google/cloud/policytroubleshooter/iam/v3",
+            "python-gapic-namespace": "google.cloud",
+            "service_yaml": "policytroubleshooter_v3.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "grpc_service_config": "policytroubleshooter_v3beta_grpc_service_config.json",
+            "id": "google/cloud/policytroubleshooter/iam/v3beta",
+            "service_yaml": "policytroubleshooter_v3beta.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/cloud/video/transcoder"
+        },
+        {
+            "grpc_service_config": "transcoder_grpc_service_config.json",
+            "id": "google/cloud/video/transcoder/v1",
+            "service_yaml": "transcoder_v1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/cloud/video/livestream"
+        },
+        {
+            "id": "google/cloud/video/livestream/logging/v1"
+        },
+        {
+            "grpc_service_config": "livestream_grpc_service_config.json",
+            "id": "google/cloud/video/livestream/v1",
+            "python-gapic-namespace": "google.cloud.video",
+            "service_yaml": "livestream_v1.yaml",
+            "transport": "grpc+rest",
+            "warehouse-package-name": "google-cloud-video-live-stream"
+        },
+        {
+            "id": "google/cloud/video/stitcher"
+        },
+        {
+            "grpc_service_config": "videostitcher_grpc_service_config.json",
+            "id": "google/cloud/video/stitcher/v1",
+            "service_yaml": "videostitcher_v1.yaml",
+            "transport": "grpc"
+        },
+        {
+            "id": "google/cloud/websecurityscanner"
+        },
+        {
+            "grpc_service_config": "websecurityscanner_grpc_service_config.json",
+            "id": "google/cloud/websecurityscanner/v1alpha",
+            "service_yaml": "websecurityscanner_v1alpha.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "grpc_service_config": "websecurityscanner_grpc_service_config.json",
+            "id": "google/cloud/websecurityscanner/v1",
+            "service_yaml": "websecurityscanner_v1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "grpc_service_config": "websecurityscanner_grpc_service_config.json",
+            "id": "google/cloud/websecurityscanner/v1beta",
+            "service_yaml": "websecurityscanner_v1beta.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/cloud/notebooks"
+        },
+        {
+            "grpc_service_config": "notebooks_grpc_service_config.json",
+            "id": "google/cloud/notebooks/v1beta1",
+            "service_yaml": "notebooks_v1beta1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/cloud/notebooks/logging/v1"
+        },
+        {
+            "grpc_service_config": "notebooks_grpc_service_config.json",
+            "id": "google/cloud/notebooks/v1",
+            "service_yaml": "notebooks_v1.yaml",
+            "transport": "grpc"
+        },
+        {
+            "grpc_service_config": "notebooks_grpc_service_config.json",
+            "id": "google/cloud/notebooks/v2",
+            "service_yaml": "notebooks_v2.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/cloud/gkehub"
+        },
+        {
+            "grpc_service_config": "membership_grpc_service_config.json",
+            "id": "google/cloud/gkehub/v1beta1",
+            "service_yaml": "gkehub_v1beta1.yaml",
+            "transport": "grpc+rest",
+            "warehouse-package-name": "google-cloud-gke-hub"
+        },
+        {
+            "grpc_service_config": "v1alpha_grpc_service_config.json",
+            "id": "google/cloud/gkehub/v1alpha",
+            "service_yaml": "gkehub_v1alpha.yaml",
+            "transport": "grpc+rest",
+            "warehouse-package-name": "google-cloud-gke-hub"
+        },
+        {
+            "id": "google/cloud/gkehub/v1alpha/configmanagement",
+            "transport": "grpc"
+        },
+        {
+            "id": "google/cloud/gkehub/v1alpha/servicemesh",
+            "transport": "grpc"
+        },
+        {
+            "id": "google/cloud/gkehub/v1alpha/cloudauditlogging",
+            "transport": "grpc"
+        },
+        {
+            "id": "google/cloud/gkehub/v1alpha/multiclusteringress",
+            "transport": "grpc"
+        },
+        {
+            "id": "google/cloud/gkehub/v1alpha/metering",
+            "transport": "grpc"
+        },
+        {
+            "id": "google/cloud/gkehub/servicemesh/v1beta",
+            "transport": "grpc+rest"
+        },
+        {
+            "grpc_service_config": "v1_grpc_service_config.json",
+            "id": "google/cloud/gkehub/v1",
+            "service_yaml": "gkehub_v1.yaml",
+            "transport": "grpc+rest",
+            "warehouse-package-name": "google-cloud-gke-hub"
+        },
+        {
+            "id": "google/cloud/gkehub/v1/configmanagement",
+            "transport": "grpc"
+        },
+        {
+            "id": "google/cloud/gkehub/v1/multiclusteringress",
+            "transport": "grpc"
+        },
+        {
+            "id": "google/cloud/gkehub/policycontroller/v1beta",
+            "transport": "grpc+rest"
+        },
+        {
+            "grpc_service_config": "v1beta_grpc_service_config.json",
+            "id": "google/cloud/gkehub/v1beta",
+            "service_yaml": "gkehub_v1beta.yaml",
+            "transport": "grpc+rest",
+            "warehouse-package-name": "google-cloud-gke-hub"
+        },
+        {
+            "id": "google/cloud/gkehub/v1beta/configmanagement",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/cloud/gkehub/v1beta/multiclusteringress",
+            "transport": "grpc"
+        },
+        {
+            "id": "google/cloud/gkehub/v1beta/metering",
+            "transport": "grpc"
+        },
+        {
+            "id": "google/cloud/iap"
+        },
+        {
+            "grpc_service_config": "iap_grpc_service_config.json",
+            "id": "google/cloud/iap/v1beta1",
+            "service_yaml": "iap_v1beta1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "grpc_service_config": "iap_grpc_service_config.json",
+            "id": "google/cloud/iap/v1",
+            "service_yaml": "iap_v1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/cloud/talent"
+        },
+        {
+            "grpc_service_config": "talent_grpc_service_config.json",
+            "id": "google/cloud/talent/v4beta1",
+            "service_yaml": "jobs_v4beta1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "grpc_service_config": "talent_grpc_service_config.json",
+            "id": "google/cloud/talent/v4",
+            "service_yaml": "jobs_v4.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/cloud/vpcaccess"
+        },
+        {
+            "grpc_service_config": "vpcaccess_grpc_service_config.json",
+            "id": "google/cloud/vpcaccess/v1",
+            "service_yaml": "vpcaccess_v1.yaml",
+            "transport": "grpc+rest",
+            "warehouse-package-name": "google-cloud-vpc-access"
+        },
+        {
+            "id": "google/cloud/edgenetwork"
+        },
+        {
+            "grpc_service_config": "edgenetwork_grpc_service_config.json",
+            "id": "google/cloud/edgenetwork/v1",
+            "service_yaml": "edgenetwork_v1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/cloud/osconfig"
+        },
+        {
+            "grpc_service_config": "agentendpoint_grpc_service_config.json",
+            "id": "google/cloud/osconfig/agentendpoint/v1",
+            "service_yaml": "osconfig_v1.yaml",
+            "transport": "grpc"
+        },
+        {
+            "grpc_service_config": "agentendpoint_grpc_service_config.json",
+            "id": "google/cloud/osconfig/agentendpoint/v1beta",
+            "service_yaml": "osconfig_v1beta.yaml",
+            "transport": "grpc"
+        },
+        {
+            "grpc_service_config": "osconfig_grpc_service_config.json",
+            "id": "google/cloud/osconfig/v1alpha",
+            "service_yaml": "osconfig_v1alpha.yaml",
+            "transport": "grpc+rest",
+            "warehouse-package-name": "google-cloud-os-config"
+        },
+        {
+            "id": "google/cloud/osconfig/logging"
+        },
+        {
+            "grpc_service_config": "osconfig_grpc_service_config.json",
+            "id": "google/cloud/osconfig/v1",
+            "service_yaml": "osconfig_v1.yaml",
+            "transport": "grpc+rest",
+            "warehouse-package-name": "google-cloud-os-config"
+        },
+        {
+            "grpc_service_config": "osconfig_grpc_service_config.json",
+            "id": "google/cloud/osconfig/v1beta",
+            "service_yaml": "osconfig_v1beta.yaml",
+            "transport": "grpc+rest",
+            "warehouse-package-name": "google-cloud-os-config"
+        },
+        {
+            "id": "google/cloud/aiplatform"
+        },
+        {
+            "grpc_service_config": "aiplatform_grpc_service_config.json",
+            "id": "google/cloud/aiplatform/v1beta1",
+            "service_yaml": "aiplatform_v1beta1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/cloud/aiplatform/v1beta1/schema"
+        },
+        {
+            "id": "google/cloud/aiplatform/v1beta1/schema/trainingjob/definition",
+            "python-gapic-namespace": "google.cloud.aiplatform.v1beta1.schema.trainingjob",
+            "transport": "grpc"
+        },
+        {
+            "id": "google/cloud/aiplatform/v1beta1/schema/predict/instance",
+            "python-gapic-namespace": "google.cloud.aiplatform.v1beta1.schema.predict",
+            "transport": "grpc"
+        },
+        {
+            "id": "google/cloud/aiplatform/v1beta1/schema/predict/params",
+            "python-gapic-namespace": "google.cloud.aiplatform.v1beta1.schema.predict",
+            "transport": "grpc"
+        },
+        {
+            "id": "google/cloud/aiplatform/v1beta1/schema/predict/prediction",
+            "python-gapic-namespace": "google.cloud.aiplatform.v1beta1.schema.predict",
+            "transport": "grpc"
+        },
+        {
+            "id": "google/cloud/aiplatform/logging"
+        },
+        {
+            "grpc_service_config": "aiplatform_grpc_service_config.json",
+            "id": "google/cloud/aiplatform/v1",
+            "service_yaml": "aiplatform_v1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/cloud/aiplatform/v1/schema/trainingjob/definition",
+            "python-gapic-namespace": "google.cloud.aiplatform.v1.schema.trainingjob",
+            "transport": "grpc"
+        },
+        {
+            "id": "google/cloud/aiplatform/v1/schema/predict/instance",
+            "python-gapic-namespace": "google.cloud.aiplatform.v1.schema.predict",
+            "transport": "grpc"
+        },
+        {
+            "id": "google/cloud/aiplatform/v1/schema/predict/params",
+            "python-gapic-namespace": "google.cloud.aiplatform.v1.schema.predict",
+            "transport": "grpc"
+        },
+        {
+            "id": "google/cloud/aiplatform/v1/schema/predict/prediction",
+            "python-gapic-namespace": "google.cloud.aiplatform.v1.schema.predict",
+            "transport": "grpc"
+        },
+        {
+            "id": "google/cloud/rapidmigrationassessment"
+        },
+        {
+            "grpc_service_config": "rapidmigrationassessment_v1_grpc_service_config.json",
+            "id": "google/cloud/rapidmigrationassessment/v1",
+            "service_yaml": "rapidmigrationassessment_v1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/cloud/advisorynotifications"
+        },
+        {
+            "grpc_service_config": "advisorynotifications_v1_grpc_service_config.json",
+            "id": "google/cloud/advisorynotifications/v1",
+            "service_yaml": "advisorynotifications_v1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/cloud/memcache"
+        },
+        {
+            "grpc_service_config": "memcache_grpc_service_config.json",
+            "id": "google/cloud/memcache/v1beta2",
+            "service_yaml": "memcache_v1beta2.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "grpc_service_config": "memcache_grpc_service_config.json",
+            "id": "google/cloud/memcache/v1",
+            "service_yaml": "memcache_v1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/cloud/memorystore"
+        },
+        {
+            "grpc_service_config": "memorystore_v1_grpc_service_config.json",
+            "id": "google/cloud/memorystore/v1",
+            "service_yaml": "memorystore_v1.yaml",
+            "transport": "rest"
+        },
+        {
+            "grpc_service_config": "memorystore_v1beta_grpc_service_config.json",
+            "id": "google/cloud/memorystore/v1beta",
+            "service_yaml": "memorystore_v1beta.yaml",
+            "transport": "rest"
+        },
+        {
+            "id": "google/cloud/functions"
+        },
+        {
+            "grpc_service_config": "functions_grpc_service_config.json",
+            "id": "google/cloud/functions/v1",
+            "service_yaml": "cloudfunctions_v1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "grpc_service_config": "functions_grpc_service_config.json",
+            "id": "google/cloud/functions/v2beta",
+            "service_yaml": "cloudfunctions_v2beta.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "grpc_service_config": "functions_grpc_service_config.json",
+            "id": "google/cloud/functions/v2alpha",
+            "service_yaml": "cloudfunctions_v2alpha.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "grpc_service_config": "functions_grpc_service_config.json",
+            "id": "google/cloud/functions/v2",
+            "service_yaml": "cloudfunctions_v2.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/cloud/securesourcemanager"
+        },
+        {
+            "grpc_service_config": "securesourcemanager_grpc_service_config.json",
+            "id": "google/cloud/securesourcemanager/v1",
+            "service_yaml": "securesourcemanager_v1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/cloud/compute"
+        },
+        {
+            "id": "google/cloud/compute/v1alpha",
+            "transport": "rest"
+        },
+        {
+            "id": "google/cloud/compute/v1small",
+            "transport": "rest"
+        },
+        {
+            "id": "google/cloud/compute/alpha",
+            "transport": "rest"
+        },
+        {
+            "id": "google/cloud/compute/v1",
+            "transport": "rest"
+        },
+        {
+            "id": "google/cloud/compute/v2alpha",
+            "transport": "rest"
+        },
+        {
+            "grpc_service_config": "enterpriseknowledgegraph_grpc_service_config.json",
+            "id": "google/cloud/enterpriseknowledgegraph/v1",
+            "service_yaml": "enterpriseknowledgegraph_v1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/cloud/parametermanager"
+        },
+        {
+            "grpc_service_config": "parametermanager_v1_grpc_service_config.json",
+            "id": "google/cloud/parametermanager/v1",
+            "service_yaml": "parametermanager_v1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/cloud/sensitiveaction/logging/v1"
+        },
+        {
+            "id": "google/cloud/resourcemanager"
+        },
+        {
+            "grpc_service_config": "cloudresourcemanager_v3_grpc_service_config.json",
+            "id": "google/cloud/resourcemanager/v3",
+            "service_yaml": "cloudresourcemanager_v3.yaml",
+            "transport": "grpc+rest",
+            "warehouse-package-name": "google-cloud-resource-manager"
+        },
+        {
+            "id": "google/cloud/resourcemanager/v2"
+        },
+        {
+            "grpc_service_config": "issuerswitch_grpc_service_config.json",
+            "id": "google/cloud/paymentgateway/issuerswitch/v1",
+            "python-gapic-namespace": "google.cloud",
+            "service_yaml": "issuerswitch_v1.yaml",
+            "transport": "grpc",
+            "warehouse-package-name": "google-cloud-payment-gateway-issuer-switch"
+        },
+        {
+            "id": "google/cloud/support"
+        },
+        {
+            "grpc_service_config": "support_v2_grpc_service_config.json",
+            "id": "google/cloud/support/v2",
+            "service_yaml": "cloudsupport_v2.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/cloud/edgecontainer"
+        },
+        {
+            "grpc_service_config": "edgecontainer_grpc_service_config.json",
+            "id": "google/cloud/edgecontainer/v1",
+            "service_yaml": "edgecontainer_v1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "grpc_service_config": "chronicle_v1_grpc_service_config.json",
+            "id": "google/cloud/chronicle/v1",
+            "service_yaml": "chronicle_v1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/cloud/datacatalog"
+        },
+        {
+            "grpc_service_config": "datacatalog_grpc_service_config.json",
+            "id": "google/cloud/datacatalog/v1beta1",
+            "service_yaml": "datacatalog_v1beta1.yaml",
+            "transport": "grpc"
+        },
+        {
+            "grpc_service_config": "datacatalog_grpc_service_config.json",
+            "id": "google/cloud/datacatalog/v1",
+            "service_yaml": "datacatalog_v1.yaml",
+            "transport": "grpc"
+        },
+        {
+            "id": "google/cloud/datacatalog/lineage"
+        },
+        {
+            "grpc_service_config": "lineage_grpc_service_config.json",
+            "id": "google/cloud/datacatalog/lineage/v1",
+            "python-gapic-namespace": "google.cloud",
+            "service_yaml": "datalineage_v1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/cloud/bigquery/migration"
+        },
+        {
+            "grpc_service_config": "bigquerymigration_grpc_service_config.json",
+            "id": "google/cloud/bigquery/migration/v2alpha",
+            "python-gapic-namespace": "google.cloud",
+            "service_yaml": "bigquerymigration_v2alpha.yaml",
+            "transport": "grpc"
+        },
+        {
+            "grpc_service_config": "bigquerymigration_grpc_service_config.json",
+            "id": "google/cloud/bigquery/migration/v2",
+            "python-gapic-namespace": "google.cloud",
+            "service_yaml": "bigquerymigration_v2.yaml",
+            "transport": "grpc"
+        },
+        {
+            "id": "google/cloud/bigquery/logging/v1",
+            "python-gapic-namespace": "google.cloud",
+            "transport": "grpc",
+            "warehouse-package-name": "google-cloud-bigquery-logging"
+        },
+        {
+            "id": "google/cloud/bigquery/reservation"
+        },
+        {
+            "grpc_service_config": "bigqueryreservation_grpc_service_config.json",
+            "id": "google/cloud/bigquery/reservation/v1",
+            "python-gapic-namespace": "google.cloud",
+            "service_yaml": "bigqueryreservation_v1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/cloud/bigquery/dataexchange"
+        },
+        {
+            "grpc_service_config": "analyticshub_v1beta1_grpc_service_config.json",
+            "id": "google/cloud/bigquery/dataexchange/v1beta1",
+            "python-gapic-namespace": "google.cloud",
+            "service_yaml": "analyticshub_v1beta1.yaml",
+            "transport": "grpc",
+            "warehouse-package-name": "google-cloud-bigquery-data-exchange"
+        },
+        {
+            "id": "google/cloud/bigquery/storage"
+        },
+        {
+            "grpc_service_config": "bigquerystorage_grpc_service_config.json",
+            "id": "google/cloud/bigquery/storage/v1beta1",
+            "service_yaml": "bigquerystorage_v1beta1.yaml",
+            "transport": "grpc"
+        },
+        {
+            "grpc_service_config": "bigquerystorage_grpc_service_config.json",
+            "id": "google/cloud/bigquery/storage/v1beta2",
+            "python-gapic-namespace": "google.cloud",
+            "service_yaml": "bigquerystorage_v1beta2.yaml",
+            "transport": "grpc"
+        },
+        {
+            "grpc_service_config": "bigquerystorage_v1alpha_grpc_service_config.json",
+            "id": "google/cloud/bigquery/storage/v1alpha",
+            "python-gapic-namespace": "google.cloud",
+            "service_yaml": "bigquerystorage_v1alpha.yaml"
+        },
+        {
+            "grpc_service_config": "bigquerystorage_grpc_service_config.json",
+            "id": "google/cloud/bigquery/storage/v1",
+            "python-gapic-namespace": "google.cloud",
+            "service_yaml": "bigquerystorage_v1.yaml",
+            "transport": "grpc"
+        },
+        {
+            "id": "google/cloud/bigquery/analyticshub"
+        },
+        {
+            "grpc_service_config": "analyticshub_v1_grpc_service_config.json",
+            "id": "google/cloud/bigquery/analyticshub/v1",
+            "python-gapic-namespace": "google.cloud",
+            "service_yaml": "analyticshub_v1.yaml",
+            "transport": "grpc"
+        },
+        {
+            "grpc_service_config": "biglake_v1alpha1_grpc_service_config.json",
+            "id": "google/cloud/bigquery/biglake/v1alpha1",
+            "python-gapic-namespace": "google.cloud",
+            "service_yaml": "biglake_v1alpha1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "grpc_service_config": "biglake_v1_grpc_service_config.json",
+            "id": "google/cloud/bigquery/biglake/v1",
+            "python-gapic-namespace": "google.cloud",
+            "service_yaml": "biglake_v1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/cloud/bigquery/datatransfer"
+        },
+        {
+            "grpc_service_config": "bigquerydatatransfer_grpc_service_config.json",
+            "id": "google/cloud/bigquery/datatransfer/v1",
+            "python-gapic-namespace": "google.cloud",
+            "service_yaml": "bigquerydatatransfer_v1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "grpc_service_config": "bigquery_grpc_service_config.json",
+            "id": "google/cloud/bigquery/v2",
+            "service_yaml": "bigquery_v2.yaml",
+            "transport": "rest"
+        },
+        {
+            "id": "google/cloud/bigquery/connection"
+        },
+        {
+            "grpc_service_config": "bigqueryconnection_grpc_service_config.json",
+            "id": "google/cloud/bigquery/connection/v1beta1",
+            "service_yaml": "bigqueryconnection_v1beta1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "grpc_service_config": "bigqueryconnection_grpc_service_config.json",
+            "id": "google/cloud/bigquery/connection/v1",
+            "python-gapic-namespace": "google.cloud",
+            "service_yaml": "bigqueryconnection_v1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/cloud/bigquery/datapolicies"
+        },
+        {
+            "grpc_service_config": "datapolicies_v1beta1_grpc_service_config.json",
+            "id": "google/cloud/bigquery/datapolicies/v1beta1",
+            "python-gapic-namespace": "google.cloud",
+            "service_yaml": "bigquerydatapolicy_v1beta1.yaml",
+            "transport": "grpc"
+        },
+        {
+            "grpc_service_config": "datapolicies_v1_grpc_service_config.json",
+            "id": "google/cloud/bigquery/datapolicies/v1",
+            "python-gapic-namespace": "google.cloud",
+            "service_yaml": "bigquerydatapolicy_v1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/cloud/shell"
+        },
+        {
+            "grpc_service_config": "cloudshell_grpc_service_config.json",
+            "id": "google/cloud/shell/v1",
+            "service_yaml": "cloudshell_v1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/cloud/essentialcontacts"
+        },
+        {
+            "grpc_service_config": "essentialcontacts_v1_grpc_service_config.json",
+            "id": "google/cloud/essentialcontacts/v1",
+            "python-gapic-namespace": "google.cloud",
+            "service_yaml": "essentialcontacts_v1.yaml",
+            "transport": "grpc+rest",
+            "warehouse-package-name": "google-cloud-essential-contacts"
+        },
+        {
+            "id": "google/cloud/stream/logging/v1"
+        },
+        {
+            "id": "google/cloud/kubernetes/security/containersecurity_logging"
+        },
+        {
+            "id": "google/cloud/dataform"
+        },
+        {
+            "grpc_service_config": "dataform_grpc_service_config.json",
+            "id": "google/cloud/dataform/v1beta1",
+            "service_yaml": "dataform_v1beta1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/cloud/dataform/logging/v1"
+        },
+        {
+            "grpc_service_config": "dataform_grpc_service_config.json",
+            "id": "google/cloud/dataform/v1",
+            "service_yaml": "dataform_v1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/cloud/privatecatalog"
+        },
+        {
+            "grpc_service_config": "cloudprivatecatalog_grpc_service_config.json",
+            "id": "google/cloud/privatecatalog/v1beta1",
+            "service_yaml": "cloudprivatecatalog_v1beta1.yaml",
+            "transport": "grpc+rest",
+            "warehouse-package-name": "google-cloud-private-catalog"
+        },
+        {
+            "id": "google/cloud/assuredworkloads"
+        },
+        {
+            "grpc_service_config": "assuredworkloads_grpc_service_config.json",
+            "id": "google/cloud/assuredworkloads/v1beta1",
+            "service_yaml": "assuredworkloads_v1beta1.yaml",
+            "transport": "grpc+rest",
+            "warehouse-package-name": "google-cloud-assured-workloads"
+        },
+        {
+            "id": "google/cloud/assuredworkloads/regulatoryintercept/logging/v1"
+        },
+        {
+            "grpc_service_config": "assuredworkloads_grpc_service_config.json",
+            "id": "google/cloud/assuredworkloads/v1",
+            "service_yaml": "assuredworkloads_v1.yaml",
+            "transport": "grpc+rest",
+            "warehouse-package-name": "google-cloud-assured-workloads"
+        },
+        {
+            "id": "google/cloud/apihub"
+        },
+        {
+            "grpc_service_config": "apihub_v1_grpc_service_config.json",
+            "id": "google/cloud/apihub/v1",
+            "service_yaml": "apihub_v1.yaml",
+            "transport": "rest"
+        },
+        {
+            "id": "google/cloud/asset"
+        },
+        {
+            "grpc_service_config": "cloudasset_grpc_service_config.json",
+            "id": "google/cloud/asset/v1p1beta1",
+            "service_yaml": "cloudasset_v1p1beta1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "grpc_service_config": "cloudasset_grpc_service_config.json",
+            "id": "google/cloud/asset/v1p7beta1",
+            "service_yaml": "cloudasset_v1p7beta1.yaml",
+            "transport": "grpc"
+        },
+        {
+            "grpc_service_config": "cloudasset_grpc_service_config.json",
+            "id": "google/cloud/asset/v1",
+            "service_yaml": "cloudasset_v1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "grpc_service_config": "cloudasset_grpc_service_config.json",
+            "id": "google/cloud/asset/v1p2beta1",
+            "service_yaml": "cloudasset_v1p2beta1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "grpc_service_config": "cloudasset_grpc_service_config.json",
+            "id": "google/cloud/asset/v1p5beta1",
+            "service_yaml": "cloudasset_v1p5beta1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/cloud/networkservices"
+        },
+        {
+            "grpc_service_config": "networkservices_v1beta1_grpc_service_config.json",
+            "id": "google/cloud/networkservices/v1beta1",
+            "service_yaml": "networkservices_v1beta1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "grpc_service_config": "networkservices_grpc_service_config.json",
+            "id": "google/cloud/networkservices/v1",
+            "python-gapic-namespace": "google.cloud",
+            "service_yaml": "networkservices_v1.yaml",
+            "transport": "grpc+rest",
+            "warehouse-package-name": "google-cloud-network-services"
+        },
+        {
+            "id": "google/cloud/netapp"
+        },
+        {
+            "grpc_service_config": "netapp_v1_grpc_service_config.json",
+            "id": "google/cloud/netapp/v1",
+            "service_yaml": "netapp_v1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/cloud/kms"
+        },
+        {
+            "id": "google/cloud/kms/logging/v1"
+        },
+        {
+            "grpc_service_config": "cloudkms_grpc_service_config.json",
+            "id": "google/cloud/kms/v1",
+            "service_yaml": "cloudkms_v1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/cloud/kms/inventory"
+        },
+        {
+            "grpc_service_config": "kmsinventory_grpc_service_config.json",
+            "id": "google/cloud/kms/inventory/v1",
+            "python-gapic-namespace": "google.cloud",
+            "service_yaml": "kmsinventory_v1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/cloud/cloudsetup/logging/v1"
+        },
+        {
+            "id": "google/cloud/oslogin"
+        },
+        {
+            "id": "google/cloud/oslogin/common",
+            "transport": "grpc"
+        },
+        {
+            "grpc_service_config": "oslogin_grpc_service_config.json",
+            "id": "google/cloud/oslogin/v1",
+            "service_yaml": "oslogin_v1.yaml",
+            "transport": "grpc+rest",
+            "warehouse-package-name": "google-cloud-os-login"
+        },
+        {
+            "grpc_service_config": "oslogin_grpc_service_config.json",
+            "id": "google/cloud/oslogin/v1beta",
+            "service_yaml": "oslogin_v1beta.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/cloud/securitycentermanagement"
+        },
+        {
+            "grpc_service_config": "securitycentermanagement_v1_grpc_service_config.json",
+            "id": "google/cloud/securitycentermanagement/v1",
+            "service_yaml": "securitycentermanagement_v1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/cloud/servicedirectory"
+        },
+        {
+            "grpc_service_config": "servicedirectory_grpc_service_config.json",
+            "id": "google/cloud/servicedirectory/v1beta1",
+            "service_yaml": "servicedirectory_v1beta1.yaml",
+            "transport": "grpc+rest",
+            "warehouse-package-name": "google-cloud-service-directory"
+        },
+        {
+            "grpc_service_config": "servicedirectory_grpc_service_config.json",
+            "id": "google/cloud/servicedirectory/v1",
+            "service_yaml": "servicedirectory_v1.yaml",
+            "transport": "grpc+rest",
+            "warehouse-package-name": "google-cloud-service-directory"
+        },
+        {
+            "id": "google/cloud/recommender"
+        },
+        {
+            "grpc_service_config": "recommender_grpc_service_config.json",
+            "id": "google/cloud/recommender/v1beta1",
+            "service_yaml": "recommender_v1beta1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/cloud/recommender/logging/v1beta1"
+        },
+        {
+            "id": "google/cloud/recommender/logging/v1"
+        },
+        {
+            "grpc_service_config": "recommender_grpc_service_config.json",
+            "id": "google/cloud/recommender/v1",
+            "service_yaml": "recommender_v1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "grpc_service_config": "storagebatchoperations_grpc_service_config.json",
+            "id": "google/cloud/storagebatchoperations/v1",
+            "service_yaml": "storagebatchoperations_v1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/cloud/security/publicca"
+        },
+        {
+            "grpc_service_config": "publicca_v1beta1_grpc_service_config.json",
+            "id": "google/cloud/security/publicca/v1beta1",
+            "service_yaml": "publicca_v1beta1.yaml",
+            "transport": "grpc+rest",
+            "warehouse-package-name": "google-cloud-public-ca"
+        },
+        {
+            "grpc_service_config": "publicca_v1_grpc_service_config.json",
+            "id": "google/cloud/security/publicca/v1",
+            "service_yaml": "publicca_v1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/cloud/security/privateca"
+        },
+        {
+            "grpc_service_config": "privateca_grpc_service_config.json",
+            "id": "google/cloud/security/privateca/v1beta1",
+            "service_yaml": "privateca_v1beta1.yaml",
+            "transport": "grpc+rest",
+            "warehouse-package-name": "google-cloud-private-ca"
+        },
+        {
+            "grpc_service_config": "privateca_grpc_service_config.json",
+            "id": "google/cloud/security/privateca/v1",
+            "service_yaml": "privateca_v1.yaml",
+            "transport": "grpc+rest",
+            "warehouse-package-name": "google-cloud-private-ca"
+        },
+        {
+            "id": "google/cloud/mediatranslation"
+        },
+        {
+            "id": "google/cloud/mediatranslation/v1alpha1"
+        },
+        {
+            "grpc_service_config": "mediatranslation_grpc_service_config.json",
+            "id": "google/cloud/mediatranslation/v1beta1",
+            "service_yaml": "mediatranslation_v1beta1.yaml",
+            "transport": "grpc",
+            "warehouse-package-name": "google-cloud-media-translation"
+        },
+        {
+            "id": "google/cloud/servicehealth"
+        },
+        {
+            "id": "google/cloud/servicehealth/logging/v1"
+        },
+        {
+            "grpc_service_config": "servicehealth_v1_grpc_service_config.json",
+            "id": "google/cloud/servicehealth/v1",
+            "service_yaml": "servicehealth_v1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/cloud/batch"
+        },
+        {
+            "grpc_service_config": "batch_v1alpha_grpc_service_config.json",
+            "id": "google/cloud/batch/v1alpha",
+            "service_yaml": "batch_v1alpha.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "grpc_service_config": "batch_v1_grpc_service_config.json",
+            "id": "google/cloud/batch/v1",
+            "service_yaml": "batch_v1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/cloud/secretmanager"
+        },
+        {
+            "grpc_service_config": "secretmanager_grpc_service_config.json",
+            "id": "google/cloud/secretmanager/v1beta2",
+            "service_yaml": "secretmanager_v1beta2.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/cloud/secretmanager/logging/v1"
+        },
+        {
+            "grpc_service_config": "secretmanager_grpc_service_config.json",
+            "id": "google/cloud/secretmanager/v1",
+            "service_yaml": "secretmanager_v1.yaml",
+            "transport": "grpc+rest",
+            "warehouse-package-name": "google-cloud-secret-manager"
+        },
+        {
+            "id": "google/cloud/dataproc"
+        },
+        {
+            "id": "google/cloud/dataproc/logging",
+            "transport": "grpc+rest"
+        },
+        {
+            "grpc_service_config": "dataproc_grpc_service_config.json",
+            "id": "google/cloud/dataproc/v1",
+            "service_yaml": "dataproc_v1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/cloud/visionai"
+        },
+        {
+            "grpc_service_config": "visionai_grpc_service_config.json",
+            "id": "google/cloud/visionai/v1alpha1",
+            "service_yaml": "visionai_v1alpha1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "grpc_service_config": "visionai_grpc_service_config.json",
+            "id": "google/cloud/visionai/v1",
+            "service_yaml": "visionai_v1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "grpc_service_config": "licensemanager_v1_grpc_service_config.json",
+            "id": "google/cloud/licensemanager/v1",
+            "service_yaml": "licensemanager_v1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/cloud/language"
+        },
+        {
+            "id": "google/cloud/language/v1beta1"
+        },
+        {
+            "grpc_service_config": "language_grpc_service_config.json",
+            "id": "google/cloud/language/v1beta2",
+            "service_yaml": "language_v1beta2.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "grpc_service_config": "language_grpc_service_config.json",
+            "id": "google/cloud/language/v1",
+            "service_yaml": "language_v1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "grpc_service_config": "language_grpc_service_config.json",
+            "id": "google/cloud/language/v2",
+            "service_yaml": "language_v2.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "grpc_service_config": "blockchainnodeengine_v1_grpc_service_config.json",
+            "id": "google/cloud/blockchainnodeengine/v1",
+            "service_yaml": "blockchainnodeengine_v1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "grpc_service_config": "financialservices_v1_grpc_service_config.json",
+            "id": "google/cloud/financialservices/v1",
+            "service_yaml": "financialservices_v1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/cloud/documentai"
+        },
+        {
+            "grpc_service_config": "documentai_v1_grpc_service_config.json",
+            "id": "google/cloud/documentai/v1",
+            "service_yaml": "documentai_v1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "grpc_service_config": "documentai_v1beta3_grpc_service_config.json",
+            "id": "google/cloud/documentai/v1beta3",
+            "service_yaml": "documentai_v1beta3.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/cloud/connectors"
+        },
+        {
+            "grpc_service_config": "connectors_grpc_service_config.json",
+            "id": "google/cloud/connectors/v1",
+            "service_yaml": "connectors_v1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/cloud/vision"
+        },
+        {
+            "grpc_service_config": "vision_grpc_service_config.json",
+            "id": "google/cloud/vision/v1p1beta1",
+            "service_yaml": "vision_v1p1beta1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "grpc_service_config": "vision_grpc_service_config.json",
+            "id": "google/cloud/vision/v1p3beta1",
+            "service_yaml": "vision_v1p3beta1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "grpc_service_config": "vision_grpc_service_config.json",
+            "id": "google/cloud/vision/v1p4beta1",
+            "service_yaml": "vision_v1p4beta1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "grpc_service_config": "vision_grpc_service_config.json",
+            "id": "google/cloud/vision/v1",
+            "service_yaml": "vision_v1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "grpc_service_config": "vision_grpc_service_config.json",
+            "id": "google/cloud/vision/v1p2beta1",
+            "service_yaml": "vision_v1p2beta1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/cloud/securitycenter"
+        },
+        {
+            "grpc_service_config": "securitycenter_grpc_service_config.json",
+            "id": "google/cloud/securitycenter/v1p1beta1",
+            "service_yaml": "securitycenter_v1p1beta1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "grpc_service_config": "securitycenter_settings_grpc_service_config.json",
+            "id": "google/cloud/securitycenter/settings/v1beta1",
+            "service_yaml": "securitycenter_settings.yaml",
+            "transport": "grpc"
+        },
+        {
+            "grpc_service_config": "securitycenter_grpc_service_config.json",
+            "id": "google/cloud/securitycenter/v1beta1",
+            "service_yaml": "securitycenter_v1beta1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "grpc_service_config": "securitycenter_grpc_service_config.json",
+            "id": "google/cloud/securitycenter/v1",
+            "service_yaml": "securitycenter_v1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/cloud/securitycenter/v2",
+            "service_yaml": "securitycenter_v2.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/cloud/audit"
+        },
+        {
+            "id": "google/cloud/networkconnectivity"
+        },
+        {
+            "grpc_service_config": "networkconnectivity_grpc_service_config.json",
+            "id": "google/cloud/networkconnectivity/v1alpha1",
+            "service_yaml": "networkconnectivity_v1alpha1.yaml",
+            "transport": "grpc",
+            "warehouse-package-name": "google-cloud-network-connectivity"
+        },
+        {
+            "grpc_service_config": "networkconnectivity_v1_grpc_service_config.json",
+            "id": "google/cloud/networkconnectivity/v1",
+            "service_yaml": "networkconnectivity_v1.yaml",
+            "transport": "grpc",
+            "warehouse-package-name": "google-cloud-network-connectivity"
+        },
+        {
+            "id": "google/cloud/dataqna"
+        },
+        {
+            "grpc_service_config": "dataqna_grpc_service_config.json",
+            "id": "google/cloud/dataqna/v1alpha",
+            "service_yaml": "dataqna_v1alpha.yaml",
+            "transport": "grpc+rest",
+            "warehouse-package-name": "google-cloud-data-qna"
+        },
+        {
+            "id": "google/cloud/tasks"
+        },
+        {
+            "grpc_service_config": "cloudtasks_grpc_service_config.json",
+            "id": "google/cloud/tasks/v2beta3",
+            "service_yaml": "cloudtasks_v2beta3.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "grpc_service_config": "cloudtasks_grpc_service_config.json",
+            "id": "google/cloud/tasks/v2",
+            "service_yaml": "cloudtasks_v2.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "grpc_service_config": "cloudtasks_grpc_service_config.json",
+            "id": "google/cloud/tasks/v2beta2",
+            "service_yaml": "cloudtasks_v2beta2.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/cloud/networksecurity"
+        },
+        {
+            "grpc_service_config": "networksecurity_v1beta1_grpc_service_config.json",
+            "id": "google/cloud/networksecurity/v1beta1",
+            "python-gapic-namespace": "google.cloud",
+            "service_yaml": "networksecurity_v1beta1.yaml",
+            "transport": "grpc",
+            "warehouse-package-name": "google-cloud-network-security"
+        },
+        {
+            "grpc_service_config": "networksecurity_v1_grpc_service_config.json",
+            "id": "google/cloud/networksecurity/v1",
+            "python-gapic-namespace": "google.cloud",
+            "service_yaml": "networksecurity_v1.yaml",
+            "transport": "grpc+rest",
+            "warehouse-package-name": "google-cloud-network-security"
+        },
+        {
+            "id": "google/cloud/privilegedaccessmanager"
+        },
+        {
+            "id": "google/cloud/privilegedaccessmanager/v1",
+            "service_yaml": "privilegedaccessmanager_v1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/cloud/storageinsights"
+        },
+        {
+            "grpc_service_config": "storageinsights_grpc_service_config.json",
+            "id": "google/cloud/storageinsights/v1",
+            "service_yaml": "storageinsights_v1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/cloud/apigeeconnect"
+        },
+        {
+            "grpc_service_config": "connection_grpc_service_config.json",
+            "id": "google/cloud/apigeeconnect/v1",
+            "service_yaml": "apigeeconnect_v1.yaml",
+            "transport": "grpc",
+            "warehouse-package-name": "google-cloud-apigee-connect"
+        },
+        {
+            "grpc_service_config": "modelarmor_v1_grpc_service_config.json",
+            "id": "google/cloud/modelarmor/v1",
+            "service_yaml": "modelarmor_v1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/cloud/config"
+        },
+        {
+            "grpc_service_config": "config_grpc_service_config.json",
+            "id": "google/cloud/config/v1",
+            "service_yaml": "config_v1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/cloud/eventarc"
+        },
+        {
+            "id": "google/cloud/eventarc/logging/v1",
+            "transport": "grpc+rest"
+        },
+        {
+            "grpc_service_config": "eventarc_grpc_service_config.json",
+            "id": "google/cloud/eventarc/v1",
+            "service_yaml": "eventarc_v1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/cloud/eventarc/publishing"
+        },
+        {
+            "grpc_service_config": "eventarcpublishing_grpc_service_config.json",
+            "id": "google/cloud/eventarc/publishing/v1",
+            "python-gapic-namespace": "google.cloud",
+            "service_yaml": "eventarcpublishing_v1.yaml",
+            "transport": "grpc+rest",
+            "warehouse-package-name": "google-cloud-eventarc-publishing"
+        },
+        {
+            "id": "google/cloud/beyondcorp/appconnectors"
+        },
+        {
+            "grpc_service_config": "beyondcorp-appconnectors_grpc_service_config.json",
+            "id": "google/cloud/beyondcorp/appconnectors/v1",
+            "python-gapic-namespace": "google.cloud",
+            "service_yaml": "beyondcorp_v1.yaml",
+            "transport": "grpc+rest",
+            "warehouse-package-name": "google-cloud-beyondcorp-appconnectors"
+        },
+        {
+            "id": "google/cloud/beyondcorp/appgateways"
+        },
+        {
+            "grpc_service_config": "beyondcorp-appgateways_grpc_service_config.json",
+            "id": "google/cloud/beyondcorp/appgateways/v1",
+            "python-gapic-namespace": "google.cloud",
+            "service_yaml": "beyondcorp_v1.yaml",
+            "transport": "grpc+rest",
+            "warehouse-package-name": "google-cloud-beyondcorp-appgateways"
+        },
+        {
+            "id": "google/cloud/beyondcorp/clientconnectorservices"
+        },
+        {
+            "grpc_service_config": "beyondcorp-clientconnectorservices_grpc_service_config.json",
+            "id": "google/cloud/beyondcorp/clientconnectorservices/v1",
+            "python-gapic-namespace": "google.cloud",
+            "service_yaml": "beyondcorp_v1.yaml",
+            "transport": "grpc+rest",
+            "warehouse-package-name": "google-cloud-beyondcorp-clientconnectorservices"
+        },
+        {
+            "id": "google/cloud/beyondcorp/appconnections"
+        },
+        {
+            "grpc_service_config": "beyondcorp-appconnections_grpc_service_config.json",
+            "id": "google/cloud/beyondcorp/appconnections/v1",
+            "python-gapic-namespace": "google.cloud",
+            "service_yaml": "beyondcorp_v1.yaml",
+            "transport": "grpc+rest",
+            "warehouse-package-name": "google-cloud-beyondcorp-appconnections"
+        },
+        {
+            "id": "google/cloud/beyondcorp/clientgateways"
+        },
+        {
+            "grpc_service_config": "beyondcorp-clientgateways_grpc_service_config.json",
+            "id": "google/cloud/beyondcorp/clientgateways/v1",
+            "python-gapic-namespace": "google.cloud",
+            "service_yaml": "beyondcorp_v1.yaml",
+            "transport": "grpc+rest",
+            "warehouse-package-name": "google-cloud-beyondcorp-clientgateways"
+        },
+        {
+            "id": "google/cloud/confidentialcomputing"
+        },
+        {
+            "grpc_service_config": "confidentialcomputing_v1alpha1_grpc_service_config.json",
+            "id": "google/cloud/confidentialcomputing/v1alpha1",
+            "service_yaml": "confidentialcomputing_v1alpha1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "grpc_service_config": "confidentialcomputing_v1_grpc_service_config.json",
+            "id": "google/cloud/confidentialcomputing/v1",
+            "service_yaml": "confidentialcomputing_v1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/cloud/dataplex"
+        },
+        {
+            "grpc_service_config": "dataplex_grpc_service_config.json",
+            "id": "google/cloud/dataplex/v1",
+            "service_yaml": "dataplex_v1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/cloud/tpu"
+        },
+        {
+            "grpc_service_config": "tpu_grpc_service_config.json",
+            "id": "google/cloud/tpu/v2alpha1",
+            "service_yaml": "tpu_v2alpha1.yaml",
+            "transport": "grpc"
+        },
+        {
+            "grpc_service_config": "tpu_grpc_service_config.json",
+            "id": "google/cloud/tpu/v1",
+            "service_yaml": "tpu_v1.yaml",
+            "transport": "grpc"
+        },
+        {
+            "grpc_service_config": "tpu_grpc_service_config.json",
+            "id": "google/cloud/tpu/v2",
+            "service_yaml": "tpu_v2.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/cloud/phishingprotection"
+        },
+        {
+            "grpc_service_config": "phishingprotection_grpc_service_config.json",
+            "id": "google/cloud/phishingprotection/v1beta1",
+            "service_yaml": "phishingprotection_v1beta1.yaml",
+            "transport": "grpc+rest",
+            "warehouse-package-name": "google-cloud-phishing-protection"
+        },
+        {
+            "grpc_service_config": "pubsublite_grpc_service_config.json",
+            "id": "google/cloud/pubsublite/v1",
+            "service_yaml": "pubsublite_v1.yaml",
+            "transport": "grpc"
+        },
+        {
+            "id": "google/pubsub"
+        },
+        {
+            "grpc_service_config": "pubsub_grpc_service_config.json",
+            "id": "google/pubsub/v1",
+            "service_yaml": ":pubsub_v1.yaml",
+            "transport": "grpc+rest",
+            "warehouse-package-name": "google-cloud-pubsub"
+        },
+        {
+            "id": "google/privacy/dlp"
+        },
+        {
+            "grpc_service_config": "dlp_grpc_service_config.json",
+            "id": "google/privacy/dlp/v2",
+            "python-gapic-namespace": "google.cloud",
+            "service_yaml": "dlp_v2.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/monitoring"
+        },
+        {
+            "id": "google/monitoring/dashboard"
+        },
+        {
+            "grpc_service_config": "dashboards_grpc_service_config.json",
+            "id": "google/monitoring/dashboard/v1",
+            "python-gapic-namespace": "google.cloud",
+            "service_yaml": "monitoring.yaml",
+            "transport": "grpc+rest",
+            "warehouse-package-name": "google-cloud-monitoring-dashboards"
+        },
+        {
+            "grpc_service_config": "monitoring_grpc_service_config.json",
+            "id": "google/monitoring/v3",
+            "python-gapic-namespace": "google.cloud",
+            "service_yaml": "monitoring.yaml",
+            "transport": "grpc"
+        },
+        {
+            "id": "google/monitoring/metricsscope"
+        },
+        {
+            "grpc_service_config": "metricsscopes_grpc_service_config.json",
+            "id": "google/monitoring/metricsscope/v1",
+            "python-gapic-namespace": "google.cloud",
+            "service_yaml": "monitoring.yaml",
+            "transport": "grpc",
+            "warehouse-package-name": "google-cloud-monitoring-metrics-scopes"
+        },
+        {
+            "grpc_service_config": "aistreams_grpc_service_config.json",
+            "id": "google/partner/aistreams/v1alpha1",
+            "service_yaml": "aistreams_v1alpha1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/identity/accesscontextmanager"
+        },
+        {
+            "id": "google/identity/accesscontextmanager/type"
+        },
+        {
+            "grpc_service_config": "accesscontextmanager_grpc_service_config.json",
+            "id": "google/identity/accesscontextmanager/v1",
+            "service_yaml": "accesscontextmanager_v1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/maps"
+        },
+        {
+            "grpc_service_config": "roads_grpc_service_config.json",
+            "id": "google/maps/roads/v1op",
+            "service_yaml": "roads_v1op.yaml",
+            "transport": "grpc"
+        },
+        {
+            "grpc_service_config": "addressvalidation_grpc_service_config.json",
+            "id": "google/maps/addressvalidation/v1",
+            "service_yaml": "addressvalidation_v1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/maps/routespreferred/v1"
+        },
+        {
+            "grpc_service_config": "solar_grpc_service_config.json",
+            "id": "google/maps/solar/v1",
+            "service_yaml": "solar_v1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/maps/playablelocations/v3"
+        },
+        {
+            "id": "google/maps/playablelocations/v3/sample"
+        },
+        {
+            "grpc_service_config": "places_grpc_service_config.json",
+            "id": "google/maps/places/v1",
+            "service_yaml": "places_v1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/maps/mobilitybilling/logs/v1",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/maps/routes/v1alpha"
+        },
+        {
+            "grpc_service_config": "routes_grpc_service_config.json",
+            "id": "google/maps/routes/v1",
+            "transport": "grpc+rest"
+        },
+        {
+            "grpc_service_config": "regionlookup_grpc_service_config.json",
+            "id": "google/maps/regionlookup/v1alpha",
+            "service_yaml": "regionlookup_v1alpha.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "grpc_service_config": "routeoptimization_v1_grpc_service_config.json",
+            "id": "google/maps/routeoptimization/v1",
+            "service_yaml": "routeoptimization_v1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/maps/fleetengine"
+        },
+        {
+            "grpc_service_config": "fleetengine_grpc_service_config.json",
+            "id": "google/maps/fleetengine/v1",
+            "python-gapic-namespace": "google.maps",
+            "service_yaml": "fleetengine_v1.yaml",
+            "transport": "grpc"
+        },
+        {
+            "id": "google/maps/fleetengine/delivery"
+        },
+        {
+            "grpc_service_config": "fleetengine_delivery_grpc_service_config.json",
+            "id": "google/maps/fleetengine/delivery/v1",
+            "python-gapic-namespace": "google.maps",
+            "service_yaml": "fleetengine_v1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/maps/unity"
+        },
+        {
+            "grpc_service_config": "areainsights_grpc_service_config.json",
+            "id": "google/maps/areainsights/v1",
+            "service_yaml": "areainsights_v1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "grpc_service_config": "library_grpc_service_config.json",
+            "id": "google/maps/routing/v2",
+            "service_yaml": "routes_v2.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "grpc_service_config": "weather_grpc_service_config.json",
+            "id": "google/maps/weather/v1",
+            "service_yaml": "weather_v1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "grpc_service_config": "aerialview_grpc_service_config.json",
+            "id": "google/maps/aerialview/v1",
+            "service_yaml": "aerialview_v1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "grpc_service_config": "mapsplatformdatasets_grpc_service_config.json",
+            "id": "google/maps/mapsplatformdatasets/v1",
+            "service_yaml": "mapsplatformdatasets_v1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/geo/type",
+            "transport": "grpc"
+        },
+        {
+            "id": "google/networking/trafficdirector/type"
+        },
+        {
+            "id": "google/rpc"
+        },
+        {
+            "id": "google/rpc/context"
+        },
+        {
+            "id": "google/appengine"
+        },
+        {
+            "id": "google/appengine/logging/v1",
+            "python-gapic-namespace": "google.cloud",
+            "transport": "grpc",
+            "warehouse-package-name": "google-cloud-appengine-logging"
+        },
+        {
+            "grpc_service_config": "appengine_grpc_service_config.json",
+            "id": "google/appengine/v1",
+            "python-gapic-namespace": "google.cloud",
+            "service_yaml": "appengine_v1.yaml",
+            "transport": "grpc+rest",
+            "warehouse-package-name": "google-cloud-appengine-admin"
+        },
+        {
+            "id": "google/appengine/legacy"
+        },
+        {
+            "id": "google/appengine/v1beta"
+        },
+        {
+            "id": "google/compute/logging/gdnsusage/v1"
+        },
+        {
+            "id": "google/compute/logging/dr/v1"
+        },
+        {
+            "id": "google/actions/type"
+        },
+        {
+            "id": "google/actions/sdk/v2"
+        },
+        {
+            "id": "google/actions/sdk/v2/conversation"
+        },
+        {
+            "id": "google/actions/sdk/v2/conversation/prompt"
+        },
+        {
+            "id": "google/actions/sdk/v2/conversation/prompt/content"
+        },
+        {
+            "id": "google/actions/sdk/v2/interactionmodel"
+        },
+        {
+            "id": "google/actions/sdk/v2/interactionmodel/type"
+        },
+        {
+            "id": "google/actions/sdk/v2/interactionmodel/prompt"
+        },
+        {
+            "id": "google/actions/sdk/v2/interactionmodel/prompt/content"
+        },
+        {
+            "id": "google/streetview/publish"
+        },
+        {
+            "grpc_service_config": "streetview_publish_grpc_service_config.json",
+            "id": "google/streetview/publish/v1",
+            "service_yaml": "streetviewpublish.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/spanner"
+        },
+        {
+            "id": "google/spanner/admin/instance"
+        },
+        {
+            "grpc_service_config": "spanner_admin_instance_grpc_service_config.json",
+            "id": "google/spanner/admin/instance/v1",
+            "python-gapic-namespace": "google.cloud",
+            "service_yaml": "spanner_admin_instance.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/spanner/admin/database"
+        },
+        {
+            "grpc_service_config": "spanner_admin_database_grpc_service_config.json",
+            "id": "google/spanner/admin/database/v1",
+            "python-gapic-namespace": "google.cloud",
+            "service_yaml": "spanner.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "grpc_service_config": "spanner_grpc_service_config.json",
+            "id": "google/spanner/v1",
+            "python-gapic-namespace": "google.cloud",
+            "service_yaml": "spanner.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "grpc_service_config": "spanner_adapter_grpc_service_config.json",
+            "id": "google/spanner/adapter/v1",
+            "service_yaml": "spanner.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "grpc_service_config": "spanner_cloud_executor_grpc_service_config.json",
+            "id": "google/spanner/executor/v1",
+            "service_yaml": "spanner_cloud_executor.yaml",
+            "transport": "grpc"
+        },
+        {
+            "id": "google/longrunning"
+        },
+        {
+            "id": "google/api"
+        },
+        {
+            "id": "google/api/apikeys"
+        },
+        {
+            "grpc_service_config": "apikeys_grpc_service_config.json",
+            "id": "google/api/apikeys/v2",
+            "python-gapic-namespace": "google.cloud",
+            "service_yaml": "apikeys_v2.yaml",
+            "transport": "grpc+rest",
+            "warehouse-package-name": "google-cloud-api-keys"
+        },
+        {
+            "id": "google/api/servicemanagement"
+        },
+        {
+            "grpc_service_config": "servicemanagement_grpc_service_config.json",
+            "id": "google/api/servicemanagement/v1",
+            "python-gapic-namespace": "google.cloud",
+            "service_yaml": "servicemanagement_v1.yaml",
+            "transport": "grpc+rest",
+            "warehouse-package-name": "google-cloud-service-management"
+        },
+        {
+            "id": "google/api/expr"
+        },
+        {
+            "id": "google/api/expr/v1alpha1"
+        },
+        {
+            "id": "google/api/expr/v1beta1"
+        },
+        {
+            "id": "google/api/expr/conformance/v1alpha1"
+        },
+        {
+            "id": "google/api/cloudquotas"
+        },
+        {
+            "grpc_service_config": "cloudquotas_v1_grpc_service_config.json",
+            "id": "google/api/cloudquotas/v1",
+            "python-gapic-namespace": "google.cloud",
+            "service_yaml": "cloudquotas_v1.yaml",
+            "transport": "grpc+rest",
+            "warehouse-package-name": "google-cloud-quotas"
+        },
+        {
+            "grpc_service_config": "cloudquotas_v1beta_grpc_service_config.json",
+            "id": "google/api/cloudquotas/v1beta",
+            "python-gapic-namespace": "google.cloud",
+            "service_yaml": "cloudquotas_v1beta.yaml",
+            "transport": "grpc+rest",
+            "warehouse-package-name": "google-cloud-quotas"
+        },
+        {
+            "id": "google/api/serviceusage"
+        },
+        {
+            "grpc_service_config": "serviceusage_grpc_service_config.json",
+            "id": "google/api/serviceusage/v1beta1",
+            "python-gapic-namespace": "google.cloud",
+            "service_yaml": "serviceusage_v1beta1.yaml",
+            "transport": "grpc+rest",
+            "warehouse-package-name": "google-cloud-service-usage"
+        },
+        {
+            "grpc_service_config": "serviceusage_grpc_service_config.json",
+            "id": "google/api/serviceusage/v1",
+            "python-gapic-namespace": "google.cloud",
+            "service_yaml": "serviceusage_v1.yaml",
+            "transport": "grpc+rest",
+            "warehouse-package-name": "google-cloud-service-usage"
+        },
+        {
+            "id": "google/api/servicecontrol"
+        },
+        {
+            "grpc_service_config": "servicecontrol_grpc_service_config.json",
+            "id": "google/api/servicecontrol/v1",
+            "python-gapic-namespace": "google.cloud",
+            "service_yaml": "servicecontrol.yaml",
+            "transport": "grpc+rest",
+            "warehouse-package-name": "google-cloud-service-control"
+        },
+        {
+            "grpc_service_config": "servicecontrol_grpc_service_config.json",
+            "id": "google/api/servicecontrol/v2",
+            "python-gapic-namespace": "google.cloud",
+            "service_yaml": "servicecontrol.yaml",
+            "transport": "grpc+rest",
+            "warehouse-package-name": "google-cloud-service-control"
+        },
+        {
+            "id": "google/bytestream"
+        },
+        {
+            "id": "google/storage/platformlogs/v1",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/storage/control"
+        },
+        {
+            "grpc_service_config": "storage_control_grpc_service_config.json",
+            "id": "google/storage/control/v2",
+            "python-gapic-namespace": "google.cloud",
+            "service_yaml": "storage_v2.yaml",
+            "transport": "grpc",
+            "warehouse-package-name": "google-cloud-storage-control"
+        },
+        {
+            "id": "google/storage/v1"
+        },
+        {
+            "grpc_service_config": "storage_grpc_service_config.json",
+            "id": "google/storage/v2",
+            "service_yaml": "storage_v2.yaml",
+            "transport": "grpc"
+        },
+        {
+            "id": "google/datastore"
+        },
+        {
+            "id": "google/datastore/admin"
+        },
+        {
+            "grpc_service_config": "datastore_admin_grpc_service_config.json",
+            "id": "google/datastore/admin/v1",
+            "python-gapic-namespace": "google.cloud",
+            "service_yaml": "datastore_v1.yaml",
+            "transport": "grpc+rest",
+            "warehouse-package-name": "google-cloud-datastore"
+        },
+        {
+            "grpc_service_config": "datastore_grpc_service_config.json",
+            "id": "google/datastore/v1",
+            "python-gapic-namespace": "google.cloud",
+            "service_yaml": "datastore_v1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/iam"
+        },
+        {
+            "grpc_service_config": "iam_grpc_service_config.json",
+            "id": "google/iam/admin/v1",
+            "python-gapic-namespace": "google.cloud",
+            "service_yaml": "iam.yaml",
+            "transport": "grpc",
+            "warehouse-package-name": "google-cloud-iam"
+        },
+        {
+            "id": "google/iam/v1"
+        },
+        {
+            "id": "google/iam/v1/logging",
+            "python-gapic-namespace": "google.cloud",
+            "transport": "grpc",
+            "warehouse-package-name": "google-cloud-iam-logging"
+        },
+        {
+            "grpc_service_config": "iam_grpc_service_config.json",
+            "id": "google/iam/v2beta",
+            "python-gapic-namespace": "google.cloud",
+            "service_yaml": "iam_v2beta.yaml",
+            "transport": "grpc",
+            "warehouse-package-name": "google-cloud-iam"
+        },
+        {
+            "grpc_service_config": "iam_grpc_service_config.json",
+            "id": "google/iam/v3",
+            "python-gapic-namespace": "google.cloud",
+            "service_yaml": "iam_v3.yaml",
+            "transport": "grpc+rest",
+            "warehouse-package-name": "google-cloud-iam"
+        },
+        {
+            "grpc_service_config": "iam_grpc_service_config.json",
+            "id": "google/iam/v1beta",
+            "service_yaml": "iam_v1beta.yaml",
+            "transport": "grpc"
+        },
+        {
+            "grpc_service_config": "iam_grpc_service_config.json",
+            "id": "google/iam/v2",
+            "python-gapic-namespace": "google.cloud",
+            "service_yaml": "iam_v2.yaml",
+            "transport": "grpc+rest",
+            "warehouse-package-name": "google-cloud-iam"
+        },
+        {
+            "grpc_service_config": "iam_grpc_service_config.json",
+            "id": "google/iam/v3beta",
+            "python-gapic-namespace": "google.cloud",
+            "service_yaml": "iam_v3beta.yaml",
+            "transport": "grpc+rest",
+            "warehouse-package-name": "google-cloud-iam"
+        },
+        {
+            "id": "google/iam/credentials"
+        },
+        {
+            "grpc_service_config": "iamcredentials_grpc_service_config.json",
+            "id": "google/iam/credentials/v1",
+            "python-gapic-namespace": "google.cloud",
+            "service_yaml": "iamcredentials_v1.yaml",
+            "transport": "grpc+rest",
+            "warehouse-package-name": "google-cloud-iam"
+        },
+        {
+            "id": "google/container"
+        },
+        {
+            "id": "google/container/v1alpha1"
+        },
+        {
+            "grpc_service_config": "container_grpc_service_config.json",
+            "id": "google/container/v1beta1",
+            "python-gapic-namespace": "google.cloud",
+            "service_yaml": "container_v1beta1.yaml",
+            "transport": "grpc",
+            "warehouse-package-name": "google-cloud-container"
+        },
+        {
+            "grpc_service_config": "container_grpc_service_config.json",
+            "id": "google/container/v1",
+            "python-gapic-namespace": "google.cloud",
+            "service_yaml": "container_v1.yaml",
+            "transport": "grpc+rest",
+            "warehouse-package-name": "google-cloud-container"
+        },
+        {
+            "id": "google/firestore"
+        },
+        {
+            "grpc_service_config": "firestore_grpc_service_config.json",
+            "id": "google/firestore/v1beta1",
+            "service_yaml": "firestore_v1beta1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/firestore/admin"
+        },
+        {
+            "grpc_service_config": "firestore_admin_grpc_service_config.json",
+            "id": "google/firestore/admin/v1",
+            "python-gapic-namespace": "google.cloud",
+            "service_yaml": "firestore_v1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "grpc_service_config": "firestore_grpc_service_config.json",
+            "id": "google/firestore/v1",
+            "python-gapic-namespace": "google.cloud",
+            "service_yaml": "firestore_v1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/firestore/bundle",
+            "python-gapic-namespace": "google.cloud",
+            "transport": "grpc"
+        },
+        {
+            "grpc_service_config": "marketingplatform_admin_v1alpha_grpc_service_config.json",
+            "id": "google/marketingplatform/admin/v1alpha",
+            "python-gapic-namespace": "google.ads",
+            "service_yaml": "marketingplatformadmin_v1alpha.yaml",
+            "transport": "grpc+rest",
+            "warehouse-package-name": "google-ads-marketingplatform-admin"
+        },
+        {
+            "id": "google/apps/script/type",
+            "transport": "grpc"
+        },
+        {
+            "id": "google/apps/script/type/gmail",
+            "transport": "grpc"
+        },
+        {
+            "id": "google/apps/script/type/docs",
+            "transport": "grpc"
+        },
+        {
+            "id": "google/apps/script/type/drive",
+            "transport": "grpc"
+        },
+        {
+            "id": "google/apps/script/type/sheets",
+            "transport": "grpc"
+        },
+        {
+            "id": "google/apps/script/type/calendar",
+            "transport": "grpc"
+        },
+        {
+            "id": "google/apps/script/type/slides",
+            "transport": "grpc"
+        },
+        {
+            "id": "google/apps/meet"
+        },
+        {
+            "grpc_service_config": "meet_v2beta_grpc_service_config.json",
+            "id": "google/apps/meet/v2beta",
+            "service_yaml": "meet_v2beta.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "grpc_service_config": "meet_v2_grpc_service_config.json",
+            "id": "google/apps/meet/v2",
+            "service_yaml": "meet_v2.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/apps/events/subscriptions"
+        },
+        {
+            "grpc_service_config": "subscriptions_v1_grpc_service_config.json",
+            "id": "google/apps/events/subscriptions/v1",
+            "python-gapic-namespace": "google.apps",
+            "service_yaml": "workspaceevents_v1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/apps/card/v1",
+            "transport": "grpc+rest"
+        },
+        {
+            "grpc_service_config": "driveactivity_grpc_service_config.json",
+            "id": "google/apps/drive/activity/v2",
+            "service_yaml": "driveactivity_v2.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "grpc_service_config": "drivelabels_v2beta_grpc_service_config.json",
+            "id": "google/apps/drive/labels/v2beta",
+            "service_yaml": "drivelabels_v2beta.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "grpc_service_config": "drivelabels_v2_grpc_service_config.json",
+            "id": "google/apps/drive/labels/v2",
+            "service_yaml": "drivelabels_v2.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "grpc_service_config": "alertcenter_grpc_service_config.json",
+            "id": "google/apps/alertcenter/v1beta1",
+            "service_yaml": "alertcenter_v1beta1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/bigtable"
+        },
+        {
+            "id": "google/bigtable/admin"
+        },
+        {
+            "grpc_service_config": "bigtableadmin_grpc_service_config.json",
+            "id": "google/bigtable/admin/v2",
+            "python-gapic-namespace": "google.cloud",
+            "service_yaml": "bigtableadmin_v2.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "grpc_service_config": "bigtable_grpc_service_config.json",
+            "id": "google/bigtable/v2",
+            "python-gapic-namespace": "google.cloud",
+            "service_yaml": "bigtable_v2.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/devtools/cloudbuild"
+        },
+        {
+            "grpc_service_config": "cloudbuild_grpc_service_config.json",
+            "id": "google/devtools/cloudbuild/v1",
+            "python-gapic-namespace": "google.cloud.devtools",
+            "service_yaml": "cloudbuild_v1.yaml",
+            "transport": "grpc+rest",
+            "warehouse-package-name": "google-cloud-build"
+        },
+        {
+            "grpc_service_config": "cloudbuild_grpc_service_config.json",
+            "id": "google/devtools/cloudbuild/v2",
+            "python-gapic-namespace": "google.cloud.devtools",
+            "service_yaml": "cloudbuild_v2.yaml",
+            "transport": "grpc+rest",
+            "warehouse-package-name": "google-cloud-build"
+        },
+        {
+            "id": "google/devtools/cloudtrace"
+        },
+        {
+            "grpc_service_config": "cloudtrace_grpc_service_config.json",
+            "id": "google/devtools/cloudtrace/v1",
+            "python-gapic-namespace": "google.cloud",
+            "service_yaml": "cloudtrace_v1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "grpc_service_config": "cloudtrace_grpc_service_config.json",
+            "id": "google/devtools/cloudtrace/v2",
+            "python-gapic-namespace": "google.cloud",
+            "service_yaml": "cloudtrace_v2.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/devtools/containeranalysis"
+        },
+        {
+            "id": "google/devtools/containeranalysis/v1beta1"
+        },
+        {
+            "id": "google/devtools/containeranalysis/v1beta1/vulnerability"
+        },
+        {
+            "id": "google/devtools/containeranalysis/v1beta1/attestation"
+        },
+        {
+            "id": "google/devtools/containeranalysis/v1beta1/deployment"
+        },
+        {
+            "id": "google/devtools/containeranalysis/v1beta1/common"
+        },
+        {
+            "id": "google/devtools/containeranalysis/v1beta1/build"
+        },
+        {
+            "id": "google/devtools/containeranalysis/v1beta1/provenance"
+        },
+        {
+            "id": "google/devtools/containeranalysis/v1beta1/discovery"
+        },
+        {
+            "id": "google/devtools/containeranalysis/v1beta1/image"
+        },
+        {
+            "id": "google/devtools/containeranalysis/v1beta1/package"
+        },
+        {
+            "id": "google/devtools/containeranalysis/v1beta1/grafeas"
+        },
+        {
+            "id": "google/devtools/containeranalysis/v1beta1/cvss"
+        },
+        {
+            "id": "google/devtools/containeranalysis/v1beta1/source"
+        },
+        {
+            "grpc_service_config": "containeranalysis_grpc_service_config.json",
+            "id": "google/devtools/containeranalysis/v1",
+            "python-gapic-namespace": "google.cloud.devtools",
+            "service_yaml": "containeranalysis_v1.yaml",
+            "transport": "grpc+rest",
+            "warehouse-package-name": "google-cloud-containeranalysis"
+        },
+        {
+            "id": "google/devtools/clouderrorreporting"
+        },
+        {
+            "grpc_service_config": "errorreporting_grpc_service_config.json",
+            "id": "google/devtools/clouderrorreporting/v1beta1",
+            "python-gapic-namespace": "google.cloud",
+            "service_yaml": "clouderrorreporting_v1beta1.yaml",
+            "transport": "grpc+rest",
+            "warehouse-package-name": "google-cloud-error-reporting"
+        },
+        {
+            "id": "google/devtools/build"
+        },
+        {
+            "grpc_service_config": "buildeventservice_grpc_service_config.json",
+            "id": "google/devtools/build/v1",
+            "service_yaml": "buildeventservice_v1.yaml",
+            "transport": "grpc"
+        },
+        {
+            "id": "google/devtools/artifactregistry"
+        },
+        {
+            "grpc_service_config": "artifactregistry_grpc_service_config.json",
+            "id": "google/devtools/artifactregistry/v1beta2",
+            "python-gapic-namespace": "google.cloud",
+            "service_yaml": "artifactregistry_v1beta2.yaml",
+            "transport": "grpc+rest",
+            "warehouse-package-name": "google-cloud-artifact-registry"
+        },
+        {
+            "grpc_service_config": "artifactregistry_grpc_service_config.json",
+            "id": "google/devtools/artifactregistry/v1",
+            "python-gapic-namespace": "google.cloud",
+            "service_yaml": "artifactregistry_v1.yaml",
+            "transport": "grpc+rest",
+            "warehouse-package-name": "google-cloud-artifact-registry"
+        },
+        {
+            "id": "google/devtools/clouddebugger"
+        },
+        {
+            "grpc_service_config": "clouddebugger_grpc_service_config.json",
+            "id": "google/devtools/clouddebugger/v2",
+            "python-gapic-namespace": "google.cloud",
+            "service_yaml": "clouddebugger_v2.yaml",
+            "transport": "grpc+rest",
+            "warehouse-package-name": "google-cloud-debugger-client"
+        },
+        {
+            "grpc_service_config": "testing_grpc_service_config.json",
+            "id": "google/devtools/testing/v1",
+            "service_yaml": "testing_v1.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/devtools/cloudprofiler"
+        },
+        {
+            "grpc_service_config": "cloudprofiler_grpc_service_config.json",
+            "id": "google/devtools/cloudprofiler/v2",
+            "service_yaml": "cloudprofiler_v2.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "grpc_service_config": "remoteworkers_grpc_service_config.json",
+            "id": "google/devtools/remoteworkers/v1test2",
+            "service_yaml": "remoteworkers_v1beta2.yaml",
+            "transport": "grpc"
+        },
+        {
+            "id": "google/devtools/source/v1",
+            "python-gapic-namespace": "google.cloud",
+            "transport": "grpc",
+            "warehouse-package-name": "google-cloud-source-context"
+        },
+        {
+            "id": "google/devtools/resultstore/v2"
+        },
+        {
+            "id": "google/analytics/admin"
+        },
+        {
+            "grpc_service_config": "admin_grpc_service_config.json",
+            "id": "google/analytics/admin/v1alpha",
+            "service_yaml": "analyticsadmin_v1alpha.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "grpc_service_config": "admin_grpc_service_config.json",
+            "id": "google/analytics/admin/v1beta",
+            "service_yaml": "analyticsadmin_v1beta.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/analytics/cloud",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/analytics/data"
+        },
+        {
+            "grpc_service_config": "analytics_data_grpc_service_config.json",
+            "id": "google/analytics/data/v1alpha",
+            "service_yaml": "analyticsdata_v1alpha.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "grpc_service_config": "analytics_data_grpc_service_config.json",
+            "id": "google/analytics/data/v1beta",
+            "service_yaml": "analyticsdata_v1beta.yaml",
+            "transport": "grpc+rest"
+        },
+        {
+            "id": "google/area120/tables"
+        },
+        {
+            "grpc_service_config": "tables_grpc_service_config.json",
+            "id": "google/area120/tables/v1alpha1",
+            "service_yaml": "area120tables_v1alpha1.yaml",
+            "transport": "grpc+rest"
+        }
+    ]
+}
