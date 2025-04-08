@@ -783,7 +783,7 @@ class LookupEntryRequest(proto.Message):
             -  ``datacatalog.entry.{PROJECT_ID}.{LOCATION_ID}.{ENTRY_GROUP_ID}.{ENTRY_ID}``
 
             Identifiers (``*_ID``) should comply with the [Lexical
-            structure in Standard SQL]
+            structure in GoogleSQL]
             (https://cloud.google.com/bigquery/docs/reference/standard-sql/lexical).
 
             This field is a member of `oneof`_ ``target_name``.
