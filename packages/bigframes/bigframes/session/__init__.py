@@ -108,11 +108,6 @@ MAX_INLINE_DF_BYTES = 5000
 
 logger = logging.getLogger(__name__)
 
-NON_INLINABLE_DTYPES: Sequence[bigframes.dtypes.Dtype] = (
-    # Currently excluded as doesn't have arrow type
-    bigframes.dtypes.GEO_DTYPE,
-)
-
 
 class Session(
     third_party_pandas_gbq.GBQIOMixin,
@@ -837,17 +832,6 @@ class Session(
             raise ValueError(
                 f"Could not convert with a BigQuery type: `{exc}`. "
             ) from exc
-
-        # Make sure all types are inlinable to avoid escaping errors.
-        inline_types = inline_df._block.expr.schema.dtypes
-        noninlinable_types = [
-            dtype for dtype in inline_types if dtype in NON_INLINABLE_DTYPES
-        ]
-        if len(noninlinable_types) != 0:
-            raise ValueError(
-                f"Could not inline with a BigQuery type: `{noninlinable_types}`. "
-                f"{constants.FEEDBACK_LINK}"
-            )
 
         return inline_df
 

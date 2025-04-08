@@ -813,10 +813,8 @@ class SQLGlotCompiler(abc.ABC):
         elif dtype.is_json():
             return sge.ParseJSON(this=sge.convert(str(value)))
         elif dtype.is_geospatial():
-            args = [value.wkt]
-            if (srid := dtype.srid) is not None:
-                args.append(srid)
-            return self.f.st_geomfromtext(*args)
+            wkt = value if isinstance(value, str) else value.wkt
+            return self.f.st_geogfromtext(wkt)
 
         raise NotImplementedError(f"Unsupported type: {dtype!r}")
 

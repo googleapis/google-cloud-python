@@ -58,18 +58,19 @@ class ArrayValue:
 
     @classmethod
     def from_pyarrow(cls, arrow_table: pa.Table, session: Session):
-        adapted_table = local_data.adapt_pa_table(arrow_table)
-        schema = local_data.arrow_schema_to_bigframes(adapted_table.schema)
+        data_source = local_data.ManagedArrowTable.from_pyarrow(arrow_table)
+        return cls.from_managed(source=data_source, session=session)
 
+    @classmethod
+    def from_managed(cls, source: local_data.ManagedArrowTable, session: Session):
         scan_list = nodes.ScanList(
             tuple(
                 nodes.ScanItem(ids.ColumnId(item.column), item.dtype, item.column)
-                for item in schema.items
+                for item in source.schema.items
             )
         )
-        data_source = local_data.ManagedArrowTable(adapted_table, schema)
         node = nodes.ReadLocalNode(
-            data_source,
+            source,
             session=session,
             scan_list=scan_list,
         )

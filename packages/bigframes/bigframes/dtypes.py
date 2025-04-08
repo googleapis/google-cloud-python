@@ -456,6 +456,8 @@ def bigframes_dtype_to_arrow_dtype(
     if bigframes_dtype in _BIGFRAMES_TO_ARROW:
         return _BIGFRAMES_TO_ARROW[bigframes_dtype]
     if isinstance(bigframes_dtype, pd.ArrowDtype):
+        if pa.types.is_duration(bigframes_dtype.pyarrow_dtype):
+            return bigframes_dtype.pyarrow_dtype
         if pa.types.is_list(bigframes_dtype.pyarrow_dtype):
             return bigframes_dtype.pyarrow_dtype
         if pa.types.is_struct(bigframes_dtype.pyarrow_dtype):

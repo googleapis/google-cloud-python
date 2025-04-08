@@ -53,6 +53,7 @@ import pyarrow as pa
 from bigframes import session
 from bigframes._config import sampling_options
 import bigframes.constants
+from bigframes.core import local_data
 import bigframes.core as core
 import bigframes.core.compile.googlesql as googlesql
 import bigframes.core.expression as ex
@@ -187,8 +188,8 @@ class Block:
 
         pd_data = pd_data.set_axis(column_ids, axis=1)
         pd_data = pd_data.reset_index(names=index_ids)
-        as_pyarrow = pa.Table.from_pandas(pd_data, preserve_index=False)
-        array_value = core.ArrayValue.from_pyarrow(as_pyarrow, session=session)
+        managed_data = local_data.ManagedArrowTable.from_pandas(pd_data)
+        array_value = core.ArrayValue.from_managed(managed_data, session=session)
         block = cls(
             array_value,
             column_labels=column_labels,
