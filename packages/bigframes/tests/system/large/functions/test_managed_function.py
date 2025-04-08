@@ -22,12 +22,6 @@ import bigframes.exceptions as bfe
 import bigframes.pandas as bpd
 from tests.system.utils import cleanup_function_assets
 
-# TODO(shobs): restore these tests after the managed udf cleanup issue is
-# resolved in the test project
-pytestmark = pytest.mark.skip(
-    reason="temporarily disable to debug managed udf cleanup in the test project"
-)
-
 
 def test_managed_function_multiply_with_ibis(
     session,
