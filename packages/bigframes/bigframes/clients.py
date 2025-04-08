@@ -86,7 +86,11 @@ class BqConnectionManager:
         self._cloud_resource_manager_client = cloud_resource_manager_client
 
     def create_bq_connection(
-        self, project_id: str, location: str, connection_id: str, iam_role: str
+        self,
+        project_id: str,
+        location: str,
+        connection_id: str,
+        iam_role: Optional[str] = None,
     ):
         """Create the BQ connection if not exist. In addition, try to add the IAM role to the connection to ensure required permissions.
 
@@ -119,11 +123,12 @@ class BqConnectionManager:
 
         # Ensure IAM role on the BQ connection
         # https://cloud.google.com/bigquery/docs/reference/standard-sql/remote-functions#grant_permission_on_function
-        try:
-            self._ensure_iam_binding(project_id, service_account_id, iam_role)
-        except google.api_core.exceptions.PermissionDenied as ex:
-            ex.message = f"Failed ensuring IAM binding (role={iam_role}, service-account={service_account_id}). {ex.message}"
-            raise
+        if iam_role:
+            try:
+                self._ensure_iam_binding(project_id, service_account_id, iam_role)
+            except google.api_core.exceptions.PermissionDenied as ex:
+                ex.message = f"Failed ensuring IAM binding (role={iam_role}, service-account={service_account_id}). {ex.message}"
+                raise
 
     # Introduce retries to accommodate transient errors like:
     # (1) Etag mismatch,

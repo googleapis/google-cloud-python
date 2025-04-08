@@ -1833,7 +1833,10 @@ class Session(
         return s.rename(name).to_frame()
 
     def _create_bq_connection(
-        self, iam_role: str, *, connection: Optional[str] = None
+        self,
+        *,
+        connection: Optional[str] = None,
+        iam_role: Optional[str] = None,
     ) -> str:
         """Create the connection with the session settings and try to attach iam role to the connection SA.
         If any of project, location or connection isn't specified, use the session defaults. Returns fully-qualified connection name."""

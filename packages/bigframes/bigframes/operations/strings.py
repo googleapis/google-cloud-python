@@ -305,9 +305,7 @@ class StringMethods(bigframes.operations.base.SeriesMethods, vendorstr.StringMet
             raise NotImplementedError()
 
         session = self._block.session
-        connection = session._create_bq_connection(
-            connection=connection, iam_role="storage.objectUser"
-        )
+        connection = session._create_bq_connection(connection=connection)
         return self._apply_binary_op(connection, ops.obj_make_ref_op)
 
 
