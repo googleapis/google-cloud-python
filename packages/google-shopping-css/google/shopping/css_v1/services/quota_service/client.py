@@ -60,37 +60,32 @@ except ImportError:  # pragma: NO COVER
 
 _LOGGER = std_logging.getLogger(__name__)
 
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.shopping.type.types import types
+from google.shopping.css_v1.services.quota_service import pagers
+from google.shopping.css_v1.types import quota
 
-from google.shopping.css_v1.types import css_product_common, css_product_inputs
-
-from .transports.base import DEFAULT_CLIENT_INFO, CssProductInputsServiceTransport
-from .transports.grpc import CssProductInputsServiceGrpcTransport
-from .transports.grpc_asyncio import CssProductInputsServiceGrpcAsyncIOTransport
-from .transports.rest import CssProductInputsServiceRestTransport
+from .transports.base import DEFAULT_CLIENT_INFO, QuotaServiceTransport
+from .transports.grpc import QuotaServiceGrpcTransport
+from .transports.grpc_asyncio import QuotaServiceGrpcAsyncIOTransport
+from .transports.rest import QuotaServiceRestTransport
 
 
-class CssProductInputsServiceClientMeta(type):
-    """Metaclass for the CssProductInputsService client.
+class QuotaServiceClientMeta(type):
+    """Metaclass for the QuotaService client.
 
     This provides class-level methods for building and retrieving
     support objects (e.g. transport) without polluting the client instance
     objects.
     """
 
-    _transport_registry = (
-        OrderedDict()
-    )  # type: Dict[str, Type[CssProductInputsServiceTransport]]
-    _transport_registry["grpc"] = CssProductInputsServiceGrpcTransport
-    _transport_registry["grpc_asyncio"] = CssProductInputsServiceGrpcAsyncIOTransport
-    _transport_registry["rest"] = CssProductInputsServiceRestTransport
+    _transport_registry = OrderedDict()  # type: Dict[str, Type[QuotaServiceTransport]]
+    _transport_registry["grpc"] = QuotaServiceGrpcTransport
+    _transport_registry["grpc_asyncio"] = QuotaServiceGrpcAsyncIOTransport
+    _transport_registry["rest"] = QuotaServiceRestTransport
 
     def get_transport_class(
         cls,
         label: Optional[str] = None,
-    ) -> Type[CssProductInputsServiceTransport]:
+    ) -> Type[QuotaServiceTransport]:
         """Returns an appropriate transport class.
 
         Args:
@@ -109,9 +104,9 @@ class CssProductInputsServiceClientMeta(type):
         return next(iter(cls._transport_registry.values()))
 
 
-class CssProductInputsServiceClient(metaclass=CssProductInputsServiceClientMeta):
-    """Service to use CssProductInput resource.
-    This service helps to insert/update/delete CSS Products.
+class QuotaServiceClient(metaclass=QuotaServiceClientMeta):
+    """Service to get method call quota information per CSS API
+    method.
     """
 
     @staticmethod
@@ -164,7 +159,7 @@ class CssProductInputsServiceClient(metaclass=CssProductInputsServiceClientMeta)
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            CssProductInputsServiceClient: The constructed client.
+            QuotaServiceClient: The constructed client.
         """
         credentials = service_account.Credentials.from_service_account_info(info)
         kwargs["credentials"] = credentials
@@ -182,7 +177,7 @@ class CssProductInputsServiceClient(metaclass=CssProductInputsServiceClientMeta)
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            CssProductInputsServiceClient: The constructed client.
+            QuotaServiceClient: The constructed client.
         """
         credentials = service_account.Credentials.from_service_account_file(filename)
         kwargs["credentials"] = credentials
@@ -191,32 +186,31 @@ class CssProductInputsServiceClient(metaclass=CssProductInputsServiceClientMeta)
     from_service_account_json = from_service_account_file
 
     @property
-    def transport(self) -> CssProductInputsServiceTransport:
+    def transport(self) -> QuotaServiceTransport:
         """Returns the transport used by the client instance.
 
         Returns:
-            CssProductInputsServiceTransport: The transport used by the client
+            QuotaServiceTransport: The transport used by the client
                 instance.
         """
         return self._transport
 
     @staticmethod
-    def css_product_input_path(
+    def quota_group_path(
         account: str,
-        css_product_input: str,
+        quota_group: str,
     ) -> str:
-        """Returns a fully-qualified css_product_input string."""
-        return "accounts/{account}/cssProductInputs/{css_product_input}".format(
+        """Returns a fully-qualified quota_group string."""
+        return "accounts/{account}/quotaGroups/{quota_group}".format(
             account=account,
-            css_product_input=css_product_input,
+            quota_group=quota_group,
         )
 
     @staticmethod
-    def parse_css_product_input_path(path: str) -> Dict[str, str]:
-        """Parses a css_product_input path into its component segments."""
+    def parse_quota_group_path(path: str) -> Dict[str, str]:
+        """Parses a quota_group path into its component segments."""
         m = re.match(
-            r"^accounts/(?P<account>.+?)/cssProductInputs/(?P<css_product_input>.+?)$",
-            path,
+            r"^accounts/(?P<account>.+?)/quotaGroups/(?P<quota_group>.+?)$", path
         )
         return m.groupdict() if m else {}
 
@@ -439,17 +433,15 @@ class CssProductInputsServiceClient(metaclass=CssProductInputsServiceClientMeta)
         elif use_mtls_endpoint == "always" or (
             use_mtls_endpoint == "auto" and client_cert_source
         ):
-            _default_universe = CssProductInputsServiceClient._DEFAULT_UNIVERSE
+            _default_universe = QuotaServiceClient._DEFAULT_UNIVERSE
             if universe_domain != _default_universe:
                 raise MutualTLSChannelError(
                     f"mTLS is not supported in any universe other than {_default_universe}."
                 )
-            api_endpoint = CssProductInputsServiceClient.DEFAULT_MTLS_ENDPOINT
+            api_endpoint = QuotaServiceClient.DEFAULT_MTLS_ENDPOINT
         else:
-            api_endpoint = (
-                CssProductInputsServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(
-                    UNIVERSE_DOMAIN=universe_domain
-                )
+            api_endpoint = QuotaServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(
+                UNIVERSE_DOMAIN=universe_domain
             )
         return api_endpoint
 
@@ -469,7 +461,7 @@ class CssProductInputsServiceClient(metaclass=CssProductInputsServiceClientMeta)
         Raises:
             ValueError: If the universe domain is an empty string.
         """
-        universe_domain = CssProductInputsServiceClient._DEFAULT_UNIVERSE
+        universe_domain = QuotaServiceClient._DEFAULT_UNIVERSE
         if client_universe_domain is not None:
             universe_domain = client_universe_domain
         elif universe_domain_env is not None:
@@ -541,16 +533,12 @@ class CssProductInputsServiceClient(metaclass=CssProductInputsServiceClientMeta)
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
         transport: Optional[
-            Union[
-                str,
-                CssProductInputsServiceTransport,
-                Callable[..., CssProductInputsServiceTransport],
-            ]
+            Union[str, QuotaServiceTransport, Callable[..., QuotaServiceTransport]]
         ] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
-        """Instantiates the css product inputs service client.
+        """Instantiates the quota service client.
 
         Args:
             credentials (Optional[google.auth.credentials.Credentials]): The
@@ -558,10 +546,10 @@ class CssProductInputsServiceClient(metaclass=CssProductInputsServiceClientMeta)
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Optional[Union[str,CssProductInputsServiceTransport,Callable[..., CssProductInputsServiceTransport]]]):
+            transport (Optional[Union[str,QuotaServiceTransport,Callable[..., QuotaServiceTransport]]]):
                 The transport to use, or a Callable that constructs and returns a new transport.
                 If a Callable is given, it will be called with the same set of initialization
-                arguments as used in the CssProductInputsServiceTransport constructor.
+                arguments as used in the QuotaServiceTransport constructor.
                 If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
@@ -614,13 +602,11 @@ class CssProductInputsServiceClient(metaclass=CssProductInputsServiceClientMeta)
             self._use_client_cert,
             self._use_mtls_endpoint,
             self._universe_domain_env,
-        ) = CssProductInputsServiceClient._read_environment_variables()
-        self._client_cert_source = (
-            CssProductInputsServiceClient._get_client_cert_source(
-                self._client_options.client_cert_source, self._use_client_cert
-            )
+        ) = QuotaServiceClient._read_environment_variables()
+        self._client_cert_source = QuotaServiceClient._get_client_cert_source(
+            self._client_options.client_cert_source, self._use_client_cert
         )
-        self._universe_domain = CssProductInputsServiceClient._get_universe_domain(
+        self._universe_domain = QuotaServiceClient._get_universe_domain(
             universe_domain_opt, self._universe_domain_env
         )
         self._api_endpoint = None  # updated below, depending on `transport`
@@ -641,9 +627,9 @@ class CssProductInputsServiceClient(metaclass=CssProductInputsServiceClientMeta)
         # Save or instantiate the transport.
         # Ordinarily, we provide the transport, but allowing a custom transport
         # instance provides an extensibility point for unusual situations.
-        transport_provided = isinstance(transport, CssProductInputsServiceTransport)
+        transport_provided = isinstance(transport, QuotaServiceTransport)
         if transport_provided:
-            # transport is a CssProductInputsServiceTransport instance.
+            # transport is a QuotaServiceTransport instance.
             if credentials or self._client_options.credentials_file or api_key_value:
                 raise ValueError(
                     "When providing a transport instance, "
@@ -654,17 +640,14 @@ class CssProductInputsServiceClient(metaclass=CssProductInputsServiceClientMeta)
                     "When providing a transport instance, provide its scopes "
                     "directly."
                 )
-            self._transport = cast(CssProductInputsServiceTransport, transport)
+            self._transport = cast(QuotaServiceTransport, transport)
             self._api_endpoint = self._transport.host
 
-        self._api_endpoint = (
-            self._api_endpoint
-            or CssProductInputsServiceClient._get_api_endpoint(
-                self._client_options.api_endpoint,
-                self._client_cert_source,
-                self._universe_domain,
-                self._use_mtls_endpoint,
-            )
+        self._api_endpoint = self._api_endpoint or QuotaServiceClient._get_api_endpoint(
+            self._client_options.api_endpoint,
+            self._client_cert_source,
+            self._universe_domain,
+            self._use_mtls_endpoint,
         )
 
         if not transport_provided:
@@ -678,12 +661,11 @@ class CssProductInputsServiceClient(metaclass=CssProductInputsServiceClientMeta)
                 )
 
             transport_init: Union[
-                Type[CssProductInputsServiceTransport],
-                Callable[..., CssProductInputsServiceTransport],
+                Type[QuotaServiceTransport], Callable[..., QuotaServiceTransport]
             ] = (
-                CssProductInputsServiceClient.get_transport_class(transport)
+                QuotaServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
-                else cast(Callable[..., CssProductInputsServiceTransport], transport)
+                else cast(Callable[..., QuotaServiceTransport], transport)
             )
             # initialize with the provided callable or the passed in class
             self._transport = transport_init(
@@ -703,9 +685,9 @@ class CssProductInputsServiceClient(metaclass=CssProductInputsServiceClientMeta)
                 std_logging.DEBUG
             ):  # pragma: NO COVER
                 _LOGGER.debug(
-                    "Created client `google.shopping.css_v1.CssProductInputsServiceClient`.",
+                    "Created client `google.shopping.css_v1.QuotaServiceClient`.",
                     extra={
-                        "serviceName": "google.shopping.css.v1.CssProductInputsService",
+                        "serviceName": "google.shopping.css.v1.QuotaService",
                         "universeDomain": getattr(
                             self._transport._credentials, "universe_domain", ""
                         ),
@@ -716,29 +698,22 @@ class CssProductInputsServiceClient(metaclass=CssProductInputsServiceClientMeta)
                     }
                     if hasattr(self._transport, "_credentials")
                     else {
-                        "serviceName": "google.shopping.css.v1.CssProductInputsService",
+                        "serviceName": "google.shopping.css.v1.QuotaService",
                         "credentialsType": None,
                     },
                 )
 
-    def insert_css_product_input(
+    def list_quota_groups(
         self,
-        request: Optional[
-            Union[css_product_inputs.InsertCssProductInputRequest, dict]
-        ] = None,
+        request: Optional[Union[quota.ListQuotaGroupsRequest, dict]] = None,
         *,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> css_product_inputs.CssProductInput:
-        r"""Uploads a CssProductInput to your CSS Center account.
-        If an input with the same contentLanguage, identity,
-        feedLabel and feedId already exists, this method
-        replaces that entry.
-
-        After inserting, updating, or deleting a CSS Product
-        input, it may take several minutes before the processed
-        CSS Product can be retrieved.
+    ) -> pagers.ListQuotaGroupsPager:
+        r"""Lists the daily call quota and usage per group for
+        your CSS Center account.
 
         .. code-block:: python
 
@@ -751,31 +726,37 @@ class CssProductInputsServiceClient(metaclass=CssProductInputsServiceClientMeta)
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.shopping import css_v1
 
-            def sample_insert_css_product_input():
+            def sample_list_quota_groups():
                 # Create a client
-                client = css_v1.CssProductInputsServiceClient()
+                client = css_v1.QuotaServiceClient()
 
                 # Initialize request argument(s)
-                css_product_input = css_v1.CssProductInput()
-                css_product_input.raw_provided_id = "raw_provided_id_value"
-                css_product_input.content_language = "content_language_value"
-                css_product_input.feed_label = "feed_label_value"
-
-                request = css_v1.InsertCssProductInputRequest(
+                request = css_v1.ListQuotaGroupsRequest(
                     parent="parent_value",
-                    css_product_input=css_product_input,
                 )
 
                 # Make the request
-                response = client.insert_css_product_input(request=request)
+                page_result = client.list_quota_groups(request=request)
 
                 # Handle the response
-                print(response)
+                for response in page_result:
+                    print(response)
 
         Args:
-            request (Union[google.shopping.css_v1.types.InsertCssProductInputRequest, dict]):
+            request (Union[google.shopping.css_v1.types.ListQuotaGroupsRequest, dict]):
                 The request object. Request message for the
-                InsertCssProductInput method.
+                ListQuotaGroups method.
+            parent (str):
+                Required. The CSS account that owns
+                the collection of method quotas and
+                resources. In most cases, this is the
+                CSS domain. Format:
+
+                accounts/{account}
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -785,23 +766,39 @@ class CssProductInputsServiceClient(metaclass=CssProductInputsServiceClientMeta)
                 be of type `bytes`.
 
         Returns:
-            google.shopping.css_v1.types.CssProductInput:
-                This resource represents input data
-                you submit for a CSS Product, not the
-                processed CSS Product that you see in
-                CSS Center, in Shopping Ads, or across
-                Google surfaces.
+            google.shopping.css_v1.services.quota_service.pagers.ListQuotaGroupsPager:
+                Response message for the
+                ListMethodGroups method.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
 
         """
         # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [parent]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(request, css_product_inputs.InsertCssProductInputRequest):
-            request = css_product_inputs.InsertCssProductInputRequest(request)
+        if not isinstance(request, quota.ListQuotaGroupsRequest):
+            request = quota.ListQuotaGroupsRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.insert_css_product_input]
+        rpc = self._transport._wrapped_methods[self._transport.list_quota_groups]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -820,153 +817,12 @@ class CssProductInputsServiceClient(metaclass=CssProductInputsServiceClientMeta)
             metadata=metadata,
         )
 
-        # Done; return the response.
-        return response
-
-    def update_css_product_input(
-        self,
-        request: Optional[
-            Union[css_product_inputs.UpdateCssProductInputRequest, dict]
-        ] = None,
-        *,
-        css_product_input: Optional[css_product_inputs.CssProductInput] = None,
-        update_mask: Optional[field_mask_pb2.FieldMask] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> css_product_inputs.CssProductInput:
-        r"""Updates the existing Css Product input in your CSS
-        Center account.
-        After inserting, updating, or deleting a CSS Product
-        input, it may take several minutes before the processed
-        Css Product can be retrieved.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.shopping import css_v1
-
-            def sample_update_css_product_input():
-                # Create a client
-                client = css_v1.CssProductInputsServiceClient()
-
-                # Initialize request argument(s)
-                css_product_input = css_v1.CssProductInput()
-                css_product_input.raw_provided_id = "raw_provided_id_value"
-                css_product_input.content_language = "content_language_value"
-                css_product_input.feed_label = "feed_label_value"
-
-                request = css_v1.UpdateCssProductInputRequest(
-                    css_product_input=css_product_input,
-                )
-
-                # Make the request
-                response = client.update_css_product_input(request=request)
-
-                # Handle the response
-                print(response)
-
-        Args:
-            request (Union[google.shopping.css_v1.types.UpdateCssProductInputRequest, dict]):
-                The request object. Request message for the
-                UpdateCssProductInput method.
-            css_product_input (google.shopping.css_v1.types.CssProductInput):
-                Required. The CSS product input
-                resource to update. Information you
-                submit will be applied to the processed
-                CSS product as well.
-
-                This corresponds to the ``css_product_input`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            update_mask (google.protobuf.field_mask_pb2.FieldMask):
-                The list of CSS product attributes to be updated.
-
-                If the update mask is omitted, then it is treated as
-                implied field mask equivalent to all fields that are
-                populated (have a non-empty value).
-
-                Attributes specified in the update mask without a value
-                specified in the body will be deleted from the CSS
-                product.
-
-                Update mask can only be specified for top level fields
-                in attributes and custom attributes.
-
-                To specify the update mask for custom attributes you
-                need to add the ``custom_attribute.`` prefix.
-
-                Providing special "*" value for full CSS product
-                replacement is not supported.
-
-                This corresponds to the ``update_mask`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
-                sent along with the request as metadata. Normally, each value must be of type `str`,
-                but for metadata keys ending with the suffix `-bin`, the corresponding values must
-                be of type `bytes`.
-
-        Returns:
-            google.shopping.css_v1.types.CssProductInput:
-                This resource represents input data
-                you submit for a CSS Product, not the
-                processed CSS Product that you see in
-                CSS Center, in Shopping Ads, or across
-                Google surfaces.
-
-        """
-        # Create or coerce a protobuf request object.
-        # - Quick check: If we got a request object, we should *not* have
-        #   gotten any keyword arguments that map to the request.
-        flattened_params = [css_product_input, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
-        # - Use the request object if provided (there's no risk of modifying the input as
-        #   there are no flattened fields), or create one.
-        if not isinstance(request, css_product_inputs.UpdateCssProductInputRequest):
-            request = css_product_inputs.UpdateCssProductInputRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if css_product_input is not None:
-                request.css_product_input = css_product_input
-            if update_mask is not None:
-                request.update_mask = update_mask
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.update_css_product_input]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("css_product_input.name", request.css_product_input.name),)
-            ),
-        )
-
-        # Validate the universe domain.
-        self._validate_universe_domain()
-
-        # Send the request.
-        response = rpc(
-            request,
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.ListQuotaGroupsPager(
+            method=rpc,
+            request=request,
+            response=response,
             retry=retry,
             timeout=timeout,
             metadata=metadata,
@@ -975,112 +831,7 @@ class CssProductInputsServiceClient(metaclass=CssProductInputsServiceClientMeta)
         # Done; return the response.
         return response
 
-    def delete_css_product_input(
-        self,
-        request: Optional[
-            Union[css_product_inputs.DeleteCssProductInputRequest, dict]
-        ] = None,
-        *,
-        name: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> None:
-        r"""Deletes a CSS Product input from your CSS Center
-        account.
-        After a delete it may take several minutes until the
-        input is no longer available.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.shopping import css_v1
-
-            def sample_delete_css_product_input():
-                # Create a client
-                client = css_v1.CssProductInputsServiceClient()
-
-                # Initialize request argument(s)
-                request = css_v1.DeleteCssProductInputRequest(
-                    name="name_value",
-                )
-
-                # Make the request
-                client.delete_css_product_input(request=request)
-
-        Args:
-            request (Union[google.shopping.css_v1.types.DeleteCssProductInputRequest, dict]):
-                The request object. Request message for the
-                DeleteCssProductInput method.
-            name (str):
-                Required. The name of the CSS product input resource to
-                delete. Format:
-                accounts/{account}/cssProductInputs/{css_product_input},
-                where the last section ``css_product_input`` consists of
-                3 parts: contentLanguage~feedLabel~offerId. Example:
-                accounts/123/cssProductInputs/de~DE~rawProvidedId123
-
-                This corresponds to the ``name`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
-                sent along with the request as metadata. Normally, each value must be of type `str`,
-                but for metadata keys ending with the suffix `-bin`, the corresponding values must
-                be of type `bytes`.
-        """
-        # Create or coerce a protobuf request object.
-        # - Quick check: If we got a request object, we should *not* have
-        #   gotten any keyword arguments that map to the request.
-        flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
-        # - Use the request object if provided (there's no risk of modifying the input as
-        #   there are no flattened fields), or create one.
-        if not isinstance(request, css_product_inputs.DeleteCssProductInputRequest):
-            request = css_product_inputs.DeleteCssProductInputRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if name is not None:
-                request.name = name
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.delete_css_product_input]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
-
-        # Validate the universe domain.
-        self._validate_universe_domain()
-
-        # Send the request.
-        rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-    def __enter__(self) -> "CssProductInputsServiceClient":
+    def __enter__(self) -> "QuotaServiceClient":
         return self
 
     def __exit__(self, type, value, traceback):
@@ -1099,4 +850,4 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
 )
 
 
-__all__ = ("CssProductInputsServiceClient",)
+__all__ = ("QuotaServiceClient",)

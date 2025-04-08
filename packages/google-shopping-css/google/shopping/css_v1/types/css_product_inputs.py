@@ -43,7 +43,10 @@ class CssProductInput(proto.Message):
     Attributes:
         name (str):
             The name of the CSS Product input. Format:
-            ``accounts/{account}/cssProductInputs/{css_product_input}``
+            ``accounts/{account}/cssProductInputs/{css_product_input}``,
+            where the last section ``css_product_input`` consists of 3
+            parts: contentLanguage~feedLabel~offerId. Example:
+            accounts/123/cssProductInputs/de~DE~rawProvidedId123
         final_name (str):
             Output only. The name of the processed CSS Product. Format:
             ``accounts/{account}/cssProducts/{css_product}`` ".
@@ -218,7 +221,10 @@ class DeleteCssProductInputRequest(proto.Message):
         name (str):
             Required. The name of the CSS product input resource to
             delete. Format:
-            accounts/{account}/cssProductInputs/{css_product_input}
+            accounts/{account}/cssProductInputs/{css_product_input},
+            where the last section ``css_product_input`` consists of 3
+            parts: contentLanguage~feedLabel~offerId. Example:
+            accounts/123/cssProductInputs/de~DE~rawProvidedId123
         supplemental_feed_id (int):
             The Content API Supplemental Feed ID.
             The field must not be set if the action applies
