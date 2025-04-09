@@ -10,6 +10,7 @@
 dist
 build
 eggs
+.eggs
 parts
 bin
 var
@@ -26,21 +27,12 @@ pip-log.txt
 # Unit test / coverage reports
 .coverage
 .nox
-.tox
 .cache
 .pytest_cache
-htmlcov
 
-# Translations
-*.mo
 
 # Mac
 .DS_Store
-
-# Mr Developer
-.mr.developer.cfg
-.project
-.pydevproject
 
 # JetBrains
 .idea
@@ -53,13 +45,16 @@ htmlcov
 
 # Built documentation
 docs/_build
-*/docs/_build
-docs/_build_doc2dash
-bigquery/docs/generated
+**/docs/_build
+docs.metadata
 
 # Virtual environment
 env/
+venv/
+
+# Test logs
 coverage.xml
+*sponge_log.xml
 
 # System test environment variables.
 system_tests/local_test_setup
@@ -67,10 +62,3 @@ system_tests/local_test_setup
 # Make sure a generated file isn't accidentally committed.
 pylintrc
 pylintrc.test
-
-# Directories used for creating generated PB2 files
-generated_python/
-cloud-bigtable-client/
-googleapis-pb/
-grpc_python_venv/
-pytype_output/
