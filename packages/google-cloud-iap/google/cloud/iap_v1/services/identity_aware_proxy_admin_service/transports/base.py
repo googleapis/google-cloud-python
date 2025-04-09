@@ -156,6 +156,11 @@ class IdentityAwareProxyAdminServiceTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.validate_iap_attribute_expression: gapic_v1.method.wrap_method(
+                self.validate_iap_attribute_expression,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.list_tunnel_dest_groups: gapic_v1.method.wrap_method(
                 self.list_tunnel_dest_groups,
                 default_timeout=None,
@@ -237,6 +242,18 @@ class IdentityAwareProxyAdminServiceTransport(abc.ABC):
     ) -> Callable[
         [service.UpdateIapSettingsRequest],
         Union[service.IapSettings, Awaitable[service.IapSettings]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def validate_iap_attribute_expression(
+        self,
+    ) -> Callable[
+        [service.ValidateIapAttributeExpressionRequest],
+        Union[
+            service.ValidateIapAttributeExpressionResponse,
+            Awaitable[service.ValidateIapAttributeExpressionResponse],
+        ],
     ]:
         raise NotImplementedError()
 

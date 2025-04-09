@@ -39,12 +39,8 @@ def sample_create_tunnel_dest_group():
     client = iap_v1.IdentityAwareProxyAdminServiceClient()
 
     # Initialize request argument(s)
-    tunnel_dest_group = iap_v1.TunnelDestGroup()
-    tunnel_dest_group.name = "name_value"
-
     request = iap_v1.CreateTunnelDestGroupRequest(
         parent="parent_value",
-        tunnel_dest_group=tunnel_dest_group,
         tunnel_dest_group_id="tunnel_dest_group_id_value",
     )
 

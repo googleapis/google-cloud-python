@@ -470,6 +470,39 @@ class IdentityAwareProxyAdminServiceGrpcTransport(
         return self._stubs["update_iap_settings"]
 
     @property
+    def validate_iap_attribute_expression(
+        self,
+    ) -> Callable[
+        [service.ValidateIapAttributeExpressionRequest],
+        service.ValidateIapAttributeExpressionResponse,
+    ]:
+        r"""Return a callable for the validate iap attribute
+        expression method over gRPC.
+
+        Validates that a given CEL expression conforms to IAP
+        restrictions.
+
+        Returns:
+            Callable[[~.ValidateIapAttributeExpressionRequest],
+                    ~.ValidateIapAttributeExpressionResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "validate_iap_attribute_expression" not in self._stubs:
+            self._stubs[
+                "validate_iap_attribute_expression"
+            ] = self._logged_channel.unary_unary(
+                "/google.cloud.iap.v1.IdentityAwareProxyAdminService/ValidateIapAttributeExpression",
+                request_serializer=service.ValidateIapAttributeExpressionRequest.serialize,
+                response_deserializer=service.ValidateIapAttributeExpressionResponse.deserialize,
+            )
+        return self._stubs["validate_iap_attribute_expression"]
+
+    @property
     def list_tunnel_dest_groups(
         self,
     ) -> Callable[
