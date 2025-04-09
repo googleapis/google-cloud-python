@@ -115,9 +115,24 @@
                 "list_gi_versions"
               ]
             },
+            "RestartAutonomousDatabase": {
+              "methods": [
+                "restart_autonomous_database"
+              ]
+            },
             "RestoreAutonomousDatabase": {
               "methods": [
                 "restore_autonomous_database"
+              ]
+            },
+            "StartAutonomousDatabase": {
+              "methods": [
+                "start_autonomous_database"
+              ]
+            },
+            "StopAutonomousDatabase": {
+              "methods": [
+                "stop_autonomous_database"
               ]
             }
           }

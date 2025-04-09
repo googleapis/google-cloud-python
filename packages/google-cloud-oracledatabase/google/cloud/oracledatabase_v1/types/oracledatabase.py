@@ -66,6 +66,9 @@ __protobuf__ = proto.module(
         "CreateAutonomousDatabaseRequest",
         "DeleteAutonomousDatabaseRequest",
         "RestoreAutonomousDatabaseRequest",
+        "StopAutonomousDatabaseRequest",
+        "StartAutonomousDatabaseRequest",
+        "RestartAutonomousDatabaseRequest",
         "GenerateAutonomousDatabaseWalletRequest",
         "GenerateAutonomousDatabaseWalletResponse",
         "ListAutonomousDbVersionsRequest",
@@ -977,6 +980,54 @@ class RestoreAutonomousDatabaseRequest(proto.Message):
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
+    )
+
+
+class StopAutonomousDatabaseRequest(proto.Message):
+    r"""The request for ``AutonomousDatabase.Stop``.
+
+    Attributes:
+        name (str):
+            Required. The name of the Autonomous Database in the
+            following format:
+            projects/{project}/locations/{location}/autonomousDatabases/{autonomous_database}.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class StartAutonomousDatabaseRequest(proto.Message):
+    r"""The request for ``AutonomousDatabase.Start``.
+
+    Attributes:
+        name (str):
+            Required. The name of the Autonomous Database in the
+            following format:
+            projects/{project}/locations/{location}/autonomousDatabases/{autonomous_database}.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class RestartAutonomousDatabaseRequest(proto.Message):
+    r"""The request for ``AutonomousDatabase.Restart``.
+
+    Attributes:
+        name (str):
+            Required. The name of the Autonomous Database in the
+            following format:
+            projects/{project}/locations/{location}/autonomousDatabases/{autonomous_database}.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
     )
 
 

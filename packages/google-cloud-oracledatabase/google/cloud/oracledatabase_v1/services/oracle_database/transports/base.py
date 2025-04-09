@@ -413,6 +413,21 @@ class OracleDatabaseTransport(abc.ABC):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
+            self.stop_autonomous_database: gapic_v1.method.wrap_method(
+                self.stop_autonomous_database,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.start_autonomous_database: gapic_v1.method.wrap_method(
+                self.start_autonomous_database,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.restart_autonomous_database: gapic_v1.method.wrap_method(
+                self.restart_autonomous_database,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.get_location: gapic_v1.method.wrap_method(
                 self.get_location,
                 default_timeout=None,
@@ -696,6 +711,33 @@ class OracleDatabaseTransport(abc.ABC):
             oracledatabase.ListAutonomousDatabaseBackupsResponse,
             Awaitable[oracledatabase.ListAutonomousDatabaseBackupsResponse],
         ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def stop_autonomous_database(
+        self,
+    ) -> Callable[
+        [oracledatabase.StopAutonomousDatabaseRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def start_autonomous_database(
+        self,
+    ) -> Callable[
+        [oracledatabase.StartAutonomousDatabaseRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def restart_autonomous_database(
+        self,
+    ) -> Callable[
+        [oracledatabase.RestartAutonomousDatabaseRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()
 
