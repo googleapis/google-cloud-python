@@ -21,7 +21,6 @@ import warnings
 
 import google.api_core.exceptions
 import google.auth.credentials
-import jellyfish
 
 import bigframes.constants
 import bigframes.enums
@@ -37,6 +36,7 @@ UNKNOWN_LOCATION_MESSAGE = "The location '{location}' is set to an unknown value
 
 
 def _get_validated_location(value: Optional[str]) -> Optional[str]:
+    import bigframes._tools.strings
 
     if value is None or value in bigframes.constants.ALL_BIGQUERY_LOCATIONS:
         return value
@@ -53,7 +53,7 @@ def _get_validated_location(value: Optional[str]) -> Optional[str]:
 
     possibility = min(
         bigframes.constants.ALL_BIGQUERY_LOCATIONS,
-        key=lambda item: jellyfish.levenshtein_distance(location, item),
+        key=lambda item: bigframes._tools.strings.levenshtein_distance(location, item),
     )
     # There are many layers before we get to (possibly) the user's code:
     # -> bpd.options.bigquery.location = "us-central-1"

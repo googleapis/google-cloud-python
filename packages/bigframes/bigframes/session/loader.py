@@ -33,7 +33,6 @@ import google.cloud.bigquery_connection_v1
 import google.cloud.bigquery_storage_v1
 import google.cloud.functions_v2
 import google.cloud.resourcemanager_v3
-import jellyfish
 import pandas
 import pandas_gbq.schema.pandas_to_bigquery  # type: ignore
 
@@ -296,6 +295,7 @@ class GbqDataLoader:
         filters: third_party_pandas_gbq.FiltersType = (),
         enable_snapshot: bool = True,
     ) -> dataframe.DataFrame:
+        import bigframes._tools.strings
         import bigframes.dataframe as dataframe
 
         # ---------------------------------
@@ -336,7 +336,9 @@ class GbqDataLoader:
             if key not in table_column_names:
                 possibility = min(
                     table_column_names,
-                    key=lambda item: jellyfish.levenshtein_distance(key, item),
+                    key=lambda item: bigframes._tools.strings.levenshtein_distance(
+                        key, item
+                    ),
                 )
                 raise ValueError(
                     f"Column '{key}' of `columns` not found in this table. Did you mean '{possibility}'?"
@@ -354,7 +356,9 @@ class GbqDataLoader:
             if key not in table_column_names:
                 possibility = min(
                     table_column_names,
-                    key=lambda item: jellyfish.levenshtein_distance(key, item),
+                    key=lambda item: bigframes._tools.strings.levenshtein_distance(
+                        key, item
+                    ),
                 )
                 raise ValueError(
                     f"Column '{key}' of `index_col` not found in this table. Did you mean '{possibility}'?"
