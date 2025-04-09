@@ -1830,13 +1830,34 @@ class Method:
         """Return the identifier data to be used in templates."""
         return self.meta.address
 
+    def _validate_paged_field_size_type(self, page_field_size) -> bool:
+        """Validates allowed paged_field_size type(s).
+
+        Confirms whether the paged_field_size.type is an allowed wrapper type:
+        The norm is for type to be int, but an additional check is included to
+        account for BigQuery legacy APIs which allowed UInt32Value and
+        Int32Value.
+        """
+
+        pb_type = page_field_size.type
+
+        return pb_type == int or (
+            isinstance(pb_type, MessageType)
+            and pb_type.message_pb.name in {"UInt32Value", "Int32Value"}
+        )
+
     @utils.cached_property
     def paged_result_field(self) -> Optional[Field]:
-        """Return the response pagination field if the method is paginated."""
-        # If the request field lacks any of the expected pagination fields,
-        # then the method is not paginated.
+        """Return the response pagination field if the method is paginated.
 
-        # The request must have page_token and next_page_token as they keep track of pages
+        The request field must have a page_token field and a page_size field (or
+        for legacy APIs, a max_results field) and the response field
+        must have a next_token_field and a repeated field.
+
+        For the purposes of supporting legacy APIs, additional wrapper types are
+        allowed.
+        """
+
         for source, source_type, name in (
             (self.input, str, "page_token"),
             (self.output, str, "next_page_token"),
@@ -1845,13 +1866,18 @@ class Method:
             if not field or field.type != source_type:
                 return None
 
-        # The request must have max_results or page_size
+        # The request must have page_size (or max_results if legacy API)
         page_fields = (
             self.input.fields.get("max_results", None),
             self.input.fields.get("page_size", None),
         )
         page_field_size = next((field for field in page_fields if field), None)
-        if not page_field_size or page_field_size.type != int:
+
+        if not page_field_size:
+            return None
+
+        # Confirm whether the paged_field_size is an allowed type.
+        if not self._validate_paged_field_size_type(page_field_size=page_field_size):
             return None
 
         # Return the first repeated field.
