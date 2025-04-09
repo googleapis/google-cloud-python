@@ -1805,9 +1805,7 @@ class Session(
             raise NotImplementedError()
 
         # TODO(garrettwu): switch to pseudocolumn when b/374988109 is done.
-        connection = self._create_bq_connection(
-            connection=connection, iam_role="storage.objectUser"
-        )
+        connection = self._create_bq_connection(connection=connection)
 
         table = self._create_object_table(path, connection)
 
