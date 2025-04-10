@@ -3798,7 +3798,7 @@ class Table(Expr, _FixedTextJupyterMixin):
         ...     names_pattern=r"wk(.+)",
         ...     names_transform=int,
         ...     values_to="rank",
-        ...     values_transform=_.cast("int"),
+        ...     values_transform=_.cast(int),
         ... ).drop_null("rank")
         ┏━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━┳━━━━━━┳━━━━━━━┓
         ┃ artist  ┃ track                   ┃ date_entered ┃ week ┃ rank  ┃

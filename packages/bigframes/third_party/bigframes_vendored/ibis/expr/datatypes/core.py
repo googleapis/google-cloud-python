@@ -168,15 +168,6 @@ class DataType(Concrete, Coercible):
         return castable(self, to, **kwargs)
 
     @classmethod
-    def from_string(cls, value) -> Self:
-        from bigframes_vendored.ibis.expr.datatypes.parse import parse
-
-        try:
-            return parse(value)
-        except SyntaxError:
-            raise TypeError(f"{value!r} cannot be parsed as a datatype")
-
-    @classmethod
     def from_typehint(cls, typ, nullable=True) -> Self:
         origin_type = get_origin(typ)
 

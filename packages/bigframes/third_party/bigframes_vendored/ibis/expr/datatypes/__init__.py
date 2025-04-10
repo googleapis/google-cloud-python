@@ -4,7 +4,6 @@ from __future__ import annotations
 
 from bigframes_vendored.ibis.expr.datatypes.cast import *  # noqa: F403
 from bigframes_vendored.ibis.expr.datatypes.core import *  # noqa: F403
-from bigframes_vendored.ibis.expr.datatypes.parse import *  # noqa: F403
 from bigframes_vendored.ibis.expr.datatypes.value import *  # noqa: F403
 
 halffloat = float16  # noqa: F405

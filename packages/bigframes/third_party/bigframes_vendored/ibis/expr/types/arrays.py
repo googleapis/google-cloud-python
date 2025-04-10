@@ -416,7 +416,7 @@ class ArrayValue(Value):
 
         The most succinct way to use `map` is with `Deferred` expressions:
 
-        >>> t.a.map((_ + 100).cast("float"))
+        >>> t.a.map((_ + 100).cast(float))
         ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
         ┃ ArrayMap(a, Cast(Add(_, 100), float64)) ┃
         ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
@@ -429,7 +429,7 @@ class ArrayValue(Value):
 
         You can also use `map` with a lambda function:
 
-        >>> t.a.map(lambda x: (x + 100).cast("float"))
+        >>> t.a.map(lambda x: (x + 100).cast(float))
         ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
         ┃ ArrayMap(a, Cast(Add(x, 100), float64)) ┃
         ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩

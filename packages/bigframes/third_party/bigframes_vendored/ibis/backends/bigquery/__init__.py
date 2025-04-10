@@ -28,6 +28,7 @@ from bigframes_vendored.ibis.backends.sql import SQLBackend
 from bigframes_vendored.ibis.backends.sql.compilers import BigQueryCompiler
 from bigframes_vendored.ibis.backends.sql.datatypes import BigQueryType
 import bigframes_vendored.ibis.common.exceptions as com
+import bigframes_vendored.ibis.expr.datatypes as ibis_dtypes
 import bigframes_vendored.ibis.expr.operations as ops
 import bigframes_vendored.ibis.expr.schema as sch
 import bigframes_vendored.ibis.expr.types as ir
@@ -773,7 +774,7 @@ class Backend(SQLBackend, CanCreateDatabase, CanCreateSchema):
         self._run_pre_execute_hooks(expr)
 
         schema = expr.as_table().schema() - bigframes_vendored.ibis.schema(
-            {"_TABLE_SUFFIX": "string"}
+            {"_TABLE_SUFFIX": ibis_dtypes.string()}
         )
 
         sql = self.compile(expr, limit=limit, params=params, **kwargs)

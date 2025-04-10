@@ -179,31 +179,10 @@ class Value(Expr):
         │                          … │
         └────────────────────────────┘
 
-        or string names
-
-        >>> x.cast("uint16")
-        ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
-        ┃ Cast(bill_depth_mm, uint16) ┃
-        ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
-        │ uint16                      │
-        ├─────────────────────────────┤
-        │                          19 │
-        │                          17 │
-        │                          18 │
-        │                        NULL │
-        │                          19 │
-        │                          21 │
-        │                          18 │
-        │                          20 │
-        │                          18 │
-        │                          20 │
-        │                           … │
-        └─────────────────────────────┘
-
         If you make an illegal cast, you won't know until the backend actually
         executes it. Consider [`.try_cast()`](#ibis.expr.types.generic.Value.try_cast).
 
-        >>> ibis.literal("a string").cast("int64")  # doctest: +SKIP
+        >>> ibis.literal("a string").cast(int)  # doctest: +SKIP
         <error>
         """
         op = ops.Cast(self, to=target_type)

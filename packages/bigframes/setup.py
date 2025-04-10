@@ -61,7 +61,6 @@ dependencies = [
     "db-dtypes >=1.4.2",
     # For vendored ibis-framework.
     "atpublic>=2.3,<6",
-    "parsy>=2,<3",
     "python-dateutil>=2.8.2,<3",
     "pytz>=2022.7",
     "toolz>=0.11,<2",

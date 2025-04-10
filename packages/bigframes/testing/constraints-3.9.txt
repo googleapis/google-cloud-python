@@ -27,7 +27,6 @@ matplotlib==3.7.1
 db-dtypes==1.4.2
 # For vendored ibis-framework.
 atpublic==2.3
-parsy==2.0
 python-dateutil==2.8.2
 pytz==2022.7
 toolz==0.11

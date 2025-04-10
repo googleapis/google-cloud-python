@@ -2369,7 +2369,7 @@ def ifelse(condition: Any, true_expr: Any, false_expr: Any) -> ir.Value:
     if not isinstance(condition, ir.Value):
         condition = literal(condition, type="bool")
     elif not condition.type().is_boolean():
-        condition = condition.cast("bool")
+        condition = condition.cast(bool)
     return condition.ifelse(true_expr, false_expr)
 
 

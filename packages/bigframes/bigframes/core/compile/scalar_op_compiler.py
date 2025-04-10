@@ -747,12 +747,12 @@ def date_diff_op_impl(x: ibis_types.DateValue, y: ibis_types.DateValue):
 
 @scalar_op_compiler.register_binary_op(ops.date_add_op)
 def date_add_op_impl(x: ibis_types.DateValue, y: ibis_types.IntegerValue):
-    return x.cast("timestamp") + y.to_interval("us")  # type: ignore
+    return x.cast(ibis_dtypes.timestamp()) + y.to_interval("us")  # type: ignore
 
 
 @scalar_op_compiler.register_binary_op(ops.date_sub_op)
 def date_sub_op_impl(x: ibis_types.DateValue, y: ibis_types.IntegerValue):
-    return x.cast("timestamp") - y.to_interval("us")  # type: ignore
+    return x.cast(ibis_dtypes.timestamp()) - y.to_interval("us")  # type: ignore
 
 
 @scalar_op_compiler.register_unary_op(ops.FloorDtOp, pass_op=True)

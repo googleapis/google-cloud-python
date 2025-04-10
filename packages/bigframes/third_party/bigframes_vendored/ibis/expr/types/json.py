@@ -446,24 +446,6 @@ class JSONValue(Value):
         │ NULL                 │
         └──────────────────────┘
 
-        Note the difference between `.string` and `.cast("string")`.
-
-        The latter preserves quotes for JSON string values and returns a valid
-        JSON string.
-
-        >>> t.js.cast("string")
-        ┏━━━━━━━━━━━━━━━━━━┓
-        ┃ Cast(js, string) ┃
-        ┡━━━━━━━━━━━━━━━━━━┩
-        │ string           │
-        ├──────────────────┤
-        │ "a"              │
-        │ "b"              │
-        │ 1                │
-        │ {}               │
-        │ [{"a": 1}]       │
-        └──────────────────┘
-
         Here's a more complex example with a table containing a JSON column
         with nested fields.
 
