@@ -26,7 +26,6 @@ common = gcp.CommonTemplates()
 excludes = [
     "noxfile.py",  # pytype
     "setup.cfg",  # pytype
-    ".flake8",  # flake8-import-order, layout
     ".coveragerc",  # layout
     "CONTRIBUTING.rst",  # no systests
     ".github/workflows/unittest.yml",  # exclude unittest gh action
@@ -35,18 +34,6 @@ excludes = [
 ]
 templated_files = common.py_library(microgenerator=True, cov_level=100)
 s.move(templated_files, excludes=excludes)
-
-# Add pytype support
-s.replace(
-    ".gitignore",
-    """\
-.pytest_cache
-""",
-    """\
-.pytest_cache
-.pytype
-""",
-)
 
 python.configure_previous_major_version_branches()
 
