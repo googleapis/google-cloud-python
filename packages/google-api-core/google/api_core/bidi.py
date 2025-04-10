@@ -664,7 +664,8 @@ class BackgroundConsumer(object):
                 _LOGGER.debug("waiting for recv.")
                 response = self._bidi_rpc.recv()
                 _LOGGER.debug("recved response.")
-                self._on_response(response)
+                if self._on_response is not None:
+                    self._on_response(response)
 
         except exceptions.GoogleAPICallError as exc:
             _LOGGER.debug(

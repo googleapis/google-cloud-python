@@ -16,6 +16,7 @@ import datetime
 import logging
 import queue
 import threading
+import time
 
 try:
     from unittest import mock
@@ -894,3 +895,26 @@ class TestBackgroundConsumer(object):
 
         # calling stop twice should not result in an error.
         consumer.stop()
+
+    def test_stop_error_logs(self, caplog):
+        """
+        Closing the client should result in no internal error logs
+
+        https://github.com/googleapis/python-api-core/issues/788
+        """
+        caplog.set_level(logging.DEBUG)
+        bidi_rpc = mock.create_autospec(bidi.BidiRpc, instance=True)
+        bidi_rpc.is_active = True
+        on_response = mock.Mock(spec=["__call__"])
+
+        consumer = bidi.BackgroundConsumer(bidi_rpc, on_response)
+
+        consumer.start()
+        consumer.stop()
+        # let the background thread run for a while before exiting
+        time.sleep(0.1)
+        bidi_rpc.is_active = False
+        # running thread should not result in error logs
+        error_logs = [r.message for r in caplog.records if r.levelname == "ERROR"]
+        assert not error_logs, f"Found unexpected ERROR logs: {error_logs}"
+        bidi_rpc.is_active = False
