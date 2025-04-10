@@ -130,14 +130,6 @@ s.replace(
     'ALL_VERSIONS = ["3.9", "3.10", "3.11", "3.12", "3.13"]',
 )
 
-
-# ----------------------------------------------------------------------------
-# pytype-related changes
-# ----------------------------------------------------------------------------
-
-# Add .pytype to .gitignore
-s.replace(".gitignore", r"\.pytest_cache", "\\g<0>\n.pytype")
-
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)
 for noxfile in REPO_ROOT.glob("samples/**/noxfile.py"):
     s.shell.run(["nox", "-s", "blacken"], cwd=noxfile.parent, hide_output=False)
