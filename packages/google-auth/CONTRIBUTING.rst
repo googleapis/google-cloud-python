@@ -19,7 +19,7 @@ A few notes on making changes to ``google-auth-library-python``.
   using ``nox -s docs``.
 
 - The change must work fully on the following CPython versions:
-  3.7, 3.8, 3.9, 3.10, 3.11 and 3.12 across macOS, Linux, and Windows.
+  3.7, 3.8, 3.9, 3.10, 3.11, 3.12 and 3.13 across macOS, Linux, and Windows.
 
 - The codebase *must* have 100% test statement coverage after each commit.
   You can test coverage via ``nox -e cover``.
