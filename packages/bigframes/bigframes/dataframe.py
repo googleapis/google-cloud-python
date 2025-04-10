@@ -67,12 +67,12 @@ import bigframes.core.ordering as order
 import bigframes.core.utils as utils
 import bigframes.core.validations as validations
 import bigframes.core.window
+from bigframes.core.window import rolling
 import bigframes.core.window_spec as windows
 import bigframes.dtypes
 import bigframes.exceptions as bfe
 import bigframes.formatting_helpers as formatter
 import bigframes.operations as ops
-import bigframes.operations.aggregations
 import bigframes.operations.aggregations as agg_ops
 import bigframes.operations.ai
 import bigframes.operations.plotting as plotting
@@ -3393,23 +3393,33 @@ class DataFrame(vendored_pandas_frame.DataFrame):
     @validations.requires_ordering()
     def rolling(
         self,
-        window: int,
+        window: int | pandas.Timedelta | numpy.timedelta64 | datetime.timedelta | str,
         min_periods=None,
         on: str | None = None,
         closed: Literal["right", "left", "both", "neither"] = "right",
     ) -> bigframes.core.window.Window:
-        window_def = windows.WindowSpec(
-            bounds=windows.RowsWindowBounds.from_window_size(window, closed),
-            min_periods=min_periods if min_periods is not None else window,
-        )
-        skip_agg_col_id = (
-            None if on is None else self._block.resolve_label_exact_or_error(on)
-        )
-        return bigframes.core.window.Window(
+        if isinstance(window, int):
+            window_def = windows.WindowSpec(
+                bounds=windows.RowsWindowBounds.from_window_size(window, closed),
+                min_periods=min_periods if min_periods is not None else window,
+            )
+            skip_agg_col_id = (
+                None if on is None else self._block.resolve_label_exact_or_error(on)
+            )
+            return bigframes.core.window.Window(
+                self._block,
+                window_def,
+                self._block.value_columns,
+                skip_agg_column_id=skip_agg_col_id,
+            )
+
+        return rolling.create_range_window(
             self._block,
-            window_def,
-            self._block.value_columns,
-            skip_agg_column_id=skip_agg_col_id,
+            window,
+            min_periods=min_periods,
+            on=on,
+            closed=closed,
+            is_series=False,
         )
 
     @validations.requires_ordering()

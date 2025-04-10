@@ -76,18 +76,7 @@ class Window(vendored_pandas_rolling.Window):
         self,
         op: agg_ops.UnaryAggregateOp,
     ):
-        agg_col_ids = [
-            col_id
-            for col_id in self._value_column_ids
-            if col_id != self._skip_agg_column_id
-        ]
-        agg_block = self._aggregate_block(op, agg_col_ids)
-
-        if self._skip_agg_column_id is not None:
-            # Concat the skipped column to the result.
-            agg_block, _ = agg_block.join(
-                self._block.select_column(self._skip_agg_column_id), how="outer"
-            )
+        agg_block = self._aggregate_block(op)
 
         if self._is_series:
             from bigframes.series import Series
@@ -102,9 +91,12 @@ class Window(vendored_pandas_rolling.Window):
             ]
             return DataFrame(agg_block)._reindex_columns(column_labels)
 
-    def _aggregate_block(
-        self, op: agg_ops.UnaryAggregateOp, agg_col_ids: typing.List[str]
-    ) -> blocks.Block:
+    def _aggregate_block(self, op: agg_ops.UnaryAggregateOp) -> blocks.Block:
+        agg_col_ids = [
+            col_id
+            for col_id in self._value_column_ids
+            if col_id != self._skip_agg_column_id
+        ]
         block, result_ids = self._block.multi_apply_window_op(
             agg_col_ids,
             op,
@@ -123,29 +115,47 @@ class Window(vendored_pandas_rolling.Window):
             block = block.set_index(col_ids=index_ids)
 
         labels = [self._block.col_id_to_label[col] for col in agg_col_ids]
+        if self._skip_agg_column_id is not None:
+            result_ids = [self._skip_agg_column_id, *result_ids]
+            labels.insert(0, self._block.col_id_to_label[self._skip_agg_column_id])
+
         return block.select_columns(result_ids).with_column_labels(labels)
 
 
 def create_range_window(
     block: blocks.Block,
     window: pandas.Timedelta | numpy.timedelta64 | datetime.timedelta | str,
+    *,
+    value_column_ids: typing.Sequence[str] = tuple(),
     min_periods: int | None,
+    on: str | None = None,
     closed: typing.Literal["right", "left", "both", "neither"],
     is_series: bool,
+    grouping_keys: typing.Sequence[str] = tuple(),
+    drop_null_groups: bool = True,
 ) -> Window:
 
-    index_dtypes = block.index.dtypes
-    if len(index_dtypes) > 1:
-        raise ValueError("Range rolling on MultiIndex is not supported")
-    if index_dtypes[0] != dtypes.TIMESTAMP_DTYPE:
-        raise ValueError("Index type should be timestamps with timezones")
+    if on is None:
+        # Rolling on index
+        index_dtypes = block.index.dtypes
+        if len(index_dtypes) > 1:
+            raise ValueError("Range rolling on MultiIndex is not supported")
+        if index_dtypes[0] != dtypes.TIMESTAMP_DTYPE:
+            raise ValueError("Index type should be timestamps with timezones")
+        rolling_key_col_id = block.index_columns[0]
+    else:
+        # Rolling on a specific column
+        rolling_key_col_id = block.resolve_label_exact_or_error(on)
+        if block.expr.get_column_type(rolling_key_col_id) != dtypes.TIMESTAMP_DTYPE:
+            raise ValueError(f"Column {on} type should be timestamps with timezones")
 
     order_direction = window_ordering.find_order_direction(
-        block.expr.node, block.index_columns[0]
+        block.expr.node, rolling_key_col_id
     )
     if order_direction is None:
+        target_str = "index" if on is None else f"column {on}"
         raise ValueError(
-            "The index might not be in a monotonic order. Please sort the index before rolling."
+            f"The {target_str} might not be in a monotonic order. Please sort by {target_str} before rolling."
         )
     if isinstance(window, str):
         window = pandas.Timedelta(window)
@@ -153,9 +163,23 @@ def create_range_window(
         bounds=window_spec.RangeWindowBounds.from_timedelta_window(window, closed),
         min_periods=1 if min_periods is None else min_periods,
         ordering=(
-            ordering.OrderingExpression(
-                ex.deref(block.index_columns[0]), order_direction
-            ),
+            ordering.OrderingExpression(ex.deref(rolling_key_col_id), order_direction),
         ),
+        grouping_keys=tuple(ex.deref(col) for col in grouping_keys),
     )
-    return Window(block, spec, block.value_columns, is_series=is_series)
+
+    selected_value_col_ids = (
+        value_column_ids if value_column_ids else block.value_columns
+    )
+    # This step must be done after finding the order direction of the window key.
+    if grouping_keys:
+        block = block.order_by([ordering.ascending_over(col) for col in grouping_keys])
+
+    return Window(
+        block,
+        spec,
+        value_column_ids=selected_value_col_ids,
+        is_series=is_series,
+        skip_agg_column_id=None if on is None else rolling_key_col_id,
+        drop_null_groups=drop_null_groups,
+    )

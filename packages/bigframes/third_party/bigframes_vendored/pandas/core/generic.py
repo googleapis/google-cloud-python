@@ -1083,11 +1083,16 @@ class NDFrame(indexing.IndexingMixin):
             [4 rows x 2 columns]
 
         Args:
-            window (int):
+            window (int, pandas.Timedelta, numpy.timedelta64, datetime.timedelta, str):
                 Size of the moving window.
 
                 If an integer, the fixed number of observations used for
                 each window.
+
+                If a string, the timedelta representation in string. This string
+                must be parsable by pandas.Timedelta().
+
+                Otherwise, the time range for each window.
 
             min_periods (int, default None):
                 Minimum number of observations in window required to have a value;
@@ -1095,6 +1100,9 @@ class NDFrame(indexing.IndexingMixin):
 
                 For a window that is specified by an integer, ``min_periods`` will default
                 to the size of the window.
+
+                For a window that is not spicified by an interger, ``min_periods`` will default
+                to 1.
 
             on (str, optional):
                 For a DataFrame, a column label on which to calculate the rolling window,

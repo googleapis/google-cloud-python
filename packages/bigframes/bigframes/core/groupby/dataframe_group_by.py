@@ -14,11 +14,13 @@
 
 from __future__ import annotations
 
+import datetime
 import typing
 from typing import Literal, Sequence, Tuple, Union
 
 import bigframes_vendored.constants as constants
 import bigframes_vendored.pandas.core.groupby as vendored_pandas_groupby
+import numpy
 import pandas as pd
 
 from bigframes import session
@@ -30,6 +32,7 @@ from bigframes.core.groupby import aggs, series_group_by
 import bigframes.core.ordering as order
 import bigframes.core.utils as utils
 import bigframes.core.validations as validations
+from bigframes.core.window import rolling
 import bigframes.core.window as windows
 import bigframes.core.window_spec as window_specs
 import bigframes.dataframe as df
@@ -309,28 +312,41 @@ class DataFrameGroupBy(vendored_pandas_groupby.DataFrameGroupBy):
     @validations.requires_ordering()
     def rolling(
         self,
-        window: int,
+        window: int | pd.Timedelta | numpy.timedelta64 | datetime.timedelta | str,
         min_periods=None,
         on: str | None = None,
         closed: Literal["right", "left", "both", "neither"] = "right",
     ) -> windows.Window:
-        window_spec = window_specs.WindowSpec(
-            bounds=window_specs.RowsWindowBounds.from_window_size(window, closed),
-            min_periods=min_periods if min_periods is not None else window,
-            grouping_keys=tuple(ex.deref(col) for col in self._by_col_ids),
-        )
-        block = self._block.order_by(
-            [order.ascending_over(col) for col in self._by_col_ids],
-        )
-        skip_agg_col_id = (
-            None if on is None else self._block.resolve_label_exact_or_error(on)
-        )
-        return windows.Window(
-            block,
-            window_spec,
-            self._selected_cols,
+        if isinstance(window, int):
+            window_spec = window_specs.WindowSpec(
+                bounds=window_specs.RowsWindowBounds.from_window_size(window, closed),
+                min_periods=min_periods if min_periods is not None else window,
+                grouping_keys=tuple(ex.deref(col) for col in self._by_col_ids),
+            )
+            block = self._block.order_by(
+                [order.ascending_over(col) for col in self._by_col_ids],
+            )
+            skip_agg_col_id = (
+                None if on is None else self._block.resolve_label_exact_or_error(on)
+            )
+            return windows.Window(
+                block,
+                window_spec,
+                self._selected_cols,
+                drop_null_groups=self._dropna,
+                skip_agg_column_id=skip_agg_col_id,
+            )
+
+        return rolling.create_range_window(
+            self._block,
+            window,
+            min_periods=min_periods,
+            value_column_ids=self._selected_cols,
+            on=on,
+            closed=closed,
+            is_series=False,
+            grouping_keys=self._by_col_ids,
             drop_null_groups=self._dropna,
-            skip_agg_column_id=skip_agg_col_id,
         )
 
     @validations.requires_ordering()

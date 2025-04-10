@@ -1590,7 +1590,11 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
             )
 
         return rolling.create_range_window(
-            self._block, window, min_periods, closed, is_series=True
+            block=self._block,
+            window=window,
+            min_periods=min_periods,
+            closed=closed,
+            is_series=True,
         )
 
     @validations.requires_ordering()

@@ -78,4 +78,9 @@ def _(root: nodes.WindowOpNode, column_id: str):
 
 @find_order_direction.register
 def _(root: nodes.ProjectionNode, column_id: str):
+    for expr, ref in root.assignments:
+        if ref.name == column_id and isinstance(expr, ex.DerefOp):
+            # This source column is renamed.
+            return find_order_direction(root.child, expr.id.name)
+
     return find_order_direction(root.child, column_id)
