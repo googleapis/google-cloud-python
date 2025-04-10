@@ -26,5 +26,5 @@ tests/test_identity_pool.py                                 @googleapis/googleap
 tests/test_pluggable.py                                     @googleapis/googleapis-auth @googleapis/aion-sdk
 tests/test_sts.py                                           @googleapis/googleapis-auth @googleapis/aion-sdk
 tests/test_impersonated_credentials.py                      @googleapis/googleapis-auth @googleapis/aion-sdk
-/samples/                                                   @googleapis/python-samples-owners
+/samples/                                                   @googleapis/googleapis-auth @googleapis/aion-sdk @googleapis/python-samples-owners
 system_tests/secrets.tar.enc # Remove noise from test creds.
