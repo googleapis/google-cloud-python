@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import copy
 import datetime
 import http.client as http_client
 import json
@@ -35,6 +36,9 @@ with open(os.path.join(DATA_DIR, "privatekey.pem"), "rb") as fh:
     PRIVATE_KEY_BYTES = fh.read()
 
 SERVICE_ACCOUNT_JSON_FILE = os.path.join(DATA_DIR, "service_account.json")
+IMPERSONATED_SERVICE_ACCOUNT_AUTHORIZED_USER_SOURCE_FILE = os.path.join(
+    DATA_DIR, "impersonated_service_account_authorized_user_source.json"
+)
 
 ID_TOKEN_DATA = (
     "eyJhbGciOiJSUzI1NiIsImtpZCI6ImRmMzc1ODkwOGI3OTIyOTNhZDk3N2Ew"
@@ -48,6 +52,9 @@ ID_TOKEN_EXPIRY = 1564475051
 
 with open(SERVICE_ACCOUNT_JSON_FILE, "rb") as fh:
     SERVICE_ACCOUNT_INFO = json.load(fh)
+
+with open(IMPERSONATED_SERVICE_ACCOUNT_AUTHORIZED_USER_SOURCE_FILE, "rb") as fh:
+    IMPERSONATED_SERVICE_ACCOUNT_AUTHORIZED_USER_SOURCE_INFO = json.load(fh)
 
 SIGNER = crypt.RSASigner.from_string(PRIVATE_KEY_BYTES, "1")
 TOKEN_URI = "https://example.com/oauth2/token"
@@ -147,6 +154,38 @@ class TestImpersonatedCredentials(object):
             subject=subject,
             iam_endpoint_override=iam_endpoint_override,
         )
+
+    def test_from_impersonated_service_account_info(self):
+        credentials = impersonated_credentials.Credentials.from_impersonated_service_account_info(
+            IMPERSONATED_SERVICE_ACCOUNT_AUTHORIZED_USER_SOURCE_INFO
+        )
+        assert isinstance(credentials, impersonated_credentials.Credentials)
+
+    def test_from_impersonated_service_account_info_with_invalid_source_credentials_type(
+        self
+    ):
+        info = copy.deepcopy(IMPERSONATED_SERVICE_ACCOUNT_AUTHORIZED_USER_SOURCE_INFO)
+        assert "source_credentials" in info
+        # Set the source_credentials to an invalid type
+        info["source_credentials"]["type"] = "invalid_type"
+        with pytest.raises(exceptions.DefaultCredentialsError) as excinfo:
+            impersonated_credentials.Credentials.from_impersonated_service_account_info(
+                info
+            )
+        assert excinfo.match(
+            "source credential of type {} is not supported".format("invalid_type")
+        )
+
+    def test_from_impersonated_service_account_info_with_invalid_impersonation_url(
+        self
+    ):
+        info = copy.deepcopy(IMPERSONATED_SERVICE_ACCOUNT_AUTHORIZED_USER_SOURCE_INFO)
+        info["service_account_impersonation_url"] = "invalid_url"
+        with pytest.raises(exceptions.DefaultCredentialsError) as excinfo:
+            impersonated_credentials.Credentials.from_impersonated_service_account_info(
+                info
+            )
+        assert excinfo.match(r"Cannot extract target principal from")
 
     def test_get_cred_info(self):
         credentials = self.make_credentials()

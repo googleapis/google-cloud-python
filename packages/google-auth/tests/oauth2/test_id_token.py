@@ -20,6 +20,7 @@ import pytest  # type: ignore
 
 from google.auth import environment_vars
 from google.auth import exceptions
+from google.auth import impersonated_credentials
 from google.auth import transport
 from google.oauth2 import id_token
 from google.oauth2 import service_account
@@ -27,6 +28,12 @@ from google.oauth2 import service_account
 SERVICE_ACCOUNT_FILE = os.path.join(
     os.path.dirname(__file__), "../data/service_account.json"
 )
+
+IMPERSONATED_SERVICE_ACCOUNT_FILE = os.path.join(
+    os.path.dirname(__file__),
+    "../data/impersonated_service_account_authorized_user_source.json",
+)
+
 ID_TOKEN_AUDIENCE = "https://pubsub.googleapis.com"
 
 
@@ -259,6 +266,14 @@ def test_fetch_id_token_credentials_from_explicit_cred_json_file(monkeypatch):
 
     cred = id_token.fetch_id_token_credentials(ID_TOKEN_AUDIENCE)
     assert isinstance(cred, service_account.IDTokenCredentials)
+    assert cred._target_audience == ID_TOKEN_AUDIENCE
+
+
+def test_fetch_id_token_credentials_from_impersonated_cred_json_file(monkeypatch):
+    monkeypatch.setenv(environment_vars.CREDENTIALS, IMPERSONATED_SERVICE_ACCOUNT_FILE)
+
+    cred = id_token.fetch_id_token_credentials(ID_TOKEN_AUDIENCE)
+    assert isinstance(cred, impersonated_credentials.IDTokenCredentials)
     assert cred._target_audience == ID_TOKEN_AUDIENCE
 
 
