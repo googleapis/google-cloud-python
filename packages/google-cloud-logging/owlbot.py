@@ -126,13 +126,6 @@ s.replace(
     'pass_down_envvars+=(\n    "ENVIRONMENT"\n    "RUNTIME"',
 )
 
-# don't lint environment tests
-s.replace(
-    ".flake8",
-    "exclude =",
-    "exclude =\n  # Exclude environment test code.\n  tests/environment/**\n",
-)
-
 # use conventional commits for renovate bot
 s.replace(
     "renovate.json",
