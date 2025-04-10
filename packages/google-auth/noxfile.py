@@ -89,8 +89,7 @@ def unit(session):
     constraints_path = str(
         CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
     )
-    session.install("-r", "testing/requirements.txt", "-c", constraints_path)
-    session.install("-e", ".", "-c", constraints_path)
+    session.install("-e", ".[testing]", "-c", constraints_path)
     session.run(
         "pytest",
         f"--junitxml=unit_{session.python}_sponge_log.xml",
@@ -105,8 +104,7 @@ def unit(session):
 
 @nox.session(python="3.8")
 def cover(session):
-    session.install("-r", "testing/requirements.txt")
-    session.install("-e", ".")
+    session.install("-e", ".[testing]")
     session.run(
         "pytest",
         "--cov=google.auth",
@@ -144,8 +142,7 @@ def docs(session):
 
 @nox.session(python="pypy")
 def pypy(session):
-    session.install("-r", "testing/requirements.txt")
-    session.install("-e", ".")
+    session.install("-e", ".[testing]")
     session.run(
         "pytest",
         f"--junitxml=unit_{session.python}_sponge_log.xml",
