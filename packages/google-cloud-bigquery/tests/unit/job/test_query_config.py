@@ -167,6 +167,11 @@ class TestQueryJobConfig(_Base):
         self.assertEqual(config.connection_properties[1].key, "time_zone")
         self.assertEqual(config.connection_properties[1].value, "America/Chicago")
 
+    def test_incremental_results(self):
+        config = self._get_target_class()()
+        config.write_incremental_results = True
+        self.assertEqual(config.write_incremental_results, True)
+
     def test_create_session(self):
         config = self._get_target_class()()
         self.assertIsNone(config.create_session)

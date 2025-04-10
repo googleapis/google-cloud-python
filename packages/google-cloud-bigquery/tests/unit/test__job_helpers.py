@@ -194,6 +194,13 @@ def make_query_response(
             make_query_request({"maximumBytesBilled": "987654"}),
             id="job_config-with-maximum_bytes_billed",
         ),
+        pytest.param(
+            job_query.QueryJobConfig(
+                write_incremental_results=True,
+            ),
+            make_query_request({"writeIncrementalResults": True}),
+            id="job_config-with-incremental-results",
+        ),
     ),
 )
 def test__to_query_request(job_config, expected):
@@ -1140,6 +1147,11 @@ def test_make_job_id_w_job_id_overrides_prefix():
             ),
             False,
             id="priority=BATCH",
+        ),
+        pytest.param(
+            job_query.QueryJobConfig(write_incremental_results=True),
+            True,
+            id="write_incremental_results",
         ),
     ),
 )

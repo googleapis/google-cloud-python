@@ -675,6 +675,21 @@ class QueryJobConfig(_JobConfig):
         self._set_sub_prop("writeDisposition", value)
 
     @property
+    def write_incremental_results(self) -> Optional[bool]:
+        """This is only supported for a SELECT query using a temporary table.
+
+        If set, the query is allowed to write results incrementally to the temporary result
+        table. This may incur a performance penalty. This option cannot be used with Legacy SQL.
+
+        This feature is not generally available.
+        """
+        return self._get_sub_prop("writeIncrementalResults")
+
+    @write_incremental_results.setter
+    def write_incremental_results(self, value):
+        self._set_sub_prop("writeIncrementalResults", value)
+
+    @property
     def table_definitions(self):
         """Dict[str, google.cloud.bigquery.external_config.ExternalConfig]:
         Definitions for external tables or :data:`None` if not set.
