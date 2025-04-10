@@ -239,31 +239,6 @@ s.replace(
             system_test""",
 )
 
-# Add pytype support
-s.replace(
-    ".gitignore",
-    """\
-.pytest_cache
-""",
-    """\
-.pytest_cache
-.pytype
-""",
-)
-
-s.replace(
-    ".gitignore",
-    """\
-pylintrc
-pylintrc.test
-""",
-    """\
-pylintrc
-pylintrc.test
-.make/**
-""",
-)
-
 s.replace(
     "noxfile.py",
     """\
