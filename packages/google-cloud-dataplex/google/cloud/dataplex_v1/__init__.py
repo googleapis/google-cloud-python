@@ -19,6 +19,7 @@ __version__ = package_version.__version__
 
 
 from .services.catalog_service import CatalogServiceAsyncClient, CatalogServiceClient
+from .services.cmek_service import CmekServiceAsyncClient, CmekServiceClient
 from .services.content_service import ContentServiceAsyncClient, ContentServiceClient
 from .services.data_scan_service import (
     DataScanServiceAsyncClient,
@@ -76,6 +77,15 @@ from .types.catalog import (
     UpdateEntryGroupRequest,
     UpdateEntryRequest,
     UpdateEntryTypeRequest,
+)
+from .types.cmek import (
+    CreateEncryptionConfigRequest,
+    DeleteEncryptionConfigRequest,
+    EncryptionConfig,
+    GetEncryptionConfigRequest,
+    ListEncryptionConfigsRequest,
+    ListEncryptionConfigsResponse,
+    UpdateEncryptionConfigRequest,
 )
 from .types.content import (
     CreateContentRequest,
@@ -218,6 +228,7 @@ from .types.tasks import Job, Task
 
 __all__ = (
     "CatalogServiceAsyncClient",
+    "CmekServiceAsyncClient",
     "ContentServiceAsyncClient",
     "DataScanServiceAsyncClient",
     "DataTaxonomyServiceAsyncClient",
@@ -233,6 +244,7 @@ __all__ = (
     "CancelJobRequest",
     "CancelMetadataJobRequest",
     "CatalogServiceClient",
+    "CmekServiceClient",
     "Content",
     "ContentServiceClient",
     "CreateAspectTypeRequest",
@@ -242,6 +254,7 @@ __all__ = (
     "CreateDataAttributeRequest",
     "CreateDataScanRequest",
     "CreateDataTaxonomyRequest",
+    "CreateEncryptionConfigRequest",
     "CreateEntityRequest",
     "CreateEntryGroupRequest",
     "CreateEntryRequest",
@@ -283,6 +296,7 @@ __all__ = (
     "DeleteDataAttributeRequest",
     "DeleteDataScanRequest",
     "DeleteDataTaxonomyRequest",
+    "DeleteEncryptionConfigRequest",
     "DeleteEntityRequest",
     "DeleteEntryGroupRequest",
     "DeleteEntryRequest",
@@ -293,6 +307,7 @@ __all__ = (
     "DeleteTaskRequest",
     "DeleteZoneRequest",
     "DiscoveryEvent",
+    "EncryptionConfig",
     "Entity",
     "Entry",
     "EntryGroup",
@@ -311,6 +326,7 @@ __all__ = (
     "GetDataScanJobRequest",
     "GetDataScanRequest",
     "GetDataTaxonomyRequest",
+    "GetEncryptionConfigRequest",
     "GetEntityRequest",
     "GetEntryGroupRequest",
     "GetEntryRequest",
@@ -345,6 +361,8 @@ __all__ = (
     "ListDataScansResponse",
     "ListDataTaxonomiesRequest",
     "ListDataTaxonomiesResponse",
+    "ListEncryptionConfigsRequest",
+    "ListEncryptionConfigsResponse",
     "ListEntitiesRequest",
     "ListEntitiesResponse",
     "ListEntriesRequest",
@@ -402,6 +420,7 @@ __all__ = (
     "UpdateDataAttributeRequest",
     "UpdateDataScanRequest",
     "UpdateDataTaxonomyRequest",
+    "UpdateEncryptionConfigRequest",
     "UpdateEntityRequest",
     "UpdateEntryGroupRequest",
     "UpdateEntryRequest",

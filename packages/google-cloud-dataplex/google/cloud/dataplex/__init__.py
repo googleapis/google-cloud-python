@@ -24,6 +24,10 @@ from google.cloud.dataplex_v1.services.catalog_service.async_client import (
 from google.cloud.dataplex_v1.services.catalog_service.client import (
     CatalogServiceClient,
 )
+from google.cloud.dataplex_v1.services.cmek_service.async_client import (
+    CmekServiceAsyncClient,
+)
+from google.cloud.dataplex_v1.services.cmek_service.client import CmekServiceClient
 from google.cloud.dataplex_v1.services.content_service.async_client import (
     ContentServiceAsyncClient,
 )
@@ -100,6 +104,15 @@ from google.cloud.dataplex_v1.types.catalog import (
     UpdateEntryGroupRequest,
     UpdateEntryRequest,
     UpdateEntryTypeRequest,
+)
+from google.cloud.dataplex_v1.types.cmek import (
+    CreateEncryptionConfigRequest,
+    DeleteEncryptionConfigRequest,
+    EncryptionConfig,
+    GetEncryptionConfigRequest,
+    ListEncryptionConfigsRequest,
+    ListEncryptionConfigsResponse,
+    UpdateEncryptionConfigRequest,
 )
 from google.cloud.dataplex_v1.types.content import (
     CreateContentRequest,
@@ -256,6 +269,8 @@ from google.cloud.dataplex_v1.types.tasks import Job, Task
 __all__ = (
     "CatalogServiceClient",
     "CatalogServiceAsyncClient",
+    "CmekServiceClient",
+    "CmekServiceAsyncClient",
     "ContentServiceClient",
     "ContentServiceAsyncClient",
     "DataplexServiceClient",
@@ -313,6 +328,13 @@ __all__ = (
     "UpdateEntryTypeRequest",
     "EntryView",
     "TransferStatus",
+    "CreateEncryptionConfigRequest",
+    "DeleteEncryptionConfigRequest",
+    "EncryptionConfig",
+    "GetEncryptionConfigRequest",
+    "ListEncryptionConfigsRequest",
+    "ListEncryptionConfigsResponse",
+    "UpdateEncryptionConfigRequest",
     "CreateContentRequest",
     "DeleteContentRequest",
     "GetContentRequest",

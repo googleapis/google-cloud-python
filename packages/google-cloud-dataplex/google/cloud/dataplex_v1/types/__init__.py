@@ -60,6 +60,15 @@ from .catalog import (
     UpdateEntryRequest,
     UpdateEntryTypeRequest,
 )
+from .cmek import (
+    CreateEncryptionConfigRequest,
+    DeleteEncryptionConfigRequest,
+    EncryptionConfig,
+    GetEncryptionConfigRequest,
+    ListEncryptionConfigsRequest,
+    ListEncryptionConfigsResponse,
+    UpdateEncryptionConfigRequest,
+)
 from .content import (
     CreateContentRequest,
     DeleteContentRequest,
@@ -247,6 +256,13 @@ __all__ = (
     "UpdateEntryTypeRequest",
     "EntryView",
     "TransferStatus",
+    "CreateEncryptionConfigRequest",
+    "DeleteEncryptionConfigRequest",
+    "EncryptionConfig",
+    "GetEncryptionConfigRequest",
+    "ListEncryptionConfigsRequest",
+    "ListEncryptionConfigsResponse",
+    "UpdateEncryptionConfigRequest",
     "CreateContentRequest",
     "DeleteContentRequest",
     "GetContentRequest",
