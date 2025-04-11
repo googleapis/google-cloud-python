@@ -1513,12 +1513,16 @@ class Session(
                 format. If this parameter is not provided then session dataset
                 id is used.
             bigquery_connection (str, Optional):
-                Name of the BigQuery connection. You should either have the
-                connection already created in the `location` you have chosen, or
-                you should have the Project IAM Admin role to enable the service
-                to create the connection for you if you need it. If this
-                parameter is not provided then the BigQuery connection from the
-                session is used.
+                Name of the BigQuery connection. It is used to provide an
+                identity to the serverless instances running the user code. It
+                helps BigQuery manage and track the resources used by the udf.
+                This connection is required for internet access and for
+                interacting with other GCP services. To access GCP services, the
+                appropriate IAM permissions must also be granted to the
+                connection's Service Account. When it defaults to None, the udf
+                will be created without any connection. A udf without a
+                connection has no internet access and no access to other GCP
+                services.
             name (str, Optional):
                 Explicit name of the persisted BigQuery managed function. Use it
                 with caution, because more than one users working in the same
