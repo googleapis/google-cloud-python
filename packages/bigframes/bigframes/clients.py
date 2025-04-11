@@ -24,7 +24,6 @@ from typing import cast, Optional
 import google.api_core.exceptions
 import google.api_core.retry
 from google.cloud import bigquery_connection_v1, resourcemanager_v3
-from google.iam.v1 import iam_policy_pb2, policy_pb2
 
 logger = logging.getLogger(__name__)
 
@@ -161,7 +160,9 @@ class BqConnectionManager:
         project = f"projects/{project_id}"
         service_account = f"serviceAccount:{service_account_id}"
         role = f"roles/{iam_role}"
-        request = iam_policy_pb2.GetIamPolicyRequest(resource=project)
+        request = {
+            "resource": project
+        }  # Use a dictionary to avoid problematic google.iam namespace package.
         policy = self._cloud_resource_manager_client.get_iam_policy(request=request)
 
         # Check if the binding already exists, and if does, do nothing more
@@ -171,9 +172,15 @@ class BqConnectionManager:
                     return
 
         # Create a new binding
-        new_binding = policy_pb2.Binding(role=role, members=[service_account])
+        new_binding = {
+            "role": role,
+            "members": [service_account],
+        }  # Use a dictionary to avoid problematic google.iam namespace package.
         policy.bindings.append(new_binding)
-        request = iam_policy_pb2.SetIamPolicyRequest(resource=project, policy=policy)
+        request = {
+            "resource": project,
+            "policy": policy,
+        }  # Use a dictionary to avoid problematic google.iam namespace package.
         self._cloud_resource_manager_client.set_iam_policy(request=request)
 
         # We would wait for the IAM policy change to take effect
