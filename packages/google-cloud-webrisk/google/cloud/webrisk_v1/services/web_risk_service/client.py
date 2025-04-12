@@ -1203,6 +1203,8 @@ class WebRiskServiceClient(metaclass=WebRiskServiceClientMeta):
         self,
         request: Optional[Union[webrisk.SubmitUriRequest, dict]] = None,
         *,
+        parent: Optional[str] = None,
+        submission: Optional[webrisk.Submission] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
@@ -1258,6 +1260,21 @@ class WebRiskServiceClient(metaclass=WebRiskServiceClientMeta):
             request (Union[google.cloud.webrisk_v1.types.SubmitUriRequest, dict]):
                 The request object. Request to send a potentially
                 malicious URI to WebRisk.
+            parent (str):
+                Required. The name of the project that is making the
+                submission. This string is in the format
+                "projects/{project_number}".
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            submission (google.cloud.webrisk_v1.types.Submission):
+                Required. The submission that
+                contains the URI to be scanned.
+
+                This corresponds to the ``submission`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1276,10 +1293,28 @@ class WebRiskServiceClient(metaclass=WebRiskServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [parent, submission]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
         if not isinstance(request, webrisk.SubmitUriRequest):
             request = webrisk.SubmitUriRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+            if submission is not None:
+                request.submission = submission
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.

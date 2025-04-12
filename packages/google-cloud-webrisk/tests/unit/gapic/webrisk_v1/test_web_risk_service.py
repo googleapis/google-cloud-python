@@ -2559,6 +2559,98 @@ async def test_submit_uri_field_headers_async():
     ) in kw["metadata"]
 
 
+def test_submit_uri_flattened():
+    client = WebRiskServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.submit_uri), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.submit_uri(
+            parent="parent_value",
+            submission=webrisk.Submission(uri="uri_value"),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].submission
+        mock_val = webrisk.Submission(uri="uri_value")
+        assert arg == mock_val
+
+
+def test_submit_uri_flattened_error():
+    client = WebRiskServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.submit_uri(
+            webrisk.SubmitUriRequest(),
+            parent="parent_value",
+            submission=webrisk.Submission(uri="uri_value"),
+        )
+
+
+@pytest.mark.asyncio
+async def test_submit_uri_flattened_async():
+    client = WebRiskServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.submit_uri), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.submit_uri(
+            parent="parent_value",
+            submission=webrisk.Submission(uri="uri_value"),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].submission
+        mock_val = webrisk.Submission(uri="uri_value")
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_submit_uri_flattened_error_async():
+    client = WebRiskServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.submit_uri(
+            webrisk.SubmitUriRequest(),
+            parent="parent_value",
+            submission=webrisk.Submission(uri="uri_value"),
+        )
+
+
 def test_compute_threat_list_diff_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -3471,6 +3563,62 @@ def test_submit_uri_rest_unset_required_fields():
             )
         )
     )
+
+
+def test_submit_uri_rest_flattened():
+    client = WebRiskServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            submission=webrisk.Submission(uri="uri_value"),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        client.submit_uri(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*}/uris:submit" % client.transport._host, args[1]
+        )
+
+
+def test_submit_uri_rest_flattened_error(transport: str = "rest"):
+    client = WebRiskServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.submit_uri(
+            webrisk.SubmitUriRequest(),
+            parent="parent_value",
+            submission=webrisk.Submission(uri="uri_value"),
+        )
 
 
 def test_credentials_transport_error():
