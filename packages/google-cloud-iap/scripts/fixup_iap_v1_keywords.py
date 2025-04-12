@@ -57,6 +57,7 @@ class iapCallTransformer(cst.CSTTransformer):
         'test_iam_permissions': ('resource', 'permissions', ),
         'update_iap_settings': ('iap_settings', 'update_mask', ),
         'update_tunnel_dest_group': ('tunnel_dest_group', 'update_mask', ),
+        'validate_iap_attribute_expression': ('name', 'expression', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:

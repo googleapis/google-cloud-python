@@ -53,12 +53,16 @@ from .types.service import (
     ListIdentityAwareProxyClientsResponse,
     ListTunnelDestGroupsRequest,
     ListTunnelDestGroupsResponse,
+    OAuth2,
     OAuthSettings,
     ReauthSettings,
     ResetIdentityAwareProxyClientSecretRequest,
     TunnelDestGroup,
     UpdateIapSettingsRequest,
     UpdateTunnelDestGroupRequest,
+    ValidateIapAttributeExpressionRequest,
+    ValidateIapAttributeExpressionResponse,
+    WorkforceIdentitySettings,
 )
 
 __all__ = (
@@ -92,10 +96,14 @@ __all__ = (
     "ListIdentityAwareProxyClientsResponse",
     "ListTunnelDestGroupsRequest",
     "ListTunnelDestGroupsResponse",
+    "OAuth2",
     "OAuthSettings",
     "ReauthSettings",
     "ResetIdentityAwareProxyClientSecretRequest",
     "TunnelDestGroup",
     "UpdateIapSettingsRequest",
     "UpdateTunnelDestGroupRequest",
+    "ValidateIapAttributeExpressionRequest",
+    "ValidateIapAttributeExpressionResponse",
+    "WorkforceIdentitySettings",
 )

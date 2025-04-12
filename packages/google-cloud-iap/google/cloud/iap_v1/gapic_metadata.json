@@ -59,6 +59,11 @@
               "methods": [
                 "update_tunnel_dest_group"
               ]
+            },
+            "ValidateIapAttributeExpression": {
+              "methods": [
+                "validate_iap_attribute_expression"
+              ]
             }
           }
         },
@@ -114,6 +119,11 @@
               "methods": [
                 "update_tunnel_dest_group"
               ]
+            },
+            "ValidateIapAttributeExpression": {
+              "methods": [
+                "validate_iap_attribute_expression"
+              ]
             }
           }
         },
@@ -168,6 +178,11 @@
             "UpdateTunnelDestGroup": {
               "methods": [
                 "update_tunnel_dest_group"
+              ]
+            },
+            "ValidateIapAttributeExpression": {
+              "methods": [
+                "validate_iap_attribute_expression"
               ]
             }
           }

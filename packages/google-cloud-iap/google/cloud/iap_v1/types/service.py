@@ -39,12 +39,16 @@ __protobuf__ = proto.module(
         "GcipSettings",
         "CorsSettings",
         "OAuthSettings",
+        "WorkforceIdentitySettings",
+        "OAuth2",
         "ReauthSettings",
         "AllowedDomainsSettings",
         "ApplicationSettings",
         "CsmSettings",
         "AccessDeniedPageSettings",
         "AttributePropagationSettings",
+        "ValidateIapAttributeExpressionRequest",
+        "ValidateIapAttributeExpressionResponse",
         "ListBrandsRequest",
         "ListBrandsResponse",
         "CreateBrandRequest",
@@ -224,16 +228,16 @@ class TunnelDestGroup(proto.Message):
 
     Attributes:
         name (str):
-            Required. Immutable. Identifier for the
+            Identifier. Identifier for the
             TunnelDestGroup. Must be unique within the
             project and contain only lower case letters
             (a-z) and dashes (-).
         cidrs (MutableSequence[str]):
-            Unordered list. List of CIDRs that this group
-            applies to.
+            Optional. Unordered list. List of CIDRs that
+            this group applies to.
         fqdns (MutableSequence[str]):
-            Unordered list. List of FQDNs that this group
-            applies to.
+            Optional. Unordered list. List of FQDNs that
+            this group applies to.
     """
 
     name: str = proto.Field(
@@ -305,11 +309,11 @@ class IapSettings(proto.Message):
             Required. The resource name of the IAP
             protected resource.
         access_settings (google.cloud.iap_v1.types.AccessSettings):
-            Top level wrapper for all access related
-            setting in IAP
+            Optional. Top level wrapper for all access
+            related setting in IAP
         application_settings (google.cloud.iap_v1.types.ApplicationSettings):
-            Top level wrapper for all application related
-            settings in IAP
+            Optional. Top level wrapper for all
+            application related settings in IAP
     """
 
     name: str = proto.Field(
@@ -333,20 +337,47 @@ class AccessSettings(proto.Message):
 
     Attributes:
         gcip_settings (google.cloud.iap_v1.types.GcipSettings):
-            GCIP claims and endpoint configurations for
-            3p identity providers.
+            Optional. GCIP claims and endpoint
+            configurations for 3p identity providers.
         cors_settings (google.cloud.iap_v1.types.CorsSettings):
-            Configuration to allow cross-origin requests
-            via IAP.
+            Optional. Configuration to allow cross-origin
+            requests via IAP.
         oauth_settings (google.cloud.iap_v1.types.OAuthSettings):
-            Settings to configure IAP's OAuth behavior.
+            Optional. Settings to configure IAP's OAuth
+            behavior.
         reauth_settings (google.cloud.iap_v1.types.ReauthSettings):
-            Settings to configure reauthentication
-            policies in IAP.
+            Optional. Settings to configure
+            reauthentication policies in IAP.
         allowed_domains_settings (google.cloud.iap_v1.types.AllowedDomainsSettings):
-            Settings to configure and enable allowed
-            domains.
+            Optional. Settings to configure and enable
+            allowed domains.
+        workforce_identity_settings (google.cloud.iap_v1.types.WorkforceIdentitySettings):
+            Optional. Settings to configure the workforce
+            identity federation, including workforce pools
+            and OAuth 2.0 settings.
+        identity_sources (MutableSequence[google.cloud.iap_v1.types.AccessSettings.IdentitySource]):
+            Optional. Identity sources that IAP can use
+            to authenticate the end user. Only one identity
+            source can be configured.
     """
+
+    class IdentitySource(proto.Enum):
+        r"""Types of identity source supported by IAP.
+
+        Values:
+            IDENTITY_SOURCE_UNSPECIFIED (0):
+                IdentitySource Unspecified.
+                When selected, IAP relies on which identity
+                settings are fully configured to redirect the
+                traffic to. The precedence order is
+                WorkforceIdentitySettings > GcipSettings. If
+                none is set, default to use Google identity.
+            WORKFORCE_IDENTITY_FEDERATION (3):
+                Use external identities set up on Google
+                Cloud Workforce Identity Federation.
+        """
+        IDENTITY_SOURCE_UNSPECIFIED = 0
+        WORKFORCE_IDENTITY_FEDERATION = 3
 
     gcip_settings: "GcipSettings" = proto.Field(
         proto.MESSAGE,
@@ -373,6 +404,16 @@ class AccessSettings(proto.Message):
         number=7,
         message="AllowedDomainsSettings",
     )
+    workforce_identity_settings: "WorkforceIdentitySettings" = proto.Field(
+        proto.MESSAGE,
+        number=9,
+        message="WorkforceIdentitySettings",
+    )
+    identity_sources: MutableSequence[IdentitySource] = proto.RepeatedField(
+        proto.ENUM,
+        number=10,
+        enum=IdentitySource,
+    )
 
 
 class GcipSettings(proto.Message):
@@ -380,12 +421,12 @@ class GcipSettings(proto.Message):
 
     Attributes:
         tenant_ids (MutableSequence[str]):
-            GCIP tenant ids that are linked to the IAP resource.
-            tenant_ids could be a string beginning with a number
-            character to indicate authenticating with GCIP tenant flow,
-            or in the format of \_ to indicate authenticating with GCIP
-            agent flow. If agent flow is used, tenant_ids should only
-            contain one single element, while for tenant flow,
+            Optional. GCIP tenant ids that are linked to the IAP
+            resource. tenant_ids could be a string beginning with a
+            number character to indicate authenticating with GCIP tenant
+            flow, or in the format of \_ to indicate authenticating with
+            GCIP agent flow. If agent flow is used, tenant_ids should
+            only contain one single element, while for tenant flow,
             tenant_ids can contain multiple elements.
         login_page_uri (google.protobuf.wrappers_pb2.StringValue):
             Login page URI associated with the GCIP
@@ -439,8 +480,8 @@ class OAuthSettings(proto.Message):
             claim matches this value since access behavior
             is managed by IAM policies.
         programmatic_clients (MutableSequence[str]):
-            List of OAuth client IDs allowed to
-            programmatically authenticate with IAP.
+            Optional. List of client ids allowed to use
+            IAP programmatically.
     """
 
     login_hint: wrappers_pb2.StringValue = proto.Field(
@@ -454,20 +495,76 @@ class OAuthSettings(proto.Message):
     )
 
 
+class WorkforceIdentitySettings(proto.Message):
+    r"""WorkforceIdentitySettings allows customers to configure
+    workforce pools and OAuth 2.0 settings to gate their
+    applications using a third-party IdP with access control.
+
+    Attributes:
+        workforce_pools (MutableSequence[str]):
+            The workforce pool resources. Only one
+            workforce pool is accepted.
+        oauth2 (google.cloud.iap_v1.types.OAuth2):
+            OAuth 2.0 settings for IAP to perform OIDC
+            flow with workforce identity federation
+            services.
+    """
+
+    workforce_pools: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=1,
+    )
+    oauth2: "OAuth2" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="OAuth2",
+    )
+
+
+class OAuth2(proto.Message):
+    r"""The OAuth 2.0 Settings
+
+    Attributes:
+        client_id (str):
+            The OAuth 2.0 client ID registered in the
+            workforce identity federation OAuth 2.0 Server.
+        client_secret (str):
+            Input only. The OAuth 2.0 client secret
+            created while registering the client ID.
+        client_secret_sha256 (str):
+            Output only. SHA256 hash value for the client
+            secret. This field is returned by IAP when the
+            settings are retrieved.
+    """
+
+    client_id: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    client_secret: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    client_secret_sha256: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
 class ReauthSettings(proto.Message):
     r"""Configuration for IAP reauthentication policies.
 
     Attributes:
         method (google.cloud.iap_v1.types.ReauthSettings.Method):
-            Reauth method requested.
+            Optional. Reauth method requested.
         max_age (google.protobuf.duration_pb2.Duration):
-            Reauth session lifetime, how long before a
-            user has to reauthenticate again.
+            Optional. Reauth session lifetime, how long
+            before a user has to reauthenticate again.
         policy_type (google.cloud.iap_v1.types.ReauthSettings.PolicyType):
-            How IAP determines the effective policy in
-            cases of hierarchial policies. Policies are
-            merged from higher in the hierarchy to lower in
-            the hierarchy.
+            Optional. How IAP determines the effective
+            policy in cases of hierarchical policies.
+            Policies are merged from higher in the hierarchy
+            to lower in the hierarchy.
     """
 
     class Method(proto.Enum):
@@ -493,7 +590,7 @@ class ReauthSettings(proto.Message):
         ENROLLED_SECOND_FACTORS = 4
 
     class PolicyType(proto.Enum):
-        r"""Type of policy in the case of hierarchial policies.
+        r"""Type of policy in the case of hierarchical policies.
 
         Values:
             POLICY_TYPE_UNSPECIFIED (0):
@@ -537,12 +634,12 @@ class AllowedDomainsSettings(proto.Message):
 
     Attributes:
         enable (bool):
-            Configuration for customers to opt in for the
-            feature.
+            Optional. Configuration for customers to opt
+            in for the feature.
 
             This field is a member of `oneof`_ ``_enable``.
         domains (MutableSequence[str]):
-            List of trusted domains.
+            Optional. List of trusted domains.
     """
 
     enable: bool = proto.Field(
@@ -561,16 +658,18 @@ class ApplicationSettings(proto.Message):
 
     Attributes:
         csm_settings (google.cloud.iap_v1.types.CsmSettings):
-            Settings to configure IAP's behavior for a
-            service mesh.
+            Optional. Settings to configure IAP's
+            behavior for a service mesh.
         access_denied_page_settings (google.cloud.iap_v1.types.AccessDeniedPageSettings):
-            Customization for Access Denied page.
+            Optional. Customization for Access Denied
+            page.
         cookie_domain (google.protobuf.wrappers_pb2.StringValue):
             The Domain value to set for cookies generated
             by IAP. This value is not validated by the API,
             but will be ignored at runtime if invalid.
         attribute_propagation_settings (google.cloud.iap_v1.types.AttributePropagationSettings):
-            Settings to configure attribute propagation.
+            Optional. Settings to configure attribute
+            propagation.
     """
 
     csm_settings: "CsmSettings" = proto.Field(
@@ -665,10 +764,10 @@ class AttributePropagationSettings(proto.Message):
 
     Attributes:
         expression (str):
-            Raw string CEL expression. Must return a list of attributes.
-            A maximum of 45 attributes can be selected. Expressions can
-            select different attribute types from ``attributes``:
-            ``attributes.saml_attributes``,
+            Optional. Raw string CEL expression. Must return a list of
+            attributes. A maximum of 45 attributes can be selected.
+            Expressions can select different attribute types from
+            ``attributes``: ``attributes.saml_attributes``,
             ``attributes.iap_attributes``. The following functions are
             supported:
 
@@ -702,16 +801,16 @@ class AttributePropagationSettings(proto.Message):
 
             This field is a member of `oneof`_ ``_expression``.
         output_credentials (MutableSequence[google.cloud.iap_v1.types.AttributePropagationSettings.OutputCredentials]):
-            Which output credentials attributes selected
-            by the CEL expression should be propagated in.
-            All attributes will be fully duplicated in each
-            selected output credential.
+            Optional. Which output credentials attributes
+            selected by the CEL expression should be
+            propagated in. All attributes will be fully
+            duplicated in each selected output credential.
         enable (bool):
-            Whether the provided attribute propagation
-            settings should be evaluated on user requests.
-            If set to true, attributes returned from the
-            expression will be propagated in the set output
-            credentials.
+            Optional. Whether the provided attribute
+            propagation settings should be evaluated on user
+            requests. If set to true, attributes returned
+            from the expression will be propagated in the
+            set output credentials.
 
             This field is a member of `oneof`_ ``_enable``.
     """
@@ -755,6 +854,33 @@ class AttributePropagationSettings(proto.Message):
         number=3,
         optional=True,
     )
+
+
+class ValidateIapAttributeExpressionRequest(proto.Message):
+    r"""Request sent to IAP Expression Linter endpoint.
+
+    Attributes:
+        name (str):
+            Required. The resource name of the IAP
+            protected resource.
+        expression (str):
+            Required. User input string expression. Should be of the
+            form
+            ``attributes.saml_attributes.filter(attribute, attribute.name in ['{attribute_name}', '{attribute_name}'])``
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    expression: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class ValidateIapAttributeExpressionResponse(proto.Message):
+    r"""IAP Expression Linter endpoint returns empty response body."""
 
 
 class ListBrandsRequest(proto.Message):

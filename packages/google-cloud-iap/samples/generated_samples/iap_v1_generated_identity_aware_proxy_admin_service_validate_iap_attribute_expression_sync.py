@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for CreateTunnelDestGroup
+# Snippet for ValidateIapAttributeExpression
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,7 +23,7 @@
 #   python3 -m pip install google-cloud-iap
 
 
-# [START iap_v1_generated_IdentityAwareProxyAdminService_CreateTunnelDestGroup_sync]
+# [START iap_v1_generated_IdentityAwareProxyAdminService_ValidateIapAttributeExpression_sync]
 # This snippet has been automatically generated and should be regarded as a
 # code template only.
 # It will require modifications to work:
@@ -34,20 +34,20 @@
 from google.cloud import iap_v1
 
 
-def sample_create_tunnel_dest_group():
+def sample_validate_iap_attribute_expression():
     # Create a client
     client = iap_v1.IdentityAwareProxyAdminServiceClient()
 
     # Initialize request argument(s)
-    request = iap_v1.CreateTunnelDestGroupRequest(
-        parent="parent_value",
-        tunnel_dest_group_id="tunnel_dest_group_id_value",
+    request = iap_v1.ValidateIapAttributeExpressionRequest(
+        name="name_value",
+        expression="expression_value",
     )
 
     # Make the request
-    response = client.create_tunnel_dest_group(request=request)
+    response = client.validate_iap_attribute_expression(request=request)
 
     # Handle the response
     print(response)
 
-# [END iap_v1_generated_IdentityAwareProxyAdminService_CreateTunnelDestGroup_sync]
+# [END iap_v1_generated_IdentityAwareProxyAdminService_ValidateIapAttributeExpression_sync]
