@@ -57,6 +57,8 @@ from .file import (
     UpdateFileRequest,
 )
 from .generic import GenericArtifact
+from .go import GoModule
+from .kfp_artifact import KfpArtifact
 from .package import (
     DeletePackageRequest,
     GetPackageRequest,
@@ -162,6 +164,8 @@ __all__ = (
     "ListFilesResponse",
     "UpdateFileRequest",
     "GenericArtifact",
+    "GoModule",
+    "KfpArtifact",
     "DeletePackageRequest",
     "GetPackageRequest",
     "ListPackagesRequest",
