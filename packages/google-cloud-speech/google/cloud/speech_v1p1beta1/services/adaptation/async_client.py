@@ -45,6 +45,7 @@ except AttributeError:  # pragma: NO COVER
 
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
 
 from google.cloud.speech_v1p1beta1.services.adaptation import pagers
 from google.cloud.speech_v1p1beta1.types import cloud_speech_adaptation, resource
@@ -75,6 +76,12 @@ class AdaptationAsyncClient:
     _DEFAULT_ENDPOINT_TEMPLATE = AdaptationClient._DEFAULT_ENDPOINT_TEMPLATE
     _DEFAULT_UNIVERSE = AdaptationClient._DEFAULT_UNIVERSE
 
+    crypto_key_path = staticmethod(AdaptationClient.crypto_key_path)
+    parse_crypto_key_path = staticmethod(AdaptationClient.parse_crypto_key_path)
+    crypto_key_version_path = staticmethod(AdaptationClient.crypto_key_version_path)
+    parse_crypto_key_version_path = staticmethod(
+        AdaptationClient.parse_crypto_key_version_path
+    )
     custom_class_path = staticmethod(AdaptationClient.custom_class_path)
     parse_custom_class_path = staticmethod(AdaptationClient.parse_custom_class_path)
     phrase_set_path = staticmethod(AdaptationClient.phrase_set_path)
