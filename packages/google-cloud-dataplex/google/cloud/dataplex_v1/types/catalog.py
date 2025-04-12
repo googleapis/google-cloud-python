@@ -2608,6 +2608,7 @@ class MetadataJob(proto.Message):
                 organization_level (bool):
                     Indicating if it is an organization level
                     export job.
+
                     - When set to true, exports all entries from
                       entry groups and projects sharing the same
                       organization id of the Metadata Job. Only
