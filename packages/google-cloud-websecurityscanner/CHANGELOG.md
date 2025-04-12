@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-websecurityscanner/#history
 
+## [1.17.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-websecurityscanner-v1.17.1...google-cloud-websecurityscanner-v1.17.2) (2025-04-12)
+
+
+### Documentation
+
+* group Security Command Center packages together on cloud.google.com ([#13715](https://github.com/googleapis/google-cloud-python/issues/13715)) ([3ce0eda](https://github.com/googleapis/google-cloud-python/commit/3ce0eda3fe7b86acf2e67102077c803bf743f613)), closes [#13714](https://github.com/googleapis/google-cloud-python/issues/13714)
+
 ## [1.17.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-websecurityscanner-v1.17.0...google-cloud-websecurityscanner-v1.17.1) (2025-03-15)
 
 

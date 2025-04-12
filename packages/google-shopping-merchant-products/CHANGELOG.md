@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.2.4](https://github.com/googleapis/google-cloud-python/compare/google-shopping-merchant-products-v0.2.3...google-shopping-merchant-products-v0.2.4) (2025-04-12)
+
+
+### Features
+
+* A new field `automated_discounts` is added to message `google.shopping.merchant.products.v1beta.Product` ([62f7efa](https://github.com/googleapis/google-cloud-python/commit/62f7efa2ac8a06f36feef5e9c887aa31e55bca33))
+
+
+### Documentation
+
+* Modified several comments ([62f7efa](https://github.com/googleapis/google-cloud-python/commit/62f7efa2ac8a06f36feef5e9c887aa31e55bca33))
+
 ## [0.2.3](https://github.com/googleapis/google-cloud-python/compare/google-shopping-merchant-products-v0.2.2...google-shopping-merchant-products-v0.2.3) (2025-03-19)
 
 

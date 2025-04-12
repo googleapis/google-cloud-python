@@ -3,6 +3,19 @@
 [PyPI History][1]
 
 [1]: https://pypi.org/project/google-cloud-webrisk/#history
+## [1.18.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-webrisk-v1.17.1...google-cloud-webrisk-v1.18.0) (2025-04-12)
+
+
+### Features
+
+* A new method_signature `parent,submission` is added to method `SubmitUri` in service `WebRiskService` ([a6545c5](https://github.com/googleapis/google-cloud-python/commit/a6545c56895c2208d02aadbeceb020be08cb0256))
+
+
+### Documentation
+
+* A comment for message `SubmitUriMetadata` is changed ([a6545c5](https://github.com/googleapis/google-cloud-python/commit/a6545c56895c2208d02aadbeceb020be08cb0256))
+* A comment for message `ThreatInfo` is changed ([a6545c5](https://github.com/googleapis/google-cloud-python/commit/a6545c56895c2208d02aadbeceb020be08cb0256))
+
 ## [1.17.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-webrisk-v1.17.0...google-cloud-webrisk-v1.17.1) (2025-03-15)
 
 
