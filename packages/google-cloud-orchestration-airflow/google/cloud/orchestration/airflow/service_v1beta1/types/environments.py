@@ -2874,8 +2874,8 @@ class MasterAuthorizedNetworksConfig(proto.Message):
 
     Attributes:
         enabled (bool):
-            Whether or not master authorized networks
-            feature is enabled.
+            Optional. Whether or not master authorized
+            networks feature is enabled.
         cidr_blocks (MutableSequence[google.cloud.orchestration.airflow.service_v1beta1.types.MasterAuthorizedNetworksConfig.CidrBlock]):
             Up to 50 external networks that could access
             Kubernetes master through HTTPS.
