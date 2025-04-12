@@ -50,14 +50,13 @@ from google.api_core import retry as retries
 import google.auth
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
-from google.oauth2 import service_account
-
 from google.cloud.security.publicca_v1alpha1.services.public_certificate_authority_service import (
     PublicCertificateAuthorityServiceAsyncClient,
     PublicCertificateAuthorityServiceClient,
     transports,
 )
 from google.cloud.security.publicca_v1alpha1.types import resources, service
+from google.oauth2 import service_account
 
 CRED_INFO_JSON = {
     "credential_source": "/path/to/file",
