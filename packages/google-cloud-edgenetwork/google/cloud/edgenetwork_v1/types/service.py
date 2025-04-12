@@ -1249,7 +1249,7 @@ class DiagnoseInterconnectResponse(proto.Message):
 
 
 class DiagnoseRouterRequest(proto.Message):
-    r"""Message for requesting diagnositcs of a router within a
+    r"""Message for requesting diagnostics of a router within a
     specific zone.
 
     Attributes:
