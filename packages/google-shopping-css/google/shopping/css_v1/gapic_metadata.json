@@ -260,6 +260,40 @@
           }
         }
       }
+    },
+    "QuotaService": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "QuotaServiceClient",
+          "rpcs": {
+            "ListQuotaGroups": {
+              "methods": [
+                "list_quota_groups"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "QuotaServiceAsyncClient",
+          "rpcs": {
+            "ListQuotaGroups": {
+              "methods": [
+                "list_quota_groups"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "QuotaServiceClient",
+          "rpcs": {
+            "ListQuotaGroups": {
+              "methods": [
+                "list_quota_groups"
+              ]
+            }
+          }
+        }
+      }
     }
   }
 }

@@ -42,6 +42,10 @@ from google.shopping.css_v1.services.css_products_service.async_client import (
 from google.shopping.css_v1.services.css_products_service.client import (
     CssProductsServiceClient,
 )
+from google.shopping.css_v1.services.quota_service.async_client import (
+    QuotaServiceAsyncClient,
+)
+from google.shopping.css_v1.services.quota_service.client import QuotaServiceClient
 from google.shopping.css_v1.types.accounts import (
     Account,
     GetAccountRequest,
@@ -80,6 +84,12 @@ from google.shopping.css_v1.types.css_products import (
     ListCssProductsRequest,
     ListCssProductsResponse,
 )
+from google.shopping.css_v1.types.quota import (
+    ListQuotaGroupsRequest,
+    ListQuotaGroupsResponse,
+    MethodDetails,
+    QuotaGroup,
+)
 
 __all__ = (
     "AccountLabelsServiceClient",
@@ -90,6 +100,8 @@ __all__ = (
     "CssProductInputsServiceAsyncClient",
     "CssProductsServiceClient",
     "CssProductsServiceAsyncClient",
+    "QuotaServiceClient",
+    "QuotaServiceAsyncClient",
     "Account",
     "GetAccountRequest",
     "ListChildAccountsRequest",
@@ -118,4 +130,8 @@ __all__ = (
     "GetCssProductRequest",
     "ListCssProductsRequest",
     "ListCssProductsResponse",
+    "ListQuotaGroupsRequest",
+    "ListQuotaGroupsResponse",
+    "MethodDetails",
+    "QuotaGroup",
 )
