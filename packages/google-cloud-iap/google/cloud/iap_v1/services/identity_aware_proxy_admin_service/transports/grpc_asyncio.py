@@ -477,6 +477,39 @@ class IdentityAwareProxyAdminServiceGrpcAsyncIOTransport(
         return self._stubs["update_iap_settings"]
 
     @property
+    def validate_iap_attribute_expression(
+        self,
+    ) -> Callable[
+        [service.ValidateIapAttributeExpressionRequest],
+        Awaitable[service.ValidateIapAttributeExpressionResponse],
+    ]:
+        r"""Return a callable for the validate iap attribute
+        expression method over gRPC.
+
+        Validates that a given CEL expression conforms to IAP
+        restrictions.
+
+        Returns:
+            Callable[[~.ValidateIapAttributeExpressionRequest],
+                    Awaitable[~.ValidateIapAttributeExpressionResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "validate_iap_attribute_expression" not in self._stubs:
+            self._stubs[
+                "validate_iap_attribute_expression"
+            ] = self._logged_channel.unary_unary(
+                "/google.cloud.iap.v1.IdentityAwareProxyAdminService/ValidateIapAttributeExpression",
+                request_serializer=service.ValidateIapAttributeExpressionRequest.serialize,
+                response_deserializer=service.ValidateIapAttributeExpressionResponse.deserialize,
+            )
+        return self._stubs["validate_iap_attribute_expression"]
+
+    @property
     def list_tunnel_dest_groups(
         self,
     ) -> Callable[
@@ -642,6 +675,11 @@ class IdentityAwareProxyAdminServiceGrpcAsyncIOTransport(
             ),
             self.update_iap_settings: self._wrap_method(
                 self.update_iap_settings,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.validate_iap_attribute_expression: self._wrap_method(
+                self.validate_iap_attribute_expression,
                 default_timeout=None,
                 client_info=client_info,
             ),

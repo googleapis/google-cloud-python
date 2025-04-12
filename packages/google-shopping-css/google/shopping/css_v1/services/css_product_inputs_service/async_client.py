@@ -610,7 +610,10 @@ class CssProductInputsServiceAsyncClient:
             name (:class:`str`):
                 Required. The name of the CSS product input resource to
                 delete. Format:
-                accounts/{account}/cssProductInputs/{css_product_input}
+                accounts/{account}/cssProductInputs/{css_product_input},
+                where the last section ``css_product_input`` consists of
+                3 parts: contentLanguage~feedLabel~offerId. Example:
+                accounts/123/cssProductInputs/de~DE~rawProvidedId123
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this

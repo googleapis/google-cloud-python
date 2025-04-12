@@ -74,13 +74,52 @@ class QuotaFailure(_message.Message):
     __slots__ = ("violations",)
 
     class Violation(_message.Message):
-        __slots__ = ("subject", "description")
+        __slots__ = (
+            "subject",
+            "description",
+            "api_service",
+            "quota_metric",
+            "quota_id",
+            "quota_dimensions",
+            "quota_value",
+            "future_quota_value",
+        )
+
+        class QuotaDimensionsEntry(_message.Message):
+            __slots__ = ("key", "value")
+            KEY_FIELD_NUMBER: _ClassVar[int]
+            VALUE_FIELD_NUMBER: _ClassVar[int]
+            key: str
+            value: str
+            def __init__(
+                self, key: _Optional[str] = ..., value: _Optional[str] = ...
+            ) -> None: ...
         SUBJECT_FIELD_NUMBER: _ClassVar[int]
         DESCRIPTION_FIELD_NUMBER: _ClassVar[int]
+        API_SERVICE_FIELD_NUMBER: _ClassVar[int]
+        QUOTA_METRIC_FIELD_NUMBER: _ClassVar[int]
+        QUOTA_ID_FIELD_NUMBER: _ClassVar[int]
+        QUOTA_DIMENSIONS_FIELD_NUMBER: _ClassVar[int]
+        QUOTA_VALUE_FIELD_NUMBER: _ClassVar[int]
+        FUTURE_QUOTA_VALUE_FIELD_NUMBER: _ClassVar[int]
         subject: str
         description: str
+        api_service: str
+        quota_metric: str
+        quota_id: str
+        quota_dimensions: _containers.ScalarMap[str, str]
+        quota_value: int
+        future_quota_value: int
         def __init__(
-            self, subject: _Optional[str] = ..., description: _Optional[str] = ...
+            self,
+            subject: _Optional[str] = ...,
+            description: _Optional[str] = ...,
+            api_service: _Optional[str] = ...,
+            quota_metric: _Optional[str] = ...,
+            quota_id: _Optional[str] = ...,
+            quota_dimensions: _Optional[_Mapping[str, str]] = ...,
+            quota_value: _Optional[int] = ...,
+            future_quota_value: _Optional[int] = ...,
         ) -> None: ...
     VIOLATIONS_FIELD_NUMBER: _ClassVar[int]
     violations: _containers.RepeatedCompositeFieldContainer[QuotaFailure.Violation]

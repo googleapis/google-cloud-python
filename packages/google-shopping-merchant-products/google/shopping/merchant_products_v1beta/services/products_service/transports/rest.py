@@ -192,7 +192,6 @@ class ProductsServiceRestTransport(_BaseProductsServiceRestTransport):
     """REST backend synchronous transport for ProductsService.
 
     Service to use Product resource.
-    This service works for products with online channel only.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -324,8 +323,7 @@ class ProductsServiceRestTransport(_BaseProductsServiceRestTransport):
                 inputs][google.shopping.merchant.products.v1main.ProductInput]
                 after applying rules and supplemental data sources. This
                 processed product matches what is shown in your Merchant
-                Center account and in Shopping ads and other surfaces
-                across Google. Each product is built from exactly one
+                Center account. Each product is built from exactly one
                 primary data source product input, and multiple
                 supplemental data source inputs. After inserting,
                 updating, or deleting a product input, it may take

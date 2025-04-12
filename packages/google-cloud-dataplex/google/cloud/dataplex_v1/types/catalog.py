@@ -2240,6 +2240,11 @@ class CancelMetadataJobRequest(proto.Message):
 class MetadataJob(proto.Message):
     r"""A metadata job resource.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
@@ -2266,8 +2271,16 @@ class MetadataJob(proto.Message):
             Import job specification.
 
             This field is a member of `oneof`_ ``spec``.
+        export_spec (google.cloud.dataplex_v1.types.MetadataJob.ExportJobSpec):
+            Export job specification.
+
+            This field is a member of `oneof`_ ``spec``.
         import_result (google.cloud.dataplex_v1.types.MetadataJob.ImportJobResult):
             Output only. Import job result.
+
+            This field is a member of `oneof`_ ``result``.
+        export_result (google.cloud.dataplex_v1.types.MetadataJob.ExportJobResult):
+            Output only. Export job result.
 
             This field is a member of `oneof`_ ``result``.
         status (google.cloud.dataplex_v1.types.MetadataJob.Status):
@@ -2282,9 +2295,12 @@ class MetadataJob(proto.Message):
                 Unspecified.
             IMPORT (1):
                 Import job.
+            EXPORT (2):
+                Export job type.
         """
         TYPE_UNSPECIFIED = 0
         IMPORT = 1
+        EXPORT = 2
 
     class ImportJobResult(proto.Message):
         r"""Results from a metadata import job.
@@ -2334,6 +2350,28 @@ class MetadataJob(proto.Message):
             proto.MESSAGE,
             number=5,
             message=timestamp_pb2.Timestamp,
+        )
+
+    class ExportJobResult(proto.Message):
+        r"""Export Job Results. The result is based on the snapshot at
+        the time when the job is created.
+
+        Attributes:
+            exported_entries (int):
+                Output only. The number of entries that have
+                been exported.
+            error_message (str):
+                Output only. The error message if the export
+                job failed.
+        """
+
+        exported_entries: int = proto.Field(
+            proto.INT64,
+            number=1,
+        )
+        error_message: str = proto.Field(
+            proto.STRING,
+            number=2,
         )
 
     class ImportJobSpec(proto.Message):
@@ -2548,6 +2586,97 @@ class MetadataJob(proto.Message):
             enum="MetadataJob.ImportJobSpec.LogLevel",
         )
 
+    class ExportJobSpec(proto.Message):
+        r"""Export job specification.
+
+        Attributes:
+            scope (google.cloud.dataplex_v1.types.MetadataJob.ExportJobSpec.ExportJobScope):
+                Required. Selects the entries to be exported
+                by this job.
+            output_path (str):
+                Required. The root path of the exported metadata. Must be in
+                the format: "gs://<bucket_id>" Or specify a customized
+                prefix after the bucket: "gs://<bucket_id>///.../". The
+                length limit of the customized prefix is 128 characters. The
+                bucket must be in the same VPC-SC perimeter with the job.
+        """
+
+        class ExportJobScope(proto.Message):
+            r"""Scope of the export job.
+
+            Attributes:
+                organization_level (bool):
+                    Indicating if it is an organization level
+                    export job.
+
+                    - When set to true, exports all entries from
+                      entry groups and projects sharing the same
+                      organization id of the Metadata Job. Only
+                      projects and entry groups in the VPC-SC
+                      perimeter will be exported. The projects and
+                      entry groups are ignored.
+                    - When set to false, one of the projects or
+                      entry groups must be specified.
+                    - Default to false.
+                projects (MutableSequence[str]):
+                    The projects that are in the scope of the export job. Can
+                    either be project numbers or project IDs. If specified, only
+                    the entries from the specified projects will be exported.
+                    The projects must be in the same organization and in the
+                    VPC-SC perimeter. Either projects or entry_groups can be
+                    specified when organization_level_export is set to false.
+                    Must follow the format: "projects/<project_id_or_number>".
+                entry_groups (MutableSequence[str]):
+                    The entry groups that are in scope for the export job.
+                    Optional. If specified, only entries in the specified entry
+                    groups will be exported by the job. Must be in the VPC-SC
+                    perimeter of the job. The location of the entry groups must
+                    be the same as the job. Either projects or entry_groups can
+                    be specified when organization_level_export is set to false.
+                    Must follow the format:
+                    "projects/<project_id_or_number>/locations//entryGroups/<entry_group_id>".
+                entry_types (MutableSequence[str]):
+                    If specified, only entries of the specified types will be
+                    affected by the job. Must follow the format:
+                    "projects/<project_id_or_number>/locations//entryTypes/<entry_type_id>".
+                aspect_types (MutableSequence[str]):
+                    The aspect types that are in scope for the export job.
+                    Optional. If specified, only aspects of the specified types
+                    will be affected by the job. Must follow the format:
+                    "projects/<project_id_or_number>/locations//aspectTypes/<aspect_type_id>".
+            """
+
+            organization_level: bool = proto.Field(
+                proto.BOOL,
+                number=1,
+            )
+            projects: MutableSequence[str] = proto.RepeatedField(
+                proto.STRING,
+                number=2,
+            )
+            entry_groups: MutableSequence[str] = proto.RepeatedField(
+                proto.STRING,
+                number=3,
+            )
+            entry_types: MutableSequence[str] = proto.RepeatedField(
+                proto.STRING,
+                number=4,
+            )
+            aspect_types: MutableSequence[str] = proto.RepeatedField(
+                proto.STRING,
+                number=5,
+            )
+
+        scope: "MetadataJob.ExportJobSpec.ExportJobScope" = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            message="MetadataJob.ExportJobSpec.ExportJobScope",
+        )
+        output_path: str = proto.Field(
+            proto.STRING,
+            number=3,
+        )
+
     class Status(proto.Message):
         r"""Metadata job status.
 
@@ -2647,11 +2776,23 @@ class MetadataJob(proto.Message):
         oneof="spec",
         message=ImportJobSpec,
     )
+    export_spec: ExportJobSpec = proto.Field(
+        proto.MESSAGE,
+        number=101,
+        oneof="spec",
+        message=ExportJobSpec,
+    )
     import_result: ImportJobResult = proto.Field(
         proto.MESSAGE,
         number=200,
         oneof="result",
         message=ImportJobResult,
+    )
+    export_result: ExportJobResult = proto.Field(
+        proto.MESSAGE,
+        number=201,
+        oneof="result",
+        message=ExportJobResult,
     )
     status: Status = proto.Field(
         proto.MESSAGE,

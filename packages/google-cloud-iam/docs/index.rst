@@ -38,6 +38,22 @@ API Reference
     iam_v2beta/services_
     iam_v2beta/types_
 
+API Reference
+-------------
+.. toctree::
+    :maxdepth: 2
+
+    iam_v3/services_
+    iam_v3/types_
+
+API Reference
+-------------
+.. toctree::
+    :maxdepth: 2
+
+    iam_v3beta/services_
+    iam_v3beta/types_
+
 
 Changelog
 ---------

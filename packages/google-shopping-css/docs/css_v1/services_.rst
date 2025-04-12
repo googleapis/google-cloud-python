@@ -7,3 +7,4 @@ Services for Google Shopping Css v1 API
     accounts_service
     css_product_inputs_service
     css_products_service
+    quota_service

@@ -60,7 +60,10 @@ class oracledatabaseCallTransformer(cst.CSTTransformer):
         'list_db_system_shapes': ('parent', 'page_size', 'page_token', ),
         'list_entitlements': ('parent', 'page_size', 'page_token', ),
         'list_gi_versions': ('parent', 'page_size', 'page_token', ),
+        'restart_autonomous_database': ('name', ),
         'restore_autonomous_database': ('name', 'restore_time', ),
+        'start_autonomous_database': ('name', ),
+        'stop_autonomous_database': ('name', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:

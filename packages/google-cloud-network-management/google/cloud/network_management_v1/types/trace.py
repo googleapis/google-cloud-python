@@ -48,6 +48,8 @@ __protobuf__ = proto.module(
         "CloudRunRevisionInfo",
         "AppEngineVersionInfo",
         "VpcConnectorInfo",
+        "DirectVpcEgressConnectionInfo",
+        "ServerlessExternalConnectionInfo",
         "NatInfo",
         "ProxyConnectionInfo",
         "LoadBalancerBackendInfo",
@@ -228,6 +230,16 @@ class Step(proto.Message):
             Display information of a VPC connector.
 
             This field is a member of `oneof`_ ``step_info``.
+        direct_vpc_egress_connection (google.cloud.network_management_v1.types.DirectVpcEgressConnectionInfo):
+            Display information of a serverless direct
+            VPC egress connection.
+
+            This field is a member of `oneof`_ ``step_info``.
+        serverless_external_connection (google.cloud.network_management_v1.types.ServerlessExternalConnectionInfo):
+            Display information of a serverless public
+            (external) connection.
+
+            This field is a member of `oneof`_ ``step_info``.
         deliver (google.cloud.network_management_v1.types.DeliverInfo):
             Display information of the final state
             "deliver" and reason.
@@ -399,11 +411,15 @@ class Step(proto.Message):
                 Forwarding state: arriving at a Compute
                 Engine instance.
             ARRIVE_AT_INTERNAL_LOAD_BALANCER (10):
-                Forwarding state: arriving at a Compute
-                Engine internal load balancer.
+                Forwarding state: arriving at a Compute Engine internal load
+                balancer. Deprecated in favor of the
+                ``ANALYZE_LOAD_BALANCER_BACKEND`` state, not used in new
+                tests.
             ARRIVE_AT_EXTERNAL_LOAD_BALANCER (11):
-                Forwarding state: arriving at a Compute
-                Engine external load balancer.
+                Forwarding state: arriving at a Compute Engine external load
+                balancer. Deprecated in favor of the
+                ``ANALYZE_LOAD_BALANCER_BACKEND`` state, not used in new
+                tests.
             ARRIVE_AT_VPN_GATEWAY (12):
                 Forwarding state: arriving at a Cloud VPN
                 gateway.
@@ -413,6 +429,14 @@ class Step(proto.Message):
             ARRIVE_AT_VPC_CONNECTOR (24):
                 Forwarding state: arriving at a VPC
                 connector.
+            DIRECT_VPC_EGRESS_CONNECTION (35):
+                Forwarding state: for packets originating
+                from a serverless endpoint forwarded through
+                Direct VPC egress.
+            SERVERLESS_EXTERNAL_CONNECTION (36):
+                Forwarding state: for packets originating
+                from a serverless endpoint forwarded through
+                public (external) connectivity.
             NAT (14):
                 Transition state: packet header translated.
             PROXY_CONNECTION (15):
@@ -460,6 +484,8 @@ class Step(proto.Message):
         ARRIVE_AT_VPN_GATEWAY = 12
         ARRIVE_AT_VPN_TUNNEL = 13
         ARRIVE_AT_VPC_CONNECTOR = 24
+        DIRECT_VPC_EGRESS_CONNECTION = 35
+        SERVERLESS_EXTERNAL_CONNECTION = 36
         NAT = 14
         PROXY_CONNECTION = 15
         DELIVER = 16
@@ -538,6 +564,18 @@ class Step(proto.Message):
         number=21,
         oneof="step_info",
         message="VpcConnectorInfo",
+    )
+    direct_vpc_egress_connection: "DirectVpcEgressConnectionInfo" = proto.Field(
+        proto.MESSAGE,
+        number=33,
+        oneof="step_info",
+        message="DirectVpcEgressConnectionInfo",
+    )
+    serverless_external_connection: "ServerlessExternalConnectionInfo" = proto.Field(
+        proto.MESSAGE,
+        number=34,
+        oneof="step_info",
+        message="ServerlessExternalConnectionInfo",
     )
     deliver: "DeliverInfo" = proto.Field(
         proto.MESSAGE,
@@ -840,6 +878,10 @@ class FirewallInfo(proto.Message):
                 traffic goes through allow firewall rule. For details, see
                 `firewall rules
                 specifications <https://cloud.google.com/firewall/docs/firewalls#specifications>`__
+            ANALYSIS_SKIPPED (102):
+                Firewall analysis was skipped due to
+                executing Connectivity Test in the
+                BypassFirewallChecks mode
         """
         FIREWALL_RULE_TYPE_UNSPECIFIED = 0
         HIERARCHICAL_FIREWALL_POLICY_RULE = 1
@@ -850,6 +892,7 @@ class FirewallInfo(proto.Message):
         NETWORK_REGIONAL_FIREWALL_POLICY_RULE = 6
         UNSUPPORTED_FIREWALL_POLICY_RULE = 100
         TRACKING_STATE = 101
+        ANALYSIS_SKIPPED = 102
 
     display_name: str = proto.Field(
         proto.STRING,
@@ -911,58 +954,82 @@ class RouteInfo(proto.Message):
         next_hop_type (google.cloud.network_management_v1.types.RouteInfo.NextHopType):
             Type of next hop.
         route_scope (google.cloud.network_management_v1.types.RouteInfo.RouteScope):
-            Indicates where route is applicable.
+            Indicates where route is applicable. Deprecated, routes with
+            NCC_HUB scope are not included in the trace in new tests.
         display_name (str):
             Name of a route.
         uri (str):
-            URI of a route (if applicable).
+            URI of a route. SUBNET, STATIC, PEERING_SUBNET (only for
+            peering network) and POLICY_BASED routes only.
         region (str):
-            Region of the route (if applicable).
+            Region of the route. DYNAMIC, PEERING_DYNAMIC, POLICY_BASED
+            and ADVERTISED routes only. If set for POLICY_BASED route,
+            this is a region of VLAN attachments for Cloud Interconnect
+            the route applies to.
         dest_ip_range (str):
             Destination IP range of the route.
         next_hop (str):
-            Next hop of the route.
+            String type of the next hop of the route (for example, "VPN
+            tunnel"). Deprecated in favor of the next_hop_type and
+            next_hop_uri fields, not used in new tests.
         network_uri (str):
-            URI of a Compute Engine network. NETWORK
-            routes only.
+            URI of a VPC network where route is located.
         priority (int):
             Priority of the route.
         instance_tags (MutableSequence[str]):
             Instance tags of the route.
         src_ip_range (str):
-            Source IP address range of the route. Policy
-            based routes only.
-        dest_port_ranges (MutableSequence[str]):
-            Destination port ranges of the route. Policy
-            based routes only.
-        src_port_ranges (MutableSequence[str]):
-            Source port ranges of the route. Policy based
-            routes only.
-        protocols (MutableSequence[str]):
-            Protocols of the route. Policy based routes
+            Source IP address range of the route. POLICY_BASED routes
             only.
+        dest_port_ranges (MutableSequence[str]):
+            Destination port ranges of the route. POLICY_BASED routes
+            only.
+        src_port_ranges (MutableSequence[str]):
+            Source port ranges of the route. POLICY_BASED routes only.
+        protocols (MutableSequence[str]):
+            Protocols of the route. POLICY_BASED routes only.
         ncc_hub_uri (str):
-            URI of a NCC Hub. NCC_HUB routes only.
+            URI of the NCC Hub the route is advertised by.
+            PEERING_SUBNET and PEERING_DYNAMIC routes that are
+            advertised by NCC Hub only.
 
             This field is a member of `oneof`_ ``_ncc_hub_uri``.
         ncc_spoke_uri (str):
-            URI of a NCC Spoke. NCC_HUB routes only.
+            URI of the destination NCC Spoke. PEERING_SUBNET and
+            PEERING_DYNAMIC routes that are advertised by NCC Hub only.
 
             This field is a member of `oneof`_ ``_ncc_spoke_uri``.
         advertised_route_source_router_uri (str):
-            For advertised dynamic routes, the URI of the
+            For ADVERTISED dynamic routes, the URI of the
             Cloud Router that advertised the corresponding
             IP prefix.
 
             This field is a member of `oneof`_ ``_advertised_route_source_router_uri``.
         advertised_route_next_hop_uri (str):
-            For advertised routes, the URI of their next
-            hop, i.e. the URI of the hybrid endpoint (VPN
-            tunnel, Interconnect attachment, NCC router
-            appliance) the advertised prefix is advertised
-            through, or URI of the source peered network.
+            For ADVERTISED routes, the URI of their next hop, i.e. the
+            URI of the hybrid endpoint (VPN tunnel, Interconnect
+            attachment, NCC router appliance) the advertised prefix is
+            advertised through, or URI of the source peered network.
+            Deprecated in favor of the next_hop_uri field, not used in
+            new tests.
 
             This field is a member of `oneof`_ ``_advertised_route_next_hop_uri``.
+        next_hop_uri (str):
+            URI of the next hop resource.
+        next_hop_network_uri (str):
+            URI of a VPC network where the next hop
+            resource is located.
+        originating_route_uri (str):
+            For PEERING_SUBNET and PEERING_STATIC routes, the URI of the
+            originating SUBNET/STATIC route.
+        originating_route_display_name (str):
+            For PEERING_SUBNET, PEERING_STATIC and PEERING_DYNAMIC
+            routes, the name of the originating SUBNET/STATIC/DYNAMIC
+            route.
+        ncc_hub_route_uri (str):
+            For PEERING_SUBNET and PEERING_DYNAMIC routes that are
+            advertised by NCC Hub, the URI of the corresponding route in
+            NCC Hub's routing table.
     """
 
     class RouteType(proto.Enum):
@@ -980,12 +1047,13 @@ class RouteInfo(proto.Message):
             DYNAMIC (3):
                 Dynamic route exchanged between BGP peers.
             PEERING_SUBNET (4):
-                A subnet route received from peering network.
+                A subnet route received from peering network
+                or NCC Hub.
             PEERING_STATIC (5):
                 A static route received from peering network.
             PEERING_DYNAMIC (6):
-                A dynamic route received from peering
-                network.
+                A dynamic route received from peering network
+                or NCC Hub.
             POLICY_BASED (7):
                 Policy based route.
             ADVERTISED (101):
@@ -1017,7 +1085,10 @@ class RouteInfo(proto.Message):
             NEXT_HOP_NETWORK (3):
                 Next hop is a VPC network gateway.
             NEXT_HOP_PEERING (4):
-                Next hop is a peering VPC.
+                Next hop is a peering VPC. This scenario only
+                happens when the user doesn't have permissions
+                to the project where the next hop resource is
+                located.
             NEXT_HOP_INTERCONNECT (5):
                 Next hop is an interconnect.
             NEXT_HOP_VPN_TUNNEL (6):
@@ -1033,7 +1104,7 @@ class RouteInfo(proto.Message):
                 Next hop is an internet gateway.
             NEXT_HOP_BLACKHOLE (9):
                 Next hop is blackhole; that is, the next hop
-                either does not exist or is not running.
+                either does not exist or is unusable.
             NEXT_HOP_ILB (10):
                 Next hop is the forwarding rule of an
                 Internal Load Balancer.
@@ -1041,7 +1112,10 @@ class RouteInfo(proto.Message):
                 Next hop is a `router appliance
                 instance <https://cloud.google.com/network-connectivity/docs/network-connectivity-center/concepts/ra-overview>`__.
             NEXT_HOP_NCC_HUB (12):
-                Next hop is an NCC hub.
+                Next hop is an NCC hub. This scenario only
+                happens when the user doesn't have permissions
+                to the project where the next hop resource is
+                located.
         """
         NEXT_HOP_TYPE_UNSPECIFIED = 0
         NEXT_HOP_IP = 1
@@ -1156,6 +1230,26 @@ class RouteInfo(proto.Message):
         number=18,
         optional=True,
     )
+    next_hop_uri: str = proto.Field(
+        proto.STRING,
+        number=20,
+    )
+    next_hop_network_uri: str = proto.Field(
+        proto.STRING,
+        number=21,
+    )
+    originating_route_uri: str = proto.Field(
+        proto.STRING,
+        number=22,
+    )
+    originating_route_display_name: str = proto.Field(
+        proto.STRING,
+        number=23,
+    )
+    ncc_hub_route_uri: str = proto.Field(
+        proto.STRING,
+        number=24,
+    )
 
 
 class GoogleServiceInfo(proto.Message):
@@ -1202,6 +1296,9 @@ class GoogleServiceInfo(proto.Message):
             GOOGLE_API_VPC_SC (6):
                 Google API via VPC Service Controls.
                 https://cloud.google.com/vpc/docs/configure-private-service-connect-apis
+            SERVERLESS_VPC_ACCESS (7):
+                Google API via Serverless VPC Access.
+                https://cloud.google.com/vpc/docs/serverless-vpc-access
         """
         GOOGLE_SERVICE_TYPE_UNSPECIFIED = 0
         IAP = 1
@@ -1210,6 +1307,7 @@ class GoogleServiceInfo(proto.Message):
         GOOGLE_API = 4
         GOOGLE_API_PSC = 5
         GOOGLE_API_VPC_SC = 6
+        SERVERLESS_VPC_ACCESS = 7
 
     source_ip: str = proto.Field(
         proto.STRING,
@@ -1999,6 +2097,11 @@ class AbortInfo(proto.Message):
             UNSUPPORTED_GOOGLE_MANAGED_PROJECT_CONFIG (31):
                 Aborted due to an unsupported configuration
                 of the Google-managed project.
+            NO_SERVERLESS_IP_RANGES (37):
+                Aborted because the source endpoint is a
+                Cloud Run revision with direct VPC access
+                enabled, but there are no reserved serverless IP
+                ranges.
         """
         CAUSE_UNSPECIFIED = 0
         UNKNOWN_NETWORK = 1
@@ -2036,6 +2139,7 @@ class AbortInfo(proto.Message):
         NON_ROUTABLE_IP_ADDRESS = 22
         UNKNOWN_ISSUE_IN_GOOGLE_MANAGED_PROJECT = 30
         UNSUPPORTED_GOOGLE_MANAGED_PROJECT_CONFIG = 31
+        NO_SERVERLESS_IP_RANGES = 37
 
     cause: Cause = proto.Field(
         proto.ENUM,
@@ -2167,6 +2271,11 @@ class DropInfo(proto.Message):
                 cause the backends to be unavailable for traffic from the
                 load balancer. For more details, see `Health check firewall
                 rules <https://cloud.google.com/load-balancing/docs/health-checks#firewall_rules>`__.
+            INGRESS_FIREWALL_TAGS_UNSUPPORTED_BY_DIRECT_VPC_EGRESS (85):
+                Matching ingress firewall rules by network
+                tags for packets sent via serverless VPC direct
+                egress is unsupported. Behavior is undefined.
+                https://cloud.google.com/run/docs/configuring/vpc-direct-vpc#limitations
             INSTANCE_NOT_RUNNING (14):
                 Packet is sent from or to a Compute Engine
                 instance that is not in a running state.
@@ -2395,6 +2504,18 @@ class DropInfo(proto.Message):
                 Sending packets processed by the Private NAT
                 Gateways to the Private Service Connect
                 endpoints is not supported.
+            PSC_PORT_MAPPING_PORT_MISMATCH (86):
+                Packet is sent to the PSC port mapping
+                service, but its destination port does not match
+                any port mapping rules.
+            PSC_PORT_MAPPING_WITHOUT_PSC_CONNECTION_UNSUPPORTED (87):
+                Sending packets directly to the PSC port
+                mapping service without going through the PSC
+                connection is not supported.
+            UNSUPPORTED_ROUTE_MATCHED_FOR_NAT64_DESTINATION (88):
+                Packet with destination IP address within the
+                reserved NAT64 range is dropped due to matching
+                a route of an unsupported type.
         """
         CAUSE_UNSPECIFIED = 0
         UNKNOWN_EXTERNAL_ADDRESS = 1
@@ -2421,6 +2542,7 @@ class DropInfo(proto.Message):
         FORWARDING_RULE_MISMATCH = 11
         FORWARDING_RULE_NO_INSTANCES = 12
         FIREWALL_BLOCKING_LOAD_BALANCER_BACKEND_HEALTH_CHECK = 13
+        INGRESS_FIREWALL_TAGS_UNSUPPORTED_BY_DIRECT_VPC_EGRESS = 85
         INSTANCE_NOT_RUNNING = 14
         GKE_CLUSTER_NOT_RUNNING = 27
         CLOUD_SQL_INSTANCE_NOT_RUNNING = 28
@@ -2480,6 +2602,9 @@ class DropInfo(proto.Message):
         NO_TRAFFIC_SELECTOR_TO_GCP_DESTINATION = 81
         NO_KNOWN_ROUTE_FROM_PEERED_NETWORK_TO_DESTINATION = 82
         PRIVATE_NAT_TO_PSC_ENDPOINT_UNSUPPORTED = 83
+        PSC_PORT_MAPPING_PORT_MISMATCH = 86
+        PSC_PORT_MAPPING_WITHOUT_PSC_CONNECTION_UNSUPPORTED = 87
+        UNSUPPORTED_ROUTE_MATCHED_FOR_NAT64_DESTINATION = 88
 
     cause: Cause = proto.Field(
         proto.ENUM,
@@ -2650,8 +2775,8 @@ class RedisClusterInfo(proto.Message):
             URI of a Redis Cluster in format
             "projects/{project_id}/locations/{location}/clusters/{cluster_id}".
         network_uri (str):
-            URI of a Redis Cluster network in format
-            "projects/{project_id}/global/networks/{network_id}".
+            URI of the network containing the Redis Cluster endpoints in
+            format "projects/{project_id}/global/networks/{network_id}".
         discovery_endpoint_ip_address (str):
             Discovery endpoint IP address of a Redis
             Cluster.
@@ -2815,6 +2940,63 @@ class VpcConnectorInfo(proto.Message):
     location: str = proto.Field(
         proto.STRING,
         number=3,
+    )
+
+
+class DirectVpcEgressConnectionInfo(proto.Message):
+    r"""For display only. Metadata associated with a serverless
+    direct VPC egress connection.
+
+    Attributes:
+        network_uri (str):
+            URI of direct access network.
+        subnetwork_uri (str):
+            URI of direct access subnetwork.
+        selected_ip_range (str):
+            Selected IP range.
+        selected_ip_address (str):
+            Selected starting IP address, from the
+            selected IP range.
+        region (str):
+            Region in which the Direct VPC egress is
+            deployed.
+    """
+
+    network_uri: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    subnetwork_uri: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    selected_ip_range: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    selected_ip_address: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    region: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+
+
+class ServerlessExternalConnectionInfo(proto.Message):
+    r"""For display only. Metadata associated with a serverless
+    public connection.
+
+    Attributes:
+        selected_ip_address (str):
+            Selected starting IP address, from the Google
+            dynamic address pool.
+    """
+
+    selected_ip_address: str = proto.Field(
+        proto.STRING,
+        number=1,
     )
 
 

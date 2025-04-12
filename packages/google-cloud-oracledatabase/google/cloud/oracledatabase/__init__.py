@@ -96,7 +96,10 @@ from google.cloud.oracledatabase_v1.types.oracledatabase import (
     ListGiVersionsRequest,
     ListGiVersionsResponse,
     OperationMetadata,
+    RestartAutonomousDatabaseRequest,
     RestoreAutonomousDatabaseRequest,
+    StartAutonomousDatabaseRequest,
+    StopAutonomousDatabaseRequest,
 )
 from google.cloud.oracledatabase_v1.types.vm_cluster import (
     CloudVmCluster,
@@ -170,7 +173,10 @@ __all__ = (
     "ListGiVersionsRequest",
     "ListGiVersionsResponse",
     "OperationMetadata",
+    "RestartAutonomousDatabaseRequest",
     "RestoreAutonomousDatabaseRequest",
+    "StartAutonomousDatabaseRequest",
+    "StopAutonomousDatabaseRequest",
     "CloudVmCluster",
     "CloudVmClusterProperties",
     "DataCollectionOptions",

@@ -47,6 +47,7 @@ __protobuf__ = proto.module(
         "ProductStatus",
         "CloudExportAdditionalProperties",
         "ProductSustainabilityIncentive",
+        "AutomatedDiscounts",
     },
 )
 
@@ -2006,6 +2007,44 @@ class ProductSustainabilityIncentive(proto.Message):
         number=1,
         optional=True,
         enum=Type,
+    )
+
+
+class AutomatedDiscounts(proto.Message):
+    r"""Information regarding Automated Discounts.
+
+    Attributes:
+        prior_price (google.shopping.type.types.Price):
+            The price prior to the application of the
+            first price reduction. Absent if the information
+            about the prior price of the product is not
+            available.
+        prior_price_progressive (google.shopping.type.types.Price):
+            The price prior to the application of
+            consecutive price reductions. Absent if the
+            information about the prior price of the product
+            is not available.
+        gad_price (google.shopping.type.types.Price):
+            The current sale price for products with a price optimized
+            using Google Automated Discounts (GAD). Absent if the
+            information about the GAD_price of the product is not
+            available.
+    """
+
+    prior_price: types.Price = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=types.Price,
+    )
+    prior_price_progressive: types.Price = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=types.Price,
+    )
+    gad_price: types.Price = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=types.Price,
     )
 
 

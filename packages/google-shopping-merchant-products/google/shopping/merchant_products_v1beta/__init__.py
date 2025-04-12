@@ -37,6 +37,7 @@ from .types.products import (
 )
 from .types.products_common import (
     Attributes,
+    AutomatedDiscounts,
     Certification,
     CloudExportAdditionalProperties,
     FreeShippingThreshold,
@@ -64,6 +65,7 @@ __all__ = (
     "ProductInputsServiceAsyncClient",
     "ProductsServiceAsyncClient",
     "Attributes",
+    "AutomatedDiscounts",
     "Certification",
     "CloudExportAdditionalProperties",
     "DeleteProductInputRequest",

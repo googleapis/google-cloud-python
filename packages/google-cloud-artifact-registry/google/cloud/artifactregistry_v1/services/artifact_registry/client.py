@@ -3634,8 +3634,10 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
                 should not be set.
             names (MutableSequence[str]):
                 Required. The names of the versions
-                to delete. A maximum of 10000 versions
-                can be deleted in a batch.
+                to delete. The maximum number of
+                versions deleted per batch is determined
+                by the service and is dependent on the
+                available resources in the region.
 
                 This corresponds to the ``names`` field
                 on the ``request`` instance; if ``request`` is provided, this

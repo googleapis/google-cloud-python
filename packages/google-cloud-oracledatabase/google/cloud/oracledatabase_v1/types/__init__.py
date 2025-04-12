@@ -81,7 +81,10 @@ from .oracledatabase import (
     ListGiVersionsRequest,
     ListGiVersionsResponse,
     OperationMetadata,
+    RestartAutonomousDatabaseRequest,
     RestoreAutonomousDatabaseRequest,
+    StartAutonomousDatabaseRequest,
+    StopAutonomousDatabaseRequest,
 )
 from .vm_cluster import CloudVmCluster, CloudVmClusterProperties, DataCollectionOptions
 
@@ -150,7 +153,10 @@ __all__ = (
     "ListGiVersionsRequest",
     "ListGiVersionsResponse",
     "OperationMetadata",
+    "RestartAutonomousDatabaseRequest",
     "RestoreAutonomousDatabaseRequest",
+    "StartAutonomousDatabaseRequest",
+    "StopAutonomousDatabaseRequest",
     "CloudVmCluster",
     "CloudVmClusterProperties",
     "DataCollectionOptions",

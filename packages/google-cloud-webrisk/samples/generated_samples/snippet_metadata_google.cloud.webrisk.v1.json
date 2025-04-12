@@ -718,6 +718,14 @@
             "type": "google.cloud.webrisk_v1.types.SubmitUriRequest"
           },
           {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "submission",
+            "type": "google.cloud.webrisk_v1.types.Submission"
+          },
+          {
             "name": "retry",
             "type": "google.api_core.retry.Retry"
           },
@@ -792,6 +800,14 @@
           {
             "name": "request",
             "type": "google.cloud.webrisk_v1.types.SubmitUriRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "submission",
+            "type": "google.cloud.webrisk_v1.types.Submission"
           },
           {
             "name": "retry",

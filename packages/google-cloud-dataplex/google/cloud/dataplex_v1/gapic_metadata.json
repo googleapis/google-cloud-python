@@ -414,6 +414,100 @@
         }
       }
     },
+    "CmekService": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "CmekServiceClient",
+          "rpcs": {
+            "CreateEncryptionConfig": {
+              "methods": [
+                "create_encryption_config"
+              ]
+            },
+            "DeleteEncryptionConfig": {
+              "methods": [
+                "delete_encryption_config"
+              ]
+            },
+            "GetEncryptionConfig": {
+              "methods": [
+                "get_encryption_config"
+              ]
+            },
+            "ListEncryptionConfigs": {
+              "methods": [
+                "list_encryption_configs"
+              ]
+            },
+            "UpdateEncryptionConfig": {
+              "methods": [
+                "update_encryption_config"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "CmekServiceAsyncClient",
+          "rpcs": {
+            "CreateEncryptionConfig": {
+              "methods": [
+                "create_encryption_config"
+              ]
+            },
+            "DeleteEncryptionConfig": {
+              "methods": [
+                "delete_encryption_config"
+              ]
+            },
+            "GetEncryptionConfig": {
+              "methods": [
+                "get_encryption_config"
+              ]
+            },
+            "ListEncryptionConfigs": {
+              "methods": [
+                "list_encryption_configs"
+              ]
+            },
+            "UpdateEncryptionConfig": {
+              "methods": [
+                "update_encryption_config"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "CmekServiceClient",
+          "rpcs": {
+            "CreateEncryptionConfig": {
+              "methods": [
+                "create_encryption_config"
+              ]
+            },
+            "DeleteEncryptionConfig": {
+              "methods": [
+                "delete_encryption_config"
+              ]
+            },
+            "GetEncryptionConfig": {
+              "methods": [
+                "get_encryption_config"
+              ]
+            },
+            "ListEncryptionConfigs": {
+              "methods": [
+                "list_encryption_configs"
+              ]
+            },
+            "UpdateEncryptionConfig": {
+              "methods": [
+                "update_encryption_config"
+              ]
+            }
+          }
+        }
+      }
+    },
     "ContentService": {
       "clients": {
         "grpc": {

@@ -3563,9 +3563,9 @@ class Release(proto.Message):
                     Skaffold configuration.
                 CUSTOM_ACTION_NOT_FOUND (5):
                     The render operation did not complete successfully because
-                    the custom action required for predeploy or postdeploy was
-                    not found in the Skaffold configuration. See failure_message
-                    for additional details.
+                    the custom action(s) required for Rollout jobs were not
+                    found in the Skaffold configuration. See failure_message for
+                    additional details.
                 DEPLOYMENT_STRATEGY_NOT_SUPPORTED (6):
                     Release failed during rendering because the
                     release configuration is not supported with the
@@ -4130,10 +4130,12 @@ class TargetArtifact(proto.Message):
             This field is a member of `oneof`_ ``uri``.
         skaffold_config_path (str):
             Output only. File path of the resolved
-            Skaffold configuration relative to the URI.
+            Skaffold configuration for the stable phase,
+            relative to the URI.
         manifest_path (str):
             Output only. File path of the rendered
-            manifest relative to the URI.
+            manifest relative to the URI for the stable
+            phase.
         phase_artifacts (MutableMapping[str, google.cloud.deploy_v1.types.TargetArtifact.PhaseArtifact]):
             Output only. Map from the phase ID to the phase artifacts
             for the ``Target``.

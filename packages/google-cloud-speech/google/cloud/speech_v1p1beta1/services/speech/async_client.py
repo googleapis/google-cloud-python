@@ -80,6 +80,12 @@ class SpeechAsyncClient:
     _DEFAULT_ENDPOINT_TEMPLATE = SpeechClient._DEFAULT_ENDPOINT_TEMPLATE
     _DEFAULT_UNIVERSE = SpeechClient._DEFAULT_UNIVERSE
 
+    crypto_key_path = staticmethod(SpeechClient.crypto_key_path)
+    parse_crypto_key_path = staticmethod(SpeechClient.parse_crypto_key_path)
+    crypto_key_version_path = staticmethod(SpeechClient.crypto_key_version_path)
+    parse_crypto_key_version_path = staticmethod(
+        SpeechClient.parse_crypto_key_version_path
+    )
     custom_class_path = staticmethod(SpeechClient.custom_class_path)
     parse_custom_class_path = staticmethod(SpeechClient.parse_custom_class_path)
     phrase_set_path = staticmethod(SpeechClient.phrase_set_path)

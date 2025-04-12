@@ -2495,6 +2495,259 @@ async def test_update_iap_settings_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
+        service.ValidateIapAttributeExpressionRequest,
+        dict,
+    ],
+)
+def test_validate_iap_attribute_expression(request_type, transport: str = "grpc"):
+    client = IdentityAwareProxyAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.validate_iap_attribute_expression), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = service.ValidateIapAttributeExpressionResponse()
+        response = client.validate_iap_attribute_expression(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = service.ValidateIapAttributeExpressionRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, service.ValidateIapAttributeExpressionResponse)
+
+
+def test_validate_iap_attribute_expression_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = IdentityAwareProxyAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = service.ValidateIapAttributeExpressionRequest(
+        name="name_value",
+        expression="expression_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.validate_iap_attribute_expression), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.validate_iap_attribute_expression(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.ValidateIapAttributeExpressionRequest(
+            name="name_value",
+            expression="expression_value",
+        )
+
+
+def test_validate_iap_attribute_expression_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = IdentityAwareProxyAdminServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.validate_iap_attribute_expression
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.validate_iap_attribute_expression
+        ] = mock_rpc
+        request = {}
+        client.validate_iap_attribute_expression(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.validate_iap_attribute_expression(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_validate_iap_attribute_expression_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = IdentityAwareProxyAdminServiceAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.validate_iap_attribute_expression
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.validate_iap_attribute_expression
+        ] = mock_rpc
+
+        request = {}
+        await client.validate_iap_attribute_expression(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        await client.validate_iap_attribute_expression(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_validate_iap_attribute_expression_async(
+    transport: str = "grpc_asyncio",
+    request_type=service.ValidateIapAttributeExpressionRequest,
+):
+    client = IdentityAwareProxyAdminServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.validate_iap_attribute_expression), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.ValidateIapAttributeExpressionResponse()
+        )
+        response = await client.validate_iap_attribute_expression(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = service.ValidateIapAttributeExpressionRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, service.ValidateIapAttributeExpressionResponse)
+
+
+@pytest.mark.asyncio
+async def test_validate_iap_attribute_expression_async_from_dict():
+    await test_validate_iap_attribute_expression_async(request_type=dict)
+
+
+def test_validate_iap_attribute_expression_field_headers():
+    client = IdentityAwareProxyAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = service.ValidateIapAttributeExpressionRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.validate_iap_attribute_expression), "__call__"
+    ) as call:
+        call.return_value = service.ValidateIapAttributeExpressionResponse()
+        client.validate_iap_attribute_expression(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_validate_iap_attribute_expression_field_headers_async():
+    client = IdentityAwareProxyAdminServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = service.ValidateIapAttributeExpressionRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.validate_iap_attribute_expression), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.ValidateIapAttributeExpressionResponse()
+        )
+        await client.validate_iap_attribute_expression(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         service.ListTunnelDestGroupsRequest,
         dict,
     ],
@@ -5071,6 +5324,158 @@ def test_update_iap_settings_rest_unset_required_fields():
     assert set(unset_fields) == (set(("updateMask",)) & set(("iapSettings",)))
 
 
+def test_validate_iap_attribute_expression_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = IdentityAwareProxyAdminServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.validate_iap_attribute_expression
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.validate_iap_attribute_expression
+        ] = mock_rpc
+
+        request = {}
+        client.validate_iap_attribute_expression(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.validate_iap_attribute_expression(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_validate_iap_attribute_expression_rest_required_fields(
+    request_type=service.ValidateIapAttributeExpressionRequest,
+):
+    transport_class = transports.IdentityAwareProxyAdminServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request_init["expression"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+    assert "expression" not in jsonified_request
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).validate_iap_attribute_expression._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+    assert "expression" in jsonified_request
+    assert jsonified_request["expression"] == request_init["expression"]
+
+    jsonified_request["name"] = "name_value"
+    jsonified_request["expression"] = "expression_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).validate_iap_attribute_expression._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("expression",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+    assert "expression" in jsonified_request
+    assert jsonified_request["expression"] == "expression_value"
+
+    client = IdentityAwareProxyAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = service.ValidateIapAttributeExpressionResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = service.ValidateIapAttributeExpressionResponse.pb(
+                return_value
+            )
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.validate_iap_attribute_expression(request)
+
+            expected_params = [
+                (
+                    "expression",
+                    "",
+                ),
+                ("$alt", "json;enum-encoding=int"),
+            ]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_validate_iap_attribute_expression_rest_unset_required_fields():
+    transport = transports.IdentityAwareProxyAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = (
+        transport.validate_iap_attribute_expression._get_unset_required_fields({})
+    )
+    assert set(unset_fields) == (
+        set(("expression",))
+        & set(
+            (
+                "name",
+                "expression",
+            )
+        )
+    )
+
+
 def test_list_tunnel_dest_groups_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -6315,6 +6720,29 @@ def test_update_iap_settings_empty_call_grpc():
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
+def test_validate_iap_attribute_expression_empty_call_grpc():
+    client = IdentityAwareProxyAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.validate_iap_attribute_expression), "__call__"
+    ) as call:
+        call.return_value = service.ValidateIapAttributeExpressionResponse()
+        client.validate_iap_attribute_expression(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.ValidateIapAttributeExpressionRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
 def test_list_tunnel_dest_groups_empty_call_grpc():
     client = IdentityAwareProxyAdminServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -6579,6 +7007,33 @@ async def test_update_iap_settings_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.UpdateIapSettingsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_validate_iap_attribute_expression_empty_call_grpc_asyncio():
+    client = IdentityAwareProxyAdminServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.validate_iap_attribute_expression), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.ValidateIapAttributeExpressionResponse()
+        )
+        await client.validate_iap_attribute_expression(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.ValidateIapAttributeExpressionRequest()
 
         assert args[0] == request_msg
 
@@ -7305,6 +7760,15 @@ def test_update_iap_settings_rest_call_success(request_type):
                 "enable": True,
                 "domains": ["domains_value1", "domains_value2"],
             },
+            "workforce_identity_settings": {
+                "workforce_pools": ["workforce_pools_value1", "workforce_pools_value2"],
+                "oauth2": {
+                    "client_id": "client_id_value",
+                    "client_secret": "client_secret_value",
+                    "client_secret_sha256": "client_secret_sha256_value",
+                },
+            },
+            "identity_sources": [3],
         },
         "application_settings": {
             "csm_settings": {"rctoken_aud": {}},
@@ -7467,6 +7931,138 @@ def test_update_iap_settings_rest_interceptors(null_interceptor):
         post_with_metadata.return_value = service.IapSettings(), metadata
 
         client.update_iap_settings(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+        post_with_metadata.assert_called_once()
+
+
+def test_validate_iap_attribute_expression_rest_bad_request(
+    request_type=service.ValidateIapAttributeExpressionRequest,
+):
+    client = IdentityAwareProxyAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"name": "sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.validate_iap_attribute_expression(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.ValidateIapAttributeExpressionRequest,
+        dict,
+    ],
+)
+def test_validate_iap_attribute_expression_rest_call_success(request_type):
+    client = IdentityAwareProxyAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = service.ValidateIapAttributeExpressionResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = service.ValidateIapAttributeExpressionResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.validate_iap_attribute_expression(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, service.ValidateIapAttributeExpressionResponse)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_validate_iap_attribute_expression_rest_interceptors(null_interceptor):
+    transport = transports.IdentityAwareProxyAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.IdentityAwareProxyAdminServiceRestInterceptor(),
+    )
+    client = IdentityAwareProxyAdminServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.IdentityAwareProxyAdminServiceRestInterceptor,
+        "post_validate_iap_attribute_expression",
+    ) as post, mock.patch.object(
+        transports.IdentityAwareProxyAdminServiceRestInterceptor,
+        "post_validate_iap_attribute_expression_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
+        transports.IdentityAwareProxyAdminServiceRestInterceptor,
+        "pre_validate_iap_attribute_expression",
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        post_with_metadata.assert_not_called()
+        pb_message = service.ValidateIapAttributeExpressionRequest.pb(
+            service.ValidateIapAttributeExpressionRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = service.ValidateIapAttributeExpressionResponse.to_json(
+            service.ValidateIapAttributeExpressionResponse()
+        )
+        req.return_value.content = return_value
+
+        request = service.ValidateIapAttributeExpressionRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = service.ValidateIapAttributeExpressionResponse()
+        post_with_metadata.return_value = (
+            service.ValidateIapAttributeExpressionResponse(),
+            metadata,
+        )
+
+        client.validate_iap_attribute_expression(
             request,
             metadata=[
                 ("key", "val"),
@@ -8399,6 +8995,28 @@ def test_update_iap_settings_empty_call_rest():
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
+def test_validate_iap_attribute_expression_empty_call_rest():
+    client = IdentityAwareProxyAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.validate_iap_attribute_expression), "__call__"
+    ) as call:
+        client.validate_iap_attribute_expression(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.ValidateIapAttributeExpressionRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
 def test_list_tunnel_dest_groups_empty_call_rest():
     client = IdentityAwareProxyAdminServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -8545,6 +9163,7 @@ def test_identity_aware_proxy_admin_service_base_transport():
         "test_iam_permissions",
         "get_iap_settings",
         "update_iap_settings",
+        "validate_iap_attribute_expression",
         "list_tunnel_dest_groups",
         "create_tunnel_dest_group",
         "get_tunnel_dest_group",
@@ -8831,6 +9450,9 @@ def test_identity_aware_proxy_admin_service_client_transport_session_collision(
     assert session1 != session2
     session1 = client1.transport.update_iap_settings._session
     session2 = client2.transport.update_iap_settings._session
+    assert session1 != session2
+    session1 = client1.transport.validate_iap_attribute_expression._session
+    session2 = client2.transport.validate_iap_attribute_expression._session
     assert session1 != session2
     session1 = client1.transport.list_tunnel_dest_groups._session
     session2 = client2.transport.list_tunnel_dest_groups._session

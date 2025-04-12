@@ -217,6 +217,18 @@ replacements:
     after: "entry_type=projects/another-project/locations/\\*"
     count: 1
   - paths: [
+      packages/google-cloud-dataplex/google/cloud/dataplex_v1/types/catalog.py,
+    ]
+    before: |
+      Indicating if it is an organization level
+      \                    export job.
+      \                    - When set to true, exports all entries from
+    after: |
+      Indicating if it is an organization level
+                          export job.\n
+                          - When set to true, exports all entries from
+    count: 1
+  - paths: [
       packages/google-cloud-deploy/google/cloud/deploy_v1/types/cloud_deploy.py,
     ]
     before: \"gs:\/\/my-bucket\/dir\/configs\/\*\"

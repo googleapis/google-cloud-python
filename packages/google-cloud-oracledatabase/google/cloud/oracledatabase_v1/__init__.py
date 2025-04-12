@@ -87,7 +87,10 @@ from .types.oracledatabase import (
     ListGiVersionsRequest,
     ListGiVersionsResponse,
     OperationMetadata,
+    RestartAutonomousDatabaseRequest,
     RestoreAutonomousDatabaseRequest,
+    StartAutonomousDatabaseRequest,
+    StopAutonomousDatabaseRequest,
 )
 from .types.vm_cluster import (
     CloudVmCluster,
@@ -162,7 +165,10 @@ __all__ = (
     "OperationMetadata",
     "OperationsInsightsState",
     "OracleDatabaseClient",
+    "RestartAutonomousDatabaseRequest",
     "RestoreAutonomousDatabaseRequest",
     "ScheduledOperationDetails",
+    "StartAutonomousDatabaseRequest",
     "State",
+    "StopAutonomousDatabaseRequest",
 )
