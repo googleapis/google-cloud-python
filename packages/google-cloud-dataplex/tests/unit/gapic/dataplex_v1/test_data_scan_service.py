@@ -7232,7 +7232,23 @@ def test_create_data_scan_rest_call_success(request_type):
                 "bigquery_export_result": {"state": 1, "message": "message_value"}
             },
         },
-        "data_discovery_result": {"bigquery_publishing": {"dataset": "dataset_value"}},
+        "data_discovery_result": {
+            "bigquery_publishing": {
+                "dataset": "dataset_value",
+                "location": "location_value",
+            },
+            "scan_statistics": {
+                "scanned_file_count": 1891,
+                "data_processed_bytes": 2119,
+                "files_excluded": 1472,
+                "tables_created": 1458,
+                "tables_deleted": 1457,
+                "tables_updated": 1473,
+                "filesets_created": 1686,
+                "filesets_deleted": 1685,
+                "filesets_updated": 1701,
+            },
+        },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -7608,7 +7624,23 @@ def test_update_data_scan_rest_call_success(request_type):
                 "bigquery_export_result": {"state": 1, "message": "message_value"}
             },
         },
-        "data_discovery_result": {"bigquery_publishing": {"dataset": "dataset_value"}},
+        "data_discovery_result": {
+            "bigquery_publishing": {
+                "dataset": "dataset_value",
+                "location": "location_value",
+            },
+            "scan_statistics": {
+                "scanned_file_count": 1891,
+                "data_processed_bytes": 2119,
+                "files_excluded": 1472,
+                "tables_created": 1458,
+                "tables_deleted": 1457,
+                "tables_updated": 1473,
+                "filesets_created": 1686,
+                "filesets_deleted": 1685,
+                "filesets_updated": 1701,
+            },
+        },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency

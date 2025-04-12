@@ -21681,6 +21681,16 @@ def test_create_metadata_job_rest_call_success(request_type):
             "aspect_sync_mode": 1,
             "log_level": 1,
         },
+        "export_spec": {
+            "scope": {
+                "organization_level": True,
+                "projects": ["projects_value1", "projects_value2"],
+                "entry_groups": ["entry_groups_value1", "entry_groups_value2"],
+                "entry_types": ["entry_types_value1", "entry_types_value2"],
+                "aspect_types": ["aspect_types_value1", "aspect_types_value2"],
+            },
+            "output_path": "output_path_value",
+        },
         "import_result": {
             "deleted_entries": 1584,
             "updated_entries": 1600,
@@ -21688,6 +21698,10 @@ def test_create_metadata_job_rest_call_success(request_type):
             "unchanged_entries": 1798,
             "recreated_entries": 1800,
             "update_time": {},
+        },
+        "export_result": {
+            "exported_entries": 1732,
+            "error_message": "error_message_value",
         },
         "status": {
             "state": 1,

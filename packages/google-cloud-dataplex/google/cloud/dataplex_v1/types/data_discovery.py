@@ -255,6 +255,9 @@ class DataDiscoveryResult(proto.Message):
         bigquery_publishing (google.cloud.dataplex_v1.types.DataDiscoveryResult.BigQueryPublishing):
             Output only. Configuration for metadata
             publishing.
+        scan_statistics (google.cloud.dataplex_v1.types.DataDiscoveryResult.ScanStatistics):
+            Output only. Statistics of the
+            DataDiscoveryScan.
     """
 
     class BigQueryPublishing(proto.Message):
@@ -262,20 +265,92 @@ class DataDiscoveryResult(proto.Message):
 
         Attributes:
             dataset (str):
-                Output only. The BigQuery dataset to publish to. It takes
-                the form ``projects/{project_id}/datasets/{dataset_id}``. If
-                not set, the service creates a default publishing dataset.
+                Output only. The BigQuery dataset the
+                discovered tables are published to.
+            location (str):
+                Output only. The location of the BigQuery
+                publishing dataset.
         """
 
         dataset: str = proto.Field(
             proto.STRING,
             number=1,
         )
+        location: str = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+
+    class ScanStatistics(proto.Message):
+        r"""Statistics of the DataDiscoveryScan.
+
+        Attributes:
+            scanned_file_count (int):
+                The number of files scanned.
+            data_processed_bytes (int):
+                The data processed in bytes.
+            files_excluded (int):
+                The number of files excluded.
+            tables_created (int):
+                The number of tables created.
+            tables_deleted (int):
+                The number of tables deleted.
+            tables_updated (int):
+                The number of tables updated.
+            filesets_created (int):
+                The number of filesets created.
+            filesets_deleted (int):
+                The number of filesets deleted.
+            filesets_updated (int):
+                The number of filesets updated.
+        """
+
+        scanned_file_count: int = proto.Field(
+            proto.INT32,
+            number=1,
+        )
+        data_processed_bytes: int = proto.Field(
+            proto.INT64,
+            number=2,
+        )
+        files_excluded: int = proto.Field(
+            proto.INT32,
+            number=3,
+        )
+        tables_created: int = proto.Field(
+            proto.INT32,
+            number=4,
+        )
+        tables_deleted: int = proto.Field(
+            proto.INT32,
+            number=5,
+        )
+        tables_updated: int = proto.Field(
+            proto.INT32,
+            number=6,
+        )
+        filesets_created: int = proto.Field(
+            proto.INT32,
+            number=7,
+        )
+        filesets_deleted: int = proto.Field(
+            proto.INT32,
+            number=8,
+        )
+        filesets_updated: int = proto.Field(
+            proto.INT32,
+            number=9,
+        )
 
     bigquery_publishing: BigQueryPublishing = proto.Field(
         proto.MESSAGE,
         number=1,
         message=BigQueryPublishing,
+    )
+    scan_statistics: ScanStatistics = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=ScanStatistics,
     )
 
 

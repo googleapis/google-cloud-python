@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for CreateMetadataJob
+# Snippet for UpdateEncryptionConfig
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,7 +23,7 @@
 #   python3 -m pip install google-cloud-dataplex
 
 
-# [START dataplex_v1_generated_CatalogService_CreateMetadataJob_async]
+# [START dataplex_v1_generated_CmekService_UpdateEncryptionConfig_sync]
 # This snippet has been automatically generated and should be regarded as a
 # code template only.
 # It will require modifications to work:
@@ -34,31 +34,22 @@
 from google.cloud import dataplex_v1
 
 
-async def sample_create_metadata_job():
+def sample_update_encryption_config():
     # Create a client
-    client = dataplex_v1.CatalogServiceAsyncClient()
+    client = dataplex_v1.CmekServiceClient()
 
     # Initialize request argument(s)
-    metadata_job = dataplex_v1.MetadataJob()
-    metadata_job.import_spec.scope.entry_groups = ['entry_groups_value1', 'entry_groups_value2']
-    metadata_job.import_spec.scope.entry_types = ['entry_types_value1', 'entry_types_value2']
-    metadata_job.import_spec.entry_sync_mode = "NONE"
-    metadata_job.import_spec.aspect_sync_mode = "NONE"
-    metadata_job.type_ = "EXPORT"
-
-    request = dataplex_v1.CreateMetadataJobRequest(
-        parent="parent_value",
-        metadata_job=metadata_job,
+    request = dataplex_v1.UpdateEncryptionConfigRequest(
     )
 
     # Make the request
-    operation = client.create_metadata_job(request=request)
+    operation = client.update_encryption_config(request=request)
 
     print("Waiting for operation to complete...")
 
-    response = (await operation).result()
+    response = operation.result()
 
     # Handle the response
     print(response)
 
-# [END dataplex_v1_generated_CatalogService_CreateMetadataJob_async]
+# [END dataplex_v1_generated_CmekService_UpdateEncryptionConfig_sync]

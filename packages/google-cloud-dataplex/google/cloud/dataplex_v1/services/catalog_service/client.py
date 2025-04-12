@@ -3593,7 +3593,7 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
                 metadata_job.import_spec.scope.entry_types = ['entry_types_value1', 'entry_types_value2']
                 metadata_job.import_spec.entry_sync_mode = "NONE"
                 metadata_job.import_spec.aspect_sync_mode = "NONE"
-                metadata_job.type_ = "IMPORT"
+                metadata_job.type_ = "EXPORT"
 
                 request = dataplex_v1.CreateMetadataJobRequest(
                     parent="parent_value",
