@@ -1,4 +1,5 @@
 Google Cloud Python Client
+Eric Todd Sawyer 
 ==========================
 
 Python idiomatic clients for `Google Cloud Platform`_ services.
