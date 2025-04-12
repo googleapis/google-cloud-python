@@ -44,6 +44,7 @@ from google.shopping.merchant_products_v1beta.types.products import (
 )
 from google.shopping.merchant_products_v1beta.types.products_common import (
     Attributes,
+    AutomatedDiscounts,
     Certification,
     CloudExportAdditionalProperties,
     FreeShippingThreshold,
@@ -81,6 +82,7 @@ __all__ = (
     "ListProductsResponse",
     "Product",
     "Attributes",
+    "AutomatedDiscounts",
     "Certification",
     "CloudExportAdditionalProperties",
     "FreeShippingThreshold",

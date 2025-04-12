@@ -27,6 +27,7 @@ from .products import (
 )
 from .products_common import (
     Attributes,
+    AutomatedDiscounts,
     Certification,
     CloudExportAdditionalProperties,
     FreeShippingThreshold,
@@ -60,6 +61,7 @@ __all__ = (
     "ListProductsResponse",
     "Product",
     "Attributes",
+    "AutomatedDiscounts",
     "Certification",
     "CloudExportAdditionalProperties",
     "FreeShippingThreshold",
