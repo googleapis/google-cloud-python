@@ -16,6 +16,9 @@
 deep-remove-regex:
   - /owl-bot-staging
 
+deep-preserve-regex:
+  - /owl-bot-staging/google-cloud-public-ca/v1alpha1
+
 deep-copy-regex:
   - source: /google/cloud/security/publicca/(v.*)/.*-py
     dest: /owl-bot-staging/google-cloud-public-ca/$1
