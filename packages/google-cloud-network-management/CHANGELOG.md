@@ -1,5 +1,23 @@
 # Changelog
 
+## [1.26.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-management-v1.25.3...google-cloud-network-management-v1.26.0) (2025-04-12)
+
+
+### Features
+
+* add enum types related to Abort ([35034e1](https://github.com/googleapis/google-cloud-python/commit/35034e1ec48b830622be4c7c327fd6813288510a))
+* add enum types related to Drop ([35034e1](https://github.com/googleapis/google-cloud-python/commit/35034e1ec48b830622be4c7c327fd6813288510a))
+* add enum types related to Firewall ([35034e1](https://github.com/googleapis/google-cloud-python/commit/35034e1ec48b830622be4c7c327fd6813288510a))
+* add enum types related to Google Service ([35034e1](https://github.com/googleapis/google-cloud-python/commit/35034e1ec48b830622be4c7c327fd6813288510a))
+* add messages and fields related to Direct VPC Egress ([35034e1](https://github.com/googleapis/google-cloud-python/commit/35034e1ec48b830622be4c7c327fd6813288510a))
+* add messages and fields related to Route ([35034e1](https://github.com/googleapis/google-cloud-python/commit/35034e1ec48b830622be4c7c327fd6813288510a))
+* add messages and fields related to Serverless External ([35034e1](https://github.com/googleapis/google-cloud-python/commit/35034e1ec48b830622be4c7c327fd6813288510a))
+
+
+### Documentation
+
+* update outdated comments ([35034e1](https://github.com/googleapis/google-cloud-python/commit/35034e1ec48b830622be4c7c327fd6813288510a))
+
 ## [1.25.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-management-v1.25.2...google-cloud-network-management-v1.25.3) (2025-03-19)
 
 

@@ -1,5 +1,26 @@
 # Changelog
 
+## [0.2.13](https://github.com/googleapis/google-cloud-python/compare/google-cloud-parallelstore-v0.2.12...google-cloud-parallelstore-v0.2.13) (2025-04-12)
+
+
+### Features
+
+* A new field `bytes_failed` is added to message `v1beta.TransferCounters` ([a5d917d](https://github.com/googleapis/google-cloud-python/commit/a5d917d61904b609886a49e1a79911aa0084103b))
+* A new field `error_summary` is added to message `v1beta.TransferOperationMetadata` ([a5d917d](https://github.com/googleapis/google-cloud-python/commit/a5d917d61904b609886a49e1a79911aa0084103b))
+* A new field `metadata_options` is added to message `v1beta.ExportDataRequest` ([a5d917d](https://github.com/googleapis/google-cloud-python/commit/a5d917d61904b609886a49e1a79911aa0084103b))
+* A new field `metadata_options` is added to message `v1beta.ImportDataRequest` ([a5d917d](https://github.com/googleapis/google-cloud-python/commit/a5d917d61904b609886a49e1a79911aa0084103b))
+* A new field `objects_failed` is added to message `v1beta.TransferCounters` ([a5d917d](https://github.com/googleapis/google-cloud-python/commit/a5d917d61904b609886a49e1a79911aa0084103b))
+* A new message `TransferErrorLogEntry` is added ([a5d917d](https://github.com/googleapis/google-cloud-python/commit/a5d917d61904b609886a49e1a79911aa0084103b))
+* A new message `TransferErrorSummary` is added ([a5d917d](https://github.com/googleapis/google-cloud-python/commit/a5d917d61904b609886a49e1a79911aa0084103b))
+* A new message `TransferMetadataOptions` is added ([a5d917d](https://github.com/googleapis/google-cloud-python/commit/a5d917d61904b609886a49e1a79911aa0084103b))
+* A new value `REPAIRING` is added to enum `State` ([a5d917d](https://github.com/googleapis/google-cloud-python/commit/a5d917d61904b609886a49e1a79911aa0084103b))
+* Field `daos_version` in message `v1beta.Instance` is Deprecated ([a5d917d](https://github.com/googleapis/google-cloud-python/commit/a5d917d61904b609886a49e1a79911aa0084103b))
+
+
+### Documentation
+
+* fields `directory_stripe_level` `deployment_type` `file_stripe_level` in message `v1beta.Instance` documented as immutable ([a5d917d](https://github.com/googleapis/google-cloud-python/commit/a5d917d61904b609886a49e1a79911aa0084103b))
+
 ## [0.2.12](https://github.com/googleapis/google-cloud-python/compare/google-cloud-parallelstore-v0.2.11...google-cloud-parallelstore-v0.2.12) (2025-03-15)
 
 

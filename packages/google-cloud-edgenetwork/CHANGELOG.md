@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.17](https://github.com/googleapis/google-cloud-python/compare/google-cloud-edgenetwork-v0.1.16...google-cloud-edgenetwork-v0.1.17) (2025-04-12)
+
+
+### Documentation
+
+* [google-cloud-edgenetwork] fix typos in comments ([#13756](https://github.com/googleapis/google-cloud-python/issues/13756)) ([e9fda4e](https://github.com/googleapis/google-cloud-python/commit/e9fda4e97ab7202421a604df9112b9fb14c5f352))
+
 ## [0.1.16](https://github.com/googleapis/google-cloud-python/compare/google-cloud-edgenetwork-v0.1.15...google-cloud-edgenetwork-v0.1.16) (2025-03-15)
 
 

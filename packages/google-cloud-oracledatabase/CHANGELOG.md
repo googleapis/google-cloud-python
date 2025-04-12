@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.9](https://github.com/googleapis/google-cloud-python/compare/google-cloud-oracledatabase-v0.1.8...google-cloud-oracledatabase-v0.1.9) (2025-04-12)
+
+
+### Features
+
+* [google-cloud-oracledatabase] add new AutonomousDatabase RPCs ([#13752](https://github.com/googleapis/google-cloud-python/issues/13752)) ([40b98e6](https://github.com/googleapis/google-cloud-python/commit/40b98e63c2f99f8d7b6b18cc4f3bad82298d15c7))
+
 ## [0.1.8](https://github.com/googleapis/google-cloud-python/compare/google-cloud-oracledatabase-v0.1.7...google-cloud-oracledatabase-v0.1.8) (2025-03-21)
 
 

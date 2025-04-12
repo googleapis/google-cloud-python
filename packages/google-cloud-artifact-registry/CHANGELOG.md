@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.16.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-artifact-registry-v1.15.2...google-cloud-artifact-registry-v1.16.0) (2025-04-12)
+
+
+### Features
+
+* add the GoModule and KfpArtifact resources ([33b1d93](https://github.com/googleapis/google-cloud-python/commit/33b1d93d262266a274cf0ad3b822fd61d260406d))
+
+
+### Documentation
+
+* remove the restriction of the maximum numbers of versions that can be deleted in one BatchDeleteVersions call ([33b1d93](https://github.com/googleapis/google-cloud-python/commit/33b1d93d262266a274cf0ad3b822fd61d260406d))
+
 ## [1.15.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-artifact-registry-v1.15.1...google-cloud-artifact-registry-v1.15.2) (2025-03-15)
 
 

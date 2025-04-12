@@ -4,6 +4,21 @@
 
 [1]: https://pypi.org/project/google-cloud-speech/#history
 
+## [2.32.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-speech-v2.31.1...google-cloud-speech-v2.32.0) (2025-04-12)
+
+
+### Features
+
+* add ALAW support to RecognitionConfig ([c970f9f](https://github.com/googleapis/google-cloud-python/commit/c970f9f158bba8af92e06dd76cf94a86165c44ca))
+* add new fields to CustomClass and PhraseSet.Phrase messages ([c970f9f](https://github.com/googleapis/google-cloud-python/commit/c970f9f158bba8af92e06dd76cf94a86165c44ca))
+* deprecating speaker_tag (int) for speaker_label (string) ([c970f9f](https://github.com/googleapis/google-cloud-python/commit/c970f9f158bba8af92e06dd76cf94a86165c44ca))
+* make transcript_normalization field optional ([c970f9f](https://github.com/googleapis/google-cloud-python/commit/c970f9f158bba8af92e06dd76cf94a86165c44ca))
+
+
+### Documentation
+
+* miscellaneous clarifications ([c970f9f](https://github.com/googleapis/google-cloud-python/commit/c970f9f158bba8af92e06dd76cf94a86165c44ca))
+
 ## [2.31.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-speech-v2.31.0...google-cloud-speech-v2.31.1) (2025-03-15)
 
 

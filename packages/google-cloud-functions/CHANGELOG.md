@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.20.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-functions-v1.20.2...google-cloud-functions-v1.20.3) (2025-04-12)
+
+
+### Documentation
+
+* small fixes ([bc9fdfe](https://github.com/googleapis/google-cloud-python/commit/bc9fdfe26b08ac1573abbcb112fe511f70956826))
+* updated `docker_registry` proto to reflect its deprecated status ([bc9fdfe](https://github.com/googleapis/google-cloud-python/commit/bc9fdfe26b08ac1573abbcb112fe511f70956826))
+* updated docker_registry proto to reflect its deprecated status [#13736](https://github.com/googleapis/google-cloud-python/issues/13736) ([bc9fdfe](https://github.com/googleapis/google-cloud-python/commit/bc9fdfe26b08ac1573abbcb112fe511f70956826))
+
 ## [1.20.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-functions-v1.20.1...google-cloud-functions-v1.20.2) (2025-03-15)
 
 
