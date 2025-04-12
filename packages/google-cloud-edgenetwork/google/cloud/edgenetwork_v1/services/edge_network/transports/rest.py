@@ -3363,7 +3363,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
 
             Args:
                 request (~.service.DiagnoseRouterRequest):
-                    The request object. Message for requesting diagnositcs of
+                    The request object. Message for requesting diagnostics of
                 a router within a specific zone.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.

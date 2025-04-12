@@ -3081,7 +3081,7 @@ class EdgeNetworkAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.edgenetwork_v1.types.DiagnoseRouterRequest, dict]]):
-                The request object. Message for requesting diagnositcs of
+                The request object. Message for requesting diagnostics of
                 a router within a specific zone.
             name (:class:`str`):
                 Required. The name of the router

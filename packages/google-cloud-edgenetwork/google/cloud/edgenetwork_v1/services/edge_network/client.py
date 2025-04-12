@@ -3548,7 +3548,7 @@ class EdgeNetworkClient(metaclass=EdgeNetworkClientMeta):
 
         Args:
             request (Union[google.cloud.edgenetwork_v1.types.DiagnoseRouterRequest, dict]):
-                The request object. Message for requesting diagnositcs of
+                The request object. Message for requesting diagnostics of
                 a router within a specific zone.
             name (str):
                 Required. The name of the router
