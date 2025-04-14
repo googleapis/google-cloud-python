@@ -40,6 +40,7 @@ class LfpStoreServiceTransport(abc.ABC):
     )
 
     DEFAULT_HOST: str = 'merchantapi.googleapis.com'
+
     def __init__(
             self, *,
             host: str = DEFAULT_HOST,
