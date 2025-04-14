@@ -118,7 +118,7 @@ def test_success_get_assertion(os_get_stub, subprocess_run_stub):
         "type": "get",
         "origin": "fake_origin",
         "requestData": {
-            "rpid": "fake_rpid",
+            "rpId": "fake_rpid",
             "challenge": "fake_challenge",
             "allowCredentials": [{"type": "public-key", "id": "fake_id_1"}],
         },

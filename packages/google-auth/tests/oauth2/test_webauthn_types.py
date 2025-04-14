@@ -82,7 +82,7 @@ def test_GetRequest(has_allow_credentials):
         "type": "get",
         "origin": "fake_origin",
         "requestData": {
-            "rpid": "fake_rpid",
+            "rpId": "fake_rpid",
             "timeout": 123,
             "challenge": "fake_challenge",
             "userVerification": "preferred",

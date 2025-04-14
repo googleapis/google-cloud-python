@@ -67,7 +67,7 @@ class GetRequest:
     extensions: Optional[AuthenticationExtensionsClientInputs] = None
 
     def to_json(self) -> str:
-        req_options: Dict[str, Any] = {"rpid": self.rpid, "challenge": self.challenge}
+        req_options: Dict[str, Any] = {"rpId": self.rpid, "challenge": self.challenge}
         if self.timeout_ms:
             req_options["timeout"] = self.timeout_ms
         if self.allow_credentials:
