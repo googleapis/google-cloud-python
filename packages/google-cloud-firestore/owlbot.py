@@ -83,13 +83,13 @@ except ImportError:
     )
 
 for library in get_staging_dirs(default_version=firestore_default_version, sub_directory="firestore"):
-    s.move(library / f"google/cloud/firestore_{library.name}", excludes=[f"__init__.py", "**/gapic_version.py"])
+    s.move(library / f"google/cloud/firestore_{library.name}", excludes=[f"__init__.py", "**/gapic_version.py", "noxfile.py"])
     s.move(library / f"tests/", f"tests")
     update_fixup_scripts(library)
     s.move(library / "scripts")
 
 for library in get_staging_dirs(default_version=firestore_admin_default_version, sub_directory="firestore_admin"):
-    s.move(library / f"google/cloud/firestore_admin_{library.name}", excludes=[f"__init__.py", "**/gapic_version.py"])
+    s.move(library / f"google/cloud/firestore_admin_{library.name}", excludes=[f"__init__.py", "**/gapic_version.py", "noxfile.py"])
     s.move(library / f"tests", f"tests")
     update_fixup_scripts(library)
     s.move(library / "scripts")
@@ -127,7 +127,7 @@ for library in get_staging_dirs(sub_directory="firestore_bundle"):
     s.move(
         library / f"google/cloud/bundle",
         f"google/cloud/firestore_bundle",
-        excludes=["**/gapic_version.py"],
+        excludes=["**/gapic_version.py", "noxfile.py"],
     )
     s.move(library / f"tests", f"tests")
 
@@ -151,133 +151,6 @@ s.move(templated_files,
 
 python.py_samples(skip_readmes=True)
 
-# ----------------------------------------------------------------------------
-# Customize noxfile.py
-# ----------------------------------------------------------------------------
-
-def place_before(path, text, *before_text, escape=None):
-    replacement = "\n".join(before_text) + "\n" + text
-    if escape:
-        for c in escape:
-            text = text.replace(c, '\\' + c)
-    s.replace([path], text, replacement)
-
-system_emulated_session = """
-@nox.session(python=SYSTEM_TEST_PYTHON_VERSIONS)
-def system_emulated(session):
-    import subprocess
-    import signal
-
-    try:
-        # https://github.com/googleapis/python-firestore/issues/472
-        # Kokoro image doesn't have java installed, don't attempt to run emulator.
-        subprocess.call(["java", "--version"])
-    except OSError:
-        session.skip("java not found but required for emulator support")
-
-    try:
-        subprocess.call(["gcloud", "--version"])
-    except OSError:
-        session.skip("gcloud not found but required for emulator support")
-
-    # Currently, CI/CD doesn't have beta component of gcloud.
-    subprocess.call(
-        ["gcloud", "components", "install", "beta", "cloud-firestore-emulator",]
-    )
-
-    hostport = "localhost:8789"
-    session.env["FIRESTORE_EMULATOR_HOST"] = hostport
-
-    p = subprocess.Popen(
-        [
-            "gcloud",
-            "--quiet",
-            "beta",
-            "emulators",
-            "firestore",
-            "start",
-            "--host-port",
-            hostport,
-        ]
-    )
-
-    try:
-        system(session)
-    finally:
-        # Stop Emulator
-        os.killpg(os.getpgid(p.pid), signal.SIGKILL)
-
-"""
-
-place_before(
-    "noxfile.py",
-    "@nox.session(python=SYSTEM_TEST_PYTHON_VERSIONS)\n"
-    "def system(session):",
-    system_emulated_session,
-    escape="()"
-)
-
-# add system_emulated + mypy nox session
-s.replace("noxfile.py",
-    """nox.options.sessions = \[
-    "unit",
-    "system",""",
-    """nox.options.sessions = [
-    "unit",
-    "system_emulated",
-    "system",
-    "mypy",""",
-)
-
-s.replace(
-    "noxfile.py",
-    """\"--quiet\",
-            f\"--junitxml=system_\{session.python\}_sponge_log.xml\",
-            system_test""",
-    """\"--verbose\",
-            f\"--junitxml=system_{session.python}_sponge_log.xml\",
-            system_test""",
-)
-
-s.replace(
-    "noxfile.py",
-    """\
-BLACK_VERSION = "black\[jupyter\]==23.7.0"
-""",
-    """\
-PYTYPE_VERSION = "pytype==2020.7.24"
-BLACK_VERSION = "black[jupyter]==23.7.0"
-""",
-)
-
-s.replace(
-    "noxfile.py",
-    """\
-@nox.session\(python=DEFAULT_PYTHON_VERSION\)
-def lint_setup_py\(session\):
-""",
-    '''\
-@nox.session(python="3.7")
-def pytype(session):
-    """Verify type hints are pytype compatible."""
-    session.install(PYTYPE_VERSION)
-    session.run("pytype",)
-
-
-@nox.session(python=DEFAULT_PYTHON_VERSION)
-def mypy(session):
-    """Verify type hints are mypy compatible."""
-    session.install("-e", ".")
-    session.install("mypy", "types-setuptools")
-    # TODO: also verify types on tests, all of google package
-    session.run("mypy", "-p", "google.cloud.firestore", "--no-incremental")
-
-
-@nox.session(python=DEFAULT_PYTHON_VERSION)
-def lint_setup_py(session):
-''',
-)
-
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)
 
 s.replace(
@@ -289,5 +162,3 @@ export FIRESTORE_APPLICATION_CREDENTIALS=${KOKORO_GFILE_DIR}/firebase-credential
 
 # Setup service account credentials.""",
 )
-
-s.replace("noxfile.py", "\"pytest-asyncio\"", "\"pytest-asyncio==0.21.2\"")
