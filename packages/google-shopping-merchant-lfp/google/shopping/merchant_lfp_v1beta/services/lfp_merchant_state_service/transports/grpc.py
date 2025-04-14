@@ -28,9 +28,9 @@ import google.protobuf.message
 import grpc  # type: ignore
 import proto  # type: ignore
 
-from google.shopping.merchant_lfp_v1beta.types import lfpsale
+from google.shopping.merchant_lfp_v1beta.types import lfpmerchantstate
 
-from .base import DEFAULT_CLIENT_INFO, LfpSaleServiceTransport
+from .base import DEFAULT_CLIENT_INFO, LfpMerchantStateServiceTransport
 
 try:
     from google.api_core import client_logging  # type: ignore
@@ -68,7 +68,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             _LOGGER.debug(
                 f"Sending request for {client_call_details.method}",
                 extra={
-                    "serviceName": "google.shopping.merchant.lfp.v1beta.LfpSaleService",
+                    "serviceName": "google.shopping.merchant.lfp.v1beta.LfpMerchantStateService",
                     "rpcName": str(client_call_details.method),
                     "request": grpc_request,
                     "metadata": grpc_request["metadata"],
@@ -98,7 +98,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             _LOGGER.debug(
                 f"Received response for {client_call_details.method}.",
                 extra={
-                    "serviceName": "google.shopping.merchant.lfp.v1beta.LfpSaleService",
+                    "serviceName": "google.shopping.merchant.lfp.v1beta.LfpMerchantStateService",
                     "rpcName": client_call_details.method,
                     "response": grpc_response,
                     "metadata": grpc_response["metadata"],
@@ -107,12 +107,12 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
         return response
 
 
-class LfpSaleServiceGrpcTransport(LfpSaleServiceTransport):
-    """gRPC backend transport for LfpSaleService.
+class LfpMerchantStateServiceGrpcTransport(LfpMerchantStateServiceTransport):
+    """gRPC backend transport for LfpMerchantStateService.
 
     Service for a `LFP
     partner <https://support.google.com/merchants/answer/7676652>`__ to
-    submit sales data for a merchant.
+    get the state of a merchant.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -322,16 +322,18 @@ class LfpSaleServiceGrpcTransport(LfpSaleServiceTransport):
         return self._grpc_channel
 
     @property
-    def insert_lfp_sale(
+    def get_lfp_merchant_state(
         self,
-    ) -> Callable[[lfpsale.InsertLfpSaleRequest], lfpsale.LfpSale]:
-        r"""Return a callable for the insert lfp sale method over gRPC.
+    ) -> Callable[
+        [lfpmerchantstate.GetLfpMerchantStateRequest], lfpmerchantstate.LfpMerchantState
+    ]:
+        r"""Return a callable for the get lfp merchant state method over gRPC.
 
-        Inserts a ``LfpSale`` for the given merchant.
+        Gets the LFP state of a merchant
 
         Returns:
-            Callable[[~.InsertLfpSaleRequest],
-                    ~.LfpSale]:
+            Callable[[~.GetLfpMerchantStateRequest],
+                    ~.LfpMerchantState]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -339,13 +341,13 @@ class LfpSaleServiceGrpcTransport(LfpSaleServiceTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "insert_lfp_sale" not in self._stubs:
-            self._stubs["insert_lfp_sale"] = self._logged_channel.unary_unary(
-                "/google.shopping.merchant.lfp.v1beta.LfpSaleService/InsertLfpSale",
-                request_serializer=lfpsale.InsertLfpSaleRequest.serialize,
-                response_deserializer=lfpsale.LfpSale.deserialize,
+        if "get_lfp_merchant_state" not in self._stubs:
+            self._stubs["get_lfp_merchant_state"] = self._logged_channel.unary_unary(
+                "/google.shopping.merchant.lfp.v1beta.LfpMerchantStateService/GetLfpMerchantState",
+                request_serializer=lfpmerchantstate.GetLfpMerchantStateRequest.serialize,
+                response_deserializer=lfpmerchantstate.LfpMerchantState.deserialize,
             )
-        return self._stubs["insert_lfp_sale"]
+        return self._stubs["get_lfp_merchant_state"]
 
     def close(self):
         self._logged_channel.close()
@@ -355,4 +357,4 @@ class LfpSaleServiceGrpcTransport(LfpSaleServiceTransport):
         return "grpc"
 
 
-__all__ = ("LfpSaleServiceGrpcTransport",)
+__all__ = ("LfpMerchantStateServiceGrpcTransport",)
