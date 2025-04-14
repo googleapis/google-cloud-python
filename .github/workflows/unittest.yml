@@ -76,7 +76,8 @@ jobs:
       env:
         BUILD_TYPE: presubmit
         TEST_TYPE: ${{ matrix.option }}
-        PY_VERSION: ${{ matrix.python }}
+        # TODO(https://github.com/googleapis/google-cloud-python/issues/13775): Remove `PY_VERSION` since it's not used
+        PY_VERSION: ""
       run: |
         ci/run_conditional_tests.sh
 
