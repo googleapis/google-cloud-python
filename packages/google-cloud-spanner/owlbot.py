@@ -85,6 +85,7 @@ for library in get_staging_dirs(spanner_default_version, "spanner"):
         excludes=[
             "google/cloud/spanner/**",
             "*.*",
+            "noxfile.py",
             "docs/index.rst",
             "google/cloud/spanner_v1/__init__.py",
             "**/gapic_version.py",
@@ -102,7 +103,7 @@ for library in get_staging_dirs(
     )
     s.move(
         library,
-        excludes=["google/cloud/spanner_admin_instance/**", "*.*", "docs/index.rst", "**/gapic_version.py", "testing/constraints-3.7.txt",],
+        excludes=["google/cloud/spanner_admin_instance/**", "*.*", "docs/index.rst", "noxfile.py", "**/gapic_version.py", "testing/constraints-3.7.txt",],
     )
 
 for library in get_staging_dirs(
@@ -115,7 +116,7 @@ for library in get_staging_dirs(
     )
     s.move(
         library,
-        excludes=["google/cloud/spanner_admin_database/**", "*.*", "docs/index.rst", "**/gapic_version.py", "testing/constraints-3.7.txt",],
+        excludes=["google/cloud/spanner_admin_database/**", "*.*", "docs/index.rst", "noxfile.py", "**/gapic_version.py", "testing/constraints-3.7.txt",],
     )
 
 s.remove_staging_dirs()
@@ -160,220 +161,5 @@ s.replace("CONTRIBUTING.rst", "samples/snippets", "samples/samples")
 # ----------------------------------------------------------------------------
 
 python.py_samples()
-
-# ----------------------------------------------------------------------------
-# Customize noxfile.py
-# ----------------------------------------------------------------------------
-
-
-def place_before(path, text, *before_text, escape=None):
-    replacement = "\n".join(before_text) + "\n" + text
-    if escape:
-        for c in escape:
-            text = text.replace(c, "\\" + c)
-    s.replace([path], text, replacement)
-
-
-open_telemetry_test = """
-    # XXX Work around Kokoro image's older pip, which borks the OT install.
-    session.run("pip", "install", "--upgrade", "pip")
-    constraints_path = str(
-        CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
-    )
-    session.install("-e", ".[tracing]", "-c", constraints_path)
-    # XXX: Dump installed versions to debug OT issue
-    session.run("pip", "list")
-
-    # Run py.test against the unit tests with OpenTelemetry.
-    session.run(
-        "py.test",
-        "--quiet",
-        "--cov=google.cloud.spanner",
-        "--cov=google.cloud",
-        "--cov=tests.unit",
-        "--cov-append",
-        "--cov-config=.coveragerc",
-        "--cov-report=",
-        "--cov-fail-under=0",
-        os.path.join("tests", "unit"),
-        *session.posargs,
-    )
-"""
-
-place_before(
-    "noxfile.py",
-    "@nox.session(python=UNIT_TEST_PYTHON_VERSIONS)",
-    open_telemetry_test,
-    escape="()",
-)
-
-skip_tests_if_env_var_not_set = """# Sanity check: Only run tests if the environment variable is set.
-    if not os.environ.get("GOOGLE_APPLICATION_CREDENTIALS", "") and not os.environ.get(
-        "SPANNER_EMULATOR_HOST", ""
-    ):
-        session.skip(
-            "Credentials or emulator host must be set via environment variable"
-        )
-    # If POSTGRESQL tests and Emulator, skip the tests
-    if os.environ.get("SPANNER_EMULATOR_HOST") and database_dialect == "POSTGRESQL":
-        session.skip("Postgresql is not supported by Emulator yet.")
-"""
-
-place_before(
-    "noxfile.py",
-    "# Install pyopenssl for mTLS testing.",
-    skip_tests_if_env_var_not_set,
-    escape="()",
-)
-
-s.replace(
-    "noxfile.py",
-    r"""session.install\("-e", "."\)""",
-    """session.install("-e", ".[tracing]")""",
-)
-
-# Apply manual changes from PR https://github.com/googleapis/python-spanner/pull/759
-s.replace(
-    "noxfile.py",
-    """@nox.session\(python=SYSTEM_TEST_PYTHON_VERSIONS\)
-def system\(session\):""",
-    """@nox.session(python=SYSTEM_TEST_PYTHON_VERSIONS)
-@nox.parametrize(
-    "protobuf_implementation,database_dialect",
-    [
-        ("python", "GOOGLE_STANDARD_SQL"),
-        ("python", "POSTGRESQL"),
-        ("upb", "GOOGLE_STANDARD_SQL"),
-        ("upb", "POSTGRESQL"),
-        ("cpp", "GOOGLE_STANDARD_SQL"),
-        ("cpp", "POSTGRESQL"),
-    ],
-)
-def system(session, protobuf_implementation, database_dialect):""",
-)
-
-s.replace(
-    "noxfile.py",
-    """\*session.posargs,
-        \)""",
-    """*session.posargs,
-            env={
-                "PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION": protobuf_implementation,
-                "SPANNER_DATABASE_DIALECT": database_dialect,
-                "SKIP_BACKUP_TESTS": "true",
-            },
-        )""",
-)
-
-s.replace("noxfile.py",
-    """env={
-                "PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION": protobuf_implementation,
-            },""",
-    """env={
-                "PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION": protobuf_implementation,
-                "SPANNER_DATABASE_DIALECT": database_dialect,
-                "SKIP_BACKUP_TESTS": "true",
-            },""",
-)
-
-s.replace("noxfile.py",
-"""session.run\(
-        "py.test",
-        "tests/unit",
-        env={
-            "PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION": protobuf_implementation,
-        },
-    \)""",
-"""session.run(
-        "py.test",
-        "tests/unit",
-        env={
-            "PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION": protobuf_implementation,
-            "SPANNER_DATABASE_DIALECT": database_dialect,
-            "SKIP_BACKUP_TESTS": "true",
-        },
-    )""",
-)
-
-s.replace(
-    "noxfile.py",
-    """\@nox.session\(python="3.13"\)
-\@nox.parametrize\(
-    "protobuf_implementation",
-    \[ "python", "upb", "cpp" \],
-\)
-def prerelease_deps\(session, protobuf_implementation\):""",
-    """@nox.session(python="3.13")
-@nox.parametrize(
-    "protobuf_implementation,database_dialect",
-    [
-        ("python", "GOOGLE_STANDARD_SQL"),
-        ("python", "POSTGRESQL"),
-        ("upb", "GOOGLE_STANDARD_SQL"),
-        ("upb", "POSTGRESQL"),
-        ("cpp", "GOOGLE_STANDARD_SQL"),
-        ("cpp", "POSTGRESQL"),
-    ],
-)
-def prerelease_deps(session, protobuf_implementation, database_dialect):""",
-)
-
-
-mockserver_test = """
-@nox.session(python=DEFAULT_MOCK_SERVER_TESTS_PYTHON_VERSION)
-def mockserver(session):
-    # Install all test dependencies, then install this package in-place.
-
-    constraints_path = str(
-        CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
-    )
-    # install_unittest_dependencies(session, "-c", constraints_path)
-    standard_deps = UNIT_TEST_STANDARD_DEPENDENCIES + UNIT_TEST_DEPENDENCIES
-    session.install(*standard_deps, "-c", constraints_path)
-    session.install("-e", ".", "-c", constraints_path)
-
-    # Run py.test against the mockserver tests.
-    session.run(
-        "py.test",
-        "--quiet",
-        f"--junitxml=unit_{session.python}_sponge_log.xml",
-        "--cov=google",
-        "--cov=tests/unit",
-        "--cov-append",
-        "--cov-config=.coveragerc",
-        "--cov-report=",
-        "--cov-fail-under=0",
-        os.path.join("tests", "mockserver_tests"),
-        *session.posargs,
-    )
-
-"""
-
-place_before(
-    "noxfile.py",
-    "def install_systemtest_dependencies(session, *constraints):",
-    mockserver_test,
-    escape="()_*:",
-)
-
-s.replace(
-    "noxfile.py",
-    "install_systemtest_dependencies\(session, \"-c\", constraints_path\)",
-    """install_systemtest_dependencies(session, "-c", constraints_path)
-
-    # TODO(https://github.com/googleapis/synthtool/issues/1976):
-    # Remove the 'cpp' implementation once support for Protobuf 3.x is dropped.
-    # The 'cpp' implementation requires Protobuf<4.
-    if protobuf_implementation == "cpp":
-        session.install("protobuf<4")
-"""
-)
-
-place_before(
-    "noxfile.py",
-    "UNIT_TEST_PYTHON_VERSIONS: List[str] = [",
-    'DEFAULT_MOCK_SERVER_TESTS_PYTHON_VERSION = "3.12"',
-    escape="[]",
-)
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)
