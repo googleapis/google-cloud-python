@@ -34,11 +34,14 @@ jobs:
       env:
         BUILD_TYPE: presubmit
         TEST_TYPE: lint
+        # TODO(https://github.com/googleapis/google-cloud-python/issues/13775): Remove `PY_VERSION` since it's not used
+        PY_VERSION: ""
       run: |
         ci/run_conditional_tests.sh
     - name: Run lint_setup_py
       env:
         BUILD_TYPE: presubmit
         TEST_TYPE: lint_setup_py
+        PY_VERSION: ""
       run: |
         ci/run_conditional_tests.sh
