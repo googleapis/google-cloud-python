@@ -55,11 +55,11 @@ def test_blob_image_blur_to_series(
     images_mm_df: bpd.DataFrame,
     bq_connection: str,
     images_output_uris: list[str],
-    session: bigframes.Session,
+    test_session: bigframes.Session,
 ):
     bigframes.options.experiments.blob = True
 
-    series = bpd.Series(images_output_uris, session=session).str.to_blob(
+    series = bpd.Series(images_output_uris, session=test_session).str.to_blob(
         connection=bq_connection
     )
 
@@ -129,11 +129,11 @@ def test_blob_image_resize_to_series(
     images_mm_df: bpd.DataFrame,
     bq_connection: str,
     images_output_uris: list[str],
-    session: bigframes.Session,
+    test_session: bigframes.Session,
 ):
     bigframes.options.experiments.blob = True
 
-    series = bpd.Series(images_output_uris, session=session).str.to_blob(
+    series = bpd.Series(images_output_uris, session=test_session).str.to_blob(
         connection=bq_connection
     )
 
@@ -205,11 +205,11 @@ def test_blob_image_normalize_to_series(
     images_mm_df: bpd.DataFrame,
     bq_connection: str,
     images_output_uris: list[str],
-    session: bigframes.Session,
+    test_session: bigframes.Session,
 ):
     bigframes.options.experiments.blob = True
 
-    series = bpd.Series(images_output_uris, session=session).str.to_blob(
+    series = bpd.Series(images_output_uris, session=test_session).str.to_blob(
         connection=bq_connection
     )
 

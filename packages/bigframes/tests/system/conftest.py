@@ -185,6 +185,20 @@ def session_tokyo(tokyo_location: str) -> Generator[bigframes.Session, None, Non
 
 
 @pytest.fixture(scope="session")
+def test_session() -> Generator[bigframes.Session, None, None]:
+    context = bigframes.BigQueryOptions(
+        client_endpoints_override={
+            "bqclient": "https://test-bigquery.sandbox.google.com",
+            "bqconnectionclient": "test-bigqueryconnection.sandbox.googleapis.com",
+            "bqstoragereadclient": "test-bigquerystorage-grpc.sandbox.googleapis.com",
+        },
+    )
+    session = bigframes.Session(context=context)
+    yield session
+    session.close()
+
+
+@pytest.fixture(scope="session")
 def bq_connection_name() -> str:
     return "bigframes-rf-conn"
 
@@ -910,8 +924,8 @@ def llm_text_pandas_df():
 
 
 @pytest.fixture(scope="session")
-def llm_text_df(session, llm_text_pandas_df):
-    return session.read_pandas(llm_text_pandas_df)
+def llm_text_df(test_session, llm_text_pandas_df):
+    return test_session.read_pandas(llm_text_pandas_df)
 
 
 @pytest.fixture(scope="session")
@@ -1249,10 +1263,10 @@ WHERE
 
 @pytest.fixture(scope="session")
 def llm_fine_tune_df_default_index(
-    session: bigframes.Session,
+    test_session: bigframes.Session,
 ) -> bigframes.dataframe.DataFrame:
     training_table_name = "llm_tuning.emotion_classification_train"
-    df = session.read_gbq(training_table_name).dropna().head(30)
+    df = test_session.read_gbq(training_table_name).dropna().head(30)
     prefix = "Please do sentiment analysis on the following text and only output a number from 0 to 5 where 0 means sadness, 1 means joy, 2 means love, 3 means anger, 4 means fear, and 5 means surprise. Text: "
     df["prompt"] = prefix + df["text"]
     df["label"] = df["label"].astype("string")
@@ -1484,13 +1498,14 @@ def images_uris() -> list[str]:
 
 @pytest.fixture(scope="session")
 def images_mm_df(
-    images_gcs_path, session: bigframes.Session, bq_connection: str
+    images_uris, test_session: bigframes.Session, bq_connection: str
 ) -> bpd.DataFrame:
     bigframes.options.experiments.blob = True
 
-    return session.from_glob_path(
-        images_gcs_path, name="blob_col", connection=bq_connection
+    blob_series = bpd.Series(images_uris, session=test_session).str.to_blob(
+        connection=bq_connection
     )
+    return blob_series.rename("blob_col").to_frame()
 
 
 @pytest.fixture()
@@ -1509,8 +1524,10 @@ def pdf_gcs_path() -> str:
 
 @pytest.fixture(scope="session")
 def pdf_mm_df(
-    pdf_gcs_path, session: bigframes.Session, bq_connection: str
+    pdf_gcs_path, test_session: bigframes.Session, bq_connection: str
 ) -> bpd.DataFrame:
     bigframes.options.experiments.blob = True
 
-    return session.from_glob_path(pdf_gcs_path, name="pdf", connection=bq_connection)
+    return test_session.from_glob_path(
+        pdf_gcs_path, name="pdf", connection=bq_connection
+    )

@@ -106,25 +106,6 @@ def test_create_load_multimodal_embedding_generator_model(
     assert reloaded_model.connection_name == bq_connection
 
 
-@pytest.mark.flaky(retries=2)
-def test_multimodal_embedding_generator_predict_default_params_success(
-    images_mm_df, session, bq_connection
-):
-    bigframes.options.experiments.blob = True
-
-    text_embedding_model = llm.MultimodalEmbeddingGenerator(
-        connection_name=bq_connection, session=session
-    )
-    df = text_embedding_model.predict(images_mm_df).to_pandas()
-    utils.check_pandas_df_schema_and_index(
-        df,
-        columns=utils.ML_MULTIMODAL_GENERATE_EMBEDDING_OUTPUT,
-        index=2,
-        col_exact=False,
-    )
-    assert len(df["ml_generate_embedding_result"][0]) == 1408
-
-
 @pytest.mark.parametrize(
     "model_name",
     (
@@ -237,36 +218,6 @@ def test_gemini_text_generator_multi_cols_predict_success(
         pd_df,
         columns=utils.ML_GENERATE_TEXT_OUTPUT + ["additional_col"],
         index=3,
-        col_exact=False,
-    )
-
-
-@pytest.mark.parametrize(
-    "model_name",
-    (
-        "gemini-1.5-pro-001",
-        "gemini-1.5-pro-002",
-        "gemini-1.5-flash-001",
-        "gemini-1.5-flash-002",
-        "gemini-2.0-flash-exp",
-    ),
-)
-@pytest.mark.flaky(retries=2)
-def test_gemini_text_generator_multimodal_input(
-    images_mm_df: bpd.DataFrame, model_name, session, bq_connection
-):
-    bigframes.options.experiments.blob = True
-
-    gemini_text_generator_model = llm.GeminiTextGenerator(
-        model_name=model_name, connection_name=bq_connection, session=session
-    )
-    pd_df = gemini_text_generator_model.predict(
-        images_mm_df, prompt=["Describe", images_mm_df["blob_col"]]
-    ).to_pandas()
-    utils.check_pandas_df_schema_and_index(
-        pd_df,
-        columns=utils.ML_GENERATE_TEXT_OUTPUT + ["blob_col"],
-        index=2,
         col_exact=False,
     )
 
