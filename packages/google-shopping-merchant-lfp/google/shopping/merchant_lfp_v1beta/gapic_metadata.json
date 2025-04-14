@@ -39,6 +39,40 @@
         }
       }
     },
+    "LfpMerchantStateService": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "LfpMerchantStateServiceClient",
+          "rpcs": {
+            "GetLfpMerchantState": {
+              "methods": [
+                "get_lfp_merchant_state"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "LfpMerchantStateServiceAsyncClient",
+          "rpcs": {
+            "GetLfpMerchantState": {
+              "methods": [
+                "get_lfp_merchant_state"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "LfpMerchantStateServiceClient",
+          "rpcs": {
+            "GetLfpMerchantState": {
+              "methods": [
+                "get_lfp_merchant_state"
+              ]
+            }
+          }
+        }
+      }
+    },
     "LfpSaleService": {
       "clients": {
         "grpc": {

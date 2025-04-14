@@ -13,22 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-[flake8]
-# TODO(https://github.com/googleapis/gapic-generator-python/issues/2333):
-# Resolve flake8 lint issues
-ignore = E203, E231, E266, E501, W503
-exclude =
-  # TODO(https://github.com/googleapis/gapic-generator-python/issues/2333):
-  # Ensure that generated code passes flake8 lint
-  **/gapic/**
-  **/services/**
-  **/types/**
-  # Exclude Protobuf gencode
-  *_pb2.py
+from .async_client import LfpMerchantStateServiceAsyncClient
+from .client import LfpMerchantStateServiceClient
 
-  # Standard linting exemptions.
-  **/.nox/**
-  __pycache__,
-  .git,
-  *.pyc,
-  conf.py
+__all__ = (
+    "LfpMerchantStateServiceClient",
+    "LfpMerchantStateServiceAsyncClient",
+)

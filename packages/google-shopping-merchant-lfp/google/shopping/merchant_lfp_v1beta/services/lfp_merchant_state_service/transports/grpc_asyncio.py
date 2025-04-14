@@ -13,24 +13,28 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import inspect
 import json
 import logging as std_logging
 import pickle
-from typing import Callable, Dict, Optional, Sequence, Tuple, Union
+from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
-from google.api_core import gapic_v1, grpc_helpers
-import google.auth  # type: ignore
+from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1, grpc_helpers_async
+from google.api_core import retry_async as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.protobuf.json_format import MessageToJson
 import google.protobuf.message
 import grpc  # type: ignore
+from grpc.experimental import aio  # type: ignore
 import proto  # type: ignore
 
-from google.shopping.merchant_lfp_v1beta.types import lfpsale
+from google.shopping.merchant_lfp_v1beta.types import lfpmerchantstate
 
-from .base import DEFAULT_CLIENT_INFO, LfpSaleServiceTransport
+from .base import DEFAULT_CLIENT_INFO, LfpMerchantStateServiceTransport
+from .grpc import LfpMerchantStateServiceGrpcTransport
 
 try:
     from google.api_core import client_logging  # type: ignore
@@ -42,8 +46,10 @@ except ImportError:  # pragma: NO COVER
 _LOGGER = std_logging.getLogger(__name__)
 
 
-class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
-    def intercept_unary_unary(self, continuation, client_call_details, request):
+class _LoggingClientAIOInterceptor(
+    grpc.aio.UnaryUnaryClientInterceptor
+):  # pragma: NO COVER
+    async def intercept_unary_unary(self, continuation, client_call_details, request):
         logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
             std_logging.DEBUG
         )
@@ -68,22 +74,22 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             _LOGGER.debug(
                 f"Sending request for {client_call_details.method}",
                 extra={
-                    "serviceName": "google.shopping.merchant.lfp.v1beta.LfpSaleService",
+                    "serviceName": "google.shopping.merchant.lfp.v1beta.LfpMerchantStateService",
                     "rpcName": str(client_call_details.method),
                     "request": grpc_request,
                     "metadata": grpc_request["metadata"],
                 },
             )
-        response = continuation(client_call_details, request)
+        response = await continuation(client_call_details, request)
         if logging_enabled:  # pragma: NO COVER
-            response_metadata = response.trailing_metadata()
+            response_metadata = await response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
             metadata = (
                 dict([(k, str(v)) for k, v in response_metadata])
                 if response_metadata
                 else None
             )
-            result = response.result()
+            result = await response
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
             elif isinstance(result, google.protobuf.message.Message):
@@ -96,10 +102,10 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
                 "status": "OK",
             }
             _LOGGER.debug(
-                f"Received response for {client_call_details.method}.",
+                f"Received response to rpc {client_call_details.method}.",
                 extra={
-                    "serviceName": "google.shopping.merchant.lfp.v1beta.LfpSaleService",
-                    "rpcName": client_call_details.method,
+                    "serviceName": "google.shopping.merchant.lfp.v1beta.LfpMerchantStateService",
+                    "rpcName": str(client_call_details.method),
                     "response": grpc_response,
                     "metadata": grpc_response["metadata"],
                 },
@@ -107,12 +113,12 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
         return response
 
 
-class LfpSaleServiceGrpcTransport(LfpSaleServiceTransport):
-    """gRPC backend transport for LfpSaleService.
+class LfpMerchantStateServiceGrpcAsyncIOTransport(LfpMerchantStateServiceTransport):
+    """gRPC AsyncIO backend transport for LfpMerchantStateService.
 
     Service for a `LFP
     partner <https://support.google.com/merchants/answer/7676652>`__ to
-    submit sales data for a merchant.
+    get the state of a merchant.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -122,7 +128,50 @@ class LfpSaleServiceGrpcTransport(LfpSaleServiceTransport):
     top of HTTP/2); the ``grpcio`` package must be installed.
     """
 
-    _stubs: Dict[str, Callable]
+    _grpc_channel: aio.Channel
+    _stubs: Dict[str, Callable] = {}
+
+    @classmethod
+    def create_channel(
+        cls,
+        host: str = "merchantapi.googleapis.com",
+        credentials: Optional[ga_credentials.Credentials] = None,
+        credentials_file: Optional[str] = None,
+        scopes: Optional[Sequence[str]] = None,
+        quota_project_id: Optional[str] = None,
+        **kwargs,
+    ) -> aio.Channel:
+        """Create and return a gRPC AsyncIO channel object.
+        Args:
+            host (Optional[str]): The host for the channel to use.
+            credentials (Optional[~.Credentials]): The
+                authorization credentials to attach to requests. These
+                credentials identify this application to the service. If
+                none are specified, the client will attempt to ascertain
+                the credentials from the environment.
+            credentials_file (Optional[str]): A file with credentials that can
+                be loaded with :func:`google.auth.load_credentials_from_file`.
+            scopes (Optional[Sequence[str]]): A optional list of scopes needed for this
+                service. These are only used when credentials are not specified and
+                are passed to :func:`google.auth.default`.
+            quota_project_id (Optional[str]): An optional project to use for billing
+                and quota.
+            kwargs (Optional[dict]): Keyword arguments, which are passed to the
+                channel creation.
+        Returns:
+            aio.Channel: A gRPC AsyncIO channel object.
+        """
+
+        return grpc_helpers_async.create_channel(
+            host,
+            credentials=credentials,
+            credentials_file=credentials_file,
+            quota_project_id=quota_project_id,
+            default_scopes=cls.AUTH_SCOPES,
+            scopes=scopes,
+            default_host=cls.DEFAULT_HOST,
+            **kwargs,
+        )
 
     def __init__(
         self,
@@ -131,7 +180,7 @@ class LfpSaleServiceGrpcTransport(LfpSaleServiceTransport):
         credentials: Optional[ga_credentials.Credentials] = None,
         credentials_file: Optional[str] = None,
         scopes: Optional[Sequence[str]] = None,
-        channel: Optional[Union[grpc.Channel, Callable[..., grpc.Channel]]] = None,
+        channel: Optional[Union[aio.Channel, Callable[..., aio.Channel]]] = None,
         api_mtls_endpoint: Optional[str] = None,
         client_cert_source: Optional[Callable[[], Tuple[bytes, bytes]]] = None,
         ssl_channel_credentials: Optional[grpc.ChannelCredentials] = None,
@@ -155,9 +204,10 @@ class LfpSaleServiceGrpcTransport(LfpSaleServiceTransport):
             credentials_file (Optional[str]): A file with credentials that can
                 be loaded with :func:`google.auth.load_credentials_from_file`.
                 This argument is ignored if a ``channel`` instance is provided.
-            scopes (Optional(Sequence[str])): A list of scopes. This argument is
-                ignored if a ``channel`` instance is provided.
-            channel (Optional[Union[grpc.Channel, Callable[..., grpc.Channel]]]):
+            scopes (Optional[Sequence[str]]): A optional list of scopes needed for this
+                service. These are only used when credentials are not specified and
+                are passed to :func:`google.auth.default`.
+            channel (Optional[Union[aio.Channel, Callable[..., aio.Channel]]]):
                 A ``Channel`` instance through which to make calls, or a Callable
                 that constructs and returns one. If set to None, ``self.create_channel``
                 is used to create the channel. If a Callable is given, it will be called
@@ -187,7 +237,7 @@ class LfpSaleServiceGrpcTransport(LfpSaleServiceTransport):
                 be used for service account credentials.
 
         Raises:
-          google.auth.exceptions.MutualTLSChannelError: If mutual TLS transport
+            google.auth.exceptions.MutualTlsChannelError: If mutual TLS transport
               creation failed for any reason.
           google.api_core.exceptions.DuplicateCredentialArgs: If both ``credentials``
               and ``credentials_file`` are passed.
@@ -201,14 +251,13 @@ class LfpSaleServiceGrpcTransport(LfpSaleServiceTransport):
         if client_cert_source:
             warnings.warn("client_cert_source is deprecated", DeprecationWarning)
 
-        if isinstance(channel, grpc.Channel):
+        if isinstance(channel, aio.Channel):
             # Ignore credentials if a channel was passed.
             credentials = None
             self._ignore_credentials = True
             # If a channel was explicitly provided, set it.
             self._grpc_channel = channel
             self._ssl_channel_credentials = None
-
         else:
             if api_mtls_endpoint:
                 host = api_mtls_endpoint
@@ -261,77 +310,39 @@ class LfpSaleServiceGrpcTransport(LfpSaleServiceTransport):
                 ],
             )
 
-        self._interceptor = _LoggingClientInterceptor()
-        self._logged_channel = grpc.intercept_channel(
-            self._grpc_channel, self._interceptor
+        self._interceptor = _LoggingClientAIOInterceptor()
+        self._grpc_channel._unary_unary_interceptors.append(self._interceptor)
+        self._logged_channel = self._grpc_channel
+        self._wrap_with_kind = (
+            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
         )
-
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
-    @classmethod
-    def create_channel(
-        cls,
-        host: str = "merchantapi.googleapis.com",
-        credentials: Optional[ga_credentials.Credentials] = None,
-        credentials_file: Optional[str] = None,
-        scopes: Optional[Sequence[str]] = None,
-        quota_project_id: Optional[str] = None,
-        **kwargs,
-    ) -> grpc.Channel:
-        """Create and return a gRPC channel object.
-        Args:
-            host (Optional[str]): The host for the channel to use.
-            credentials (Optional[~.Credentials]): The
-                authorization credentials to attach to requests. These
-                credentials identify this application to the service. If
-                none are specified, the client will attempt to ascertain
-                the credentials from the environment.
-            credentials_file (Optional[str]): A file with credentials that can
-                be loaded with :func:`google.auth.load_credentials_from_file`.
-                This argument is mutually exclusive with credentials.
-            scopes (Optional[Sequence[str]]): A optional list of scopes needed for this
-                service. These are only used when credentials are not specified and
-                are passed to :func:`google.auth.default`.
-            quota_project_id (Optional[str]): An optional project to use for billing
-                and quota.
-            kwargs (Optional[dict]): Keyword arguments, which are passed to the
-                channel creation.
-        Returns:
-            grpc.Channel: A gRPC channel object.
-
-        Raises:
-            google.api_core.exceptions.DuplicateCredentialArgs: If both ``credentials``
-              and ``credentials_file`` are passed.
-        """
-
-        return grpc_helpers.create_channel(
-            host,
-            credentials=credentials,
-            credentials_file=credentials_file,
-            quota_project_id=quota_project_id,
-            default_scopes=cls.AUTH_SCOPES,
-            scopes=scopes,
-            default_host=cls.DEFAULT_HOST,
-            **kwargs,
-        )
-
     @property
-    def grpc_channel(self) -> grpc.Channel:
-        """Return the channel designed to connect to this service."""
+    def grpc_channel(self) -> aio.Channel:
+        """Create the channel designed to connect to this service.
+
+        This property caches on the instance; repeated calls return
+        the same channel.
+        """
+        # Return the channel from cache.
         return self._grpc_channel
 
     @property
-    def insert_lfp_sale(
+    def get_lfp_merchant_state(
         self,
-    ) -> Callable[[lfpsale.InsertLfpSaleRequest], lfpsale.LfpSale]:
-        r"""Return a callable for the insert lfp sale method over gRPC.
+    ) -> Callable[
+        [lfpmerchantstate.GetLfpMerchantStateRequest],
+        Awaitable[lfpmerchantstate.LfpMerchantState],
+    ]:
+        r"""Return a callable for the get lfp merchant state method over gRPC.
 
-        Inserts a ``LfpSale`` for the given merchant.
+        Gets the LFP state of a merchant
 
         Returns:
-            Callable[[~.InsertLfpSaleRequest],
-                    ~.LfpSale]:
+            Callable[[~.GetLfpMerchantStateRequest],
+                    Awaitable[~.LfpMerchantState]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -339,20 +350,35 @@ class LfpSaleServiceGrpcTransport(LfpSaleServiceTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "insert_lfp_sale" not in self._stubs:
-            self._stubs["insert_lfp_sale"] = self._logged_channel.unary_unary(
-                "/google.shopping.merchant.lfp.v1beta.LfpSaleService/InsertLfpSale",
-                request_serializer=lfpsale.InsertLfpSaleRequest.serialize,
-                response_deserializer=lfpsale.LfpSale.deserialize,
+        if "get_lfp_merchant_state" not in self._stubs:
+            self._stubs["get_lfp_merchant_state"] = self._logged_channel.unary_unary(
+                "/google.shopping.merchant.lfp.v1beta.LfpMerchantStateService/GetLfpMerchantState",
+                request_serializer=lfpmerchantstate.GetLfpMerchantStateRequest.serialize,
+                response_deserializer=lfpmerchantstate.LfpMerchantState.deserialize,
             )
-        return self._stubs["insert_lfp_sale"]
+        return self._stubs["get_lfp_merchant_state"]
+
+    def _prep_wrapped_messages(self, client_info):
+        """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
+        self._wrapped_methods = {
+            self.get_lfp_merchant_state: self._wrap_method(
+                self.get_lfp_merchant_state,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+        }
+
+    def _wrap_method(self, func, *args, **kwargs):
+        if self._wrap_with_kind:  # pragma: NO COVER
+            kwargs["kind"] = self.kind
+        return gapic_v1.method_async.wrap_method(func, *args, **kwargs)
 
     def close(self):
-        self._logged_channel.close()
+        return self._logged_channel.close()
 
     @property
     def kind(self) -> str:
-        return "grpc"
+        return "grpc_asyncio"
 
 
-__all__ = ("LfpSaleServiceGrpcTransport",)
+__all__ = ("LfpMerchantStateServiceGrpcAsyncIOTransport",)
