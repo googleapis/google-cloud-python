@@ -1,6 +1,19 @@
 # Changelog
 
 
+## [1.24.0](https://github.com/googleapis/gapic-generator-python/compare/v1.23.6...v1.24.0) (2025-04-11)
+
+
+### Features
+
+* Adds augmented pagination to account for BQ family of APIs ([#2372](https://github.com/googleapis/gapic-generator-python/issues/2372)) ([30cd1a4](https://github.com/googleapis/gapic-generator-python/commit/30cd1a49353048fc190114cfb7a73e14ec2eff31))
+
+
+### Bug Fixes
+
+* Fixed internal method generation naming issues ([#2365](https://github.com/googleapis/gapic-generator-python/issues/2365)) ([868f201](https://github.com/googleapis/gapic-generator-python/commit/868f201957b271c9390bf41374897a2ce728a5e2))
+* Missing DEFAULT_HOST should still result in compiling code ([#2051](https://github.com/googleapis/gapic-generator-python/issues/2051)) ([dc6d4f7](https://github.com/googleapis/gapic-generator-python/commit/dc6d4f7ec0853557bb7c25a8276fbe262c5bda5d))
+
 ## [1.23.6](https://github.com/googleapis/gapic-generator-python/compare/v1.23.5...v1.23.6) (2025-03-17)
 
 
