@@ -63,7 +63,8 @@ jobs:
       env:
         BUILD_TYPE: presubmit
         TEST_TYPE: docs
-        PY_VERSION: "3.10"
+        # TODO(https://github.com/googleapis/google-cloud-python/issues/13775): Specify `PY_VERSION` rather than relying on the default python version of the nox session.
+        PY_VERSION: "unused"
       run: |
         ci/run_conditional_tests.sh
   docs-warnings:    
@@ -91,7 +92,8 @@ jobs:
       env:
         BUILD_TYPE: presubmit
         TEST_TYPE: docs
-        PY_VERSION: "3.10"
+        # TODO(https://github.com/googleapis/google-cloud-python/issues/13775): Specify `PY_VERSION` rather than relying on the default python version of the nox session.
+        PY_VERSION: "unused"
       run: |
         ci/run_conditional_tests.sh
   docfx:
@@ -117,7 +119,8 @@ jobs:
       env:
         BUILD_TYPE: presubmit
         TEST_TYPE: docfx
-        PY_VERSION: "3.10"
+        # TODO(https://github.com/googleapis/google-cloud-python/issues/13775): Specify `PY_VERSION` rather than relying on the default python version of the nox session.
+        PY_VERSION: "unused"
       run: |
         ci/run_conditional_tests.sh
   docfx-warnings:
@@ -145,6 +148,7 @@ jobs:
       env:
         BUILD_TYPE: presubmit
         TEST_TYPE: docfx
-        PY_VERSION: "3.10"
+        # TODO(https://github.com/googleapis/google-cloud-python/issues/13775): Specify `PY_VERSION` rather than relying on the default python version of the nox session.
+        PY_VERSION: "unused"
       run: |
         ci/run_conditional_tests.sh
