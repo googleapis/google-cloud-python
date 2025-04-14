@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.1.16](https://github.com/googleapis/google-cloud-python/compare/google-shopping-css-v0.1.15...google-shopping-css-v0.1.16) (2025-04-12)
+
+
+### Features
+
+* Introduce QuotaService for CSS API ([1c2d32c](https://github.com/googleapis/google-cloud-python/commit/1c2d32cddd80da9ede0bbc39d1a93aa9d7305f3f))
+
+
+### Documentation
+
+* A comment for field `name` in message `.google.shopping.css.v1.CssProductInput` is changed ([1c2d32c](https://github.com/googleapis/google-cloud-python/commit/1c2d32cddd80da9ede0bbc39d1a93aa9d7305f3f))
+* A comment for field `name` in message `.google.shopping.css.v1.DeleteCssProductInputRequest` is changed ([1c2d32c](https://github.com/googleapis/google-cloud-python/commit/1c2d32cddd80da9ede0bbc39d1a93aa9d7305f3f))
+
 ## [0.1.15](https://github.com/googleapis/google-cloud-python/compare/google-shopping-css-v0.1.14...google-shopping-css-v0.1.15) (2025-03-21)
 
 

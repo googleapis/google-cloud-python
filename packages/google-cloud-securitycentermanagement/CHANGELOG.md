@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.22](https://github.com/googleapis/google-cloud-python/compare/google-cloud-securitycentermanagement-v0.1.21...google-cloud-securitycentermanagement-v0.1.22) (2025-04-12)
+
+
+### Documentation
+
+* group Security Command Center packages together on cloud.google.com ([#13715](https://github.com/googleapis/google-cloud-python/issues/13715)) ([3ce0eda](https://github.com/googleapis/google-cloud-python/commit/3ce0eda3fe7b86acf2e67102077c803bf743f613)), closes [#13714](https://github.com/googleapis/google-cloud-python/issues/13714)
+
 ## [0.1.21](https://github.com/googleapis/google-cloud-python/compare/google-cloud-securitycentermanagement-v0.1.20...google-cloud-securitycentermanagement-v0.1.21) (2025-03-15)
 
 

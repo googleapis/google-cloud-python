@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.18.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-workflows-v1.18.0...google-cloud-workflows-v1.18.1) (2025-04-12)
+
+
+### Documentation
+
+* A comment for field `revision_id` in message `.google.cloud.workflows.v1beta.Workflow` is changed ([0868067](https://github.com/googleapis/google-cloud-python/commit/086806789b47b6ff53fa17333347eb16514dc6e1))
+* A comment for field `service_account` in message `.google.cloud.workflows.v1beta.Workflow` is changed ([0868067](https://github.com/googleapis/google-cloud-python/commit/086806789b47b6ff53fa17333347eb16514dc6e1))
+* A comment for field `source_contents` in message `.google.cloud.workflows.v1beta.Workflow` is changed ([0868067](https://github.com/googleapis/google-cloud-python/commit/086806789b47b6ff53fa17333347eb16514dc6e1))
+
 ## [1.18.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-workflows-v1.17.1...google-cloud-workflows-v1.18.0) (2025-03-19)
 
 

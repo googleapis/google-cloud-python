@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.70.0](https://github.com/googleapis/google-cloud-python/compare/googleapis-common-protos-v1.69.2...googleapis-common-protos-v1.70.0) (2025-04-12)
+
+
+### Features
+
+* expand QuotaFailure with quota error details ([#13745](https://github.com/googleapis/google-cloud-python/issues/13745)) ([5535afe](https://github.com/googleapis/google-cloud-python/commit/5535afe64021ce9688dd95742af201edb402dcf0))
+
 ## [1.69.2](https://github.com/googleapis/google-cloud-python/compare/googleapis-common-protos-v1.69.1...googleapis-common-protos-v1.69.2) (2025-03-15)
 
 

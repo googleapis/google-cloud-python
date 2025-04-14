@@ -1,5 +1,22 @@
 # Changelog
 
+## [2.10.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataplex-v2.9.0...google-cloud-dataplex-v2.10.0) (2025-04-12)
+
+
+### Features
+
+* A new field `export_result` is added to message `.google.cloud.dataplex.v1.MetadataJob` ([c46b81a](https://github.com/googleapis/google-cloud-python/commit/c46b81a930878a1f9526825be607f7d07f4c0640))
+* A new field `export_spec` is added to message `.google.cloud.dataplex.v1.MetadataJob` ([c46b81a](https://github.com/googleapis/google-cloud-python/commit/c46b81a930878a1f9526825be607f7d07f4c0640))
+* A new message `ExportJobResult` is added ([c46b81a](https://github.com/googleapis/google-cloud-python/commit/c46b81a930878a1f9526825be607f7d07f4c0640))
+* A new message `ExportJobSpec` is added ([c46b81a](https://github.com/googleapis/google-cloud-python/commit/c46b81a930878a1f9526825be607f7d07f4c0640))
+* A new value `EXPORT` is added to enum `Type` ([c46b81a](https://github.com/googleapis/google-cloud-python/commit/c46b81a930878a1f9526825be607f7d07f4c0640))
+* Removing internal visibility labels for cmek public preview ([c46b81a](https://github.com/googleapis/google-cloud-python/commit/c46b81a930878a1f9526825be607f7d07f4c0640))
+
+
+### Documentation
+
+* minor formatting changes ([c46b81a](https://github.com/googleapis/google-cloud-python/commit/c46b81a930878a1f9526825be607f7d07f4c0640))
+
 ## [2.9.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataplex-v2.8.0...google-cloud-dataplex-v2.9.0) (2025-03-27)
 
 

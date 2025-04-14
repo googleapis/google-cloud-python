@@ -1,5 +1,17 @@
 # Changelog
 
+## [2.7.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-deploy-v2.6.3...google-cloud-deploy-v2.7.0) (2025-04-12)
+
+
+### Features
+
+* Add resource definition for Revision ([831dd1d](https://github.com/googleapis/google-cloud-python/commit/831dd1d815e29c54f0ba9428e799bf805970c574))
+
+
+### Documentation
+
+* Typos fixes and small improvements ([831dd1d](https://github.com/googleapis/google-cloud-python/commit/831dd1d815e29c54f0ba9428e799bf805970c574))
+
 ## [2.6.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-deploy-v2.6.2...google-cloud-deploy-v2.6.3) (2025-03-21)
 
 

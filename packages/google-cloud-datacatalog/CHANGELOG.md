@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-datacatalog/#history
 
+## [3.26.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-datacatalog-v3.26.0...google-cloud-datacatalog-v3.26.1) (2025-04-12)
+
+
+### Documentation
+
+* clarify sql variant in comment for `v1.LookupEntryRequest.sql_resource` ([2c0c1c8](https://github.com/googleapis/google-cloud-python/commit/2c0c1c8e0f4bc213dd7f714cdc2cd7ac330e98c9))
+* clarify sql variant in comment for `v1beta1.LookupEntryRequest.sql_resource` ([2c0c1c8](https://github.com/googleapis/google-cloud-python/commit/2c0c1c8e0f4bc213dd7f714cdc2cd7ac330e98c9))
+
 ## [3.26.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-datacatalog-v3.25.1...google-cloud-datacatalog-v3.26.0) (2025-03-15)
 
 
