@@ -326,7 +326,7 @@ for library in s.get_staging_dirs(default_version):
     if count < 1:
         raise Exception(".coveragerc replacement failed.")
 
-    s.move([library], excludes=["**/gapic_version.py", "README.rst", "docs/**/*", "setup.py", "testing/constraints-3.7.txt", "testing/constraints-3.8.txt"])
+    s.move([library], excludes=["**/gapic_version.py", "noxfile.py", "README.rst", "docs/**/*", "setup.py", "testing/constraints-3.7.txt", "testing/constraints-3.8.txt"])
 s.remove_staging_dirs()
 
 # ----------------------------------------------------------------------------
@@ -344,96 +344,6 @@ templated_files = gcp.CommonTemplates().py_library(
     system_test_external_dependencies=["psutil","flaky"],
 )
 s.move(templated_files, excludes=[".coveragerc", ".github/release-please.yml", "README.rst", "docs/index.rst"])
-
-# ----------------------------------------------------------------------------
-# Add mypy nox session.
-# ----------------------------------------------------------------------------
-s.replace(
-    "noxfile.py",
-    r"LINT_PATHS = \[.*?\]",
-    '\g<0>\n\nMYPY_VERSION = "mypy==1.10.0"',
-)
-s.replace(
-    "noxfile.py", r'"blacken",', '\g<0>\n    "mypy",',
-)
-s.replace(
-    "noxfile.py",
-    r"nox\.options\.error_on_missing_interpreters = True",
-    textwrap.dedent(
-        '''    \g<0>
-
-
-    @nox.session(python=DEFAULT_PYTHON_VERSION)
-    def mypy(session):
-        """Run type checks with mypy."""
-        session.install("-e", ".[all]")
-        session.install(MYPY_VERSION)
-
-        # Version 2.1.1 of google-api-core version is the first type-checked release.
-        # Version 2.2.0 of google-cloud-core version is the first type-checked release.
-        session.install(
-            "google-api-core[grpc]>=2.1.1",
-            "google-cloud-core>=2.2.0",
-        )
-
-        # Just install the type info directly, since "mypy --install-types" might
-        # require an additional pass.
-        # Exclude types-protobuf==4.24.0.20240106
-        # See https://github.com/python/typeshed/issues/11254
-        session.install("types-protobuf!=4.24.0.20240106", "types-setuptools")
-
-        # TODO: Only check the hand-written layer, the generated code does not pass
-        # mypy checks yet.
-        # https://github.com/googleapis/gapic-generator-python/issues/1092
-        session.run("mypy", "-p", "google.cloud")'''
-    ),
-)
-
-
-# ----------------------------------------------------------------------------
-# Add mypy_samples nox session.
-# ----------------------------------------------------------------------------
-s.replace(
-    "noxfile.py",
-    r'    "mypy",',
-    '\g<0>\n    # https://github.com/googleapis/python-pubsub/pull/552#issuecomment-1016256936'
-    '\n    # "mypy_samples",  # TODO: uncomment when the check passes',
-)
-s.replace(
-    "noxfile.py",
-    r'session\.run\("mypy", "-p", "google.cloud"\)',
-    textwrap.dedent(
-        '''    \g<0>
-
-
-    @nox.session(python=DEFAULT_PYTHON_VERSION)
-    def mypy_samples(session):
-        """Run type checks with mypy."""
-
-        session.install("-e", ".[all]")
-
-        session.install("pytest")
-        session.install(MYPY_VERSION)
-
-        # Just install the type info directly, since "mypy --install-types" might
-        # require an additional pass.
-        session.install("types-mock", "types-protobuf", "types-setuptools") 
-
-        session.run(
-            "mypy",
-            "--config-file",
-            str(CURRENT_DIRECTORY / "samples" / "snippets" / "mypy.ini"),
-            "--no-incremental",  # Required by warn-unused-configs from mypy.ini to work
-            "samples/",
-        )'''
-    ),
-)
-
-
-# Only consider the hand-written layer when assessing the test coverage.
-s.replace(
-    "noxfile.py", "--cov=google", "--cov=google/cloud",
-)
 
 s.replace(".github/blunderbuss.yml", "googleapis/api-pubsub", "mukund-ananthu")
 
