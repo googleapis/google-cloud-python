@@ -35,7 +35,7 @@ jobs:
         BUILD_TYPE: presubmit
         TEST_TYPE: lint
         # TODO(https://github.com/googleapis/google-cloud-python/issues/13775): Specify `PY_VERSION` rather than relying on the default python version of the nox session.
-        PY_VERSION: ""
+        PY_VERSION: "unused"
       run: |
         ci/run_conditional_tests.sh
     - name: Run lint_setup_py
@@ -43,6 +43,6 @@ jobs:
         BUILD_TYPE: presubmit
         TEST_TYPE: lint_setup_py
         # TODO(https://github.com/googleapis/google-cloud-python/issues/13775): Specify `PY_VERSION` rather than relying on the default python version of the nox session.
-        PY_VERSION: ""
+        PY_VERSION: "unused"
       run: |
         ci/run_conditional_tests.sh
