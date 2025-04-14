@@ -4,6 +4,21 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+## [2.39.0](https://github.com/googleapis/google-auth-library-python/compare/v2.38.0...v2.39.0) (2025-04-14)
+
+
+### Features
+
+* Adds GA support for X.509 workload identity federation ([#1695](https://github.com/googleapis/google-auth-library-python/issues/1695)) ([7495960](https://github.com/googleapis/google-auth-library-python/commit/74959605400f9a1976bbdc52c029943b634eb553))
+
+
+### Bug Fixes
+
+* Add impersonated SA via local ADC support for fetch_id_token ([#1740](https://github.com/googleapis/google-auth-library-python/issues/1740)) ([f249764](https://github.com/googleapis/google-auth-library-python/commit/f24976452d741de6a49d9b7a85cdab47812f5312))
+* Add missing packaging dependency for feature requiring urllib3 ([#1732](https://github.com/googleapis/google-auth-library-python/issues/1732)) ([221f4a8](https://github.com/googleapis/google-auth-library-python/commit/221f4a82fa25c1ad453b85bc8b7f2fc304724879))
+* Add request timeout for MDS requests ([#1699](https://github.com/googleapis/google-auth-library-python/issues/1699)) ([9f7d3fa](https://github.com/googleapis/google-auth-library-python/commit/9f7d3fa92c0e656a1c970182833abe2d0d3ad3ee))
+* Explicitly declare support for Python 3.13 ([#1741](https://github.com/googleapis/google-auth-library-python/issues/1741)) ([6fd04d5](https://github.com/googleapis/google-auth-library-python/commit/6fd04d57df90866f24b554c489f8f2653467d70e))
+
 ## [2.38.0](https://github.com/googleapis/google-auth-library-python/compare/v2.37.0...v2.38.0) (2025-01-23)
 
 
