@@ -21,7 +21,10 @@ from google.cloud.spanner_dbapi.parsed_statement import (
     Statement,
 )
 
-RE_BEGIN = re.compile(r"^\s*(BEGIN|START)(\s+TRANSACTION)?\s*$", re.IGNORECASE)
+RE_BEGIN = re.compile(
+    r"^\s*(?:BEGIN|START)(?:\s+TRANSACTION)?(?:\s+ISOLATION\s+LEVEL\s+(REPEATABLE\s+READ|SERIALIZABLE))?\s*$",
+    re.IGNORECASE,
+)
 RE_COMMIT = re.compile(r"^\s*(COMMIT)(\s+TRANSACTION)?\s*$", re.IGNORECASE)
 RE_ROLLBACK = re.compile(r"^\s*(ROLLBACK)(\s+TRANSACTION)?\s*$", re.IGNORECASE)
 RE_SHOW_COMMIT_TIMESTAMP = re.compile(
@@ -68,6 +71,10 @@ def parse_stmt(query):
     elif RE_START_BATCH_DML.match(query):
         client_side_statement_type = ClientSideStatementType.START_BATCH_DML
     elif RE_BEGIN.match(query):
+        match = re.search(RE_BEGIN, query)
+        isolation_level = match.group(1)
+        if isolation_level is not None:
+            client_side_statement_params.append(isolation_level)
         client_side_statement_type = ClientSideStatementType.BEGIN
     elif RE_RUN_BATCH.match(query):
         client_side_statement_type = ClientSideStatementType.RUN_BATCH

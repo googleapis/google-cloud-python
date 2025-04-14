@@ -11,7 +11,8 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Union
+from google.cloud.spanner_v1 import TransactionOptions
 
 if TYPE_CHECKING:
     from google.cloud.spanner_dbapi.cursor import Cursor
@@ -58,7 +59,7 @@ def execute(cursor: "Cursor", parsed_statement: ParsedStatement):
         connection.commit()
         return None
     if statement_type == ClientSideStatementType.BEGIN:
-        connection.begin()
+        connection.begin(isolation_level=_get_isolation_level(parsed_statement))
         return None
     if statement_type == ClientSideStatementType.ROLLBACK:
         connection.rollback()
@@ -121,3 +122,19 @@ def _get_streamed_result_set(column_name, type_code, column_values):
             column_values_pb.append(_make_value_pb(column_value))
         result_set.values.extend(column_values_pb)
     return StreamedResultSet(iter([result_set]))
+
+
+def _get_isolation_level(
+    statement: ParsedStatement,
+) -> Union[TransactionOptions.IsolationLevel, None]:
+    if (
+        statement.client_side_statement_params is None
+        or len(statement.client_side_statement_params) == 0
+    ):
+        return None
+    level = statement.client_side_statement_params[0]
+    if not isinstance(level, str) or level == "":
+        return None
+    # Replace (duplicate) whitespaces in the string with an underscore.
+    level = "_".join(level.split()).upper()
+    return TransactionOptions.IsolationLevel[level]
