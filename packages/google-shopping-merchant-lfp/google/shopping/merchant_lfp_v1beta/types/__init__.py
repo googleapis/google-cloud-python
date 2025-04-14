@@ -14,6 +14,7 @@
 # limitations under the License.
 #
 from .lfpinventory import InsertLfpInventoryRequest, LfpInventory
+from .lfpmerchantstate import GetLfpMerchantStateRequest, LfpMerchantState
 from .lfpsale import InsertLfpSaleRequest, LfpSale
 from .lfpstore import (
     DeleteLfpStoreRequest,
@@ -27,6 +28,8 @@ from .lfpstore import (
 __all__ = (
     "InsertLfpInventoryRequest",
     "LfpInventory",
+    "GetLfpMerchantStateRequest",
+    "LfpMerchantState",
     "InsertLfpSaleRequest",
     "LfpSale",
     "DeleteLfpStoreRequest",

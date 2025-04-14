@@ -24,6 +24,12 @@ from google.shopping.merchant_lfp_v1beta.services.lfp_inventory_service.async_cl
 from google.shopping.merchant_lfp_v1beta.services.lfp_inventory_service.client import (
     LfpInventoryServiceClient,
 )
+from google.shopping.merchant_lfp_v1beta.services.lfp_merchant_state_service.async_client import (
+    LfpMerchantStateServiceAsyncClient,
+)
+from google.shopping.merchant_lfp_v1beta.services.lfp_merchant_state_service.client import (
+    LfpMerchantStateServiceClient,
+)
 from google.shopping.merchant_lfp_v1beta.services.lfp_sale_service.async_client import (
     LfpSaleServiceAsyncClient,
 )
@@ -39,6 +45,10 @@ from google.shopping.merchant_lfp_v1beta.services.lfp_store_service.client impor
 from google.shopping.merchant_lfp_v1beta.types.lfpinventory import (
     InsertLfpInventoryRequest,
     LfpInventory,
+)
+from google.shopping.merchant_lfp_v1beta.types.lfpmerchantstate import (
+    GetLfpMerchantStateRequest,
+    LfpMerchantState,
 )
 from google.shopping.merchant_lfp_v1beta.types.lfpsale import (
     InsertLfpSaleRequest,
@@ -56,12 +66,16 @@ from google.shopping.merchant_lfp_v1beta.types.lfpstore import (
 __all__ = (
     "LfpInventoryServiceClient",
     "LfpInventoryServiceAsyncClient",
+    "LfpMerchantStateServiceClient",
+    "LfpMerchantStateServiceAsyncClient",
     "LfpSaleServiceClient",
     "LfpSaleServiceAsyncClient",
     "LfpStoreServiceClient",
     "LfpStoreServiceAsyncClient",
     "InsertLfpInventoryRequest",
     "LfpInventory",
+    "GetLfpMerchantStateRequest",
+    "LfpMerchantState",
     "InsertLfpSaleRequest",
     "LfpSale",
     "DeleteLfpStoreRequest",

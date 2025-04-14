@@ -40,6 +40,7 @@ class merchant_lfpCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
         'delete_lfp_store': ('name', ),
+        'get_lfp_merchant_state': ('name', ),
         'get_lfp_store': ('name', ),
         'insert_lfp_inventory': ('parent', 'lfp_inventory', ),
         'insert_lfp_sale': ('parent', 'lfp_sale', ),
