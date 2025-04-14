@@ -2713,11 +2713,13 @@ SELECT {select_columns_csv} FROM T1
             )
         )
 
+        dest_table = self.session.bqclient.get_table(destination)
         expr = core.ArrayValue.from_table(
-            self.session.bqclient.get_table(destination),
+            dest_table,
             schema=new_schema,
             session=self.session,
             offsets_col=ordering_column_name,
+            n_rows=dest_table.num_rows,
         ).drop_columns([ordering_column_name])
         block = Block(
             expr,

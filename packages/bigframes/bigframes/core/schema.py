@@ -67,9 +67,13 @@ class ArraySchema:
     def _mapping(self) -> typing.Dict[ColumnIdentifierType, bigframes.dtypes.Dtype]:
         return {item.column: item.dtype for item in self.items}
 
-    def to_bigquery(self) -> typing.Tuple[google.cloud.bigquery.SchemaField, ...]:
+    def to_bigquery(
+        self, overrides: dict[bigframes.dtypes.Dtype, str] = {}
+    ) -> typing.Tuple[google.cloud.bigquery.SchemaField, ...]:
         return tuple(
-            bigframes.dtypes.convert_to_schema_field(item.column, item.dtype)
+            bigframes.dtypes.convert_to_schema_field(
+                item.column, item.dtype, overrides=overrides
+            )
             for item in self.items
         )
 

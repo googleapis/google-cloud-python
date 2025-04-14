@@ -491,5 +491,5 @@ def test_read_pandas_inline_exceeds_limit_raises_error():
 def test_read_pandas_inline_w_interval_type_raises_error():
     session = resources.create_bigquery_session()
     df = pd.DataFrame(pd.arrays.IntervalArray.from_breaks([0, 10, 20, 30, 40, 50]))
-    with pytest.raises(ValueError, match="Could not convert with a BigQuery type: "):
+    with pytest.raises(TypeError):
         session.read_pandas(df, write_engine="bigquery_inline")

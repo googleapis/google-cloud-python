@@ -17,6 +17,7 @@ import re
 import bigframes_vendored.constants as constants
 import geopandas  # type: ignore
 from geopandas.array import GeometryDtype  # type:ignore
+import geopandas.testing  # type:ignore
 import google.api_core.exceptions
 import pandas as pd
 import pytest
@@ -188,16 +189,17 @@ def test_geo_boundary():
             LineString([(0, 0), (1, 1), (0, 1)]),
             Point(0, 1),
         ],
+        index=pd.Index([0, 1, 2, 3, 4], dtype="Int64"),
     )
 
     bf_result = bf_s.geo.boundary.to_pandas()
     pd_result = pd_s.boundary
 
-    pd.testing.assert_series_equal(
+    geopandas.testing.assert_geoseries_equal(
         bf_result,
         pd_result,
         check_series_type=False,
-        check_index=False,
+        check_index_type=False,
     )
 
 

@@ -17,64 +17,62 @@ from __future__ import annotations
 import copy
 import dataclasses
 import datetime
+import io
 import itertools
 import os
 import typing
-from typing import Dict, Hashable, IO, Iterable, List, Optional, Sequence, Tuple
+from typing import (
+    Dict,
+    Hashable,
+    IO,
+    Iterable,
+    List,
+    Literal,
+    Optional,
+    Sequence,
+    Tuple,
+)
 
 import bigframes_vendored.constants as constants
 import bigframes_vendored.pandas.io.gbq as third_party_pandas_gbq
 import google.api_core.exceptions
-import google.auth.credentials
 import google.cloud.bigquery as bigquery
-import google.cloud.bigquery.job
 import google.cloud.bigquery.table
-import google.cloud.bigquery_connection_v1
-import google.cloud.bigquery_storage_v1
-import google.cloud.functions_v2
-import google.cloud.resourcemanager_v3
 import pandas
-import pandas_gbq.schema.pandas_to_bigquery  # type: ignore
+import pyarrow as pa
 
-import bigframes.clients
-import bigframes.constants
+from bigframes.core import local_data, utils
 import bigframes.core as core
 import bigframes.core.blocks as blocks
-import bigframes.core.compile
-import bigframes.core.expression as expression
-import bigframes.core.guid
-import bigframes.core.ordering
-import bigframes.core.pruning
 import bigframes.core.schema as schemata
-import bigframes.dataframe
 import bigframes.dtypes
-import bigframes.exceptions
 import bigframes.formatting_helpers as formatting_helpers
-import bigframes.operations
-import bigframes.operations.aggregations as agg_ops
 import bigframes.session._io.bigquery as bf_io_bigquery
 import bigframes.session._io.bigquery.read_gbq_table as bf_read_gbq_table
-import bigframes.session._io.pandas as bf_io_pandas
-import bigframes.session.anonymous_dataset
-import bigframes.session.clients
-import bigframes.session.executor
 import bigframes.session.metrics
-import bigframes.session.planner
 import bigframes.session.temporary_storage
 import bigframes.session.time as session_time
-import bigframes.version
 
 # Avoid circular imports.
 if typing.TYPE_CHECKING:
-    import bigframes.core.indexes
     import bigframes.dataframe as dataframe
-    import bigframes.series
     import bigframes.session
 
-_MAX_CLUSTER_COLUMNS = 4
 _PLACEHOLDER_SCHEMA = (
     google.cloud.bigquery.SchemaField("bf_loader_placeholder", "INTEGER"),
 )
+
+_LOAD_JOB_TYPE_OVERRIDES = {
+    # Json load jobs not supported yet: b/271321143
+    bigframes.dtypes.JSON_DTYPE: "STRING",
+    # Timedelta is emulated using integer in bq type system
+    bigframes.dtypes.TIMEDELTA_DTYPE: "INTEGER",
+}
+
+_STREAM_JOB_TYPE_OVERRIDES = {
+    # Timedelta is emulated using integer in bq type system
+    bigframes.dtypes.TIMEDELTA_DTYPE: "INTEGER",
+}
 
 
 def _to_index_cols(
@@ -139,141 +137,120 @@ class GbqDataLoader:
         self._clock = session_time.BigQuerySyncedClock(bqclient)
         self._clock.sync()
 
-    def read_pandas_load_job(
-        self, pandas_dataframe: pandas.DataFrame, api_name: str
+    def read_pandas(
+        self,
+        pandas_dataframe: pandas.DataFrame,
+        method: Literal["load", "stream"],
+        api_name: str,
     ) -> dataframe.DataFrame:
-        import bigframes.dataframe as dataframe
+        # TODO: Push this into from_pandas, along with index flag
+        from bigframes import dataframe
 
-        df_and_labels = bf_io_pandas.pandas_to_bq_compatible(pandas_dataframe)
-        pandas_dataframe_copy = df_and_labels.df
-        new_idx_ids = pandas_dataframe_copy.index.names
-        ordering_col = df_and_labels.ordering_col
-
-        # TODO(https://github.com/googleapis/python-bigquery-pandas/issues/760):
-        # Once pandas-gbq can show a link to the running load job like
-        # bigframes does, switch to using pandas-gbq to load the
-        # bigquery-compatible pandas DataFrame.
-        schema: list[
-            bigquery.SchemaField
-        ] = pandas_gbq.schema.pandas_to_bigquery.dataframe_to_bigquery_fields(
-            pandas_dataframe_copy,
-            index=True,
+        val_cols, idx_cols = utils.get_standardized_ids(
+            pandas_dataframe.columns, pandas_dataframe.index.names, strict=True
         )
-
-        job_config = bigquery.LoadJobConfig()
-        job_config.schema = schema
-
-        cluster_cols = [ordering_col]
-        job_config.clustering_fields = cluster_cols
-
-        job_config.labels = {"bigframes-api": api_name}
-        # Allow field addition, as we want to keep the clustered ordering_col field we already created
-        job_config.schema_update_options = [
-            google.cloud.bigquery.job.SchemaUpdateOption.ALLOW_FIELD_ADDITION
-        ]
-
-        load_table_destination = self._storage_manager.create_temp_table(
-            [google.cloud.bigquery.SchemaField(ordering_col, "INTEGER")], [ordering_col]
+        prepared_df = pandas_dataframe.reset_index(drop=False).set_axis(
+            [*idx_cols, *val_cols], axis="columns"
         )
-        load_job = self._bqclient.load_table_from_dataframe(
-            pandas_dataframe_copy,
-            load_table_destination,
-            job_config=job_config,
-        )
-        self._start_generic_job(load_job)
+        managed_data = local_data.ManagedArrowTable.from_pandas(prepared_df)
 
-        destination_table = self._bqclient.get_table(load_table_destination)
-        array_value = core.ArrayValue.from_table(
-            table=destination_table,
-            # TODO (b/394156190): Generate this directly from original pandas df.
-            schema=schemata.ArraySchema.from_bq_table(
-                destination_table, df_and_labels.col_type_overrides
-            ),
-            session=self._session,
-            offsets_col=ordering_col,
-        ).drop_columns([ordering_col])
+        if method == "load":
+            array_value = self.load_data(managed_data, api_name=api_name)
+        elif method == "stream":
+            array_value = self.stream_data(managed_data)
+        else:
+            raise ValueError(f"Unsupported read method {method}")
 
         block = blocks.Block(
             array_value,
-            index_columns=new_idx_ids,
-            column_labels=df_and_labels.column_labels,
-            index_labels=df_and_labels.index_labels,
+            index_columns=idx_cols,
+            column_labels=pandas_dataframe.columns,
+            index_labels=pandas_dataframe.index.names,
         )
         return dataframe.DataFrame(block)
 
-    def read_pandas_streaming(
-        self,
-        pandas_dataframe: pandas.DataFrame,
-    ) -> dataframe.DataFrame:
-        """Same as pandas_to_bigquery_load, but uses the BQ legacy streaming API."""
-        import bigframes.dataframe as dataframe
+    def load_data(
+        self, data: local_data.ManagedArrowTable, api_name: Optional[str] = None
+    ) -> core.ArrayValue:
+        """Load managed data into bigquery"""
+        ordering_col = "bf_load_job_offsets"
 
-        df_and_labels = bf_io_pandas.pandas_to_bq_compatible(pandas_dataframe)
-        pandas_dataframe_copy = df_and_labels.df
-        new_idx_ids = pandas_dataframe_copy.index.names
-        ordering_col = df_and_labels.ordering_col
+        # JSON support incomplete
+        for item in data.schema.items:
+            _validate_dtype_can_load(item.column, item.dtype)
 
-        # TODO(https://github.com/googleapis/python-bigquery-pandas/issues/300):
-        # Once pandas-gbq can do streaming inserts (again), switch to using
-        # pandas-gbq to write the bigquery-compatible pandas DataFrame.
-        schema: list[
-            bigquery.SchemaField
-        ] = pandas_gbq.schema.pandas_to_bigquery.dataframe_to_bigquery_fields(
-            pandas_dataframe_copy,
-            index=True,
+        schema_w_offsets = data.schema.append(
+            schemata.SchemaItem(ordering_col, bigframes.dtypes.INT_DTYPE)
+        )
+        bq_schema = schema_w_offsets.to_bigquery(_LOAD_JOB_TYPE_OVERRIDES)
+
+        job_config = bigquery.LoadJobConfig()
+        job_config.source_format = bigquery.SourceFormat.PARQUET
+        job_config.schema = bq_schema
+        if api_name:
+            job_config.labels = {"bigframes-api": api_name}
+
+        load_table_destination = self._storage_manager.create_temp_table(
+            bq_schema, [ordering_col]
         )
 
-        destination = self._storage_manager.create_temp_table(
-            schema,
-            [ordering_col],
+        buffer = io.BytesIO()
+        data.to_parquet(
+            buffer,
+            offsets_col=ordering_col,
+            geo_format="wkt",
+            duration_type="duration",
+            json_type="string",
         )
-        destination_table = bigquery.Table(destination, schema=schema)
+        buffer.seek(0)
+        load_job = self._bqclient.load_table_from_file(
+            buffer, destination=load_table_destination, job_config=job_config
+        )
+        self._start_generic_job(load_job)
+        # must get table metadata after load job for accurate metadata
+        destination_table = self._bqclient.get_table(load_table_destination)
+        return core.ArrayValue.from_table(
+            table=destination_table,
+            schema=schema_w_offsets,
+            session=self._session,
+            offsets_col=ordering_col,
+            n_rows=data.data.num_rows,
+        ).drop_columns([ordering_col])
 
-        # `insert_rows_from_dataframe` does not include the DataFrame's index,
-        # so reset_index() is called first.
-        for errors in self._bqclient.insert_rows_from_dataframe(
-            destination_table,
-            pandas_dataframe_copy.reset_index(),
+    def stream_data(self, data: local_data.ManagedArrowTable) -> core.ArrayValue:
+        """Load managed data into bigquery"""
+        ordering_col = "bf_stream_job_offsets"
+        schema_w_offsets = data.schema.append(
+            schemata.SchemaItem(ordering_col, bigframes.dtypes.INT_DTYPE)
+        )
+        bq_schema = schema_w_offsets.to_bigquery(_STREAM_JOB_TYPE_OVERRIDES)
+        load_table_destination = self._storage_manager.create_temp_table(
+            bq_schema, [ordering_col]
+        )
+
+        rows = data.itertuples(
+            geo_format="wkt", duration_type="int", json_type="object"
+        )
+        rows_w_offsets = ((*row, offset) for offset, row in enumerate(rows))
+
+        for errors in self._bqclient.insert_rows(
+            load_table_destination,
+            rows_w_offsets,
+            selected_fields=bq_schema,
+            row_ids=map(str, itertools.count()),  # used to ensure only-once insertion
         ):
             if errors:
                 raise ValueError(
                     f"Problem loading at least one row from DataFrame: {errors}. {constants.FEEDBACK_LINK}"
                 )
-        array_value = (
-            core.ArrayValue.from_table(
-                table=destination_table,
-                schema=schemata.ArraySchema.from_bq_table(
-                    destination_table, df_and_labels.col_type_overrides
-                ),
-                session=self._session,
-                # Don't set the offsets column because we want to group by it.
-            )
-            # There may be duplicate rows because of hidden retries, so use a query to
-            # deduplicate based on the ordering ID, which is guaranteed to be unique.
-            # We know that rows with same ordering ID are duplicates,
-            # so ANY_VALUE() is deterministic.
-            .aggregate(
-                by_column_ids=[ordering_col],
-                aggregations=[
-                    (
-                        expression.UnaryAggregation(
-                            agg_ops.AnyValueOp(),
-                            expression.deref(field.name),
-                        ),
-                        field.name,
-                    )
-                    for field in destination_table.schema
-                    if field.name != ordering_col
-                ],
-            ).drop_columns([ordering_col])
-        )
-        block = blocks.Block(
-            array_value,
-            index_columns=new_idx_ids,
-            column_labels=df_and_labels.column_labels,
-            index_labels=df_and_labels.index_labels,
-        )
-        return dataframe.DataFrame(block)
+        destination_table = self._bqclient.get_table(load_table_destination)
+        return core.ArrayValue.from_table(
+            table=destination_table,
+            schema=schema_w_offsets,
+            session=self._session,
+            offsets_col=ordering_col,
+            n_rows=data.data.num_rows,
+        ).drop_columns([ordering_col])
 
     def _start_generic_job(self, job: formatting_helpers.GenericJob):
         if bigframes.options.display.progress_bar is not None:
@@ -763,3 +740,44 @@ def _transform_read_gbq_configuration(configuration: Optional[dict]) -> dict:
         configuration["jobTimeoutMs"] = timeout_ms
 
     return configuration
+
+
+def _has_json_arrow_type(arrow_type: pa.DataType) -> bool:
+    """
+    Searches recursively for JSON array type within a PyArrow DataType.
+    """
+    if arrow_type == bigframes.dtypes.JSON_ARROW_TYPE:
+        return True
+    if pa.types.is_list(arrow_type):
+        return _has_json_arrow_type(arrow_type.value_type)
+    if pa.types.is_struct(arrow_type):
+        for i in range(arrow_type.num_fields):
+            if _has_json_arrow_type(arrow_type.field(i).type):
+                return True
+        return False
+    return False
+
+
+def _validate_dtype_can_load(name: str, column_type: bigframes.dtypes.Dtype):
+    """
+    Determines whether a datatype is supported by bq load jobs.
+
+    Due to a BigQuery IO limitation with loading JSON from Parquet files (b/374784249),
+    we're using a workaround: storing JSON as strings and then parsing them into JSON
+    objects.
+    TODO(b/395912450): Remove workaround solution once b/374784249 got resolved.
+
+    Raises:
+        NotImplementedError: Type is not yet supported by load jobs.
+    """
+    # we can handle top-level json, but not nested yet through string conversion
+    if column_type == bigframes.dtypes.JSON_DTYPE:
+        return
+
+    if isinstance(column_type, pandas.ArrowDtype) and _has_json_arrow_type(
+        column_type.pyarrow_dtype
+    ):
+        raise NotImplementedError(
+            f"Nested JSON types, found in column `{name}`: `{column_type}`', "
+            f"are currently unsupported for upload. {constants.FEEDBACK_LINK}"
+        )

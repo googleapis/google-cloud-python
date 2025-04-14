@@ -352,6 +352,24 @@ def is_comparable(type_: ExpressionType) -> bool:
     return (type_ is not None) and is_orderable(type_)
 
 
+def get_struct_fields(type_: ExpressionType) -> dict[str, Dtype]:
+    assert isinstance(type_, pd.ArrowDtype)
+    assert isinstance(type_.pyarrow_dtype, pa.StructType)
+    struct_type = type_.pyarrow_dtype
+    result: dict[str, Dtype] = {}
+    for field_no in range(struct_type.num_fields):
+        field = struct_type.field(field_no)
+        result[field.name] = arrow_dtype_to_bigframes_dtype(field.type)
+    return result
+
+
+def get_array_inner_type(type_: ExpressionType) -> Dtype:
+    assert isinstance(type_, pd.ArrowDtype)
+    assert isinstance(type_.pyarrow_dtype, pa.ListType)
+    list_type = type_.pyarrow_dtype
+    return arrow_dtype_to_bigframes_dtype(list_type.value_type)
+
+
 _ORDERABLE_SIMPLE_TYPES = set(
     mapping.dtype for mapping in SIMPLE_TYPES if mapping.orderable
 )
@@ -699,9 +717,10 @@ def convert_schema_field(
 
 
 def convert_to_schema_field(
-    name: str,
-    bigframes_dtype: Dtype,
+    name: str, bigframes_dtype: Dtype, overrides: dict[Dtype, str] = {}
 ) -> google.cloud.bigquery.SchemaField:
+    if bigframes_dtype in overrides:
+        return google.cloud.bigquery.SchemaField(name, overrides[bigframes_dtype])
     if bigframes_dtype in _BIGFRAMES_TO_TK:
         return google.cloud.bigquery.SchemaField(
             name, _BIGFRAMES_TO_TK[bigframes_dtype]
@@ -711,7 +730,7 @@ def convert_to_schema_field(
             inner_type = arrow_dtype_to_bigframes_dtype(
                 bigframes_dtype.pyarrow_dtype.value_type
             )
-            inner_field = convert_to_schema_field(name, inner_type)
+            inner_field = convert_to_schema_field(name, inner_type, overrides)
             return google.cloud.bigquery.SchemaField(
                 name, inner_field.field_type, mode="REPEATED", fields=inner_field.fields
             )
@@ -721,7 +740,9 @@ def convert_to_schema_field(
             for i in range(struct_type.num_fields):
                 field = struct_type.field(i)
                 inner_bf_type = arrow_dtype_to_bigframes_dtype(field.type)
-                inner_fields.append(convert_to_schema_field(field.name, inner_bf_type))
+                inner_fields.append(
+                    convert_to_schema_field(field.name, inner_bf_type, overrides)
+                )
 
             return google.cloud.bigquery.SchemaField(
                 name, "RECORD", fields=inner_fields

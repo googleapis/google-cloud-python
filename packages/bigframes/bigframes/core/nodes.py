@@ -654,7 +654,6 @@ class GbqTable:
     dataset_id: str = dataclasses.field()
     table_id: str = dataclasses.field()
     physical_schema: Tuple[bq.SchemaField, ...] = dataclasses.field()
-    n_rows: int = dataclasses.field()
     is_physically_stored: bool = dataclasses.field()
     cluster_cols: typing.Optional[Tuple[str, ...]]
 
@@ -670,7 +669,6 @@ class GbqTable:
             dataset_id=table.dataset_id,
             table_id=table.table_id,
             physical_schema=schema,
-            n_rows=table.num_rows,
             is_physically_stored=(table.table_type in ["TABLE", "MATERIALIZED_VIEW"]),
             cluster_cols=None
             if table.clustering_fields is None
@@ -696,6 +694,7 @@ class BigqueryDataSource:
     # Added for backwards compatibility, not validated
     sql_predicate: typing.Optional[str] = None
     ordering: typing.Optional[orderings.RowOrdering] = None
+    n_rows: Optional[int] = None
 
 
 ## Put ordering in here or just add order_by node above?
@@ -773,7 +772,7 @@ class ReadTableNode(LeafNode):
     @property
     def row_count(self) -> typing.Optional[int]:
         if self.source.sql_predicate is None and self.source.table.is_physically_stored:
-            return self.source.table.n_rows
+            return self.source.n_rows
         return None
 
     @property

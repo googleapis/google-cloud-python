@@ -865,20 +865,22 @@ def test_read_pandas_tokyo(
     assert len(expected) == result.total_rows
 
 
+# old versions don't support local casting to arrow duration
+@utils.skip_legacy_pandas
 @pytest.mark.parametrize(
     "write_engine",
     ["default", "bigquery_inline", "bigquery_load", "bigquery_streaming"],
 )
 def test_read_pandas_timedelta_dataframes(session, write_engine):
-    expected_df = pd.DataFrame({"my_col": pd.to_timedelta([1, 2, 3], unit="d")})
+    pandas_df = pd.DataFrame({"my_col": pd.to_timedelta([1, 2, 3], unit="d")})
 
-    actual_result = (
-        session.read_pandas(expected_df, write_engine=write_engine)
-        .to_pandas()
-        .astype("timedelta64[ns]")
-    )
+    actual_result = session.read_pandas(
+        pandas_df, write_engine=write_engine
+    ).to_pandas()
+    expected_result = pandas_df.astype(bigframes.dtypes.TIMEDELTA_DTYPE)
+    expected_result.index = expected_result.index.astype(bigframes.dtypes.INT_DTYPE)
 
-    pd.testing.assert_frame_equal(actual_result, expected_df, check_index_type=False)
+    pd.testing.assert_frame_equal(actual_result, expected_result)
 
 
 @pytest.mark.parametrize(
@@ -923,7 +925,7 @@ def test_read_pandas_timedelta_index(session, write_engine):
         pytest.param("default"),
         pytest.param("bigquery_load"),
         pytest.param("bigquery_streaming"),
-        pytest.param("bigquery_inline", marks=pytest.mark.xfail(raises=ValueError)),
+        pytest.param("bigquery_inline"),
     ],
 )
 def test_read_pandas_json_dataframes(session, write_engine):
@@ -950,7 +952,7 @@ def test_read_pandas_json_dataframes(session, write_engine):
         pytest.param("default"),
         pytest.param("bigquery_load"),
         pytest.param("bigquery_streaming"),
-        pytest.param("bigquery_inline", marks=pytest.mark.xfail(raises=ValueError)),
+        pytest.param("bigquery_inline"),
     ],
 )
 def test_read_pandas_json_series(session, write_engine):
@@ -997,7 +999,6 @@ def test_read_pandas_json_index(session, write_engine):
     ("write_engine"),
     [
         pytest.param("bigquery_load"),
-        pytest.param("bigquery_streaming"),
     ],
 )
 def test_read_pandas_w_nested_json_fails(session, write_engine):
@@ -1009,11 +1010,11 @@ def test_read_pandas_w_nested_json_fails(session, write_engine):
     ]
     # PyArrow currently lacks support for creating structs or lists containing extension types.
     # See issue: https://github.com/apache/arrow/issues/45262
-    pa_array = pa.array(data, type=pa.list_(pa.struct([("name", pa.string())])))
+    pa_array = pa.array(data, type=pa.list_(pa.struct([("json_field", pa.string())])))
     pd_s = pd.Series(
         arrays.ArrowExtensionArray(pa_array),  # type: ignore
         dtype=pd.ArrowDtype(
-            pa.list_(pa.struct([("name", bigframes.dtypes.JSON_ARROW_TYPE)]))
+            pa.list_(pa.struct([("json_field", bigframes.dtypes.JSON_ARROW_TYPE)]))
         ),
     )
     with pytest.raises(NotImplementedError, match="Nested JSON types, found in column"):
@@ -1026,20 +1027,21 @@ def test_read_pandas_w_nested_json_fails(session, write_engine):
     [
         pytest.param("default"),
         pytest.param("bigquery_inline"),
+        pytest.param("bigquery_streaming"),
     ],
 )
-def test_read_pandas_inline_w_nested_json(session, write_engine):
+def test_read_pandas_w_nested_json(session, write_engine):
     data = [
         [{"json_field": "1"}],
         [{"json_field": None}],
         [{"json_field": '["1","3","5"]'}],
         [{"json_field": '{"a":1,"b":["x","y"],"c":{"x":[],"z":false}}'}],
     ]
-    pa_array = pa.array(data, type=pa.list_(pa.struct([("name", pa.string())])))
+    pa_array = pa.array(data, type=pa.list_(pa.struct([("json_field", pa.string())])))
     pd_s = pd.Series(
         arrays.ArrowExtensionArray(pa_array),  # type: ignore
         dtype=pd.ArrowDtype(
-            pa.list_(pa.struct([("name", bigframes.dtypes.JSON_ARROW_TYPE)]))
+            pa.list_(pa.struct([("json_field", bigframes.dtypes.JSON_ARROW_TYPE)]))
         ),
     )
     bq_s = (
@@ -1054,10 +1056,9 @@ def test_read_pandas_inline_w_nested_json(session, write_engine):
     ("write_engine"),
     [
         pytest.param("bigquery_load"),
-        pytest.param("bigquery_streaming"),
     ],
 )
-def test_read_pandas_inline_w_nested_json_index_fails(session, write_engine):
+def test_read_pandas_w_nested_json_index_fails(session, write_engine):
     data = [
         [{"json_field": "1"}],
         [{"json_field": None}],
@@ -1066,16 +1067,14 @@ def test_read_pandas_inline_w_nested_json_index_fails(session, write_engine):
     ]
     # PyArrow currently lacks support for creating structs or lists containing extension types.
     # See issue: https://github.com/apache/arrow/issues/45262
-    pa_array = pa.array(data, type=pa.list_(pa.struct([("name", pa.string())])))
+    pa_array = pa.array(data, type=pa.list_(pa.struct([("json_field", pa.string())])))
     pd_idx: pd.Index = pd.Index(
         arrays.ArrowExtensionArray(pa_array),  # type: ignore
         dtype=pd.ArrowDtype(
-            pa.list_(pa.struct([("name", bigframes.dtypes.JSON_ARROW_TYPE)]))
+            pa.list_(pa.struct([("json_field", bigframes.dtypes.JSON_ARROW_TYPE)]))
         ),
     )
-    with pytest.raises(
-        NotImplementedError, match="Nested JSON types, found in the index"
-    ):
+    with pytest.raises(NotImplementedError, match="Nested JSON types, found in"):
         session.read_pandas(pd_idx, write_engine=write_engine)
 
 
@@ -1085,6 +1084,7 @@ def test_read_pandas_inline_w_nested_json_index_fails(session, write_engine):
     [
         pytest.param("default"),
         pytest.param("bigquery_inline"),
+        pytest.param("bigquery_streaming"),
     ],
 )
 def test_read_pandas_w_nested_json_index(session, write_engine):
