@@ -1,0 +1,17 @@
+{
+    "name": "google-cloud-devicestreaming",
+    "name_pretty": "Device Streaming API",
+    "api_description": "The Cloud API for device streaming usage.",
+    "product_documentation": "https://cloud.google.com/device-streaming/docs",
+    "client_documentation": "https://cloud.google.com/python/docs/reference/google-cloud-devicestreaming/latest",
+    "issue_tracker": "https://issuetracker.google.com/issues/new?component=1767292&template=2112325",
+    "release_level": "preview",
+    "language": "python",
+    "library_type": "GAPIC_AUTO",
+    "repo": "googleapis/google-cloud-python",
+    "distribution_name": "google-cloud-devicestreaming",
+    "api_id": "devicestreaming.googleapis.com",
+    "default_version": "v1",
+    "codeowner_team": "",
+    "api_shortname": "devicestreaming"
+}
