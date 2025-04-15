@@ -222,8 +222,8 @@ def test_unordered_mode_linear_regression_configure_fit_score_predict(
     start_execution_count = end_execution_count
     result = model.score(X_train, y_train).to_pandas()
     end_execution_count = df._block._expr.session._metrics.execution_count
-    # The score function and to_pandas each initiate one query.
-    assert end_execution_count - start_execution_count == 2
+    # The score function and to_pandas reuse same result.
+    assert end_execution_count - start_execution_count == 1
 
     utils.check_pandas_df_schema_and_index(
         result, columns=utils.ML_REGRESSION_METRICS, index=1

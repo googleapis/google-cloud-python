@@ -20,7 +20,16 @@ import datetime
 import functools
 import itertools
 import typing
-from typing import Callable, cast, Iterable, Mapping, Optional, Sequence, Tuple
+from typing import (
+    AbstractSet,
+    Callable,
+    cast,
+    Iterable,
+    Mapping,
+    Optional,
+    Sequence,
+    Tuple,
+)
 
 import google.cloud.bigquery as bq
 
@@ -572,7 +581,38 @@ class ScanItem(typing.NamedTuple):
 
 @dataclasses.dataclass(frozen=True)
 class ScanList:
+    """
+    Defines the set of columns to scan from a source, along with the variable to bind the columns to.
+    """
+
     items: typing.Tuple[ScanItem, ...]
+
+    def filter_cols(
+        self,
+        ids: AbstractSet[identifiers.ColumnId],
+    ) -> ScanList:
+        """Drop columns from the scan that except those in the 'ids' arg."""
+        result = ScanList(tuple(item for item in self.items if item.id in ids))
+        if len(result.items) == 0:
+            # We need to select something, or sql syntax breaks
+            result = ScanList(self.items[:1])
+        return result
+
+    def project(
+        self,
+        selections: Mapping[identifiers.ColumnId, identifiers.ColumnId],
+    ) -> ScanList:
+        """Project given ids from the scanlist, dropping previous bindings."""
+        by_id = {item.id: item for item in self.items}
+        result = ScanList(
+            tuple(
+                by_id[old_id].with_id(new_id) for old_id, new_id in selections.items()
+            )
+        )
+        if len(result.items) == 0:
+            # We need to select something, or sql syntax breaks
+            result = ScanList((self.items[:1]))
+        return result
 
 
 @dataclasses.dataclass(frozen=True, eq=False)
@@ -673,6 +713,11 @@ class GbqTable:
             cluster_cols=None
             if table.clustering_fields is None
             else tuple(table.clustering_fields),
+        )
+
+    def get_table_ref(self) -> bq.TableReference:
+        return bq.TableReference(
+            bq.DatasetReference(self.project_id, self.dataset_id), self.table_id
         )
 
     @property
@@ -1067,6 +1112,11 @@ class SelectionNode(UnaryNode):
     def variables_introduced(self) -> int:
         # This operation only renames variables, doesn't actually create new ones
         return 0
+
+    @property
+    def has_multi_referenced_ids(self) -> bool:
+        referenced = tuple(ref.ref.id for ref in self.input_output_pairs)
+        return len(referenced) != len(set(referenced))
 
     # TODO: Reuse parent namespace
     # Currently, Selection node allows renaming an reusing existing names, so it must establish a

@@ -64,11 +64,10 @@ from bigframes.core import blocks
 # to register new and replacement ops with the Ibis BigQuery backend.
 import bigframes.functions._function_session as bff_session
 import bigframes.functions.function as bff
-from bigframes.session import bigquery_session
+from bigframes.session import bigquery_session, bq_caching_executor, executor
 import bigframes.session._io.bigquery as bf_io_bigquery
 import bigframes.session.anonymous_dataset
 import bigframes.session.clients
-import bigframes.session.executor
 import bigframes.session.loader
 import bigframes.session.metrics
 import bigframes.session.validation
@@ -245,14 +244,12 @@ class Session(
         self._temp_storage_manager = (
             self._session_resource_manager or self._anon_dataset_manager
         )
-        self._executor: bigframes.session.executor.Executor = (
-            bigframes.session.executor.BigQueryCachingExecutor(
-                bqclient=self._clients_provider.bqclient,
-                bqstoragereadclient=self._clients_provider.bqstoragereadclient,
-                storage_manager=self._temp_storage_manager,
-                strictly_ordered=self._strictly_ordered,
-                metrics=self._metrics,
-            )
+        self._executor: executor.Executor = bq_caching_executor.BigQueryCachingExecutor(
+            bqclient=self._clients_provider.bqclient,
+            bqstoragereadclient=self._clients_provider.bqstoragereadclient,
+            storage_manager=self._temp_storage_manager,
+            strictly_ordered=self._strictly_ordered,
+            metrics=self._metrics,
         )
         self._loader = bigframes.session.loader.GbqDataLoader(
             session=self,

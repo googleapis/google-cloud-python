@@ -170,7 +170,7 @@ def prune_readlocal(
     node: bigframes.core.nodes.ReadLocalNode,
     selection: AbstractSet[identifiers.ColumnId],
 ) -> bigframes.core.nodes.ReadLocalNode:
-    new_scan_list = filter_scanlist(node.scan_list, selection)
+    new_scan_list = node.scan_list.filter_cols(selection)
     return dataclasses.replace(
         node,
         scan_list=new_scan_list,
@@ -183,18 +183,5 @@ def prune_readtable(
     node: bigframes.core.nodes.ReadTableNode,
     selection: AbstractSet[identifiers.ColumnId],
 ) -> bigframes.core.nodes.ReadTableNode:
-    new_scan_list = filter_scanlist(node.scan_list, selection)
+    new_scan_list = node.scan_list.filter_cols(selection)
     return dataclasses.replace(node, scan_list=new_scan_list)
-
-
-def filter_scanlist(
-    scanlist: bigframes.core.nodes.ScanList,
-    ids: AbstractSet[identifiers.ColumnId],
-):
-    result = bigframes.core.nodes.ScanList(
-        tuple(item for item in scanlist.items if item.id in ids)
-    )
-    if len(result.items) == 0:
-        # We need to select something, or stuff breaks
-        result = bigframes.core.nodes.ScanList(scanlist.items[:1])
-    return result

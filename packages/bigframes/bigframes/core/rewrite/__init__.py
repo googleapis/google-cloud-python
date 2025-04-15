@@ -17,6 +17,7 @@ from bigframes.core.rewrite.implicit_align import try_row_join
 from bigframes.core.rewrite.legacy_align import legacy_join_as_projection
 from bigframes.core.rewrite.order import pull_up_order
 from bigframes.core.rewrite.pruning import column_pruning
+from bigframes.core.rewrite.scan_reduction import try_reduce_to_table_scan
 from bigframes.core.rewrite.slices import pullup_limit_from_slice, rewrite_slice
 from bigframes.core.rewrite.timedeltas import rewrite_timedelta_expressions
 from bigframes.core.rewrite.windows import rewrite_range_rolling
@@ -31,4 +32,5 @@ __all__ = [
     "pull_up_order",
     "column_pruning",
     "rewrite_range_rolling",
+    "try_reduce_to_table_scan",
 ]

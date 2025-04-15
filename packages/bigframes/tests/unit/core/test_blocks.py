@@ -20,7 +20,7 @@ import pytest
 
 import bigframes
 import bigframes.core.blocks as blocks
-import bigframes.session.executor
+import bigframes.session.bq_caching_executor
 
 
 @pytest.mark.parametrize(
@@ -80,7 +80,7 @@ def test_block_from_local(data):
     expected = pandas.DataFrame(data)
     mock_session = mock.create_autospec(spec=bigframes.Session)
     mock_executor = mock.create_autospec(
-        spec=bigframes.session.executor.BigQueryCachingExecutor
+        spec=bigframes.session.bq_caching_executor.BigQueryCachingExecutor
     )
 
     # hard-coded the returned dimension of the session for that each of the test case contains 3 rows.
