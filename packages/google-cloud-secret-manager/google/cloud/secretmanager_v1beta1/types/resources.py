@@ -204,7 +204,8 @@ class Replication(proto.Message):
     class UserManaged(proto.Message):
         r"""A replication policy that replicates the
         [Secret][google.cloud.secrets.v1beta1.Secret] payload into the
-        locations specified in [Secret.replication.user_managed.replicas][]
+        locations specified in
+        [Replication.UserManaged.replicas][google.cloud.secrets.v1beta1.Replication.UserManaged.replicas]
 
         Attributes:
             replicas (MutableSequence[google.cloud.secretmanager_v1beta1.types.Replication.UserManaged.Replica]):
