@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.17.5](https://github.com/googleapis/google-cloud-python/compare/google-cloud-orchestration-airflow-v1.17.4...google-cloud-orchestration-airflow-v1.17.5) (2025-04-15)
+
+
+### Documentation
+
+* `enabled` field of `MasterAuthorizedNetworksConfig` is now marked as optional ([0a2a1ee](https://github.com/googleapis/google-cloud-python/commit/0a2a1ee6637c9e643a66324dded780384bfc414f))
+
 ## [1.17.4](https://github.com/googleapis/google-cloud-python/compare/google-cloud-orchestration-airflow-v1.17.3...google-cloud-orchestration-airflow-v1.17.4) (2025-04-12)
 
 
