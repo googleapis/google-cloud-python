@@ -32,9 +32,6 @@ ISORT_VERSION = "isort==5.11.0"
 
 LINT_PATHS = ["docs", "google", "tests", "noxfile.py", "setup.py"]
 
-
-DEFAULT_PYTHON_VERSION = "3.10"
-
 UNIT_TEST_PYTHON_VERSIONS: List[str] = [
     "3.7",
     "3.8",
@@ -44,6 +41,9 @@ UNIT_TEST_PYTHON_VERSIONS: List[str] = [
     "3.12",
     "3.13",
 ]
+
+DEFAULT_PYTHON_VERSION = UNIT_TEST_PYTHON_VERSIONS[-1]
+
 UNIT_TEST_STANDARD_DEPENDENCIES = [
     "mock",
     "asyncmock",
@@ -295,7 +295,7 @@ def cover(session):
     session.run("coverage", "erase")
 
 
-@nox.session(python=DEFAULT_PYTHON_VERSION)
+@nox.session(python="3.10")
 def docs(session):
     """Build the docs for this library."""
 
@@ -330,7 +330,7 @@ def docs(session):
     )
 
 
-@nox.session(python=DEFAULT_PYTHON_VERSION)
+@nox.session(python="3.10")
 def docfx(session):
     """Build the docfx yaml files for this library."""
 
@@ -376,7 +376,7 @@ def docfx(session):
     )
 
 
-@nox.session(python="3.13")
+@nox.session(python=DEFAULT_PYTHON_VERSION)
 @nox.parametrize(
     "protobuf_implementation",
     ["python", "upb", "cpp"],
@@ -477,7 +477,7 @@ def prerelease_deps(session, protobuf_implementation):
     )
 
 
-@nox.session(python="3.13")
+@nox.session(python=DEFAULT_PYTHON_VERSION)
 @nox.parametrize(
     "protobuf_implementation",
     ["python", "upb"],
