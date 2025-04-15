@@ -89,6 +89,31 @@ def _to_index_cols(
     return index_cols
 
 
+def _check_column_duplicates(index_cols: Iterable[str], columns: Iterable[str]):
+    index_cols_list = list(index_cols) if index_cols is not None else []
+    columns_list = list(columns) if columns is not None else []
+    set_index = set(index_cols_list)
+    set_columns = set(columns_list)
+
+    if len(index_cols_list) > len(set_index):
+        raise ValueError(
+            "The 'index_col' argument contains duplicate names. "
+            "All column names specified in 'index_col' must be unique."
+        )
+
+    if len(columns_list) > len(set_columns):
+        raise ValueError(
+            "The 'columns' argument contains duplicate names. "
+            "All column names specified in 'columns' must be unique."
+        )
+
+    if not set_index.isdisjoint(set_columns):
+        raise ValueError(
+            "Found column names that exist in both 'index_col' and 'columns' arguments. "
+            "These arguments must specify distinct sets of columns."
+        )
+
+
 @dataclasses.dataclass
 class GbqDataLoader:
     """
@@ -328,6 +353,7 @@ class GbqDataLoader:
             table=table,
             index_col=index_col,
         )
+        _check_column_duplicates(index_cols, columns)
 
         for key in index_cols:
             if key not in table_column_names:
@@ -569,6 +595,7 @@ class GbqDataLoader:
             )
 
         index_cols = _to_index_cols(index_col)
+        _check_column_duplicates(index_cols, columns)
 
         filters_copy1, filters_copy2 = itertools.tee(filters)
         has_filters = len(list(filters_copy1)) != 0

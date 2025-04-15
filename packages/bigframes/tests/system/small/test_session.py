@@ -1627,3 +1627,56 @@ def test_read_gbq_test(test_session: bigframes.Session):
     actual = test_session.read_gbq(table_id).to_pandas()
 
     assert actual.shape == (1, 1)
+
+
+@pytest.mark.parametrize(
+    ("query_or_table", "index_col", "columns"),
+    [
+        pytest.param(
+            "{scalars_table_id}",
+            ("int64_col", "string_col", "int64_col"),
+            ("float64_col", "bool_col"),
+            id="table_input_index_col_dup",
+            marks=pytest.mark.xfail(
+                raises=ValueError,
+                reason="ValueError: Duplicate names within 'index_col'.",
+                strict=True,
+            ),
+        ),
+        pytest.param(
+            """SELECT int64_col, string_col, float64_col, bool_col
+               FROM `{scalars_table_id}`""",
+            ("int64_col",),
+            ("string_col", "float64_col", "string_col"),
+            id="query_input_columns_dup",
+            marks=pytest.mark.xfail(
+                raises=ValueError,
+                reason="ValueError: Duplicate names within 'columns'.",
+                strict=True,
+            ),
+        ),
+        pytest.param(
+            "{scalars_table_id}",
+            ("int64_col", "string_col"),
+            ("float64_col", "string_col", "bool_col"),
+            id="table_input_cross_dup",
+            marks=pytest.mark.xfail(
+                raises=ValueError,
+                reason="ValueError: Overlap between 'index_col' and 'columns'.",
+                strict=True,
+            ),
+        ),
+    ],
+)
+def test_read_gbq_duplicate_columns_xfail(
+    session: bigframes.Session,
+    scalars_table_id: str,
+    query_or_table: str,
+    index_col: tuple,
+    columns: tuple,
+):
+    session.read_gbq(
+        query_or_table.format(scalars_table_id=scalars_table_id),
+        index_col=index_col,
+        columns=columns,
+    )
