@@ -74,6 +74,7 @@
     "packages/google-cloud-datastream": "1.14.0",
     "packages/google-cloud-deploy": "2.7.0",
     "packages/google-cloud-developerconnect": "0.1.8",
+    "packages/google-cloud-devicestreaming": "0.0.0",
     "packages/google-cloud-dialogflow": "2.41.1",
     "packages/google-cloud-dialogflow-cx": "1.41.0",
     "packages/google-cloud-discoveryengine": "0.13.8",

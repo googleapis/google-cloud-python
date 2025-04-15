@@ -1259,6 +1259,21 @@
             ],
             "release-type": "python"
         },
+        "packages/google-cloud-devicestreaming": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
+            "component": "google-cloud-devicestreaming",
+            "extra-files": [
+                "google/cloud/devicestreaming/gapic_version.py",
+                "google/cloud/devicestreaming_v1/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.devicestreaming.v1.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
         "packages/google-cloud-dialogflow": {
             "bump-minor-pre-major": true,
             "bump-patch-for-minor-pre-major": true,
