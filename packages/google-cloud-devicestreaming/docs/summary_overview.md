@@ -5,14 +5,14 @@ reverted. Instead, if you want to place additional content, create an
 pick up on the content and merge the content.
 ]: #
 
-#  API
+# Device Streaming API API
 
-Overview of the APIs available for  API.
+Overview of the APIs available for Device Streaming API API.
 
 ## All entries
 
 Classes, methods and properties & attributes for
- API.
+Device Streaming API API.
 
 [classes](https://cloud.google.com/python/docs/reference/google-cloud-devicestreaming/latest/summary_class.html)
 
