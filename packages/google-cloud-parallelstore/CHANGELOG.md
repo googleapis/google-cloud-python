@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.2.14](https://github.com/googleapis/google-cloud-python/compare/google-cloud-parallelstore-v0.2.13...google-cloud-parallelstore-v0.2.14) (2025-04-15)
+
+
+### Documentation
+
+* A comment for field `bytes_failed` in message `.google.cloud.parallelstore.v1.TransferCounters` is changed ([aceb95a](https://github.com/googleapis/google-cloud-python/commit/aceb95a890b71e4af978bb2731f93cd8447d7a2f))
+* A comment for field `daos_version` in message `.google.cloud.parallelstore.v1.Instance` is changed ([aceb95a](https://github.com/googleapis/google-cloud-python/commit/aceb95a890b71e4af978bb2731f93cd8447d7a2f))
+* A comment for field `objects_failed` in message `.google.cloud.parallelstore.v1.TransferCounters` is changed ([aceb95a](https://github.com/googleapis/google-cloud-python/commit/aceb95a890b71e4af978bb2731f93cd8447d7a2f))
+
 ## [0.2.13](https://github.com/googleapis/google-cloud-python/compare/google-cloud-parallelstore-v0.2.12...google-cloud-parallelstore-v0.2.13) (2025-04-12)
 
 
