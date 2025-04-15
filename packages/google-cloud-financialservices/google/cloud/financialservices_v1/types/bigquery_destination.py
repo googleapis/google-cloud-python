@@ -38,7 +38,7 @@ class BigQueryDestination(proto.Message):
             Note that the BigQuery dataset must already
             exist. VPC-SC restrictions apply.
         write_disposition (google.cloud.financialservices_v1.types.BigQueryDestination.WriteDisposition):
-            Required. Whether or not to overwrite
+            Required. Whether or not to overwrite the
             destination table. By default the table won't be
             overwritten and an error will be returned if the
             table exists and contains data.

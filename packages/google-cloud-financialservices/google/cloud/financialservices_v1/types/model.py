@@ -48,7 +48,7 @@ class Model(proto.Message):
     Attributes:
         name (str):
             Output only. The resource name of the Model. format:
-            "/projects/{project_num}/locations/{location}/instances/{instance}/models/{model}".
+            ``/projects/{project_num}/locations/{location}/instances/{instance}/models/{model}``
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The timestamp of creation of
             this resource.
@@ -67,13 +67,13 @@ class Model(proto.Message):
         engine_config (str):
             Required. The resource name of the EngineConfig the model
             training will be based on. Format:
-            "/projects/{project_num}/locations/{location}/instances/{instance}/engineConfigs/{engineConfig}".
+            ``/projects/{project_num}/locations/{location}/instances/{instance}/engineConfigs/{engineConfig}``
         primary_dataset (str):
             Required. The resource name of the Primary Dataset used in
             this model training. For information about how primary and
             auxiliary datasets are used, refer to the engine version's
             documentation. Format:
-            "/projects/{project_num}/locations/{location}/instances/{instance}/datasets/{dataset}".
+            ``/projects/{project_num}/locations/{location}/instances/{instance}/datasets/{dataset}``
         end_time (google.protobuf.timestamp_pb2.Timestamp):
             Required. End_time specifies the latest time from which
             labels are used and from which data is used to generate

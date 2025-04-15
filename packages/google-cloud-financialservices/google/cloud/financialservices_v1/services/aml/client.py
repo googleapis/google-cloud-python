@@ -1599,9 +1599,9 @@ class AMLClient(metaclass=AMLClientMeta):
                 registered parties from BigQuery tables
                 specified by the customer.
             name (str):
-                Required. The full path to the
-                Instance resource in this API. format:
-                "projects/{project}/locations/{location}/instances/{instance}"
+                Required. The full path to the Instance resource in this
+                API. format:
+                ``projects/{project}/locations/{location}/instances/{instance}``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1622,7 +1622,7 @@ class AMLClient(metaclass=AMLClientMeta):
                 Optional. List of BigQuery tables. Union of tables will
                 be taken if there is more than one table. VPC-SC
                 restrictions apply. format:
-                "bq://{project}.{bqDatasetID}.{bqTableID}" Use of
+                ``bq://{project}.{bqDatasetID}.{bqTableID}`` Use of
                 ``datasets`` is preferred over the latter due to its
                 simplicity and the reduced risk of errors
                 ``party_tables`` and ``datasets`` must not be provided
@@ -1766,9 +1766,9 @@ class AMLClient(metaclass=AMLClientMeta):
                 The request object. Request to export a list of currently
                 registered parties.
             name (str):
-                Required. The full path to the
-                Instance resource in this API. format:
-                "projects/{project}/locations/{location}/instances/{instance}"
+                Required. The full path to the Instance resource in this
+                API. format:
+                ``projects/{project}/locations/{location}/instances/{instance}``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this

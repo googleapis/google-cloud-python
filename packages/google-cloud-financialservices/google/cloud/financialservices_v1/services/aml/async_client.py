@@ -1056,9 +1056,9 @@ class AMLAsyncClient:
                 registered parties from BigQuery tables
                 specified by the customer.
             name (:class:`str`):
-                Required. The full path to the
-                Instance resource in this API. format:
-                "projects/{project}/locations/{location}/instances/{instance}"
+                Required. The full path to the Instance resource in this
+                API. format:
+                ``projects/{project}/locations/{location}/instances/{instance}``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1079,7 +1079,7 @@ class AMLAsyncClient:
                 Optional. List of BigQuery tables. Union of tables will
                 be taken if there is more than one table. VPC-SC
                 restrictions apply. format:
-                "bq://{project}.{bqDatasetID}.{bqTableID}" Use of
+                ``bq://{project}.{bqDatasetID}.{bqTableID}`` Use of
                 ``datasets`` is preferred over the latter due to its
                 simplicity and the reduced risk of errors
                 ``party_tables`` and ``datasets`` must not be provided
@@ -1224,9 +1224,9 @@ class AMLAsyncClient:
                 The request object. Request to export a list of currently
                 registered parties.
             name (:class:`str`):
-                Required. The full path to the
-                Instance resource in this API. format:
-                "projects/{project}/locations/{location}/instances/{instance}"
+                Required. The full path to the Instance resource in this
+                API. format:
+                ``projects/{project}/locations/{location}/instances/{instance}``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this

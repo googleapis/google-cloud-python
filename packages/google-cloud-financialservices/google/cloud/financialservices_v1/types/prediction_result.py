@@ -50,7 +50,7 @@ class PredictionResult(proto.Message):
         name (str):
             Output only. The resource name of the PredictionResult.
             format:
-            "/projects/{project_num}/locations/{location}/instances/{instance}/predictionResults/{prediction_result}".
+            ``/projects/{project_num}/locations/{location}/instances/{instance}/predictionResults/{prediction_result}``
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The timestamp of creation of
             this resource.
@@ -65,11 +65,11 @@ class PredictionResult(proto.Message):
         dataset (str):
             Required. The resource name of the Dataset to do predictions
             on Format:
-            "/projects/{project_num}/locations/{location}/instances/{instance}/dataset/{dataset_id}".
+            ``/projects/{project_num}/locations/{location}/instances/{instance}/dataset/{dataset_id}``
         model (str):
             Required. The resource name of the Model to use to use to
             make predictions Format:
-            "/projects/{project_num}/locations/{location}/instances/{instance}/models/{model}".
+            ``/projects/{project_num}/locations/{location}/instances/{instance}/models/{model}``
         end_time (google.protobuf.timestamp_pb2.Timestamp):
             Required. Specifies the latest time from which data is used
             to generate features for predictions. This time should be no
