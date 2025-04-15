@@ -76,6 +76,11 @@ def dataset_id_eu(bigquery_client: bigquery.Client, project_id: str) -> Iterator
     bigquery_client.delete_dataset(dataset, delete_contents=True, not_found_ok=True)
 
 
+@pytest.fixture(scope="session")
+def gcs_dst_bucket() -> str:
+    return "gs://bigframes_blob_test"
+
+
 @pytest.fixture
 def random_model_id(
     bigquery_client: bigquery.Client, project_id: str, dataset_id: str

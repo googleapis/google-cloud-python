@@ -13,7 +13,9 @@
 # limitations under the License.
 
 
-def test_multimodal_dataframe() -> None:
+def test_multimodal_dataframe(gcs_dst_bucket: str) -> None:
+    # destination folder must be in a GCS bucket that the BQ connection service account (default or user provided) has write access to.
+    dst_bucket = gcs_dst_bucket
     # [START bigquery_dataframes_multimodal_dataframe_create]
     import bigframes
 
@@ -52,21 +54,21 @@ def test_multimodal_dataframe() -> None:
 
     # [START bigquery_dataframes_multimodal_dataframe_image_transform]
     df_image["blurred"] = df_image["image"].blob.image_blur(
-        (20, 20), dst="gs://bigframes_blob_test/image_blur_transformed/"
+        (20, 20), dst=f"{dst_bucket}/image_blur_transformed/"
     )
     df_image["resized"] = df_image["image"].blob.image_resize(
-        (300, 200), dst="gs://bigframes_blob_test/image_resize_transformed/"
+        (300, 200), dst=f"{dst_bucket}/image_resize_transformed/"
     )
     df_image["normalized"] = df_image["image"].blob.image_normalize(
         alpha=50.0,
         beta=150.0,
         norm_type="minmax",
-        dst="gs://bigframes_blob_test/image_normalize_transformed/",
+        dst=f"{dst_bucket}/image_normalize_transformed/",
     )
 
     # You can also chain functions together
     df_image["blur_resized"] = df_image["blurred"].blob.image_resize(
-        (300, 200), dst="gs://bigframes_blob_test/image_blur_resize_transformed/"
+        (300, 200), dst=f"{dst_bucket}/image_blur_resize_transformed/"
     )
     df_image
     # [END bigquery_dataframes_multimodal_dataframe_image_transform]
