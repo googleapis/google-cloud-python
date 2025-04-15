@@ -1417,6 +1417,12 @@ Libraries
      - `API Issues <https://issuetracker.google.com/issues?q=componentid:1356349>`_
      - `File an API Issue <https://issuetracker.google.com/issues/new?component=1356349>`_
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
+   * - `Storage Batch Operations API <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-storagebatchoperations>`_
+     - preview
+     - |PyPI-google-cloud-storagebatchoperations|
+     - `API Issues <https://issuetracker.google.com/issues?q=componentid:815827>`_
+     - `File an API Issue <https://issuetracker.google.com/issues/new?component=815827&template=1395449>`_
+     - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Storage Insights API <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-storageinsights>`_
      - preview
      - |PyPI-google-cloud-storageinsights|
@@ -1920,6 +1926,8 @@ Libraries
      :target: https://pypi.org/project/google-shopping-type
 .. |PyPI-google-maps-solar| image:: https://img.shields.io/pypi/v/google-maps-solar.svg
      :target: https://pypi.org/project/google-maps-solar
+.. |PyPI-google-cloud-storagebatchoperations| image:: https://img.shields.io/pypi/v/google-cloud-storagebatchoperations.svg
+     :target: https://pypi.org/project/google-cloud-storagebatchoperations
 .. |PyPI-google-cloud-storageinsights| image:: https://img.shields.io/pypi/v/google-cloud-storageinsights.svg
      :target: https://pypi.org/project/google-cloud-storageinsights
 .. |PyPI-google-cloud-support| image:: https://img.shields.io/pypi/v/google-cloud-support.svg
