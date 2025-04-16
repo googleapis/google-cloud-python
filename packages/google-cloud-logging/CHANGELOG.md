@@ -4,6 +4,28 @@
 
 [1]: https://pypi.org/project/google-cloud-logging/#history
 
+## [3.12.0](https://github.com/googleapis/python-logging/compare/v3.11.4...v3.12.0) (2025-04-10)
+
+
+### Features
+
+* Add REST Interceptors which support reading metadata ([681bcc5](https://github.com/googleapis/python-logging/commit/681bcc5c1f983bb5a43e1d5ebcdb14e5e3f25a77))
+* Add support for opt-in debug logging ([681bcc5](https://github.com/googleapis/python-logging/commit/681bcc5c1f983bb5a43e1d5ebcdb14e5e3f25a77))
+* Added flushes/close functionality to logging handlers ([#917](https://github.com/googleapis/python-logging/issues/917)) ([d179304](https://github.com/googleapis/python-logging/commit/d179304b344277e349456f72cd90c56f28011286))
+
+
+### Bug Fixes
+
+* Allow protobuf 6.x ([#977](https://github.com/googleapis/python-logging/issues/977)) ([6757890](https://github.com/googleapis/python-logging/commit/675789001344fdae68ee20ec14e14c11c83a0433))
+* **deps:** Require google-cloud-audit-log &gt;= 0.3.1 ([#979](https://github.com/googleapis/python-logging/issues/979)) ([1cc00ec](https://github.com/googleapis/python-logging/commit/1cc00ecf646a7a36eb32afd2e5df3d9aa7f564b1))
+* Fix typing issue with gRPC metadata when key ends in -bin ([681bcc5](https://github.com/googleapis/python-logging/commit/681bcc5c1f983bb5a43e1d5ebcdb14e5e3f25a77))
+
+
+### Documentation
+
+* Added documentation on log_level and excluded_loggers params in setup_logging ([#971](https://github.com/googleapis/python-logging/issues/971)) ([70d9d25](https://github.com/googleapis/python-logging/commit/70d9d25bf8c3c85a3c5523ecc7fbdbf72f08c583))
+* Update README to break infinite redirect loop ([#972](https://github.com/googleapis/python-logging/issues/972)) ([52cd907](https://github.com/googleapis/python-logging/commit/52cd907bb313df2766ec11e3d24c7e10cda31ca7))
+
 ## [3.11.4](https://github.com/googleapis/python-logging/compare/v3.11.3...v3.11.4) (2025-01-22)
 
 
