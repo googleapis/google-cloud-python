@@ -46,7 +46,7 @@ class AIAccessor:
             >>> bpd.options.compute.ai_ops_confirmation_threshold = 25
 
             >>> import bigframes.ml.llm as llm
-            >>> model = llm.GeminiTextGenerator(model_name="gemini-1.5-flash-001")
+            >>> model = llm.GeminiTextGenerator(model_name="gemini-2.0-flash-001")
 
             >>> df = bpd.DataFrame({"country": ["USA", "Germany"], "city": ["Seattle", "Berlin"]})
             >>> df.ai.filter("{city} is the capital of {country}", model)
@@ -160,7 +160,7 @@ class AIAccessor:
             >>> bpd.options.compute.ai_ops_confirmation_threshold = 25
 
             >>> import bigframes.ml.llm as llm
-            >>> model = llm.GeminiTextGenerator(model_name="gemini-1.5-flash-001")
+            >>> model = llm.GeminiTextGenerator(model_name="gemini-2.0-flash-001")
 
             >>> df = bpd.DataFrame({"ingredient_1": ["Burger Bun", "Soy Bean"], "ingredient_2": ["Beef Patty", "Bittern"]})
             >>> df.ai.map("What is the food made from {ingredient_1} and {ingredient_2}? One word only.", output_column="food", model=model)
@@ -283,7 +283,7 @@ class AIAccessor:
             >>> bpd.options.compute.ai_ops_confirmation_threshold = 25
 
             >>> import bigframes.ml.llm as llm
-            >>> model = llm.GeminiTextGenerator(model_name="gemini-1.5-flash-001")
+            >>> model = llm.GeminiTextGenerator(model_name="gemini-2.0-flash-001")
 
             >>> cities = bpd.DataFrame({'city': ['Seattle', 'Ottawa', 'Berlin', 'Shanghai', 'New Delhi']})
             >>> continents = bpd.DataFrame({'continent': ['North America', 'Africa', 'Asia']})
@@ -525,7 +525,7 @@ class AIAccessor:
             >>> bpd.options.compute.ai_ops_confirmation_threshold = 25
 
             >>> import bigframes.ml.llm as llm
-            >>> model = llm.GeminiTextGenerator(model_name="gemini-1.5-flash-001")
+            >>> model = llm.GeminiTextGenerator(model_name="gemini-2.0-flash-001")
 
             >>> df = bpd.DataFrame(
             ... {
