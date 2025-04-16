@@ -117,9 +117,9 @@ def udf(
     *,
     input_types: Union[None, type, Sequence[type]] = None,
     output_type: Optional[type] = None,
-    dataset: Optional[str] = None,
+    dataset: str,
     bigquery_connection: Optional[str] = None,
-    name: Optional[str] = None,
+    name: str,
     packages: Optional[Sequence[str]] = None,
 ):
     return global_session.with_default_session(

@@ -1441,9 +1441,9 @@ class Session(
         *,
         input_types: Union[None, type, Sequence[type]] = None,
         output_type: Optional[type] = None,
-        dataset: Optional[str] = None,
+        dataset: str,
         bigquery_connection: Optional[str] = None,
-        name: Optional[str] = None,
+        name: str,
         packages: Optional[Sequence[str]] = None,
     ):
         """Decorator to turn a Python user defined function (udf) into a
@@ -1470,11 +1470,10 @@ class Session(
                 be specified. The supported output types are `bool`, `bytes`,
                 `float`, `int`, `str`, `list[bool]`, `list[float]`, `list[int]`
                 and `list[str]`.
-            dataset (str, Optional):
+            dataset (str):
                 Dataset in which to create a BigQuery managed function. It
                 should be in `<project_id>.<dataset_name>` or `<dataset_name>`
-                format. If this parameter is not provided then session dataset
-                id is used.
+                format.
             bigquery_connection (str, Optional):
                 Name of the BigQuery connection. It is used to provide an
                 identity to the serverless instances running the user code. It
@@ -1486,18 +1485,18 @@ class Session(
                 will be created without any connection. A udf without a
                 connection has no internet access and no access to other GCP
                 services.
-            name (str, Optional):
+            name (str):
                 Explicit name of the persisted BigQuery managed function. Use it
                 with caution, because more than one users working in the same
                 project and dataset could overwrite each other's managed
-                functions if they use the same persistent name. When an explicit
-                name is provided, any session specific clean up (
+                functions if they use the same persistent name. Please note that
+                any session specific clean up (
                 ``bigframes.session.Session.close``/
                 ``bigframes.pandas.close_session``/
                 ``bigframes.pandas.reset_session``/
                 ``bigframes.pandas.clean_up_by_session_id``) does not clean up
-                the function, and leaves it for the user to manage the function
-                and the associated cloud function directly.
+                this function, and leaves it for the user to manage the function
+                directly.
             packages (str[], Optional):
                 Explicit name of the external package dependencies. Each
                 dependency is added to the `requirements.txt` as is, and can be

@@ -16,11 +16,14 @@ import google.api_core.exceptions
 import pandas
 import pyarrow
 import pytest
+import test_utils.prefixer
 
 import bigframes
 import bigframes.exceptions as bfe
 import bigframes.pandas as bpd
 from tests.system.utils import cleanup_function_assets
+
+prefixer = test_utils.prefixer.Prefixer("bigframes", "")
 
 
 def test_managed_function_multiply_with_ibis(
@@ -37,6 +40,7 @@ def test_managed_function_multiply_with_ibis(
             input_types=[int, int],
             output_type=int,
             dataset=dataset_id,
+            name=prefixer.create_prefix(),
         )
         def multiply(x, y):
             return x * y
@@ -87,6 +91,7 @@ def test_managed_function_stringify_with_ibis(
             input_types=[int],
             output_type=str,
             dataset=dataset_id,
+            name=prefixer.create_prefix(),
         )
         def stringify(x):
             return f"I got {x}"
@@ -123,7 +128,10 @@ def test_managed_function_stringify_with_ibis(
 def test_managed_function_array_output(session, scalars_dfs, dataset_id):
     try:
 
-        @session.udf(dataset=dataset_id)
+        @session.udf(
+            dataset=dataset_id,
+            name=prefixer.create_prefix(),
+        )
         def featurize(x: int) -> list[float]:
             return [float(i) for i in [x, x + 1, x + 2]]
 
@@ -160,10 +168,10 @@ def test_managed_function_array_output(session, scalars_dfs, dataset_id):
         cleanup_function_assets(featurize, session.bqclient, ignore_failures=False)
 
 
-def test_managed_function_series_apply(session, scalars_dfs):
+def test_managed_function_series_apply(session, dataset_id, scalars_dfs):
     try:
 
-        @session.udf()
+        @session.udf(dataset=dataset_id, name=prefixer.create_prefix())
         def foo(x: int) -> bytes:
             return bytes(abs(x))
 
@@ -214,13 +222,14 @@ def test_managed_function_series_apply(session, scalars_dfs):
 
 def test_managed_function_series_apply_array_output(
     session,
+    dataset_id,
     scalars_dfs,
 ):
     try:
 
         with pytest.warns(bfe.PreviewWarning, match="udf is in preview."):
 
-            @session.udf()
+            @session.udf(dataset=dataset_id, name=prefixer.create_prefix())
             def foo_list(x: int) -> list[float]:
                 return [float(abs(x)), float(abs(x) + 1)]
 
@@ -243,7 +252,7 @@ def test_managed_function_series_apply_array_output(
         cleanup_function_assets(foo_list, session.bqclient, ignore_failures=False)
 
 
-def test_managed_function_series_combine(session, scalars_dfs):
+def test_managed_function_series_combine(session, dataset_id, scalars_dfs):
     try:
         # This function is deliberately written to not work with NA input.
         def add(x: int, y: int) -> int:
@@ -258,7 +267,9 @@ def test_managed_function_series_combine(session, scalars_dfs):
         # make sure there are NA values in the test column.
         assert any([pandas.isna(val) for val in bf_df[int_col_name_with_nulls]])
 
-        add_managed_func = session.udf()(add)
+        add_managed_func = session.udf(
+            dataset=dataset_id, name=prefixer.create_prefix()
+        )(add)
 
         # with nulls in the series the managed function application would fail.
         with pytest.raises(
@@ -301,7 +312,7 @@ def test_managed_function_series_combine(session, scalars_dfs):
         )
 
 
-def test_managed_function_series_combine_array_output(session, scalars_dfs):
+def test_managed_function_series_combine_array_output(session, dataset_id, scalars_dfs):
     try:
 
         def add_list(x: int, y: int) -> list[int]:
@@ -316,7 +327,9 @@ def test_managed_function_series_combine_array_output(session, scalars_dfs):
         # Make sure there are NA values in the test column.
         assert any([pandas.isna(val) for val in bf_df[int_col_name_with_nulls]])
 
-        add_list_managed_func = session.udf()(add_list)
+        add_list_managed_func = session.udf(
+            dataset=dataset_id, name=prefixer.create_prefix()
+        )(add_list)
 
         # After filtering out nulls the managed function application should work
         # similar to pandas.
@@ -364,7 +377,7 @@ def test_managed_function_series_combine_array_output(session, scalars_dfs):
         )
 
 
-def test_managed_function_dataframe_map(session, scalars_dfs):
+def test_managed_function_dataframe_map(session, dataset_id, scalars_dfs):
     try:
 
         def add_one(x):
@@ -373,6 +386,8 @@ def test_managed_function_dataframe_map(session, scalars_dfs):
         mf_add_one = session.udf(
             input_types=[int],
             output_type=int,
+            dataset=dataset_id,
+            name=prefixer.create_prefix(),
         )(add_one)
 
         scalars_df, scalars_pandas_df = scalars_dfs
@@ -398,9 +413,7 @@ def test_managed_function_dataframe_map(session, scalars_dfs):
         cleanup_function_assets(mf_add_one, session.bqclient, ignore_failures=False)
 
 
-def test_managed_function_dataframe_map_array_output(
-    session, scalars_dfs, dataset_id_permanent
-):
+def test_managed_function_dataframe_map_array_output(session, scalars_dfs, dataset_id):
     try:
 
         def add_one_list(x):
@@ -409,6 +422,8 @@ def test_managed_function_dataframe_map_array_output(
         mf_add_one_list = session.udf(
             input_types=[int],
             output_type=list[int],
+            dataset=dataset_id,
+            name=prefixer.create_prefix(),
         )(add_one_list)
 
         scalars_df, scalars_pandas_df = scalars_dfs
@@ -439,7 +454,7 @@ def test_managed_function_dataframe_map_array_output(
         )
 
 
-def test_managed_function_dataframe_apply_axis_1(session, scalars_dfs):
+def test_managed_function_dataframe_apply_axis_1(session, dataset_id, scalars_dfs):
     try:
         scalars_df, scalars_pandas_df = scalars_dfs
         series = scalars_df["int64_too"]
@@ -451,6 +466,8 @@ def test_managed_function_dataframe_apply_axis_1(session, scalars_dfs):
         add_ints_mf = session.udf(
             input_types=[int, int],
             output_type=int,
+            dataset=dataset_id,
+            name=prefixer.create_prefix(),
         )(add_ints)
         assert add_ints_mf.bigframes_bigquery_function  # type: ignore
 
@@ -475,7 +492,7 @@ def test_managed_function_dataframe_apply_axis_1(session, scalars_dfs):
         cleanup_function_assets(add_ints_mf, session.bqclient, ignore_failures=False)
 
 
-def test_managed_function_dataframe_apply_axis_1_array_output(session):
+def test_managed_function_dataframe_apply_axis_1_array_output(session, dataset_id):
     bf_df = bigframes.dataframe.DataFrame(
         {
             "Id": [1, 2, 3],
@@ -498,6 +515,8 @@ def test_managed_function_dataframe_apply_axis_1_array_output(session):
         @session.udf(
             input_types=[int, float, str],
             output_type=list[str],
+            dataset=dataset_id,
+            name=prefixer.create_prefix(),
         )
         def foo(x, y, z):
             return [str(x), str(y), z]
@@ -591,12 +610,16 @@ def test_managed_function_dataframe_apply_axis_1_array_output(session):
     ],
 )
 def test_managed_function_with_connection(
-    session, scalars_dfs, request, connection_fixture
+    session, scalars_dfs, dataset_id, request, connection_fixture
 ):
     try:
         bigquery_connection = request.getfixturevalue(connection_fixture)
 
-        @session.udf(bigquery_connection=bigquery_connection)
+        @session.udf(
+            bigquery_connection=bigquery_connection,
+            dataset=dataset_id,
+            name=prefixer.create_prefix(),
+        )
         def foo(x: int) -> int:
             return x + 10
 

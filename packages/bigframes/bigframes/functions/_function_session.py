@@ -793,7 +793,7 @@ class FunctionSession:
                 ``bigframes.pandas.reset_session``/
                 ``bigframes.pandas.clean_up_by_session_id``) does not clean up
                 the function, and leaves it for the user to manage the function
-                and the associated cloud function directly.
+                directly.
             packages (str[], Optional):
                 Explicit name of the external package dependencies. Each
                 dependency is added to the `requirements.txt` as is, and can be

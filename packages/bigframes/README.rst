@@ -25,6 +25,7 @@ Version 2.0 introduces breaking changes for improved security and performance. K
   ``cloud_function_service_account="default"``. And network ingress now defaults to ``"internal-only"``.
 * **@remote_function Argument Passing:** Arguments other than ``input_types``, ``output_type``, and ``dataset``
   to ``remote_function`` must now be passed using keyword syntax, as positional arguments are no longer supported.
+* **@udf Argument Passing:** Arguments ``dataset`` and ``name`` to ``udf`` are now mandatory.
 * **Endpoint Connections:** Automatic fallback to locational endpoints in certain regions is removed.
 * **LLM Updates (Gemini Integration):** Integrations now default to the ``gemini-2.0-flash-001`` model.
   PaLM2 support has been removed; please migrate any existing PaLM2 usage to Gemini. **Note:** The current default
