@@ -898,6 +898,36 @@ class AnalyticsAdminServiceTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.create_reporting_data_annotation: gapic_v1.method.wrap_method(
+                self.create_reporting_data_annotation,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_reporting_data_annotation: gapic_v1.method.wrap_method(
+                self.get_reporting_data_annotation,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_reporting_data_annotations: gapic_v1.method.wrap_method(
+                self.list_reporting_data_annotations,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_reporting_data_annotation: gapic_v1.method.wrap_method(
+                self.update_reporting_data_annotation,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_reporting_data_annotation: gapic_v1.method.wrap_method(
+                self.delete_reporting_data_annotation,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.submit_user_deletion: gapic_v1.method.wrap_method(
+                self.submit_user_deletion,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -2483,6 +2513,75 @@ class AnalyticsAdminServiceTransport(abc.ABC):
     ) -> Callable[
         [analytics_admin.DeleteSubpropertyEventFilterRequest],
         Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_reporting_data_annotation(
+        self,
+    ) -> Callable[
+        [analytics_admin.CreateReportingDataAnnotationRequest],
+        Union[
+            resources.ReportingDataAnnotation,
+            Awaitable[resources.ReportingDataAnnotation],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_reporting_data_annotation(
+        self,
+    ) -> Callable[
+        [analytics_admin.GetReportingDataAnnotationRequest],
+        Union[
+            resources.ReportingDataAnnotation,
+            Awaitable[resources.ReportingDataAnnotation],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_reporting_data_annotations(
+        self,
+    ) -> Callable[
+        [analytics_admin.ListReportingDataAnnotationsRequest],
+        Union[
+            analytics_admin.ListReportingDataAnnotationsResponse,
+            Awaitable[analytics_admin.ListReportingDataAnnotationsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_reporting_data_annotation(
+        self,
+    ) -> Callable[
+        [analytics_admin.UpdateReportingDataAnnotationRequest],
+        Union[
+            resources.ReportingDataAnnotation,
+            Awaitable[resources.ReportingDataAnnotation],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_reporting_data_annotation(
+        self,
+    ) -> Callable[
+        [analytics_admin.DeleteReportingDataAnnotationRequest],
+        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def submit_user_deletion(
+        self,
+    ) -> Callable[
+        [analytics_admin.SubmitUserDeletionRequest],
+        Union[
+            analytics_admin.SubmitUserDeletionResponse,
+            Awaitable[analytics_admin.SubmitUserDeletionResponse],
+        ],
     ]:
         raise NotImplementedError()
 

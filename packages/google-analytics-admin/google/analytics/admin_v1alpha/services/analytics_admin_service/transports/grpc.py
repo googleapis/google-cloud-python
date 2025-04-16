@@ -4785,6 +4785,193 @@ class AnalyticsAdminServiceGrpcTransport(AnalyticsAdminServiceTransport):
             )
         return self._stubs["delete_subproperty_event_filter"]
 
+    @property
+    def create_reporting_data_annotation(
+        self,
+    ) -> Callable[
+        [analytics_admin.CreateReportingDataAnnotationRequest],
+        resources.ReportingDataAnnotation,
+    ]:
+        r"""Return a callable for the create reporting data
+        annotation method over gRPC.
+
+        Creates a Reporting Data Annotation.
+
+        Returns:
+            Callable[[~.CreateReportingDataAnnotationRequest],
+                    ~.ReportingDataAnnotation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_reporting_data_annotation" not in self._stubs:
+            self._stubs[
+                "create_reporting_data_annotation"
+            ] = self._logged_channel.unary_unary(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/CreateReportingDataAnnotation",
+                request_serializer=analytics_admin.CreateReportingDataAnnotationRequest.serialize,
+                response_deserializer=resources.ReportingDataAnnotation.deserialize,
+            )
+        return self._stubs["create_reporting_data_annotation"]
+
+    @property
+    def get_reporting_data_annotation(
+        self,
+    ) -> Callable[
+        [analytics_admin.GetReportingDataAnnotationRequest],
+        resources.ReportingDataAnnotation,
+    ]:
+        r"""Return a callable for the get reporting data annotation method over gRPC.
+
+        Lookup a single Reporting Data Annotation.
+
+        Returns:
+            Callable[[~.GetReportingDataAnnotationRequest],
+                    ~.ReportingDataAnnotation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_reporting_data_annotation" not in self._stubs:
+            self._stubs[
+                "get_reporting_data_annotation"
+            ] = self._logged_channel.unary_unary(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/GetReportingDataAnnotation",
+                request_serializer=analytics_admin.GetReportingDataAnnotationRequest.serialize,
+                response_deserializer=resources.ReportingDataAnnotation.deserialize,
+            )
+        return self._stubs["get_reporting_data_annotation"]
+
+    @property
+    def list_reporting_data_annotations(
+        self,
+    ) -> Callable[
+        [analytics_admin.ListReportingDataAnnotationsRequest],
+        analytics_admin.ListReportingDataAnnotationsResponse,
+    ]:
+        r"""Return a callable for the list reporting data
+        annotations method over gRPC.
+
+        List all Reporting Data Annotations on a property.
+
+        Returns:
+            Callable[[~.ListReportingDataAnnotationsRequest],
+                    ~.ListReportingDataAnnotationsResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_reporting_data_annotations" not in self._stubs:
+            self._stubs[
+                "list_reporting_data_annotations"
+            ] = self._logged_channel.unary_unary(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/ListReportingDataAnnotations",
+                request_serializer=analytics_admin.ListReportingDataAnnotationsRequest.serialize,
+                response_deserializer=analytics_admin.ListReportingDataAnnotationsResponse.deserialize,
+            )
+        return self._stubs["list_reporting_data_annotations"]
+
+    @property
+    def update_reporting_data_annotation(
+        self,
+    ) -> Callable[
+        [analytics_admin.UpdateReportingDataAnnotationRequest],
+        resources.ReportingDataAnnotation,
+    ]:
+        r"""Return a callable for the update reporting data
+        annotation method over gRPC.
+
+        Updates a Reporting Data Annotation.
+
+        Returns:
+            Callable[[~.UpdateReportingDataAnnotationRequest],
+                    ~.ReportingDataAnnotation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_reporting_data_annotation" not in self._stubs:
+            self._stubs[
+                "update_reporting_data_annotation"
+            ] = self._logged_channel.unary_unary(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/UpdateReportingDataAnnotation",
+                request_serializer=analytics_admin.UpdateReportingDataAnnotationRequest.serialize,
+                response_deserializer=resources.ReportingDataAnnotation.deserialize,
+            )
+        return self._stubs["update_reporting_data_annotation"]
+
+    @property
+    def delete_reporting_data_annotation(
+        self,
+    ) -> Callable[
+        [analytics_admin.DeleteReportingDataAnnotationRequest], empty_pb2.Empty
+    ]:
+        r"""Return a callable for the delete reporting data
+        annotation method over gRPC.
+
+        Deletes a Reporting Data Annotation.
+
+        Returns:
+            Callable[[~.DeleteReportingDataAnnotationRequest],
+                    ~.Empty]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_reporting_data_annotation" not in self._stubs:
+            self._stubs[
+                "delete_reporting_data_annotation"
+            ] = self._logged_channel.unary_unary(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/DeleteReportingDataAnnotation",
+                request_serializer=analytics_admin.DeleteReportingDataAnnotationRequest.serialize,
+                response_deserializer=empty_pb2.Empty.FromString,
+            )
+        return self._stubs["delete_reporting_data_annotation"]
+
+    @property
+    def submit_user_deletion(
+        self,
+    ) -> Callable[
+        [analytics_admin.SubmitUserDeletionRequest],
+        analytics_admin.SubmitUserDeletionResponse,
+    ]:
+        r"""Return a callable for the submit user deletion method over gRPC.
+
+        Submits a request for user deletion for a property.
+
+        Returns:
+            Callable[[~.SubmitUserDeletionRequest],
+                    ~.SubmitUserDeletionResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "submit_user_deletion" not in self._stubs:
+            self._stubs["submit_user_deletion"] = self._logged_channel.unary_unary(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/SubmitUserDeletion",
+                request_serializer=analytics_admin.SubmitUserDeletionRequest.serialize,
+                response_deserializer=analytics_admin.SubmitUserDeletionResponse.deserialize,
+            )
+        return self._stubs["submit_user_deletion"]
+
     def close(self):
         self._logged_channel.close()
 
