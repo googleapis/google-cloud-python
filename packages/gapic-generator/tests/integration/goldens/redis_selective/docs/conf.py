@@ -34,12 +34,16 @@ import shlex
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 sys.path.insert(0, os.path.abspath(".."))
 
-__version__ = "0.1.0"
+# For plugins that can not read conf.py.
+# See also: https://github.com/docascode/sphinx-docfx-yaml/issues/85
+sys.path.insert(0, os.path.abspath("."))
+
+__version__ = ""
 
 # -- General configuration ------------------------------------------------
 
 # If your documentation needs a minimal Sphinx version, state it here.
-needs_sphinx = "4.0.1"
+needs_sphinx = "4.5.0"
 
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
@@ -49,26 +53,25 @@ extensions = [
     "sphinx.ext.autosummary",
     "sphinx.ext.intersphinx",
     "sphinx.ext.coverage",
+    "sphinx.ext.doctest",
     "sphinx.ext.napoleon",
     "sphinx.ext.todo",
     "sphinx.ext.viewcode",
+    "recommonmark",
 ]
 
 # autodoc/autosummary flags
 autoclass_content = "both"
-autodoc_default_flags = ["members"]
+autodoc_default_options = {"members": True}
 autosummary_generate = True
 
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ["_templates"]
 
-# Allow markdown includes (so releases.md can include CHANGLEOG.md)
-# http://www.sphinx-doc.org/en/master/markdown.html
-source_parsers = {".md": "recommonmark.parser.CommonMarkParser"}
-
 # The suffix(es) of source filenames.
 # You can specify multiple suffix as a list of string:
+# source_suffix = ['.rst', '.md']
 source_suffix = [".rst", ".md"]
 
 # The encoding of source files.
@@ -79,8 +82,8 @@ root_doc = "index"
 
 # General information about the project.
 project = u"google-cloud-redis"
-copyright = u"2023, Google, LLC"
-author = u"Google APIs"         # TODO: autogenerate this bit
+copyright = u"2025, Google, LLC"
+author = u"Google APIs"
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -96,7 +99,7 @@ version = ".".join(release.split(".")[0:2])
 #
 # This is also used if you do content translation via gettext catalogs.
 # Usually you set "language" from the command line for these cases.
-language = 'en'
+language = None
 
 # There are two options for replacing |today|: either, you set today to some
 # non-false value, then it is used:
@@ -106,7 +109,13 @@ language = 'en'
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
-exclude_patterns = ["_build"]
+exclude_patterns = [
+    "_build",
+    "**/.nox/**/*",
+    "samples/AUTHORING_GUIDE.md",
+    "samples/CONTRIBUTING.md",
+    "samples/snippets/README.rst",
+]
 
 # The reST default role (used for this markup: `text`) to use for all
 # documents.
@@ -146,7 +155,7 @@ html_theme = "alabaster"
 # further.  For a list of options available for each theme, see the
 # documentation.
 html_theme_options = {
-    "description": "Google Cloud Client Libraries for Python",
+    "description": "Google Cloud Client Libraries for google-cloud-redis",
     "github_user": "googleapis",
     "github_repo": "google-cloud-python",
     "github_banner": True,
@@ -309,7 +318,7 @@ man_pages = [
     (
         root_doc,
         "google-cloud-redis",
-        u"Google Cloud Redis Documentation",
+        "google-cloud-redis Documentation",
         [author],
         1,
     )
@@ -328,10 +337,10 @@ texinfo_documents = [
     (
         root_doc,
         "google-cloud-redis",
-        u"google-cloud-redis Documentation",
+        "google-cloud-redis Documentation",
         author,
         "google-cloud-redis",
-        "GAPIC library for Google Cloud Redis API",
+        "google-cloud-redis Library",
         "APIs",
     )
 ]
@@ -351,14 +360,14 @@ texinfo_documents = [
 
 # Example configuration for intersphinx: refer to the Python standard library.
 intersphinx_mapping = {
-    "python": ("http://python.readthedocs.org/en/latest/", None),
-    "gax": ("https://gax-python.readthedocs.org/en/latest/", None),
-    "google-auth": ("https://google-auth.readthedocs.io/en/stable", None),
-    "google-gax": ("https://gax-python.readthedocs.io/en/latest/", None),
-    "google.api_core": ("https://googleapis.dev/python/google-api-core/latest/", None),
-    "grpc": ("https://grpc.io/grpc/python/", None),
-    "requests": ("http://requests.kennethreitz.org/en/stable/", None),
-    "proto": ("https://proto-plus-python.readthedocs.io/en/stable", None),
+    "python": ("https://python.readthedocs.org/en/latest/", None),
+    "google-auth": ("https://googleapis.dev/python/google-auth/latest/", None),
+    "google.api_core": (
+        "https://googleapis.dev/python/google-api-core/latest/",
+        None,
+    ),
+    "grpc": ("https://grpc.github.io/grpc/python/", None),
+    "proto-plus": ("https://proto-plus-python.readthedocs.io/en/latest/", None),
     "protobuf": ("https://googleapis.dev/python/protobuf/latest/", None),
 }
 
