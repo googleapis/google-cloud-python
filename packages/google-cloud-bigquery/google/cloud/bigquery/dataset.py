@@ -19,6 +19,7 @@ from __future__ import absolute_import
 import copy
 
 import typing
+from typing import Optional, List, Dict, Any, Union
 
 import google.cloud._helpers  # type: ignore
 
@@ -28,8 +29,6 @@ from google.cloud.bigquery.routine import Routine, RoutineReference
 from google.cloud.bigquery.table import Table, TableReference
 from google.cloud.bigquery.encryption_configuration import EncryptionConfiguration
 from google.cloud.bigquery import external_config
-
-from typing import Optional, List, Dict, Any, Union
 
 
 def _get_table_reference(self, table_id: str) -> TableReference:
@@ -1074,3 +1073,93 @@ class DatasetListItem(object):
     model = _get_model_reference
 
     routine = _get_routine_reference
+
+
+class Condition(object):
+    """Represents a textual expression in the Common Expression Language (CEL) syntax.
+
+    Typically used for filtering or policy rules, such as in IAM Conditions
+    or BigQuery row/column access policies.
+
+    See:
+        https://cloud.google.com/iam/docs/reference/rest/Shared.Types/Expr
+        https://github.com/google/cel-spec
+
+    Args:
+        expression (str):
+            The condition expression string using CEL syntax. This is required.
+            Example: ``resource.type == "compute.googleapis.com/Instance"``
+        title (Optional[str]):
+            An optional title for the condition, providing a short summary.
+            Example: ``"Request is for a GCE instance"``
+        description (Optional[str]):
+            An optional description of the condition, providing a detailed explanation.
+            Example: ``"This condition checks whether the resource is a GCE instance."``
+    """
+
+    def __init__(
+        self,
+        expression: str,
+        title: Optional[str] = None,
+        description: Optional[str] = None,
+    ):
+        self._properties: Dict[str, Any] = {}
+        # Use setters to initialize properties, which also handle validation
+        self.expression = expression
+        self.title = title
+        self.description = description
+
+    @property
+    def title(self) -> Optional[str]:
+        """Optional[str]: The title for the condition."""
+        return self._properties.get("title")
+
+    @title.setter
+    def title(self, value: Optional[str]):
+        if value is not None and not isinstance(value, str):
+            raise ValueError("Pass a string for title, or None")
+        self._properties["title"] = value
+
+    @property
+    def description(self) -> Optional[str]:
+        """Optional[str]: The description for the condition."""
+        return self._properties.get("description")
+
+    @description.setter
+    def description(self, value: Optional[str]):
+        if value is not None and not isinstance(value, str):
+            raise ValueError("Pass a string for description, or None")
+        self._properties["description"] = value
+
+    @property
+    def expression(self) -> str:
+        """str: The expression string for the condition."""
+
+        # Cast assumes expression is always set due to __init__ validation
+        return typing.cast(str, self._properties.get("expression"))
+
+    @expression.setter
+    def expression(self, value: str):
+        if not isinstance(value, str):
+            raise ValueError("Pass a non-empty string for expression")
+        if not value:
+            raise ValueError("expression cannot be an empty string")
+        self._properties["expression"] = value
+
+    def to_api_repr(self) -> Dict[str, Any]:
+        """Construct the API resource representation of this Condition."""
+        return self._properties
+
+    @classmethod
+    def from_api_repr(cls, resource: Dict[str, Any]) -> "Condition":
+        """Factory: construct a Condition instance given its API representation."""
+
+        # Ensure required fields are present in the resource if necessary
+        if "expression" not in resource:
+            raise ValueError("API representation missing required 'expression' field.")
+
+        return cls(
+            expression=resource["expression"],
+            title=resource.get("title"),
+            description=resource.get("description"),
+        )

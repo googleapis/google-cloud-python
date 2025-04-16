@@ -19,6 +19,7 @@ from google.cloud.bigquery.routine.routine import Routine, RoutineReference
 import pytest
 from google.cloud.bigquery.dataset import (
     AccessEntry,
+    Condition,
     Dataset,
     DatasetReference,
     Table,
@@ -1228,3 +1229,157 @@ class TestDatasetListItem(unittest.TestCase):
         self.assertEqual(table.table_id, "table_id")
         self.assertEqual(table.dataset_id, dataset_id)
         self.assertEqual(table.project, project)
+
+
+class TestCondition:
+    EXPRESSION = 'resource.name.startsWith("projects/my-project/instances/")'
+    TITLE = "Instance Access"
+    DESCRIPTION = "Access to instances in my-project"
+
+    @pytest.fixture
+    def condition_instance(self):
+        """Provides a Condition instance for tests."""
+        return Condition(
+            expression=self.EXPRESSION,
+            title=self.TITLE,
+            description=self.DESCRIPTION,
+        )
+
+    @pytest.fixture
+    def condition_api_repr(self):
+        """Provides the API representation for the test Condition."""
+        return {
+            "expression": self.EXPRESSION,
+            "title": self.TITLE,
+            "description": self.DESCRIPTION,
+        }
+
+    # --- Basic Functionality Tests ---
+
+    def test_constructor_and_getters_full(self, condition_instance):
+        """Test initialization with all arguments and subsequent attribute access."""
+        assert condition_instance.expression == self.EXPRESSION
+        assert condition_instance.title == self.TITLE
+        assert condition_instance.description == self.DESCRIPTION
+
+    def test_constructor_and_getters_minimal(self):
+        """Test initialization with only the required expression."""
+        condition = Condition(expression=self.EXPRESSION)
+        assert condition.expression == self.EXPRESSION
+        assert condition.title is None
+        assert condition.description is None
+
+    def test_setters(self, condition_instance):
+        """Test setting attributes after initialization."""
+        new_title = "New Title"
+        new_desc = "New Description"
+        new_expr = "request.time < timestamp('2024-01-01T00:00:00Z')"
+
+        condition_instance.title = new_title
+        assert condition_instance.title == new_title
+
+        condition_instance.description = new_desc
+        assert condition_instance.description == new_desc
+
+        condition_instance.expression = new_expr
+        assert condition_instance.expression == new_expr
+
+        # Test setting title and description to empty strings
+        condition_instance.title = ""
+        assert condition_instance.title == ""
+
+        condition_instance.description = ""
+        assert condition_instance.description == ""
+
+        # Test setting optional fields back to None
+        condition_instance.title = None
+        assert condition_instance.title is None
+        condition_instance.description = None
+        assert condition_instance.description is None
+
+    # --- API Representation Tests ---
+
+    def test_to_api_repr_full(self, condition_instance, condition_api_repr):
+        """Test converting a fully populated Condition to API representation."""
+        api_repr = condition_instance.to_api_repr()
+        assert api_repr == condition_api_repr
+
+    def test_to_api_repr_minimal(self):
+        """Test converting a minimally populated Condition to API representation."""
+        condition = Condition(expression=self.EXPRESSION)
+        expected_api_repr = {
+            "expression": self.EXPRESSION,
+            "title": None,
+            "description": None,
+        }
+        api_repr = condition.to_api_repr()
+        assert api_repr == expected_api_repr
+
+    def test_from_api_repr_full(self, condition_api_repr):
+        """Test creating a Condition from a full API representation."""
+        condition = Condition.from_api_repr(condition_api_repr)
+        assert condition.expression == self.EXPRESSION
+        assert condition.title == self.TITLE
+        assert condition.description == self.DESCRIPTION
+
+    def test_from_api_repr_minimal(self):
+        """Test creating a Condition from a minimal API representation."""
+        minimal_repr = {"expression": self.EXPRESSION}
+        condition = Condition.from_api_repr(minimal_repr)
+        assert condition.expression == self.EXPRESSION
+        assert condition.title is None
+        assert condition.description is None
+
+    def test_from_api_repr_with_extra_fields(self):
+        """Test creating a Condition from an API repr with unexpected fields."""
+        api_repr = {
+            "expression": self.EXPRESSION,
+            "title": self.TITLE,
+            "unexpected_field": "some_value",
+        }
+        condition = Condition.from_api_repr(api_repr)
+        assert condition.expression == self.EXPRESSION
+        assert condition.title == self.TITLE
+        assert condition.description is None
+        # Check that the extra field didn't get added to internal properties
+        assert "unexpected_field" not in condition._properties
+
+    #     # --- Validation Tests ---
+
+    @pytest.mark.parametrize(
+        "kwargs, error_msg",
+        [
+            ({"expression": None}, "Pass a non-empty string for expression"),  # type: ignore
+            ({"expression": ""}, "expression cannot be an empty string"),
+            ({"expression": 123}, "Pass a non-empty string for expression"),  # type: ignore
+            ({"expression": EXPRESSION, "title": 123}, "Pass a string for title, or None"),  # type: ignore
+            ({"expression": EXPRESSION, "description": False}, "Pass a string for description, or None"),  # type: ignore
+        ],
+    )
+    def test_validation_init(self, kwargs, error_msg):
+        """Test validation during __init__."""
+        with pytest.raises(ValueError, match=error_msg):
+            Condition(**kwargs)
+
+    @pytest.mark.parametrize(
+        "attribute, value, error_msg",
+        [
+            ("expression", None, "Pass a non-empty string for expression"),  # type: ignore
+            ("expression", "", "expression cannot be an empty string"),
+            ("expression", 123, "Pass a non-empty string for expression"),  # type: ignore
+            ("title", 123, "Pass a string for title, or None"),  # type: ignore
+            ("description", [], "Pass a string for description, or None"),  # type: ignore
+        ],
+    )
+    def test_validation_setters(self, condition_instance, attribute, value, error_msg):
+        """Test validation via setters."""
+        with pytest.raises(ValueError, match=error_msg):
+            setattr(condition_instance, attribute, value)
+
+    def test_validation_expression_required_from_api(self):
+        """Test ValueError is raised if expression is missing in from_api_repr."""
+        api_repr = {"title": self.TITLE}
+        with pytest.raises(
+            ValueError, match="API representation missing required 'expression' field."
+        ):
+            Condition.from_api_repr(api_repr)
