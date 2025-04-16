@@ -762,3 +762,19 @@ def test_llm_gemini_pro_score_params(llm_fine_tune_df_default_index, model_name)
 def test_gemini_preview_model_warnings(model_name):
     with pytest.warns(exceptions.PreviewWarning):
         llm.GeminiTextGenerator(model_name=model_name)
+
+
+@pytest.mark.parametrize(
+    "model_class",
+    [
+        llm.TextEmbeddingGenerator,
+        llm.MultimodalEmbeddingGenerator,
+        llm.GeminiTextGenerator,
+        llm.Claude3TextGenerator,
+    ],
+)
+def test_text_embedding_generator_no_default_model_warning(model_class):
+    message = "Since upgrading the default model can cause unintended breakages, the\ndefault model will be removed in BigFrames 3.0. Please supply an\nexplicit model to avoid this message."
+    bigframes.options.experiments.blob = True
+    with pytest.warns(FutureWarning, match=message):
+        model_class(model_name=None)
