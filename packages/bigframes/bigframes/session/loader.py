@@ -292,7 +292,7 @@ class GbqDataLoader:
         index_col: Iterable[str] | str | bigframes.enums.DefaultIndexKind = (),
         columns: Iterable[str] = (),
         max_results: Optional[int] = None,
-        api_name: str,
+        api_name: str = "read_gbq_table",
         use_cache: bool = True,
         filters: third_party_pandas_gbq.FiltersType = (),
         enable_snapshot: bool = True,
@@ -401,7 +401,7 @@ class GbqDataLoader:
                 query,
                 index_col=index_cols,
                 columns=columns,
-                api_name="read_gbq_table",
+                api_name=api_name,
                 use_cache=use_cache,
             )
 

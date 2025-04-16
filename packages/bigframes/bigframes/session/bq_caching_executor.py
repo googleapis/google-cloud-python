@@ -332,10 +332,6 @@ class BigQueryCachingExecutor(executor.Executor):
         if not self.strictly_ordered:
             job_config.labels["bigframes-mode"] = "unordered"
 
-        # Note: add_and_trim_labels is global scope which may have unexpected effects
-        # Ensure no additional labels are added to job_config after this point,
-        # as `add_and_trim_labels` ensures the label count does not exceed 64.
-        bq_io.add_and_trim_labels(job_config, api_name=api_name)
         try:
             iterator, query_job = bq_io.start_query_with_client(
                 self.bqclient,
