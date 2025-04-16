@@ -78,7 +78,10 @@ def arrow_to_pandas(
 
         if dtype == geopandas.array.GeometryDtype():
             series = geopandas.GeoSeries.from_wkt(
-                column,
+                # Use `to_pylist()` is a workaround for TypeError: object of type
+                # 'pyarrow.lib.StringScalar' has no len() on older pyarrow,
+                # geopandas, shapely combinations.
+                column.to_pylist(),
                 # BigQuery geography type is based on the WGS84 reference ellipsoid.
                 crs="EPSG:4326",
             )

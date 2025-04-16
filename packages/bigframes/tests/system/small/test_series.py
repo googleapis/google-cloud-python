@@ -24,7 +24,7 @@ from packaging.version import Version
 import pandas as pd
 import pyarrow as pa  # type: ignore
 import pytest
-import shapely  # type: ignore
+import shapely.geometry  # type: ignore
 
 import bigframes.dtypes as dtypes
 import bigframes.features
@@ -229,7 +229,11 @@ def test_series_construct_from_list_escaped_strings():
 
 def test_series_construct_geodata():
     pd_series = pd.Series(
-        [shapely.Point(1, 1), shapely.Point(2, 2), shapely.Point(3, 3)],
+        [
+            shapely.geometry.Point(1, 1),
+            shapely.geometry.Point(2, 2),
+            shapely.geometry.Point(3, 3),
+        ],
         dtype=gpd.array.GeometryDtype(),
     )
 

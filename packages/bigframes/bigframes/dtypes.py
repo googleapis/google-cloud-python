@@ -28,7 +28,7 @@ import google.cloud.bigquery
 import numpy as np
 import pandas as pd
 import pyarrow as pa
-import shapely  # type: ignore
+import shapely.geometry  # type: ignore
 
 # Type hints for Pandas dtypes supported by BigQuery DataFrame
 Dtype = Union[
@@ -506,7 +506,7 @@ def bigframes_dtype_to_literal(
     if isinstance(bigframes_dtype, pd.StringDtype):
         return "string"
     if isinstance(bigframes_dtype, gpd.array.GeometryDtype):
-        return shapely.Point((0, 0))
+        return shapely.geometry.Point((0, 0))
 
     raise TypeError(
         f"No literal  conversion for {bigframes_dtype}. {constants.FEEDBACK_LINK}"

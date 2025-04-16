@@ -135,7 +135,7 @@ class GeoSpatialValue(NumericValue):
         >>> ibis.options.interactive = True
         >>> import shapely
         >>> t = ibis.examples.zones.fetch()
-        >>> p = shapely.Point(935996.821, 191376.75)  # centroid for zone 1
+        >>> p = shapely.geometry.Point(935996.821, 191376.75)  # centroid for zone 1
         >>> plit = ibis.literal(p, "geometry")
         >>> t.geom.contains(plit).name("contains")
         ┏━━━━━━━━━━┓
@@ -197,7 +197,7 @@ class GeoSpatialValue(NumericValue):
 
         Polygon area center in zone 1
 
-        >>> z1_ctr_buff = shapely.Point(935996.821, 191376.75).buffer(10)
+        >>> z1_ctr_buff = shapely.geometry.Point(935996.821, 191376.75).buffer(10)
         >>> z1_ctr_buff_lit = ibis.literal(z1_ctr_buff, "geometry")
         >>> t.geom.covers(z1_ctr_buff_lit).name("covers")
         ┏━━━━━━━━━┓
@@ -242,7 +242,7 @@ class GeoSpatialValue(NumericValue):
 
         Polygon area center in zone 1
 
-        >>> pol_big = shapely.Point(935996.821, 191376.75).buffer(10000)
+        >>> pol_big = shapely.geometry.Point(935996.821, 191376.75).buffer(10000)
         >>> pol_big_lit = ibis.literal(pol_big, "geometry")
         >>> t.geom.covered_by(pol_big_lit).name("covered_by")
         ┏━━━━━━━━━━━━┓
@@ -262,7 +262,7 @@ class GeoSpatialValue(NumericValue):
         │ False      │
         │ …          │
         └────────────┘
-        >>> pol_small = shapely.Point(935996.821, 191376.75).buffer(100)
+        >>> pol_small = shapely.geometry.Point(935996.821, 191376.75).buffer(100)
         >>> pol_small_lit = ibis.literal(pol_small, "geometry")
         >>> t.geom.covered_by(pol_small_lit).name("covered_by")
         ┏━━━━━━━━━━━━┓
@@ -387,7 +387,7 @@ class GeoSpatialValue(NumericValue):
         >>> ibis.options.interactive = True
         >>> import shapely
         >>> t = ibis.examples.zones.fetch()
-        >>> p = shapely.Point(935996.821, 191376.75)  # zone 1 centroid
+        >>> p = shapely.geometry.Point(935996.821, 191376.75)  # zone 1 centroid
         >>> plit = ibis.literal(p, "geometry")
         >>> t.geom.disjoint(plit).name("disjoint")
         ┏━━━━━━━━━━┓
@@ -435,7 +435,7 @@ class GeoSpatialValue(NumericValue):
         >>> ibis.options.interactive = True
         >>> import shapely
         >>> t = ibis.examples.zones.fetch()
-        >>> penn_station = shapely.Point(986345.399, 211974.446)
+        >>> penn_station = shapely.geometry.Point(986345.399, 211974.446)
         >>> penn_lit = ibis.literal(penn_station, "geometry")
 
         Check zones within 1000ft of Penn Station centroid
@@ -578,7 +578,7 @@ class GeoSpatialValue(NumericValue):
         >>> ibis.options.interactive = True
         >>> import shapely
         >>> t = ibis.examples.zones.fetch()
-        >>> p = shapely.Point(935996.821, 191376.75)  # zone 1 centroid
+        >>> p = shapely.geometry.Point(935996.821, 191376.75)  # zone 1 centroid
         >>> plit = ibis.literal(p, "geometry")
         >>> t.geom.intersects(plit).name("intersects")
         ┏━━━━━━━━━━━━┓
@@ -675,7 +675,7 @@ class GeoSpatialValue(NumericValue):
 
         Polygon center in an edge point of zone 1
 
-        >>> p_edge_buffer = shapely.Point(933100.918, 192536.086).buffer(100)
+        >>> p_edge_buffer = shapely.geometry.Point(933100.918, 192536.086).buffer(100)
         >>> buff_lit = ibis.literal(p_edge_buffer, "geometry")
         >>> t.geom.overlaps(buff_lit).name("overlaps")
         ┏━━━━━━━━━━┓
@@ -720,7 +720,7 @@ class GeoSpatialValue(NumericValue):
 
         Edge point of zone 1
 
-        >>> p_edge = shapely.Point(933100.9183527103, 192536.08569720192)
+        >>> p_edge = shapely.geometry.Point(933100.9183527103, 192536.08569720192)
         >>> p_edge_lit = ibis.literal(p_edge, "geometry")
         >>> t.geom.touches(p_edge_lit).name("touches")
         ┏━━━━━━━━━┓
@@ -765,7 +765,7 @@ class GeoSpatialValue(NumericValue):
 
         Penn station zone centroid
 
-        >>> penn_station = shapely.Point(986345.399, 211974.446)
+        >>> penn_station = shapely.geometry.Point(986345.399, 211974.446)
         >>> penn_lit = ibis.literal(penn_station, "geometry")
         >>> t.geom.distance(penn_lit).name("distance_penn")
         ┏━━━━━━━━━━━━━━━┓
@@ -886,7 +886,7 @@ class GeoSpatialValue(NumericValue):
 
         Penn station zone centroid
 
-        >>> penn_station = shapely.Point(986345.399, 211974.446)
+        >>> penn_station = shapely.geometry.Point(986345.399, 211974.446)
         >>> penn_lit = ibis.literal(penn_station, "geometry")
         >>> t.geom.centroid().union(penn_lit).name("union_centroid_penn")
         ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
@@ -1312,7 +1312,7 @@ class GeoSpatialValue(NumericValue):
         >>> ibis.options.interactive = True
         >>> import shapely
         >>> t = ibis.examples.zones.fetch()
-        >>> penn_station_buff = shapely.Point(986345.399, 211974.446).buffer(5000)
+        >>> penn_station_buff = shapely.geometry.Point(986345.399, 211974.446).buffer(5000)
         >>> penn_lit = ibis.literal(penn_station_buff, "geometry")
         >>> t.filter(t.geom.within(penn_lit))["zone"]
         ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓

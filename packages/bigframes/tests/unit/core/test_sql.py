@@ -14,15 +14,16 @@
 
 import datetime
 import decimal
+import re
 
 import pytest
-import shapely  # type: ignore
+import shapely.geometry  # type: ignore
 
 from bigframes.core import sql
 
 
 @pytest.mark.parametrize(
-    ("value", "expected"),
+    ("value", "expected_pattern"),
     (
         # Try to have some literals for each scalar data type:
         # https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types
@@ -32,44 +33,44 @@ from bigframes.core import sql
         (False, "False"),
         (
             b"\x01\x02\x03ABC",
-            r"b'\x01\x02\x03ABC'",
+            re.escape(r"b'\x01\x02\x03ABC'"),
         ),
         (
             datetime.date(2025, 1, 1),
-            "DATE('2025-01-01')",
+            re.escape("DATE('2025-01-01')"),
         ),
         (
             datetime.datetime(2025, 1, 2, 3, 45, 6, 789123),
-            "DATETIME('2025-01-02T03:45:06.789123')",
+            re.escape("DATETIME('2025-01-02T03:45:06.789123')"),
         ),
         (
-            shapely.Point(0, 1),
-            "ST_GEOGFROMTEXT('POINT (0 1)')",
+            shapely.geometry.Point(0, 1),
+            r"ST_GEOGFROMTEXT\('POINT \(0[.]?0* 1[.]?0*\)'\)",
         ),
         # TODO: INTERVAL type (e.g. from dateutil.relativedelta)
         # TODO: JSON type (TBD what Python object that would correspond to)
-        (123, "123"),
-        (decimal.Decimal("123.75"), "CAST('123.75' AS NUMERIC)"),
+        (123, re.escape("123")),
+        (decimal.Decimal("123.75"), re.escape("CAST('123.75' AS NUMERIC)")),
         # TODO: support BIGNUMERIC by looking at precision/scale of the DECIMAL
-        (123.75, "123.75"),
+        (123.75, re.escape("123.75")),
         # TODO: support RANGE type
-        ("abc", "'abc'"),
+        ("abc", re.escape("'abc'")),
         # TODO: support STRUCT type (possibly another method?)
         (
             datetime.time(12, 34, 56, 789123),
-            "TIME(DATETIME('1970-01-01 12:34:56.789123'))",
+            re.escape("TIME(DATETIME('1970-01-01 12:34:56.789123'))"),
         ),
         (
             datetime.datetime(
                 2025, 1, 2, 3, 45, 6, 789123, tzinfo=datetime.timezone.utc
             ),
-            "TIMESTAMP('2025-01-02T03:45:06.789123+00:00')",
+            re.escape("TIMESTAMP('2025-01-02T03:45:06.789123+00:00')"),
         ),
     ),
 )
-def test_simple_literal(value, expected):
+def test_simple_literal(value, expected_pattern):
     got = sql.simple_literal(value)
-    assert got == expected
+    assert re.match(expected_pattern, got) is not None
 
 
 def test_create_vector_search_sql_simple():

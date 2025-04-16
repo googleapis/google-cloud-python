@@ -23,7 +23,7 @@ import json
 import math
 from typing import cast, Collection, Iterable, Mapping, Optional, TYPE_CHECKING, Union
 
-import shapely  # type: ignore
+import shapely.geometry.base  # type: ignore
 
 import bigframes.core.compile.googlesql as googlesql
 
@@ -33,9 +33,19 @@ if TYPE_CHECKING:
     import bigframes.core.ordering
 
 
+# shapely.wkt.dumps was moved to shapely.io.to_wkt in 2.0.
+try:
+    from shapely.io import to_wkt  # type: ignore
+except ImportError:
+    from shapely.wkt import dumps  # type: ignore
+
+    to_wkt = dumps
+
+
 ### Writing SQL Values (literals, column references, table references, etc.)
 def simple_literal(value: bytes | str | int | bool | float | datetime.datetime | None):
     """Return quoted input string."""
+
     # https://cloud.google.com/bigquery/docs/reference/standard-sql/lexical#literals
     if value is None:
         return "NULL"
@@ -65,8 +75,8 @@ def simple_literal(value: bytes | str | int | bool | float | datetime.datetime |
         return f"DATE('{value.isoformat()}')"
     elif isinstance(value, datetime.time):
         return f"TIME(DATETIME('1970-01-01 {value.isoformat()}'))"
-    elif isinstance(value, shapely.Geometry):
-        return f"ST_GEOGFROMTEXT({simple_literal(shapely.to_wkt(value))})"
+    elif isinstance(value, shapely.geometry.base.BaseGeometry):
+        return f"ST_GEOGFROMTEXT({simple_literal(to_wkt(value))})"
     elif isinstance(value, decimal.Decimal):
         # TODO: disambiguate BIGNUMERIC based on scale and/or precision
         return f"CAST('{str(value)}' AS NUMERIC)"

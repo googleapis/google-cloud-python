@@ -312,15 +312,16 @@ def normalize(typ, value):
             )
         return frozendict({k: normalize(t, value[k]) for k, t in dtype.items()})
     elif dtype.is_geospatial():
-        import shapely as shp
+        import shapely
+        import shapely.geometry
 
         if isinstance(value, (tuple, list)):
             if dtype.is_point():
-                return shp.Point(value)
+                return shapely.geometry.Point(value)
             elif dtype.is_linestring():
-                return shp.LineString(value)
+                return shapely.geometry.LineString(value)
             elif dtype.is_polygon():
-                return shp.Polygon(
+                return shapely.geometry.Polygon(
                     toolz.concat(
                         map(
                             attrgetter("coords"),
@@ -329,19 +330,23 @@ def normalize(typ, value):
                     )
                 )
             elif dtype.is_multipoint():
-                return shp.MultiPoint(tuple(map(partial(normalize, dt.point), value)))
+                return shapely.geometry.MultiPoint(
+                    tuple(map(partial(normalize, dt.point), value))
+                )
             elif dtype.is_multilinestring():
-                return shp.MultiLineString(
+                return shapely.geometry.MultiLineString(
                     tuple(map(partial(normalize, dt.linestring), value))
                 )
             elif dtype.is_multipolygon():
-                return shp.MultiPolygon(map(partial(normalize, dt.polygon), value))
+                return shapely.geometry.MultiPolygon(
+                    map(partial(normalize, dt.polygon), value)
+                )
             else:
                 raise IbisTypeError(f"Unsupported geospatial type: {dtype}")
-        elif isinstance(value, shp.geometry.base.BaseGeometry):
+        elif isinstance(value, shapely.geometry.base.BaseGeometry):
             return value
         else:
-            return shp.from_wkt(value)
+            return shapely.from_wkt(value)
     elif dtype.is_date():
         return normalize_datetime(value).date()
     elif dtype.is_time():
