@@ -17,10 +17,10 @@ from unittest import mock
 from google.cloud import bigquery
 import pandas as pd
 import pytest
-import pytest_mock
 
 import bigframes
 from bigframes.ml import core, decomposition, linear_model
+import bigframes.ml.core
 import bigframes.pandas as bpd
 
 TEMP_MODEL_ID = bigquery.ModelReference.from_string(
@@ -50,10 +50,11 @@ def mock_session():
 
 
 @pytest.fixture
-def bqml_model_factory(mocker: pytest_mock.MockerFixture):
-    mocker.patch(
-        "bigframes.ml.core.BqmlModelFactory._create_model_ref",
-        return_value=TEMP_MODEL_ID,
+def bqml_model_factory(monkeypatch):
+    monkeypatch.setattr(
+        bigframes.ml.core.BqmlModelFactory,
+        "_create_model_ref",
+        mock.Mock(return_value=TEMP_MODEL_ID),
     )
     bqml_model_factory = core.BqmlModelFactory()
 

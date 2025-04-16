@@ -77,7 +77,6 @@ extras = {
     # Packages required for basic development flow.
     "dev": [
         "pytest",
-        "pytest-mock",
         "pre-commit",
         "nox",
         "google-cloud-testutils",

@@ -281,7 +281,7 @@ def test_customtransformer_compile_sql(mock_X):
     ]
 
 
-def create_bq_model_mock(mocker, transform_columns, feature_columns=None):
+def create_bq_model_mock(monkeypatch, transform_columns, feature_columns=None):
     properties = {"transformColumns": transform_columns}
     mock_bq_model = bigquery.Model("model_project.model_dataset.model_id")
     type(mock_bq_model)._properties = mock.PropertyMock(return_value=properties)
@@ -289,18 +289,19 @@ def create_bq_model_mock(mocker, transform_columns, feature_columns=None):
         result = [
             bigquery.standard_sql.StandardSqlField(col, None) for col in feature_columns
         ]
-        mocker.patch(
-            "google.cloud.bigquery.model.Model.feature_columns",
-            new_callable=mock.PropertyMock(return_value=result),
+        monkeypatch.setattr(
+            type(mock_bq_model),
+            "feature_columns",
+            mock.PropertyMock(return_value=result),
         )
 
     return mock_bq_model
 
 
 @pytest.fixture
-def bq_model_good(mocker):
+def bq_model_good(monkeypatch):
     return create_bq_model_mock(
-        mocker,
+        monkeypatch,
         [
             {
                 "name": "ident_culmen_length_mm",
@@ -337,9 +338,9 @@ def bq_model_good(mocker):
 
 
 @pytest.fixture
-def bq_model_merge(mocker):
+def bq_model_merge(monkeypatch):
     return create_bq_model_mock(
-        mocker,
+        monkeypatch,
         [
             {
                 "name": "labelencoded_county",
@@ -357,9 +358,9 @@ def bq_model_merge(mocker):
 
 
 @pytest.fixture
-def bq_model_no_merge(mocker):
+def bq_model_no_merge(monkeypatch):
     return create_bq_model_mock(
-        mocker,
+        monkeypatch,
         [
             {
                 "name": "ident_culmen_length_mm",
@@ -372,9 +373,9 @@ def bq_model_no_merge(mocker):
 
 
 @pytest.fixture
-def bq_model_unknown_ML(mocker):
+def bq_model_unknown_ML(monkeypatch):
     return create_bq_model_mock(
-        mocker,
+        monkeypatch,
         [
             {
                 "name": "unknownml_culmen_length_mm",
@@ -391,9 +392,9 @@ def bq_model_unknown_ML(mocker):
 
 
 @pytest.fixture
-def bq_model_flexnames(mocker):
+def bq_model_flexnames(monkeypatch):
     return create_bq_model_mock(
-        mocker,
+        monkeypatch,
         [
             {
                 "name": "Flex Name culmen_length_mm",
