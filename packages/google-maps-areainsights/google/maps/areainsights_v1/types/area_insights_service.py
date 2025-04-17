@@ -209,8 +209,9 @@ class PlaceInsight(proto.Message):
 
     Attributes:
         place (str):
-            The resource name of a place. This resource name can be used
-            to retrieve details about the place using the `Places
+            The unique identifier of the place. This resource name can
+            be used to retrieve details about the place using the
+            `Places
             API <https://developers.google.com/maps/documentation/places/web-service/reference/rest/v1/places/get>`__.
     """
 
@@ -349,7 +350,8 @@ class LocationFilter(proto.Message):
 
         Attributes:
             place (str):
-                The Place resource name of a region.
+                The unique identifier of a specific
+                geographic region.
 
                 This field is a member of `oneof`_ ``region``.
         """
