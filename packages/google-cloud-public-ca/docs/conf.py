@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-# http://www.apache.org/licenses/LICENSE-2.0
+#     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,7 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-# google-cloud-public-ca documentation build configuration file
+#
+# google-cloud-security-publicca documentation build configuration file
 #
 # This file is execfile()d with the current directory set to its
 # containing dir.
@@ -42,7 +43,7 @@ __version__ = ""
 # -- General configuration ------------------------------------------------
 
 # If your documentation needs a minimal Sphinx version, state it here.
-needs_sphinx = "1.5.5"
+needs_sphinx = "4.5.0"
 
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
@@ -80,8 +81,8 @@ source_suffix = [".rst", ".md"]
 root_doc = "index"
 
 # General information about the project.
-project = "google-cloud-public-ca"
-copyright = "2019, Google"
+project = "google-cloud-security-publicca"
+copyright = "2025, Google, LLC"
 author = "Google APIs"
 
 # The version info for the project you're documenting, acts as replacement for
@@ -154,7 +155,7 @@ html_theme = "alabaster"
 # further.  For a list of options available for each theme, see the
 # documentation.
 html_theme_options = {
-    "description": "Google Cloud Client Libraries for google-cloud-public-ca",
+    "description": "Google Cloud Security Client Libraries for google-cloud-security-publicca",
     "github_user": "googleapis",
     "github_repo": "google-cloud-python",
     "github_banner": True,
@@ -248,7 +249,7 @@ html_static_path = ["_static"]
 # html_search_scorer = 'scorer.js'
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = "google-cloud-public-ca-doc"
+htmlhelp_basename = "google-cloud-security-publicca-doc"
 
 # -- Options for warnings ------------------------------------------------------
 
@@ -266,13 +267,13 @@ suppress_warnings = [
 
 latex_elements = {
     # The paper size ('letterpaper' or 'a4paper').
-    #'papersize': 'letterpaper',
+    # 'papersize': 'letterpaper',
     # The font size ('10pt', '11pt' or '12pt').
-    #'pointsize': '10pt',
+    # 'pointsize': '10pt',
     # Additional stuff for the LaTeX preamble.
-    #'preamble': '',
+    # 'preamble': '',
     # Latex figure (float) alignment
-    #'figure_align': 'htbp',
+    # 'figure_align': 'htbp',
 }
 
 # Grouping the document tree into LaTeX files. List of tuples
@@ -281,8 +282,8 @@ latex_elements = {
 latex_documents = [
     (
         root_doc,
-        "google-cloud-public-ca.tex",
-        "google-cloud-public-ca Documentation",
+        "google-cloud-security-publicca.tex",
+        "google-cloud-security-publicca Documentation",
         author,
         "manual",
     )
@@ -316,8 +317,8 @@ latex_documents = [
 man_pages = [
     (
         root_doc,
-        "google-cloud-public-ca",
-        "google-cloud-public-ca Documentation",
+        "google-cloud-security-publicca",
+        "google-cloud-security-publicca Documentation",
         [author],
         1,
     )
@@ -335,11 +336,11 @@ man_pages = [
 texinfo_documents = [
     (
         root_doc,
-        "google-cloud-public-ca",
-        "google-cloud-public-ca Documentation",
+        "google-cloud-security-publicca",
+        "google-cloud-security-publicca Documentation",
         author,
-        "google-cloud-public-ca",
-        "google-cloud-public-ca Library",
+        "google-cloud-security-publicca",
+        "google-cloud-security-publicca Library",
         "APIs",
     )
 ]
