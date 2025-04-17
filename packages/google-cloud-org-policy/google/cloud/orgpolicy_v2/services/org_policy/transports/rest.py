@@ -1978,8 +1978,8 @@ class OrgPolicyRestTransport(_BaseOrgPolicyRestTransport):
                 ~.orgpolicy.ListCustomConstraintsResponse:
                     The response returned from the [ListCustomConstraints]
                 [google.cloud.orgpolicy.v2.OrgPolicy.ListCustomConstraints]
-                method. It will be empty if no custom constraints are
-                set on the organization resource.
+                method. It will be empty if no custom or managed
+                constraints are set on the organization resource.
 
             """
 

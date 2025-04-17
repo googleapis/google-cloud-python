@@ -1444,11 +1444,11 @@ class OrgPolicyAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> constraint.CustomConstraint:
-        r"""Gets a custom constraint.
+        r"""Gets a custom or managed constraint.
 
         Returns a ``google.rpc.Status`` with
-        ``google.rpc.Code.NOT_FOUND`` if the custom constraint does not
-        exist.
+        ``google.rpc.Code.NOT_FOUND`` if the custom or managed
+        constraint does not exist.
 
         .. code-block:: python
 
@@ -1483,8 +1483,9 @@ class OrgPolicyAsyncClient:
                 method.
             name (:class:`str`):
                 Required. Resource name of the custom
-                constraint. See the custom constraint
-                entry for naming requirements.
+                or managed constraint. See the custom
+                constraint entry for naming
+                requirements.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1623,8 +1624,8 @@ class OrgPolicyAsyncClient:
             google.cloud.orgpolicy_v2.services.org_policy.pagers.ListCustomConstraintsAsyncPager:
                 The response returned from the [ListCustomConstraints]
                    [google.cloud.orgpolicy.v2.OrgPolicy.ListCustomConstraints]
-                   method. It will be empty if no custom constraints are
-                   set on the organization resource.
+                   method. It will be empty if no custom or managed
+                   constraints are set on the organization resource.
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.

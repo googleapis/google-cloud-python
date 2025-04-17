@@ -17,6 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+from google.protobuf import struct_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -39,8 +40,8 @@ class Constraint(proto.Message):
     a policy that includes constraints at different locations in the
     organization's resource hierarchy. Policies are inherited down the
     resource hierarchy from higher levels, but can also be overridden.
-    For details about the inheritance rules please read about
-    [``policies``][google.cloud.OrgPolicy.v2.Policy].
+    For details about the inheritance rules, see
+    [``Policy``][google.cloud.orgpolicy.v2.Policy].
 
     Constraints have a default behavior determined by the
     ``constraint_default`` field, which is the enforcement behavior that
@@ -79,17 +80,24 @@ class Constraint(proto.Message):
             The evaluation behavior of this constraint in
             the absence of a policy.
         list_constraint (google.cloud.orgpolicy_v2.types.Constraint.ListConstraint):
-            Defines this constraint as being a
-            ListConstraint.
+            Defines this constraint as being a list
+            constraint.
 
             This field is a member of `oneof`_ ``constraint_type``.
         boolean_constraint (google.cloud.orgpolicy_v2.types.Constraint.BooleanConstraint):
-            Defines this constraint as being a
-            BooleanConstraint.
+            Defines this constraint as being a boolean
+            constraint.
 
             This field is a member of `oneof`_ ``constraint_type``.
         supports_dry_run (bool):
             Shows if dry run is supported for this
+            constraint or not.
+        equivalent_constraint (str):
+            Managed constraint and canned constraint
+            sometimes can have equivalents. This field is
+            used to store the equivalent constraint name.
+        supports_simulation (bool):
+            Shows if simulation is supported for this
             constraint or not.
     """
 
@@ -102,7 +110,8 @@ class Constraint(proto.Message):
         Values:
             CONSTRAINT_DEFAULT_UNSPECIFIED (0):
                 This is only used for distinguishing unset
-                values and should never be used.
+                values and should never be used. Results in an
+                error.
             ALLOW (1):
                 Indicate that all values are allowed for list
                 constraints. Indicate that enforcement is off
@@ -117,9 +126,9 @@ class Constraint(proto.Message):
         DENY = 2
 
     class ListConstraint(proto.Message):
-        r"""A constraint that allows or disallows a list of string
-        values, which are configured by an Organization Policy
-        administrator with a policy.
+        r"""A constraint type that allows or disallows a list of string values,
+        which are configured in the
+        [``PolicyRule``][google.cloud.orgpolicy.v2.PolicySpec.PolicyRule].
 
         Attributes:
             supports_in (bool):
@@ -144,15 +153,224 @@ class Constraint(proto.Message):
             number=2,
         )
 
-    class BooleanConstraint(proto.Message):
-        r"""A constraint that is either enforced or not.
+    class CustomConstraintDefinition(proto.Message):
+        r"""Custom constraint definition. Defines this as a managed
+        constraint.
 
-        For example, a constraint
-        ``constraints/compute.disableSerialPortAccess``. If it is enforced
-        on a VM instance, serial port connections will not be opened to that
-        instance.
+        Attributes:
+            resource_types (MutableSequence[str]):
+                The resource instance type on which this policy applies.
+                Format will be of the form : ``<service name>/<type>``
+                Example:
 
+                -  ``compute.googleapis.com/Instance``.
+            method_types (MutableSequence[google.cloud.orgpolicy_v2.types.Constraint.CustomConstraintDefinition.MethodType]):
+                All the operations being applied for this
+                constraint.
+            condition (str):
+                Org policy condition/expression. For example:
+                ``resource.instanceName.matches("[production|test]_.*_(\d)+")``
+                or, ``resource.management.auto_upgrade == true``
+
+                The max length of the condition is 1000 characters.
+            action_type (google.cloud.orgpolicy_v2.types.Constraint.CustomConstraintDefinition.ActionType):
+                Allow or deny type.
+            parameters (MutableMapping[str, google.cloud.orgpolicy_v2.types.Constraint.CustomConstraintDefinition.Parameter]):
+                Stores the structure of
+                [``Parameters``][google.cloud.orgpolicy.v2.Constraint.CustomConstraintDefinition.Parameter]
+                used by the constraint condition. The key of ``map``
+                represents the name of the parameter.
         """
+
+        class MethodType(proto.Enum):
+            r"""The operation for which this constraint will be applied. To apply
+            this constraint only when creating new resources, the
+            ``method_types`` should be ``CREATE`` only. To apply this constraint
+            when creating or deleting resources, the ``method_types`` should be
+            ``CREATE`` and ``DELETE``.
+
+            ``UPDATE``-only custom constraints are not supported. Use ``CREATE``
+            or ``CREATE, UPDATE``.
+
+            Values:
+                METHOD_TYPE_UNSPECIFIED (0):
+                    This is only used for distinguishing unset
+                    values and should never be used. Results in an
+                    error.
+                CREATE (1):
+                    Constraint applied when creating the
+                    resource.
+                UPDATE (2):
+                    Constraint applied when updating the
+                    resource.
+                DELETE (3):
+                    Constraint applied when deleting the
+                    resource. Not currently supported.
+                REMOVE_GRANT (4):
+                    Constraint applied when removing an IAM
+                    grant.
+                GOVERN_TAGS (5):
+                    Constraint applied when enforcing forced
+                    tagging.
+            """
+            METHOD_TYPE_UNSPECIFIED = 0
+            CREATE = 1
+            UPDATE = 2
+            DELETE = 3
+            REMOVE_GRANT = 4
+            GOVERN_TAGS = 5
+
+        class ActionType(proto.Enum):
+            r"""Allow or deny type.
+
+            Values:
+                ACTION_TYPE_UNSPECIFIED (0):
+                    This is only used for distinguishing unset
+                    values and should never be used. Results in an
+                    error.
+                ALLOW (1):
+                    Allowed action type.
+                DENY (2):
+                    Deny action type.
+            """
+            ACTION_TYPE_UNSPECIFIED = 0
+            ALLOW = 1
+            DENY = 2
+
+        class Parameter(proto.Message):
+            r"""Defines a parameter structure.
+
+            Attributes:
+                type_ (google.cloud.orgpolicy_v2.types.Constraint.CustomConstraintDefinition.Parameter.Type):
+                    Type of the parameter.
+                default_value (google.protobuf.struct_pb2.Value):
+                    Sets the value of the parameter in an
+                    assignment if no value is given.
+                valid_values_expr (str):
+                    Provides a CEL expression to specify the
+                    acceptable parameter values during assignment.
+                    For example, parameterName in
+                    ("parameterValue1", "parameterValue2")
+                metadata (google.cloud.orgpolicy_v2.types.Constraint.CustomConstraintDefinition.Parameter.Metadata):
+                    Defines subproperties primarily used by the
+                    UI to display user-friendly information.
+                item (google.cloud.orgpolicy_v2.types.Constraint.CustomConstraintDefinition.Parameter.Type):
+                    Determines the parameter's value structure. For example,
+                    ``LIST<STRING>`` can be specified by defining
+                    ``type: LIST``, and ``item: STRING``.
+            """
+
+            class Type(proto.Enum):
+                r"""All valid types of parameter.
+
+                Values:
+                    TYPE_UNSPECIFIED (0):
+                        This is only used for distinguishing unset
+                        values and should never be used. Results in an
+                        error.
+                    LIST (1):
+                        List parameter type.
+                    STRING (2):
+                        String parameter type.
+                    BOOLEAN (3):
+                        Boolean parameter type.
+                """
+                TYPE_UNSPECIFIED = 0
+                LIST = 1
+                STRING = 2
+                BOOLEAN = 3
+
+            class Metadata(proto.Message):
+                r"""Defines Metadata structure.
+
+                Attributes:
+                    description (str):
+                        Detailed description of what this ``parameter`` is and use
+                        of it. Mutable.
+                """
+
+                description: str = proto.Field(
+                    proto.STRING,
+                    number=1,
+                )
+
+            type_: "Constraint.CustomConstraintDefinition.Parameter.Type" = proto.Field(
+                proto.ENUM,
+                number=1,
+                enum="Constraint.CustomConstraintDefinition.Parameter.Type",
+            )
+            default_value: struct_pb2.Value = proto.Field(
+                proto.MESSAGE,
+                number=2,
+                message=struct_pb2.Value,
+            )
+            valid_values_expr: str = proto.Field(
+                proto.STRING,
+                number=3,
+            )
+            metadata: "Constraint.CustomConstraintDefinition.Parameter.Metadata" = (
+                proto.Field(
+                    proto.MESSAGE,
+                    number=4,
+                    message="Constraint.CustomConstraintDefinition.Parameter.Metadata",
+                )
+            )
+            item: "Constraint.CustomConstraintDefinition.Parameter.Type" = proto.Field(
+                proto.ENUM,
+                number=5,
+                enum="Constraint.CustomConstraintDefinition.Parameter.Type",
+            )
+
+        resource_types: MutableSequence[str] = proto.RepeatedField(
+            proto.STRING,
+            number=1,
+        )
+        method_types: MutableSequence[
+            "Constraint.CustomConstraintDefinition.MethodType"
+        ] = proto.RepeatedField(
+            proto.ENUM,
+            number=2,
+            enum="Constraint.CustomConstraintDefinition.MethodType",
+        )
+        condition: str = proto.Field(
+            proto.STRING,
+            number=3,
+        )
+        action_type: "Constraint.CustomConstraintDefinition.ActionType" = proto.Field(
+            proto.ENUM,
+            number=4,
+            enum="Constraint.CustomConstraintDefinition.ActionType",
+        )
+        parameters: MutableMapping[
+            str, "Constraint.CustomConstraintDefinition.Parameter"
+        ] = proto.MapField(
+            proto.STRING,
+            proto.MESSAGE,
+            number=5,
+            message="Constraint.CustomConstraintDefinition.Parameter",
+        )
+
+    class BooleanConstraint(proto.Message):
+        r"""A constraint type is enforced or not enforced, which is configured
+        in the
+        [``PolicyRule``][google.cloud.orgpolicy.v2.PolicySpec.PolicyRule].
+
+        If ``customConstraintDefinition`` is defined, this constraint is a
+        managed constraint.
+
+        Attributes:
+            custom_constraint_definition (google.cloud.orgpolicy_v2.types.Constraint.CustomConstraintDefinition):
+                Custom constraint definition. Defines this as
+                a managed constraint.
+        """
+
+        custom_constraint_definition: "Constraint.CustomConstraintDefinition" = (
+            proto.Field(
+                proto.MESSAGE,
+                number=1,
+                message="Constraint.CustomConstraintDefinition",
+            )
+        )
 
     name: str = proto.Field(
         proto.STRING,
@@ -187,6 +405,14 @@ class Constraint(proto.Message):
         proto.BOOL,
         number=7,
     )
+    equivalent_constraint: str = proto.Field(
+        proto.STRING,
+        number=8,
+    )
+    supports_simulation: bool = proto.Field(
+        proto.BOOL,
+        number=9,
+    )
 
 
 class CustomConstraint(proto.Message):
@@ -214,14 +440,15 @@ class CustomConstraint(proto.Message):
         resource_types (MutableSequence[str]):
             Immutable. The resource instance type on which this policy
             applies. Format will be of the form :
-            ``<canonical service name>/<type>`` Example:
+            ``<service name>/<type>`` Example:
 
             -  ``compute.googleapis.com/Instance``.
         method_types (MutableSequence[google.cloud.orgpolicy_v2.types.CustomConstraint.MethodType]):
             All the operations being applied for this
             constraint.
         condition (str):
-            Org policy condition/expression. For example:
+            A Common Expression Language (CEL) condition which is used
+            in the evaluation of the constraint. For example:
             ``resource.instanceName.matches("[production|test]_.*_(\d)+")``
             or, ``resource.management.auto_upgrade == true``
 
@@ -238,23 +465,25 @@ class CustomConstraint(proto.Message):
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The last time this custom constraint was
             updated. This represents the last time that the
-            ``CreateCustomConstraint`` or ``UpdateCustomConstraint`` RPC
-            was called
+            ``CreateCustomConstraint`` or ``UpdateCustomConstraint``
+            methods were called.
     """
 
     class MethodType(proto.Enum):
         r"""The operation for which this constraint will be applied. To apply
-        this constraint only when creating new VMs, the ``method_types``
-        should be ``CREATE`` only. To apply this constraint when creating or
-        deleting VMs, the ``method_types`` should be ``CREATE`` and
-        ``DELETE``.
+        this constraint only when creating new resources, the
+        ``method_types`` should be ``CREATE`` only. To apply this constraint
+        when creating or deleting resources, the ``method_types`` should be
+        ``CREATE`` and ``DELETE``.
 
         ``UPDATE`` only custom constraints are not supported. Use ``CREATE``
         or ``CREATE, UPDATE``.
 
         Values:
             METHOD_TYPE_UNSPECIFIED (0):
-                Unspecified. Results in an error.
+                This is only used for distinguishing unset
+                values and should never be used. Results in an
+                error.
             CREATE (1):
                 Constraint applied when creating the
                 resource.
@@ -263,7 +492,7 @@ class CustomConstraint(proto.Message):
                 resource.
             DELETE (3):
                 Constraint applied when deleting the
-                resource. Not supported yet.
+                resource. Not currently supported.
             REMOVE_GRANT (4):
                 Constraint applied when removing an IAM
                 grant.
@@ -283,7 +512,9 @@ class CustomConstraint(proto.Message):
 
         Values:
             ACTION_TYPE_UNSPECIFIED (0):
-                Unspecified. Results in an error.
+                This is only used for distinguishing unset
+                values and should never be used. Results in an
+                error.
             ALLOW (1):
                 Allowed action type.
             DENY (2):

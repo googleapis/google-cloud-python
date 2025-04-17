@@ -627,11 +627,11 @@ class OrgPolicyGrpcTransport(OrgPolicyTransport):
     ) -> Callable[[orgpolicy.GetCustomConstraintRequest], constraint.CustomConstraint]:
         r"""Return a callable for the get custom constraint method over gRPC.
 
-        Gets a custom constraint.
+        Gets a custom or managed constraint.
 
         Returns a ``google.rpc.Status`` with
-        ``google.rpc.Code.NOT_FOUND`` if the custom constraint does not
-        exist.
+        ``google.rpc.Code.NOT_FOUND`` if the custom or managed
+        constraint does not exist.
 
         Returns:
             Callable[[~.GetCustomConstraintRequest],
