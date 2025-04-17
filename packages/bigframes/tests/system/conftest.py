@@ -1263,10 +1263,10 @@ WHERE
 
 @pytest.fixture(scope="session")
 def llm_fine_tune_df_default_index(
-    test_session: bigframes.Session,
+    session: bigframes.Session,
 ) -> bigframes.dataframe.DataFrame:
     training_table_name = "llm_tuning.emotion_classification_train"
-    df = test_session.read_gbq(training_table_name).dropna().head(30)
+    df = session.read_gbq(training_table_name).dropna().head(30)
     prefix = "Please do sentiment analysis on the following text and only output a number from 0 to 5 where 0 means sadness, 1 means joy, 2 means love, 3 means anger, 4 means fear, and 5 means surprise. Text: "
     df["prompt"] = prefix + df["text"]
     df["label"] = df["label"].astype("string")
