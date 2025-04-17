@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-bigtable/#history
 
+## [2.30.1](https://github.com/googleapis/python-bigtable/compare/v2.30.0...v2.30.1) (2025-04-17)
+
+
+### Bug Fixes
+
+* Populate SQL app_profile_id header even when it is unset ([#1109](https://github.com/googleapis/python-bigtable/issues/1109)) ([17b75bd](https://github.com/googleapis/python-bigtable/commit/17b75bd746cb0a616f64a05eb0ed72b46de28a17))
+
 ## [2.30.0](https://github.com/googleapis/python-bigtable/compare/v2.29.0...v2.30.0) (2025-03-18)
 
 
