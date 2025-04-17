@@ -225,7 +225,14 @@ class BlobAccessor(base.SeriesMethods):
             ops.JSONValue(json_path="$.access_urls.write_url")
         )
 
-    def display(self, n: int = 3, *, content_type: str = ""):
+    def display(
+        self,
+        n: int = 3,
+        *,
+        content_type: str = "",
+        width: Optional[int] = None,
+        height: Optional[int] = None,
+    ):
         """Display the blob content in the IPython Notebook environment. Only works for image type now.
 
         .. note::
@@ -234,6 +241,8 @@ class BlobAccessor(base.SeriesMethods):
         Args:
             n (int, default 3): number of sample blob objects to display.
             content_type (str, default ""): content type of the blob. If unset, use the blob metadata of the storage. Possible values are "image", "audio" and "video".
+            width (int or None, default None): width in pixels that the image/video are constrained to. If unset, use the image/video's original size or ratio. No-op for other content types.
+            height (int or None, default None): height in pixels that the image/video are constrained to. If unset, use the image/video's original size or ratio. No-op for other content types.
         """
         # col name doesn't matter here. Rename to avoid column name conflicts
         df = bigframes.series.Series(self._block).rename("blob_col").to_frame()
@@ -259,13 +268,17 @@ class BlobAccessor(base.SeriesMethods):
             content_type = cast(str, content_type).casefold()
 
             if content_type.startswith("image"):
-                ipy_display.display(ipy_display.Image(url=read_url))
+                ipy_display.display(
+                    ipy_display.Image(url=read_url, width=width, height=height)
+                )
             elif content_type.startswith("audio"):
                 # using url somehow doesn't work with audios
                 response = requests.get(read_url)
                 ipy_display.display(ipy_display.Audio(response.content))
             elif content_type.startswith("video"):
-                ipy_display.display(ipy_display.Video(read_url))
+                ipy_display.display(
+                    ipy_display.Video(read_url, width=width, height=height)
+                )
             else:  # display as raw data
                 response = requests.get(read_url)
                 ipy_display.display(response.content)
