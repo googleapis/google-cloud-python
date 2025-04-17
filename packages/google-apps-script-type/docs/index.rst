@@ -1,3 +1,6 @@
+.. include:: multiprocessing.rst
+
+
 .. include:: README.rst
 
 .. include:: multiprocessing.rst
