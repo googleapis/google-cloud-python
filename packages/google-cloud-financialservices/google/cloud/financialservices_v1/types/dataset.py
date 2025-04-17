@@ -44,7 +44,7 @@ class Dataset(proto.Message):
     Attributes:
         name (str):
             Output only. The resource name of the Dataset. format:
-            "/projects/{project_num}/locations/{location}/instances/{instance}/datasets/{dataset}".
+            ``/projects/{project_num}/locations/{location}/instances/{instance}/datasets/{dataset}``
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The timestamp of creation of
             this resource.

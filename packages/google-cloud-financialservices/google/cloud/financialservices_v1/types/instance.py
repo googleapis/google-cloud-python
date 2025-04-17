@@ -53,9 +53,9 @@ class Instance(proto.Message):
 
     Attributes:
         name (str):
-            Output only. The full path to the Instance
-            resource in this API. format:
-            "projects/{project}/locations/{location}/instances/{instance}".
+            Output only. The full path to the Instance resource in this
+            API. format:
+            ``projects/{project}/locations/{location}/instances/{instance}``
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Timestamp when the Instance was
             created. Assigned by the server.
@@ -70,8 +70,7 @@ class Instance(proto.Message):
         kms_key (str):
             Required. The KMS key name used for CMEK
             (encryption-at-rest). format:
-
-            "projects/{project}/locations/{location}/keyRings/{keyRing}/cryptoKeys/{cryptoKey}"
+            ``projects/{project}/locations/{location}/keyRings/{keyRing}/cryptoKeys/{cryptoKey}``
             VPC-SC restrictions apply.
     """
 
@@ -372,21 +371,21 @@ class ImportRegisteredPartiesRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The full path to the Instance
-            resource in this API. format:
-            "projects/{project}/locations/{location}/instances/{instance}".
+            Required. The full path to the Instance resource in this
+            API. format:
+            ``projects/{project}/locations/{location}/instances/{instance}``
         party_tables (MutableSequence[str]):
             Optional. List of BigQuery tables. Union of tables will be
             taken if there is more than one table. VPC-SC restrictions
-            apply. format: "bq://{project}.{bqDatasetID}.{bqTableID}"
+            apply. format: ``bq://{project}.{bqDatasetID}.{bqTableID}``
             Use of ``datasets`` is preferred over the latter due to its
             simplicity and the reduced risk of errors ``party_tables``
             and ``datasets`` must not be provided at the same time
         mode (google.cloud.financialservices_v1.types.ImportRegisteredPartiesRequest.UpdateMode):
             Required. Mode of the request.
         validate_only (bool):
-            Optional. Is the request will not register
-            the parties, just determine what woud happen.
+            Optional. If the request will not register
+            the parties, just determine what would happen.
         line_of_business (google.cloud.financialservices_v1.types.LineOfBusiness):
             Required. LineOfBusiness for the specified
             registered parties.
@@ -493,9 +492,9 @@ class ExportRegisteredPartiesRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The full path to the Instance
-            resource in this API. format:
-            "projects/{project}/locations/{location}/instances/{instance}".
+            Required. The full path to the Instance resource in this
+            API. format:
+            ``projects/{project}/locations/{location}/instances/{instance}``
         dataset (google.cloud.financialservices_v1.types.BigQueryDestination):
             Required. The location to output the
             RegisteredParties.

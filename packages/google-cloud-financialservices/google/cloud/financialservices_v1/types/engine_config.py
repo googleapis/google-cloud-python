@@ -49,7 +49,7 @@ class EngineConfig(proto.Message):
     Attributes:
         name (str):
             Output only. The resource name of the EngineConfig. format:
-            "/projects/{project_num}/locations/{location}/instances/{instance}/engineConfigs/{engine_config}".
+            ``/projects/{project_num}/locations/{location}/instances/{instance}/engineConfigs/{engine_config}``
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The timestamp of creation of
             this resource.
@@ -64,7 +64,7 @@ class EngineConfig(proto.Message):
         engine_version (str):
             Required. The resource name of the EngineVersion used in
             this model tuning. format:
-            "/projects/{project_num}/locations/{location}/instances/{instance}/engineVersions/{engine_version}".
+            ``/projects/{project_num}/locations/{location}/instances/{instance}/engineVersions/{engine_version}``
         tuning (google.cloud.financialservices_v1.types.EngineConfig.Tuning):
             Optional. Configuration for tuning in creation of the
             EngineConfig. This field is required if
@@ -140,7 +140,7 @@ class EngineConfig(proto.Message):
                 this model tuning. For information about how primary and
                 auxiliary datasets are used, refer to the engine version's
                 documentation. Format:
-                "/projects/{project_num}/locations/{location}/instances/{instance}/datasets/{dataset}".
+                ``/projects/{project_num}/locations/{location}/instances/{instance}/datasets/{dataset}``
             end_time (google.protobuf.timestamp_pb2.Timestamp):
                 Required. End_time specifies the latest time from which
                 labels are used and from which data is used to generate
@@ -188,11 +188,11 @@ class EngineConfig(proto.Message):
             source_engine_config (str):
                 Required. The resource name of the source EngineConfig whose
                 outputs are used. Format:
-                "/projects/{project_num}/locations/{location}/instances/{instance}/engineConfigs/{engine_config}".
+                ``/projects/{project_num}/locations/{location}/instances/{instance}/engineConfigs/{engine_config}``
             source_engine_version (str):
                 Output only. The resource name of the EngineVersion that was
                 used in the tuning run. Format:
-                "/projects/{project_num}/locations/{location}/instances/{instance}/engineVersions/{engine_version}".
+                ``/projects/{project_num}/locations/{location}/instances/{instance}/engineVersions/{engine_version}``
         """
 
         source_engine_config: str = proto.Field(

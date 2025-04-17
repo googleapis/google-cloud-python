@@ -43,7 +43,7 @@ class EngineVersion(proto.Message):
         name (str):
             Output only. Identifier. The resource name of the
             EngineVersion format:
-            "/projects/{project_num}/locations/{location}/instances/{instance}/engineVersions/{engine_version}".
+            ``/projects/{project_num}/locations/{location}/instances/{instance}/engineVersions/{engine_version}``
         state (google.cloud.financialservices_v1.types.EngineVersion.State):
             Output only. The state of the version.
         expected_limitation_start_time (google.protobuf.timestamp_pb2.Timestamp):
