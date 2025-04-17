@@ -2033,7 +2033,9 @@ class BigtableClient(metaclass=BigtableClientMeta):
         if regex_match and regex_match.group("name"):
             header_params["name"] = regex_match.group("name")
 
-        if request.app_profile_id:
+        if request.app_profile_id is not None:
+            # prepare_query currently requires app_profile_id header to be set
+            # even when the request param is unpopulated TODO: remove after support is added
             header_params["app_profile_id"] = request.app_profile_id
 
         if header_params:
@@ -2150,7 +2152,9 @@ class BigtableClient(metaclass=BigtableClientMeta):
         if regex_match and regex_match.group("name"):
             header_params["name"] = regex_match.group("name")
 
-        if request.app_profile_id:
+        if request.app_profile_id is not None:
+            # execute_query currently requires app_profile_id header to be set
+            # even when the request param is unpopulated TODO: remove after support is added
             header_params["app_profile_id"] = request.app_profile_id
 
         if header_params:
