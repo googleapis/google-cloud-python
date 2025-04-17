@@ -1217,7 +1217,7 @@ class TieringPolicy(proto.Message):
         cooling_threshold_days (int):
             Optional. Time in days to mark the volume's
             data block as cold and make it eligible for
-            tiering, can be range from 7-183. Default is 31.
+            tiering, can be range from 2-183. Default is 31.
 
             This field is a member of `oneof`_ ``_cooling_threshold_days``.
     """
