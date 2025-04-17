@@ -19,9 +19,9 @@ import pytest
 
 import bigframes
 import bigframes.pandas as bpd
-from tests.system.utils import skip_legacy_pandas
 
 pytest.importorskip("polars")
+pytest.importorskip("pandas", minversion="2.0.0")
 
 
 # All tests in this file require polars to be installed to pass.
@@ -50,8 +50,6 @@ def small_inline_frame() -> pd.DataFrame:
     return df
 
 
-# These tests should be unit tests, but Session object is tightly coupled to BigQuery client.
-@skip_legacy_pandas
 def test_polars_local_engine_add(
     small_inline_frame: pd.DataFrame, polars_session: bigframes.Session
 ):
@@ -63,7 +61,6 @@ def test_polars_local_engine_add(
     pandas.testing.assert_series_equal(bf_result, pd_result)
 
 
-@skip_legacy_pandas
 def test_polars_local_engine_order_by(small_inline_frame: pd.DataFrame, polars_session):
     pd_df = small_inline_frame
     bf_df = bpd.DataFrame(pd_df, session=polars_session)
@@ -73,7 +70,6 @@ def test_polars_local_engine_order_by(small_inline_frame: pd.DataFrame, polars_s
     pandas.testing.assert_frame_equal(bf_result, pd_result)
 
 
-@skip_legacy_pandas
 def test_polars_local_engine_filter(small_inline_frame: pd.DataFrame, polars_session):
     pd_df = small_inline_frame
     bf_df = bpd.DataFrame(pd_df, session=polars_session)
@@ -83,7 +79,6 @@ def test_polars_local_engine_filter(small_inline_frame: pd.DataFrame, polars_ses
     pandas.testing.assert_frame_equal(bf_result, pd_result)
 
 
-@skip_legacy_pandas
 def test_polars_local_engine_reset_index(
     small_inline_frame: pd.DataFrame, polars_session
 ):
@@ -96,7 +91,6 @@ def test_polars_local_engine_reset_index(
     pandas.testing.assert_frame_equal(bf_result, pd_result, check_index_type=False)
 
 
-@skip_legacy_pandas
 def test_polars_local_engine_join_binop(polars_session):
     pd_df_1 = pd.DataFrame({"colA": [1, None, 3], "colB": [3, 1, 2]}, index=[1, 2, 3])
     pd_df_2 = pd.DataFrame(
@@ -116,7 +110,6 @@ def test_polars_local_engine_join_binop(polars_session):
     )
 
 
-@skip_legacy_pandas
 @pytest.mark.parametrize(
     "join_type",
     ["inner", "left", "right", "outer"],
@@ -139,7 +132,6 @@ def test_polars_local_engine_joins(join_type, polars_session):
     )
 
 
-@skip_legacy_pandas
 def test_polars_local_engine_agg(polars_session):
     pd_df = pd.DataFrame(
         {"colA": [True, False, True, False, True], "colB": [1, 2, 3, 4, 5]}
@@ -152,7 +144,6 @@ def test_polars_local_engine_agg(polars_session):
     pandas.testing.assert_frame_equal(bf_result, pd_result, check_dtype=False, check_index_type=False)  # type: ignore
 
 
-@skip_legacy_pandas
 def test_polars_local_engine_groupby_sum(polars_session):
     pd_df = pd.DataFrame(
         {"colA": [True, False, True, False, True], "colB": [1, 2, 3, 4, 5]}
@@ -166,7 +157,6 @@ def test_polars_local_engine_groupby_sum(polars_session):
     )
 
 
-@skip_legacy_pandas
 def test_polars_local_engine_cumsum(small_inline_frame, polars_session):
     pd_df = small_inline_frame[["int1", "int2"]]
     bf_df = bpd.DataFrame(pd_df, session=polars_session)
@@ -176,7 +166,6 @@ def test_polars_local_engine_cumsum(small_inline_frame, polars_session):
     pandas.testing.assert_frame_equal(bf_result, pd_result)
 
 
-@skip_legacy_pandas
 def test_polars_local_engine_explode(small_inline_frame, polars_session):
     pd_df = small_inline_frame
     bf_df = bpd.DataFrame(pd_df, session=polars_session)
@@ -206,7 +195,6 @@ def test_polars_local_engine_explode(small_inline_frame, polars_session):
         (7, -7, -2),
     ],
 )
-@skip_legacy_pandas
 def test_polars_local_engine_slice(
     small_inline_frame, polars_session, start, stop, step
 ):

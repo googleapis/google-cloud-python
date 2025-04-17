@@ -20,8 +20,7 @@ import google.cloud.bigquery
 import pytest
 
 import bigframes.session._io.bigquery.read_gbq_table as bf_read_gbq_table
-
-from .. import resources
+from bigframes.testing import mocks
 
 
 @pytest.mark.parametrize(
@@ -87,7 +86,7 @@ def test_infer_unique_columns(index_cols, primary_keys, values_distinct, expecte
     bqclient.query_and_wait.return_value = (
         {"total_count": 3, "distinct_count": 3 if values_distinct else 2},
     )
-    session = resources.create_bigquery_session(
+    session = mocks.create_bigquery_session(
         bqclient=bqclient, table_schema=table.schema
     )
     table._properties["location"] = session._location

@@ -865,13 +865,16 @@ def test_read_pandas_tokyo(
     assert len(expected) == result.total_rows
 
 
-# old versions don't support local casting to arrow duration
-@utils.skip_legacy_pandas
 @pytest.mark.parametrize(
     "write_engine",
     ["default", "bigquery_inline", "bigquery_load", "bigquery_streaming"],
 )
 def test_read_pandas_timedelta_dataframes(session, write_engine):
+    pytest.importorskip(
+        "pandas",
+        minversion="2.0.0",
+        reason="old versions don't support local casting to arrow duration",
+    )
     pandas_df = pd.DataFrame({"my_col": pd.to_timedelta([1, 2, 3], unit="d")})
 
     actual_result = session.read_pandas(
@@ -1021,7 +1024,6 @@ def test_read_pandas_w_nested_json_fails(session, write_engine):
         session.read_pandas(pd_s, write_engine=write_engine)
 
 
-@utils.skip_legacy_pandas
 @pytest.mark.parametrize(
     ("write_engine"),
     [
@@ -1031,6 +1033,8 @@ def test_read_pandas_w_nested_json_fails(session, write_engine):
     ],
 )
 def test_read_pandas_w_nested_json(session, write_engine):
+    # TODO: supply a reason why this isn't compatible with pandas 1.x
+    pytest.importorskip("pandas", minversion="2.0.0")
     data = [
         [{"json_field": "1"}],
         [{"json_field": None}],
@@ -1078,7 +1082,6 @@ def test_read_pandas_w_nested_json_index_fails(session, write_engine):
         session.read_pandas(pd_idx, write_engine=write_engine)
 
 
-@utils.skip_legacy_pandas
 @pytest.mark.parametrize(
     ("write_engine"),
     [
@@ -1088,6 +1091,8 @@ def test_read_pandas_w_nested_json_index_fails(session, write_engine):
     ],
 )
 def test_read_pandas_w_nested_json_index(session, write_engine):
+    # TODO: supply a reason why this isn't compatible with pandas 1.x
+    pytest.importorskip("pandas", minversion="2.0.0")
     data = [
         [{"json_field": "1"}],
         [{"json_field": None}],

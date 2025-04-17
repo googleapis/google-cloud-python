@@ -17,7 +17,7 @@ import pandas
 import pytest
 
 import bigframes.pandas as bpd
-from tests.system.utils import assert_pandas_df_equal, skip_legacy_pandas
+from tests.system.utils import assert_pandas_df_equal
 
 
 def test_multi_index_from_arrays():
@@ -45,8 +45,9 @@ def test_multi_index_from_arrays():
     pandas.testing.assert_index_equal(bf_idx.to_pandas(), pd_idx)
 
 
-@skip_legacy_pandas
 def test_read_pandas_multi_index_axes():
+    # TODO: supply a reason why this isn't compatible with pandas 1.x
+    pytest.importorskip("pandas", minversion="2.0.0")
     index = pandas.MultiIndex.from_arrays(
         [
             pandas.Index([4, 99], dtype=pandas.Int64Dtype()),
@@ -759,8 +760,9 @@ def test_column_multi_index_binary_op(scalars_df_index, scalars_pandas_df_index)
     pandas.testing.assert_series_equal(bf_result, pd_result)
 
 
-@skip_legacy_pandas
 def test_column_multi_index_any():
+    # TODO: supply a reason why this isn't compatible with pandas 1.x
+    pytest.importorskip("pandas", minversion="2.0.0")
     columns = pandas.MultiIndex.from_tuples(
         [("col0", "col00"), ("col0", "col00"), ("col1", "col11")]
     )

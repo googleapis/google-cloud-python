@@ -19,11 +19,10 @@ from bigframes_vendored.ibis.expr import datatypes as ibis_types
 import pandas
 import pytest
 
-import bigframes.core.compile.ibis_types
 import bigframes.dtypes
 import bigframes.functions.function as bff
 import bigframes.series
-from tests.unit import resources
+from bigframes.testing import mocks
 
 
 @pytest.mark.parametrize(
@@ -41,7 +40,7 @@ from tests.unit import resources
 )
 def test_series_input_types_to_str(series_type):
     """Check that is_row_processor=True uses str as the input type to serialize a row."""
-    session = resources.create_bigquery_session()
+    session = mocks.create_bigquery_session()
     remote_function_decorator = bff.remote_function(
         session=session, cloud_function_service_account="default"
     )
@@ -80,7 +79,7 @@ def test_supported_types_correspond():
 
 
 def test_missing_input_types():
-    session = resources.create_bigquery_session()
+    session = mocks.create_bigquery_session()
     remote_function_decorator = bff.remote_function(
         session=session, cloud_function_service_account="default"
     )
@@ -98,7 +97,7 @@ def test_missing_input_types():
 
 
 def test_missing_output_type():
-    session = resources.create_bigquery_session()
+    session = mocks.create_bigquery_session()
     remote_function_decorator = bff.remote_function(
         session=session, cloud_function_service_account="default"
     )

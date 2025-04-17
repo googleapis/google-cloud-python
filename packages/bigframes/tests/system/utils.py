@@ -14,7 +14,6 @@
 
 import base64
 import decimal
-import functools
 from typing import Iterable, Optional, Set, Union
 
 import geopandas as gpd  # type: ignore
@@ -64,16 +63,6 @@ ML_MULTIMODAL_GENERATE_EMBEDDING_OUTPUT = [
     "ml_generate_embedding_end_sec",
     "content",
 ]
-
-
-def skip_legacy_pandas(test):
-    @functools.wraps(test)
-    def wrapper(*args, **kwds):
-        if pd.__version__.startswith("1."):
-            pytest.skip("Skips pandas 1.x as not compatible with 2.x behavior.")
-        return test(*args, **kwds)
-
-    return wrapper
 
 
 # Prefer this function for tests that run in both ordered and unordered mode

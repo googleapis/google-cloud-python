@@ -12,17 +12,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from unittest.mock import Mock
+from unittest import mock
 
 import pytest
 
-from . import resources
+from bigframes.testing import mocks
 
 
 @pytest.fixture
 def mock_df(monkeypatch: pytest.MonkeyPatch):
-    dataframe = resources.create_dataframe(monkeypatch)
-    monkeypatch.setattr(dataframe, "to_pandas", Mock())
+    dataframe = mocks.create_dataframe(monkeypatch)
+    monkeypatch.setattr(dataframe, "to_pandas", mock.Mock())
     return dataframe
 
 

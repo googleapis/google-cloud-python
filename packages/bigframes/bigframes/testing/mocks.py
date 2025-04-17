@@ -36,12 +36,17 @@ TEST_SCHEMA = (google.cloud.bigquery.SchemaField("col", "INTEGER"),)
 
 
 def create_bigquery_session(
+    *,
     bqclient: Optional[mock.Mock] = None,
     session_id: str = "abcxyz",
     table_schema: Sequence[google.cloud.bigquery.SchemaField] = TEST_SCHEMA,
     anonymous_dataset: Optional[google.cloud.bigquery.DatasetReference] = None,
     location: str = "test-region",
 ) -> bigframes.Session:
+    """[Experimental] Create a mock BigQuery DataFrames session that avoids making Google Cloud API calls.
+
+    Intended for unit test environments that don't have access to the network.
+    """
     credentials = mock.create_autospec(
         google.auth.credentials.Credentials, instance=True
     )
@@ -108,8 +113,12 @@ def create_bigquery_session(
 
 
 def create_dataframe(
-    monkeypatch: pytest.MonkeyPatch, session: Optional[bigframes.Session] = None
+    monkeypatch: pytest.MonkeyPatch, *, session: Optional[bigframes.Session] = None
 ) -> bigframes.dataframe.DataFrame:
+    """[Experimental] Create a mock DataFrame that avoids making Google Cloud API calls.
+
+    Intended for unit test environments that don't have access to the network.
+    """
     if session is None:
         session = create_bigquery_session()
 

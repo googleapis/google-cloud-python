@@ -16,7 +16,7 @@ import pandas as pd
 import pytest
 
 import bigframes.pandas as bpd
-from tests.system.utils import assert_pandas_df_equal, skip_legacy_pandas
+from tests.system.utils import assert_pandas_df_equal
 
 # =================
 # DataFrame.groupby
@@ -94,7 +94,6 @@ def test_dataframe_groupby_quantile(scalars_df_index, scalars_pandas_df_index, q
     )
 
 
-@skip_legacy_pandas
 @pytest.mark.parametrize(
     ("na_option", "method", "ascending"),
     [
@@ -132,6 +131,8 @@ def test_dataframe_groupby_rank(
     method,
     ascending,
 ):
+    # TODO: supply a reason why this isn't compatible with pandas 1.x
+    pytest.importorskip("pandas", minversion="2.0.0")
     col_names = ["int64_too", "float64_col", "int64_col", "string_col"]
     bf_result = (
         scalars_df_index[col_names]
@@ -599,7 +600,6 @@ def test_series_groupby_agg_list(scalars_df_index, scalars_pandas_df_index):
     )
 
 
-@skip_legacy_pandas
 @pytest.mark.parametrize(
     ("na_option", "method", "ascending"),
     [
@@ -637,6 +637,8 @@ def test_series_groupby_rank(
     method,
     ascending,
 ):
+    # TODO: supply a reason why this isn't compatible with pandas 1.x
+    pytest.importorskip("pandas", minversion="2.0.0")
     col_names = ["int64_col", "string_col"]
     bf_result = (
         scalars_df_index[col_names]

@@ -18,7 +18,6 @@ import pytest
 
 import bigframes.exceptions
 import bigframes.pandas as bpd
-from tests.system.utils import skip_legacy_pandas
 
 
 def test_null_index_to_gbq(session, scalars_df_null_index, dataset_id_not_created):
@@ -126,8 +125,9 @@ def test_null_index_groupby_aggregate(
     pd.testing.assert_frame_equal(bf_result, pd_result, check_dtype=False)
 
 
-@skip_legacy_pandas
 def test_null_index_analytic(scalars_df_null_index, scalars_pandas_df_default_index):
+    # TODO: supply a reason why this isn't compatible with pandas 1.x
+    pytest.importorskip("pandas", minversion="2.0.0")
     bf_result = scalars_df_null_index["int64_col"].cumsum().to_pandas()
     pd_result = scalars_pandas_df_default_index["int64_col"].cumsum()
     pd.testing.assert_series_equal(
@@ -173,7 +173,6 @@ def test_null_index_merge_left_null_index_object(
     assert got.shape == expected.shape
 
 
-@skip_legacy_pandas
 @pytest.mark.parametrize(
     ("expr",),
     [
@@ -185,6 +184,8 @@ def test_null_index_merge_left_null_index_object(
 def test_null_index_df_eval(
     scalars_df_null_index, scalars_pandas_df_default_index, expr
 ):
+    # TODO: supply a reason why this isn't compatible with pandas 1.x
+    pytest.importorskip("pandas", minversion="2.0.0")
 
     bf_result = scalars_df_null_index.eval(expr).to_pandas()
     pd_result = scalars_pandas_df_default_index.eval(expr)
@@ -237,8 +238,9 @@ def test_null_index_merge_two_null_index_objects(
     assert got.shape == expected.shape
 
 
-@skip_legacy_pandas
 def test_null_index_stack(scalars_df_null_index, scalars_pandas_df_default_index):
+    # TODO: supply a reason why this isn't compatible with pandas 1.x
+    pytest.importorskip("pandas", minversion="2.0.0")
     stacking_cols = ["int64_col", "int64_too"]
     bf_result = scalars_df_null_index[stacking_cols].stack().to_pandas()
     pd_result = (

@@ -16,14 +16,13 @@ import google.cloud.bigquery
 import pytest
 
 import bigframes.dataframe
-
-from . import resources
+from bigframes.testing import mocks
 
 
 def test_dataframe_dropna_axis_1_subset_not_implememented(
     monkeypatch: pytest.MonkeyPatch,
 ):
-    dataframe = resources.create_dataframe(monkeypatch)
+    dataframe = mocks.create_dataframe(monkeypatch)
 
     with pytest.raises(NotImplementedError, match="subset"):
         dataframe.dropna(axis=1, subset=["col1", "col2"])
@@ -51,14 +50,14 @@ def test_dataframe_setattr_with_uninitialized_object():
 
 
 def test_dataframe_to_gbq_invalid_destination(monkeypatch: pytest.MonkeyPatch):
-    dataframe = resources.create_dataframe(monkeypatch)
+    dataframe = mocks.create_dataframe(monkeypatch)
 
     with pytest.raises(ValueError, match="no_dataset_or_project"):
         dataframe.to_gbq("no_dataset_or_project")
 
 
 def test_dataframe_to_gbq_invalid_if_exists(monkeypatch: pytest.MonkeyPatch):
-    dataframe = resources.create_dataframe(monkeypatch)
+    dataframe = mocks.create_dataframe(monkeypatch)
 
     with pytest.raises(ValueError, match="notreallyanoption"):
         # Even though the type is annotated with the literals we accept, users
@@ -70,7 +69,7 @@ def test_dataframe_to_gbq_invalid_if_exists(monkeypatch: pytest.MonkeyPatch):
 def test_dataframe_to_gbq_invalid_if_exists_no_destination(
     monkeypatch: pytest.MonkeyPatch,
 ):
-    dataframe = resources.create_dataframe(monkeypatch)
+    dataframe = mocks.create_dataframe(monkeypatch)
 
     with pytest.raises(ValueError, match="append"):
         dataframe.to_gbq(if_exists="append")
@@ -83,8 +82,8 @@ def test_dataframe_to_gbq_writes_to_anonymous_dataset(
     anonymous_dataset = google.cloud.bigquery.DatasetReference.from_string(
         anonymous_dataset_id
     )
-    session = resources.create_bigquery_session(anonymous_dataset=anonymous_dataset)
-    dataframe = resources.create_dataframe(monkeypatch, session=session)
+    session = mocks.create_bigquery_session(anonymous_dataset=anonymous_dataset)
+    dataframe = mocks.create_dataframe(monkeypatch, session=session)
 
     destination = dataframe.to_gbq()
 
@@ -94,7 +93,7 @@ def test_dataframe_to_gbq_writes_to_anonymous_dataset(
 def test_dataframe_semantics_property_future_warning(
     monkeypatch: pytest.MonkeyPatch,
 ):
-    dataframe = resources.create_dataframe(monkeypatch)
+    dataframe = mocks.create_dataframe(monkeypatch)
 
     with bigframes.option_context("experiments.semantic_operators", True), pytest.warns(
         FutureWarning

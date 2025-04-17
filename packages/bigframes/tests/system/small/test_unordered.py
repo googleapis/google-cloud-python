@@ -19,11 +19,7 @@ import pytest
 
 import bigframes.exceptions
 import bigframes.pandas as bpd
-from tests.system.utils import (
-    assert_pandas_df_equal,
-    assert_series_equal,
-    skip_legacy_pandas,
-)
+from tests.system.utils import assert_pandas_df_equal, assert_series_equal
 
 
 def test_unordered_mode_sql_no_hash(unordered_session):
@@ -77,8 +73,9 @@ def test_unordered_mode_print(unordered_session):
     print(df)
 
 
-@skip_legacy_pandas
 def test_unordered_mode_read_gbq(unordered_session):
+    # TODO: supply a reason why this isn't compatible with pandas 1.x
+    pytest.importorskip("pandas", minversion="2.0.0")
     df = unordered_session.read_gbq(
         """SELECT
         [1, 3, 2] AS array_column,
@@ -221,7 +218,6 @@ def test_unordered_mode_no_ambiguity_warning(unordered_session):
         df.groupby("a").head(3)
 
 
-@skip_legacy_pandas
 @pytest.mark.parametrize(
     ("rule", "origin", "data"),
     [
@@ -255,6 +251,8 @@ def test_unordered_mode_no_ambiguity_warning(unordered_session):
     ],
 )
 def test__resample_with_index(unordered_session, rule, origin, data):
+    # TODO: supply a reason why this isn't compatible with pandas 1.x
+    pytest.importorskip("pandas", minversion="2.0.0")
     col = "timestamp_col"
     scalars_df_index = bpd.DataFrame(data, session=unordered_session).set_index(col)
     scalars_pandas_df_index = pd.DataFrame(data).set_index(col)

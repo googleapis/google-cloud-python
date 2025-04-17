@@ -34,7 +34,6 @@ from tests.system.utils import (
     assert_pandas_df_equal,
     assert_series_equal,
     get_first_file_from_wildcard,
-    skip_legacy_pandas,
 )
 
 
@@ -1034,8 +1033,9 @@ def test_series_corr(scalars_dfs):
     assert math.isclose(pd_result, bf_result)
 
 
-@skip_legacy_pandas
 def test_series_autocorr(scalars_dfs):
+    # TODO: supply a reason why this isn't compatible with pandas 1.x
+    pytest.importorskip("pandas", minversion="2.0.0")
     scalars_df, scalars_pandas_df = scalars_dfs
     bf_result = scalars_df["float64_col"].autocorr(2)
     pd_result = scalars_pandas_df["float64_col"].autocorr(2)
@@ -1684,8 +1684,9 @@ def test_binop_right_filtered(scalars_dfs):
         (pd.Series([-1.4, 2.3, None], index=[44, 2, 1]),),
     ],
 )
-@skip_legacy_pandas
 def test_series_binop_w_other_types(scalars_dfs, other):
+    # TODO: supply a reason why this isn't compatible with pandas 1.x
+    pytest.importorskip("pandas", minversion="2.0.0")
     scalars_df, scalars_pandas_df = scalars_dfs
 
     bf_result = (scalars_df["int64_col"].head(3) + other).to_pandas()
@@ -1705,8 +1706,9 @@ def test_series_binop_w_other_types(scalars_dfs, other):
         (pd.Series([-1.4, 2.3, None], index=[44, 2, 1]),),
     ],
 )
-@skip_legacy_pandas
 def test_series_reverse_binop_w_other_types(scalars_dfs, other):
+    # TODO: supply a reason why this isn't compatible with pandas 1.x
+    pytest.importorskip("pandas", minversion="2.0.0")
     scalars_df, scalars_pandas_df = scalars_dfs
 
     bf_result = (other + scalars_df["int64_col"].head(3)).to_pandas()
@@ -1718,8 +1720,9 @@ def test_series_reverse_binop_w_other_types(scalars_dfs, other):
     )
 
 
-@skip_legacy_pandas
 def test_series_combine_first(scalars_dfs):
+    # TODO: supply a reason why this isn't compatible with pandas 1.x
+    pytest.importorskip("pandas", minversion="2.0.0")
     scalars_df, scalars_pandas_df = scalars_dfs
     int64_col = scalars_df["int64_col"].head(7)
     float64_col = scalars_df["float64_col"].tail(7)
@@ -2362,8 +2365,9 @@ def test_series_peek_filtered(scalars_dfs):
     )
 
 
-@skip_legacy_pandas
 def test_series_peek_force(scalars_dfs):
+    # TODO: supply a reason why this isn't compatible with pandas 1.x
+    pytest.importorskip("pandas", minversion="2.0.0")
     scalars_df, scalars_pandas_df = scalars_dfs
 
     cumsum_df = scalars_df[["int64_col", "int64_too"]].cumsum()
@@ -2377,8 +2381,9 @@ def test_series_peek_force(scalars_dfs):
     )
 
 
-@skip_legacy_pandas
 def test_series_peek_force_float(scalars_dfs):
+    # TODO: supply a reason why this isn't compatible with pandas 1.x
+    pytest.importorskip("pandas", minversion="2.0.0")
     scalars_df, scalars_pandas_df = scalars_dfs
 
     cumsum_df = scalars_df[["int64_col", "float64_col"]].cumsum()
@@ -2595,8 +2600,9 @@ def test_cumsum_nested(scalars_df_index, scalars_pandas_df_index):
     )
 
 
-@skip_legacy_pandas
 def test_nested_analytic_ops_align(scalars_df_index, scalars_pandas_df_index):
+    # TODO: supply a reason why this isn't compatible with pandas 1.x
+    pytest.importorskip("pandas", minversion="2.0.0")
     col_name = "float64_col"
     # set non-unique index to check implicit alignment
     bf_series = scalars_df_index.set_index("bool_col")[col_name].fillna(0.0)
@@ -3187,8 +3193,9 @@ def test_series_to_json_local_str(scalars_df_index, scalars_pandas_df_index):
     assert bf_result == pd_result
 
 
-@skip_legacy_pandas
 def test_series_to_json_local_file(scalars_df_index, scalars_pandas_df_index):
+    # TODO: supply a reason why this isn't compatible with pandas 1.x
+    pytest.importorskip("pandas", minversion="2.0.0")
     with tempfile.TemporaryFile() as bf_result_file, tempfile.TemporaryFile() as pd_result_file:
         scalars_df_index.int64_col.to_json(bf_result_file)
         scalars_pandas_df_index.int64_col.to_json(pd_result_file)
@@ -3479,8 +3486,9 @@ def test_mask_simple_udf(scalars_dfs):
         # https://cloud.google.com/bigquery/docs/reference/standard-sql/conversion_functions
     ],
 )
-@skip_legacy_pandas
 def test_astype(scalars_df_index, scalars_pandas_df_index, column, to_type, errors):
+    # TODO: supply a reason why this isn't compatible with pandas 1.x
+    pytest.importorskip("pandas", minversion="2.0.0")
     bf_result = scalars_df_index[column].astype(to_type, errors=errors).to_pandas()
     pd_result = scalars_pandas_df_index[column].astype(to_type)
     pd.testing.assert_series_equal(bf_result, pd_result)
@@ -3514,8 +3522,9 @@ def test_series_astype_error_error(session):
         session.read_pandas(input).astype("Float64", errors="bad_value")
 
 
-@skip_legacy_pandas
 def test_astype_numeric_to_int(scalars_df_index, scalars_pandas_df_index):
+    # TODO: supply a reason why this isn't compatible with pandas 1.x
+    pytest.importorskip("pandas", minversion="2.0.0")
     column = "numeric_col"
     to_type = "Int64"
     bf_result = scalars_df_index[column].astype(to_type).to_pandas()
@@ -3532,10 +3541,11 @@ def test_astype_numeric_to_int(scalars_df_index, scalars_pandas_df_index):
         ("time_col", "int64[pyarrow]"),
     ],
 )
-@skip_legacy_pandas
 def test_date_time_astype_int(
     scalars_df_index, scalars_pandas_df_index, column, to_type
 ):
+    # TODO: supply a reason why this isn't compatible with pandas 1.x
+    pytest.importorskip("pandas", minversion="2.0.0")
     bf_result = scalars_df_index[column].astype(to_type).to_pandas()
     pd_result = scalars_pandas_df_index[column].astype(to_type)
     pd.testing.assert_series_equal(bf_result, pd_result, check_dtype=False)
@@ -4346,8 +4356,9 @@ def test_series_explode_w_aggregate():
     assert s.explode().sum() == pd_s.explode().sum()
 
 
-@skip_legacy_pandas
 def test_series_construct_empty_array():
+    # TODO: supply a reason why this isn't compatible with pandas 1.x
+    pytest.importorskip("pandas", minversion="2.0.0")
     s = bigframes.pandas.Series([[]])
     expected = pd.Series(
         [[]],
@@ -4378,7 +4389,6 @@ def test_series_explode_null(data):
     )
 
 
-@skip_legacy_pandas
 @pytest.mark.parametrize(
     ("append", "level", "col", "rule"),
     [
@@ -4389,6 +4399,8 @@ def test_series_explode_null(data):
     ],
 )
 def test__resample(scalars_df_index, scalars_pandas_df_index, append, level, col, rule):
+    # TODO: supply a reason why this isn't compatible with pandas 1.x
+    pytest.importorskip("pandas", minversion="2.0.0")
     scalars_df_index = scalars_df_index.set_index(col, append=append)["int64_col"]
     scalars_pandas_df_index = scalars_pandas_df_index.set_index(col, append=append)[
         "int64_col"
