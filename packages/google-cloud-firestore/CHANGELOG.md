@@ -5,6 +5,14 @@
 [1]: https://pypi.org/project/google-cloud-firestore/#history
 
 
+## [2.20.2](https://github.com/googleapis/python-firestore/compare/v2.20.1...v2.20.2) (2025-04-14)
+
+
+### Bug Fixes
+
+* Allow Protobuf 6.x ([#1028](https://github.com/googleapis/python-firestore/issues/1028)) ([13d5c6d](https://github.com/googleapis/python-firestore/commit/13d5c6d18a3836e3c90b0b63360cb0394fa0375b))
+* Remove setup.cfg configuration for creating universal wheels ([#1030](https://github.com/googleapis/python-firestore/issues/1030)) ([727098b](https://github.com/googleapis/python-firestore/commit/727098b4abf4a616f3ccce4b2476ab930fd5bf5c))
+
 ## [2.20.1](https://github.com/googleapis/python-firestore/compare/v2.20.0...v2.20.1) (2025-02-26)
 
 
