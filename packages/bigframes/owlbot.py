@@ -42,6 +42,8 @@ templated_files = common.py_library(
 s.move(
     templated_files,
     excludes=[
+        # Need a combined LICENSE for all vendored packages.
+        "LICENSE",
         # Multi-processing note isn't relevant, as bigframes is responsible for
         # creating clients, not the end user.
         "docs/multiprocessing.rst",
