@@ -5039,6 +5039,8 @@ def test_get_rest_call_success(request_type):
             description="description_value",
             edge_security_policy="edge_security_policy_value",
             enable_c_d_n=True,
+            external_managed_migration_state="external_managed_migration_state_value",
+            external_managed_migration_testing_percentage=0.47540000000000004,
             fingerprint="fingerprint_value",
             health_checks=["health_checks_value"],
             id=205,
@@ -5082,6 +5084,15 @@ def test_get_rest_call_success(request_type):
     assert response.description == "description_value"
     assert response.edge_security_policy == "edge_security_policy_value"
     assert response.enable_c_d_n is True
+    assert (
+        response.external_managed_migration_state
+        == "external_managed_migration_state_value"
+    )
+    assert math.isclose(
+        response.external_managed_migration_testing_percentage,
+        0.47540000000000004,
+        rel_tol=1e-6,
+    )
     assert response.fingerprint == "fingerprint_value"
     assert response.health_checks == ["health_checks_value"]
     assert response.id == 205
@@ -5645,6 +5656,8 @@ def test_insert_rest_call_success(request_type):
         "description": "description_value",
         "edge_security_policy": "edge_security_policy_value",
         "enable_c_d_n": True,
+        "external_managed_migration_state": "external_managed_migration_state_value",
+        "external_managed_migration_testing_percentage": 0.47540000000000004,
         "failover_policy": {
             "disable_connection_drain_on_failover": True,
             "drop_traffic_if_unhealthy": True,
@@ -6333,6 +6346,8 @@ def test_patch_rest_call_success(request_type):
         "description": "description_value",
         "edge_security_policy": "edge_security_policy_value",
         "enable_c_d_n": True,
+        "external_managed_migration_state": "external_managed_migration_state_value",
+        "external_managed_migration_testing_percentage": 0.47540000000000004,
         "failover_policy": {
             "disable_connection_drain_on_failover": True,
             "drop_traffic_if_unhealthy": True,
@@ -7468,6 +7483,8 @@ def test_update_rest_call_success(request_type):
         "description": "description_value",
         "edge_security_policy": "edge_security_policy_value",
         "enable_c_d_n": True,
+        "external_managed_migration_state": "external_managed_migration_state_value",
+        "external_managed_migration_testing_percentage": 0.47540000000000004,
         "failover_policy": {
             "disable_connection_drain_on_failover": True,
             "drop_traffic_if_unhealthy": True,

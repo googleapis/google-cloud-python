@@ -7662,6 +7662,7 @@ def test_insert_rest_call_success(request_type):
                 "max_ports_per_vm": 1733,
                 "min_ports_per_vm": 1731,
                 "name": "name_value",
+                "nat64_subnetworks": [{"name": "name_value"}],
                 "nat_ip_allocate_option": "nat_ip_allocate_option_value",
                 "nat_ips": ["nat_ips_value1", "nat_ips_value2"],
                 "rules": [
@@ -7690,6 +7691,7 @@ def test_insert_rest_call_success(request_type):
                     }
                 ],
                 "source_subnetwork_ip_ranges_to_nat": "source_subnetwork_ip_ranges_to_nat_value",
+                "source_subnetwork_ip_ranges_to_nat64": "source_subnetwork_ip_ranges_to_nat64_value",
                 "subnetworks": [
                     {
                         "name": "name_value",
@@ -8427,6 +8429,7 @@ def test_patch_rest_call_success(request_type):
                 "max_ports_per_vm": 1733,
                 "min_ports_per_vm": 1731,
                 "name": "name_value",
+                "nat64_subnetworks": [{"name": "name_value"}],
                 "nat_ip_allocate_option": "nat_ip_allocate_option_value",
                 "nat_ips": ["nat_ips_value1", "nat_ips_value2"],
                 "rules": [
@@ -8455,6 +8458,7 @@ def test_patch_rest_call_success(request_type):
                     }
                 ],
                 "source_subnetwork_ip_ranges_to_nat": "source_subnetwork_ip_ranges_to_nat_value",
+                "source_subnetwork_ip_ranges_to_nat64": "source_subnetwork_ip_ranges_to_nat64_value",
                 "subnetworks": [
                     {
                         "name": "name_value",
@@ -9049,6 +9053,7 @@ def test_preview_rest_call_success(request_type):
                 "max_ports_per_vm": 1733,
                 "min_ports_per_vm": 1731,
                 "name": "name_value",
+                "nat64_subnetworks": [{"name": "name_value"}],
                 "nat_ip_allocate_option": "nat_ip_allocate_option_value",
                 "nat_ips": ["nat_ips_value1", "nat_ips_value2"],
                 "rules": [
@@ -9077,6 +9082,7 @@ def test_preview_rest_call_success(request_type):
                     }
                 ],
                 "source_subnetwork_ip_ranges_to_nat": "source_subnetwork_ip_ranges_to_nat_value",
+                "source_subnetwork_ip_ranges_to_nat64": "source_subnetwork_ip_ranges_to_nat64_value",
                 "subnetworks": [
                     {
                         "name": "name_value",
@@ -9370,6 +9376,7 @@ def test_update_rest_call_success(request_type):
                 "max_ports_per_vm": 1733,
                 "min_ports_per_vm": 1731,
                 "name": "name_value",
+                "nat64_subnetworks": [{"name": "name_value"}],
                 "nat_ip_allocate_option": "nat_ip_allocate_option_value",
                 "nat_ips": ["nat_ips_value1", "nat_ips_value2"],
                 "rules": [
@@ -9398,6 +9405,7 @@ def test_update_rest_call_success(request_type):
                     }
                 ],
                 "source_subnetwork_ip_ranges_to_nat": "source_subnetwork_ip_ranges_to_nat_value",
+                "source_subnetwork_ip_ranges_to_nat64": "source_subnetwork_ip_ranges_to_nat64_value",
                 "subnetworks": [
                     {
                         "name": "name_value",
