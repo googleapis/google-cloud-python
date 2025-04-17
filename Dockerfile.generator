@@ -1,0 +1,60 @@
+# Copyright 2025 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+FROM python:3.13.3-slim-bullseye
+
+RUN apt-get update \
+    && apt-get -y upgrade \
+    && apt-get install -y \
+    # TODO: This is only temporary. git is only needed to install packages from Github. We should use the artifact from PyPI.
+    git \
+    pandoc \
+    wget \
+    zip \
+    && apt-get clean autoclean \
+    && apt-get autoremove -y \
+    && rm -rf /var/lib/apt/lists/* \
+    && rm -f /var/cache/apt/archives/*.deb
+
+# Download/install protoc
+RUN wget https://github.com/protocolbuffers/protobuf/releases/download/v25.3/protoc-25.3-linux-x86_64.zip
+RUN unzip protoc-25.3-linux-x86_64.zip -d protoc
+RUN mv protoc/bin/* /usr/local/bin/
+RUN mv protoc/include/* /usr/local/include/
+RUN chmod +x /usr/local/bin/protoc
+ENV PATH="/usr/bin:${PATH}"
+
+# Configure user to avoid running as root
+env USER myuser
+
+WORKDIR /
+
+# TODO: move to requirements.txt file
+RUN pip3 install click black==23.7.0 isort==5.11.0
+# TODO: This is only temporary. We should use the artifact from PyPI via a requirements.txt file
+RUN pip3 install git+https://github.com/googleapis/gapic-generator-python.git@1pp-update-README
+
+# Copy Python Generator CLI
+COPY tools/python_generator_cli /python_generator_cli
+ENV HOME=/python_generator_cli
+
+COPY generator-input /generator-input
+
+# Update permissions so non-root users won't see errors.
+RUN find /python_generator_cli -exec chmod a+rw {} \;
+RUN find /python_generator_cli -type d -exec chmod a+x {} \;
+RUN find /generator-input -exec chmod a+rw {} \;
+RUN find /generator-input -type d -exec chmod a+x {} \;
+
+ENTRYPOINT [ "python3", "/python_generator_cli/cli.py" ]
