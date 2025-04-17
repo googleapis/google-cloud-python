@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.1.6](https://github.com/googleapis/google-cloud-python/compare/google-maps-areainsights-v0.1.5...google-maps-areainsights-v0.1.6) (2025-04-17)
+
+
+### Documentation
+
+* A comment for field `place` in message `.google.maps.areainsights.v1.LocationFilter` is changed ([afd8e5b](https://github.com/googleapis/google-cloud-python/commit/afd8e5bd3751669be857d7538ce10c04a9ba1ee0))
+* A comment for field `place` in message `.google.maps.areainsights.v1.PlaceInsight` is changed ([afd8e5b](https://github.com/googleapis/google-cloud-python/commit/afd8e5bd3751669be857d7538ce10c04a9ba1ee0))
+
 ## [0.1.5](https://github.com/googleapis/google-cloud-python/compare/google-maps-areainsights-v0.1.4...google-maps-areainsights-v0.1.5) (2025-03-15)
 
 

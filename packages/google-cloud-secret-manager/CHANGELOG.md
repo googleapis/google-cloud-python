@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.23.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-secret-manager-v2.23.2...google-cloud-secret-manager-v2.23.3) (2025-04-17)
+
+
+### Documentation
+
+* [google-cloud-secret-manager] various documentation clarifications ([#13796](https://github.com/googleapis/google-cloud-python/issues/13796)) ([5f6227b](https://github.com/googleapis/google-cloud-python/commit/5f6227b047b07d7c032caca77554d9fa86bf7b7c))
+
 ## [2.23.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-secret-manager-v2.23.1...google-cloud-secret-manager-v2.23.2) (2025-03-15)
 
 

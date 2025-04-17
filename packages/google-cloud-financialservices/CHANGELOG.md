@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.1.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-financialservices-v0.1.1...google-cloud-financialservices-v0.1.2) (2025-04-17)
+
+
+### Documentation
+
+* [google-cloud-financialservices] fix grammar in comments of proto fields ([#13791](https://github.com/googleapis/google-cloud-python/issues/13791)) ([b7ad711](https://github.com/googleapis/google-cloud-python/commit/b7ad711be36c71f60e48ff6ca5c1a18c44d20fc6))
+* repalce double quotes with backticks for formats in comments ([b7ad711](https://github.com/googleapis/google-cloud-python/commit/b7ad711be36c71f60e48ff6ca5c1a18c44d20fc6))
+
 ## [0.1.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-financialservices-v0.1.0...google-cloud-financialservices-v0.1.1) (2025-03-15)
 
 

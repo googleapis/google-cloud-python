@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.21](https://github.com/googleapis/google-cloud-python/compare/google-cloud-netapp-v0.3.20...google-cloud-netapp-v0.3.21) (2025-04-17)
+
+
+### Documentation
+
+* [google-cloud-netapp] A comment for field `cooling_threshold_days` in message `.google.cloud.netapp.v1.TieringPolicy` is changed ([#13795](https://github.com/googleapis/google-cloud-python/issues/13795)) ([5035014](https://github.com/googleapis/google-cloud-python/commit/503501456f77783c07076530b63e58292f26dec4))
+
 ## [0.3.20](https://github.com/googleapis/google-cloud-python/compare/google-cloud-netapp-v0.3.19...google-cloud-netapp-v0.3.20) (2025-03-15)
 
 
