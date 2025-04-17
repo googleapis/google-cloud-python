@@ -163,6 +163,11 @@ class MachineImagesTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.set_labels: gapic_v1.method.wrap_method(
+                self.set_labels,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.test_iam_permissions: gapic_v1.method.wrap_method(
                 self.test_iam_permissions,
                 default_timeout=None,
@@ -230,6 +235,15 @@ class MachineImagesTransport(abc.ABC):
     ) -> Callable[
         [compute.SetIamPolicyMachineImageRequest],
         Union[compute.Policy, Awaitable[compute.Policy]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def set_labels(
+        self,
+    ) -> Callable[
+        [compute.SetLabelsMachineImageRequest],
+        Union[compute.Operation, Awaitable[compute.Operation]],
     ]:
         raise NotImplementedError()
 

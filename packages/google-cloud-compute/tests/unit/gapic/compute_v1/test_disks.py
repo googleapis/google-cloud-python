@@ -8139,6 +8139,7 @@ def test_create_snapshot_rest_call_success(request_type):
         "disk_size_gb": 1261,
         "download_bytes": 1502,
         "enable_confidential_compute": True,
+        "guest_flush": True,
         "guest_os_features": [{"type_": "type__value"}],
         "id": 205,
         "kind": "kind_value",

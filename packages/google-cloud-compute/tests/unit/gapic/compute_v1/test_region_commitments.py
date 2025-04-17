@@ -3040,19 +3040,38 @@ def test_insert_rest_call_success(request_type):
                 },
                 "commitment": "commitment_value",
                 "creation_timestamp": "creation_timestamp_value",
+                "deployment_type": "deployment_type_value",
                 "description": "description_value",
                 "id": 205,
                 "kind": "kind_value",
+                "linked_commitments": [
+                    "linked_commitments_value1",
+                    "linked_commitments_value2",
+                ],
                 "name": "name_value",
                 "reservation_sharing_policy": {
                     "service_share_type": "service_share_type_value"
                 },
                 "resource_policies": {},
                 "resource_status": {
+                    "reservation_block_count": 2468,
+                    "reservation_maintenance": {
+                        "maintenance_ongoing_count": 2651,
+                        "maintenance_pending_count": 2639,
+                        "scheduling_type": "scheduling_type_value",
+                        "upcoming_group_maintenance": {
+                            "can_reschedule": True,
+                            "latest_window_start_time": "latest_window_start_time_value",
+                            "maintenance_status": "maintenance_status_value",
+                            "type_": "type__value",
+                            "window_end_time": "window_end_time_value",
+                            "window_start_time": "window_start_time_value",
+                        },
+                    },
                     "specific_sku_allocation": {
                         "source_instance_template_id": "source_instance_template_id_value",
                         "utilizations": {},
-                    }
+                    },
                 },
                 "satisfies_pzs": True,
                 "self_link": "self_link_value",
@@ -3508,19 +3527,38 @@ def test_update_rest_call_success(request_type):
                 },
                 "commitment": "commitment_value",
                 "creation_timestamp": "creation_timestamp_value",
+                "deployment_type": "deployment_type_value",
                 "description": "description_value",
                 "id": 205,
                 "kind": "kind_value",
+                "linked_commitments": [
+                    "linked_commitments_value1",
+                    "linked_commitments_value2",
+                ],
                 "name": "name_value",
                 "reservation_sharing_policy": {
                     "service_share_type": "service_share_type_value"
                 },
                 "resource_policies": {},
                 "resource_status": {
+                    "reservation_block_count": 2468,
+                    "reservation_maintenance": {
+                        "maintenance_ongoing_count": 2651,
+                        "maintenance_pending_count": 2639,
+                        "scheduling_type": "scheduling_type_value",
+                        "upcoming_group_maintenance": {
+                            "can_reschedule": True,
+                            "latest_window_start_time": "latest_window_start_time_value",
+                            "maintenance_status": "maintenance_status_value",
+                            "type_": "type__value",
+                            "window_end_time": "window_end_time_value",
+                            "window_start_time": "window_start_time_value",
+                        },
+                    },
                     "specific_sku_allocation": {
                         "source_instance_template_id": "source_instance_template_id_value",
                         "utilizations": {},
-                    }
+                    },
                 },
                 "satisfies_pzs": True,
                 "self_link": "self_link_value",
