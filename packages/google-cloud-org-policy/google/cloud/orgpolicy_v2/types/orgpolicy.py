@@ -18,6 +18,7 @@ from __future__ import annotations
 from typing import MutableMapping, MutableSequence
 
 from google.protobuf import field_mask_pb2  # type: ignore
+from google.protobuf import struct_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.type import expr_pb2  # type: ignore
 import proto  # type: ignore
@@ -70,8 +71,8 @@ class Policy(proto.Message):
             is also an acceptable name for API requests, but responses
             will return the name using the equivalent project number.
         spec (google.cloud.orgpolicy_v2.types.PolicySpec):
-            Basic information about the Organization
-            Policy.
+            Basic information about the organization
+            policy.
         alternate (google.cloud.orgpolicy_v2.types.AlternatePolicySpec):
             Deprecated.
         dry_run_spec (google.cloud.orgpolicy_v2.types.PolicySpec):
@@ -116,8 +117,7 @@ class Policy(proto.Message):
 
 class AlternatePolicySpec(proto.Message):
     r"""Similar to PolicySpec but with an extra 'launch' field for
-    launch reference. The PolicySpec here is specific for
-    dry-run/darklaunch.
+    launch reference. The PolicySpec here is specific for dry-run.
 
     Attributes:
         launch (str):
@@ -242,6 +242,13 @@ class PolicySpec(proto.Message):
                 expression is: "resource.matchTag('123456789/environment,
                 'prod')". or "resource.matchTagId('tagKeys/123',
                 'tagValues/456')".
+            parameters (google.protobuf.struct_pb2.Struct):
+                Optional. Required for managed constraints if parameters are
+                defined. Passes parameter values when policy enforcement is
+                enabled. Ensure that parameter value types match those
+                defined in the constraint definition. For example: {
+                "allowedLocations" : ["us-east1", "us-west1"], "allowAll" :
+                true }
         """
 
         class StringValues(proto.Message):
@@ -306,6 +313,11 @@ class PolicySpec(proto.Message):
             proto.MESSAGE,
             number=5,
             message=expr_pb2.Expr,
+        )
+        parameters: struct_pb2.Struct = proto.Field(
+            proto.MESSAGE,
+            number=6,
+            message=struct_pb2.Struct,
         )
 
     etag: str = proto.Field(
@@ -612,9 +624,9 @@ class GetCustomConstraintRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. Resource name of the custom
-            constraint. See the custom constraint entry for
-            naming requirements.
+            Required. Resource name of the custom or
+            managed constraint. See the custom constraint
+            entry for naming requirements.
     """
 
     name: str = proto.Field(
@@ -663,14 +675,14 @@ class ListCustomConstraintsRequest(proto.Message):
 class ListCustomConstraintsResponse(proto.Message):
     r"""The response returned from the [ListCustomConstraints]
     [google.cloud.orgpolicy.v2.OrgPolicy.ListCustomConstraints] method.
-    It will be empty if no custom constraints are set on the
+    It will be empty if no custom or managed constraints are set on the
     organization resource.
 
     Attributes:
         custom_constraints (MutableSequence[google.cloud.orgpolicy_v2.types.CustomConstraint]):
-            All custom constraints that exist on the
-            organization resource. It will be empty if no
-            custom constraints are set.
+            All custom and managed constraints that exist
+            on the organization resource. It will be empty
+            if no custom constraints are set.
         next_page_token (str):
             Page token used to retrieve the next page.
             This is currently not used, but the server may

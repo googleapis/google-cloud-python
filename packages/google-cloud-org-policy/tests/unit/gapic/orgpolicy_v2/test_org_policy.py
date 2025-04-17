@@ -52,6 +52,7 @@ from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
 from google.oauth2 import service_account
 from google.protobuf import field_mask_pb2  # type: ignore
+from google.protobuf import struct_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.type import expr_pb2  # type: ignore
 
@@ -9408,6 +9409,7 @@ def test_create_policy_rest_call_success(request_type):
                         "description": "description_value",
                         "location": "location_value",
                     },
+                    "parameters": {"fields": {}},
                 }
             ],
             "inherit_from_parent": True,
@@ -9633,6 +9635,7 @@ def test_update_policy_rest_call_success(request_type):
                         "description": "description_value",
                         "location": "location_value",
                     },
+                    "parameters": {"fields": {}},
                 }
             ],
             "inherit_from_parent": True,
