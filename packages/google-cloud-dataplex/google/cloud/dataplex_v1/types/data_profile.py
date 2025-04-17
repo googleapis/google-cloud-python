@@ -85,6 +85,7 @@ class DataProfileSpec(proto.Message):
                     Optional. The BigQuery table to export DataProfileScan
                     results to. Format:
                     //bigquery.googleapis.com/projects/PROJECT_ID/datasets/DATASET_ID/tables/TABLE_ID
+                    or projects/PROJECT_ID/datasets/DATASET_ID/tables/TABLE_ID
             """
 
             results_table: str = proto.Field(
