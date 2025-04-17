@@ -811,7 +811,7 @@ class SnapshotsRestTransport(_BaseSnapshotsRestTransport):
                 resource. You can use snapshots to back
                 up data on a regular interval. For more
                 information, read Creating persistent
-                disk snapshots.
+                disk snapshots. LINT.IfChange
 
             """
 

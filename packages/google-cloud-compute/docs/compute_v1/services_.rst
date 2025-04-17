@@ -76,6 +76,7 @@ Services for Google Cloud Compute v1 API
     region_target_tcp_proxies
     region_url_maps
     region_zones
+    reservation_blocks
     reservations
     resource_policies
     routers

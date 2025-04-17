@@ -3450,6 +3450,7 @@ def test_get_rest_call_success(request_type):
             disk_size_gb=1261,
             download_bytes=1502,
             enable_confidential_compute=True,
+            guest_flush=True,
             id=205,
             kind="kind_value",
             label_fingerprint="label_fingerprint_value",
@@ -3497,6 +3498,7 @@ def test_get_rest_call_success(request_type):
     assert response.disk_size_gb == 1261
     assert response.download_bytes == 1502
     assert response.enable_confidential_compute is True
+    assert response.guest_flush is True
     assert response.id == 205
     assert response.kind == "kind_value"
     assert response.label_fingerprint == "label_fingerprint_value"
@@ -3764,6 +3766,7 @@ def test_insert_rest_call_success(request_type):
         "disk_size_gb": 1261,
         "download_bytes": 1502,
         "enable_confidential_compute": True,
+        "guest_flush": True,
         "guest_os_features": [{"type_": "type__value"}],
         "id": 205,
         "kind": "kind_value",

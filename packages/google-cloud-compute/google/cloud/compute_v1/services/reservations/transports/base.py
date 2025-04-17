@@ -163,6 +163,11 @@ class ReservationsTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.perform_maintenance: gapic_v1.method.wrap_method(
+                self.perform_maintenance,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.resize: gapic_v1.method.wrap_method(
                 self.resize,
                 default_timeout=None,
@@ -248,6 +253,15 @@ class ReservationsTransport(abc.ABC):
     ) -> Callable[
         [compute.ListReservationsRequest],
         Union[compute.ReservationList, Awaitable[compute.ReservationList]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def perform_maintenance(
+        self,
+    ) -> Callable[
+        [compute.PerformMaintenanceReservationRequest],
+        Union[compute.Operation, Awaitable[compute.Operation]],
     ]:
         raise NotImplementedError()
 
