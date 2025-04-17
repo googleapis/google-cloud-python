@@ -43,6 +43,7 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
+from google.cloud.location import locations_pb2  # type: ignore
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
@@ -367,7 +368,7 @@ class SecretManagerServiceAsyncClient:
         Returns:
             google.cloud.secretmanager_v1beta1.services.secret_manager_service.pagers.ListSecretsAsyncPager:
                 Response message for
-                [SecretManagerService.ListSecrets][google.cloud.secrets.v1beta1.SecretManagerService.ListSecrets].
+                   [SecretManagerService.ListSecrets][google.cloud.secrets.v1beta1.SecretManagerService.ListSecrets].
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
@@ -516,8 +517,8 @@ class SecretManagerServiceAsyncClient:
 
         Returns:
             google.cloud.secretmanager_v1beta1.types.Secret:
-                A [Secret][google.cloud.secrets.v1beta1.Secret] is a logical secret whose value and versions can
-                   be accessed.
+                A [Secret][google.cloud.secrets.v1beta1.Secret] is a logical secret whose
+                   value and versions can be accessed.
 
                    A [Secret][google.cloud.secrets.v1beta1.Secret] is
                    made up of zero or more
@@ -765,8 +766,8 @@ class SecretManagerServiceAsyncClient:
 
         Returns:
             google.cloud.secretmanager_v1beta1.types.Secret:
-                A [Secret][google.cloud.secrets.v1beta1.Secret] is a logical secret whose value and versions can
-                   be accessed.
+                A [Secret][google.cloud.secrets.v1beta1.Secret] is a logical secret whose
+                   value and versions can be accessed.
 
                    A [Secret][google.cloud.secrets.v1beta1.Secret] is
                    made up of zero or more
@@ -889,8 +890,8 @@ class SecretManagerServiceAsyncClient:
 
         Returns:
             google.cloud.secretmanager_v1beta1.types.Secret:
-                A [Secret][google.cloud.secrets.v1beta1.Secret] is a logical secret whose value and versions can
-                   be accessed.
+                A [Secret][google.cloud.secrets.v1beta1.Secret] is a logical secret whose
+                   value and versions can be accessed.
 
                    A [Secret][google.cloud.secrets.v1beta1.Secret] is
                    made up of zero or more
@@ -1116,7 +1117,7 @@ class SecretManagerServiceAsyncClient:
         Returns:
             google.cloud.secretmanager_v1beta1.services.secret_manager_service.pagers.ListSecretVersionsAsyncPager:
                 Response message for
-                [SecretManagerService.ListSecretVersions][google.cloud.secrets.v1beta1.SecretManagerService.ListSecretVersions].
+                   [SecretManagerService.ListSecretVersions][google.cloud.secrets.v1beta1.SecretManagerService.ListSecretVersions].
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
@@ -1368,7 +1369,7 @@ class SecretManagerServiceAsyncClient:
         Returns:
             google.cloud.secretmanager_v1beta1.types.AccessSecretVersionResponse:
                 Response message for
-                [SecretManagerService.AccessSecretVersion][google.cloud.secrets.v1beta1.SecretManagerService.AccessSecretVersion].
+                   [SecretManagerService.AccessSecretVersion][google.cloud.secrets.v1beta1.SecretManagerService.AccessSecretVersion].
 
         """
         # Create or coerce a protobuf request object.
@@ -2096,6 +2097,116 @@ class SecretManagerServiceAsyncClient:
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def get_location(
+        self,
+        request: Optional[locations_pb2.GetLocationRequest] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> locations_pb2.Location:
+        r"""Gets information about a location.
+
+        Args:
+            request (:class:`~.location_pb2.GetLocationRequest`):
+                The request object. Request message for
+                `GetLocation` method.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors,
+                 if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+        Returns:
+            ~.location_pb2.Location:
+                Location object.
+        """
+        # Create or coerce a protobuf request object.
+        # The request isn't a proto-plus wrapped type,
+        # so it must be constructed via keyword expansion.
+        if isinstance(request, dict):
+            request = locations_pb2.GetLocationRequest(**request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self.transport._wrapped_methods[self._client._transport.get_location]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def list_locations(
+        self,
+        request: Optional[locations_pb2.ListLocationsRequest] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> locations_pb2.ListLocationsResponse:
+        r"""Lists information about the supported locations for this service.
+
+        Args:
+            request (:class:`~.location_pb2.ListLocationsRequest`):
+                The request object. Request message for
+                `ListLocations` method.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors,
+                 if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+        Returns:
+            ~.location_pb2.ListLocationsResponse:
+                Response message for ``ListLocations`` method.
+        """
+        # Create or coerce a protobuf request object.
+        # The request isn't a proto-plus wrapped type,
+        # so it must be constructed via keyword expansion.
+        if isinstance(request, dict):
+            request = locations_pb2.ListLocationsRequest(**request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self.transport._wrapped_methods[self._client._transport.list_locations]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
         )
 
         # Validate the universe domain.
