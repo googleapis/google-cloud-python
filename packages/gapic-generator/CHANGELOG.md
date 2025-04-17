@@ -1,6 +1,13 @@
 # Changelog
 
 
+## [1.24.1](https://github.com/googleapis/gapic-generator-python/compare/v1.24.0...v1.24.1) (2025-04-17)
+
+
+### Bug Fixes
+
+* Update generated docs to match synthtool templates ([3f62f31](https://github.com/googleapis/gapic-generator-python/commit/3f62f31d5146147c4bc6393fbeef18ce1d9a1a42))
+
 ## [1.24.0](https://github.com/googleapis/gapic-generator-python/compare/v1.23.6...v1.24.0) (2025-04-11)
 
 
