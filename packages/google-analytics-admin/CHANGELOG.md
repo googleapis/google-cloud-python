@@ -1,5 +1,37 @@
 # Changelog
 
+## [0.24.0](https://github.com/googleapis/google-cloud-python/compare/google-analytics-admin-v0.23.6...google-analytics-admin-v0.24.0) (2025-04-17)
+
+
+### ⚠ BREAKING CHANGES
+
+* change an existing value KEY_EVENT = 32 to KEY_EVENT = 30 in enum `ChangeHistoryResourceType`.
+* rename an existing field `key_event` to `reporting_data_annotation` in `ChangeHistoryChange`.
+
+### Features
+
+* add `key_event`, `reporting_data_annotation` fields to the `ChangeHistoryResource` resource ([c59a5c9](https://github.com/googleapis/google-cloud-python/commit/c59a5c9a88038f81f8899003988bfd3201bf40ed))
+* add the `CreateReportingDataAnnotation` method ([c59a5c9](https://github.com/googleapis/google-cloud-python/commit/c59a5c9a88038f81f8899003988bfd3201bf40ed))
+* add the `DeleteReportingDataAnnotation` method ([c59a5c9](https://github.com/googleapis/google-cloud-python/commit/c59a5c9a88038f81f8899003988bfd3201bf40ed))
+* add the `GetReportingDataAnnotation` method ([c59a5c9](https://github.com/googleapis/google-cloud-python/commit/c59a5c9a88038f81f8899003988bfd3201bf40ed))
+* add the `ListReportingDataAnnotations` method ([c59a5c9](https://github.com/googleapis/google-cloud-python/commit/c59a5c9a88038f81f8899003988bfd3201bf40ed))
+* add the `REPORTING_DATA_ANNOTATION` resource type to the `ChangeHistoryResourceType` enum ([c59a5c9](https://github.com/googleapis/google-cloud-python/commit/c59a5c9a88038f81f8899003988bfd3201bf40ed))
+* add the `ReportingDataAnnotation` type ([c59a5c9](https://github.com/googleapis/google-cloud-python/commit/c59a5c9a88038f81f8899003988bfd3201bf40ed))
+* add the `SubmitUserDeletion` method ([c59a5c9](https://github.com/googleapis/google-cloud-python/commit/c59a5c9a88038f81f8899003988bfd3201bf40ed))
+* add the `UpdateReportingDataAnnotation` method ([c59a5c9](https://github.com/googleapis/google-cloud-python/commit/c59a5c9a88038f81f8899003988bfd3201bf40ed))
+
+
+### Bug Fixes
+
+* change an existing value KEY_EVENT = 32 to KEY_EVENT = 30 in enum `ChangeHistoryResourceType`. ([c59a5c9](https://github.com/googleapis/google-cloud-python/commit/c59a5c9a88038f81f8899003988bfd3201bf40ed))
+* rename an existing field `key_event` to `reporting_data_annotation` in `ChangeHistoryChange`. ([c59a5c9](https://github.com/googleapis/google-cloud-python/commit/c59a5c9a88038f81f8899003988bfd3201bf40ed))
+
+
+### Documentation
+
+* announce the deprecation of the `sharing_with_google_any_sales_enabled` field of the `DataSharingSettings` type ([c59a5c9](https://github.com/googleapis/google-cloud-python/commit/c59a5c9a88038f81f8899003988bfd3201bf40ed))
+* update the documentation of `sharing_with_google_support_enabled`, `sharing_with_google_assigned_sales_enabled`, 'sharing_with_google_products_enabled', 'sharing_with_others_enabled' fields of the `DataSharingSettings` type ([c59a5c9](https://github.com/googleapis/google-cloud-python/commit/c59a5c9a88038f81f8899003988bfd3201bf40ed))
+
 ## [0.23.6](https://github.com/googleapis/google-cloud-python/compare/google-analytics-admin-v0.23.5...google-analytics-admin-v0.23.6) (2025-03-15)
 
 

@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.14.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-org-policy-v1.13.1...google-cloud-org-policy-v1.14.0) (2025-04-17)
+
+
+### Features
+
+* Add managed constraints new fields (e.g. parameter) ([#13801](https://github.com/googleapis/google-cloud-python/issues/13801)) ([ba8fd2e](https://github.com/googleapis/google-cloud-python/commit/ba8fd2e21566c0beef174e7f180a58d3ae9e7973))
+
+
+### Documentation
+
+* updated comments ([ba8fd2e](https://github.com/googleapis/google-cloud-python/commit/ba8fd2e21566c0beef174e7f180a58d3ae9e7973))
+
 ## [1.13.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-org-policy-v1.13.0...google-cloud-org-policy-v1.13.1) (2025-03-15)
 
 

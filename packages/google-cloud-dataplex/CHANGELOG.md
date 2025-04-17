@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.10.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataplex-v2.10.0...google-cloud-dataplex-v2.10.1) (2025-04-17)
+
+
+### Documentation
+
+* minor changes ([cf141a8](https://github.com/googleapis/google-cloud-python/commit/cf141a859c6c2e811f19bfe42346348c1978ebf1))
+* minor changes ([#13792](https://github.com/googleapis/google-cloud-python/issues/13792)) ([cf141a8](https://github.com/googleapis/google-cloud-python/commit/cf141a859c6c2e811f19bfe42346348c1978ebf1))
+
 ## [2.10.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataplex-v2.9.0...google-cloud-dataplex-v2.10.0) (2025-04-12)
 
 
