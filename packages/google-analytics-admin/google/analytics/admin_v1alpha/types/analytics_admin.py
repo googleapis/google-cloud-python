@@ -227,6 +227,14 @@ __protobuf__ = proto.module(
         "ListSubpropertyEventFiltersResponse",
         "UpdateSubpropertyEventFilterRequest",
         "DeleteSubpropertyEventFilterRequest",
+        "CreateReportingDataAnnotationRequest",
+        "GetReportingDataAnnotationRequest",
+        "ListReportingDataAnnotationsRequest",
+        "ListReportingDataAnnotationsResponse",
+        "UpdateReportingDataAnnotationRequest",
+        "DeleteReportingDataAnnotationRequest",
+        "SubmitUserDeletionRequest",
+        "SubmitUserDeletionResponse",
     },
 )
 
@@ -4991,6 +4999,290 @@ class DeleteSubpropertyEventFilterRequest(proto.Message):
     name: str = proto.Field(
         proto.STRING,
         number=1,
+    )
+
+
+class CreateReportingDataAnnotationRequest(proto.Message):
+    r"""Request message for CreateReportingDataAnnotation RPC.
+
+    Attributes:
+        parent (str):
+            Required. The property for which to create a Reporting Data
+            Annotation. Format: properties/property_id Example:
+            properties/123
+        reporting_data_annotation (google.analytics.admin_v1alpha.types.ReportingDataAnnotation):
+            Required. The Reporting Data Annotation to
+            create.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    reporting_data_annotation: resources.ReportingDataAnnotation = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=resources.ReportingDataAnnotation,
+    )
+
+
+class GetReportingDataAnnotationRequest(proto.Message):
+    r"""Request message for GetReportingDataAnnotation RPC.
+
+    Attributes:
+        name (str):
+            Required. Resource name of the Reporting Data Annotation to
+            lookup. Format:
+            properties/property_id/reportingDataAnnotations/reportingDataAnnotation
+            Example: properties/123/reportingDataAnnotations/456
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class ListReportingDataAnnotationsRequest(proto.Message):
+    r"""Request message for ListReportingDataAnnotation RPC.
+
+    Attributes:
+        parent (str):
+            Required. Resource name of the property. Format:
+            properties/property_id Example: properties/123
+        filter (str):
+            Optional. Filter that restricts which reporting data
+            annotations under the parent property are listed.
+
+            Supported fields are:
+
+            -  'name'
+            -  ``title``
+            -  ``description``
+            -  ``annotation_date``
+            -  ``annotation_date_range``
+            -  ``color``
+
+            Additionally, this API provides the following helper
+            functions:
+
+            -  annotation_duration() : the duration that this annotation
+               marks,
+               `durations <https://github.com/protocolbuffers/protobuf/blob/main/src/google/protobuf/duration.proto>`__.
+               expect a numeric representation of seconds followed by an
+               ``s`` suffix.
+            -  is_annotation_in_range(start_date, end_date) : if the
+               annotation is in the range specified by the
+               ``start_date`` and ``end_date``. The dates are in
+               ISO-8601 format, for example ``2031-06-28``.
+
+            Supported operations:
+
+            -  ``=`` : equals
+            -  ``!=`` : not equals
+            -  ``<`` : less than
+            -  ``>`` : greater than
+            -  ``<=`` : less than or equals
+            -  ``>=`` : greater than or equals
+            -  ``:`` : has operator
+            -  ``=~`` : `regular
+               expression <https://github.com/google/re2/wiki/Syntax>`__
+               match
+            -  ``!~`` : `regular
+               expression <https://github.com/google/re2/wiki/Syntax>`__
+               does not match
+            -  ``NOT`` : Logical not
+            -  ``AND`` : Logical and
+            -  ``OR`` : Logical or
+
+            Examples:
+
+            1. ``title="Holiday Sale"``
+            2. ``description=~"[Bb]ig [Gg]ame.*[Ss]ale"``
+            3. ``is_annotation_in_range("2025-12-25", "2026-01-16") = true``
+            4. ``annotation_duration() >= 172800s AND title:BOGO``
+        page_size (int):
+            Optional. The maximum number of resources to
+            return. The service may return fewer than this
+            value, even if there are additional pages. If
+            unspecified, at most 50 resources will be
+            returned. The maximum value is 200; (higher
+            values will be coerced to the maximum)
+        page_token (str):
+            Optional. A page token, received from a previous
+            ``ListReportingDataAnnotations`` call. Provide this to
+            retrieve the subsequent page. When paginating, all other
+            parameters provided to ``ListReportingDataAnnotations`` must
+            match the call that provided the page token.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    filter: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=3,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+
+
+class ListReportingDataAnnotationsResponse(proto.Message):
+    r"""Response message for ListReportingDataAnnotation RPC.
+
+    Attributes:
+        reporting_data_annotations (MutableSequence[google.analytics.admin_v1alpha.types.ReportingDataAnnotation]):
+            List of Reporting Data Annotations.
+        next_page_token (str):
+            A token, which can be sent as ``page_token`` to retrieve the
+            next page. If this field is omitted, there are no subsequent
+            pages.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    reporting_data_annotations: MutableSequence[
+        resources.ReportingDataAnnotation
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=resources.ReportingDataAnnotation,
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class UpdateReportingDataAnnotationRequest(proto.Message):
+    r"""Request message for UpdateReportingDataAnnotation RPC.
+
+    Attributes:
+        reporting_data_annotation (google.analytics.admin_v1alpha.types.ReportingDataAnnotation):
+            Required. The Reporting Data Annotation to
+            update.
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Optional. The list of fields to update. Field names must be
+            in snake case (for example, "field_to_update"). Omitted
+            fields will not be updated. To replace the entire entity,
+            use one path with the string "*" to match all fields.
+    """
+
+    reporting_data_annotation: resources.ReportingDataAnnotation = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=resources.ReportingDataAnnotation,
+    )
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
+    )
+
+
+class DeleteReportingDataAnnotationRequest(proto.Message):
+    r"""Request message for DeleteReportingDataAnnotation RPC.
+
+    Attributes:
+        name (str):
+            Required. Resource name of the Reporting Data Annotation to
+            delete. Format:
+            properties/property_id/reportingDataAnnotations/reporting_data_annotation
+            Example: properties/123/reportingDataAnnotations/456
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class SubmitUserDeletionRequest(proto.Message):
+    r"""Request message for SubmitUserDeletion RPC.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        user_id (str):
+            Google Analytics `user
+            ID <https://firebase.google.com/docs/analytics/userid>`__.
+
+            This field is a member of `oneof`_ ``user``.
+        client_id (str):
+            Google Analytics `client
+            ID <https://support.google.com/analytics/answer/11593727>`__.
+
+            This field is a member of `oneof`_ ``user``.
+        app_instance_id (str):
+            Firebase `application instance
+            ID <https://firebase.google.com/docs/reference/android/com/google/firebase/analytics/FirebaseAnalytics.html#getAppInstanceId>`__.
+
+            This field is a member of `oneof`_ ``user``.
+        user_provided_data (str):
+            The un-hashed, unencrypted, `user-provided
+            data <https://support.google.com/analytics/answer/14077171>`__.
+
+            This field is a member of `oneof`_ ``user``.
+        name (str):
+            Required. The name of the property to submit
+            user deletion for.
+    """
+
+    user_id: str = proto.Field(
+        proto.STRING,
+        number=2,
+        oneof="user",
+    )
+    client_id: str = proto.Field(
+        proto.STRING,
+        number=3,
+        oneof="user",
+    )
+    app_instance_id: str = proto.Field(
+        proto.STRING,
+        number=4,
+        oneof="user",
+    )
+    user_provided_data: str = proto.Field(
+        proto.STRING,
+        number=5,
+        oneof="user",
+    )
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class SubmitUserDeletionResponse(proto.Message):
+    r"""Response message for SubmitUserDeletion RPC.
+
+    Attributes:
+        deletion_request_time (google.protobuf.timestamp_pb2.Timestamp):
+            Marks the moment for which all visitor data
+            before this point should be deleted. This is set
+            to the time at which the deletion request was
+            received.
+    """
+
+    deletion_request_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=timestamp_pb2.Timestamp,
     )
 
 

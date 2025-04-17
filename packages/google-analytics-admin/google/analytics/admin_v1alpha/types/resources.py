@@ -19,6 +19,7 @@ from typing import MutableMapping, MutableSequence
 
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.protobuf import wrappers_pb2  # type: ignore
+from google.type import date_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.analytics.admin_v1alpha.types import channel_group as gaa_channel_group
@@ -77,6 +78,7 @@ __protobuf__ = proto.module(
         "DataRedactionSettings",
         "AdSenseLink",
         "RollupPropertySourceLink",
+        "ReportingDataAnnotation",
     },
 )
 
@@ -283,10 +285,12 @@ class ChangeHistoryResourceType(proto.Enum):
             Audience resource
         EVENT_CREATE_RULE (29):
             EventCreateRule resource
+        KEY_EVENT (30):
+            KeyEvent resource
         CALCULATED_METRIC (31):
             CalculatedMetric resource
-        KEY_EVENT (32):
-            KeyEvent resource
+        REPORTING_DATA_ANNOTATION (32):
+            ReportingDataAnnotation resource
     """
     CHANGE_HISTORY_RESOURCE_TYPE_UNSPECIFIED = 0
     ACCOUNT = 1
@@ -313,8 +317,9 @@ class ChangeHistoryResourceType(proto.Enum):
     ADSENSE_LINK = 27
     AUDIENCE = 28
     EVENT_CREATE_RULE = 29
+    KEY_EVENT = 30
     CALCULATED_METRIC = 31
-    KEY_EVENT = 32
+    REPORTING_DATA_ANNOTATION = 32
 
 
 class GoogleSignalsState(proto.Enum):
@@ -976,24 +981,49 @@ class DataSharingSettings(proto.Message):
             Format: accounts/{account}/dataSharingSettings
             Example: "accounts/1000/dataSharingSettings".
         sharing_with_google_support_enabled (bool):
-            Allows Google support to access the data in
-            order to help troubleshoot issues.
+            Allows Google technical support
+            representatives access to your Google Analytics
+            data and account when necessary to provide
+            service and find solutions to technical issues.
+
+            This field maps to the "Technical support" field
+            in the Google Analytics Admin UI.
         sharing_with_google_assigned_sales_enabled (bool):
-            Allows Google sales teams that are assigned
-            to the customer to access the data in order to
-            suggest configuration changes to improve
-            results. Sales team restrictions still apply
-            when enabled.
+            Allows Google access to your Google Analytics
+            account data, including account usage and
+            configuration data, product spending, and users
+            associated with your Google Analytics account,
+            so that Google can help you make the most of
+            Google products, providing you with insights,
+            offers, recommendations, and optimization tips
+            across Google Analytics and other Google
+            products for business.
+
+            This field maps to the "Recommendations for your
+            business" field in the Google Analytics Admin
+            UI.
         sharing_with_google_any_sales_enabled (bool):
-            Allows any of Google sales to access the data
-            in order to suggest configuration changes to
-            improve results.
+            Deprecated. This field is no longer used and
+            always returns false.
         sharing_with_google_products_enabled (bool):
             Allows Google to use the data to improve
             other Google products or services.
+            This fields maps to the "Google products &
+            services" field in the Google Analytics Admin
+            UI.
         sharing_with_others_enabled (bool):
-            Allows Google to share the data anonymously
-            in aggregate form with others.
+            Enable features like predictions, modeled
+            data, and benchmarking that can provide you with
+            richer business insights when you contribute
+            aggregated measurement data. The data you share
+            (including information about the property from
+            which it is shared) is aggregated and
+            de-identified before being used to generate
+            business insights.
+
+            This field maps to the "Modeling contributions &
+            business insights" field in the Google Analytics
+            Admin UI.
     """
 
     name: str = proto.Field(
@@ -1591,14 +1621,19 @@ class ChangeHistoryChange(proto.Message):
                 change history.
 
                 This field is a member of `oneof`_ ``resource``.
+            key_event (google.analytics.admin_v1alpha.types.KeyEvent):
+                A snapshot of a KeyEvent resource in change
+                history.
+
+                This field is a member of `oneof`_ ``resource``.
             calculated_metric (google.analytics.admin_v1alpha.types.CalculatedMetric):
                 A snapshot of a CalculatedMetric resource in
                 change history.
 
                 This field is a member of `oneof`_ ``resource``.
-            key_event (google.analytics.admin_v1alpha.types.KeyEvent):
-                A snapshot of a KeyEvent resource in change
-                history.
+            reporting_data_annotation (google.analytics.admin_v1alpha.types.ReportingDataAnnotation):
+                A snapshot of a ReportingDataAnnotation
+                resource in change history.
 
                 This field is a member of `oneof`_ ``resource``.
         """
@@ -1751,17 +1786,23 @@ class ChangeHistoryChange(proto.Message):
             oneof="resource",
             message=event_create_and_edit.EventCreateRule,
         )
+        key_event: "KeyEvent" = proto.Field(
+            proto.MESSAGE,
+            number=30,
+            oneof="resource",
+            message="KeyEvent",
+        )
         calculated_metric: "CalculatedMetric" = proto.Field(
             proto.MESSAGE,
             number=31,
             oneof="resource",
             message="CalculatedMetric",
         )
-        key_event: "KeyEvent" = proto.Field(
+        reporting_data_annotation: "ReportingDataAnnotation" = proto.Field(
             proto.MESSAGE,
             number=32,
             oneof="resource",
-            message="KeyEvent",
+            message="ReportingDataAnnotation",
         )
 
     resource: str = proto.Field(
@@ -3283,6 +3324,146 @@ class RollupPropertySourceLink(proto.Message):
     source_property: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+
+
+class ReportingDataAnnotation(proto.Message):
+    r"""A Reporting Data Annotation is a comment connected to certain
+    dates for reporting data.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        annotation_date (google.type.date_pb2.Date):
+            If set, the Reporting Data Annotation is for
+            a specific date represented by this field. The
+            date must be a valid date with year, month and
+            day set. The date may be in the past, present,
+            or future.
+
+            This field is a member of `oneof`_ ``target``.
+        annotation_date_range (google.analytics.admin_v1alpha.types.ReportingDataAnnotation.DateRange):
+            If set, the Reporting Data Annotation is for
+            a range of dates represented by this field.
+
+            This field is a member of `oneof`_ ``target``.
+        name (str):
+            Required. Identifier. Resource name of this Reporting Data
+            Annotation. Format:
+            'properties/{property_id}/reportingDataAnnotations/{reporting_data_annotation}'
+            Format: 'properties/123/reportingDataAnnotations/456'
+        title (str):
+            Required. Human-readable title for this
+            Reporting Data Annotation.
+        description (str):
+            Optional. Description for this Reporting Data
+            Annotation.
+        color (google.analytics.admin_v1alpha.types.ReportingDataAnnotation.Color):
+            Required. The color used for display of this
+            Reporting Data Annotation.
+        system_generated (bool):
+            Output only. If true, this annotation was
+            generated by the Google Analytics system.
+            System-generated annotations cannot be updated
+            or deleted.
+    """
+
+    class Color(proto.Enum):
+        r"""Colors that may be used for this Reporting Data Annotation
+
+        Values:
+            COLOR_UNSPECIFIED (0):
+                Color unknown or not specified.
+            PURPLE (1):
+                Purple color.
+            BROWN (2):
+                Brown color.
+            BLUE (3):
+                Blue color.
+            GREEN (4):
+                Green color.
+            RED (5):
+                Red color.
+            CYAN (6):
+                Cyan color.
+            ORANGE (7):
+                Orange color. (Only used for system-generated
+                annotations)
+        """
+        COLOR_UNSPECIFIED = 0
+        PURPLE = 1
+        BROWN = 2
+        BLUE = 3
+        GREEN = 4
+        RED = 5
+        CYAN = 6
+        ORANGE = 7
+
+    class DateRange(proto.Message):
+        r"""Represents a Reporting Data Annotation's date range, both
+        start and end dates are inclusive. Time zones are based on the
+        parent property.
+
+        Attributes:
+            start_date (google.type.date_pb2.Date):
+                Required. The start date for this range. Must
+                be a valid date with year, month, and day set.
+                The date may be in the past, present, or future.
+            end_date (google.type.date_pb2.Date):
+                Required. The end date for this range. Must
+                be a valid date with year, month, and day set.
+                This date must be greater than or equal to the
+                start date.
+        """
+
+        start_date: date_pb2.Date = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            message=date_pb2.Date,
+        )
+        end_date: date_pb2.Date = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            message=date_pb2.Date,
+        )
+
+    annotation_date: date_pb2.Date = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        oneof="target",
+        message=date_pb2.Date,
+    )
+    annotation_date_range: DateRange = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        oneof="target",
+        message=DateRange,
+    )
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    title: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    description: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    color: Color = proto.Field(
+        proto.ENUM,
+        number=6,
+        enum=Color,
+    )
+    system_generated: bool = proto.Field(
+        proto.BOOL,
+        number=7,
     )
 
 

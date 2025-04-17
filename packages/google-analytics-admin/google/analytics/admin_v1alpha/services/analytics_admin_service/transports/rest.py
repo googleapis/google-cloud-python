@@ -315,6 +315,14 @@ class AnalyticsAdminServiceRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_create_reporting_data_annotation(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_create_reporting_data_annotation(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_create_rollup_property(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -434,6 +442,10 @@ class AnalyticsAdminServiceRestInterceptor:
             def post_delete_property(self, response):
                 logging.log(f"Received response: {response}")
                 return response
+
+            def pre_delete_reporting_data_annotation(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
 
             def pre_delete_rollup_property_source_link(self, request, metadata):
                 logging.log(f"Received request: {request}")
@@ -675,6 +687,14 @@ class AnalyticsAdminServiceRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_get_reporting_data_annotation(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_reporting_data_annotation(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_get_rollup_property_source_link(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -891,6 +911,14 @@ class AnalyticsAdminServiceRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_list_reporting_data_annotations(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_reporting_data_annotations(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_list_rollup_property_source_links(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -964,6 +992,14 @@ class AnalyticsAdminServiceRestInterceptor:
                 return request, metadata
 
             def post_set_automated_ga4_configuration_opt_out(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_submit_user_deletion(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_submit_user_deletion(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -1148,6 +1184,14 @@ class AnalyticsAdminServiceRestInterceptor:
                 return request, metadata
 
             def post_update_property(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_update_reporting_data_annotation(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_update_reporting_data_annotation(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -2590,6 +2634,57 @@ class AnalyticsAdminServiceRestInterceptor:
         """
         return response, metadata
 
+    def pre_create_reporting_data_annotation(
+        self,
+        request: analytics_admin.CreateReportingDataAnnotationRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        analytics_admin.CreateReportingDataAnnotationRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for create_reporting_data_annotation
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the AnalyticsAdminService server.
+        """
+        return request, metadata
+
+    def post_create_reporting_data_annotation(
+        self, response: resources.ReportingDataAnnotation
+    ) -> resources.ReportingDataAnnotation:
+        """Post-rpc interceptor for create_reporting_data_annotation
+
+        DEPRECATED. Please use the `post_create_reporting_data_annotation_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the AnalyticsAdminService server but before
+        it is returned to user code. This `post_create_reporting_data_annotation` interceptor runs
+        before the `post_create_reporting_data_annotation_with_metadata` interceptor.
+        """
+        return response
+
+    def post_create_reporting_data_annotation_with_metadata(
+        self,
+        response: resources.ReportingDataAnnotation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        resources.ReportingDataAnnotation, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for create_reporting_data_annotation
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AnalyticsAdminService server but before it is returned to user code.
+
+        We recommend only using this `post_create_reporting_data_annotation_with_metadata`
+        interceptor in new development instead of the `post_create_reporting_data_annotation` interceptor.
+        When both interceptors are used, this `post_create_reporting_data_annotation_with_metadata` interceptor runs after the
+        `post_create_reporting_data_annotation` interceptor. The (possibly modified) response returned by
+        `post_create_reporting_data_annotation` will be passed to
+        `post_create_reporting_data_annotation_with_metadata`.
+        """
+        return response, metadata
+
     def pre_create_rollup_property(
         self,
         request: analytics_admin.CreateRollupPropertyRequest,
@@ -3158,6 +3253,21 @@ class AnalyticsAdminServiceRestInterceptor:
         `post_delete_property_with_metadata`.
         """
         return response, metadata
+
+    def pre_delete_reporting_data_annotation(
+        self,
+        request: analytics_admin.DeleteReportingDataAnnotationRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        analytics_admin.DeleteReportingDataAnnotationRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for delete_reporting_data_annotation
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the AnalyticsAdminService server.
+        """
+        return request, metadata
 
     def pre_delete_rollup_property_source_link(
         self,
@@ -4598,6 +4708,57 @@ class AnalyticsAdminServiceRestInterceptor:
         """
         return response, metadata
 
+    def pre_get_reporting_data_annotation(
+        self,
+        request: analytics_admin.GetReportingDataAnnotationRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        analytics_admin.GetReportingDataAnnotationRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for get_reporting_data_annotation
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the AnalyticsAdminService server.
+        """
+        return request, metadata
+
+    def post_get_reporting_data_annotation(
+        self, response: resources.ReportingDataAnnotation
+    ) -> resources.ReportingDataAnnotation:
+        """Post-rpc interceptor for get_reporting_data_annotation
+
+        DEPRECATED. Please use the `post_get_reporting_data_annotation_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the AnalyticsAdminService server but before
+        it is returned to user code. This `post_get_reporting_data_annotation` interceptor runs
+        before the `post_get_reporting_data_annotation_with_metadata` interceptor.
+        """
+        return response
+
+    def post_get_reporting_data_annotation_with_metadata(
+        self,
+        response: resources.ReportingDataAnnotation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        resources.ReportingDataAnnotation, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for get_reporting_data_annotation
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AnalyticsAdminService server but before it is returned to user code.
+
+        We recommend only using this `post_get_reporting_data_annotation_with_metadata`
+        interceptor in new development instead of the `post_get_reporting_data_annotation` interceptor.
+        When both interceptors are used, this `post_get_reporting_data_annotation_with_metadata` interceptor runs after the
+        `post_get_reporting_data_annotation` interceptor. The (possibly modified) response returned by
+        `post_get_reporting_data_annotation` will be passed to
+        `post_get_reporting_data_annotation_with_metadata`.
+        """
+        return response, metadata
+
     def pre_get_rollup_property_source_link(
         self,
         request: analytics_admin.GetRollupPropertySourceLinkRequest,
@@ -5988,6 +6149,58 @@ class AnalyticsAdminServiceRestInterceptor:
         """
         return response, metadata
 
+    def pre_list_reporting_data_annotations(
+        self,
+        request: analytics_admin.ListReportingDataAnnotationsRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        analytics_admin.ListReportingDataAnnotationsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for list_reporting_data_annotations
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the AnalyticsAdminService server.
+        """
+        return request, metadata
+
+    def post_list_reporting_data_annotations(
+        self, response: analytics_admin.ListReportingDataAnnotationsResponse
+    ) -> analytics_admin.ListReportingDataAnnotationsResponse:
+        """Post-rpc interceptor for list_reporting_data_annotations
+
+        DEPRECATED. Please use the `post_list_reporting_data_annotations_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the AnalyticsAdminService server but before
+        it is returned to user code. This `post_list_reporting_data_annotations` interceptor runs
+        before the `post_list_reporting_data_annotations_with_metadata` interceptor.
+        """
+        return response
+
+    def post_list_reporting_data_annotations_with_metadata(
+        self,
+        response: analytics_admin.ListReportingDataAnnotationsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        analytics_admin.ListReportingDataAnnotationsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_reporting_data_annotations
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AnalyticsAdminService server but before it is returned to user code.
+
+        We recommend only using this `post_list_reporting_data_annotations_with_metadata`
+        interceptor in new development instead of the `post_list_reporting_data_annotations` interceptor.
+        When both interceptors are used, this `post_list_reporting_data_annotations_with_metadata` interceptor runs after the
+        `post_list_reporting_data_annotations` interceptor. The (possibly modified) response returned by
+        `post_list_reporting_data_annotations` will be passed to
+        `post_list_reporting_data_annotations_with_metadata`.
+        """
+        return response, metadata
+
     def pre_list_rollup_property_source_links(
         self,
         request: analytics_admin.ListRollupPropertySourceLinksRequest,
@@ -6466,6 +6679,58 @@ class AnalyticsAdminServiceRestInterceptor:
         `post_set_automated_ga4_configuration_opt_out` interceptor. The (possibly modified) response returned by
         `post_set_automated_ga4_configuration_opt_out` will be passed to
         `post_set_automated_ga4_configuration_opt_out_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_submit_user_deletion(
+        self,
+        request: analytics_admin.SubmitUserDeletionRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        analytics_admin.SubmitUserDeletionRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for submit_user_deletion
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the AnalyticsAdminService server.
+        """
+        return request, metadata
+
+    def post_submit_user_deletion(
+        self, response: analytics_admin.SubmitUserDeletionResponse
+    ) -> analytics_admin.SubmitUserDeletionResponse:
+        """Post-rpc interceptor for submit_user_deletion
+
+        DEPRECATED. Please use the `post_submit_user_deletion_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the AnalyticsAdminService server but before
+        it is returned to user code. This `post_submit_user_deletion` interceptor runs
+        before the `post_submit_user_deletion_with_metadata` interceptor.
+        """
+        return response
+
+    def post_submit_user_deletion_with_metadata(
+        self,
+        response: analytics_admin.SubmitUserDeletionResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        analytics_admin.SubmitUserDeletionResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for submit_user_deletion
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AnalyticsAdminService server but before it is returned to user code.
+
+        We recommend only using this `post_submit_user_deletion_with_metadata`
+        interceptor in new development instead of the `post_submit_user_deletion` interceptor.
+        When both interceptors are used, this `post_submit_user_deletion_with_metadata` interceptor runs after the
+        `post_submit_user_deletion` interceptor. The (possibly modified) response returned by
+        `post_submit_user_deletion` will be passed to
+        `post_submit_user_deletion_with_metadata`.
         """
         return response, metadata
 
@@ -7600,6 +7865,57 @@ class AnalyticsAdminServiceRestInterceptor:
         `post_update_property` interceptor. The (possibly modified) response returned by
         `post_update_property` will be passed to
         `post_update_property_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_update_reporting_data_annotation(
+        self,
+        request: analytics_admin.UpdateReportingDataAnnotationRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        analytics_admin.UpdateReportingDataAnnotationRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for update_reporting_data_annotation
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the AnalyticsAdminService server.
+        """
+        return request, metadata
+
+    def post_update_reporting_data_annotation(
+        self, response: resources.ReportingDataAnnotation
+    ) -> resources.ReportingDataAnnotation:
+        """Post-rpc interceptor for update_reporting_data_annotation
+
+        DEPRECATED. Please use the `post_update_reporting_data_annotation_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the AnalyticsAdminService server but before
+        it is returned to user code. This `post_update_reporting_data_annotation` interceptor runs
+        before the `post_update_reporting_data_annotation_with_metadata` interceptor.
+        """
+        return response
+
+    def post_update_reporting_data_annotation_with_metadata(
+        self,
+        response: resources.ReportingDataAnnotation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        resources.ReportingDataAnnotation, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for update_reporting_data_annotation
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AnalyticsAdminService server but before it is returned to user code.
+
+        We recommend only using this `post_update_reporting_data_annotation_with_metadata`
+        interceptor in new development instead of the `post_update_reporting_data_annotation` interceptor.
+        When both interceptors are used, this `post_update_reporting_data_annotation_with_metadata` interceptor runs after the
+        `post_update_reporting_data_annotation` interceptor. The (possibly modified) response returned by
+        `post_update_reporting_data_annotation` will be passed to
+        `post_update_reporting_data_annotation_with_metadata`.
         """
         return response, metadata
 
@@ -12683,6 +12999,171 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                 )
             return resp
 
+    class _CreateReportingDataAnnotation(
+        _BaseAnalyticsAdminServiceRestTransport._BaseCreateReportingDataAnnotation,
+        AnalyticsAdminServiceRestStub,
+    ):
+        def __hash__(self):
+            return hash(
+                "AnalyticsAdminServiceRestTransport.CreateReportingDataAnnotation"
+            )
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: analytics_admin.CreateReportingDataAnnotationRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> resources.ReportingDataAnnotation:
+            r"""Call the create reporting data
+            annotation method over HTTP.
+
+                Args:
+                    request (~.analytics_admin.CreateReportingDataAnnotationRequest):
+                        The request object. Request message for
+                    CreateReportingDataAnnotation RPC.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
+
+                Returns:
+                    ~.resources.ReportingDataAnnotation:
+                        A Reporting Data Annotation is a
+                    comment connected to certain dates for
+                    reporting data.
+
+            """
+
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseCreateReportingDataAnnotation._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_create_reporting_data_annotation(
+                request, metadata
+            )
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseCreateReportingDataAnnotation._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseAnalyticsAdminServiceRestTransport._BaseCreateReportingDataAnnotation._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseCreateReportingDataAnnotation._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.CreateReportingDataAnnotation",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "CreateReportingDataAnnotation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = AnalyticsAdminServiceRestTransport._CreateReportingDataAnnotation._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = resources.ReportingDataAnnotation()
+            pb_resp = resources.ReportingDataAnnotation.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_create_reporting_data_annotation(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_create_reporting_data_annotation_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.ReportingDataAnnotation.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.create_reporting_data_annotation",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "CreateReportingDataAnnotation",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     class _CreateRollupProperty(
         _BaseAnalyticsAdminServiceRestTransport._BaseCreateRollupProperty,
         AnalyticsAdminServiceRestStub,
@@ -15676,6 +16157,119 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                     },
                 )
             return resp
+
+    class _DeleteReportingDataAnnotation(
+        _BaseAnalyticsAdminServiceRestTransport._BaseDeleteReportingDataAnnotation,
+        AnalyticsAdminServiceRestStub,
+    ):
+        def __hash__(self):
+            return hash(
+                "AnalyticsAdminServiceRestTransport.DeleteReportingDataAnnotation"
+            )
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: analytics_admin.DeleteReportingDataAnnotationRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ):
+            r"""Call the delete reporting data
+            annotation method over HTTP.
+
+                Args:
+                    request (~.analytics_admin.DeleteReportingDataAnnotationRequest):
+                        The request object. Request message for
+                    DeleteReportingDataAnnotation RPC.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
+            """
+
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseDeleteReportingDataAnnotation._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_delete_reporting_data_annotation(
+                request, metadata
+            )
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseDeleteReportingDataAnnotation._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseDeleteReportingDataAnnotation._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.DeleteReportingDataAnnotation",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "DeleteReportingDataAnnotation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = AnalyticsAdminServiceRestTransport._DeleteReportingDataAnnotation._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
 
     class _DeleteRollupPropertySourceLink(
         _BaseAnalyticsAdminServiceRestTransport._BaseDeleteRollupPropertySourceLink,
@@ -20454,6 +21048,163 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                 )
             return resp
 
+    class _GetReportingDataAnnotation(
+        _BaseAnalyticsAdminServiceRestTransport._BaseGetReportingDataAnnotation,
+        AnalyticsAdminServiceRestStub,
+    ):
+        def __hash__(self):
+            return hash("AnalyticsAdminServiceRestTransport.GetReportingDataAnnotation")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: analytics_admin.GetReportingDataAnnotationRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> resources.ReportingDataAnnotation:
+            r"""Call the get reporting data
+            annotation method over HTTP.
+
+                Args:
+                    request (~.analytics_admin.GetReportingDataAnnotationRequest):
+                        The request object. Request message for
+                    GetReportingDataAnnotation RPC.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
+
+                Returns:
+                    ~.resources.ReportingDataAnnotation:
+                        A Reporting Data Annotation is a
+                    comment connected to certain dates for
+                    reporting data.
+
+            """
+
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseGetReportingDataAnnotation._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_get_reporting_data_annotation(
+                request, metadata
+            )
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseGetReportingDataAnnotation._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseGetReportingDataAnnotation._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.GetReportingDataAnnotation",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "GetReportingDataAnnotation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = AnalyticsAdminServiceRestTransport._GetReportingDataAnnotation._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = resources.ReportingDataAnnotation()
+            pb_resp = resources.ReportingDataAnnotation.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_get_reporting_data_annotation(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_get_reporting_data_annotation_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.ReportingDataAnnotation.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.get_reporting_data_annotation",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "GetReportingDataAnnotation",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     class _GetRollupPropertySourceLink(
         _BaseAnalyticsAdminServiceRestTransport._BaseGetRollupPropertySourceLink,
         AnalyticsAdminServiceRestStub,
@@ -24644,6 +25395,166 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                 )
             return resp
 
+    class _ListReportingDataAnnotations(
+        _BaseAnalyticsAdminServiceRestTransport._BaseListReportingDataAnnotations,
+        AnalyticsAdminServiceRestStub,
+    ):
+        def __hash__(self):
+            return hash(
+                "AnalyticsAdminServiceRestTransport.ListReportingDataAnnotations"
+            )
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: analytics_admin.ListReportingDataAnnotationsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> analytics_admin.ListReportingDataAnnotationsResponse:
+            r"""Call the list reporting data
+            annotations method over HTTP.
+
+                Args:
+                    request (~.analytics_admin.ListReportingDataAnnotationsRequest):
+                        The request object. Request message for
+                    ListReportingDataAnnotation RPC.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
+
+                Returns:
+                    ~.analytics_admin.ListReportingDataAnnotationsResponse:
+                        Response message for
+                    ListReportingDataAnnotation RPC.
+
+            """
+
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseListReportingDataAnnotations._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_list_reporting_data_annotations(
+                request, metadata
+            )
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseListReportingDataAnnotations._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseListReportingDataAnnotations._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.ListReportingDataAnnotations",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "ListReportingDataAnnotations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = AnalyticsAdminServiceRestTransport._ListReportingDataAnnotations._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = analytics_admin.ListReportingDataAnnotationsResponse()
+            pb_resp = analytics_admin.ListReportingDataAnnotationsResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_list_reporting_data_annotations(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_list_reporting_data_annotations_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        analytics_admin.ListReportingDataAnnotationsResponse.to_json(
+                            response
+                        )
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.list_reporting_data_annotations",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "ListReportingDataAnnotations",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     class _ListRollupPropertySourceLinks(
         _BaseAnalyticsAdminServiceRestTransport._BaseListRollupPropertySourceLinks,
         AnalyticsAdminServiceRestStub,
@@ -26207,6 +27118,166 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                     extra={
                         "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
                         "rpcName": "SetAutomatedGa4ConfigurationOptOut",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _SubmitUserDeletion(
+        _BaseAnalyticsAdminServiceRestTransport._BaseSubmitUserDeletion,
+        AnalyticsAdminServiceRestStub,
+    ):
+        def __hash__(self):
+            return hash("AnalyticsAdminServiceRestTransport.SubmitUserDeletion")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: analytics_admin.SubmitUserDeletionRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> analytics_admin.SubmitUserDeletionResponse:
+            r"""Call the submit user deletion method over HTTP.
+
+            Args:
+                request (~.analytics_admin.SubmitUserDeletionRequest):
+                    The request object. Request message for
+                SubmitUserDeletion RPC.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.analytics_admin.SubmitUserDeletionResponse:
+                    Response message for
+                SubmitUserDeletion RPC.
+
+            """
+
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseSubmitUserDeletion._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_submit_user_deletion(
+                request, metadata
+            )
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseSubmitUserDeletion._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseAnalyticsAdminServiceRestTransport._BaseSubmitUserDeletion._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseSubmitUserDeletion._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.SubmitUserDeletion",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "SubmitUserDeletion",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = (
+                AnalyticsAdminServiceRestTransport._SubmitUserDeletion._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = analytics_admin.SubmitUserDeletionResponse()
+            pb_resp = analytics_admin.SubmitUserDeletionResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_submit_user_deletion(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_submit_user_deletion_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        analytics_admin.SubmitUserDeletionResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.submit_user_deletion",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "SubmitUserDeletion",
                         "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
@@ -29896,6 +30967,171 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                 )
             return resp
 
+    class _UpdateReportingDataAnnotation(
+        _BaseAnalyticsAdminServiceRestTransport._BaseUpdateReportingDataAnnotation,
+        AnalyticsAdminServiceRestStub,
+    ):
+        def __hash__(self):
+            return hash(
+                "AnalyticsAdminServiceRestTransport.UpdateReportingDataAnnotation"
+            )
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: analytics_admin.UpdateReportingDataAnnotationRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> resources.ReportingDataAnnotation:
+            r"""Call the update reporting data
+            annotation method over HTTP.
+
+                Args:
+                    request (~.analytics_admin.UpdateReportingDataAnnotationRequest):
+                        The request object. Request message for
+                    UpdateReportingDataAnnotation RPC.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
+
+                Returns:
+                    ~.resources.ReportingDataAnnotation:
+                        A Reporting Data Annotation is a
+                    comment connected to certain dates for
+                    reporting data.
+
+            """
+
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseUpdateReportingDataAnnotation._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_update_reporting_data_annotation(
+                request, metadata
+            )
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseUpdateReportingDataAnnotation._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseAnalyticsAdminServiceRestTransport._BaseUpdateReportingDataAnnotation._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseUpdateReportingDataAnnotation._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.UpdateReportingDataAnnotation",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "UpdateReportingDataAnnotation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = AnalyticsAdminServiceRestTransport._UpdateReportingDataAnnotation._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = resources.ReportingDataAnnotation()
+            pb_resp = resources.ReportingDataAnnotation.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_update_reporting_data_annotation(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_update_reporting_data_annotation_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.ReportingDataAnnotation.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.update_reporting_data_annotation",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "UpdateReportingDataAnnotation",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     class _UpdateSearchAds360Link(
         _BaseAnalyticsAdminServiceRestTransport._BaseUpdateSearchAds360Link,
         AnalyticsAdminServiceRestStub,
@@ -30689,6 +31925,17 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
         return self._CreateProperty(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def create_reporting_data_annotation(
+        self,
+    ) -> Callable[
+        [analytics_admin.CreateReportingDataAnnotationRequest],
+        resources.ReportingDataAnnotation,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._CreateReportingDataAnnotation(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def create_rollup_property(
         self,
     ) -> Callable[
@@ -30900,6 +32147,16 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteProperty(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def delete_reporting_data_annotation(
+        self,
+    ) -> Callable[
+        [analytics_admin.DeleteReportingDataAnnotationRequest], empty_pb2.Empty
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._DeleteReportingDataAnnotation(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def delete_rollup_property_source_link(
@@ -31208,6 +32465,17 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
         return self._GetProperty(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def get_reporting_data_annotation(
+        self,
+    ) -> Callable[
+        [analytics_admin.GetReportingDataAnnotationRequest],
+        resources.ReportingDataAnnotation,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetReportingDataAnnotation(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def get_rollup_property_source_link(
         self,
     ) -> Callable[
@@ -31500,6 +32768,17 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
         return self._ListProperties(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def list_reporting_data_annotations(
+        self,
+    ) -> Callable[
+        [analytics_admin.ListReportingDataAnnotationsRequest],
+        analytics_admin.ListReportingDataAnnotationsResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListReportingDataAnnotations(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def list_rollup_property_source_links(
         self,
     ) -> Callable[
@@ -31605,6 +32884,17 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SetAutomatedGa4ConfigurationOptOut(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def submit_user_deletion(
+        self,
+    ) -> Callable[
+        [analytics_admin.SubmitUserDeletionRequest],
+        analytics_admin.SubmitUserDeletionResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._SubmitUserDeletion(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def update_access_binding(
@@ -31831,6 +33121,17 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateProperty(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def update_reporting_data_annotation(
+        self,
+    ) -> Callable[
+        [analytics_admin.UpdateReportingDataAnnotationRequest],
+        resources.ReportingDataAnnotation,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._UpdateReportingDataAnnotation(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def update_search_ads360_link(
