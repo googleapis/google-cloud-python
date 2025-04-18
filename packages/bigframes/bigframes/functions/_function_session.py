@@ -886,7 +886,7 @@ class FunctionSession:
                 signature, input_types, output_type  # type: ignore
             )
 
-            remote_function_client = _function_client.FunctionClient(
+            managed_function_client = _function_client.FunctionClient(
                 dataset_ref.project,
                 bq_location,
                 dataset_ref.dataset_id,
@@ -905,7 +905,7 @@ class FunctionSession:
             self._try_delattr(func, "is_row_processor")
             self._try_delattr(func, "ibis_node")
 
-            bq_function_name = remote_function_client.provision_bq_managed_function(
+            bq_function_name = managed_function_client.provision_bq_managed_function(
                 func=func,
                 input_types=tuple(
                     third_party_ibis_bqtypes.BigQueryType.from_ibis(type_)
@@ -942,7 +942,7 @@ class FunctionSession:
                 signature=(ibis_signature.input_types, ibis_signature.output_type),
             )  # type: ignore
             func.bigframes_bigquery_function = (
-                remote_function_client.get_remote_function_fully_qualilfied_name(
+                managed_function_client.get_remote_function_fully_qualilfied_name(
                     bq_function_name
                 )
             )
