@@ -26,11 +26,12 @@ import uuid
 
 import geopandas  # type: ignore
 import numpy as np
-import pandas
+import pandas as pd
 import pyarrow as pa
 import pyarrow.parquet  # type: ignore
 
 import bigframes.core.schema as schemata
+import bigframes.core.utils as utils
 import bigframes.dtypes
 
 
@@ -58,15 +59,12 @@ class ManagedArrowTable:
     schema: schemata.ArraySchema = dataclasses.field(hash=False)
     id: uuid.UUID = dataclasses.field(default_factory=uuid.uuid4)
 
-    def __post_init__(self):
-        self.validate()
-
     @functools.cached_property
     def metadata(self) -> LocalTableMetadata:
         return LocalTableMetadata.from_arrow(self.data)
 
     @classmethod
-    def from_pandas(cls, dataframe: pandas.DataFrame) -> ManagedArrowTable:
+    def from_pandas(cls, dataframe: pd.DataFrame) -> ManagedArrowTable:
         """Creates managed table from pandas. Ignores index, col names must be unique strings"""
         columns: list[pa.ChunkedArray] = []
         fields: list[schemata.SchemaItem] = []
@@ -78,9 +76,11 @@ class ManagedArrowTable:
             columns.append(new_arr)
             fields.append(schemata.SchemaItem(str(name), bf_type))
 
-        return ManagedArrowTable(
+        mat = ManagedArrowTable(
             pa.table(columns, names=column_names), schemata.ArraySchema(tuple(fields))
         )
+        mat.validate(include_content=True)
+        return mat
 
     @classmethod
     def from_pyarrow(self, table: pa.Table) -> ManagedArrowTable:
@@ -91,10 +91,12 @@ class ManagedArrowTable:
             columns.append(new_arr)
             fields.append(schemata.SchemaItem(name, bf_type))
 
-        return ManagedArrowTable(
+        mat = ManagedArrowTable(
             pa.table(columns, names=table.column_names),
             schemata.ArraySchema(tuple(fields)),
         )
+        mat.validate()
+        return mat
 
     def to_parquet(
         self,
@@ -140,8 +142,7 @@ class ManagedArrowTable:
         ):
             yield tuple(row_dict.values())
 
-    def validate(self):
-        # TODO: Content-based validation for some datatypes (eg json, wkt, list) where logical domain is smaller than pyarrow type
+    def validate(self, include_content: bool = False):
         for bf_field, arrow_field in zip(self.schema.items, self.data.schema):
             expected_arrow_type = _get_managed_storage_type(bf_field.dtype)
             arrow_type = arrow_field.type
@@ -149,6 +150,38 @@ class ManagedArrowTable:
                 raise TypeError(
                     f"Field {bf_field} has arrow array type: {arrow_type}, expected type: {expected_arrow_type}"
                 )
+
+        if include_content:
+            for batch in self.data.to_batches():
+                for field in self.schema.items:
+                    _validate_content(batch.column(field.column), field.dtype)
+
+
+def _validate_content(array: pa.Array, dtype: bigframes.dtypes.Dtype):
+    """
+    Recursively validates the content of a PyArrow Array based on the
+    expected BigFrames dtype, focusing on complex types like JSON, structs,
+    and arrays where the Arrow type alone isn't sufficient.
+    """
+    # TODO: validate GEO data context.
+    if dtype == bigframes.dtypes.JSON_DTYPE:
+        values = array.to_pandas()
+        for data in values:
+            # Skip scalar null values to avoid `TypeError` from json.load.
+            if not utils.is_list_like(data) and pd.isna(data):
+                continue
+            try:
+                # Attempts JSON parsing.
+                json.loads(data)
+            except json.JSONDecodeError as e:
+                raise ValueError(f"Invalid JSON format found: {data!r}") from e
+    elif bigframes.dtypes.is_struct_like(dtype):
+        for field_name, dtype in bigframes.dtypes.get_struct_fields(dtype).items():
+            _validate_content(array.field(field_name), dtype)
+    elif bigframes.dtypes.is_array_like(dtype):
+        return _validate_content(
+            array.flatten(), bigframes.dtypes.get_array_inner_type(dtype)
+        )
 
 
 # Sequential iterator, but could split into batches and leverage parallelism for speed
@@ -226,7 +259,7 @@ def _iter_table(
 
 
 def _adapt_pandas_series(
-    series: pandas.Series,
+    series: pd.Series,
 ) -> tuple[Union[pa.ChunkedArray, pa.Array], bigframes.dtypes.Dtype]:
     # Mostly rely on pyarrow conversions, but have to convert geo without its help.
     if series.dtype == bigframes.dtypes.GEO_DTYPE:
