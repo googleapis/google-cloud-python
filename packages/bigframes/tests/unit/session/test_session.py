@@ -119,11 +119,6 @@ CLUSTERED_OR_PARTITIONED_TABLES = [
             id="with_dtype",
         ),
         pytest.param(
-            {"engine": "bigquery", "index_col": 5},
-            "BigQuery engine only supports a single column name for `index_col`.",
-            id="with_index_col_not_str",
-        ),
-        pytest.param(
             {"engine": "bigquery", "usecols": [1, 2]},
             "BigQuery engine only supports an iterable of strings for `usecols`.",
             id="with_usecols_invalid",

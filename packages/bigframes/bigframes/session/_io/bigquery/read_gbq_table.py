@@ -230,7 +230,11 @@ def _is_table_clustered_or_partitioned(
 
 def get_index_cols(
     table: bigquery.table.Table,
-    index_col: Iterable[str] | str | bigframes.enums.DefaultIndexKind,
+    index_col: Iterable[str]
+    | str
+    | Iterable[int]
+    | int
+    | bigframes.enums.DefaultIndexKind,
 ) -> List[str]:
     """
     If we can get a total ordering from the table, such as via primary key
@@ -240,6 +244,8 @@ def get_index_cols(
 
     # Transform index_col -> index_cols so we have a variable that is
     # always a list of column names (possibly empty).
+    schema_len = len(table.schema)
+    index_cols: List[str] = []
     if isinstance(index_col, bigframes.enums.DefaultIndexKind):
         if index_col == bigframes.enums.DefaultIndexKind.SEQUENTIAL_INT64:
             # User has explicity asked for a default, sequential index.
@@ -255,9 +261,35 @@ def get_index_cols(
                 f"Got unexpected index_col {repr(index_col)}. {constants.FEEDBACK_LINK}"
             )
     elif isinstance(index_col, str):
-        index_cols: List[str] = [index_col]
+        index_cols = [index_col]
+    elif isinstance(index_col, int):
+        if not 0 <= index_col < schema_len:
+            raise ValueError(
+                f"Integer index {index_col} is out of bounds "
+                f"for table with {schema_len} columns (must be >= 0 and < {schema_len})."
+            )
+        index_cols = [table.schema[index_col].name]
+    elif isinstance(index_col, Iterable):
+        for item in index_col:
+            if isinstance(item, str):
+                index_cols.append(item)
+            elif isinstance(item, int):
+                if not 0 <= item < schema_len:
+                    raise ValueError(
+                        f"Integer index {item} is out of bounds "
+                        f"for table with {schema_len} columns (must be >= 0 and < {schema_len})."
+                    )
+                index_cols.append(table.schema[item].name)
+            else:
+                raise TypeError(
+                    "If index_col is an iterable, it must contain either strings "
+                    "(column names) or integers (column positions)."
+                )
     else:
-        index_cols = list(index_col)
+        raise TypeError(
+            f"Unsupported type for index_col: {type(index_col).__name__}. Expected"
+            "an integer, an string, an iterable of strings, or an iterable of integers."
+        )
 
     # If the isn't an index selected, use the primary keys of the table as the
     # index. If there are no primary keys, we'll return an empty list.

@@ -961,36 +961,12 @@ class Session(
                 f"{constants.FEEDBACK_LINK}"
             )
 
-        # TODO(b/338089659): Looks like we can relax this 1 column
-        # restriction if we check the contents of an iterable are strings
-        # not integers.
-        if (
-            # Empty tuples, None, and False are allowed and falsey.
-            index_col
-            and not isinstance(index_col, bigframes.enums.DefaultIndexKind)
-            and not isinstance(index_col, str)
-        ):
-            raise NotImplementedError(
-                "BigQuery engine only supports a single column name for `index_col`, "
-                f"got: {repr(index_col)}. {constants.FEEDBACK_LINK}"
-            )
+        if index_col is True:
+            raise ValueError("The value of index_col couldn't be 'True'")
 
         # None and False cannot be passed to read_gbq.
-        # TODO(b/338400133): When index_col is None, we should be using the
-        # first column of the CSV as the index to be compatible with the
-        # pandas engine. According to the pandas docs, only "False"
-        # indicates a default sequential index.
-        if not index_col:
+        if index_col is None or index_col is False:
             index_col = ()
-
-        index_col = typing.cast(
-            Union[
-                Sequence[str],  # Falsey values
-                bigframes.enums.DefaultIndexKind,
-                str,
-            ],
-            index_col,
-        )
 
         # usecols should only be an iterable of strings (column names) for use as columns in read_gbq.
         columns: Tuple[Any, ...] = tuple()

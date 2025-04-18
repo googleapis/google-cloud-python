@@ -289,7 +289,11 @@ class GbqDataLoader:
         self,
         query: str,
         *,
-        index_col: Iterable[str] | str | bigframes.enums.DefaultIndexKind = (),
+        index_col: Iterable[str]
+        | str
+        | Iterable[int]
+        | int
+        | bigframes.enums.DefaultIndexKind = (),
         columns: Iterable[str] = (),
         max_results: Optional[int] = None,
         api_name: str = "read_gbq_table",
@@ -516,7 +520,11 @@ class GbqDataLoader:
         filepath_or_buffer: str | IO["bytes"],
         *,
         job_config: bigquery.LoadJobConfig,
-        index_col: Iterable[str] | str | bigframes.enums.DefaultIndexKind = (),
+        index_col: Iterable[str]
+        | str
+        | Iterable[int]
+        | int
+        | bigframes.enums.DefaultIndexKind = (),
         columns: Iterable[str] = (),
     ) -> dataframe.DataFrame:
         # Need to create session table beforehand
