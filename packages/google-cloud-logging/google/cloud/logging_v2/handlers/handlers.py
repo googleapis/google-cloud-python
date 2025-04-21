@@ -245,9 +245,10 @@ class CloudLoggingHandler(logging.StreamHandler):
 
     def close(self):
         """Closes the log handler and cleans up all Transport objects used."""
-        self.transport.close()
-        self.transport = None
-        self._transport_open = False
+        if self._transport_open:
+            self.transport.close()
+            self.transport = None
+            self._transport_open = False
 
 
 def _format_and_parse_message(record, formatter_handler):

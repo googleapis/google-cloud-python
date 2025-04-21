@@ -901,6 +901,10 @@ class TestCloudLoggingHandler(unittest.TestCase):
         self.assertFalse(handler._transport_open)
         self.assertTrue(old_transport.close_called)
 
+        # second call to close shouldn't throw an exception
+        handler.close()
+        self.assertFalse(handler._transport_open)
+
 
 class TestFormatAndParseMessage(unittest.TestCase):
     def test_none(self):
