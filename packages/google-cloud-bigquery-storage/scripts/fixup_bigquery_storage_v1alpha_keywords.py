@@ -39,10 +39,10 @@ def partition(
 class bigquery_storageCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
-        'batch_create_metastore_partitions': ('parent', 'requests', 'skip_existing_partitions', ),
-        'batch_delete_metastore_partitions': ('parent', 'partition_values', ),
-        'batch_update_metastore_partitions': ('parent', 'requests', ),
-        'list_metastore_partitions': ('parent', 'filter', ),
+        'batch_create_metastore_partitions': ('parent', 'requests', 'skip_existing_partitions', 'trace_id', ),
+        'batch_delete_metastore_partitions': ('parent', 'partition_values', 'trace_id', ),
+        'batch_update_metastore_partitions': ('parent', 'requests', 'trace_id', ),
+        'list_metastore_partitions': ('parent', 'filter', 'trace_id', ),
         'stream_metastore_partitions': ('parent', 'metastore_partitions', 'skip_existing_partitions', ),
     }
 

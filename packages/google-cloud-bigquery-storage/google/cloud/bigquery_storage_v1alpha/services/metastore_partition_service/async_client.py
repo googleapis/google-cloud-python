@@ -65,7 +65,7 @@ _LOGGER = std_logging.getLogger(__name__)
 class MetastorePartitionServiceAsyncClient:
     """BigQuery Metastore Partition Service API.
     This service is used for managing metastore partitions in
-    BigQuery metastore. The service supports only batch operations
+    BigQuery  metastore. The service supports only batch operations
     for write.
     """
 

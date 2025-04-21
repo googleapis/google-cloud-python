@@ -86,7 +86,15 @@ class BatchCreateMetastorePartitionsRequest(proto.Message):
             add_partitions(..). If the flag is set to false, the server
             will return ALREADY_EXISTS if any partition already exists.
             If the flag is set to true, the server will skip existing
-            partitions and insert only the non-existing partitions.
+            partitions and insert only the non-existing partitions. A
+            maximum of 900 partitions can be inserted in a batch.
+        trace_id (str):
+            Optional. Optional trace id to be used for debugging. It is
+            expected that the client sets the same ``trace_id`` for all
+            the batches in the same operation, so that it is possible to
+            tie together the logs to all the batches in the same
+            operation. Limited to 256 characters. This is expected, but
+            not required, to be globally unique.
     """
 
     parent: str = proto.Field(
@@ -101,6 +109,10 @@ class BatchCreateMetastorePartitionsRequest(proto.Message):
     skip_existing_partitions: bool = proto.Field(
         proto.BOOL,
         number=3,
+    )
+    trace_id: str = proto.Field(
+        proto.STRING,
+        number=4,
     )
 
 
@@ -135,8 +147,15 @@ class BatchDeleteMetastorePartitionsRequest(proto.Message):
         partition_values (MutableSequence[google.cloud.bigquery_storage_v1alpha.types.MetastorePartitionValues]):
             Required. The list of metastore partitions
             (identified by its values) to be deleted. A
-            maximum of 100 partitions can be deleted in a
+            maximum of 900 partitions can be deleted in a
             batch.
+        trace_id (str):
+            Optional. Optional trace id to be used for debugging. It is
+            expected that the client sets the same ``trace_id`` for all
+            the batches in the same operation, so that it is possible to
+            tie together the logs to all the batches in the same
+            operation. This is expected, but not required, to be
+            globally unique.
     """
 
     parent: str = proto.Field(
@@ -149,6 +168,10 @@ class BatchDeleteMetastorePartitionsRequest(proto.Message):
         proto.MESSAGE,
         number=2,
         message=partition.MetastorePartitionValues,
+    )
+    trace_id: str = proto.Field(
+        proto.STRING,
+        number=4,
     )
 
 
@@ -187,6 +210,13 @@ class BatchUpdateMetastorePartitionsRequest(proto.Message):
         requests (MutableSequence[google.cloud.bigquery_storage_v1alpha.types.UpdateMetastorePartitionRequest]):
             Required. Requests to update metastore
             partitions in the table.
+        trace_id (str):
+            Optional. Optional trace id to be used for debugging. It is
+            expected that the client sets the same ``trace_id`` for all
+            the batches in the same operation, so that it is possible to
+            tie together the logs to all the batches in the same
+            operation. This is expected, but not required, to be
+            globally unique.
     """
 
     parent: str = proto.Field(
@@ -198,6 +228,10 @@ class BatchUpdateMetastorePartitionsRequest(proto.Message):
         number=2,
         message="UpdateMetastorePartitionRequest",
     )
+    trace_id: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
 
 
 class BatchUpdateMetastorePartitionsResponse(proto.Message):
@@ -206,7 +240,8 @@ class BatchUpdateMetastorePartitionsResponse(proto.Message):
     Attributes:
         partitions (MutableSequence[google.cloud.bigquery_storage_v1alpha.types.MetastorePartition]):
             The list of metastore partitions that have
-            been updated.
+            been updated. A maximum of 900 partitions can be
+            updated in a batch.
     """
 
     partitions: MutableSequence[partition.MetastorePartition] = proto.RepeatedField(
@@ -234,6 +269,13 @@ class ListMetastorePartitionsRequest(proto.Message):
             DATE)" "nullable_field is not NULL" "st_equals(geo_field,
             st_geofromtext("POINT(2, 2)"))" "numeric_field BETWEEN 1.0
             AND 5.0" Restricted to a maximum length for 1 MB.
+        trace_id (str):
+            Optional. Optional trace id to be used for debugging. It is
+            expected that the client sets the same ``trace_id`` for all
+            the batches in the same operation, so that it is possible to
+            tie together the logs to all the batches in the same
+            operation. Limited to 256 characters. This is expected, but
+            not required, to be globally unique.
     """
 
     parent: str = proto.Field(
@@ -243,6 +285,10 @@ class ListMetastorePartitionsRequest(proto.Message):
     filter: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+    trace_id: str = proto.Field(
+        proto.STRING,
+        number=3,
     )
 
 

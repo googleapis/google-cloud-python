@@ -108,7 +108,7 @@ class MetastorePartitionServiceClientMeta(type):
 class MetastorePartitionServiceClient(metaclass=MetastorePartitionServiceClientMeta):
     """BigQuery Metastore Partition Service API.
     This service is used for managing metastore partitions in
-    BigQuery metastore. The service supports only batch operations
+    BigQuery  metastore. The service supports only batch operations
     for write.
     """
 

@@ -1196,6 +1196,7 @@ def test_batch_create_metastore_partitions_non_empty_request_with_auto_populated
     # if they meet the requirements of AIP 4235.
     request = metastore_partition.BatchCreateMetastorePartitionsRequest(
         parent="parent_value",
+        trace_id="trace_id_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1210,6 +1211,7 @@ def test_batch_create_metastore_partitions_non_empty_request_with_auto_populated
         _, args, _ = call.mock_calls[0]
         assert args[0] == metastore_partition.BatchCreateMetastorePartitionsRequest(
             parent="parent_value",
+            trace_id="trace_id_value",
         )
 
 
@@ -1449,6 +1451,7 @@ def test_batch_delete_metastore_partitions_non_empty_request_with_auto_populated
     # if they meet the requirements of AIP 4235.
     request = metastore_partition.BatchDeleteMetastorePartitionsRequest(
         parent="parent_value",
+        trace_id="trace_id_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1463,6 +1466,7 @@ def test_batch_delete_metastore_partitions_non_empty_request_with_auto_populated
         _, args, _ = call.mock_calls[0]
         assert args[0] == metastore_partition.BatchDeleteMetastorePartitionsRequest(
             parent="parent_value",
+            trace_id="trace_id_value",
         )
 
 
@@ -1698,6 +1702,7 @@ def test_batch_update_metastore_partitions_non_empty_request_with_auto_populated
     # if they meet the requirements of AIP 4235.
     request = metastore_partition.BatchUpdateMetastorePartitionsRequest(
         parent="parent_value",
+        trace_id="trace_id_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1712,6 +1717,7 @@ def test_batch_update_metastore_partitions_non_empty_request_with_auto_populated
         _, args, _ = call.mock_calls[0]
         assert args[0] == metastore_partition.BatchUpdateMetastorePartitionsRequest(
             parent="parent_value",
+            trace_id="trace_id_value",
         )
 
 
@@ -1952,6 +1958,7 @@ def test_list_metastore_partitions_non_empty_request_with_auto_populated_field()
     request = metastore_partition.ListMetastorePartitionsRequest(
         parent="parent_value",
         filter="filter_value",
+        trace_id="trace_id_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1967,6 +1974,7 @@ def test_list_metastore_partitions_non_empty_request_with_auto_populated_field()
         assert args[0] == metastore_partition.ListMetastorePartitionsRequest(
             parent="parent_value",
             filter="filter_value",
+            trace_id="trace_id_value",
         )
 
 

@@ -70,12 +70,11 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
                 f"Sending request for {client_call_details.method}",
                 extra={
                     "serviceName": "google.cloud.bigquery.storage.v1alpha.MetastorePartitionService",
-                    "rpcName": client_call_details.method,
+                    "rpcName": str(client_call_details.method),
                     "request": grpc_request,
                     "metadata": grpc_request["metadata"],
                 },
             )
-
         response = continuation(client_call_details, request)
         if logging_enabled:  # pragma: NO COVER
             response_metadata = response.trailing_metadata()
@@ -114,7 +113,7 @@ class MetastorePartitionServiceGrpcTransport(MetastorePartitionServiceTransport)
 
     BigQuery Metastore Partition Service API.
     This service is used for managing metastore partitions in
-    BigQuery metastore. The service supports only batch operations
+    BigQuery  metastore. The service supports only batch operations
     for write.
 
     This class defines the same methods as the primary client, so the
