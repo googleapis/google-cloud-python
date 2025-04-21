@@ -1423,7 +1423,7 @@ class Session(
         packages: Optional[Sequence[str]] = None,
     ):
         """Decorator to turn a Python user defined function (udf) into a
-        BigQuery managed function.
+        [BigQuery managed user-defined function](https://cloud.google.com/bigquery/docs/user-defined-functions-python).
 
         .. note::
             The udf must be self-contained, i.e. it must not contain any
@@ -1431,9 +1431,70 @@ class Session(
             body.
 
         .. note::
-            Please have following IAM roles enabled for you:
+            Please have BigQuery Data Editor (roles/bigquery.dataEditor) IAM
+            role enabled for you.
 
-            * BigQuery Data Editor (roles/bigquery.dataEditor)
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> import datetime
+            >>> bpd.options.display.progress_bar = None
+
+        Turning an arbitrary python function into a BigQuery managed python udf:
+
+            >>> bq_name = datetime.datetime.now().strftime("bigframes_%Y%m%d%H%M%S%f")
+            >>> @bpd.udf(dataset="bigfranes_testing", name=bq_name)
+            ... def minutes_to_hours(x: int) -> float:
+            ...     return x/60
+
+            >>> minutes = bpd.Series([0, 30, 60, 90, 120])
+            >>> minutes
+            0      0
+            1     30
+            2     60
+            3     90
+            4    120
+            dtype: Int64
+
+            >>> hours = minutes.apply(minutes_to_hours)
+            >>> hours
+            0    0.0
+            1    0.5
+            2    1.0
+            3    1.5
+            4    2.0
+            dtype: Float64
+
+        To turn a user defined function with external package dependencies into
+        a BigQuery managed python udf, you would provide the names of the
+        packages (optionally with the package version) via `packages` param.
+
+            >>> bq_name = datetime.datetime.now().strftime("bigframes_%Y%m%d%H%M%S%f")
+            >>> @bpd.udf(
+            ...     dataset="bigfranes_testing",
+            ...     name=bq_name,
+            ...     packages=["cryptography"]
+            ... )
+            ... def get_hash(input: str) -> str:
+            ...     from cryptography.fernet import Fernet
+            ...
+            ...     # handle missing value
+            ...     if input is None:
+            ...         input = ""
+            ...
+            ...     key = Fernet.generate_key()
+            ...     f = Fernet(key)
+            ...     return f.encrypt(input.encode()).decode()
+
+            >>> names = bpd.Series(["Alice", "Bob"])
+            >>> hashes = names.apply(get_hash)
+
+        You can clean-up the BigQuery functions created above using the BigQuery
+        client from the BigQuery DataFrames session:
+
+            >>> session = bpd.get_global_session()
+            >>> session.bqclient.delete_routine(minutes_to_hours.bigframes_bigquery_function)
+            >>> session.bqclient.delete_routine(get_hash.bigframes_bigquery_function)
 
         Args:
             input_types (type or sequence(type), Optional):
