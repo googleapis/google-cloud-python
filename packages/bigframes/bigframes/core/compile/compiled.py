@@ -69,23 +69,28 @@ class UnorderedIR:
 
     def to_sql(
         self,
-        *,
-        order_by: Sequence[OrderingExpression] = (),
-        limit: Optional[int] = None,
-        selections: Optional[Sequence[str]] = None,
+        order_by: Sequence[OrderingExpression],
+        limit: Optional[int],
+        selections: tuple[tuple[ex.DerefOp, str], ...],
     ) -> str:
         ibis_table = self._to_ibis_expr()
         # This set of output transforms maybe should be its own output node??
-        if (
-            order_by
-            or limit
-            or (selections and (tuple(selections) != tuple(self.column_ids)))
-        ):
+
+        selection_strings = tuple((ref.id.sql, name) for ref, name in selections)
+
+        names_preserved = tuple(name for _, name in selections) == tuple(
+            self.column_ids
+        )
+        is_noop_selection = (
+            all((i[0] == i[1] for i in selection_strings)) and names_preserved
+        )
+
+        if order_by or limit or not is_noop_selection:
             sql = ibis_bigquery.Backend().compile(ibis_table)
             sql = (
                 bigframes.core.compile.googlesql.Select()
                 .from_(sql)
-                .select(selections or self.column_ids)
+                .select(selection_strings)
                 .sql()
             )
 

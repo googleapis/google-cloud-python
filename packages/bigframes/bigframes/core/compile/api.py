@@ -23,7 +23,6 @@ from bigframes.core.compile import compiler
 if TYPE_CHECKING:
     import bigframes.core.nodes
     import bigframes.core.ordering
-    import bigframes.core.schema
 
 
 class SQLCompiler:
@@ -35,8 +34,8 @@ class SQLCompiler:
         limit: Optional[int] = None,
     ) -> str:
         """Compile node into sql where rows are sorted with ORDER BY."""
-        # If we are ordering the query anyways, compiling the slice as a limit is probably a good idea.
-        return compiler.compile_sql(node, ordered=ordered, limit=limit)
+        request = compiler.CompileRequest(node, sort_rows=ordered, peek_count=limit)
+        return compiler.compile_sql(request).sql
 
     def compile_raw(
         self,
@@ -45,7 +44,12 @@ class SQLCompiler:
         str, Sequence[bigquery.SchemaField], bigframes.core.ordering.RowOrdering
     ]:
         """Compile node into sql that exposes all columns, including hidden ordering-only columns."""
-        return compiler.compile_raw(node)
+        request = compiler.CompileRequest(
+            node, sort_rows=False, materialize_all_order_keys=True
+        )
+        result = compiler.compile_sql(request)
+        assert result.row_order is not None
+        return result.sql, result.sql_schema, result.row_order
 
 
 def test_only_ibis_inferred_schema(node: bigframes.core.nodes.BigFrameNode):
@@ -53,7 +57,7 @@ def test_only_ibis_inferred_schema(node: bigframes.core.nodes.BigFrameNode):
     import bigframes.core.schema
 
     node = compiler._replace_unsupported_ops(node)
-    node, _ = rewrite.pull_up_order(node, order_root=False)
+    node = rewrite.bake_order(node)
     ir = compiler.compile_node(node)
     items = tuple(
         bigframes.core.schema.SchemaItem(name, ir.get_column_type(ibis_id))

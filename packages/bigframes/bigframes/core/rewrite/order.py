@@ -15,17 +15,40 @@ import dataclasses
 import functools
 from typing import Mapping, Tuple
 
-from bigframes.core import identifiers
-import bigframes.core.expression
+from bigframes.core import expression, identifiers
 import bigframes.core.nodes
 import bigframes.core.ordering
 import bigframes.core.window_spec
-import bigframes.operations
 from bigframes.operations import aggregations as agg_ops
 
 
+def defer_order(
+    root: bigframes.core.nodes.ResultNode, output_hidden_row_keys: bool
+) -> bigframes.core.nodes.ResultNode:
+    new_child, order = _pull_up_order(root.child, order_root=True)
+    order_by = (
+        order.with_ordering_columns(root.order_by.all_ordering_columns)
+        if root.order_by
+        else order
+    )
+    if output_hidden_row_keys:
+        output_names = tuple((expression.DerefOp(id), id.sql) for id in new_child.ids)
+    else:
+        output_names = root.output_cols
+    return dataclasses.replace(
+        root, output_cols=output_names, child=new_child, order_by=order_by
+    )
+
+
+def bake_order(
+    node: bigframes.core.nodes.BigFrameNode,
+) -> bigframes.core.nodes.BigFrameNode:
+    node, _ = _pull_up_order(node, order_root=False)
+    return node
+
+
 # Makes ordering explicit in window definitions
-def pull_up_order(
+def _pull_up_order(
     root: bigframes.core.nodes.BigFrameNode,
     *,
     order_root: bool = True,

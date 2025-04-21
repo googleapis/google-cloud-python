@@ -13,8 +13,10 @@
 # limitations under the License.
 from __future__ import annotations
 
+import dataclasses
 import functools
 import typing
+from typing import cast, Optional
 
 import bigframes_vendored.ibis.backends.bigquery as ibis_bigquery
 import bigframes_vendored.ibis.expr.api as ibis_api
@@ -24,6 +26,7 @@ import google.cloud.bigquery
 import pyarrow as pa
 
 from bigframes import dtypes, operations
+from bigframes.core import expression
 import bigframes.core.compile.compiled as compiled
 import bigframes.core.compile.concat as concat_impl
 import bigframes.core.compile.explode
@@ -34,48 +37,58 @@ import bigframes.core.rewrite as rewrites
 
 if typing.TYPE_CHECKING:
     import bigframes.core
-    import bigframes.session
 
 
-def compile_sql(
-    node: nodes.BigFrameNode,
-    ordered: bool,
-    limit: typing.Optional[int] = None,
-) -> str:
-    # later steps might add ids, so snapshot before those steps.
-    output_ids = node.schema.names
-    if ordered:
-        # Need to do this before replacing unsupported ops, as that will rewrite slice ops
-        node, pulled_up_limit = rewrites.pullup_limit_from_slice(node)
-        if (pulled_up_limit is not None) and (
-            (limit is None) or limit > pulled_up_limit
-        ):
-            limit = pulled_up_limit
+@dataclasses.dataclass(frozen=True)
+class CompileRequest:
+    node: nodes.BigFrameNode
+    sort_rows: bool
+    materialize_all_order_keys: bool = False
+    peek_count: typing.Optional[int] = None
 
-    node = _replace_unsupported_ops(node)
-    # prune before pulling up order to avoid unnnecessary row_number() ops
-    node = rewrites.column_pruning(node)
-    node, ordering = rewrites.pull_up_order(node, order_root=ordered)
-    # final pruning to cleanup up any leftovers unused values
-    node = rewrites.column_pruning(node)
-    return compile_node(node).to_sql(
-        order_by=ordering.all_ordering_columns if ordered else (),
-        limit=limit,
-        selections=output_ids,
+
+@dataclasses.dataclass(frozen=True)
+class CompileResult:
+    sql: str
+    sql_schema: typing.Sequence[google.cloud.bigquery.SchemaField]
+    row_order: Optional[bf_ordering.RowOrdering]
+
+
+def compile_sql(request: CompileRequest) -> CompileResult:
+    output_names = tuple((expression.DerefOp(id), id.sql) for id in request.node.ids)
+    result_node = nodes.ResultNode(
+        request.node,
+        output_cols=output_names,
+        limit=request.peek_count,
     )
+    if request.sort_rows:
+        # Can only pullup slice if we are doing ORDER BY in outermost SELECT
+        # Need to do this before replacing unsupported ops, as that will rewrite slice ops
+        result_node = rewrites.pull_up_limits(result_node)
+    result_node = _replace_unsupported_ops(result_node)
+    # prune before pulling up order to avoid unnnecessary row_number() ops
+    result_node = cast(nodes.ResultNode, rewrites.column_pruning(result_node))
+    result_node = rewrites.defer_order(
+        result_node, output_hidden_row_keys=request.materialize_all_order_keys
+    )
+    if request.sort_rows:
+        result_node = cast(nodes.ResultNode, rewrites.column_pruning(result_node))
+        sql = compile_result_node(result_node)
+        return CompileResult(
+            sql, result_node.schema.to_bigquery(), result_node.order_by
+        )
 
-
-def compile_raw(
-    node: nodes.BigFrameNode,
-) -> typing.Tuple[
-    str, typing.Sequence[google.cloud.bigquery.SchemaField], bf_ordering.RowOrdering
-]:
-    node = _replace_unsupported_ops(node)
-    node = rewrites.column_pruning(node)
-    node, ordering = rewrites.pull_up_order(node, order_root=True)
-    node = rewrites.column_pruning(node)
-    sql = compile_node(node).to_sql()
-    return sql, node.schema.to_bigquery(), ordering
+    ordering: Optional[bf_ordering.RowOrdering] = result_node.order_by
+    result_node = dataclasses.replace(result_node, order_by=None)
+    result_node = cast(nodes.ResultNode, rewrites.column_pruning(result_node))
+    sql = compile_result_node(result_node)
+    # Return the ordering iff no extra columns are needed to define the row order
+    if ordering is not None:
+        output_order = (
+            ordering if ordering.referenced_columns.issubset(result_node.ids) else None
+        )
+    assert (not request.materialize_all_order_keys) or (output_order is not None)
+    return CompileResult(sql, result_node.schema.to_bigquery(), output_order)
 
 
 def _replace_unsupported_ops(node: nodes.BigFrameNode):
@@ -84,6 +97,14 @@ def _replace_unsupported_ops(node: nodes.BigFrameNode):
     node = nodes.bottom_up(node, rewrites.rewrite_timedelta_expressions)
     node = nodes.bottom_up(node, rewrites.rewrite_range_rolling)
     return node
+
+
+def compile_result_node(root: nodes.ResultNode) -> str:
+    return compile_node(root.child).to_sql(
+        order_by=root.order_by.all_ordering_columns if root.order_by else (),
+        limit=root.limit,
+        selections=root.output_cols,
+    )
 
 
 # TODO: Remove cache when schema no longer requires compilation to derive schema (and therefor only compiles for execution)

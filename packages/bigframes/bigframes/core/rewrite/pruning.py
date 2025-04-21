@@ -15,14 +15,13 @@ import dataclasses
 import functools
 from typing import AbstractSet
 
-from bigframes.core import identifiers
-import bigframes.core.nodes
+from bigframes.core import identifiers, nodes
 
 
 def column_pruning(
-    root: bigframes.core.nodes.BigFrameNode,
-) -> bigframes.core.nodes.BigFrameNode:
-    return bigframes.core.nodes.top_down(root, prune_columns)
+    root: nodes.BigFrameNode,
+) -> nodes.BigFrameNode:
+    return nodes.top_down(root, prune_columns)
 
 
 def to_fixed(max_iterations: int = 100):
@@ -48,12 +47,14 @@ def to_fixed(max_iterations: int = 100):
 
 
 @to_fixed(max_iterations=100)
-def prune_columns(node: bigframes.core.nodes.BigFrameNode):
-    if isinstance(node, bigframes.core.nodes.SelectionNode):
+def prune_columns(node: nodes.BigFrameNode):
+    if isinstance(node, nodes.SelectionNode):
         result = prune_selection_child(node)
-    elif isinstance(node, bigframes.core.nodes.AggregateNode):
+    elif isinstance(node, nodes.ResultNode):
         result = node.replace_child(prune_node(node.child, node.consumed_ids))
-    elif isinstance(node, bigframes.core.nodes.InNode):
+    elif isinstance(node, nodes.AggregateNode):
+        result = node.replace_child(prune_node(node.child, node.consumed_ids))
+    elif isinstance(node, nodes.InNode):
         result = dataclasses.replace(
             node,
             right_child=prune_node(node.right_child, frozenset([node.right_col.id])),
@@ -64,23 +65,23 @@ def prune_columns(node: bigframes.core.nodes.BigFrameNode):
 
 
 def prune_selection_child(
-    selection: bigframes.core.nodes.SelectionNode,
-) -> bigframes.core.nodes.BigFrameNode:
+    selection: nodes.SelectionNode,
+) -> nodes.BigFrameNode:
     child = selection.child
 
     # Important to check this first
     if list(selection.ids) == list(child.ids):
         return child
 
-    if isinstance(child, bigframes.core.nodes.SelectionNode):
+    if isinstance(child, nodes.SelectionNode):
         return selection.remap_refs(
             {id: ref.id for ref, id in child.input_output_pairs}
         ).replace_child(child.child)
-    elif isinstance(child, bigframes.core.nodes.AdditiveNode):
+    elif isinstance(child, nodes.AdditiveNode):
         if not set(field.id for field in child.added_fields) & selection.consumed_ids:
             return selection.replace_child(child.additive_base)
         needed_ids = selection.consumed_ids | child.referenced_ids
-        if isinstance(child, bigframes.core.nodes.ProjectionNode):
+        if isinstance(child, nodes.ProjectionNode):
             # Projection expressions are independent, so can be individually removed from the node
             child = dataclasses.replace(
                 child,
@@ -91,75 +92,67 @@ def prune_selection_child(
         return selection.replace_child(
             child.replace_additive_base(prune_node(child.additive_base, needed_ids))
         )
-    elif isinstance(child, bigframes.core.nodes.ConcatNode):
+    elif isinstance(child, nodes.ConcatNode):
         indices = [
             list(child.ids).index(ref.id) for ref, _ in selection.input_output_pairs
         ]
         new_children = []
         for concat_node in child.child_nodes:
             cc_ids = tuple(concat_node.ids)
-            sub_selection = tuple(
-                bigframes.core.nodes.AliasedRef.identity(cc_ids[i]) for i in indices
-            )
-            new_children.append(
-                bigframes.core.nodes.SelectionNode(concat_node, sub_selection)
-            )
-        return bigframes.core.nodes.ConcatNode(
+            sub_selection = tuple(nodes.AliasedRef.identity(cc_ids[i]) for i in indices)
+            new_children.append(nodes.SelectionNode(concat_node, sub_selection))
+        return nodes.ConcatNode(
             children=tuple(new_children), output_ids=tuple(selection.ids)
         )
     # Nodes that pass through input columns
     elif isinstance(
         child,
         (
-            bigframes.core.nodes.RandomSampleNode,
-            bigframes.core.nodes.ReversedNode,
-            bigframes.core.nodes.OrderByNode,
-            bigframes.core.nodes.FilterNode,
-            bigframes.core.nodes.SliceNode,
-            bigframes.core.nodes.JoinNode,
-            bigframes.core.nodes.ExplodeNode,
+            nodes.RandomSampleNode,
+            nodes.ReversedNode,
+            nodes.OrderByNode,
+            nodes.FilterNode,
+            nodes.SliceNode,
+            nodes.JoinNode,
+            nodes.ExplodeNode,
         ),
     ):
         ids = selection.consumed_ids | child.referenced_ids
         return selection.replace_child(
             child.transform_children(lambda x: prune_node(x, ids))
         )
-    elif isinstance(child, bigframes.core.nodes.AggregateNode):
+    elif isinstance(child, nodes.AggregateNode):
         return selection.replace_child(prune_aggregate(child, selection.consumed_ids))
-    elif isinstance(child, bigframes.core.nodes.LeafNode):
+    elif isinstance(child, nodes.LeafNode):
         return selection.replace_child(prune_leaf(child, selection.consumed_ids))
     return selection
 
 
 def prune_node(
-    node: bigframes.core.nodes.BigFrameNode,
+    node: nodes.BigFrameNode,
     ids: AbstractSet[identifiers.ColumnId],
 ):
     # This clause is important, ensures idempotency, so can reach fixed point
     if not (set(node.ids) - ids):
         return node
     else:
-        return bigframes.core.nodes.SelectionNode(
+        return nodes.SelectionNode(
             node,
-            tuple(
-                bigframes.core.nodes.AliasedRef.identity(id)
-                for id in node.ids
-                if id in ids
-            ),
+            tuple(nodes.AliasedRef.identity(id) for id in node.ids if id in ids),
         )
 
 
 def prune_aggregate(
-    node: bigframes.core.nodes.AggregateNode,
+    node: nodes.AggregateNode,
     used_cols: AbstractSet[identifiers.ColumnId],
-) -> bigframes.core.nodes.AggregateNode:
+) -> nodes.AggregateNode:
     pruned_aggs = tuple(agg for agg in node.aggregations if agg[1] in used_cols)
     return dataclasses.replace(node, aggregations=pruned_aggs)
 
 
 @functools.singledispatch
 def prune_leaf(
-    node: bigframes.core.nodes.BigFrameNode,
+    node: nodes.BigFrameNode,
     used_cols: AbstractSet[identifiers.ColumnId],
 ):
     ...
@@ -167,9 +160,9 @@ def prune_leaf(
 
 @prune_leaf.register
 def prune_readlocal(
-    node: bigframes.core.nodes.ReadLocalNode,
+    node: nodes.ReadLocalNode,
     selection: AbstractSet[identifiers.ColumnId],
-) -> bigframes.core.nodes.ReadLocalNode:
+) -> nodes.ReadLocalNode:
     new_scan_list = node.scan_list.filter_cols(selection)
     return dataclasses.replace(
         node,
@@ -180,8 +173,8 @@ def prune_readlocal(
 
 @prune_leaf.register
 def prune_readtable(
-    node: bigframes.core.nodes.ReadTableNode,
+    node: nodes.ReadTableNode,
     selection: AbstractSet[identifiers.ColumnId],
-) -> bigframes.core.nodes.ReadTableNode:
+) -> nodes.ReadTableNode:
     new_scan_list = node.scan_list.filter_cols(selection)
     return dataclasses.replace(node, scan_list=new_scan_list)

@@ -25,7 +25,7 @@ Core class:
 * `expression`: Models basic SQL expressions.
 
 Extended classes (not part of standard GoogleSQL syntax, but added for convenience):
-
+i
 * `ColumnExpression`:  Represents column references.
 * `TableExpression`:   Represents table references.
 * `AliasExpression`:   Represents aliased expressions.

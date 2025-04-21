@@ -63,21 +63,30 @@ class Select(abc.SQLSyntax):
 
     def select(
         self,
-        columns: typing.Union[typing.Iterable[str], str, None] = None,
+        columns: typing.Union[
+            typing.Iterable[str], typing.Iterable[tuple[str, str]], str, None
+        ] = None,
         distinct: bool = False,
     ) -> Select:
         if isinstance(columns, str):
             columns = [columns]
         self.select_list: typing.List[typing.Union[SelectExpression, SelectAll]] = (
-            [
-                SelectExpression(expression=expr.ColumnExpression(name=column))
-                for column in columns
-            ]
+            [self._select_field(column) for column in columns]
             if columns
             else [SelectAll(expression=expr.StarExpression())]
         )
         self.distinct = distinct
         return self
+
+    def _select_field(self, field) -> SelectExpression:
+        if isinstance(field, str):
+            return SelectExpression(expression=expr.ColumnExpression(name=field))
+
+        else:
+            alias = field[1] if (field[0] != field[1]) else None
+            return SelectExpression(
+                expression=expr.ColumnExpression(name=field[0]), alias=alias
+            )
 
     def from_(
         self,

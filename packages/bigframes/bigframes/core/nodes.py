@@ -36,7 +36,7 @@ import google.cloud.bigquery as bq
 from bigframes.core import identifiers, local_data
 from bigframes.core.bigframe_node import BigFrameNode, COLUMN_SET, Field
 import bigframes.core.expression as ex
-from bigframes.core.ordering import OrderingExpression
+from bigframes.core.ordering import OrderingExpression, RowOrdering
 import bigframes.core.slices as slices
 import bigframes.core.window_spec as window
 import bigframes.dtypes
@@ -1602,11 +1602,50 @@ class ExplodeNode(UnaryNode):
 
 
 # Introduced during planing/compilation
+# TODO: Enforce more strictly that this should never be a child node
 @dataclasses.dataclass(frozen=True, eq=False)
 class ResultNode(UnaryNode):
-    output_names: tuple[str, ...]
-    order_by: Tuple[OrderingExpression, ...] = ()
+    output_cols: tuple[tuple[ex.DerefOp, str], ...]
+    order_by: Optional[RowOrdering] = None
     limit: Optional[int] = None
+    # TODO: CTE definitions
+
+    @property
+    def node_defined_ids(self) -> Tuple[identifiers.ColumnId, ...]:
+        return ()
+
+    def remap_vars(
+        self, mappings: Mapping[identifiers.ColumnId, identifiers.ColumnId]
+    ) -> ResultNode:
+        return self
+
+    def remap_refs(
+        self, mappings: Mapping[identifiers.ColumnId, identifiers.ColumnId]
+    ) -> ResultNode:
+        output_names = tuple(
+            (ref.remap_column_refs(mappings), name) for ref, name in self.output_cols
+        )
+        order_by = self.order_by.remap_column_refs(mappings) if self.order_by else None
+        return dataclasses.replace(self, output_names=output_names, order_by=order_by)  # type: ignore
+
+    @property
+    def consumed_ids(self) -> COLUMN_SET:
+        out_refs = frozenset(ref.id for ref, _ in self.output_cols)
+        order_refs = self.order_by.referenced_columns if self.order_by else frozenset()
+        return out_refs | order_refs
+
+    @property
+    def row_count(self) -> Optional[int]:
+        child_count = self.child.row_count
+        if child_count is None:
+            return None
+        if self.limit is None:
+            return child_count
+        return min(self.limit, child_count)
+
+    @property
+    def variables_introduced(self) -> int:
+        return 0
 
 
 # Tree operators
