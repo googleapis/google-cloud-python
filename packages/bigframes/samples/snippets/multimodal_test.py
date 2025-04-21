@@ -48,8 +48,8 @@ def test_multimodal_dataframe(gcs_dst_bucket: str) -> None:
     df_image["updated"] = df_image["image"].blob.updated()
     df_image
 
-    # Filter images and display, you can also display audio and video types
-    df_image[df_image["author"] == "alice"]["image"].blob.display()
+    # Filter images and display, you can also display audio and video types. Use width/height parameters to constrain window sizes.
+    df_image[df_image["author"] == "alice"]["image"].blob.display(width=400)
     # [END bigquery_dataframes_multimodal_dataframe_merge]
 
     # [START bigquery_dataframes_multimodal_dataframe_image_transform]
