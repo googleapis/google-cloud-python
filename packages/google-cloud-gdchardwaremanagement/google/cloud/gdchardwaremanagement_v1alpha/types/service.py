@@ -1484,6 +1484,14 @@ class SignalZoneStateRequest(proto.Message):
             Optional. The provisioning state signal to send for this
             zone. Either state_signal or provisioning_state_signal must
             be set, but not both.
+        step (str):
+            Optional. The step being executed. Provides a finer grained
+            status when the state_signal is
+            FACTORY_TURNUP_CHECKS_STARTED or
+            FACTORY_TURNUP_CHECKS_FAILED.
+        details (str):
+            Optional. Additional details, such as an error message when
+            state_signal is FACTORY_TURNUP_CHECKS_FAILED.
     """
 
     class StateSignal(proto.Enum):
@@ -1492,6 +1500,8 @@ class SignalZoneStateRequest(proto.Message):
         Values:
             STATE_SIGNAL_UNSPECIFIED (0):
                 State signal of the zone is unspecified.
+            FACTORY_TURNUP_CHECKS_STARTED (3):
+                Factory turnup checks have started.
             FACTORY_TURNUP_CHECKS_PASSED (1):
                 The Zone is ready for site turnup.
             READY_FOR_SITE_TURNUP (1):
@@ -1502,6 +1512,7 @@ class SignalZoneStateRequest(proto.Message):
         """
         _pb_options = {"allow_alias": True}
         STATE_SIGNAL_UNSPECIFIED = 0
+        FACTORY_TURNUP_CHECKS_STARTED = 3
         FACTORY_TURNUP_CHECKS_PASSED = 1
         READY_FOR_SITE_TURNUP = 1
         FACTORY_TURNUP_CHECKS_FAILED = 2
@@ -1538,6 +1549,14 @@ class SignalZoneStateRequest(proto.Message):
         proto.ENUM,
         number=4,
         enum=ProvisioningStateSignal,
+    )
+    step: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    details: str = proto.Field(
+        proto.STRING,
+        number=6,
     )
 
 

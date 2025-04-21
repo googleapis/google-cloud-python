@@ -593,7 +593,6 @@ class GDCHardwareManagementAsyncClient:
                 order.organization_contact.contacts.phone = "phone_value"
                 order.customer_motivation = "customer_motivation_value"
                 order.region_code = "region_code_value"
-                order.billing_id = "billing_id_value"
 
                 request = gdchardwaremanagement_v1alpha.CreateOrderRequest(
                     parent="parent_value",
@@ -751,7 +750,6 @@ class GDCHardwareManagementAsyncClient:
                 order.organization_contact.contacts.phone = "phone_value"
                 order.customer_motivation = "customer_motivation_value"
                 order.region_code = "region_code_value"
-                order.billing_id = "billing_id_value"
 
                 request = gdchardwaremanagement_v1alpha.UpdateOrderRequest(
                     order=order,
